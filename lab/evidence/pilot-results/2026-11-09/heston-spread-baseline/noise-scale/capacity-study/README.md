@@ -1,6 +1,6 @@
 # Larger-bank Heston training: two batch sizes
 
-**Completed, 10 November 2026.** Both corrected runs used all **100,000 clean Heston surfaces**, batches of **128 or 512**, and **500 additional complete bank passes**. Each branch saw the same **50 million fresh noisy examples**, starting from the same six-target 60k checkpoint. More training improved the loss and physical-parameter recovery, but **did not resolve learning of c**. Stop for reflection before another fit, grid production or Bergomi work.
+**Completed, 10 November 2026.** Both corrected runs used all **100,000 clean Heston surfaces**, batches of **128 or 512**, and **500 additional complete bank passes**. Each branch saw the same **50 million fresh noisy examples**, starting from the same six-target 60k checkpoint. More training improved the loss and physical-parameter recovery, but **did not resolve learning of c**. The subsequently requested batch-1024/4098 comparison is recorded separately below; grid production and Bergomi work remain deferred.
 
 Read the [offline HTML report](report.html) for parameter recovery, SBC, conditional comparisons, exact network/rate/dropout code and the exploratory input-conditioning diagnostic. All figures and styles are embedded. The [summary](summary.json), [report manifest](report-manifest.json) and [software verification](verification.json) bind the underlying evidence.
 
@@ -41,6 +41,10 @@ The original deadline, 19:48:49.590152UTC, was retained. The corrected training 
 The requested [eight-case MCMC recovery study](mcmc-recovery/README.md) is complete. Seven joint six-parameter fits pass the predeclared convergence and sampled numerical checks; one mixing failure remains visible and is not retried or replaced. On the identical seven ready validation datasets, c posterior-median RMSE is **.10003 for MCMC versus .46699/.46906 for the networks**. MCMC correlation with generating c is .97729, with mean central-90% width .35923 versus 1.36112/1.35404 for the networks. The [recovery report](mcmc-recovery/report.html) and [c plot](mcmc-recovery/c-recovery.png) show the matched comparison and all eight statuses.
 
 This new sampling study supports a failure of the neural approximation to use available scale information on the converged examples. It is a small c-stratified panel, not SBC, a population coverage estimate or a general identifiability proof. All five physical parameters were unknown to MCMC; no truth or neural output was used to initialize it. No further neural, grid or Bergomi work follows automatically.
+
+## Requested larger-batch follow-up
+
+The user requested a further comparison with exact batches **1024 and 4098**. The [new study](large-batches/README.md) uses the same original 60k parent, 100k bank, paired augmentation stream, architecture, zero dropout and rate schedule as the completed 128/512 runs. Each arm receives another 500 complete passes / 50 million examples from that shared parent; the larger batches make 49,000 / 12,500 additional updates. The [new protocol](large-batches/protocol.json) was frozen before launch. These are separate run identities, not continuations of the finished 500-pass branches. Both runs are now complete: c RMSE is .44743/.44709 and median 90% width is 1.34287/1.34244 (prior 1.35); neither resolves c recovery. All eight evaluations and exact exposure counts pass the independent audit. The [four-batch report](large-batches/report.html) includes final/intermediate recovery, SBC, conditional comparisons and the same seven converged MCMC cases. No additional fit or grid/Bergomi production follows automatically.
 
 ## Reflection
 

@@ -1,0 +1,30 @@
+{
+  "format": "heston_spread_scale_large_batch_software_verification_v1",
+  "lab_suite": {
+    "result": "pass",
+    "tests": 732,
+    "seconds": 390.75,
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/software-tests.log",
+      "sha256": "653a142bc4bf5890a13e3b1f5551988dc1502ea707b2b2ecd60f8cdeb84d9e17"
+    }
+  },
+  "additional_report_tests": {
+    "result": "pass",
+    "tests": 3,
+    "source": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/tests/test_heston_spread_scale_large_batch_report.py",
+      "sha256": "5f73ac083c72b9dce8bc509f0984d5e4370b3c446e56ba882e989fa46f86bc54"
+    },
+    "scope": "Added after full-suite discovery; tested separately after scalar-counter naming support."
+  },
+  "release_checks": {
+    "manifest": "current, 153 artifacts, 0 copies refreshed",
+    "claims": "current",
+    "runtime_boundary": "183 shared symbols, no duplicated lab implementations"
+  },
+  "tutorial_source_or_assets_changed": false,
+  "reserved_arrays_opened": false,
+  "new_reference_sampling": false,
+  "automatic_training_retry": false
+}

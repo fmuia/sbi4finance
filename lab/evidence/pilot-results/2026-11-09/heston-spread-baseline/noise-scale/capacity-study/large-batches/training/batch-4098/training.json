@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "completed_updates": 72500,
+  "completed_bank_passes": 500,
+  "continued_updates": 12500,
+  "continued_row_presentations": 50000000,
+  "seconds": 1058.8668380421586,
+  "same_seed_reload_exact": true,
+  "all_parent_array_hashes_restored": true,
+  "last_checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0500",
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false
+}

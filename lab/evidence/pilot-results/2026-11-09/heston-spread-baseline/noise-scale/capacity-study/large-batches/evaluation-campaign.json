@@ -1,0 +1,235 @@
+{
+  "format": "heston_large_batch_evaluation_campaign_v1",
+  "status": "complete",
+  "started_utc": "2026-11-10T20:58:13.938838+00:00",
+  "deadline_utc": "2026-11-10T22:32:01.603611+00:00",
+  "per_evaluation_outer_wall_seconds": 300,
+  "automatic_retry": false,
+  "jobs": {
+    "1024:25": {
+      "status": "complete",
+      "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0025",
+      "out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0025",
+      "payload": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0025",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluation-logs/batch-1024-pass-0025.log",
+      "started_utc": "2026-11-10T20:58:51.078406+00:00",
+      "exit_code": 0,
+      "wall_seconds": 26.32350954087451,
+      "finished_utc": "2026-11-10T20:59:17.402568+00:00",
+      "c_summary": {
+        "median_rmse": 0.44624048222199886,
+        "truth_posterior_median_correlation": -0.04184437528437446,
+        "median_posterior_width90": 1.3463755846023557,
+        "prior_width90": 1.35,
+        "median_width90_over_prior": 0.9973152478535968,
+        "prior_midpoint_rmse": 0.4370734589111061
+      },
+      "sbc_passed": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "conditional_status": "fail"
+    },
+    "4098:25": {
+      "status": "complete",
+      "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0025",
+      "out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0025",
+      "payload": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0025",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluation-logs/batch-4098-pass-0025.log",
+      "started_utc": "2026-11-10T20:58:13.939463+00:00",
+      "exit_code": 0,
+      "wall_seconds": 27.131476875161752,
+      "finished_utc": "2026-11-10T20:58:41.071356+00:00",
+      "c_summary": {
+        "median_rmse": 0.44540108580715776,
+        "truth_posterior_median_correlation": -0.04043708901456905,
+        "median_posterior_width90": 1.3404020220041275,
+        "prior_width90": 1.35,
+        "median_width90_over_prior": 0.992890386669724,
+        "prior_midpoint_rmse": 0.4370734589111061
+      },
+      "sbc_passed": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "conditional_status": "fail"
+    },
+    "1024:100": {
+      "status": "complete",
+      "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0100",
+      "out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0100",
+      "payload": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0100",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluation-logs/batch-1024-pass-0100.log",
+      "started_utc": "2026-11-10T21:02:04.005190+00:00",
+      "exit_code": 0,
+      "wall_seconds": 25.785865416983142,
+      "finished_utc": "2026-11-10T21:02:29.791765+00:00",
+      "c_summary": {
+        "median_rmse": 0.44574348726536267,
+        "truth_posterior_median_correlation": -0.03708782287647473,
+        "median_posterior_width90": 1.3398123994469642,
+        "prior_width90": 1.35,
+        "median_width90_over_prior": 0.9924536292199734,
+        "prior_midpoint_rmse": 0.4370734589111061
+      },
+      "sbc_passed": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "conditional_status": "fail"
+    },
+    "4098:100": {
+      "status": "complete",
+      "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0100",
+      "out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0100",
+      "payload": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0100",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluation-logs/batch-4098-pass-0100.log",
+      "started_utc": "2026-11-10T21:00:27.471497+00:00",
+      "exit_code": 0,
+      "wall_seconds": 26.47755949990824,
+      "finished_utc": "2026-11-10T21:00:53.949980+00:00",
+      "c_summary": {
+        "median_rmse": 0.44600780408599255,
+        "truth_posterior_median_correlation": -0.041973330981899315,
+        "median_posterior_width90": 1.3414784029126166,
+        "prior_width90": 1.35,
+        "median_width90_over_prior": 0.9936877058611974,
+        "prior_midpoint_rmse": 0.4370734589111061
+      },
+      "sbc_passed": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "conditional_status": "fail"
+    },
+    "1024:250": {
+      "status": "complete",
+      "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0250",
+      "out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0250",
+      "payload": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0250",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluation-logs/batch-1024-pass-0250.log",
+      "started_utc": "2026-11-10T21:10:04.269993+00:00",
+      "exit_code": 0,
+      "wall_seconds": 23.786352165974677,
+      "finished_utc": "2026-11-10T21:10:28.057036+00:00",
+      "c_summary": {
+        "median_rmse": 0.44732375043584377,
+        "truth_posterior_median_correlation": -0.04157271828089408,
+        "median_posterior_width90": 1.341173754632473,
+        "prior_width90": 1.35,
+        "median_width90_over_prior": 0.9934620404684984,
+        "prior_midpoint_rmse": 0.4370734589111061
+      },
+      "sbc_passed": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "conditional_status": "fail"
+    },
+    "4098:250": {
+      "status": "complete",
+      "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0250",
+      "out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0250",
+      "payload": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0250",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluation-logs/batch-4098-pass-0250.log",
+      "started_utc": "2026-11-10T21:05:49.929770+00:00",
+      "exit_code": 0,
+      "wall_seconds": 24.15855895797722,
+      "finished_utc": "2026-11-10T21:06:14.089049+00:00",
+      "c_summary": {
+        "median_rmse": 0.4467419424914742,
+        "truth_posterior_median_correlation": -0.03798596888803441,
+        "median_posterior_width90": 1.3419277966022491,
+        "prior_width90": 1.35,
+        "median_width90_over_prior": 0.9940205900757401,
+        "prior_midpoint_rmse": 0.4370734589111061
+      },
+      "sbc_passed": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "conditional_status": "fail"
+    },
+    "1024:500": {
+      "status": "complete",
+      "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0500",
+      "out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0500",
+      "payload": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0500",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluation-logs/batch-1024-pass-0500.log",
+      "started_utc": "2026-11-10T21:22:20.166836+00:00",
+      "exit_code": 0,
+      "wall_seconds": 20.231468749931082,
+      "finished_utc": "2026-11-10T21:22:40.399350+00:00",
+      "c_summary": {
+        "median_rmse": 0.4474338473102354,
+        "truth_posterior_median_correlation": -0.036480256648261086,
+        "median_posterior_width90": 1.3428734883666036,
+        "prior_width90": 1.35,
+        "median_width90_over_prior": 0.9947211024937803,
+        "prior_midpoint_rmse": 0.4370734589111061
+      },
+      "sbc_passed": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "conditional_status": "fail"
+    },
+    "4098:500": {
+      "status": "complete",
+      "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0500",
+      "out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0500",
+      "payload": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0500",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluation-logs/batch-4098-pass-0500.log",
+      "started_utc": "2026-11-10T21:14:48.234349+00:00",
+      "exit_code": 0,
+      "wall_seconds": 21.66555833397433,
+      "finished_utc": "2026-11-10T21:15:09.900575+00:00",
+      "c_summary": {
+        "median_rmse": 0.44708789479639777,
+        "truth_posterior_median_correlation": -0.04169253822032787,
+        "median_posterior_width90": 1.342436110973358,
+        "prior_width90": 1.35,
+        "median_width90_over_prior": 0.9943971192395243,
+        "prior_midpoint_rmse": 0.4370734589111061
+      },
+      "sbc_passed": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "conditional_status": "fail"
+    }
+  },
+  "finished_utc": "2026-11-10T21:22:40.401478+00:00"
+}

@@ -1,0 +1,202 @@
+{
+  "format": "heston_spread_scale_large_batch_protocol_verification_v1",
+  "status": "passed",
+  "checked_at_utc": "2026-11-10T21:02:12.195897+00:00",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/protocol.json",
+    "sha256": "f793bdb656423f4268a93640ae55e6f599ad2662a42d4f4157ed0c8018420840"
+  },
+  "sources": {
+    "trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_large_batch.py",
+      "sha256": "9afdb945978f556a879681a205781093d5f83a96a80baabff6f57ca94575662d"
+    },
+    "evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_large_batch.py",
+      "sha256": "da238a7aa7515448d103242b62b297d5b61f9a6131359aab35c3ac7f6307605a"
+    },
+    "controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_large_batch_campaign.py",
+      "sha256": "4729f4c0ef35a335fa652e2d2a7f5130dcc214bcdde4269c595dcb26da8e0544"
+    },
+    "frozen_scale_trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_scale.py",
+      "sha256": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068"
+    },
+    "frozen_fixed_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py",
+      "sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38"
+    },
+    "full_state_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_baseline.py",
+      "sha256": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+    },
+    "original_expansion": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale.py",
+      "sha256": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892"
+    },
+    "shared_capacity_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_continuation.py",
+      "sha256": "eda6b86ed47c3aa6af0678c129eba0e4a7220d4070fed7193fe5b6e511af39b5"
+    },
+    "precision_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_precision.py",
+      "sha256": "767a759a79d764c067d7c702ed30272965eb62a58400208bf58bab7331c9db47"
+    },
+    "previous_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_precision.py",
+      "sha256": "e4fcc89bf94d723189968aefb8ff8c4360a5ef6bb98679699a76f6b583625df2"
+    },
+    "preparer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/prepare_heston_spread_scale_large_batch.py",
+      "sha256": "d6b211e07a9c0d23bdd938c426a2953c8f6c9e17ad2d498fa65689c970a531c3"
+    }
+  },
+  "all_declared_source_hashes_match": true,
+  "previous_training_study": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/precision-replay/protocol.json",
+    "sha256": "292e1a5be99bcde8f290f10f8a927603673030ab6197899391c6818b93771d3d"
+  },
+  "native_preflight": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/native-batch-preflight.json",
+    "sha256": "52fc969d5fafee6e212638b394e668b6e8bf5fa943022da548c5201b33953106"
+  },
+  "native_preflight_binds_exact_frozen_trainer": true,
+  "preflight_scope": {
+    "actual_batch_shapes_tested": [
+      1024,
+      4098
+    ],
+    "native_finite_metric_gradient_and_update_checks": true,
+    "software_cli_checkpoint_reload_and_next_update_checks": true,
+    "production_parent_loaded_by_preflight": false,
+    "production_bank_loaded_by_preflight": false,
+    "peak_rss_measured": false
+  },
+  "unchanged_scientific_target": true,
+  "unchanged_parent_and_bank_identities": true,
+  "parent_and_bank_payload_hashes_match": true,
+  "unchanged_contract_fields_checked": [
+    "task_fingerprint",
+    "parent_checkpoint_path",
+    "parent_model_sha256",
+    "parent_state_sha256",
+    "train_rows",
+    "additional_bank_passes",
+    "additional_presentations",
+    "seed",
+    "augmentation_namespace",
+    "permutation_namespace",
+    "schedule",
+    "precision_recipe",
+    "bank_record_sha256",
+    "bank_payload_sha256"
+  ],
+  "unchanged_math_helpers": {
+    "host_float64_logit_then_float32": "frozen precision.host_adapt_training",
+    "epoch_order_and_raw_c_gaussian_examples": "frozen original.epoch_order/epoch_data",
+    "exposure_based_rate_schedule": "frozen original.SpreadExposureCosine via precision.install_schedule",
+    "architecture": "Same six-block spline flow, 128-by-128 conditioners, effective dropout zero",
+    "parent_state_policy": "Restore all original 60k model, Adam, normalization and RNG arrays before the same 5e-5 restart"
+  },
+  "exact_batch4098_not_rounded": true,
+  "arms": [
+    {
+      "batch_size": 1024,
+      "training_rows": 100000,
+      "complete_bank_passes": 500,
+      "batches_per_pass": 98,
+      "planned_additional_examples": 50000000,
+      "planned_additional_optimizer_updates": 49000,
+      "planned_absolute_optimizer_updates": 109000,
+      "checkpoint_absolute_updates": {
+        "25": 62450,
+        "100": 69800,
+        "250": 84500,
+        "500": 109000
+      },
+      "unpadded_tail_batch_size": 672
+    },
+    {
+      "batch_size": 4098,
+      "training_rows": 100000,
+      "complete_bank_passes": 500,
+      "batches_per_pass": 25,
+      "planned_additional_examples": 50000000,
+      "planned_additional_optimizer_updates": 12500,
+      "planned_absolute_optimizer_updates": 72500,
+      "checkpoint_absolute_updates": {
+        "25": 60625,
+        "100": 62500,
+        "250": 66250,
+        "500": 72500
+      },
+      "unpadded_tail_batch_size": 1648
+    }
+  ],
+  "campaign_caps": {
+    "worker_wall_seconds": 5400,
+    "whole_training_wall_seconds": 5700,
+    "max_concurrent_workers": 2,
+    "automatic_retry": false,
+    "automatic_extension": false
+  },
+  "new_conditional_family_checks": 384,
+  "evaluation_scope": "Reuse same512 validation observations and existing conditional/MCMC references. New and historical384-screen families remain separate; no new MCMC or pricing labels.",
+  "old_source_preservation": {
+    "historical_pinned_sources_unchanged": true,
+    "new_artifact_paths_separate": true,
+    "no_existing_files_changed_by_this_audit": true,
+    "unknown_parent_README_and_recovery_inputs_preserved": true
+  },
+  "float32_standardizer_count_note": {
+    "classification": "nonblocking finite-precision grouping behavior; logical data exposure unchanged",
+    "method": "Arithmetic-only NumPy float32 replay of the installed Standardize total_count=count+batch_count formula; no network updates or sampled outcomes.",
+    "source": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/.pixi/envs/core-reference/lib/python3.12/site-packages/bayesflow/networks/helpers/standardization/standardize.py",
+      "sha256": "c6a9110842431c90087f6db6daf698c7efb7b89aca5fbe1e5ffdcd8e563fd737"
+    },
+    "parent_counters": [
+      {
+        "path": "basic_estimator/standardization/standardize/variable_2",
+        "dtype": "float32",
+        "value": 7643328.0
+      },
+      {
+        "path": "basic_estimator/standardization/standardize_1/variable_5",
+        "dtype": "float32",
+        "value": 7643328.0
+      }
+    ],
+    "predictions": [
+      {
+        "batch_size": 1024,
+        "predicted_float32_count": 57643328.0,
+        "integer_total_including_parent": 57643328,
+        "predicted_difference": 0.0,
+        "predicted_relative_difference": 0.0,
+        "first_predicted_rounding": null
+      },
+      {
+        "batch_size": 4098,
+        "predicted_float32_count": 57631768.0,
+        "integer_total_including_parent": 57643328,
+        "predicted_difference": -11560.0,
+        "predicted_relative_difference": -0.00020054359109869575,
+        "first_predicted_rounding": {
+          "bank_pass": 260,
+          "offset": 8196,
+          "float32_count": 33555624.0,
+          "integer_count": 33555622
+        }
+      }
+    ],
+    "observation_status": "Predicted, not observed from these production runs. Actual terminal outputs are to be checked separately.",
+    "interpretation": "Both runs still present all 100000 rows exactly 500 times using the int64 exposure ledger. The predicted normalizer-count rounding does not drop training examples or round the requested batch size."
+  },
+  "training_sampling_or_pricing_performed_by_this_audit": false,
+  "reserved_bank_arrays_opened": false,
+  "scientific_acceptance": false,
+  "scope": "Independent launch/protocol review only; not posterior accuracy or completed-run verification.",
+  "blocking_defects": []
+}

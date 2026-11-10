@@ -1,0 +1,1914 @@
+<svg role="img" aria-label="Four neural batches against the unchanged joint-MCMC recovery panel" xmlns:xlink="http://www.w3.org/1999/xlink" width="908.93294pt" height="604.99976pt" viewBox="0 0 908.93294 604.99976" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<title>Four neural batches against the unchanged joint-MCMC recovery panel</title><desc>All four networks use the same 8 preselected rows; only the 7 ready joint-MCMC references supply posterior points.</desc>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="heston-55c21b799c-figure_1">
+  <g id="heston-55c21b799c-patch_1">
+   <path d="M 0 604.99976 
+L 908.93294 604.99976 
+L 908.93294 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="heston-55c21b799c-axes_1">
+   <g id="heston-55c21b799c-patch_2">
+    <path d="M 41.513516 254.797952 
+L 274.905155 254.797952 
+L 274.905155 21.406312 
+L 41.513516 21.406312 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_1">
+    <g id="heston-55c21b799c-xtick_1">
+     <g id="heston-55c21b799c-line2d_1">
+      <defs>
+       <path id="heston-55c21b799c-m70bf6c87d6" d="M 0 0 
+L 0 3.5 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="60.962819" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_1">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="60.962819" y="268.635843" transform="rotate(-0 60.962819 268.635843)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_2">
+     <g id="heston-55c21b799c-line2d_2">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="90.884824" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_2">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="90.884824" y="268.635843" transform="rotate(-0 90.884824 268.635843)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_3">
+     <g id="heston-55c21b799c-line2d_3">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="120.806829" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_3">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="120.806829" y="268.635843" transform="rotate(-0 120.806829 268.635843)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_4">
+     <g id="heston-55c21b799c-line2d_4">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="150.728834" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_4">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="150.728834" y="268.635843" transform="rotate(-0 150.728834 268.635843)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_5">
+     <g id="heston-55c21b799c-line2d_5">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="180.650839" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_5">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="180.650839" y="268.635843" transform="rotate(-0 180.650839 268.635843)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_6">
+     <g id="heston-55c21b799c-line2d_6">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="210.572844" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_6">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="210.572844" y="268.635843" transform="rotate(-0 210.572844 268.635843)">1.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_7">
+     <g id="heston-55c21b799c-line2d_7">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="240.494849" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_7">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="240.494849" y="268.635843" transform="rotate(-0 240.494849 268.635843)">1.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_8">
+     <g id="heston-55c21b799c-line2d_8">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="270.416854" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_8">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="270.416854" y="268.635843" transform="rotate(-0 270.416854 268.635843)">2.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_9">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="158.209335" y="281.636546" transform="rotate(-0 158.209335 281.636546)">Generating c</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_2">
+    <g id="heston-55c21b799c-ytick_1">
+     <g id="heston-55c21b799c-line2d_9">
+      <defs>
+       <path id="heston-55c21b799c-mc3bcbfe952" d="M 0 0 
+L -3.5 0 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="235.348649" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_10">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="238.767594" transform="rotate(-0 34.513516 238.767594)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_2">
+     <g id="heston-55c21b799c-line2d_10">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="205.426644" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_11">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="208.845589" transform="rotate(-0 34.513516 208.845589)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_3">
+     <g id="heston-55c21b799c-line2d_11">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="175.504638" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_12">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="178.923584" transform="rotate(-0 34.513516 178.923584)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_4">
+     <g id="heston-55c21b799c-line2d_12">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="145.582633" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_13">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="149.001579" transform="rotate(-0 34.513516 149.001579)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_5">
+     <g id="heston-55c21b799c-line2d_13">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="115.660628" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_14">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="119.079574" transform="rotate(-0 34.513516 119.079574)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_6">
+     <g id="heston-55c21b799c-line2d_14">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="85.738623" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_15">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="89.157569" transform="rotate(-0 34.513516 89.157569)">1.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_7">
+     <g id="heston-55c21b799c-line2d_15">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="55.816618" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_16">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="59.235564" transform="rotate(-0 34.513516 59.235564)">1.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_8">
+     <g id="heston-55c21b799c-line2d_16">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="25.894613" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_17">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="29.313559" transform="rotate(-0 34.513516 29.313559)">2.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_18">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="14.038594" y="138.102132" transform="rotate(-90 14.038594 138.102132)">Posterior median c</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_17">
+    <path d="M 46.001816 250.309651 
+L 270.416854 25.894613 
+" clip-path="url(#heston-55c21b799c-pf0c0bccaec)" style="fill: none; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #405562"/>
+   </g>
+   <g id="heston-55c21b799c-line2d_18">
+    <path d="M 41.513516 138.102132 
+L 274.905155 138.102132 
+" clip-path="url(#heston-55c21b799c-pf0c0bccaec)" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #7e8790; stroke-width: 1.5"/>
+   </g>
+   <g id="heston-55c21b799c-LineCollection_1">
+    <path d="M 60.130677 244.501367 
+L 60.130677 213.028214 
+" clip-path="url(#heston-55c21b799c-pf0c0bccaec)" style="fill: none; stroke: #b44b37"/>
+    <path d="M 89.949296 223.711497 
+L 89.949296 182.890286 
+" clip-path="url(#heston-55c21b799c-pf0c0bccaec)" style="fill: none; stroke: #b44b37"/>
+    <path d="M 115.622225 209.599797 
+L 115.622225 161.87911 
+" clip-path="url(#heston-55c21b799c-pf0c0bccaec)" style="fill: none; stroke: #b44b37"/>
+    <path d="M 174.436133 175.448022 
+L 174.436133 116.138397 
+" clip-path="url(#heston-55c21b799c-pf0c0bccaec)" style="fill: none; stroke: #b44b37"/>
+    <path d="M 201.631192 114.306725 
+L 201.631192 39.866207 
+" clip-path="url(#heston-55c21b799c-pf0c0bccaec)" style="fill: none; stroke: #b44b37"/>
+    <path d="M 230.171098 89.889146 
+L 230.171098 29.813507 
+" clip-path="url(#heston-55c21b799c-pf0c0bccaec)" style="fill: none; stroke: #b44b37"/>
+    <path d="M 256.239903 93.125761 
+L 256.239903 30.75838 
+" clip-path="url(#heston-55c21b799c-pf0c0bccaec)" style="fill: none; stroke: #b44b37"/>
+   </g>
+   <g id="heston-55c21b799c-line2d_19">
+    <defs>
+     <path id="heston-55c21b799c-meafe2537da" d="M 3 0 
+L -3 -0 
+" style="stroke: #b44b37"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-pf0c0bccaec)">
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="60.130677" y="244.501367" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="89.949296" y="223.711497" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="115.622225" y="209.599797" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="174.436133" y="175.448022" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="201.631192" y="114.306725" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="230.171098" y="89.889146" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="256.239903" y="93.125761" style="fill: #b44b37; stroke: #b44b37"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_20">
+    <g clip-path="url(#heston-55c21b799c-pf0c0bccaec)">
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="60.130677" y="213.028214" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="89.949296" y="182.890286" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="115.622225" y="161.87911" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="174.436133" y="116.138397" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="201.631192" y="39.866207" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="230.171098" y="29.813507" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-meafe2537da" x="256.239903" y="30.75838" style="fill: #b44b37; stroke: #b44b37"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_21">
+    <defs>
+     <path id="heston-55c21b799c-mfcbbcae4d8" d="M 0 2.5 
+C 0.663008 2.5 1.29895 2.236584 1.767767 1.767767 
+C 2.236584 1.29895 2.5 0.663008 2.5 0 
+C 2.5 -0.663008 2.236584 -1.29895 1.767767 -1.767767 
+C 1.29895 -2.236584 0.663008 -2.5 0 -2.5 
+C -0.663008 -2.5 -1.29895 -2.236584 -1.767767 -1.767767 
+C -2.236584 -1.29895 -2.5 -0.663008 -2.5 0 
+C -2.5 0.663008 -2.236584 1.29895 -1.767767 1.767767 
+C -1.29895 2.236584 -0.663008 2.5 0 2.5 
+z
+" style="stroke: #b44b37"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-pf0c0bccaec)">
+     <use xlink:href="#heston-55c21b799c-mfcbbcae4d8" x="60.130677" y="231.547671" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-mfcbbcae4d8" x="89.949296" y="206.02693" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-mfcbbcae4d8" x="115.622225" y="189.367102" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-mfcbbcae4d8" x="174.436133" y="149.615793" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-mfcbbcae4d8" x="201.631192" y="78.436072" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-mfcbbcae4d8" x="230.171098" y="55.265627" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-mfcbbcae4d8" x="256.239903" y="57.935526" style="fill: #b44b37; stroke: #b44b37"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-patch_3">
+    <path d="M 41.513516 254.797952 
+L 41.513516 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_4">
+    <path d="M 274.905155 254.797952 
+L 274.905155 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_5">
+    <path d="M 41.513516 254.797952 
+L 274.905155 254.797952 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_6">
+    <path d="M 41.513516 21.406312 
+L 274.905155 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-text_19">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="48.515265" y="36.820728" transform="rotate(-0 48.515265 36.820728)">7/8 ready; unready case omitted</text>
+   </g>
+   <g id="heston-55c21b799c-text_20">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: middle" x="158.209335" y="15.406312" transform="rotate(-0 158.209335 15.406312)">Joint MCMC</text>
+   </g>
+  </g>
+  <g id="heston-55c21b799c-axes_2">
+   <g id="heston-55c21b799c-patch_7">
+    <path d="M 353.593356 254.797952 
+L 586.984995 254.797952 
+L 586.984995 21.406312 
+L 353.593356 21.406312 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_3">
+    <g id="heston-55c21b799c-xtick_9">
+     <g id="heston-55c21b799c-line2d_22">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="373.042659" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_21">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="373.042659" y="268.635843" transform="rotate(-0 373.042659 268.635843)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_10">
+     <g id="heston-55c21b799c-line2d_23">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="402.964664" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_22">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="402.964664" y="268.635843" transform="rotate(-0 402.964664 268.635843)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_11">
+     <g id="heston-55c21b799c-line2d_24">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="432.886669" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_23">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="432.886669" y="268.635843" transform="rotate(-0 432.886669 268.635843)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_12">
+     <g id="heston-55c21b799c-line2d_25">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="462.808674" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_24">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="462.808674" y="268.635843" transform="rotate(-0 462.808674 268.635843)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_13">
+     <g id="heston-55c21b799c-line2d_26">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="492.730679" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_25">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="492.730679" y="268.635843" transform="rotate(-0 492.730679 268.635843)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_14">
+     <g id="heston-55c21b799c-line2d_27">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="522.652684" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_26">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="522.652684" y="268.635843" transform="rotate(-0 522.652684 268.635843)">1.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_15">
+     <g id="heston-55c21b799c-line2d_28">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="552.574689" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_27">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="552.574689" y="268.635843" transform="rotate(-0 552.574689 268.635843)">1.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_16">
+     <g id="heston-55c21b799c-line2d_29">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="582.496694" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_28">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="582.496694" y="268.635843" transform="rotate(-0 582.496694 268.635843)">2.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_29">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="470.289175" y="281.636546" transform="rotate(-0 470.289175 281.636546)">Generating c</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_4">
+    <g id="heston-55c21b799c-ytick_9">
+     <g id="heston-55c21b799c-line2d_30">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="235.348649" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_30">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="238.767594" transform="rotate(-0 346.593356 238.767594)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_10">
+     <g id="heston-55c21b799c-line2d_31">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="205.426644" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_31">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="208.845589" transform="rotate(-0 346.593356 208.845589)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_11">
+     <g id="heston-55c21b799c-line2d_32">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="175.504638" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_32">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="178.923584" transform="rotate(-0 346.593356 178.923584)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_12">
+     <g id="heston-55c21b799c-line2d_33">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="145.582633" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_33">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="149.001579" transform="rotate(-0 346.593356 149.001579)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_13">
+     <g id="heston-55c21b799c-line2d_34">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="115.660628" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_34">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="119.079574" transform="rotate(-0 346.593356 119.079574)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_14">
+     <g id="heston-55c21b799c-line2d_35">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="85.738623" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_35">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="89.157569" transform="rotate(-0 346.593356 89.157569)">1.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_15">
+     <g id="heston-55c21b799c-line2d_36">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="55.816618" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_36">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="59.235564" transform="rotate(-0 346.593356 59.235564)">1.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_16">
+     <g id="heston-55c21b799c-line2d_37">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="25.894613" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_37">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="29.313559" transform="rotate(-0 346.593356 29.313559)">2.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_38">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="326.118434" y="138.102132" transform="rotate(-90 326.118434 138.102132)">Posterior median c</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_38">
+    <path d="M 358.081656 250.309651 
+L 582.496694 25.894613 
+" clip-path="url(#heston-55c21b799c-pb83ce62dee)" style="fill: none; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #405562"/>
+   </g>
+   <g id="heston-55c21b799c-line2d_39">
+    <path d="M 353.593356 138.102132 
+L 586.984995 138.102132 
+" clip-path="url(#heston-55c21b799c-pb83ce62dee)" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #7e8790; stroke-width: 1.5"/>
+   </g>
+   <g id="heston-55c21b799c-LineCollection_2">
+    <path d="M 372.210517 237.639449 
+L 372.210517 32.799878 
+" clip-path="url(#heston-55c21b799c-pb83ce62dee)" style="fill: none; stroke: #287b6a"/>
+    <path d="M 402.029136 239.371798 
+L 402.029136 37.155429 
+" clip-path="url(#heston-55c21b799c-pb83ce62dee)" style="fill: none; stroke: #287b6a"/>
+    <path d="M 427.702065 234.288012 
+L 427.702065 34.717862 
+" clip-path="url(#heston-55c21b799c-pb83ce62dee)" style="fill: none; stroke: #287b6a"/>
+    <path d="M 457.022503 234.315353 
+L 457.022503 35.015776 
+" clip-path="url(#heston-55c21b799c-pb83ce62dee)" style="fill: none; stroke: #287b6a"/>
+    <path d="M 486.515973 238.118076 
+L 486.515973 33.365405 
+" clip-path="url(#heston-55c21b799c-pb83ce62dee)" style="fill: none; stroke: #287b6a"/>
+    <path d="M 513.711032 240.065095 
+L 513.711032 34.87085 
+" clip-path="url(#heston-55c21b799c-pb83ce62dee)" style="fill: none; stroke: #287b6a"/>
+    <path d="M 542.250938 238.439809 
+L 542.250938 34.881051 
+" clip-path="url(#heston-55c21b799c-pb83ce62dee)" style="fill: none; stroke: #287b6a"/>
+    <path d="M 568.319743 241.993538 
+L 568.319743 36.667966 
+" clip-path="url(#heston-55c21b799c-pb83ce62dee)" style="fill: none; stroke: #287b6a"/>
+   </g>
+   <g id="heston-55c21b799c-line2d_40">
+    <defs>
+     <path id="heston-55c21b799c-m2bacc4b057" d="M 3 0 
+L -3 -0 
+" style="stroke: #287b6a"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-pb83ce62dee)">
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="372.210517" y="237.639449" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="402.029136" y="239.371798" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="427.702065" y="234.288012" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="457.022503" y="234.315353" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="486.515973" y="238.118076" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="513.711032" y="240.065095" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="542.250938" y="238.439809" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="568.319743" y="241.993538" style="fill: #287b6a; stroke: #287b6a"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_41">
+    <g clip-path="url(#heston-55c21b799c-pb83ce62dee)">
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="372.210517" y="32.799878" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="402.029136" y="37.155429" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="427.702065" y="34.717862" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="457.022503" y="35.015776" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="486.515973" y="33.365405" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="513.711032" y="34.87085" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="542.250938" y="34.881051" style="fill: #287b6a; stroke: #287b6a"/>
+     <use xlink:href="#heston-55c21b799c-m2bacc4b057" x="568.319743" y="36.667966" style="fill: #287b6a; stroke: #287b6a"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_42">
+    <defs>
+     <path id="heston-55c21b799c-mfdbf7350e8" d="M 0 -2.5 
+L -2.5 2.5 
+L 2.5 2.5 
+z
+" style="stroke: #287b6a; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-pb83ce62dee)">
+     <use xlink:href="#heston-55c21b799c-mfdbf7350e8" x="372.210517" y="135.158606" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mfdbf7350e8" x="402.029136" y="134.773854" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mfdbf7350e8" x="427.702065" y="144.186314" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mfdbf7350e8" x="457.022503" y="132.550019" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mfdbf7350e8" x="486.515973" y="144.824215" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mfdbf7350e8" x="513.711032" y="144.386279" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mfdbf7350e8" x="542.250938" y="135.42711" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mfdbf7350e8" x="568.319743" y="138.605736" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-patch_8">
+    <path d="M 353.593356 254.797952 
+L 353.593356 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_9">
+    <path d="M 586.984995 254.797952 
+L 586.984995 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_10">
+    <path d="M 353.593356 254.797952 
+L 586.984995 254.797952 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_11">
+    <path d="M 353.593356 21.406312 
+L 586.984995 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-text_39">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: middle" x="470.289175" y="15.406312" transform="rotate(-0 470.289175 15.406312)">Network · batch 128</text>
+   </g>
+  </g>
+  <g id="heston-55c21b799c-axes_3">
+   <g id="heston-55c21b799c-patch_12">
+    <path d="M 665.673196 254.797952 
+L 899.064835 254.797952 
+L 899.064835 21.406312 
+L 665.673196 21.406312 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_5">
+    <g id="heston-55c21b799c-xtick_17">
+     <g id="heston-55c21b799c-line2d_43">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="685.122499" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_40">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="685.122499" y="268.635843" transform="rotate(-0 685.122499 268.635843)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_18">
+     <g id="heston-55c21b799c-line2d_44">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="715.044504" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_41">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="715.044504" y="268.635843" transform="rotate(-0 715.044504 268.635843)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_19">
+     <g id="heston-55c21b799c-line2d_45">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="744.966509" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_42">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="744.966509" y="268.635843" transform="rotate(-0 744.966509 268.635843)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_20">
+     <g id="heston-55c21b799c-line2d_46">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="774.888514" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_43">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="774.888514" y="268.635843" transform="rotate(-0 774.888514 268.635843)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_21">
+     <g id="heston-55c21b799c-line2d_47">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="804.810519" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_44">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="804.810519" y="268.635843" transform="rotate(-0 804.810519 268.635843)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_22">
+     <g id="heston-55c21b799c-line2d_48">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="834.732524" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_45">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="834.732524" y="268.635843" transform="rotate(-0 834.732524 268.635843)">1.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_23">
+     <g id="heston-55c21b799c-line2d_49">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="864.654529" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_46">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="864.654529" y="268.635843" transform="rotate(-0 864.654529 268.635843)">1.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_24">
+     <g id="heston-55c21b799c-line2d_50">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="894.576534" y="254.797952" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_47">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="894.576534" y="268.635843" transform="rotate(-0 894.576534 268.635843)">2.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_48">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="782.369015" y="281.636546" transform="rotate(-0 782.369015 281.636546)">Generating c</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_6">
+    <g id="heston-55c21b799c-ytick_17">
+     <g id="heston-55c21b799c-line2d_51">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="235.348649" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_49">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="238.767594" transform="rotate(-0 658.673196 238.767594)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_18">
+     <g id="heston-55c21b799c-line2d_52">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="205.426644" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_50">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="208.845589" transform="rotate(-0 658.673196 208.845589)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_19">
+     <g id="heston-55c21b799c-line2d_53">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="175.504638" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_51">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="178.923584" transform="rotate(-0 658.673196 178.923584)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_20">
+     <g id="heston-55c21b799c-line2d_54">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="145.582633" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_52">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="149.001579" transform="rotate(-0 658.673196 149.001579)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_21">
+     <g id="heston-55c21b799c-line2d_55">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="115.660628" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_53">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="119.079574" transform="rotate(-0 658.673196 119.079574)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_22">
+     <g id="heston-55c21b799c-line2d_56">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="85.738623" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_54">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="89.157569" transform="rotate(-0 658.673196 89.157569)">1.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_23">
+     <g id="heston-55c21b799c-line2d_57">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="55.816618" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_55">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="59.235564" transform="rotate(-0 658.673196 59.235564)">1.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_24">
+     <g id="heston-55c21b799c-line2d_58">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="25.894613" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_56">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="29.313559" transform="rotate(-0 658.673196 29.313559)">2.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_57">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="638.198274" y="138.102132" transform="rotate(-90 638.198274 138.102132)">Posterior median c</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_59">
+    <path d="M 670.161496 250.309651 
+L 894.576534 25.894613 
+" clip-path="url(#heston-55c21b799c-pad40a12f60)" style="fill: none; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #405562"/>
+   </g>
+   <g id="heston-55c21b799c-line2d_60">
+    <path d="M 665.673196 138.102132 
+L 899.064835 138.102132 
+" clip-path="url(#heston-55c21b799c-pad40a12f60)" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #7e8790; stroke-width: 1.5"/>
+   </g>
+   <g id="heston-55c21b799c-LineCollection_3">
+    <path d="M 684.290357 237.716764 
+L 684.290357 34.008068 
+" clip-path="url(#heston-55c21b799c-pad40a12f60)" style="fill: none; stroke: #654a97"/>
+    <path d="M 714.108976 238.475166 
+L 714.108976 35.773742 
+" clip-path="url(#heston-55c21b799c-pad40a12f60)" style="fill: none; stroke: #654a97"/>
+    <path d="M 739.781905 233.520157 
+L 739.781905 34.980356 
+" clip-path="url(#heston-55c21b799c-pad40a12f60)" style="fill: none; stroke: #654a97"/>
+    <path d="M 769.102343 236.605979 
+L 769.102343 34.727635 
+" clip-path="url(#heston-55c21b799c-pad40a12f60)" style="fill: none; stroke: #654a97"/>
+    <path d="M 798.595813 237.119624 
+L 798.595813 34.100596 
+" clip-path="url(#heston-55c21b799c-pad40a12f60)" style="fill: none; stroke: #654a97"/>
+    <path d="M 825.790872 240.005571 
+L 825.790872 36.825662 
+" clip-path="url(#heston-55c21b799c-pad40a12f60)" style="fill: none; stroke: #654a97"/>
+    <path d="M 854.330778 233.741774 
+L 854.330778 32.580616 
+" clip-path="url(#heston-55c21b799c-pad40a12f60)" style="fill: none; stroke: #654a97"/>
+    <path d="M 880.399583 242.507041 
+L 880.399583 36.768466 
+" clip-path="url(#heston-55c21b799c-pad40a12f60)" style="fill: none; stroke: #654a97"/>
+   </g>
+   <g id="heston-55c21b799c-line2d_61">
+    <defs>
+     <path id="heston-55c21b799c-m644db70929" d="M 3 0 
+L -3 -0 
+" style="stroke: #654a97"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-pad40a12f60)">
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="684.290357" y="237.716764" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="714.108976" y="238.475166" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="739.781905" y="233.520157" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="769.102343" y="236.605979" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="798.595813" y="237.119624" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="825.790872" y="240.005571" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="854.330778" y="233.741774" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="880.399583" y="242.507041" style="fill: #654a97; stroke: #654a97"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_62">
+    <g clip-path="url(#heston-55c21b799c-pad40a12f60)">
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="684.290357" y="34.008068" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="714.108976" y="35.773742" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="739.781905" y="34.980356" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="769.102343" y="34.727635" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="798.595813" y="34.100596" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="825.790872" y="36.825662" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="854.330778" y="32.580616" style="fill: #654a97; stroke: #654a97"/>
+     <use xlink:href="#heston-55c21b799c-m644db70929" x="880.399583" y="36.768466" style="fill: #654a97; stroke: #654a97"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_63">
+    <defs>
+     <path id="heston-55c21b799c-m5292c9ba07" d="M -2.5 2.5 
+L 2.5 2.5 
+L 2.5 -2.5 
+L -2.5 -2.5 
+z
+" style="stroke: #654a97; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-pad40a12f60)">
+     <use xlink:href="#heston-55c21b799c-m5292c9ba07" x="684.290357" y="133.212764" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m5292c9ba07" x="714.108976" y="130.221851" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m5292c9ba07" x="739.781905" y="143.791288" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m5292c9ba07" x="769.102343" y="133.727783" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m5292c9ba07" x="798.595813" y="141.43956" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m5292c9ba07" x="825.790872" y="146.552881" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m5292c9ba07" x="854.330778" y="124.583025" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m5292c9ba07" x="880.399583" y="141.178707" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-patch_13">
+    <path d="M 665.673196 254.797952 
+L 665.673196 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_14">
+    <path d="M 899.064835 254.797952 
+L 899.064835 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_15">
+    <path d="M 665.673196 254.797952 
+L 899.064835 254.797952 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_16">
+    <path d="M 665.673196 21.406312 
+L 899.064835 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-text_58">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: middle" x="782.369015" y="15.406312" transform="rotate(-0 782.369015 15.406312)">Network · batch 512</text>
+   </g>
+  </g>
+  <g id="heston-55c21b799c-axes_4">
+   <g id="heston-55c21b799c-patch_17">
+    <path d="M 41.513516 537.397087 
+L 274.905155 537.397087 
+L 274.905155 304.005448 
+L 41.513516 304.005448 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_7">
+    <g id="heston-55c21b799c-xtick_25">
+     <g id="heston-55c21b799c-line2d_64">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="60.962819" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_59">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="60.962819" y="551.234978" transform="rotate(-0 60.962819 551.234978)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_26">
+     <g id="heston-55c21b799c-line2d_65">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="90.884824" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_60">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="90.884824" y="551.234978" transform="rotate(-0 90.884824 551.234978)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_27">
+     <g id="heston-55c21b799c-line2d_66">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="120.806829" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_61">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="120.806829" y="551.234978" transform="rotate(-0 120.806829 551.234978)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_28">
+     <g id="heston-55c21b799c-line2d_67">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="150.728834" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_62">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="150.728834" y="551.234978" transform="rotate(-0 150.728834 551.234978)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_29">
+     <g id="heston-55c21b799c-line2d_68">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="180.650839" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_63">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="180.650839" y="551.234978" transform="rotate(-0 180.650839 551.234978)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_30">
+     <g id="heston-55c21b799c-line2d_69">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="210.572844" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_64">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="210.572844" y="551.234978" transform="rotate(-0 210.572844 551.234978)">1.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_31">
+     <g id="heston-55c21b799c-line2d_70">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="240.494849" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_65">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="240.494849" y="551.234978" transform="rotate(-0 240.494849 551.234978)">1.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_32">
+     <g id="heston-55c21b799c-line2d_71">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="270.416854" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_66">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="270.416854" y="551.234978" transform="rotate(-0 270.416854 551.234978)">2.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_67">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="158.209335" y="564.235681" transform="rotate(-0 158.209335 564.235681)">Generating c</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_8">
+    <g id="heston-55c21b799c-ytick_25">
+     <g id="heston-55c21b799c-line2d_72">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="517.947784" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_68">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="521.366729" transform="rotate(-0 34.513516 521.366729)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_26">
+     <g id="heston-55c21b799c-line2d_73">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="488.025779" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_69">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="491.444724" transform="rotate(-0 34.513516 491.444724)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_27">
+     <g id="heston-55c21b799c-line2d_74">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="458.103773" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_70">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="461.522719" transform="rotate(-0 34.513516 461.522719)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_28">
+     <g id="heston-55c21b799c-line2d_75">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="428.181768" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_71">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="431.600714" transform="rotate(-0 34.513516 431.600714)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_29">
+     <g id="heston-55c21b799c-line2d_76">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="398.259763" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_72">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="401.678709" transform="rotate(-0 34.513516 401.678709)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_30">
+     <g id="heston-55c21b799c-line2d_77">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="368.337758" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_73">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="371.756704" transform="rotate(-0 34.513516 371.756704)">1.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_31">
+     <g id="heston-55c21b799c-line2d_78">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="338.415753" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_74">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="341.834699" transform="rotate(-0 34.513516 341.834699)">1.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_32">
+     <g id="heston-55c21b799c-line2d_79">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="41.513516" y="308.493748" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_75">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="34.513516" y="311.912694" transform="rotate(-0 34.513516 311.912694)">2.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_76">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="14.038594" y="420.701267" transform="rotate(-90 14.038594 420.701267)">Posterior median c</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_80">
+    <path d="M 46.001816 532.908786 
+L 270.416854 308.493748 
+" clip-path="url(#heston-55c21b799c-pd659037109)" style="fill: none; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #405562"/>
+   </g>
+   <g id="heston-55c21b799c-line2d_81">
+    <path d="M 41.513516 420.701267 
+L 274.905155 420.701267 
+" clip-path="url(#heston-55c21b799c-pd659037109)" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #7e8790; stroke-width: 1.5"/>
+   </g>
+   <g id="heston-55c21b799c-LineCollection_4">
+    <path d="M 60.130677 520.438835 
+L 60.130677 316.712643 
+" clip-path="url(#heston-55c21b799c-pd659037109)" style="fill: none; stroke: #246da0"/>
+    <path d="M 89.949296 521.035047 
+L 89.949296 318.333996 
+" clip-path="url(#heston-55c21b799c-pd659037109)" style="fill: none; stroke: #246da0"/>
+    <path d="M 115.622225 515.549618 
+L 115.622225 318.143787 
+" clip-path="url(#heston-55c21b799c-pd659037109)" style="fill: none; stroke: #246da0"/>
+    <path d="M 144.942663 518.691772 
+L 144.942663 317.876335 
+" clip-path="url(#heston-55c21b799c-pd659037109)" style="fill: none; stroke: #246da0"/>
+    <path d="M 174.436133 519.332134 
+L 174.436133 317.199251 
+" clip-path="url(#heston-55c21b799c-pd659037109)" style="fill: none; stroke: #246da0"/>
+    <path d="M 201.631192 522.03974 
+L 201.631192 319.86589 
+" clip-path="url(#heston-55c21b799c-pd659037109)" style="fill: none; stroke: #246da0"/>
+    <path d="M 230.171098 515.67177 
+L 230.171098 314.338728 
+" clip-path="url(#heston-55c21b799c-pd659037109)" style="fill: none; stroke: #246da0"/>
+    <path d="M 256.239903 524.963042 
+L 256.239903 320.320876 
+" clip-path="url(#heston-55c21b799c-pd659037109)" style="fill: none; stroke: #246da0"/>
+   </g>
+   <g id="heston-55c21b799c-line2d_82">
+    <defs>
+     <path id="heston-55c21b799c-m6a1d861c16" d="M 3 0 
+L -3 -0 
+" style="stroke: #246da0"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-pd659037109)">
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="60.130677" y="520.438835" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="89.949296" y="521.035047" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="115.622225" y="515.549618" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="144.942663" y="518.691772" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="174.436133" y="519.332134" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="201.631192" y="522.03974" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="230.171098" y="515.67177" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="256.239903" y="524.963042" style="fill: #246da0; stroke: #246da0"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_83">
+    <g clip-path="url(#heston-55c21b799c-pd659037109)">
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="60.130677" y="316.712643" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="89.949296" y="318.333996" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="115.622225" y="318.143787" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="144.942663" y="317.876335" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="174.436133" y="317.199251" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="201.631192" y="319.86589" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="230.171098" y="314.338728" style="fill: #246da0; stroke: #246da0"/>
+     <use xlink:href="#heston-55c21b799c-m6a1d861c16" x="256.239903" y="320.320876" style="fill: #246da0; stroke: #246da0"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_84">
+    <defs>
+     <path id="heston-55c21b799c-mebe57ba9c3" d="M -0 3.535534 
+L 3.535534 0 
+L 0 -3.535534 
+L -3.535534 -0 
+z
+" style="stroke: #246da0; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-pd659037109)">
+     <use xlink:href="#heston-55c21b799c-mebe57ba9c3" x="60.130677" y="414.169037" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mebe57ba9c3" x="89.949296" y="412.268799" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mebe57ba9c3" x="115.622225" y="425.408166" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mebe57ba9c3" x="144.942663" y="417.160432" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mebe57ba9c3" x="174.436133" y="423.183173" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mebe57ba9c3" x="201.631192" y="428.017145" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mebe57ba9c3" x="230.171098" y="401.936789" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mebe57ba9c3" x="256.239903" y="426.03772" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-patch_18">
+    <path d="M 41.513516 537.397087 
+L 41.513516 304.005448 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_19">
+    <path d="M 274.905155 537.397087 
+L 274.905155 304.005448 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_20">
+    <path d="M 41.513516 537.397087 
+L 274.905155 537.397087 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_21">
+    <path d="M 41.513516 304.005448 
+L 274.905155 304.005448 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-text_77">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: middle" x="158.209335" y="298.005448" transform="rotate(-0 158.209335 298.005448)">Network · batch 1024</text>
+   </g>
+  </g>
+  <g id="heston-55c21b799c-axes_5">
+   <g id="heston-55c21b799c-patch_22">
+    <path d="M 353.593356 537.397087 
+L 586.984995 537.397087 
+L 586.984995 304.005448 
+L 353.593356 304.005448 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_9">
+    <g id="heston-55c21b799c-xtick_33">
+     <g id="heston-55c21b799c-line2d_85">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="373.042659" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_78">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="373.042659" y="551.234978" transform="rotate(-0 373.042659 551.234978)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_34">
+     <g id="heston-55c21b799c-line2d_86">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="402.964664" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_79">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="402.964664" y="551.234978" transform="rotate(-0 402.964664 551.234978)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_35">
+     <g id="heston-55c21b799c-line2d_87">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="432.886669" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_80">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="432.886669" y="551.234978" transform="rotate(-0 432.886669 551.234978)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_36">
+     <g id="heston-55c21b799c-line2d_88">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="462.808674" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_81">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="462.808674" y="551.234978" transform="rotate(-0 462.808674 551.234978)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_37">
+     <g id="heston-55c21b799c-line2d_89">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="492.730679" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_82">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="492.730679" y="551.234978" transform="rotate(-0 492.730679 551.234978)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_38">
+     <g id="heston-55c21b799c-line2d_90">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="522.652684" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_83">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="522.652684" y="551.234978" transform="rotate(-0 522.652684 551.234978)">1.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_39">
+     <g id="heston-55c21b799c-line2d_91">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="552.574689" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_84">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="552.574689" y="551.234978" transform="rotate(-0 552.574689 551.234978)">1.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_40">
+     <g id="heston-55c21b799c-line2d_92">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="582.496694" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_85">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="582.496694" y="551.234978" transform="rotate(-0 582.496694 551.234978)">2.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_86">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="470.289175" y="564.235681" transform="rotate(-0 470.289175 564.235681)">Generating c</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_10">
+    <g id="heston-55c21b799c-ytick_33">
+     <g id="heston-55c21b799c-line2d_93">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="517.947784" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_87">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="521.366729" transform="rotate(-0 346.593356 521.366729)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_34">
+     <g id="heston-55c21b799c-line2d_94">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="488.025779" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_88">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="491.444724" transform="rotate(-0 346.593356 491.444724)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_35">
+     <g id="heston-55c21b799c-line2d_95">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="458.103773" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_89">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="461.522719" transform="rotate(-0 346.593356 461.522719)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_36">
+     <g id="heston-55c21b799c-line2d_96">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="428.181768" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_90">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="431.600714" transform="rotate(-0 346.593356 431.600714)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_37">
+     <g id="heston-55c21b799c-line2d_97">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="398.259763" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_91">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="401.678709" transform="rotate(-0 346.593356 401.678709)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_38">
+     <g id="heston-55c21b799c-line2d_98">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="368.337758" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_92">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="371.756704" transform="rotate(-0 346.593356 371.756704)">1.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_39">
+     <g id="heston-55c21b799c-line2d_99">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="338.415753" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_93">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="341.834699" transform="rotate(-0 346.593356 341.834699)">1.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_40">
+     <g id="heston-55c21b799c-line2d_100">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="353.593356" y="308.493748" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_94">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="346.593356" y="311.912694" transform="rotate(-0 346.593356 311.912694)">2.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_95">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="326.118434" y="420.701267" transform="rotate(-90 326.118434 420.701267)">Posterior median c</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_101">
+    <path d="M 358.081656 532.908786 
+L 582.496694 308.493748 
+" clip-path="url(#heston-55c21b799c-pb86e3c825d)" style="fill: none; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #405562"/>
+   </g>
+   <g id="heston-55c21b799c-line2d_102">
+    <path d="M 353.593356 420.701267 
+L 586.984995 420.701267 
+" clip-path="url(#heston-55c21b799c-pb86e3c825d)" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #7e8790; stroke-width: 1.5"/>
+   </g>
+   <g id="heston-55c21b799c-LineCollection_5">
+    <path d="M 372.210517 520.149615 
+L 372.210517 316.188065 
+" clip-path="url(#heston-55c21b799c-pb86e3c825d)" style="fill: none; stroke: #b57920"/>
+    <path d="M 402.029136 521.297255 
+L 402.029136 318.139935 
+" clip-path="url(#heston-55c21b799c-pb86e3c825d)" style="fill: none; stroke: #b57920"/>
+    <path d="M 427.702065 515.090557 
+L 427.702065 317.868577 
+" clip-path="url(#heston-55c21b799c-pb86e3c825d)" style="fill: none; stroke: #b57920"/>
+    <path d="M 457.022503 520.179462 
+L 457.022503 319.113721 
+" clip-path="url(#heston-55c21b799c-pb86e3c825d)" style="fill: none; stroke: #b57920"/>
+    <path d="M 486.515973 518.26682 
+L 486.515973 317.002764 
+" clip-path="url(#heston-55c21b799c-pb86e3c825d)" style="fill: none; stroke: #b57920"/>
+    <path d="M 513.711032 521.118844 
+L 513.711032 318.571914 
+" clip-path="url(#heston-55c21b799c-pb86e3c825d)" style="fill: none; stroke: #b57920"/>
+    <path d="M 542.250938 513.408797 
+L 542.250938 314.442902 
+" clip-path="url(#heston-55c21b799c-pb86e3c825d)" style="fill: none; stroke: #b57920"/>
+    <path d="M 568.319743 525.189991 
+L 568.319743 320.968123 
+" clip-path="url(#heston-55c21b799c-pb86e3c825d)" style="fill: none; stroke: #b57920"/>
+   </g>
+   <g id="heston-55c21b799c-line2d_103">
+    <defs>
+     <path id="heston-55c21b799c-m484ddea946" d="M 3 0 
+L -3 -0 
+" style="stroke: #b57920"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-pb86e3c825d)">
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="372.210517" y="520.149615" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="402.029136" y="521.297255" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="427.702065" y="515.090557" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="457.022503" y="520.179462" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="486.515973" y="518.26682" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="513.711032" y="521.118844" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="542.250938" y="513.408797" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="568.319743" y="525.189991" style="fill: #b57920; stroke: #b57920"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_104">
+    <g clip-path="url(#heston-55c21b799c-pb86e3c825d)">
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="372.210517" y="316.188065" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="402.029136" y="318.139935" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="427.702065" y="317.868577" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="457.022503" y="319.113721" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="486.515973" y="317.002764" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="513.711032" y="318.571914" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="542.250938" y="314.442902" style="fill: #b57920; stroke: #b57920"/>
+     <use xlink:href="#heston-55c21b799c-m484ddea946" x="568.319743" y="320.968123" style="fill: #b57920; stroke: #b57920"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_105">
+    <defs>
+     <path id="heston-55c21b799c-m65b8517ab8" d="M -0 2.5 
+L 2.5 -2.5 
+L -2.5 -2.5 
+z
+" style="stroke: #b57920; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-pb86e3c825d)">
+     <use xlink:href="#heston-55c21b799c-m65b8517ab8" x="372.210517" y="411.674951" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m65b8517ab8" x="402.029136" y="413.385336" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m65b8517ab8" x="427.702065" y="422.700417" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m65b8517ab8" x="457.022503" y="422.09692" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m65b8517ab8" x="486.515973" y="421.848961" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m65b8517ab8" x="513.711032" y="425.905261" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m65b8517ab8" x="542.250938" y="400.436927" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m65b8517ab8" x="568.319743" y="429.011584" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-patch_23">
+    <path d="M 353.593356 537.397087 
+L 353.593356 304.005448 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_24">
+    <path d="M 586.984995 537.397087 
+L 586.984995 304.005448 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_25">
+    <path d="M 353.593356 537.397087 
+L 586.984995 537.397087 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_26">
+    <path d="M 353.593356 304.005448 
+L 586.984995 304.005448 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-text_96">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: middle" x="470.289175" y="298.005448" transform="rotate(-0 470.289175 298.005448)">Network · batch 4098</text>
+   </g>
+  </g>
+  <g id="heston-55c21b799c-axes_6">
+   <g id="heston-55c21b799c-patch_27">
+    <path d="M 665.673196 537.397087 
+L 899.064835 537.397087 
+L 899.064835 304.005448 
+L 665.673196 304.005448 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_11">
+    <g id="heston-55c21b799c-xtick_41">
+     <g id="heston-55c21b799c-line2d_106">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="677.182216" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_97">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="677.182216" y="551.234978" transform="rotate(-0 677.182216 551.234978)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_42">
+     <g id="heston-55c21b799c-line2d_107">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="709.55539" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_98">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="709.55539" y="551.234978" transform="rotate(-0 709.55539 551.234978)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_43">
+     <g id="heston-55c21b799c-line2d_108">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="741.928563" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_99">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="741.928563" y="551.234978" transform="rotate(-0 741.928563 551.234978)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_44">
+     <g id="heston-55c21b799c-line2d_109">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="774.301737" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_100">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="774.301737" y="551.234978" transform="rotate(-0 774.301737 551.234978)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_45">
+     <g id="heston-55c21b799c-line2d_110">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="806.67491" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_101">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="806.67491" y="551.234978" transform="rotate(-0 806.67491 551.234978)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_46">
+     <g id="heston-55c21b799c-line2d_111">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="839.048084" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_102">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="839.048084" y="551.234978" transform="rotate(-0 839.048084 551.234978)">1.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-xtick_47">
+     <g id="heston-55c21b799c-line2d_112">
+      <g>
+       <use xlink:href="#heston-55c21b799c-m70bf6c87d6" x="871.421257" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_103">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="871.421257" y="551.234978" transform="rotate(-0 871.421257 551.234978)">1.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_104">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="782.369015" y="564.235681" transform="rotate(-0 782.369015 564.235681)">Generating c</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-matplotlib.axis_12">
+    <g id="heston-55c21b799c-ytick_41">
+     <g id="heston-55c21b799c-line2d_113">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="537.397087" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_105">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="540.816032" transform="rotate(-0 658.673196 540.816032)">0.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_42">
+     <g id="heston-55c21b799c-line2d_114">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="506.687661" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_106">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="510.106606" transform="rotate(-0 658.673196 510.106606)">0.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_43">
+     <g id="heston-55c21b799c-line2d_115">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="475.978234" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_107">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="479.39718" transform="rotate(-0 658.673196 479.39718)">0.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_44">
+     <g id="heston-55c21b799c-line2d_116">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="445.268808" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_108">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="448.687753" transform="rotate(-0 658.673196 448.687753)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_45">
+     <g id="heston-55c21b799c-line2d_117">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="414.559382" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_109">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="417.978327" transform="rotate(-0 658.673196 417.978327)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_46">
+     <g id="heston-55c21b799c-line2d_118">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="383.849956" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_110">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="387.268901" transform="rotate(-0 658.673196 387.268901)">1.0</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_47">
+     <g id="heston-55c21b799c-line2d_119">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="353.140529" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_111">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="356.559475" transform="rotate(-0 658.673196 356.559475)">1.2</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-ytick_48">
+     <g id="heston-55c21b799c-line2d_120">
+      <g>
+       <use xlink:href="#heston-55c21b799c-mc3bcbfe952" x="665.673196" y="322.431103" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-55c21b799c-text_112">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="658.673196" y="325.850049" transform="rotate(-0 658.673196 325.850049)">1.4</text>
+     </g>
+    </g>
+    <g id="heston-55c21b799c-text_113">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="638.198274" y="420.701267" transform="rotate(-90 638.198274 420.701267)">Central 90% posterior width</text>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_121">
+    <path d="M 665.673196 330.10846 
+L 899.064835 330.10846 
+" clip-path="url(#heston-55c21b799c-p44a284b623)" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #7e8790; stroke-width: 1.5"/>
+   </g>
+   <g id="heston-55c21b799c-line2d_122">
+    <path d="M 676.281907 505.095693 
+L 708.543225 495.501634 
+L 736.319244 488.420593 
+L 799.951104 476.526682 
+L 829.373944 460.997608 
+L 860.251798 475.740511 
+L 888.456124 473.388459 
+" clip-path="url(#heston-55c21b799c-p44a284b623)" style="fill: none; stroke: #b44b37; stroke-linecap: square"/>
+    <defs>
+     <path id="heston-55c21b799c-m3e762b06bd" d="M 0 3 
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132 
+C 2.683901 1.55874 3 0.795609 3 0 
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132 
+C 1.55874 -2.683901 0.795609 -3 0 -3 
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132 
+C -2.683901 -1.55874 -3 -0.795609 -3 0 
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132 
+C -1.55874 2.683901 -0.795609 3 0 3 
+z
+" style="stroke: #b44b37"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-p44a284b623)">
+     <use xlink:href="#heston-55c21b799c-m3e762b06bd" x="676.281907" y="505.095693" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-m3e762b06bd" x="708.543225" y="495.501634" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-m3e762b06bd" x="736.319244" y="488.420593" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-m3e762b06bd" x="799.951104" y="476.526682" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-m3e762b06bd" x="829.373944" y="460.997608" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-m3e762b06bd" x="860.251798" y="475.740511" style="fill: #b44b37; stroke: #b44b37"/>
+     <use xlink:href="#heston-55c21b799c-m3e762b06bd" x="888.456124" y="473.388459" style="fill: #b44b37; stroke: #b44b37"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_123">
+    <path d="M 676.281907 327.167001 
+L 708.543225 329.859235 
+L 736.319244 332.57509 
+L 768.04157 332.852784 
+L 799.951104 327.256188 
+L 829.373944 326.802993 
+L 860.251798 328.48152 
+L 888.456124 326.66821 
+" clip-path="url(#heston-55c21b799c-p44a284b623)" style="fill: none; stroke: #287b6a; stroke-linecap: square"/>
+    <defs>
+     <path id="heston-55c21b799c-m381d50b775" d="M 0 -3 
+L -3 3 
+L 3 3 
+z
+" style="stroke: #287b6a; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-p44a284b623)">
+     <use xlink:href="#heston-55c21b799c-m381d50b775" x="676.281907" y="327.167001" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m381d50b775" x="708.543225" y="329.859235" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m381d50b775" x="736.319244" y="332.57509" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m381d50b775" x="768.04157" y="332.852784" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m381d50b775" x="799.951104" y="327.256188" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m381d50b775" x="829.373944" y="326.802993" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m381d50b775" x="860.251798" y="328.48152" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m381d50b775" x="888.456124" y="326.66821" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_124">
+    <path d="M 676.281907 328.327636 
+L 708.543225 329.361414 
+L 736.319244 333.632554 
+L 768.04157 330.206155 
+L 799.951104 329.035452 
+L 829.373944 328.870339 
+L 860.251798 330.942214 
+L 888.456124 326.244339 
+" clip-path="url(#heston-55c21b799c-p44a284b623)" style="fill: none; stroke: #654a97; stroke-linecap: square"/>
+    <defs>
+     <path id="heston-55c21b799c-m11f51a214c" d="M -3 3 
+L 3 3 
+L 3 -3 
+L -3 -3 
+z
+" style="stroke: #654a97; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-p44a284b623)">
+     <use xlink:href="#heston-55c21b799c-m11f51a214c" x="676.281907" y="328.327636" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m11f51a214c" x="708.543225" y="329.361414" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m11f51a214c" x="736.319244" y="333.632554" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m11f51a214c" x="768.04157" y="330.206155" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m11f51a214c" x="799.951104" y="329.035452" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m11f51a214c" x="829.373944" y="328.870339" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m11f51a214c" x="860.251798" y="330.942214" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-m11f51a214c" x="888.456124" y="326.244339" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_125">
+    <path d="M 676.281907 328.30968 
+L 708.543225 329.361799 
+L 736.319244 334.796365 
+L 768.04157 331.297033 
+L 799.951104 329.944917 
+L 829.373944 329.902872 
+L 860.251798 330.765807 
+L 888.456124 327.369601 
+" clip-path="url(#heston-55c21b799c-p44a284b623)" style="fill: none; stroke: #246da0; stroke-linecap: square"/>
+    <defs>
+     <path id="heston-55c21b799c-me13d1ea01c" d="M -0 4.242641 
+L 4.242641 0 
+L 0 -4.242641 
+L -4.242641 -0 
+z
+" style="stroke: #246da0; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-p44a284b623)">
+     <use xlink:href="#heston-55c21b799c-me13d1ea01c" x="676.281907" y="328.30968" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-me13d1ea01c" x="708.543225" y="329.361799" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-me13d1ea01c" x="736.319244" y="334.796365" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-me13d1ea01c" x="768.04157" y="331.297033" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-me13d1ea01c" x="799.951104" y="329.944917" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-me13d1ea01c" x="829.373944" y="329.902872" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-me13d1ea01c" x="860.251798" y="330.765807" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-me13d1ea01c" x="888.456124" y="327.369601" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-line2d_126">
+    <path d="M 676.281907 328.068128 
+L 708.543225 328.893521 
+L 736.319244 334.985055 
+L 768.04157 331.040142 
+L 799.951104 330.836608 
+L 829.373944 329.519975 
+L 860.251798 333.195247 
+L 888.456124 327.800959 
+" clip-path="url(#heston-55c21b799c-p44a284b623)" style="fill: none; stroke: #b57920; stroke-linecap: square"/>
+    <defs>
+     <path id="heston-55c21b799c-mf75c3e0247" d="M -0 3 
+L 3 -3 
+L -3 -3 
+z
+" style="stroke: #b57920; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#heston-55c21b799c-p44a284b623)">
+     <use xlink:href="#heston-55c21b799c-mf75c3e0247" x="676.281907" y="328.068128" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mf75c3e0247" x="708.543225" y="328.893521" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mf75c3e0247" x="736.319244" y="334.985055" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mf75c3e0247" x="768.04157" y="331.040142" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mf75c3e0247" x="799.951104" y="330.836608" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mf75c3e0247" x="829.373944" y="329.519975" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mf75c3e0247" x="860.251798" y="333.195247" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+     <use xlink:href="#heston-55c21b799c-mf75c3e0247" x="888.456124" y="327.800959" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-patch_28">
+    <path d="M 665.673196 537.397087 
+L 665.673196 304.005448 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_29">
+    <path d="M 899.064835 537.397087 
+L 899.064835 304.005448 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_30">
+    <path d="M 665.673196 537.397087 
+L 899.064835 537.397087 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-patch_31">
+    <path d="M 665.673196 304.005448 
+L 899.064835 304.005448 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-55c21b799c-text_114">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: middle" x="782.369015" y="298.005448" transform="rotate(-0 782.369015 298.005448)">Remaining c uncertainty</text>
+   </g>
+  </g>
+  <g id="heston-55c21b799c-legend_1">
+   <g id="heston-55c21b799c-line2d_127">
+    <path d="M 271.87647 581.07726 
+L 279.87647 581.07726 
+L 287.87647 581.07726 
+" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #7e8790; stroke-width: 1.5"/>
+   </g>
+   <g id="heston-55c21b799c-text_115">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="294.27647" y="583.87726" transform="rotate(-0 294.27647 583.87726)">Uniform prior 90% width</text>
+   </g>
+   <g id="heston-55c21b799c-line2d_128">
+    <path d="M 271.87647 593.077885 
+L 279.87647 593.077885 
+L 287.87647 593.077885 
+" style="fill: none; stroke: #b44b37; stroke-linecap: square"/>
+    <g>
+     <use xlink:href="#heston-55c21b799c-m3e762b06bd" x="279.87647" y="593.077885" style="fill: #b44b37; stroke: #b44b37"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-text_116">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="294.27647" y="595.877885" transform="rotate(-0 294.27647 595.877885)">Joint MCMC</text>
+   </g>
+   <g id="heston-55c21b799c-line2d_129">
+    <path d="M 408.30897 581.07726 
+L 416.30897 581.07726 
+L 424.30897 581.07726 
+" style="fill: none; stroke: #287b6a; stroke-linecap: square"/>
+    <g>
+     <use xlink:href="#heston-55c21b799c-m381d50b775" x="416.30897" y="581.07726" style="fill: #287b6a; stroke: #287b6a; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-text_117">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="430.70897" y="583.87726" transform="rotate(-0 430.70897 583.87726)">Network · batch 128</text>
+   </g>
+   <g id="heston-55c21b799c-line2d_130">
+    <path d="M 408.30897 593.077885 
+L 416.30897 593.077885 
+L 424.30897 593.077885 
+" style="fill: none; stroke: #654a97; stroke-linecap: square"/>
+    <g>
+     <use xlink:href="#heston-55c21b799c-m11f51a214c" x="416.30897" y="593.077885" style="fill: #654a97; stroke: #654a97; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-text_118">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="430.70897" y="595.877885" transform="rotate(-0 430.70897 595.877885)">Network · batch 512</text>
+   </g>
+   <g id="heston-55c21b799c-line2d_131">
+    <path d="M 528.13772 581.07726 
+L 536.13772 581.07726 
+L 544.13772 581.07726 
+" style="fill: none; stroke: #246da0; stroke-linecap: square"/>
+    <g>
+     <use xlink:href="#heston-55c21b799c-me13d1ea01c" x="536.13772" y="581.07726" style="fill: #246da0; stroke: #246da0; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-text_119">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="550.53772" y="583.87726" transform="rotate(-0 550.53772 583.87726)">Network · batch 1024</text>
+   </g>
+   <g id="heston-55c21b799c-line2d_132">
+    <path d="M 528.13772 593.077885 
+L 536.13772 593.077885 
+L 544.13772 593.077885 
+" style="fill: none; stroke: #b57920; stroke-linecap: square"/>
+    <g>
+     <use xlink:href="#heston-55c21b799c-mf75c3e0247" x="536.13772" y="593.077885" style="fill: #b57920; stroke: #b57920; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="heston-55c21b799c-text_120">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="550.53772" y="595.877885" transform="rotate(-0 550.53772 595.877885)">Network · batch 4098</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="heston-55c21b799c-pf0c0bccaec">
+   <rect x="41.513516" y="21.406312" width="233.391639" height="233.391639"/>
+  </clipPath>
+  <clipPath id="heston-55c21b799c-pb83ce62dee">
+   <rect x="353.593356" y="21.406312" width="233.391639" height="233.391639"/>
+  </clipPath>
+  <clipPath id="heston-55c21b799c-pad40a12f60">
+   <rect x="665.673196" y="21.406312" width="233.391639" height="233.391639"/>
+  </clipPath>
+  <clipPath id="heston-55c21b799c-pd659037109">
+   <rect x="41.513516" y="304.005448" width="233.391639" height="233.391639"/>
+  </clipPath>
+  <clipPath id="heston-55c21b799c-pb86e3c825d">
+   <rect x="353.593356" y="304.005448" width="233.391639" height="233.391639"/>
+  </clipPath>
+  <clipPath id="heston-55c21b799c-p44a284b623">
+   <rect x="665.673196" y="304.005448" width="233.391639" height="233.391639"/>
+  </clipPath>
+ </defs>
+</svg>

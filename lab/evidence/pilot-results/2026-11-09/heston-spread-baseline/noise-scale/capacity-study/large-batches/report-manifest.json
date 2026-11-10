@@ -1,0 +1,616 @@
+{
+  "format": "heston_spread_scale_large_batch_report_v1",
+  "interim": false,
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/protocol.json",
+    "sha256": "f793bdb656423f4268a93640ae55e6f599ad2662a42d4f4157ed0c8018420840"
+  },
+  "old_capacity_manifest": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/report-manifest.json",
+    "sha256": "eace656290ecbc01c104809874b21602eb5ec92a51a234a992ebd9773309315c"
+  },
+  "mcmc_recovery_manifest": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/report-manifest.json",
+    "sha256": "a4d47fc74688def7fe95ad1d8e05c02716ae5e132712969ccb310765462ff09f"
+  },
+  "arms": [
+    {
+      "batch_size": 1024,
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-1024/run.json",
+        "sha256": "8428c7dc2adac39a8c7ab1aa1cf8599447a3e9b00d62f4df197fdddbbf9f634e"
+      },
+      "training": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-1024/training.json",
+        "sha256": "f4e75e4e949d3455674f8c8f78b9fe3f342791fbad09791eb0e2adfafa48c193"
+      },
+      "curve": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-1024/learning-curve.json",
+        "sha256": "949460f96d524c502dee3266116e7b3bcc6b6eaa3823bfb4daded90aa7bdf56c"
+      },
+      "evaluations": [
+        {
+          "epochs": 25,
+          "evaluation": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0025/evaluation.json",
+            "sha256": "913cf8e1fab7bf0df1e89808ea0a033c7c54b2d0833f576a4192b3ef9554d473"
+          },
+          "recovery": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0025/recovery.npz",
+            "sha256": "08e4b60ef8a7cb4f56c31d1f4c6e37ceae08cd32f9ac3243819a27f65e6f0372"
+          }
+        },
+        {
+          "epochs": 100,
+          "evaluation": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0100/evaluation.json",
+            "sha256": "fc76451e91002510ec688077b0b894b098c810737b47b5bebdc8917917ac7b08"
+          },
+          "recovery": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0100/recovery.npz",
+            "sha256": "0497a68e2b24347a421bd8b7ed9659b8ab667d6c1cf1b7ff3af5b649a0449188"
+          }
+        },
+        {
+          "epochs": 250,
+          "evaluation": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0250/evaluation.json",
+            "sha256": "a8afc525538c710d0093568a9cea61008e936430b4f116594d52daa09c253aec"
+          },
+          "recovery": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0250/recovery.npz",
+            "sha256": "46f92c4461766beeaff05300e6993d3b1a9d74d2eed2b5926996226029afe546"
+          }
+        },
+        {
+          "epochs": 500,
+          "evaluation": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0500/evaluation.json",
+            "sha256": "386117e6988f613f769da0f7c437dac4cebb8da9ad516f4ddd5aed9bd37cfc38"
+          },
+          "recovery": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-1024/pass-0500/recovery.npz",
+            "sha256": "03bd84744ddd6da7168dffb8aa444e63c24cc99d557a5dad3722ae1822378b37"
+          }
+        }
+      ],
+      "checkpoints": [
+        {
+          "bank_passes": 25,
+          "record": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0025/checkpoint.json",
+            "sha256": "f9a5c2cab6db7ff1514306d9faaa73e782d0274de802b4b10e3bbb6bc2407769"
+          },
+          "model": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0025/model.keras",
+            "sha256": "789199b769c093203810fe3dc697ad4b505667c441dbd7cdd6b0ed1788f20ac0"
+          },
+          "state": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0025/state.npz",
+            "sha256": "6efb44fbb910389e0a0406131e0ce2adafbbd006821e529dfa5783f39c6ad478"
+          },
+          "standardizer_count": {
+            "state": {
+              "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0025/state.npz",
+              "sha256": "6efb44fbb910389e0a0406131e0ce2adafbbd006821e529dfa5783f39c6ad478"
+            },
+            "counters": [
+              {
+                "path": "basic_estimator/standardization_1/standardize/variable_14",
+                "value": 10143328.0,
+                "dtype": "float32",
+                "sha256": "76a530db679187fd5ebe08707f825a23e929a0bbdfea35cd95ac2416da12e2bc"
+              },
+              {
+                "path": "basic_estimator/standardization_1/standardize_1/variable_17",
+                "value": 10143328.0,
+                "dtype": "float32",
+                "sha256": "76a530db679187fd5ebe08707f825a23e929a0bbdfea35cd95ac2416da12e2bc"
+              }
+            ],
+            "value": 10143328.0,
+            "logical_parent_plus_examples": 10143328.0,
+            "difference_from_logical": 0.0,
+            "relative_difference": 0.0
+          }
+        },
+        {
+          "bank_passes": 100,
+          "record": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0100/checkpoint.json",
+            "sha256": "d53c07acf1ee26c8434393bd76b001e148b3aef2d8a890c97dead066fd0c58c6"
+          },
+          "model": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0100/model.keras",
+            "sha256": "5379aa3505b499d784bddaa5918e2ef5d81f8f6b8c1239d12a0721422a4ac9f9"
+          },
+          "state": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0100/state.npz",
+            "sha256": "bdaafa58d67df4b1a00796f71ba5011261f449f5a7579a62ab2125fa81c126a6"
+          },
+          "standardizer_count": {
+            "state": {
+              "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0100/state.npz",
+              "sha256": "bdaafa58d67df4b1a00796f71ba5011261f449f5a7579a62ab2125fa81c126a6"
+            },
+            "counters": [
+              {
+                "path": "basic_estimator/standardization_1/standardize/variable_14",
+                "value": 17643328.0,
+                "dtype": "float32",
+                "sha256": "f00afe0fecacb7f6579628743b554526834c7924ff144bfbf4cecfe3e0c3ee49"
+              },
+              {
+                "path": "basic_estimator/standardization_1/standardize_1/variable_17",
+                "value": 17643328.0,
+                "dtype": "float32",
+                "sha256": "f00afe0fecacb7f6579628743b554526834c7924ff144bfbf4cecfe3e0c3ee49"
+              }
+            ],
+            "value": 17643328.0,
+            "logical_parent_plus_examples": 17643328.0,
+            "difference_from_logical": 0.0,
+            "relative_difference": 0.0
+          }
+        },
+        {
+          "bank_passes": 250,
+          "record": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0250/checkpoint.json",
+            "sha256": "95d785122c8de05749c168b3c82b67a90591d24015db136c704c9346f24a8af8"
+          },
+          "model": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0250/model.keras",
+            "sha256": "d901f5d91e3c0f7ce35fc7428f8bc8afb3beebaa2ef80c43310878247caef000"
+          },
+          "state": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0250/state.npz",
+            "sha256": "80017ee9886b3db00576ecaf0c59991872769a800f6dbc8be491ba1a2971791d"
+          },
+          "standardizer_count": {
+            "state": {
+              "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0250/state.npz",
+              "sha256": "80017ee9886b3db00576ecaf0c59991872769a800f6dbc8be491ba1a2971791d"
+            },
+            "counters": [
+              {
+                "path": "basic_estimator/standardization_1/standardize/variable_14",
+                "value": 32643328.0,
+                "dtype": "float32",
+                "sha256": "77b0ac2204f73f9ba9f6d2fba2decd7b6048cd4d4b64c26dc218ad765f65255b"
+              },
+              {
+                "path": "basic_estimator/standardization_1/standardize_1/variable_17",
+                "value": 32643328.0,
+                "dtype": "float32",
+                "sha256": "77b0ac2204f73f9ba9f6d2fba2decd7b6048cd4d4b64c26dc218ad765f65255b"
+              }
+            ],
+            "value": 32643328.0,
+            "logical_parent_plus_examples": 32643328.0,
+            "difference_from_logical": 0.0,
+            "relative_difference": 0.0
+          }
+        },
+        {
+          "bank_passes": 500,
+          "record": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0500/checkpoint.json",
+            "sha256": "75d9162e67212d4c11254dfc399d3c85e4c632c49170b565880bded8eff7e808"
+          },
+          "model": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0500/model.keras",
+            "sha256": "f86ad8cfe45b5b241f7edb8b22b7a0ca9bbc2b1d8b95761880fcac12914cc7ac"
+          },
+          "state": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0500/state.npz",
+            "sha256": "a36c6c0a2ceb99ee8d93d918b1fbccbf07b80a48055099e8a8f9135314c7d62a"
+          },
+          "standardizer_count": {
+            "state": {
+              "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/checkpoints/pass-0500/state.npz",
+              "sha256": "a36c6c0a2ceb99ee8d93d918b1fbccbf07b80a48055099e8a8f9135314c7d62a"
+            },
+            "counters": [
+              {
+                "path": "basic_estimator/standardization_1/standardize/variable_14",
+                "value": 57643328.0,
+                "dtype": "float32",
+                "sha256": "1f0e1e1e2cc4474c7d1e7e745987933e9fe290198550623112825c6ab9533826"
+              },
+              {
+                "path": "basic_estimator/standardization_1/standardize_1/variable_17",
+                "value": 57643328.0,
+                "dtype": "float32",
+                "sha256": "1f0e1e1e2cc4474c7d1e7e745987933e9fe290198550623112825c6ab9533826"
+              }
+            ],
+            "value": 57643328.0,
+            "logical_parent_plus_examples": 57643328.0,
+            "difference_from_logical": 0.0,
+            "relative_difference": 0.0
+          }
+        }
+      ],
+      "exposure_counts": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/exposure.npz",
+        "sha256": "dbf547d8224775987826a039de427fe2e56736890ada0602a53750f19d586502"
+      },
+      "compact_exports": {
+        "run.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/run.json",
+            "sha256": "8428c7dc2adac39a8c7ab1aa1cf8599447a3e9b00d62f4df197fdddbbf9f634e"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-1024/run.json",
+            "sha256": "8428c7dc2adac39a8c7ab1aa1cf8599447a3e9b00d62f4df197fdddbbf9f634e"
+          }
+        },
+        "training.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/training.json",
+            "sha256": "f4e75e4e949d3455674f8c8f78b9fe3f342791fbad09791eb0e2adfafa48c193"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-1024/training.json",
+            "sha256": "f4e75e4e949d3455674f8c8f78b9fe3f342791fbad09791eb0e2adfafa48c193"
+          }
+        },
+        "learning-curve.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/learning-curve.json",
+            "sha256": "949460f96d524c502dee3266116e7b3bcc6b6eaa3823bfb4daded90aa7bdf56c"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-1024/learning-curve.json",
+            "sha256": "949460f96d524c502dee3266116e7b3bcc6b6eaa3823bfb4daded90aa7bdf56c"
+          }
+        },
+        "progress.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/progress.json",
+            "sha256": "f4e75e4e949d3455674f8c8f78b9fe3f342791fbad09791eb0e2adfafa48c193"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-1024/progress.json",
+            "sha256": "f4e75e4e949d3455674f8c8f78b9fe3f342791fbad09791eb0e2adfafa48c193"
+          }
+        },
+        "initial-probes.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/initial-probes.json",
+            "sha256": "23c273fc37af6baab73c3de140de31b253557fdb895999d4505515bc78bdded5"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-1024/initial-probes.json",
+            "sha256": "23c273fc37af6baab73c3de140de31b253557fdb895999d4505515bc78bdded5"
+          }
+        },
+        "parent-probes.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/parent-probes.json",
+            "sha256": "175c0d82759ec2ed4c3eabe2d667326348a5e9abbffa9422a97740a427f2ed7c"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-1024/parent-probes.json",
+            "sha256": "175c0d82759ec2ed4c3eabe2d667326348a5e9abbffa9422a97740a427f2ed7c"
+          }
+        }
+      }
+    },
+    {
+      "batch_size": 4098,
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-4098/run.json",
+        "sha256": "bbdeac4a57baaaef8d52ec1a814bf3189755b283d8b5ee646d5b1d853b1abfd6"
+      },
+      "training": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-4098/training.json",
+        "sha256": "ee23a6f6b78a369608ab4f04b2faaab7191e55798f261588b8cf2820ce923772"
+      },
+      "curve": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-4098/learning-curve.json",
+        "sha256": "06e8591cea39a3e977b96c46f30e3f5e6a0b9c46648d0845df4ede97cd6ca26b"
+      },
+      "evaluations": [
+        {
+          "epochs": 25,
+          "evaluation": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0025/evaluation.json",
+            "sha256": "98cb0625c16afeaf9044a5fc2ad90f1ea228bcb0a9e298c60a85408aecbb7d5a"
+          },
+          "recovery": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0025/recovery.npz",
+            "sha256": "533985d6051a94b2ecea19ba0f1736fca5d9ddbc97fbb946f9dfc6042a55c8de"
+          }
+        },
+        {
+          "epochs": 100,
+          "evaluation": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0100/evaluation.json",
+            "sha256": "ad648670dc02a52260b4f2ccfcdabc672243febba80339c3280c97aa0740e276"
+          },
+          "recovery": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0100/recovery.npz",
+            "sha256": "4e9e623eb479b91192a4eac87f78558bb5151859e3dffcbad51da9168eea3944"
+          }
+        },
+        {
+          "epochs": 250,
+          "evaluation": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0250/evaluation.json",
+            "sha256": "b59b930fc9d5a5945f9547d72f73eddc848fa9d4da6305786d602b8dd0364145"
+          },
+          "recovery": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0250/recovery.npz",
+            "sha256": "0fb2a3e2636e89adff603dab13043fcda44d05437a8640f5ecc3dfed0e8d145d"
+          }
+        },
+        {
+          "epochs": 500,
+          "evaluation": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0500/evaluation.json",
+            "sha256": "d9f55809ecf2266ad2940fa866e57842cb734f6717c67a8cf817649481b5bb4a"
+          },
+          "recovery": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0500/recovery.npz",
+            "sha256": "e8d059fa15f5c7a90fe1b40118d6ef90110a2245ee2a7579ff6c757d95af228b"
+          }
+        }
+      ],
+      "checkpoints": [
+        {
+          "bank_passes": 25,
+          "record": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0025/checkpoint.json",
+            "sha256": "2ce7f99d43e68e50165a1f3798012d205e83181da42e30118772d87c4934f704"
+          },
+          "model": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0025/model.keras",
+            "sha256": "81573089b6390c5cbebebce46817989e2b5bc8b926cc7d3caf8e1b0f82ea10f5"
+          },
+          "state": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0025/state.npz",
+            "sha256": "5c2575a6d3f9c55d7b63047cfb64ea632bcc5b2a7f03c4dd027bc26bc3a0f010"
+          },
+          "standardizer_count": {
+            "state": {
+              "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0025/state.npz",
+              "sha256": "5c2575a6d3f9c55d7b63047cfb64ea632bcc5b2a7f03c4dd027bc26bc3a0f010"
+            },
+            "counters": [
+              {
+                "path": "basic_estimator/standardization_1/standardize/variable_14",
+                "value": 10143328.0,
+                "dtype": "float32",
+                "sha256": "76a530db679187fd5ebe08707f825a23e929a0bbdfea35cd95ac2416da12e2bc"
+              },
+              {
+                "path": "basic_estimator/standardization_1/standardize_1/variable_17",
+                "value": 10143328.0,
+                "dtype": "float32",
+                "sha256": "76a530db679187fd5ebe08707f825a23e929a0bbdfea35cd95ac2416da12e2bc"
+              }
+            ],
+            "value": 10143328.0,
+            "logical_parent_plus_examples": 10143328.0,
+            "difference_from_logical": 0.0,
+            "relative_difference": 0.0
+          }
+        },
+        {
+          "bank_passes": 100,
+          "record": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0100/checkpoint.json",
+            "sha256": "2182b7511696d2471840403b27f47b70900c98234d2bf6e0750d0447ef83febb"
+          },
+          "model": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0100/model.keras",
+            "sha256": "ec7c73ed085798cfe62ed5c24a66a183dbe4c9c54e39ebcb461f9f8bf2757e38"
+          },
+          "state": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0100/state.npz",
+            "sha256": "f794f13d59a0b4ed03eb60a28decfa0f0412f71d326ae161e4ead793d8d3e202"
+          },
+          "standardizer_count": {
+            "state": {
+              "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0100/state.npz",
+              "sha256": "f794f13d59a0b4ed03eb60a28decfa0f0412f71d326ae161e4ead793d8d3e202"
+            },
+            "counters": [
+              {
+                "path": "basic_estimator/standardization_1/standardize/variable_14",
+                "value": 17643328.0,
+                "dtype": "float32",
+                "sha256": "f00afe0fecacb7f6579628743b554526834c7924ff144bfbf4cecfe3e0c3ee49"
+              },
+              {
+                "path": "basic_estimator/standardization_1/standardize_1/variable_17",
+                "value": 17643328.0,
+                "dtype": "float32",
+                "sha256": "f00afe0fecacb7f6579628743b554526834c7924ff144bfbf4cecfe3e0c3ee49"
+              }
+            ],
+            "value": 17643328.0,
+            "logical_parent_plus_examples": 17643328.0,
+            "difference_from_logical": 0.0,
+            "relative_difference": 0.0
+          }
+        },
+        {
+          "bank_passes": 250,
+          "record": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0250/checkpoint.json",
+            "sha256": "74d8f77ab47fb4b8e5636da3ad499352e48f13d9da49bb818ccc2da7b9a93192"
+          },
+          "model": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0250/model.keras",
+            "sha256": "abf739c686c1c0d7b1785b450db8a1d5ca3db25fdb917f04784d2c6864ac3995"
+          },
+          "state": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0250/state.npz",
+            "sha256": "24f5f3243effef4ba2e53d9d3f4d3ae3ae6f57943d523fd1c69856d451cec491"
+          },
+          "standardizer_count": {
+            "state": {
+              "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0250/state.npz",
+              "sha256": "24f5f3243effef4ba2e53d9d3f4d3ae3ae6f57943d523fd1c69856d451cec491"
+            },
+            "counters": [
+              {
+                "path": "basic_estimator/standardization_1/standardize/variable_14",
+                "value": 32643328.0,
+                "dtype": "float32",
+                "sha256": "77b0ac2204f73f9ba9f6d2fba2decd7b6048cd4d4b64c26dc218ad765f65255b"
+              },
+              {
+                "path": "basic_estimator/standardization_1/standardize_1/variable_17",
+                "value": 32643328.0,
+                "dtype": "float32",
+                "sha256": "77b0ac2204f73f9ba9f6d2fba2decd7b6048cd4d4b64c26dc218ad765f65255b"
+              }
+            ],
+            "value": 32643328.0,
+            "logical_parent_plus_examples": 32643328.0,
+            "difference_from_logical": 0.0,
+            "relative_difference": 0.0
+          }
+        },
+        {
+          "bank_passes": 500,
+          "record": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0500/checkpoint.json",
+            "sha256": "a726590f36da5e3f8a019ffbef4bd6343346c1c4d9384c694c82971436878075"
+          },
+          "model": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0500/model.keras",
+            "sha256": "5d281855e28cfda28b21dbe28d19f8d33d109f3e599166b37a378a5be58dfb4d"
+          },
+          "state": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0500/state.npz",
+            "sha256": "29997114c63963758d605ace46525bbda50c571db6ff6fcf17c11c8cf1a18d63"
+          },
+          "standardizer_count": {
+            "state": {
+              "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0500/state.npz",
+              "sha256": "29997114c63963758d605ace46525bbda50c571db6ff6fcf17c11c8cf1a18d63"
+            },
+            "counters": [
+              {
+                "path": "basic_estimator/standardization_1/standardize/variable_14",
+                "value": 57631768.0,
+                "dtype": "float32",
+                "sha256": "43964f31ea21630058fdf2382aa15c006fe15085ca6bdbcd4c29ee78759d2748"
+              },
+              {
+                "path": "basic_estimator/standardization_1/standardize_1/variable_17",
+                "value": 57631768.0,
+                "dtype": "float32",
+                "sha256": "43964f31ea21630058fdf2382aa15c006fe15085ca6bdbcd4c29ee78759d2748"
+              }
+            ],
+            "value": 57631768.0,
+            "logical_parent_plus_examples": 57643328.0,
+            "difference_from_logical": -11560.0,
+            "relative_difference": -0.00020054359109869575
+          }
+        }
+      ],
+      "exposure_counts": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/exposure.npz",
+        "sha256": "dbf547d8224775987826a039de427fe2e56736890ada0602a53750f19d586502"
+      },
+      "compact_exports": {
+        "run.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/run.json",
+            "sha256": "bbdeac4a57baaaef8d52ec1a814bf3189755b283d8b5ee646d5b1d853b1abfd6"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-4098/run.json",
+            "sha256": "bbdeac4a57baaaef8d52ec1a814bf3189755b283d8b5ee646d5b1d853b1abfd6"
+          }
+        },
+        "training.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/training.json",
+            "sha256": "ee23a6f6b78a369608ab4f04b2faaab7191e55798f261588b8cf2820ce923772"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-4098/training.json",
+            "sha256": "ee23a6f6b78a369608ab4f04b2faaab7191e55798f261588b8cf2820ce923772"
+          }
+        },
+        "learning-curve.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/learning-curve.json",
+            "sha256": "06e8591cea39a3e977b96c46f30e3f5e6a0b9c46648d0845df4ede97cd6ca26b"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-4098/learning-curve.json",
+            "sha256": "06e8591cea39a3e977b96c46f30e3f5e6a0b9c46648d0845df4ede97cd6ca26b"
+          }
+        },
+        "progress.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/progress.json",
+            "sha256": "ee23a6f6b78a369608ab4f04b2faaab7191e55798f261588b8cf2820ce923772"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-4098/progress.json",
+            "sha256": "ee23a6f6b78a369608ab4f04b2faaab7191e55798f261588b8cf2820ce923772"
+          }
+        },
+        "initial-probes.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/initial-probes.json",
+            "sha256": "23c273fc37af6baab73c3de140de31b253557fdb895999d4505515bc78bdded5"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-4098/initial-probes.json",
+            "sha256": "23c273fc37af6baab73c3de140de31b253557fdb895999d4505515bc78bdded5"
+          }
+        },
+        "parent-probes.json": {
+          "source": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/parent-probes.json",
+            "sha256": "175c0d82759ec2ed4c3eabe2d667326348a5e9abbffa9422a97740a427f2ed7c"
+          },
+          "copy": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/training/batch-4098/parent-probes.json",
+            "sha256": "175c0d82759ec2ed4c3eabe2d667326348a5e9abbffa9422a97740a427f2ed7c"
+          }
+        }
+      }
+    }
+  ],
+  "parent_standardizer_count": {
+    "state": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000/state.npz",
+      "sha256": "e4bb7c9bd2377073eebb585e4853a74000e9318ff61f8ae420e1f8d89d76b99a"
+    },
+    "counters": [
+      {
+        "path": "basic_estimator/standardization/standardize/variable_2",
+        "value": 7643328.0,
+        "dtype": "float32",
+        "sha256": "c9dd69cdfd79c8cfea4eabb17b5a84f3e8f6dbd2204cbe4676c88716d9c60d8d"
+      },
+      {
+        "path": "basic_estimator/standardization/standardize_1/variable_5",
+        "value": 7643328.0,
+        "dtype": "float32",
+        "sha256": "c9dd69cdfd79c8cfea4eabb17b5a84f3e8f6dbd2204cbe4676c88716d9c60d8d"
+      }
+    ],
+    "value": 7643328.0
+  },
+  "sources": {
+    "summary_producer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/summarize_heston_spread_scale_large_batch.py",
+      "sha256": "9880b8f69128f76ff4817f2c1d9cc92cc16f71bb9aa4b0325078531800b96a18"
+    }
+  },
+  "comparison_scope": "Four shared-parent recipes at equal50m additional examples; old and new conditional checks retain separate384-check families."
+}

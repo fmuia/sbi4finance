@@ -1,0 +1,6591 @@
+{
+  "format": "heston_spread_scale_large_batch_evaluation_v1",
+  "status": "complete",
+  "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/checkpoints/pass-0100",
+  "checkpoint_record_sha256": "2182b7511696d2471840403b27f47b70900c98234d2bf6e0750d0447ef83febb",
+  "model_sha256": "ec7c73ed085798cfe62ed5c24a66a183dbe4c9c54e39ebcb461f9f8bf2757e38",
+  "state_sha256": "f794f13d59a0b4ed03eb60a28decfa0f0412f71d326ae161e4ead793d8d3e202",
+  "actual_optimizer_updates": 62500,
+  "batch_size": 4098,
+  "completed_bank_passes": 100,
+  "task": {
+    "format": "heston_spread_task_v1",
+    "model": "heston",
+    "measure": "Q",
+    "parameter_names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho",
+      "c"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        10.0
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        3.0
+      ],
+      [
+        -0.95,
+        -0.1
+      ],
+      [
+        0.5,
+        2.0
+      ]
+    ],
+    "prior": "independent Uniform in physical coordinates",
+    "infer_c": true,
+    "fixed_c": null,
+    "c_bounds": [
+      0.5,
+      2.0
+    ],
+    "quote_count": 54,
+    "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+    "observation_model": "independent Gaussian with price SD c * half_spread",
+    "pricing_controls": {
+      "c_min": 0.5,
+      "numerical_fraction": 0.02,
+      "quadrature_ladder": [
+        [
+          256,
+          150.0
+        ],
+        [
+          512,
+          300.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1200.0
+        ],
+        [
+          4096,
+          2400.0
+        ],
+        [
+          8192,
+          4800.0
+        ],
+        [
+          16384,
+          9600.0
+        ]
+      ]
+    }
+  },
+  "study_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/protocol.json",
+    "sha256": "f793bdb656423f4268a93640ae55e6f599ad2662a42d4f4157ed0c8018420840"
+  },
+  "training_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/protocol.json",
+    "sha256": "f793bdb656423f4268a93640ae55e6f599ad2662a42d4f4157ed0c8018420840"
+  },
+  "precision_recovery": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/precision-failure-audit.json",
+    "sha256": "15582efc534737f4ed1c4240f72d01a05a36173dee148e45402acb68e66957c7"
+  },
+  "reference_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-reference-protocol.json",
+    "sha256": "14c016581ad1981df650758405306d6098f19ff4e74a127932f88088d77522bc"
+  },
+  "reference_recovery": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/reference-recovery-v2.json",
+    "sha256": "ea46493d36f9bd7027f3c559afb8765b4e33156463cd17eec6e02981ac4f5a80"
+  },
+  "panel": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/panel.json",
+    "sha256": "8246c08c72336a819771bf481ffd46be4e09f1c2cf64dab6e6725a10229d4f1d",
+    "same_observations_per_case_for_all_targets": true,
+    "cases": {
+      "synthetic-broad": {
+        "kind": "synthetic",
+        "observation_sha256": "ee684695a1671219e9b45037a498b82286d032ac9f464b185e00d94735eb45a8",
+        "generating_c": 1.0
+      },
+      "synthetic-market-like": {
+        "kind": "synthetic",
+        "observation_sha256": "2fff2664136ba888e2f75c83b230ec53e0f31a522f74c6801ed2654802f9ed4f",
+        "generating_c": 1.0
+      },
+      "synthetic-boundary": {
+        "kind": "synthetic",
+        "observation_sha256": "c01c6d454a6044b2d1beacdea98f6da7599e446b27a2a7d136e1517d8ab731fb",
+        "generating_c": 1.0
+      },
+      "market": {
+        "kind": "market",
+        "observation_sha256": "e55bc1a754740303e906c35ad7595d93eff27a99178ef64315ba2b09f0e1aed6",
+        "generating_c": null
+      }
+    }
+  },
+  "source_sha256": {
+    "evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_large_batch.py",
+      "sha256": "da238a7aa7515448d103242b62b297d5b61f9a6131359aab35c3ac7f6307605a"
+    },
+    "continuation_trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_large_batch.py",
+      "sha256": "9afdb945978f556a879681a205781093d5f83a96a80baabff6f57ca94575662d"
+    },
+    "population_exporter": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale.py",
+      "sha256": "e0a8b73dc4828bf74a459bf53a47406bc557317293ec26474438b7e96e295db2"
+    },
+    "comparison_consumer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/compare_heston_spread_scale.py",
+      "sha256": "8e569c02d6c9feee896558b0093826c396a31ce99c1f3f8083740e482fc6bc8b"
+    },
+    "scale_trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_scale.py",
+      "sha256": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068"
+    },
+    "fixed_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py",
+      "sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38"
+    },
+    "comparison_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_baseline.py",
+      "sha256": "f899e126b4f9098b06d022b39dadd0f382d200d29ae4b8e2e52550dba808f7e0"
+    },
+    "validation": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/validation.py",
+      "sha256": "42ebc47973d512c13ed6f6edf121a58db41b659cbc0258357350d84e8d3f04b7"
+    },
+    "reference_producer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    },
+    "reference_consumer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_reference.py",
+      "sha256": "191b0482fa73ec82f5e88fa3d8022c6fc502e5f9120a9b2dc37d25ceebed9eb3"
+    },
+    "comparison_metrics": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_budget_diagnostics.py",
+      "sha256": "cd0b925fda1e359926dcd1bef1a70f679bb5ce6bfd952243ada1a4d8689777ef"
+    },
+    "reference_runner": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    },
+    "reference_spread_likelihood": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_spread.py",
+      "sha256": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca"
+    },
+    "reference_checked_pricer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_pilot.py",
+      "sha256": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b"
+    },
+    "reference_runtime_model": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/model.py",
+      "sha256": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+    },
+    "reference_reference": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/reference.py",
+      "sha256": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056"
+    },
+    "reference_initialization": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/reference_initialization.py",
+      "sha256": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f"
+    },
+    "reference_likelihood_op": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/pymc_reference_op.py",
+      "sha256": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b"
+    },
+    "reference_partial_writer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/calibration_reference.py",
+      "sha256": "070f3199645faabe8032132d13c6b1859d053d9b8717334d65ce157f707ef6b8"
+    },
+    "reference_pyproject.toml": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/pyproject.toml",
+      "sha256": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f"
+    },
+    "reference_pixi.lock": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/pixi.lock",
+      "sha256": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+    },
+    "shared_capacity_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_continuation.py",
+      "sha256": "eda6b86ed47c3aa6af0678c129eba0e4a7220d4070fed7193fe5b6e511af39b5"
+    },
+    "original_capacity_trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale.py",
+      "sha256": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892"
+    },
+    "precision_training_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_precision.py",
+      "sha256": "767a759a79d764c067d7c702ed30272965eb62a58400208bf58bab7331c9db47"
+    }
+  },
+  "seed": 261112,
+  "family_checks": 384,
+  "baseline_population": {
+    "evaluation": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/evaluations/060000/evaluation.json",
+      "sha256": "a7702ca66f886dde7866477d7b7782fccdaf7c79dccab9b74c32d4a60b445aa9"
+    },
+    "recovery": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/evaluations/060000/recovery.npz",
+      "sha256": "b9ef607e571fe89ee4796488f976e753183800657217ce905cdae50d47ef2b86"
+    },
+    "summary": {
+      "median_rmse": [
+        0.0002426303636912339,
+        0.18499693005521256,
+        0.001686653317622643,
+        0.016394435770170444,
+        0.029889208276187892,
+        0.4451979837593069
+      ],
+      "truth_posterior_median_correlation": [
+        0.9999844860084112,
+        0.9977672239134305,
+        0.999241610596762,
+        0.99982718410627,
+        0.9927910122966987,
+        -0.04807060599985812
+      ],
+      "median_posterior_width90": [
+        0.0005204398185014725,
+        0.22093772888183594,
+        0.0008903592824935913,
+        0.04262667894363403,
+        0.00836218148469925,
+        1.336169719696045
+      ],
+      "prior_width90": [
+        0.135,
+        8.91,
+        0.135,
+        2.61,
+        0.765,
+        1.35
+      ],
+      "median_width90_over_prior": [
+        0.0038551097666775737,
+        0.024796602568107288,
+        0.006595253944396972,
+        0.016332060897944076,
+        0.010930956189149346,
+        0.9897553479229961
+      ],
+      "prior_midpoint_rmse": [
+        0.04356098636756658,
+        2.770875053408706,
+        0.04330901211729393,
+        0.8798982882107513,
+        0.24822332799063374,
+        0.4370734589111061
+      ],
+      "scope": "Descriptive recovery over the same 512 validation rows and fresh fixed population c/Z; no reserved-test claim."
+    },
+    "outside_new_conditional_family": true
+  },
+  "cases": {
+    "synthetic-broad": {
+      "role": "synthetic development fidelity",
+      "observation_sha256": "ee684695a1671219e9b45037a498b82286d032ac9f464b185e00d94735eb45a8",
+      "neural_support": {
+        "outside_value_count": 0,
+        "material_outside_value_count": 0,
+        "rounding_tolerance": [
+          1.1920928955078125e-07,
+          7.62939453125e-06,
+          1.1920928955078125e-07,
+          1.9073486328125e-06,
+          4.76837158203125e-07,
+          1.9073486328125e-06
+        ],
+        "draws_clipped": false
+      },
+      "neural_quantiles_05_50_95": [
+        [
+          0.13584202900528908,
+          3.035636007785797,
+          0.08271644450724125,
+          1.718254178762436,
+          -0.7825095057487488,
+          0.5838698297739029
+        ],
+        [
+          0.13605332374572754,
+          3.070165514945984,
+          0.08295711502432823,
+          1.7257378697395325,
+          -0.7800807058811188,
+          1.199114739894867
+        ],
+        [
+          0.1362488977611065,
+          3.102754294872284,
+          0.08319506607949734,
+          1.7329041957855225,
+          -0.7775503545999527,
+          1.9009741246700287
+        ]
+      ],
+      "c_mean": 1.2178199291229248,
+      "c_sd": 0.419899046421051,
+      "neural_c_physical_correlations": {
+        "initial_variance": -0.009144931098612096,
+        "kappa": 0.04710863115609558,
+        "theta": -0.07005844548486545,
+        "vol_of_vol": -0.0418853518686746,
+        "rho": -0.01919972462506362
+      },
+      "reference_run_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-broad-c-joint/run.json",
+      "reference_diagnostics_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-broad-c-joint/diagnostics.json",
+      "reference_chain_payload_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-references/synthetic-broad-c-joint/attempt-1/chains.npz",
+      "reference_run_sha256": "2988306a5fd573397fd779f9cf964ecd02a330debf575b20ea918e17863c258e",
+      "reference_diagnostics_sha256": "ed8fd500ff403c45fffe726acd3b7bf15cc60d5a7b11b90e61dc5b8fc39a2a78",
+      "reference_chain_payload_sha256": "6617f373cd697807fcbfc4a79b39acc70e4bdb66643c79b9d9656df45418d533",
+      "reference_ready": true,
+      "reference_c_marginal": {
+        "mean": 1.1081987724097129,
+        "sd": 0.1167383286175484,
+        "quantiles_05_50_95": [
+          0.9381102520662465,
+          1.0973667469920052,
+          1.3152228326432758
+        ],
+        "probability_c_le_055": 0.0,
+        "probability_c_ge_195": 0.0
+      },
+      "comparison": {
+        "format": "heston_budget_conditional_agreement_v1",
+        "status": "fail",
+        "parameters": {
+          "initial_variance": {
+            "status": "inconclusive",
+            "neural_mean": 0.13605200913298177,
+            "reference_mean": 0.13602954296175374,
+            "reference_sd": 9.395720294432346e-05,
+            "neural_width_90": 0.00040686875581741333,
+            "reference_width_90": 0.0003050820752708572,
+            "signed_standardized_mean_difference": 0.23911068575916816,
+            "absolute_standardized_mean_difference": 0.23911068575916816,
+            "standardized_mean_mcse": 0.03149604217101887,
+            "signed_standardized_mean_interval": [
+              0.11860480565443095,
+              0.3596165658639054
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.3336370399873154,
+            "log_width_ratio_mcse": 0.022711670678846673,
+            "width_ratio_interval": [
+              1.2226412967896296,
+              1.4547093731385357
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 2.0231767514219207e-06,
+            "saved_reference_mean_mcse": 2.0231767514219207e-06,
+            "neural_mean_mcse_iid": 2.110270008539192e-06,
+            "reference_q05_q95": [
+              0.1358787618916264,
+              0.13618384396689726
+            ],
+            "neural_q05_q95": [
+              0.13584202900528908,
+              0.1362488977611065
+            ],
+            "reference_quantile_mcse": [
+              3.008726557258002e-06,
+              3.565780609026735e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              5.52595191837478e-06,
+              4.949567560083444e-06
+            ]
+          },
+          "kappa": {
+            "status": "fail",
+            "neural_mean": 3.069767181237694,
+            "reference_mean": 3.0734351227243337,
+            "reference_sd": 0.013525931530700384,
+            "neural_width_90": 0.06711828708648682,
+            "reference_width_90": 0.04427203017494552,
+            "signed_standardized_mean_difference": -0.27117847508798665,
+            "absolute_standardized_mean_difference": 0.27117847508798665,
+            "standardized_mean_mcse": 0.032052503048467185,
+            "signed_standardized_mean_interval": [
+              -0.39381341024721783,
+              -0.14854353992875544
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.5160426757314256,
+            "log_width_ratio_mcse": 0.023576767122851745,
+            "width_ratio_interval": [
+              1.3852729719344943,
+              1.6591570334540426
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 0.0002913992993506763,
+            "saved_reference_mean_mcse": 0.0002913992993506763,
+            "neural_mean_mcse_iid": 0.0003206946018983095,
+            "reference_q05_q95": [
+              3.0514695536081944,
+              3.09574158378314
+            ],
+            "neural_q05_q95": [
+              3.035636007785797,
+              3.102754294872284
+            ],
+            "reference_quantile_mcse": [
+              0.000468397276072326,
+              0.0005634632267680904
+            ],
+            "neural_quantile_mcse_iid": [
+              0.0009873823362559215,
+              0.0007427966233848132
+            ]
+          },
+          "theta": {
+            "status": "inconclusive",
+            "neural_mean": 0.08295475096383598,
+            "reference_mean": 0.08294727924763638,
+            "reference_sd": 0.00012121426632767305,
+            "neural_width_90": 0.00047862157225608826,
+            "reference_width_90": 0.0004038875388785307,
+            "signed_standardized_mean_difference": 0.06164056778099603,
+            "absolute_standardized_mean_difference": 0.06164056778099603,
+            "standardized_mean_mcse": 0.028299556913636805,
+            "signed_standardized_mean_interval": [
+              -0.04663535444233217,
+              0.16991649000432424
+            ],
+            "mean_status": "pass",
+            "width_ratio_90": 1.185036739645572,
+            "log_width_ratio_mcse": 0.018751701936010275,
+            "width_ratio_interval": [
+              1.1029942885316464,
+              1.273181637394776
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 2.5337951776259505e-06,
+            "saved_reference_mean_mcse": 2.5337951776259505e-06,
+            "neural_mean_mcse_iid": 2.3123384031612653e-06,
+            "reference_q05_q95": [
+              0.08274540086495426,
+              0.08314928840383279
+            ],
+            "neural_q05_q95": [
+              0.08271644450724125,
+              0.08319506607949734
+            ],
+            "reference_quantile_mcse": [
+              4.240183646289406e-06,
+              4.075595852205876e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              4.858678069824113e-06,
+              3.842813721964176e-06
+            ]
+          },
+          "vol_of_vol": {
+            "status": "inconclusive",
+            "neural_mean": 1.725652028893819,
+            "reference_mean": 1.7264064017500727,
+            "reference_sd": 0.003383083451437572,
+            "neural_width_90": 0.014650017023086548,
+            "reference_width_90": 0.011136835958154734,
+            "signed_standardized_mean_difference": -0.2229838155287053,
+            "absolute_standardized_mean_difference": 0.2229838155287053,
+            "standardized_mean_mcse": 0.0307510382536433,
+            "signed_standardized_mean_interval": [
+              -0.34063926279945844,
+              -0.10532836825795218
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.3154559408194708,
+            "log_width_ratio_mcse": 0.024585983279998305,
+            "width_ratio_interval": [
+              1.1973559820826232,
+              1.445204565836321
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 7.123774004922723e-05,
+            "saved_reference_mean_mcse": 7.123774004922723e-05,
+            "neural_mean_mcse_iid": 7.58163429519296e-05,
+            "reference_q05_q95": [
+              1.7209012144054605,
+              1.7320380503636152
+            ],
+            "neural_q05_q95": [
+              1.718254178762436,
+              1.7329041957855225
+            ],
+            "reference_quantile_mcse": [
+              0.0001203220677660331,
+              0.0001671751595497185
+            ],
+            "neural_quantile_mcse_iid": [
+              0.0001776711219979995,
+              0.00019632890990528795
+            ]
+          },
+          "rho": {
+            "status": "inconclusive",
+            "neural_mean": -0.7802462590334471,
+            "reference_mean": -0.7802632660719137,
+            "reference_sd": 0.0011628340586849037,
+            "neural_width_90": 0.0049591511487960815,
+            "reference_width_90": 0.003808546969008786,
+            "signed_standardized_mean_difference": 0.01462550768916678,
+            "absolute_standardized_mean_difference": 0.01462550768916678,
+            "standardized_mean_mcse": 0.06673945154380988,
+            "signed_standardized_mean_interval": [
+              -0.24072392010003615,
+              0.2699749354783697
+            ],
+            "mean_status": "pass",
+            "width_ratio_90": 1.3021110647052758,
+            "log_width_ratio_mcse": 0.02185162588387618,
+            "width_ratio_interval": [
+              1.1976737327263753,
+              1.41565534794547
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 2.4715678336720202e-05,
+            "saved_reference_mean_mcse": 2.4715678336720202e-05,
+            "neural_mean_mcse_iid": 7.356607443012555e-05,
+            "reference_q05_q95": [
+              -0.7821949485159517,
+              -0.7783864015469429
+            ],
+            "neural_q05_q95": [
+              -0.7825095057487488,
+              -0.7775503545999527
+            ],
+            "reference_quantile_mcse": [
+              3.989699561539369e-05,
+              3.5813999527491974e-05
+            ],
+            "neural_quantile_mcse_iid": [
+              5.9492983676582604e-05,
+              7.203059583616573e-05
+            ]
+          },
+          "c": {
+            "status": "fail",
+            "neural_mean": 1.2178199191694148,
+            "reference_mean": 1.1081987724097058,
+            "reference_sd": 0.11673832861754863,
+            "neural_width_90": 1.3171042948961258,
+            "reference_width_90": 0.37711258057702923,
+            "signed_standardized_mean_difference": 0.93903303274834,
+            "absolute_standardized_mean_difference": 0.93903303274834,
+            "standardized_mean_mcse": 0.0636134747028528,
+            "signed_standardized_mean_interval": [
+              0.6956437931110687,
+              1.1824222723856113
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 3.4926023758761695,
+            "log_width_ratio_mcse": 0.016723408973668034,
+            "width_ratio_interval": [
+              3.276128166304023,
+              3.723380385858772
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 0.002536522904364529,
+            "saved_reference_mean_mcse": 0.002536522904364529,
+            "neural_mean_mcse_iid": 0.006560922351916721,
+            "reference_q05_q95": [
+              0.9381102520662465,
+              1.3152228326432758
+            ],
+            "neural_q05_q95": [
+              0.5838698297739029,
+              1.9009741246700287
+            ],
+            "reference_quantile_mcse": [
+              0.002958044689084085,
+              0.00554396710479227
+            ],
+            "neural_quantile_mcse_iid": [
+              0.005909061730108873,
+              0.006624259394253374
+            ]
+          },
+          "control": {
+            "status": "fail",
+            "neural_mean": 0.13162092937360612,
+            "reference_mean": 0.13159473039651218,
+            "reference_sd": 7.581141775455595e-05,
+            "neural_width_90": 0.0003471153235727886,
+            "reference_width_90": 0.0002477971286442282,
+            "signed_standardized_mean_difference": 0.3455808883400567,
+            "absolute_standardized_mean_difference": 0.3455808883400567,
+            "standardized_mean_mcse": 0.03266752513298693,
+            "signed_standardized_mean_interval": [
+              0.22059283918712191,
+              0.47056893749299145
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.400804462392118,
+            "log_width_ratio_mcse": 0.019648145893940157,
+            "width_ratio_interval": [
+              1.299359719324494,
+              1.5101692877456594
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 1.6178489691892152e-06,
+            "saved_reference_mean_mcse": 1.6178489691892152e-06,
+            "neural_mean_mcse_iid": 1.802731337907214e-06,
+            "reference_q05_q95": [
+              0.1314717990158254,
+              0.13171959614446963
+            ],
+            "neural_q05_q95": [
+              0.13144300443411278,
+              0.13179011975768556
+            ],
+            "reference_quantile_mcse": [
+              2.581959365674448e-06,
+              2.2851305495646204e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              3.4808755513326992e-06,
+              3.5269262991370074e-06
+            ]
+          },
+          "affected": {
+            "status": "inconclusive",
+            "neural_mean": 0.09436378036580169,
+            "reference_mean": 0.09433404006899823,
+            "reference_sd": 0.00011993520736199007,
+            "neural_width_90": 0.0005118694445966354,
+            "reference_width_90": 0.00039044635557179685,
+            "signed_standardized_mean_difference": 0.24796969511791953,
+            "absolute_standardized_mean_difference": 0.24796969511791953,
+            "standardized_mean_mcse": 0.029890529435154724,
+            "signed_standardized_mean_interval": [
+              0.1336066098508365,
+              0.36233278038500255
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.3109853307428574,
+            "log_width_ratio_mcse": 0.020445890209708197,
+            "width_ratio_interval": [
+              1.2123392119355236,
+              1.417658127776836
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 2.556088544071793e-06,
+            "saved_reference_mean_mcse": 2.556088544071793e-06,
+            "neural_mean_mcse_iid": 2.442975914716047e-06,
+            "reference_q05_q95": [
+              0.09413918766513085,
+              0.09452963402070265
+            ],
+            "neural_q05_q95": [
+              0.09410687279269372,
+              0.09461874223729036
+            ],
+            "reference_quantile_mcse": [
+              4.5175512116761744e-06,
+              4.029216316078124e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              5.374899783237794e-06,
+              5.665332103355923e-06
+            ]
+          }
+        },
+        "neural_shape": [
+          4096,
+          8
+        ],
+        "reference_chain_shape": [
+          4,
+          12000,
+          8
+        ],
+        "seed": 261212,
+        "replicates_per_block_length": 400,
+        "block_lengths": [
+          45,
+          90
+        ],
+        "block_length_rule": "max(ceil(D^(1/3)), ceil(2*C*D/min(saved bulk and tail ESS across parameters))); also double L",
+        "family_checks": 384,
+        "family_confidence": 0.95,
+        "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+        "reference_diagnostics_passed": true,
+        "limits": {
+          "absolute_standardized_mean": 0.3,
+          "width_ratio_90": [
+            0.75,
+            1.25
+          ]
+        },
+        "scope": "Monte Carlo agreement on one fixed case; no numerical-target, product, copula or MCMC convergence certification",
+        "normal_critical_value": 3.82606422262226,
+        "block_length_sensitivity": [
+          {
+            "block_length": 45,
+            "reference_mean_mcse": [
+              1.782600862682632e-06,
+              0.00025343955917741525,
+              2.2895587667247906e-06,
+              6.038628017607818e-05,
+              2.160915558668642e-05,
+              0.0020745766229323006,
+              1.4261882621296219e-06,
+              2.335457297836945e-06
+            ],
+            "reference_sd_mcse": [
+              1.1285177310199833e-06,
+              0.00016592712062305192,
+              1.2952207275067957e-06,
+              4.154286745150573e-05,
+              1.4292633358183384e-05,
+              0.001512362845490838,
+              8.815148136558332e-07,
+              1.3642743798764217e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                2.8338471375483014e-06,
+                0.000450323062586879,
+                3.7056207802624935e-06,
+                0.00010270147740526534,
+                3.926657344120537e-05,
+                0.0028966421767891385,
+                2.280292386213575e-06,
+                3.867973850493196e-06
+              ],
+              [
+                3.376664432370599e-06,
+                0.0005362283434841795,
+                4.047331435512356e-06,
+                0.00016151143893335524,
+                3.413552753704481e-05,
+                0.004635461814184567,
+                2.2851305495646204e-06,
+                4.029216316078124e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              2.049490354841815e-06,
+              0.0003078676900934791,
+              2.229382351012068e-06,
+              7.388548853603673e-05,
+              7.112012463900862e-05,
+              0.005891008962846805,
+              1.7692979680937545e-06,
+              2.4340665434829557e-06
+            ],
+            "neural_quantile_mcse": [
+              [
+                5.350655835063853e-06,
+                0.0009696914657473351,
+                4.858678069824113e-06,
+                0.0001776711219979995,
+                5.9492983676582604e-05,
+                0.005736625786776613,
+                3.3813077905659512e-06,
+                5.3563672418691525e-06
+              ],
+              [
+                4.949567560083444e-06,
+                0.0007427966233848132,
+                3.842813721964176e-06,
+                0.00019632890990528795,
+                7.01795695046057e-05,
+                0.005906887933324285,
+                3.454301593055278e-06,
+                5.650900012134957e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.029804146674279684,
+              0.029992916193267733,
+              0.02592980026600159,
+              0.02841964014257757,
+              0.06294661772131303,
+              0.056612932682976784,
+              0.031075006581342955,
+              0.028240537432462787
+            ],
+            "log_width_ratio_mcse": [
+              0.021951279149267117,
+              0.023576767122851745,
+              0.018751701936010275,
+              0.024325632146857054,
+              0.021684641092054025,
+              0.014530096217392197,
+              0.018497266127731053,
+              0.020295452192749298
+            ]
+          },
+          {
+            "block_length": 90,
+            "reference_mean_mcse": [
+              1.9014609154632952e-06,
+              0.00027555450719155987,
+              2.3554646857423048e-06,
+              6.757727505164636e-05,
+              2.3237663613040094e-05,
+              0.0024718022873915606,
+              1.535008253793043e-06,
+              2.4241743939814454e-06
+            ],
+            "reference_sd_mcse": [
+              1.2094693354011642e-06,
+              0.00017469190334411082,
+              1.4349398900555206e-06,
+              4.2863464735415366e-05,
+              1.4331978433484572e-05,
+              0.001561664677588648,
+              9.499816652727934e-07,
+              1.4550850086976505e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                3.008726557258002e-06,
+                0.000468397276072326,
+                4.240183646289406e-06,
+                0.0001203220677660331,
+                3.989699561539369e-05,
+                0.002958044689084085,
+                2.581959365674448e-06,
+                4.5175512116761744e-06
+              ],
+              [
+                3.565780609026735e-06,
+                0.0005634632267680904,
+                4.075595852205876e-06,
+                0.0001671751595497185,
+                3.5813999527491974e-05,
+                0.00554396710479227,
+                2.2626597126096934e-06,
+                3.7627052878966587e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              1.999828866025921e-06,
+              0.00031413483451941726,
+              2.3524736481127473e-06,
+              7.154381556522855e-05,
+              6.747538593690493e-05,
+              0.006460327326551605,
+              1.688813486543654e-06,
+              2.5155592610375164e-06
+            ],
+            "neural_quantile_mcse": [
+              [
+                5.52595191837478e-06,
+                0.0009873823362559215,
+                4.766227689397587e-06,
+                0.00017472869484938089,
+                5.67169266973847e-05,
+                0.005909061730108873,
+                3.4808755513326992e-06,
+                5.374899783237794e-06
+              ],
+              [
+                4.771758086353586e-06,
+                0.0007254304846537057,
+                3.7540366112718107e-06,
+                0.00019133517540482025,
+                7.203059583616573e-05,
+                0.006624259394253374,
+                3.5269262991370074e-06,
+                5.665332103355923e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.02904703661499367,
+              0.03127716220834246,
+              0.027168503883452252,
+              0.02953060657687822,
+              0.06104189907073613,
+              0.06342624761137329,
+              0.029828546131621638,
+              0.02911651978014172
+            ],
+            "log_width_ratio_mcse": [
+              0.022711670678846673,
+              0.023106908164303885,
+              0.017273137045837137,
+              0.024585983279998305,
+              0.02185162588387618,
+              0.016723408973668034,
+              0.019648145893940157,
+              0.020445890209708197
+            ]
+          }
+        ]
+      },
+      "status": "fail"
+    },
+    "synthetic-market-like": {
+      "role": "synthetic development fidelity",
+      "observation_sha256": "2fff2664136ba888e2f75c83b230ec53e0f31a522f74c6801ed2654802f9ed4f",
+      "neural_support": {
+        "outside_value_count": 0,
+        "material_outside_value_count": 0,
+        "rounding_tolerance": [
+          1.1920928955078125e-07,
+          7.62939453125e-06,
+          1.1920928955078125e-07,
+          1.9073486328125e-06,
+          4.76837158203125e-07,
+          1.9073486328125e-06
+        ],
+        "draws_clipped": false
+      },
+      "neural_quantiles_05_50_95": [
+        [
+          0.026969355531036854,
+          4.199666380882263,
+          0.05621866136789322,
+          1.7856131494045258,
+          -0.6681490838527679,
+          0.6114158630371094
+        ],
+        [
+          0.027113858610391617,
+          4.316085577011108,
+          0.056622035801410675,
+          1.807926595211029,
+          -0.6655151546001434,
+          1.29905503988266
+        ],
+        [
+          0.027264637406915426,
+          4.433607339859009,
+          0.05706481263041496,
+          1.8333322703838348,
+          -0.662736177444458,
+          1.9275071322917938
+        ]
+      ],
+      "c_mean": 1.2890708446502686,
+      "c_sd": 0.4199451804161072,
+      "neural_c_physical_correlations": {
+        "initial_variance": -0.007186821613941819,
+        "kappa": 0.03107253177268476,
+        "theta": 0.021956340440801917,
+        "vol_of_vol": 0.05522335971589839,
+        "rho": 0.031679043523453077
+      },
+      "reference_run_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-market-like-c-joint/run.json",
+      "reference_diagnostics_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-market-like-c-joint/diagnostics.json",
+      "reference_chain_payload_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-references/synthetic-market-like-c-joint/attempt-1/chains.npz",
+      "reference_run_sha256": "fca67f428ac2ffe122f5bea8ab218fe1dc15c17b048db1c2e41df0b3146fa58c",
+      "reference_diagnostics_sha256": "7911cfc4acd7eebcfc8c32d13ca76f49a362a718d5859a9d2fd07c7fbf07faf4",
+      "reference_chain_payload_sha256": "73f0669518e9373d7eaeeba5d02667ba5c4de4aadba061e18890ea7dac7a1cd2",
+      "reference_ready": true,
+      "reference_c_marginal": {
+        "mean": 1.1503021553295862,
+        "sd": 0.12069356743452593,
+        "quantiles_05_50_95": [
+          0.9702011368219547,
+          1.140646158204679,
+          1.3644979012718297
+        ],
+        "probability_c_le_055": 0.0,
+        "probability_c_ge_195": 0.0
+      },
+      "comparison": {
+        "format": "heston_budget_conditional_agreement_v1",
+        "status": "fail",
+        "parameters": {
+          "initial_variance": {
+            "status": "fail",
+            "neural_mean": 0.02709075649454462,
+            "reference_mean": 0.027124825430360253,
+            "reference_sd": 6.461865755173303e-05,
+            "neural_width_90": 0.00029528187587857246,
+            "reference_width_90": 0.0002120687539445068,
+            "signed_standardized_mean_difference": -0.5272306344085884,
+            "absolute_standardized_mean_difference": 0.5272306344085884,
+            "standardized_mean_mcse": 0.14321255367855856,
+            "signed_standardized_mean_interval": [
+              -1.0751710622684914,
+              0.020709793451314407
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.3923874705079868,
+            "log_width_ratio_mcse": 0.02572916313094831,
+            "width_ratio_interval": [
+              1.2618494319083877,
+              1.5364296397039434
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 1.3553223774643254e-06,
+            "saved_reference_mean_mcse": 1.3553223774643254e-06,
+            "neural_mean_mcse_iid": 9.15441826324469e-06,
+            "reference_q05_q95": [
+              0.027019687295743867,
+              0.027231756049688374
+            ],
+            "neural_q05_q95": [
+              0.026969355531036854,
+              0.027264637406915426
+            ],
+            "reference_quantile_mcse": [
+              2.507374921028199e-06,
+              2.270873672668573e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              5.402000803163697e-06,
+              4.677001510487642e-06
+            ]
+          },
+          "kappa": {
+            "status": "fail",
+            "neural_mean": 4.3162259928067215,
+            "reference_mean": 4.316853383182226,
+            "reference_sd": 0.05096003747151049,
+            "neural_width_90": 0.2339409589767456,
+            "reference_width_90": 0.1677654008019438,
+            "signed_standardized_mean_difference": -0.012311419038002553,
+            "absolute_standardized_mean_difference": 0.012311419038002553,
+            "standardized_mean_mcse": 0.031930457470838204,
+            "signed_standardized_mean_interval": [
+              -0.13447939997913827,
+              0.10985656190313316
+            ],
+            "mean_status": "pass",
+            "width_ratio_90": 1.3944529554870833,
+            "log_width_ratio_mcse": 0.023207395743363484,
+            "width_ratio_interval": [
+              1.2759732301618998,
+              1.5239340443058802
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 0.001059976976755796,
+            "saved_reference_mean_mcse": 0.001059976976755796,
+            "neural_mean_mcse_iid": 0.0011501461262740389,
+            "reference_q05_q95": [
+              4.231759414714202,
+              4.399524815516146
+            ],
+            "neural_q05_q95": [
+              4.199666380882263,
+              4.433607339859009
+            ],
+            "reference_quantile_mcse": [
+              0.0019351740044386354,
+              0.0018303776341928534
+            ],
+            "neural_quantile_mcse_iid": [
+              0.0033095727145186576,
+              0.00281780378168157
+            ]
+          },
+          "theta": {
+            "status": "inconclusive",
+            "neural_mean": 0.05662427303468576,
+            "reference_mean": 0.05664884416054871,
+            "reference_sd": 0.0001977511542556938,
+            "neural_width_90": 0.0008461512625217438,
+            "reference_width_90": 0.0006497404491298611,
+            "signed_standardized_mean_difference": -0.124252755719354,
+            "absolute_standardized_mean_difference": 0.124252755719354,
+            "standardized_mean_mcse": 0.0310234992735447,
+            "signed_standardized_mean_interval": [
+              -0.24295065635041105,
+              -0.0055548550882969505
+            ],
+            "mean_status": "pass",
+            "width_ratio_90": 1.302291189743409,
+            "log_width_ratio_mcse": 0.021072608542736144,
+            "width_ratio_interval": [
+              1.2014149812638935,
+              1.4116374186537484
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 4.109824874105354e-06,
+            "saved_reference_mean_mcse": 4.109824874105354e-06,
+            "neural_mean_mcse_iid": 4.174900270193936e-06,
+            "reference_q05_q95": [
+              0.05632866209748543,
+              0.05697840254661529
+            ],
+            "neural_q05_q95": [
+              0.05621866136789322,
+              0.05706481263041496
+            ],
+            "reference_quantile_mcse": [
+              6.4009558053386775e-06,
+              7.74372135097742e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              8.848102013828217e-06,
+              9.872963501813838e-06
+            ]
+          },
+          "vol_of_vol": {
+            "status": "inconclusive",
+            "neural_mean": 1.809160937089473,
+            "reference_mean": 1.8110431440959407,
+            "reference_sd": 0.011022845378945255,
+            "neural_width_90": 0.04771912097930908,
+            "reference_width_90": 0.03649972617604047,
+            "signed_standardized_mean_difference": -0.1707550946929628,
+            "absolute_standardized_mean_difference": 0.1707550946929628,
+            "standardized_mean_mcse": 0.04347769438104836,
+            "signed_standardized_mean_interval": [
+              -0.3371035456463968,
+              -0.004406643739528815
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.307382985536844,
+            "log_width_ratio_mcse": 0.01800603343081027,
+            "width_ratio_interval": [
+              1.2203469186133273,
+              1.4006265307027954
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 0.00022879938011469904,
+            "saved_reference_mean_mcse": 0.00022879938011469904,
+            "neural_mean_mcse_iid": 0.00041293951748387555,
+            "reference_q05_q95": [
+              1.7929922626841932,
+              1.8294919888602337
+            ],
+            "neural_q05_q95": [
+              1.7856131494045258,
+              1.8333322703838348
+            ],
+            "reference_quantile_mcse": [
+              0.00033221094779781586,
+              0.0003616771585961711
+            ],
+            "neural_quantile_mcse_iid": [
+              0.000415094882408006,
+              0.0004608752534390026
+            ]
+          },
+          "rho": {
+            "status": "fail",
+            "neural_mean": -0.6654762565740384,
+            "reference_mean": -0.6644698758697835,
+            "reference_sd": 0.0011659239829428215,
+            "neural_width_90": 0.0054129064083099365,
+            "reference_width_90": 0.0038422334457212104,
+            "signed_standardized_mean_difference": -0.8631615087930783,
+            "absolute_standardized_mean_difference": 0.8631615087930783,
+            "standardized_mean_mcse": 0.03731618113576702,
+            "signed_standardized_mean_interval": [
+              -1.0059356143615281,
+              -0.7203874032246285
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.4087916532864133,
+            "log_width_ratio_mcse": 0.02072344802040097,
+            "width_ratio_interval": [
+              1.3014032565832023,
+              1.5250414599239777
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 2.4097555338232722e-05,
+            "saved_reference_mean_mcse": 2.4097555338232722e-05,
+            "neural_mean_mcse_iid": 3.41189812121395e-05,
+            "reference_q05_q95": [
+              -0.6663801565414463,
+              -0.6625379230957251
+            ],
+            "neural_q05_q95": [
+              -0.6681490838527679,
+              -0.662736177444458
+            ],
+            "reference_quantile_mcse": [
+              3.4593383228567104e-05,
+              3.533119597412584e-05
+            ],
+            "neural_quantile_mcse_iid": [
+              5.6330869193721e-05,
+              6.826617640950644e-05
+            ]
+          },
+          "c": {
+            "status": "fail",
+            "neural_mean": 1.289070823302609,
+            "reference_mean": 1.150302155329561,
+            "reference_sd": 0.12069356743452483,
+            "neural_width_90": 1.3160912692546844,
+            "reference_width_90": 0.39429676444987494,
+            "signed_standardized_mean_difference": 1.1497602641361042,
+            "absolute_standardized_mean_difference": 1.1497602641361042,
+            "standardized_mean_mcse": 0.06272486651833804,
+            "signed_standardized_mean_interval": [
+              0.9097708964815341,
+              1.3897496317906743
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 3.337819094434879,
+            "log_width_ratio_mcse": 0.018016464609120163,
+            "width_ratio_interval": [
+              3.1154869906784914,
+              3.576017598695792
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 0.002687080724031045,
+            "saved_reference_mean_mcse": 0.002687080724031045,
+            "neural_mean_mcse_iid": 0.00656164307578381,
+            "reference_q05_q95": [
+              0.9702011368219547,
+              1.3644979012718297
+            ],
+            "neural_q05_q95": [
+              0.6114158630371094,
+              1.9275071322917938
+            ],
+            "reference_quantile_mcse": [
+              0.0028742905495414512,
+              0.006343772429875476
+            ],
+            "neural_quantile_mcse_iid": [
+              0.0066639454156198095,
+              0.005537306807166795
+            ]
+          },
+          "control": {
+            "status": "fail",
+            "neural_mean": 0.03047652911974821,
+            "reference_mean": 0.030510157874805398,
+            "reference_sd": 5.5094071068873935e-05,
+            "neural_width_90": 0.0002754993604160462,
+            "reference_width_90": 0.0001800093026568736,
+            "signed_standardized_mean_difference": -0.6103879129779304,
+            "absolute_standardized_mean_difference": 0.6103879129779304,
+            "standardized_mean_mcse": 0.1480339162256304,
+            "signed_standardized_mean_interval": [
+              -1.1767751835834757,
+              -0.0440006423723851
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.5304729052875221,
+            "log_width_ratio_mcse": 0.01961780925855967,
+            "width_ratio_interval": [
+              1.419802500718693,
+              1.6497698184314724
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 1.1305466707530745e-06,
+            "saved_reference_mean_mcse": 1.1305466707530745e-06,
+            "neural_mean_mcse_iid": 8.077053467116638e-06,
+            "reference_q05_q95": [
+              0.03042244888381362,
+              0.030602458186470494
+            ],
+            "neural_q05_q95": [
+              0.030361520809349427,
+              0.030637020169765473
+            ],
+            "reference_quantile_mcse": [
+              1.631238763636665e-06,
+              1.847981883335089e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              3.2808591059741417e-06,
+              3.2584573959324723e-06
+            ]
+          },
+          "affected": {
+            "status": "inconclusive",
+            "neural_mean": 0.05291410551928921,
+            "reference_mean": 0.0529421918327972,
+            "reference_sd": 0.00010865900869472158,
+            "neural_width_90": 0.00047119427550086634,
+            "reference_width_90": 0.0003574742984526272,
+            "signed_standardized_mean_difference": -0.2584812234657483,
+            "absolute_standardized_mean_difference": 0.2584812234657483,
+            "standardized_mean_mcse": 0.03254358862395946,
+            "signed_standardized_mean_interval": [
+              -0.3829950835756164,
+              -0.13396736335588025
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.3181207083711766,
+            "log_width_ratio_mcse": 0.02356491226131626,
+            "width_ratio_interval": [
+              1.2044778441511421,
+              1.4424858126480506
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 2.2522733295033046e-06,
+            "saved_reference_mean_mcse": 2.2522733295033046e-06,
+            "neural_mean_mcse_iid": 2.5491750226689205e-06,
+            "reference_q05_q95": [
+              0.05276579786613959,
+              0.053123272164592214
+            ],
+            "neural_q05_q95": [
+              0.052689008797813644,
+              0.05316020307331451
+            ],
+            "reference_quantile_mcse": [
+              3.3393492177342773e-06,
+              3.977708932325555e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              6.46846183710701e-06,
+              6.456281151964392e-06
+            ]
+          }
+        },
+        "neural_shape": [
+          4096,
+          8
+        ],
+        "reference_chain_shape": [
+          4,
+          12000,
+          8
+        ],
+        "seed": 261213,
+        "replicates_per_block_length": 400,
+        "block_lengths": [
+          46,
+          92
+        ],
+        "block_length_rule": "max(ceil(D^(1/3)), ceil(2*C*D/min(saved bulk and tail ESS across parameters))); also double L",
+        "family_checks": 384,
+        "family_confidence": 0.95,
+        "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+        "reference_diagnostics_passed": true,
+        "limits": {
+          "absolute_standardized_mean": 0.3,
+          "width_ratio_90": [
+            0.75,
+            1.25
+          ]
+        },
+        "scope": "Monte Carlo agreement on one fixed case; no numerical-target, product, copula or MCMC convergence certification",
+        "normal_critical_value": 3.82606422262226,
+        "block_length_sensitivity": [
+          {
+            "block_length": 46,
+            "reference_mean_mcse": [
+              1.1641403008908666e-06,
+              0.0009196510957132912,
+              3.560882637294777e-06,
+              0.00019729566377297628,
+              2.0194164061934607e-05,
+              0.002428523866062122,
+              9.825026889758196e-07,
+              1.9335483926036355e-06
+            ],
+            "reference_sd_mcse": [
+              6.758362857658994e-07,
+              0.0005789261016108356,
+              2.2471214353188643e-06,
+              0.00013670618712023207,
+              1.3774245386726976e-05,
+              0.001686615196732772,
+              5.779552902951981e-07,
+              1.2687610914581707e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                2.3352003051603483e-06,
+                0.0018357752148808052,
+                6.4009558053386775e-06,
+                0.0003104555356004785,
+                3.2162697489894036e-05,
+                0.0027333318411930066,
+                1.506462455021094e-06,
+                3.3393492177342773e-06
+              ],
+              [
+                2.078640163123416e-06,
+                0.0016338330641355358,
+                7.453415708760366e-06,
+                0.000358761712685091,
+                3.4132763912340954e-05,
+                0.005988829015242454,
+                1.7350377595714618e-06,
+                3.977708932325555e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              8.976282963845013e-06,
+              0.0012459010176542856,
+              4.469621258047103e-06,
+              0.00041849458144751833,
+              3.3112778348119034e-05,
+              0.0065341657660787904,
+              7.8914356915016e-06,
+              2.6543807622051067e-06
+            ],
+            "neural_quantile_mcse": [
+              [
+                5.286533683662778e-06,
+                0.0032765367180417723,
+                8.848102013828217e-06,
+                0.00039918440155947975,
+                5.431350137427837e-05,
+                0.0066639454156198095,
+                3.2638085829767713e-06,
+                6.46846183710701e-06
+              ],
+              [
+                4.677001510487642e-06,
+                0.00281780378168157,
+                9.872963501813838e-06,
+                0.00043234111757504783,
+                6.826617640950644e-05,
+                0.005537306807166795,
+                3.2584573959324723e-06,
+                6.456281151964392e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.14002860381769844,
+              0.030209007545616336,
+              0.029236625010851953,
+              0.042188038914133044,
+              0.03401446709237825,
+              0.0619968475235803,
+              0.14410210379852922,
+              0.030758552987196115
+            ],
+            "log_width_ratio_mcse": [
+              0.02572916313094831,
+              0.023207395743363484,
+              0.021072608542736144,
+              0.017098588119007208,
+              0.020311668582171816,
+              0.01676559807435944,
+              0.01961780925855967,
+              0.02356491226131626
+            ]
+          },
+          {
+            "block_length": 92,
+            "reference_mean_mcse": [
+              1.2997402953907149e-06,
+              0.0010052211528844184,
+              3.759814698199586e-06,
+              0.00021865229544533351,
+              2.2009641837137047e-05,
+              0.002504023421096395,
+              1.1102133850868619e-06,
+              2.0390784500156e-06
+            ],
+            "reference_sd_mcse": [
+              7.357540213887793e-07,
+              0.000613056784773202,
+              2.48417837513759e-06,
+              0.0001316597615195065,
+              1.435430627744555e-05,
+              0.0017970987470237669,
+              6.151068410721468e-07,
+              1.3680791069071698e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                2.507374921028199e-06,
+                0.0019351740044386354,
+                6.308690081667887e-06,
+                0.00033221094779781586,
+                3.4593383228567104e-05,
+                0.0028742905495414512,
+                1.631238763636665e-06,
+                3.331016791582547e-06
+              ],
+              [
+                2.270873672668573e-06,
+                0.0018303776341928534,
+                7.74372135097742e-06,
+                0.0003616771585961711,
+                3.533119597412584e-05,
+                0.006343772429875476,
+                1.847981883335089e-06,
+                3.976797466408694e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              8.657543149236837e-06,
+              0.001155773867566879,
+              4.1577673350256465e-06,
+              0.00041870520100854706,
+              3.502946448703318e-05,
+              0.006081307365696542,
+              7.656508663986732e-06,
+              2.5349389419939938e-06
+            ],
+            "neural_quantile_mcse": [
+              [
+                5.402000803163697e-06,
+                0.0033095727145186576,
+                8.231872984231068e-06,
+                0.000415094882408006,
+                5.6330869193721e-05,
+                0.006550462685064653,
+                3.2808591059741417e-06,
+                6.416064052753317e-06
+              ],
+              [
+                4.5286470417527675e-06,
+                0.002737334017447979,
+                9.040978958821076e-06,
+                0.0004608752534390026,
+                6.739283275885937e-05,
+                0.004722693044653997,
+                3.1428109838508293e-06,
+                5.7925589209347e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.1358571282578855,
+              0.029960333665669543,
+              0.02829728065966333,
+              0.04276723252470392,
+              0.036354915047153144,
+              0.05840182911904067,
+              0.1398520946549757,
+              0.03081776309545451
+            ],
+            "log_width_ratio_mcse": [
+              0.02511286436934223,
+              0.02309991762076513,
+              0.01925229877344163,
+              0.01800603343081027,
+              0.02072344802040097,
+              0.018016464609120163,
+              0.01915584274420994,
+              0.021976827354864545
+            ]
+          }
+        ]
+      },
+      "status": "fail"
+    },
+    "market": {
+      "role": "separate market application diagnostic",
+      "observation_sha256": "e55bc1a754740303e906c35ad7595d93eff27a99178ef64315ba2b09f0e1aed6",
+      "neural_support": {
+        "outside_value_count": 0,
+        "material_outside_value_count": 0,
+        "rounding_tolerance": [
+          1.1920928955078125e-07,
+          7.62939453125e-06,
+          1.1920928955078125e-07,
+          1.9073486328125e-06,
+          4.76837158203125e-07,
+          1.9073486328125e-06
+        ],
+        "draws_clipped": false
+      },
+      "neural_quantiles_05_50_95": [
+        [
+          0.026736342813819647,
+          3.342591941356659,
+          0.05816231481730938,
+          1.5900894701480865,
+          -0.6522418409585953,
+          0.6237854659557343
+        ],
+        [
+          0.026873850263655186,
+          3.446352005004883,
+          0.058768972754478455,
+          1.6104740500450134,
+          -0.6496465504169464,
+          1.3655332922935486
+        ],
+        [
+          0.02701761294156313,
+          3.5637842416763306,
+          0.05937635526061058,
+          1.6327973008155823,
+          -0.6468824744224548,
+          1.9452994167804718
+        ]
+      ],
+      "c_mean": 1.3306739330291748,
+      "c_sd": 0.41995641589164734,
+      "neural_c_physical_correlations": {
+        "initial_variance": -0.02116058903939196,
+        "kappa": 0.054863531242986374,
+        "theta": -0.013553033454376305,
+        "vol_of_vol": 0.1131098329459118,
+        "rho": 0.044056935215260835
+      },
+      "reference_run_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/market-c-joint/run.json",
+      "reference_diagnostics_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/market-c-joint/diagnostics.json",
+      "reference_chain_payload_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-references/market-c-joint/attempt-1/chains.npz",
+      "reference_run_sha256": "abe607bc753e493f9d83dc2e7dfdba3e05a9b5f3bcdb4de04ac751437a96d0ac",
+      "reference_diagnostics_sha256": "ddb0a0537ccb7046ab2f41d8445c4387504b114982f9e3c19cf81d1756132317",
+      "reference_chain_payload_sha256": "3a18e1b5017af7b82cd0ad90ad8ff014b9d092c4b4ffcc76b8f722174ec13b6d",
+      "reference_ready": true,
+      "reference_c_marginal": {
+        "mean": 1.9990364480316694,
+        "sd": 0.000974377591260886,
+        "quantiles_05_50_95": [
+          1.997103390564277,
+          1.9993444777221954,
+          1.9999519515169792
+        ],
+        "probability_c_le_055": 0.0,
+        "probability_c_ge_195": 1.0
+      },
+      "comparison": {
+        "format": "heston_budget_conditional_agreement_v1",
+        "status": "fail",
+        "parameters": {
+          "initial_variance": {
+            "status": "fail",
+            "neural_mean": 0.02685020309581887,
+            "reference_mean": 0.02724672454833762,
+            "reference_sd": 0.00010394716446885973,
+            "neural_width_90": 0.0002812701277434826,
+            "reference_width_90": 0.0003425641363004224,
+            "signed_standardized_mean_difference": -3.81464424301384,
+            "absolute_standardized_mean_difference": 3.81464424301384,
+            "standardized_mean_mcse": 0.10116763500825258,
+            "signed_standardized_mean_interval": [
+              -4.201718111806223,
+              -3.4275703742214576
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 0.8210728968335842,
+            "log_width_ratio_mcse": 0.02241430337322814,
+            "width_ratio_interval": [
+              0.753593676067061,
+              0.8945944257827095
+            ],
+            "width_status": "pass",
+            "reference_mean_mcse": 2.119967835516367e-06,
+            "saved_reference_mean_mcse": 2.119967835516367e-06,
+            "neural_mean_mcse_iid": 9.288269727942121e-06,
+            "reference_q05_q95": [
+              0.027074693740054636,
+              0.02741725787635506
+            ],
+            "neural_q05_q95": [
+              0.026736342813819647,
+              0.02701761294156313
+            ],
+            "reference_quantile_mcse": [
+              3.759763378875601e-06,
+              3.2587330152466855e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              2.685501581052746e-06,
+              4.692336725495491e-06
+            ]
+          },
+          "kappa": {
+            "status": "fail",
+            "neural_mean": 3.448880827811081,
+            "reference_mean": 3.710268656802411,
+            "reference_sd": 0.08095180594530134,
+            "neural_width_90": 0.22119230031967163,
+            "reference_width_90": 0.26423989776170576,
+            "signed_standardized_mean_difference": -3.228931410967509,
+            "absolute_standardized_mean_difference": 3.228931410967509,
+            "standardized_mean_mcse": 0.043462552752823166,
+            "signed_standardized_mean_interval": [
+              -3.3952219290789185,
+              -3.0626408928560998
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 0.8370889566387325,
+            "log_width_ratio_mcse": 0.02067730685238697,
+            "width_ratio_interval": [
+              0.7734164442317886,
+              0.906003391255178
+            ],
+            "width_status": "pass",
+            "reference_mean_mcse": 0.001566392090511861,
+            "saved_reference_mean_mcse": 0.001566392090511861,
+            "neural_mean_mcse_iid": 0.0011004803595405085,
+            "reference_q05_q95": [
+              3.5805307622704046,
+              3.8447706600321103
+            ],
+            "neural_q05_q95": [
+              3.342591941356659,
+              3.5637842416763306
+            ],
+            "reference_quantile_mcse": [
+              0.0022196569695340806,
+              0.002330737721777813
+            ],
+            "neural_quantile_mcse_iid": [
+              0.002399351289397265,
+              0.003146530675028566
+            ]
+          },
+          "theta": {
+            "status": "fail",
+            "neural_mean": 0.058746740796777885,
+            "reference_mean": 0.05611309904891514,
+            "reference_sd": 0.000369463465616787,
+            "neural_width_90": 0.0012140404433012009,
+            "reference_width_90": 0.0012053250982116404,
+            "signed_standardized_mean_difference": 7.128287348969967,
+            "absolute_standardized_mean_difference": 7.128287348969967,
+            "standardized_mean_mcse": 0.09806685157352749,
+            "signed_standardized_mean_interval": [
+              6.753077276739286,
+              7.503497421200648
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.0072307007482808,
+            "log_width_ratio_mcse": 0.018687442270268664,
+            "width_ratio_interval": [
+              0.9377286385834223,
+              1.0818840790257251
+            ],
+            "width_status": "pass",
+            "reference_mean_mcse": 7.410521261446438e-06,
+            "saved_reference_mean_mcse": 7.410521261446438e-06,
+            "neural_mean_mcse_iid": 1.745412100350846e-05,
+            "reference_q05_q95": [
+              0.05551391098439879,
+              0.05671923608261043
+            ],
+            "neural_q05_q95": [
+              0.05816231481730938,
+              0.05937635526061058
+            ],
+            "reference_quantile_mcse": [
+              1.0172283119511412e-05,
+              1.2633434791068787e-05
+            ],
+            "neural_quantile_mcse_iid": [
+              1.187125391725737e-05,
+              1.3567939693744406e-05
+            ]
+          },
+          "vol_of_vol": {
+            "status": "fail",
+            "neural_mean": 1.610964698396856,
+            "reference_mean": 1.494644806159748,
+            "reference_sd": 0.016099830244671022,
+            "neural_width_90": 0.04270783066749573,
+            "reference_width_90": 0.05287937469144133,
+            "signed_standardized_mean_difference": 7.224914205266819,
+            "absolute_standardized_mean_difference": 7.224914205266819,
+            "standardized_mean_mcse": 0.08614605325481225,
+            "signed_standardized_mean_interval": [
+              6.89531387298847,
+              7.554514537545168
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 0.8076462877388773,
+            "log_width_ratio_mcse": 0.01768649306001322,
+            "width_ratio_interval": [
+              0.7548013044167887,
+              0.8641910424391691
+            ],
+            "width_status": "pass",
+            "reference_mean_mcse": 0.00032195002748896254,
+            "saved_reference_mean_mcse": 0.00032195002748896254,
+            "neural_mean_mcse_iid": 0.0002251754748819219,
+            "reference_q05_q95": [
+              1.468568617297965,
+              1.5214479919894064
+            ],
+            "neural_q05_q95": [
+              1.5900894701480865,
+              1.6327973008155823
+            ],
+            "reference_quantile_mcse": [
+              0.0004648613812874673,
+              0.0005519088138637801
+            ],
+            "neural_quantile_mcse_iid": [
+              0.00035354831180582137,
+              0.00047899864157855966
+            ]
+          },
+          "rho": {
+            "status": "fail",
+            "neural_mean": -0.6496470866841264,
+            "reference_mean": -0.6811412763251026,
+            "reference_sd": 0.0022357763200982913,
+            "neural_width_90": 0.005359366536140442,
+            "reference_width_90": 0.007396961760931187,
+            "signed_standardized_mean_difference": 14.086467129051439,
+            "absolute_standardized_mean_difference": 14.086467129051439,
+            "standardized_mean_mcse": 0.15525704145425578,
+            "signed_standardized_mean_interval": [
+              13.49244371743313,
+              14.680490540669748
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 0.7245361959889006,
+            "log_width_ratio_mcse": 0.01991285447123028,
+            "width_ratio_interval": [
+              0.6713857502644712,
+              0.7818943120125473
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 4.7187337972691534e-05,
+            "saved_reference_mean_mcse": 4.7187337972691534e-05,
+            "neural_mean_mcse_iid": 3.811881777270918e-05,
+            "reference_q05_q95": [
+              -0.6848572952497352,
+              -0.677460333488804
+            ],
+            "neural_q05_q95": [
+              -0.6522418409585953,
+              -0.6468824744224548
+            ],
+            "reference_quantile_mcse": [
+              8.010511386409214e-05,
+              7.02743098594883e-05
+            ],
+            "neural_quantile_mcse_iid": [
+              4.889637036600685e-05,
+              6.267316496418008e-05
+            ]
+          },
+          "c": {
+            "status": "fail",
+            "neural_mean": 1.3306738795363344,
+            "reference_mean": 1.999036448031662,
+            "reference_sd": 0.0009743775912608827,
+            "neural_width_90": 1.3215139508247375,
+            "reference_width_90": 0.0028485609527022504,
+            "signed_standardized_mean_difference": -685.9379510467193,
+            "absolute_standardized_mean_difference": 685.9379510467193,
+            "standardized_mean_mcse": 16.217883739446076,
+            "signed_standardized_mean_interval": [
+              -747.9886157888612,
+              -623.8872863045773
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 463.9233538503364,
+            "log_width_ratio_mcse": 0.02069643187099452,
+            "width_ratio_interval": [
+              428.6040255831983,
+              502.15318896011195
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 1.7463599390885296e-05,
+            "saved_reference_mean_mcse": 1.7463599390885296e-05,
+            "neural_mean_mcse_iid": 0.0065618184420060685,
+            "reference_q05_q95": [
+              1.997103390564277,
+              1.9999519515169792
+            ],
+            "neural_q05_q95": [
+              0.6237854659557343,
+              1.9452994167804718
+            ],
+            "reference_quantile_mcse": [
+              5.770739147272227e-05,
+              4.230429630043282e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              0.008095628002023849,
+              0.003505225120616829
+            ]
+          },
+          "control": {
+            "status": "fail",
+            "neural_mean": 0.02981896796002572,
+            "reference_mean": 0.030123098723790424,
+            "reference_sd": 8.815070603821752e-05,
+            "neural_width_90": 0.00026806686409389796,
+            "reference_width_90": 0.0002886024759129434,
+            "signed_standardized_mean_difference": -3.4501228343293,
+            "absolute_standardized_mean_difference": 3.4501228343293,
+            "standardized_mean_mcse": 0.10716125201218606,
+            "signed_standardized_mean_interval": [
+              -3.8601286667045325,
+              -3.040117001954067
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 0.9288446443361769,
+            "log_width_ratio_mcse": 0.02130536811355452,
+            "width_ratio_interval": [
+              0.8561330439361278,
+              1.0077316597259678
+            ],
+            "width_status": "pass",
+            "reference_mean_mcse": 1.8052119623117624e-06,
+            "saved_reference_mean_mcse": 1.8052119623117624e-06,
+            "neural_mean_mcse_iid": 8.593159443818114e-06,
+            "reference_q05_q95": [
+              0.02997904352235671,
+              0.030267645998269654
+            ],
+            "neural_q05_q95": [
+              0.02971069922885973,
+              0.029978766092953628
+            ],
+            "reference_quantile_mcse": [
+              2.827220528695993e-06,
+              2.5350016975187285e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              3.3354636248247884e-06,
+              4.0128524091936925e-06
+            ]
+          },
+          "affected": {
+            "status": "fail",
+            "neural_mean": 0.05294862246168669,
+            "reference_mean": 0.05142802876246349,
+            "reference_sd": 0.00017693480193758465,
+            "neural_width_90": 0.0005626221052028174,
+            "reference_width_90": 0.0005834268994184683,
+            "signed_standardized_mean_difference": 8.59409049305972,
+            "absolute_standardized_mean_difference": 8.59409049305972,
+            "standardized_mean_mcse": 0.12531933804895612,
+            "signed_standardized_mean_interval": [
+              8.114610657347905,
+              9.073570328771536
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 0.9643403582584416,
+            "log_width_ratio_mcse": 0.02169513703933763,
+            "width_ratio_interval": [
+              0.8875255533109997,
+              1.047803438556493
+            ],
+            "width_status": "pass",
+            "reference_mean_mcse": 3.66584154655942e-06,
+            "saved_reference_mean_mcse": 3.66584154655942e-06,
+            "neural_mean_mcse_iid": 1.3776967648480788e-05,
+            "reference_q05_q95": [
+              0.05113803076256136,
+              0.05172145766197983
+            ],
+            "neural_q05_q95": [
+              0.05270348486651845,
+              0.053266106971721267
+            ],
+            "reference_quantile_mcse": [
+              5.200811087130574e-06,
+              5.02381899617678e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              6.625297745216465e-06,
+              8.094000790907523e-06
+            ]
+          }
+        },
+        "neural_shape": [
+          4096,
+          8
+        ],
+        "reference_chain_shape": [
+          4,
+          12000,
+          8
+        ],
+        "seed": 261214,
+        "replicates_per_block_length": 400,
+        "block_lengths": [
+          45,
+          90
+        ],
+        "block_length_rule": "max(ceil(D^(1/3)), ceil(2*C*D/min(saved bulk and tail ESS across parameters))); also double L",
+        "family_checks": 384,
+        "family_confidence": 0.95,
+        "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+        "reference_diagnostics_passed": true,
+        "limits": {
+          "absolute_standardized_mean": 0.3,
+          "width_ratio_90": [
+            0.75,
+            1.25
+          ]
+        },
+        "scope": "Monte Carlo agreement on one fixed case; no numerical-target, product, copula or MCMC convergence certification",
+        "normal_critical_value": 3.82606422262226,
+        "block_length_sensitivity": [
+          {
+            "block_length": 45,
+            "reference_mean_mcse": [
+              1.8635599226454846e-06,
+              0.0014679725882231554,
+              6.56239807935333e-06,
+              0.00030596888079597494,
+              4.0254635471526763e-05,
+              1.59638679506097e-05,
+              1.643189664878083e-06,
+              3.073293716123396e-06
+            ],
+            "reference_sd_mcse": [
+              1.0161147295414877e-06,
+              0.0009010741831516144,
+              3.994227166911117e-06,
+              0.00016207427304138492,
+              2.3373428511468477e-05,
+              1.91964511138792e-05,
+              8.953686085874277e-07,
+              1.7928876293926217e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                3.526912477658654e-06,
+                0.0021682072504945527,
+                1.0124338866909937e-05,
+                0.0004256259864721609,
+                7.720073648711619e-05,
+                5.542357941646266e-05,
+                2.708146226714619e-06,
+                4.946735644749671e-06
+              ],
+              [
+                2.98873715370624e-06,
+                0.002330737721777813,
+                1.1923695354062027e-05,
+                0.0005201397646775183,
+                6.99057450062808e-05,
+                3.6239956731665295e-06,
+                2.4113113290066323e-06,
+                4.9597633904941555e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              9.523694823154206e-06,
+              0.0010425660632009317,
+              1.7246651589257177e-05,
+              0.0002154419447303094,
+              3.842865700632201e-05,
+              0.006505596557694693,
+              8.869695742264544e-06,
+              1.3715134798288632e-05
+            ],
+            "neural_quantile_mcse": [
+              [
+                2.639776329001801e-06,
+                0.002321468969479087,
+                1.187125391725737e-05,
+                0.0003322153011579888,
+                4.8432284785758255e-05,
+                0.008095628002023849,
+                3.3354636248247884e-06,
+                6.625297745216465e-06
+              ],
+              [
+                4.692336725495491e-06,
+                0.0028967830442464915,
+                1.3299556336460465e-05,
+                0.0004469350704156685,
+                6.13283233411704e-05,
+                0.0034037318932493414,
+                4.0128524091936925e-06,
+                8.094000790907523e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.10004217555994713,
+              0.04020374766991614,
+              0.08889486397719892,
+              0.07934008296823442,
+              0.14973604048586628,
+              15.284742387292585,
+              0.10682524009715393,
+              0.11623190033058677
+            ],
+            "log_width_ratio_mcse": [
+              0.0222803587591257,
+              0.019687963864641743,
+              0.018640968468615463,
+              0.01678825801154045,
+              0.01919811131496832,
+              0.020504916903300856,
+              0.02130536811355452,
+              0.02169513703933763
+            ]
+          },
+          {
+            "block_length": 90,
+            "reference_mean_mcse": [
+              1.9755129423909063e-06,
+              0.0015122979856944242,
+              6.971644223583105e-06,
+              0.0003145998255002577,
+              4.3200309443939236e-05,
+              1.6234040762272688e-05,
+              1.704326980249279e-06,
+              3.366135529999063e-06
+            ],
+            "reference_sd_mcse": [
+              1.0899233714431398e-06,
+              0.0009291359439771163,
+              4.143557554000191e-06,
+              0.00018275960693329892,
+              2.4629687975219163e-05,
+              2.0883325136057153e-05,
+              9.267937058217898e-07,
+              1.912528711545868e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                3.759763378875601e-06,
+                0.0022196569695340806,
+                1.0172283119511412e-05,
+                0.0004648613812874673,
+                8.010511386409214e-05,
+                5.770739147272227e-05,
+                2.827220528695993e-06,
+                5.200811087130574e-06
+              ],
+              [
+                3.2587330152466855e-06,
+                0.0021700080730585017,
+                1.2633434791068787e-05,
+                0.0005519088138637801,
+                7.02743098594883e-05,
+                4.230429630043282e-06,
+                2.5350016975187285e-06,
+                5.02381899617678e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              9.373915607176557e-06,
+              0.001144202379402728,
+              1.734559886232558e-05,
+              0.00021450728995747476,
+              3.659022223429784e-05,
+              0.006671493777097528,
+              8.640179276193578e-06,
+              1.3421275460740292e-05
+            ],
+            "neural_quantile_mcse": [
+              [
+                2.685501581052746e-06,
+                0.002399351289397265,
+                1.1709155032875014e-05,
+                0.00035354831180582137,
+                4.889637036600685e-05,
+                0.007516480916278474,
+                3.2262273699850034e-06,
+                6.157753043971687e-06
+              ],
+              [
+                4.672658005275234e-06,
+                0.003146530675028566,
+                1.3567939693744406e-05,
+                0.00047899864157855966,
+                6.267316496418008e-05,
+                0.003505225120616829,
+                3.6245806939356658e-06,
+                8.025128509594005e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.10089666435013636,
+              0.043169203011200245,
+              0.09783080652369675,
+              0.08604122266072009,
+              0.15502468993540122,
+              16.217882393988543,
+              0.1063298392432459,
+              0.12505045436482798
+            ],
+            "log_width_ratio_mcse": [
+              0.02241430337322814,
+              0.02067730685238697,
+              0.018687442270268664,
+              0.01768649306001322,
+              0.01991285447123028,
+              0.02069643187099452,
+              0.021284096948170118,
+              0.020790789231081075
+            ]
+          }
+        ]
+      },
+      "status": "fail"
+    }
+  },
+  "scientific_acceptance": false,
+  "reserved_arrays_opened": false,
+  "new_reference_sampling": false,
+  "scope": "Development continuation comparison; market application is separate from synthetic fidelity.",
+  "conditional_draws": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/evaluations/batch-4098/pass-0100/conditional-draws.npz",
+    "sha256": "f0c14894b2bf8d4433a996fa247bc1233662d766f46ff2175a2f75403dfbdbf2",
+    "draws_per_case": 4096
+  },
+  "population": {
+    "rows": 512,
+    "draws_per_case": 512,
+    "parameter_names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho",
+      "c"
+    ],
+    "support": {
+      "outside_value_count": 0,
+      "material_outside_value_count": 0,
+      "rounding_tolerance": [
+        1.1920928955078125e-07,
+        7.62939453125e-06,
+        1.1920928955078125e-07,
+        1.9073486328125e-06,
+        4.76837158203125e-07,
+        1.9073486328125e-06
+      ],
+      "draws_clipped": false
+    },
+    "rank_dkw": {
+      "surfaces": 512,
+      "draws_per_surface": 512,
+      "rank_ks": [
+        0.044397608999392935,
+        0.04099948387310037,
+        0.04100098557318532,
+        0.05798913836396713,
+        0.03649593745073865,
+        0.02686467479550081
+      ],
+      "dkw_bound": 0.07315863891965298,
+      "family_alpha": 0.05,
+      "passed": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "fractional_ranks": [
+      [
+        0.36987553985162147,
+        0.27449300649085423,
+        0.6318950385234731,
+        0.405467597810701,
+        0.5899893846980317,
+        0.19188426748492055
+      ],
+      [
+        0.488624631181604,
+        0.4848123496596825,
+        0.4703741826559471,
+        0.5713371755521693,
+        0.1901831600731389,
+        0.04068055731276235
+      ],
+      [
+        0.6567384256973079,
+        0.44081739444134466,
+        0.5981857329162708,
+        0.43528343464274566,
+        0.7071933821938369,
+        0.2395360064092509
+      ],
+      [
+        0.5816645241973637,
+        0.19565328189789002,
+        0.7192788371924197,
+        0.29528235344213155,
+        0.17742635535803325,
+        0.15723583896185128
+      ],
+      [
+        0.303395872286315,
+        0.480541740887041,
+        0.4392700500730567,
+        0.1880771480062384,
+        0.29445262396062105,
+        0.4675734467381099
+      ],
+      [
+        0.9178240112953395,
+        0.8936304940435206,
+        0.7870385901592485,
+        0.9361166469832641,
+        0.9125161174400758,
+        0.9450573812058171
+      ],
+      [
+        0.676150889631053,
+        0.42154222501228594,
+        0.5028315745022762,
+        0.3681490120862667,
+        0.4810670734321901,
+        0.43068406398016806
+      ],
+      [
+        0.5669712070693078,
+        0.2131426355933405,
+        0.5563836035975234,
+        0.009360296852657128,
+        0.007173229321863376,
+        0.9292413590311486
+      ],
+      [
+        0.8254509206932251,
+        0.8906713859462354,
+        0.009978768212397203,
+        0.38133364446691487,
+        0.9982254053508727,
+        0.9646720721770792
+      ],
+      [
+        0.26404511026655564,
+        0.6672439754350216,
+        0.43349375551088454,
+        0.5001926840909996,
+        0.36359834976653166,
+        0.0165245620330361
+      ],
+      [
+        0.5732943819179447,
+        0.5077479565421905,
+        0.4013253141698294,
+        0.2625914412932691,
+        0.12151388197234089,
+        0.17185456391034998
+      ],
+      [
+        0.5910373715258394,
+        0.5900153013844748,
+        0.540219621412372,
+        0.6843374078874684,
+        0.6475312595441488,
+        0.19078221190475234
+      ],
+      [
+        0.9169700810236299,
+        0.1318860954800699,
+        0.9881702545334174,
+        0.2161027699123321,
+        0.6980447481253582,
+        0.5201848245091097
+      ],
+      [
+        0.06422827459608979,
+        0.12952717553078183,
+        0.35808714007031406,
+        0.42952664463139595,
+        0.5184065478327691,
+        0.8983102457529883
+      ],
+      [
+        0.3317040632283268,
+        0.3833466782896988,
+        0.6190654644888833,
+        0.1802250433887505,
+        0.40875208693423765,
+        0.22109027913676782
+      ],
+      [
+        0.2654275184315909,
+        0.9310698026621614,
+        0.15861725762310738,
+        0.11712501209454756,
+        0.11108994071448292,
+        0.31646094865576496
+      ],
+      [
+        0.5017528519921332,
+        0.6772167153892165,
+        0.7939328019348108,
+        0.8880133489341481,
+        0.9385189462050689,
+        0.8845619900154694
+      ],
+      [
+        0.7800688126079263,
+        0.8267095346558728,
+        0.023974429693928892,
+        0.7362409624102326,
+        0.8047100461901016,
+        0.5772991194707222
+      ],
+      [
+        0.27708717996708326,
+        0.39135315350945105,
+        0.350609689288275,
+        0.4085360167304843,
+        0.3618389477106598,
+        0.06762680447022638
+      ],
+      [
+        0.24981131595471243,
+        0.17428556310070337,
+        0.16981188137151024,
+        0.15849143815315864,
+        0.48034513946374535,
+        0.7447052791228106
+      ],
+      [
+        0.8493692112378727,
+        0.8712967214280594,
+        0.08871099899878371,
+        0.8697156805892206,
+        0.8962423231703558,
+        0.3653628108756026
+      ],
+      [
+        0.20599372900167306,
+        0.9637033660876619,
+        0.005338342289457484,
+        0.8034547179950335,
+        0.7358938329938328,
+        0.9100855813456942
+      ],
+      [
+        0.4532454663772599,
+        0.036691776145558914,
+        0.43347099825857943,
+        0.7371157092439948,
+        0.7672064245000435,
+        0.8577311409512685
+      ],
+      [
+        0.21256182821932448,
+        0.24957268779975442,
+        0.13589764425464287,
+        0.5319512378542238,
+        0.5782821949706589,
+        0.057293690339265145
+      ],
+      [
+        0.3590956683201754,
+        0.5627302888703054,
+        0.19601413007762186,
+        0.3792244954923107,
+        0.6943189561796034,
+        0.7114755447243413
+      ],
+      [
+        0.3951669755685326,
+        0.426063112028832,
+        0.6757277760845423,
+        0.5142315126543888,
+        0.7754284504163932,
+        0.32319531088997305
+      ],
+      [
+        0.9394163698644673,
+        0.9765804675832581,
+        0.9795523960005054,
+        0.6285857512251609,
+        0.3102037151557412,
+        0.8129466938663155
+      ],
+      [
+        0.031353508649601264,
+        0.002339043735060076,
+        0.1784429469666719,
+        0.49188354211087926,
+        0.9868243416591758,
+        0.918847953778499
+      ],
+      [
+        0.8850590292332081,
+        0.7288588792415238,
+        0.13183829746682496,
+        0.054446693049650496,
+        0.025324600899793482,
+        0.9700033671261459
+      ],
+      [
+        0.2099810999817498,
+        0.25906670347401606,
+        0.7531222837646766,
+        0.4214166876061905,
+        0.46780283863709027,
+        0.3474717585492788
+      ],
+      [
+        0.5827137682625747,
+        0.26778144437716134,
+        0.663431801807496,
+        0.6523304103816485,
+        0.7826708404704839,
+        0.5317288303882303
+      ],
+      [
+        0.20389193710147885,
+        0.05888835478919251,
+        0.48243721509407134,
+        0.4459660090412955,
+        0.9568600110290832,
+        0.5373859542765707
+      ],
+      [
+        0.36110483692847223,
+        0.9731500039867383,
+        0.014877572196673,
+        0.7737304011009924,
+        0.49324952382291354,
+        0.8342226564197004
+      ],
+      [
+        0.6357728786011831,
+        0.13954415206653717,
+        0.8293881125793648,
+        0.07285583637429659,
+        0.11666400588725143,
+        0.5022679916793225
+      ],
+      [
+        0.29453026309723124,
+        0.10614971606249754,
+        0.4484361018058653,
+        0.3693089275468401,
+        0.5227715500759182,
+        0.14865067149383987
+      ],
+      [
+        0.136501241525255,
+        0.778463792067532,
+        0.23221102792404152,
+        0.9258651836277317,
+        0.9627184032093259,
+        0.7781418004133471
+      ],
+      [
+        0.5539080509446991,
+        0.6801623573488946,
+        0.40478119837416504,
+        0.18664192759400924,
+        0.13096489389001567,
+        0.7231300641673732
+      ],
+      [
+        0.33136346515980625,
+        0.3113171229917629,
+        0.7978753058101805,
+        0.5085592787059611,
+        0.8925608402966473,
+        0.6074889306709762
+      ],
+      [
+        0.8968382648252494,
+        0.6976668879653356,
+        0.1729829107157247,
+        0.6796310507348554,
+        0.5021136911030046,
+        0.5128272578136619
+      ],
+      [
+        0.3361735239030307,
+        0.1940944108062991,
+        0.3780010136434484,
+        0.40629837885678804,
+        0.7726268466216974,
+        0.5567680076296255
+      ],
+      [
+        0.33628356117404,
+        0.5129099662576971,
+        0.6074004828298384,
+        0.4767466464056367,
+        0.10958328593217284,
+        0.45863905327796506
+      ],
+      [
+        0.5494298812307339,
+        0.27458125563371527,
+        0.7784027438368709,
+        0.5172490736101185,
+        0.5166715452879501,
+        0.39274228183767707
+      ],
+      [
+        0.3565843766234856,
+        0.08818166695084774,
+        0.764287732076593,
+        0.0807268286688738,
+        0.3358809584143149,
+        0.26073816866309213
+      ],
+      [
+        0.820760684670639,
+        0.8189657277557677,
+        0.7182375647005759,
+        0.9559399437159433,
+        0.6533124414230708,
+        0.7473824235422819
+      ],
+      [
+        0.1203984966364804,
+        0.3493781536514505,
+        0.3932543756255755,
+        0.17539724399291276,
+        0.1408794566266685,
+        0.49480710305334474
+      ],
+      [
+        0.22094626751391516,
+        0.27401751450439815,
+        0.7803876572035576,
+        0.43731731504650934,
+        0.4429036238175133,
+        0.9261389070206945
+      ],
+      [
+        0.6340313997964162,
+        0.19828573405913497,
+        0.7059432370043506,
+        0.5079449552120266,
+        0.31540701886734107,
+        0.028540115613455843
+      ],
+      [
+        0.47558766704843347,
+        0.3971469625698657,
+        0.5981087445476663,
+        0.514570135009508,
+        0.5190210947582488,
+        0.10243216704742861
+      ],
+      [
+        0.15241614556937919,
+        0.17367811277197842,
+        0.41495456814224746,
+        0.717894334698368,
+        0.8783700273292491,
+        0.39887172525445036
+      ],
+      [
+        0.44483591062859185,
+        0.6134423635090254,
+        0.44530400423919125,
+        0.5910264173230418,
+        0.4766347274561164,
+        0.003055459747347928
+      ],
+      [
+        0.3178391615665941,
+        0.768661378192691,
+        0.15909878065625724,
+        0.6795243028623367,
+        0.6141473695986777,
+        0.09414018586784509
+      ],
+      [
+        0.3986553044020894,
+        0.6656523351031793,
+        0.5854850845864478,
+        0.5762557176868603,
+        0.410163042147227,
+        0.4169553495875594
+      ],
+      [
+        0.8364746941451129,
+        0.6160424573473573,
+        0.26126417490069537,
+        0.6471898171710914,
+        0.528557915623254,
+        0.2052596972543202
+      ],
+      [
+        0.9236633561614624,
+        0.8816301486287291,
+        0.15483049103941887,
+        0.5433323073359072,
+        0.40296093813871864,
+        0.2189955607534211
+      ],
+      [
+        0.10545678908143855,
+        0.8172925575874236,
+        0.14474526185318728,
+        0.5902448578485683,
+        0.1669987199677391,
+        0.8043678293705399
+      ],
+      [
+        0.5109351473756049,
+        0.3343732344050333,
+        0.5216140250638257,
+        0.42139039500176895,
+        0.15819215229686798,
+        0.13718316973035014
+      ],
+      [
+        0.9894811531810531,
+        0.019310507743609845,
+        0.9923473429559344,
+        0.09714501815937088,
+        0.7676150368000513,
+        0.9152582783472977
+      ],
+      [
+        0.4221741319229801,
+        0.6096870453497899,
+        0.3442439543136963,
+        0.5385511427974267,
+        0.22867525333498867,
+        0.26633866745610457
+      ],
+      [
+        0.6934024182246118,
+        0.7694747432007484,
+        0.31844858325052855,
+        0.780378346740096,
+        0.7595045717244988,
+        0.19081226928566583
+      ],
+      [
+        0.7398339960428993,
+        0.9244257456330817,
+        0.8150767073987809,
+        0.4517900231695828,
+        0.19260731292717043,
+        0.854979063998912
+      ],
+      [
+        0.2719967443789122,
+        0.5299060834633721,
+        0.12865493537803263,
+        0.2947400022079949,
+        0.32491465369681305,
+        0.7108980242974673
+      ],
+      [
+        0.9780344243829923,
+        0.7992182540165168,
+        0.8254821450647708,
+        0.7348094537980645,
+        0.8418196463104727,
+        0.5496049167294501
+      ],
+      [
+        0.3448147333030842,
+        0.7922017854797438,
+        0.3308521878229021,
+        0.3994342622029752,
+        0.8409856289176921,
+        0.3828334667301975
+      ],
+      [
+        0.270415807504476,
+        0.030605259651624035,
+        0.02713356829941628,
+        0.27019911241394107,
+        0.3979009205922946,
+        0.4545458681104019
+      ],
+      [
+        0.304782165750213,
+        0.5797713936290593,
+        0.4334104295384266,
+        0.7061863186707309,
+        0.7123833025039924,
+        0.8981671747850446
+      ],
+      [
+        0.7114550270612604,
+        0.5192411580002738,
+        0.5397239364214108,
+        0.8298004272348432,
+        0.8959656401999886,
+        0.4552644966702855
+      ],
+      [
+        0.6882115912728466,
+        0.2917236373905852,
+        0.6794976244964434,
+        0.3615281073490521,
+        0.45968883673795924,
+        0.19720940281594707
+      ],
+      [
+        0.6312970263472036,
+        0.5941561651008,
+        0.6796262451427174,
+        0.6138009719686389,
+        0.5936828865520012,
+        0.1789404986141476
+      ],
+      [
+        0.9807903004024501,
+        0.9467520062576087,
+        0.9834089580479759,
+        0.9659854323442865,
+        0.8839190512141364,
+        0.823820458403682
+      ],
+      [
+        0.6401833304638819,
+        0.6173427946582535,
+        0.9539339458570842,
+        0.9856132678050094,
+        0.9192118745373692,
+        0.8951715203941324
+      ],
+      [
+        0.8322229117407626,
+        0.7933239071076171,
+        0.6998951156439028,
+        0.6306720561730312,
+        0.747194628041262,
+        0.10861214708502548
+      ],
+      [
+        0.3814947068491421,
+        0.24252563212294648,
+        0.620858822285877,
+        0.12759590266768978,
+        0.5366181407173812,
+        0.8303755384254925
+      ],
+      [
+        0.8684885186774122,
+        0.1447344857456154,
+        0.4101309620352164,
+        0.5957546409238701,
+        0.907317987642522,
+        0.3820516135855981
+      ],
+      [
+        0.8406590753419979,
+        0.5109184081257798,
+        0.6816656046089121,
+        0.8617357562806615,
+        0.8503334314704489,
+        0.4090133726821076
+      ],
+      [
+        0.4722158402402392,
+        0.18571253024816606,
+        0.8936448750230759,
+        0.8387563622973025,
+        0.9105010063923913,
+        0.7152695715663248
+      ],
+      [
+        0.5242050242466104,
+        0.41338503035435065,
+        0.5507285380738546,
+        0.2568561075426516,
+        0.29579496035774816,
+        0.49383718040358604
+      ],
+      [
+        0.7390054983778119,
+        0.7361496759219206,
+        0.24950884083663166,
+        0.679066744085467,
+        0.504025334097095,
+        0.23992668403956693
+      ],
+      [
+        0.38302144746231953,
+        0.7677865080517952,
+        0.18682777847709,
+        0.45866901738638494,
+        0.07234727810560089,
+        0.5819170904734698
+      ],
+      [
+        0.4071682909701015,
+        0.44895046717575776,
+        0.17026076400798704,
+        0.19615446128449981,
+        0.27956794324956186,
+        0.11089272083913618
+      ],
+      [
+        0.8666135683058299,
+        0.5649757698928036,
+        0.42971818099696923,
+        0.4687384867966794,
+        0.4228322643150637,
+        0.7273382777715114
+      ],
+      [
+        0.8948008956084889,
+        0.418598994617072,
+        0.9758670108235409,
+        0.9718399490182699,
+        0.970103388192517,
+        0.6067963755188471
+      ],
+      [
+        0.07232332653224065,
+        0.5135873546294157,
+        0.08016371952193188,
+        0.3137716985430231,
+        0.6214620689362349,
+        0.487632593541262
+      ],
+      [
+        0.8803700675975319,
+        0.4778457851696742,
+        0.029733831121200767,
+        0.818309278406405,
+        0.9878809536581782,
+        0.8989193309362102
+      ],
+      [
+        0.589584874207656,
+        0.531110213170515,
+        0.5858018629951756,
+        0.40971561224911435,
+        0.45263580863478786,
+        0.07361564774688141
+      ],
+      [
+        0.9425915399492065,
+        0.4105635172194014,
+        0.07641376278514637,
+        0.7009094315150545,
+        0.8377980025513124,
+        0.7852959184972018
+      ],
+      [
+        0.7283252556370681,
+        0.4665060727041865,
+        0.7062511180362399,
+        0.35405033735279634,
+        0.6048358180069012,
+        0.4172969691759706
+      ],
+      [
+        0.9888494687655138,
+        0.8269792594319774,
+        0.23530630553117113,
+        0.7818116088856419,
+        0.9999717348230173,
+        0.6246987223992686
+      ],
+      [
+        0.014594945097351944,
+        0.90636609549608,
+        0.8884166457923477,
+        0.9697854727505436,
+        0.9955590309475113,
+        0.9960760464449061
+      ],
+      [
+        0.6149570834944866,
+        0.5470355073272813,
+        0.2609142557474226,
+        0.0194300325679219,
+        0.02174252438022137,
+        0.7265785378640977
+      ],
+      [
+        0.6095698623254011,
+        0.99711100088035,
+        0.0021205857578305174,
+        0.9921192583389812,
+        0.20925252300915845,
+        0.9585639333795943
+      ],
+      [
+        0.30557442750157743,
+        0.19592971630248973,
+        0.7024966789676866,
+        0.051230472359175334,
+        0.6138759151765919,
+        0.4905296905020677
+      ],
+      [
+        0.0650545605673613,
+        0.13482801084660137,
+        0.5871502437503009,
+        0.025196966969532168,
+        0.019822166725930766,
+        0.5281272325725527
+      ],
+      [
+        0.7703647264239731,
+        0.1939960624844337,
+        0.561533240600701,
+        0.4743094807939702,
+        0.6942868187747334,
+        0.7965384618078126
+      ],
+      [
+        0.16540328304404614,
+        0.48415558451312113,
+        0.4926503205199034,
+        0.3997544623546048,
+        0.09096248961237344,
+        0.472985313497132
+      ],
+      [
+        0.6127386150029558,
+        0.7659035566613055,
+        0.866956331473942,
+        0.14142022023872536,
+        0.10749807804715812,
+        0.45525968097858177
+      ],
+      [
+        0.8869172628106292,
+        0.09570671459620435,
+        0.9455605960878959,
+        0.028946570614945134,
+        0.1847885070807073,
+        0.21901752243465178
+      ],
+      [
+        0.7877272033108806,
+        0.6796540291616507,
+        0.15352371014590221,
+        0.23485736452427494,
+        0.23708484227293847,
+        0.42263694183724076
+      ],
+      [
+        0.36330353822556577,
+        0.5465392611430999,
+        0.720231982519471,
+        0.5292452688446918,
+        0.4242431690415496,
+        0.06277902575106616
+      ],
+      [
+        0.4710058278306508,
+        0.29380841624637943,
+        0.5325506670304864,
+        0.5298841462943332,
+        0.6224809866421233,
+        0.2961739405000608
+      ],
+      [
+        0.9069696765530381,
+        0.7891425099922631,
+        0.46411140775383675,
+        0.7821111420755033,
+        0.7076228368657467,
+        0.3358251893513014
+      ],
+      [
+        0.043907198650206404,
+        0.9627385225094731,
+        0.11498712693540089,
+        0.9579972840118507,
+        0.44398719806894066,
+        0.6697239065036777
+      ],
+      [
+        0.8116404533375949,
+        0.6757471588545623,
+        0.3475925867993109,
+        0.5847532731626935,
+        0.5653980029981474,
+        0.6310744816511233
+      ],
+      [
+        0.3060910022112854,
+        0.3615601387324112,
+        0.5243396426376438,
+        0.3552210503608885,
+        0.3439239595461104,
+        0.03280385415661793
+      ],
+      [
+        0.1917298150055792,
+        0.10722501438230704,
+        0.13968587918083422,
+        0.23316026738842577,
+        0.5055102413025271,
+        0.5460967794637269
+      ],
+      [
+        0.24765439669964873,
+        0.37949411487655926,
+        0.7329610402484464,
+        0.5321160984226914,
+        0.955335906236694,
+        0.34997861053567275
+      ],
+      [
+        0.5632817069810808,
+        0.4888876068671562,
+        0.4413509477504618,
+        0.46101019393337517,
+        0.6704567961198077,
+        0.2609447007247777
+      ],
+      [
+        0.18457955663776665,
+        0.4732371789313491,
+        0.028117570959109755,
+        0.03956124312014562,
+        0.037176672048677716,
+        0.867743823295725
+      ],
+      [
+        0.28346817758830106,
+        0.1930235527774473,
+        0.5607132456226124,
+        0.4047376856932239,
+        0.18499540939565698,
+        0.3638890600834488
+      ],
+      [
+        0.7600090367384348,
+        0.8946054939885593,
+        0.9179157856019379,
+        0.8564716994894809,
+        0.464713041783425,
+        0.2983022717646125
+      ],
+      [
+        0.9627690516137898,
+        0.08306102624938451,
+        0.6838308793080048,
+        0.09459143084731322,
+        0.4197239606665888,
+        0.8311795150992076
+      ],
+      [
+        0.8591874141933475,
+        0.5810312555574477,
+        0.20180209231851728,
+        0.4933274963331696,
+        0.9617709296978745,
+        0.7557373896131244
+      ],
+      [
+        0.004256228889109489,
+        0.0071699069615612145,
+        0.8379180931869687,
+        0.0007020548357005187,
+        0.42873413464111426,
+        0.7590858784097912
+      ],
+      [
+        0.6693951723545639,
+        0.29116991118409985,
+        0.9046116178121043,
+        0.7953327538071904,
+        0.8683797398999278,
+        0.9016358168705177
+      ],
+      [
+        0.7782634121970124,
+        0.6945159910565081,
+        0.4108622812013348,
+        0.6951489065854178,
+        0.5320279680872293,
+        0.05700945498580147
+      ],
+      [
+        0.053283951504202065,
+        0.04323278625961711,
+        0.06054178417986868,
+        0.026293238828527844,
+        0.029682233649349573,
+        0.8906263418094307
+      ],
+      [
+        0.8433904058374024,
+        0.11512869814414818,
+        0.8162501561352392,
+        0.16202390472175784,
+        0.07355985861142937,
+        0.9204770176139797
+      ],
+      [
+        0.6937312063609617,
+        0.49542122593244026,
+        0.6769664403962331,
+        0.5860848468493398,
+        0.432436139753634,
+        0.15399039224484312
+      ],
+      [
+        0.22938235379070332,
+        0.028917675906771835,
+        0.9586969059271438,
+        0.3453597632535435,
+        0.4315512225097074,
+        0.44892677704873096
+      ],
+      [
+        0.2334277387975944,
+        0.27431109377461965,
+        0.5733547107631367,
+        0.7369259907469171,
+        0.9129263717230417,
+        0.9432686894286031
+      ],
+      [
+        0.6944319286454006,
+        0.7577856402991534,
+        0.8403175949337591,
+        0.04995259532961847,
+        0.04791986386351294,
+        0.5947474152007334
+      ],
+      [
+        0.5474087257059396,
+        0.4358137120713636,
+        0.586382219573322,
+        0.323564622389314,
+        0.20098973411085633,
+        0.19178899298557753
+      ],
+      [
+        0.8657840627916389,
+        0.18683062377554732,
+        0.16111451954684824,
+        0.8087542023584996,
+        0.6818737445307458,
+        0.2997457937732645
+      ],
+      [
+        0.42915793820670134,
+        0.4498563753483714,
+        0.25536988117610104,
+        0.26582399207747237,
+        0.3265920510507826,
+        0.2643421444875109
+      ],
+      [
+        0.9736766724744823,
+        0.8349016646403241,
+        0.1808308690177794,
+        0.9716060441690451,
+        0.9821217515734282,
+        0.8023246558091953
+      ],
+      [
+        0.850876991612576,
+        0.35139866268968706,
+        0.17371595437678125,
+        0.6509529433842829,
+        0.6641757450559863,
+        0.5285812649883331
+      ],
+      [
+        0.7400878691313891,
+        0.5771741245295002,
+        0.5986560472479115,
+        0.7253388009664941,
+        0.4794431778242774,
+        0.2542680047242826
+      ],
+      [
+        0.978221644522481,
+        0.9800767395210715,
+        0.9692702799596944,
+        0.20405755033828665,
+        0.051170234438451104,
+        0.7122891247377274
+      ],
+      [
+        0.21246755083725746,
+        0.19246920295371758,
+        0.7896070848209384,
+        0.25810183222314587,
+        0.5360239009732946,
+        0.6940596188065636
+      ],
+      [
+        0.2956942258736295,
+        0.4688470456974902,
+        0.6878173801723864,
+        0.787638928315403,
+        0.9413625426782181,
+        0.9152914974164597
+      ],
+      [
+        0.40472553504346503,
+        0.48229921516050744,
+        0.32873294616998694,
+        0.25763869772351716,
+        0.31510470176451266,
+        0.27849233649565763
+      ],
+      [
+        0.5849231989115493,
+        0.7635637344291472,
+        0.297897884979272,
+        0.24184661579002184,
+        0.05685657124963887,
+        0.7887467854395213
+      ],
+      [
+        0.7033239226384734,
+        0.7927832300609251,
+        0.5051211139830717,
+        0.6909254024429545,
+        0.2385433247854456,
+        0.7848996187568924
+      ],
+      [
+        0.5259622533483042,
+        0.6403498383945411,
+        0.7175238696999864,
+        0.22470000191494163,
+        0.2915321539873707,
+        0.6599680043047423
+      ],
+      [
+        0.027193742878415174,
+        0.045536231859348304,
+        0.7529947341878233,
+        0.004014920537525537,
+        0.051489648175712104,
+        0.7278947188554299
+      ],
+      [
+        0.8699668646732129,
+        0.10660695411383889,
+        0.8209714457673752,
+        0.012785428698232359,
+        0.013148496684780768,
+        0.49295001282869005
+      ],
+      [
+        0.24701446022007417,
+        0.39895073430429256,
+        0.5828510462179253,
+        0.038981101432682144,
+        0.037845812472205566,
+        0.36999850037770743
+      ],
+      [
+        0.6183864289080558,
+        0.41182451032705086,
+        0.4031847117990213,
+        0.5060700187908237,
+        0.928672659481178,
+        0.6313544819293184
+      ],
+      [
+        0.5160439439972058,
+        0.297731114791016,
+        0.2740292896489304,
+        0.5309408045708319,
+        0.5724344252414219,
+        0.6491663998960665
+      ],
+      [
+        0.6193184035965563,
+        0.6451783044945182,
+        0.43326052635362894,
+        0.39569544885304675,
+        0.4277543883863474,
+        0.5361209015977805
+      ],
+      [
+        0.2137956878420511,
+        0.6138993503035426,
+        0.5274247158793692,
+        0.2878393032659889,
+        0.3071859166039132,
+        0.06921059586751918
+      ],
+      [
+        0.24000049497734016,
+        0.26068746549111793,
+        0.6663041425836125,
+        0.4371393842650313,
+        0.56274809377832,
+        0.23816766751590177
+      ],
+      [
+        0.6226526312283363,
+        0.48393366419973766,
+        0.5248534267167998,
+        0.46420326329506195,
+        0.44062346296068783,
+        0.23122899322087334
+      ],
+      [
+        0.6243480957424383,
+        0.29107641470056056,
+        0.23363681165597616,
+        0.8994629818905935,
+        0.5931030379389547,
+        0.677412674961134
+      ],
+      [
+        0.662635158861435,
+        0.662807186268967,
+        0.09980462176491087,
+        0.43058984448761567,
+        0.10811912961027048,
+        0.05546894930449929
+      ],
+      [
+        0.7467215836813887,
+        0.4698701381598922,
+        0.5142411588890654,
+        0.5515767465573655,
+        0.41930934764276095,
+        0.5549465836503172
+      ],
+      [
+        0.9917683235400478,
+        0.49202204841225355,
+        0.44464591799020997,
+        0.4506299245600356,
+        0.4523899739542003,
+        0.22792153212560592
+      ],
+      [
+        0.4916943709925967,
+        0.9169848603798164,
+        0.8256986611462441,
+        0.5604599515501825,
+        0.19077245256316816,
+        0.10307824843833974
+      ],
+      [
+        0.7222764609300751,
+        0.7339785140441103,
+        0.803921240753963,
+        0.4731581516937103,
+        0.8733248590842125,
+        0.3425622671497112
+      ],
+      [
+        0.2165851099680589,
+        0.3279719346184124,
+        0.6403413382574518,
+        0.2397945210781018,
+        0.45584228913887836,
+        0.7577123484967777
+      ],
+      [
+        0.32693246631757616,
+        0.5039922632574994,
+        0.7614805053379833,
+        0.3964293810773303,
+        0.29533516324029874,
+        0.46107458832171816
+      ],
+      [
+        0.9460880136662451,
+        0.12615533793475944,
+        0.16853103463621183,
+        0.3431684397299693,
+        0.9034142435014149,
+        0.7304587640089151
+      ],
+      [
+        0.4241781657614779,
+        0.685061085754445,
+        0.2101628040077256,
+        0.031529523773485925,
+        0.09763454023930287,
+        0.7151739352244127
+      ],
+      [
+        0.6475145176445638,
+        0.4550807771160988,
+        0.5097738186788565,
+        0.811394063659134,
+        0.7854190827016669,
+        0.25730200125007463
+      ],
+      [
+        0.45083533988443797,
+        0.5189729031522496,
+        0.5806012190573371,
+        0.6074931339298031,
+        0.6727289494072064,
+        0.10295490477978309
+      ],
+      [
+        0.9318825748742485,
+        0.7580614752628917,
+        0.553031839344691,
+        0.032603128616787394,
+        0.04342234968688618,
+        0.7377918066837161
+      ],
+      [
+        0.2507557469595723,
+        0.029337864244301803,
+        0.9796308043008731,
+        0.3277991835570849,
+        0.6568037308052593,
+        0.955492955730855
+      ],
+      [
+        0.8661432162707434,
+        0.8893650166598535,
+        0.4031061020816559,
+        0.9466073017723203,
+        0.8770587328195386,
+        0.9281155345250639
+      ],
+      [
+        0.0783676039869016,
+        0.20196749115895987,
+        0.42932472834870516,
+        0.10709287210957003,
+        0.2567596299321539,
+        0.5492527002353658
+      ],
+      [
+        0.14161194241225136,
+        0.6878738140124463,
+        0.3138132860057223,
+        0.8646803057711766,
+        0.8559802751944692,
+        0.8611306648227806
+      ],
+      [
+        0.3787944167103064,
+        0.29739218960337244,
+        0.4410343328038192,
+        0.2848830563551948,
+        0.7045338369298889,
+        0.629024558576366
+      ],
+      [
+        0.526425728410202,
+        0.6817324470548601,
+        0.5313109442003314,
+        0.22999125714316082,
+        0.40977153529941657,
+        0.08698214913565336
+      ],
+      [
+        0.0518525536838869,
+        0.09244932480558925,
+        0.26248706072818895,
+        0.8144542638855086,
+        0.8851149140099746,
+        0.7047693738752043
+      ],
+      [
+        0.49628058088959526,
+        0.27499270918012947,
+        0.31368295650481,
+        0.16309529985387827,
+        0.149187409202621,
+        0.03913605390500373
+      ],
+      [
+        0.48212961283394234,
+        0.5118899683455483,
+        0.5768974517072879,
+        0.5977434571594912,
+        0.3962382759512436,
+        0.021798273004467537
+      ],
+      [
+        0.22076696909335944,
+        0.844442745486347,
+        0.0494721847791064,
+        0.43209727613192617,
+        0.28249534949746763,
+        0.28234272326456056
+      ],
+      [
+        0.7530160472881748,
+        0.9217629348912592,
+        0.0494866495165809,
+        0.3606762373007498,
+        0.047397435515786415,
+        0.5926026379542941
+      ],
+      [
+        0.42505478317776935,
+        0.4273126250532419,
+        0.7104355677360115,
+        0.39879061292283036,
+        0.19825529274865591,
+        0.06627682952377026
+      ],
+      [
+        0.838388027734117,
+        0.11662518495716355,
+        0.20147688365645897,
+        0.1185346491943349,
+        0.7469934218226384,
+        0.8991602220660501
+      ],
+      [
+        0.7570374290302405,
+        0.2326454218140361,
+        0.9081846311092087,
+        0.9313226486502485,
+        0.9921628653451838,
+        0.6012411789534862
+      ],
+      [
+        0.92679963501489,
+        0.8852591391393119,
+        0.7660750481510775,
+        0.6874781787312485,
+        0.5494253450577398,
+        0.7576898816908791
+      ],
+      [
+        0.2815460311155127,
+        0.29231079343986943,
+        0.6714247330315992,
+        0.3065310832798996,
+        0.3906265219005799,
+        0.28354291460042486
+      ],
+      [
+        0.45597983796985475,
+        0.8045962983701613,
+        0.19765508481988128,
+        0.7033706890105456,
+        0.42808523356608275,
+        0.03644162826858342
+      ],
+      [
+        0.20894175425709766,
+        0.8733296755405323,
+        0.38336479363009535,
+        0.8935164657006788,
+        0.8591514941014602,
+        0.3749228006762255
+      ],
+      [
+        0.1378885003481876,
+        0.038812724801521356,
+        0.3717810392307869,
+        0.024348007278220982,
+        0.6834958983993402,
+        0.8471790981104785
+      ],
+      [
+        0.32225511917946453,
+        0.3425083264189361,
+        0.6069870645913001,
+        0.8110787426966395,
+        0.9460795733714527,
+        0.7876411445726192
+      ],
+      [
+        0.1906706447558403,
+        0.8518477674260803,
+        0.11946152700607582,
+        0.6174061819896911,
+        0.3882366454101588,
+        0.9786813917437607
+      ],
+      [
+        0.5651179016369394,
+        0.26516377564133325,
+        0.5596119359835704,
+        0.4454954366373105,
+        0.641779825303679,
+        0.0672675700154948
+      ],
+      [
+        0.6493955430975457,
+        0.6767165058680293,
+        0.31882768451534155,
+        0.5174551283334121,
+        0.34775139685241374,
+        0.24053138170416066
+      ],
+      [
+        0.2260786215566234,
+        0.8614988723739719,
+        0.14692476657630468,
+        0.09443148645844533,
+        0.03012323243920955,
+        0.4726799256451604
+      ],
+      [
+        0.3988525649725482,
+        0.5715426187160757,
+        0.4014501493049784,
+        0.2949947914212011,
+        0.15694176580096672,
+        0.3452711910274514
+      ],
+      [
+        0.4524588492363225,
+        0.380685748622975,
+        0.23237415894203203,
+        0.28830731190538333,
+        0.47929966204329216,
+        0.764908305308991
+      ],
+      [
+        0.2482019872412748,
+        0.19820434776911322,
+        0.20387137686289203,
+        0.657296759627708,
+        0.6557450339149047,
+        0.9460673780063532
+      ],
+      [
+        0.46307854003297133,
+        0.29913402438047515,
+        0.4751289405180752,
+        0.5115705984931773,
+        0.6387105039239507,
+        0.6982803742780307
+      ],
+      [
+        0.3698190012516329,
+        0.5816590054334936,
+        0.4446940241392154,
+        0.6411598231196933,
+        0.7096813589093744,
+        0.23810135079363626
+      ],
+      [
+        0.5874038503735032,
+        0.26464875669894966,
+        0.7558740144268147,
+        0.455646637546137,
+        0.5340255821215927,
+        0.29204791805943103
+      ],
+      [
+        0.006367442083662619,
+        0.9820289776712074,
+        0.022939544606315455,
+        0.9467875989745947,
+        0.7262694404549399,
+        0.8857661473385158
+      ],
+      [
+        0.1676296619117717,
+        0.17358087224720614,
+        0.7288273919564509,
+        0.32932314411492397,
+        0.6642479522386918,
+        0.5938305793770052
+      ],
+      [
+        0.6001005659584392,
+        0.5773706383847791,
+        0.7192051942976248,
+        0.6691443155862387,
+        0.27473492128741944,
+        0.5879909344431125
+      ],
+      [
+        0.9248192937944272,
+        0.04276148152903146,
+        0.9359723548871456,
+        0.6691719120116602,
+        0.8196896633048198,
+        0.8562339480534302
+      ],
+      [
+        0.10097165545384515,
+        0.9460965658217381,
+        0.06980223459420107,
+        0.023458432466964073,
+        0.0925024404140191,
+        0.6799483837072959
+      ],
+      [
+        0.122474243138491,
+        0.1294723814755319,
+        0.5494098212293368,
+        0.32515522654964274,
+        0.8173744887555536,
+        0.20884778758077158
+      ],
+      [
+        0.2497760287698613,
+        0.16159874650177583,
+        0.5407613361646709,
+        0.7045836071453689,
+        0.7460716826600089,
+        0.4539197501576923
+      ],
+      [
+        0.26449387830437265,
+        0.3380563661506885,
+        0.6041520362660212,
+        0.24516454674518542,
+        0.41233078085463026,
+        0.16368075923278744
+      ],
+      [
+        0.08415055190061567,
+        0.03757600465470374,
+        0.974210831123993,
+        0.144661850192234,
+        0.8923210751563976,
+        0.4589870219606185
+      ],
+      [
+        0.37773879614122136,
+        0.4955491818987335,
+        0.4534089380602771,
+        0.48689502155166803,
+        0.6113009743641638,
+        0.11299377447867709
+      ],
+      [
+        0.6034425195760038,
+        0.17797498240054435,
+        0.16320183449536277,
+        0.3562138289046014,
+        0.40601450917951215,
+        0.8393481694114203
+      ],
+      [
+        0.7955074723462645,
+        0.19884449183752884,
+        0.647556248639123,
+        0.10537896424488974,
+        0.35898703571488005,
+        0.1861906505275509
+      ],
+      [
+        0.6624563405414,
+        0.14231811935575742,
+        0.09244632514763672,
+        0.19125374302367334,
+        0.3657753554230626,
+        0.7228098216750009
+      ],
+      [
+        0.9389033309778434,
+        0.16585051018797334,
+        0.7078358517145331,
+        0.29471984056689843,
+        0.23990478687057007,
+        0.6750361806847937
+      ],
+      [
+        0.5994533267839964,
+        0.34855852049566294,
+        0.2601647125647059,
+        0.40339520688353525,
+        0.4843295134737419,
+        0.14098805923814137
+      ],
+      [
+        0.2750002813853581,
+        0.17617258052789248,
+        0.17969651431613404,
+        0.5288306138083819,
+        0.5845939003919508,
+        0.10503393331107419
+      ],
+      [
+        0.7274440816446996,
+        0.2603439213516414,
+        0.6714237476679055,
+        0.20069267383003395,
+        0.2943146294868492,
+        0.1487263983213777
+      ],
+      [
+        0.10937950761895493,
+        0.5523790322896566,
+        0.9163790821876099,
+        0.924788804152886,
+        0.8926041251769357,
+        0.5582639853906515
+      ],
+      [
+        0.6612456354235099,
+        0.9431786429497092,
+        0.1030943658119003,
+        0.9543628784894873,
+        0.5397261621914826,
+        0.7160895241451872
+      ],
+      [
+        0.5709471341432275,
+        0.37462032811892,
+        0.22799051562902797,
+        0.05736940441214802,
+        0.09158057395417216,
+        0.5630363014866289
+      ],
+      [
+        0.43870788739653066,
+        0.06084297593475074,
+        0.5640160912797078,
+        0.0632721096120259,
+        0.08503278341469984,
+        0.4021645446920869
+      ],
+      [
+        0.16606456760714206,
+        0.40737542934441345,
+        0.7243209257857063,
+        0.44708625753864395,
+        0.38745691367209784,
+        0.6615877824277209
+      ],
+      [
+        0.757321126041735,
+        0.3516103760851998,
+        0.6258338310079936,
+        0.5138327369444335,
+        0.7728808639182769,
+        0.3295552574711426
+      ],
+      [
+        0.09704481403263322,
+        0.8995745530028867,
+        0.06497275688027361,
+        0.9194806757917392,
+        0.5982696875492614,
+        0.1746656393243043
+      ],
+      [
+        0.08245087820951695,
+        0.34994061764722134,
+        0.49099745409214024,
+        0.22116356121453046,
+        0.43645010667447426,
+        0.37919897123756524
+      ],
+      [
+        0.34501544356132885,
+        0.6461790280976091,
+        0.8558970459391878,
+        0.8057301416722762,
+        0.6295210703308286,
+        0.4771582356091318
+      ],
+      [
+        0.43412224599689964,
+        0.22065655372597195,
+        0.8873714615979436,
+        0.2939733229518746,
+        0.6576166524988255,
+        0.6482355350981847
+      ],
+      [
+        0.5643016880546116,
+        0.24241536569493471,
+        0.7127429679415344,
+        0.3211220083738975,
+        0.6992100467203141,
+        0.0027250216268298127
+      ],
+      [
+        0.7566499155672325,
+        0.950167195797718,
+        0.9740050469125895,
+        0.8253633631823402,
+        0.6251816451685022,
+        0.5928779006357838
+      ],
+      [
+        0.04384310378813334,
+        0.9605760201333964,
+        0.1857475044027533,
+        0.9908903133458105,
+        0.9298032533199481,
+        0.6435901105891859
+      ],
+      [
+        0.2918192116538341,
+        0.25780129474014685,
+        0.9613664705904957,
+        0.5451646397440709,
+        0.15499707155555145,
+        0.17634958092903924
+      ],
+      [
+        0.7404453393940686,
+        0.581823589484289,
+        0.313593124139804,
+        0.5452324698388802,
+        0.37811108933338416,
+        0.4025361967031172
+      ],
+      [
+        0.7986266375846176,
+        0.00998205752362687,
+        0.9789581814951558,
+        0.046615004480144225,
+        0.516454404809787,
+        0.7325231856236948
+      ],
+      [
+        0.3324255426199353,
+        0.4903768928471256,
+        0.5462532263540905,
+        0.558736316795273,
+        0.7184281437253304,
+        0.04096258899818192
+      ],
+      [
+        0.7292926049469552,
+        0.9432472996190269,
+        0.5459393491098364,
+        0.961898356668231,
+        0.9357212693056534,
+        0.34701839456776373
+      ],
+      [
+        0.15623276617330087,
+        0.8724355197838543,
+        0.1529085372707377,
+        0.8637928080173967,
+        0.6374541667156476,
+        0.14467302398043075
+      ],
+      [
+        0.19546835828619355,
+        0.45615891735945624,
+        0.9060998887233203,
+        0.3002219402064253,
+        0.30263880054919734,
+        0.974750936779588
+      ],
+      [
+        0.8416384680644329,
+        0.8873806043120622,
+        0.06507273684553631,
+        0.6453070994590951,
+        0.4715886716425815,
+        0.9283009774626634
+      ],
+      [
+        0.9948717526184367,
+        0.9395520763297901,
+        0.12858124368844268,
+        0.9393955579167501,
+        0.8242921382673044,
+        0.9766737196471462
+      ],
+      [
+        0.26135033721141754,
+        0.34774817637048105,
+        0.721333468002842,
+        0.27722039692587735,
+        0.1998426118227904,
+        0.12541725048089522
+      ],
+      [
+        0.5279779946058526,
+        0.37902737211331683,
+        0.8448366310068958,
+        0.7271565803250709,
+        0.7204342797383142,
+        0.41112883063579786
+      ],
+      [
+        0.822480586221575,
+        0.8132464660772651,
+        0.04152760506847007,
+        0.49833139513944824,
+        0.010688982070812716,
+        0.9459919064196565
+      ],
+      [
+        0.18646381774471674,
+        0.24035525735748894,
+        0.23058874256911088,
+        0.28342758561928005,
+        0.18467334265526336,
+        0.6932971537264404
+      ],
+      [
+        0.1060025253448835,
+        0.7495141963213979,
+        0.2466119820506844,
+        0.18633496555062112,
+        0.012690525924645991,
+        0.06053166885562406
+      ],
+      [
+        0.29822885969794755,
+        0.28804873316100754,
+        0.6913600694075367,
+        0.5543208991861474,
+        0.8792653941167685,
+        0.3281842079362869
+      ],
+      [
+        0.2185965744796772,
+        0.5993841679977808,
+        0.29487049061007403,
+        0.49460200306182966,
+        0.5949844882106795,
+        0.26008543349762675
+      ],
+      [
+        0.19015364493996317,
+        0.3242498055531172,
+        0.6722348708020602,
+        0.4239170738606756,
+        0.28779516371823677,
+        0.3159931781886595
+      ],
+      [
+        0.8184119554169172,
+        0.5822653876975741,
+        0.45175434268804715,
+        0.5183098275206975,
+        0.2485887670769924,
+        0.5735798728156438
+      ],
+      [
+        0.14283593222187352,
+        0.8843382568805802,
+        0.8442310978561374,
+        0.6000683115695779,
+        0.4709458785056685,
+        0.9457856969819287
+      ],
+      [
+        0.9840699539418442,
+        0.8555745701516992,
+        0.616111068358161,
+        0.9675315565398995,
+        0.832367683608441,
+        0.8965321617425012
+      ],
+      [
+        0.2991203494748622,
+        0.3908443449671707,
+        0.5969262573938632,
+        0.24453331825895017,
+        0.45419586054195377,
+        0.1736478504758081
+      ],
+      [
+        0.6008659422283849,
+        0.26146403484942804,
+        0.2297822020159973,
+        0.3574331983252095,
+        0.4770935630744871,
+        0.2661037589693575
+      ],
+      [
+        0.4202546132457708,
+        0.6220737501460465,
+        0.5001819895885907,
+        0.45039360283715635,
+        0.41459946750316196,
+        0.8042320624248825
+      ],
+      [
+        0.6994640721276854,
+        0.8357859344026,
+        0.13217417018600242,
+        0.16393761202166152,
+        0.10593719832338713,
+        0.7813850250484061
+      ],
+      [
+        0.648221528863186,
+        0.7969496929787167,
+        0.9270763841775655,
+        0.8938550270681269,
+        0.6860995991150365,
+        0.38282953124728347
+      ],
+      [
+        0.6992880521963245,
+        0.5308105812857866,
+        0.44819435836533095,
+        0.8289351960145004,
+        0.7748767754229993,
+        0.299087988819521
+      ],
+      [
+        0.7131818857038598,
+        0.6787561673630899,
+        0.662289548429498,
+        0.6522344967373953,
+        0.5024234922992888,
+        0.047736954655223304
+      ],
+      [
+        0.05728940069931857,
+        0.8918686545533071,
+        0.009447938161033434,
+        0.07498769557844544,
+        0.03942550518644005,
+        0.8909742969905975
+      ],
+      [
+        0.6128369275523443,
+        0.27470371068900107,
+        0.7482784418655114,
+        0.47877076647772193,
+        0.7465430349658639,
+        0.725998355396626
+      ],
+      [
+        0.4588377628903483,
+        0.22423088336234495,
+        0.7756957678297856,
+        0.19548684146467948,
+        0.23927692981734408,
+        0.22732595888034185
+      ],
+      [
+        0.3850319325342036,
+        0.2315326565045742,
+        0.07556428872812875,
+        0.28068515879758305,
+        0.3513471936229974,
+        0.18949410684626705
+      ],
+      [
+        0.09227707635057189,
+        0.6744774816255745,
+        0.5582968775977493,
+        0.7407967665080161,
+        0.30039704556741526,
+        0.41520628707691964
+      ],
+      [
+        0.6959886345679105,
+        0.37460884264057903,
+        0.0667246193085697,
+        0.38338779948702917,
+        0.36379671093973287,
+        0.6238624924070622
+      ],
+      [
+        0.5581271620332436,
+        0.28703487300118946,
+        0.8349276407847043,
+        0.4025795380307528,
+        0.7852219867083952,
+        0.5729891108321559
+      ],
+      [
+        0.8713041335610595,
+        0.19648728547809624,
+        0.7532403830225314,
+        0.4862288982082907,
+        0.8771955197018365,
+        0.3784484862491334
+      ],
+      [
+        0.04774871171100573,
+        0.0048068752703637925,
+        0.024038006083818633,
+        0.07979140675342056,
+        0.2055890136789476,
+        0.9939878773501171
+      ],
+      [
+        0.5622976466982421,
+        0.7544374316059507,
+        0.4008406775822912,
+        0.762237158173299,
+        0.3655172871153067,
+        0.23180965968815773
+      ],
+      [
+        0.01533186152001735,
+        0.9764018691971854,
+        0.042062732366873766,
+        0.970646138744172,
+        0.24539820595291473,
+        0.7633574773940777
+      ],
+      [
+        0.4247550765725853,
+        0.20529393861086842,
+        0.8300470078367623,
+        0.273095735539968,
+        0.5195800321026289,
+        0.17805864842294572
+      ],
+      [
+        0.33963851424358255,
+        0.4338348926117992,
+        0.138637648730131,
+        0.16007778782781681,
+        0.9707100748291779,
+        0.7072447972307625
+      ],
+      [
+        0.6062542795220575,
+        0.6658065031076512,
+        0.5448173608339343,
+        0.6909856216336802,
+        0.778123331607087,
+        0.1209231279951213
+      ],
+      [
+        0.8690594757248182,
+        0.15306963484057162,
+        0.7965304322721936,
+        0.10225731589576467,
+        0.1140022019975012,
+        0.47451933086302056
+      ],
+      [
+        0.45055308196434446,
+        0.3144281993958008,
+        0.7147874691159246,
+        0.4716581189548396,
+        0.6197230084357298,
+        0.0005254194183320474
+      ],
+      [
+        0.6854580788879234,
+        0.16831613511539611,
+        0.5371780078388229,
+        0.13049004705626369,
+        0.27623812036993656,
+        0.7320363065729917
+      ],
+      [
+        0.6401468603824578,
+        0.5767906920866032,
+        0.4698643700803746,
+        0.6701178209767826,
+        0.4628017250926367,
+        0.11846495942441918
+      ],
+      [
+        0.6006137943611278,
+        0.4210370916135743,
+        0.29028369388348085,
+        0.46888373992867405,
+        0.47903152190890086,
+        0.19862094117376605
+      ],
+      [
+        0.9617767240377159,
+        0.04205721853671955,
+        0.9537250866451183,
+        0.8040894289505267,
+        0.9211110481549288,
+        0.3701005838281395
+      ],
+      [
+        0.4979012085123181,
+        0.426600813545094,
+        0.5612076337535694,
+        0.44390527390893,
+        0.3512969753405572,
+        0.01663810837443536
+      ],
+      [
+        0.017952946633129317,
+        0.9595747909868453,
+        0.10116680032792359,
+        0.5523284418788709,
+        0.03186144087469545,
+        0.9391032032293816
+      ],
+      [
+        0.4552452238231363,
+        0.5678029406914561,
+        0.5936383351007539,
+        0.5560841079916654,
+        0.5247566059114531,
+        0.02658592679650075
+      ],
+      [
+        0.8348649743129504,
+        0.4233253928883025,
+        0.5307497583428903,
+        0.7663045261901784,
+        0.9377086710105013,
+        0.32178114002080815
+      ],
+      [
+        0.1403985514680745,
+        0.6045135066376132,
+        0.17155343282198757,
+        0.22922926034094182,
+        0.16514740820224297,
+        0.6802690081959267
+      ],
+      [
+        0.7856320748840157,
+        0.7525052997974914,
+        0.06283837834294528,
+        0.5734775698349018,
+        0.44365517104881064,
+        0.29624558709558235
+      ],
+      [
+        0.12561134632451715,
+        0.3325100420371751,
+        0.8662002416701121,
+        0.5264224511182339,
+        0.6778913836954351,
+        0.16946294723322938
+      ],
+      [
+        0.9742826477379982,
+        0.765004450126201,
+        0.20033494916946948,
+        0.6192125530798127,
+        0.34904044773725756,
+        0.3791468928199135
+      ],
+      [
+        0.5402831051027941,
+        0.3020449445835219,
+        0.7207531729261039,
+        0.8827134070710281,
+        0.9184752644425825,
+        0.9145774411654655
+      ],
+      [
+        0.3163095054949636,
+        0.6968129518272647,
+        0.7870465702106962,
+        0.7910898154050144,
+        0.7175292223746813,
+        0.14991794574116998
+      ],
+      [
+        0.5775707348483422,
+        0.28031045252180864,
+        0.4824588138400529,
+        0.5468537928443349,
+        0.7712227565463708,
+        0.8867345334024963
+      ],
+      [
+        0.18882410176844255,
+        0.2966682086555382,
+        0.41032326820186754,
+        0.14570955337394462,
+        0.1937572759332079,
+        0.3934795295419253
+      ],
+      [
+        0.21962654763502376,
+        0.5646618582467411,
+        0.8225061002047294,
+        0.19738746208941788,
+        0.21145177378589972,
+        0.8588080963094034
+      ],
+      [
+        0.14763605246782113,
+        0.7796226763074102,
+        0.4495785195473493,
+        0.1379647469720856,
+        0.10861182663534502,
+        0.2944503681886533
+      ],
+      [
+        0.8962959233252807,
+        0.8094927200665956,
+        0.015932731700185124,
+        0.16502977728763538,
+        0.43301037927366476,
+        0.9315017458991224
+      ],
+      [
+        0.27782524842030193,
+        0.9537116765799982,
+        0.03914797295206217,
+        0.9711333163746168,
+        0.9385146510825426,
+        0.7271171351639133
+      ],
+      [
+        0.4771428985027299,
+        0.32100713206702114,
+        0.5045757454230191,
+        0.6468714732427207,
+        0.09659104835362282,
+        0.2643243914272738
+      ],
+      [
+        0.1860457728805673,
+        0.2229538518378416,
+        0.17512111853475745,
+        0.1910825461470635,
+        0.32585562005301344,
+        0.13325871225130495
+      ],
+      [
+        0.6422115628022544,
+        0.8018926283104741,
+        0.19843672163673043,
+        0.7549214527357627,
+        0.051483769783649214,
+        0.9758974526161281
+      ],
+      [
+        0.19292907385812497,
+        0.9286981326842499,
+        0.15716758388407692,
+        0.8697596669107254,
+        0.689438198503935,
+        0.2863315161167786
+      ],
+      [
+        0.3991745320344758,
+        0.2709474348193677,
+        0.6441266654947921,
+        0.263307919107463,
+        0.3687138993400909,
+        0.0019791120200981583
+      ],
+      [
+        0.17392049894304662,
+        0.8337441695884922,
+        0.21213292450511168,
+        0.7950754709379506,
+        0.5898470211300688,
+        0.010987757570138156
+      ],
+      [
+        0.6845780202938124,
+        0.7018927015764459,
+        0.18498160161705235,
+        0.5473602853300501,
+        0.06946361359841262,
+        0.5396517994482085
+      ],
+      [
+        0.8040636842718516,
+        0.43206321189592384,
+        0.5664095522246447,
+        0.44111926542405594,
+        0.5859248363523114,
+        0.32642132941171137
+      ],
+      [
+        0.9552981949421522,
+        0.03294683074903908,
+        0.9714392138048771,
+        0.17191308303338113,
+        0.2022729441003484,
+        0.9441793010998397
+      ],
+      [
+        0.7769954269434202,
+        0.26487015996625224,
+        0.6198280006594494,
+        0.36729499944379723,
+        0.3493223827531311,
+        0.5514399440059432
+      ],
+      [
+        0.413085267595287,
+        0.4214079091671122,
+        0.47199475037617905,
+        0.3996746270510296,
+        0.5427784341909023,
+        0.13781602717218563
+      ],
+      [
+        0.4419260950701431,
+        0.6009195031198276,
+        0.6581649321974257,
+        0.4135027303862526,
+        0.6908172063732695,
+        0.22757306480386413
+      ],
+      [
+        0.5601285548888496,
+        0.5924859219665823,
+        0.27996128579343676,
+        0.39374004962927045,
+        0.3519593922363261,
+        0.00206450849745371
+      ],
+      [
+        0.0867319344281857,
+        0.11687621137493855,
+        0.08931905498472129,
+        0.29738231912079444,
+        0.34725143921184165,
+        0.6257575136562741
+      ],
+      [
+        0.4903868531084297,
+        0.4034763214677258,
+        0.34619206126073854,
+        0.5775107052617526,
+        0.7717982499529351,
+        0.04604593085417436
+      ],
+      [
+        0.21270913441438116,
+        0.5611476128958713,
+        0.6450829714436968,
+        0.5670710983192984,
+        0.3283748963419825,
+        0.26629126158528393
+      ],
+      [
+        0.14373163012121842,
+        0.3753394607088564,
+        0.5464632579035167,
+        0.19000582109087183,
+        0.1814980495468254,
+        0.09803392046952737
+      ],
+      [
+        0.3663315009471821,
+        0.3221300526954073,
+        0.6987652622350011,
+        0.44144154142798725,
+        0.48210665525895063,
+        0.042341460235349335
+      ],
+      [
+        0.18461576315720252,
+        0.4293341156183003,
+        0.4665682166027716,
+        0.6505583834106528,
+        0.7236818089747544,
+        0.25138572047914387
+      ],
+      [
+        0.46499480786589226,
+        0.5237807089482353,
+        0.5578272491486526,
+        0.767279747124224,
+        0.4559971047363799,
+        0.7104584247955008
+      ],
+      [
+        0.5372464075447955,
+        0.9478916529836716,
+        0.6784184717395181,
+        0.8010968018468696,
+        0.452960003608603,
+        0.5868263256188124
+      ],
+      [
+        0.31877871758873594,
+        0.6197202749046646,
+        0.16683314629946824,
+        0.3459032638568292,
+        0.28535788829362124,
+        0.4820388831877279
+      ],
+      [
+        0.995557997801325,
+        0.9898826483571064,
+        0.9886717252513241,
+        0.9987664908293465,
+        0.8786018132143968,
+        0.9608642238650983
+      ],
+      [
+        0.9058442149922463,
+        0.048796209282032155,
+        0.7494318921179496,
+        0.566651114912807,
+        0.7508006110039109,
+        0.8357924092756447
+      ],
+      [
+        0.7439484749641412,
+        0.9069238526296477,
+        0.945621568563843,
+        0.8709168862227983,
+        0.5203809290921768,
+        0.3925529098513007
+      ],
+      [
+        0.5777820381184167,
+        0.28406216539282897,
+        0.7408271062415854,
+        0.6060129033936874,
+        0.5205924622329214,
+        0.2635810736874341
+      ],
+      [
+        0.9166417411525526,
+        0.0016687739735512016,
+        0.9985226469079693,
+        0.0599530739895225,
+        0.030151160357572492,
+        0.9957392420049676
+      ],
+      [
+        0.3900766055564906,
+        0.004919691868661321,
+        0.8634711276695228,
+        0.14606285796937052,
+        0.8301911423725551,
+        0.7656142850048929
+      ],
+      [
+        0.5705895528221849,
+        0.15488056315341797,
+        0.9233761135415539,
+        0.43127075301078444,
+        0.5821998960899307,
+        0.5968141694786426
+      ],
+      [
+        0.941309348479032,
+        0.842883712744502,
+        0.9001268057453182,
+        0.8300438621735007,
+        0.39339107350619834,
+        0.7237428410774587
+      ],
+      [
+        0.3730820980692898,
+        0.48019978876525926,
+        0.4638622954572824,
+        0.3037630834976613,
+        0.27558546596807754,
+        0.6411527682436393
+      ],
+      [
+        0.4997165603516764,
+        0.6120328747905479,
+        0.7335731621699296,
+        0.35228905719143583,
+        0.3565003705271388,
+        0.045380577704214733
+      ],
+      [
+        0.1174939034925159,
+        0.36520812837840894,
+        0.5141746494719625,
+        0.21818642958092707,
+        0.559816112780615,
+        0.8024822470072389
+      ],
+      [
+        0.002889904849907842,
+        0.013874911110877778,
+        0.0482445283274679,
+        0.3946762681010074,
+        0.5896067697904489,
+        0.9878757884684376
+      ],
+      [
+        0.8716281960682298,
+        0.8753415255324509,
+        0.35417613138113146,
+        0.9952239476558103,
+        0.976431866107033,
+        0.8131670021285496
+      ],
+      [
+        0.796379424345942,
+        0.785900581490475,
+        0.8456625299988934,
+        0.9536720894425279,
+        0.9300717632080245,
+        0.10723081104029132
+      ],
+      [
+        0.6348474986961085,
+        0.48470611339192154,
+        0.31554296558262024,
+        0.534553327547848,
+        0.6349222482968927,
+        0.4882974699334839
+      ],
+      [
+        0.38483022503327224,
+        0.3632541001258057,
+        0.36409922249621895,
+        0.5149081891966063,
+        0.7506980451529988,
+        0.024307641057715993
+      ],
+      [
+        0.06578490234713132,
+        0.10932705233143994,
+        0.9806810027557904,
+        0.36182351399588697,
+        0.748107638052785,
+        0.6700498033786029
+      ],
+      [
+        0.3395345076438736,
+        0.30101819109933514,
+        0.338368957774725,
+        0.20138783653366996,
+        0.22985103598049397,
+        0.22876759058390642
+      ],
+      [
+        0.6345561384147017,
+        0.26954964559808303,
+        0.6869849152158795,
+        0.309940078166743,
+        0.646823598663893,
+        0.2474685049252795
+      ],
+      [
+        0.6888984387448892,
+        0.5379193974204859,
+        0.4992743759615407,
+        0.9197180539807054,
+        0.9814991655699883,
+        0.7446310332098766
+      ],
+      [
+        0.7644925881581783,
+        0.3383795129923308,
+        0.6802876964976948,
+        0.6470541409950819,
+        0.7978647225554343,
+        0.2569796663710475
+      ],
+      [
+        0.058549792937093795,
+        0.7168920830598753,
+        0.2935457099226743,
+        0.04432185946710967,
+        0.01807099027057571,
+        0.9631797762482217
+      ],
+      [
+        0.6065842250873258,
+        0.27572224558823344,
+        0.3537090222593495,
+        0.5941886471753807,
+        0.6299361522440027,
+        0.1078091926025065
+      ],
+      [
+        0.5935593019717961,
+        0.3872755028935468,
+        0.6307518805966109,
+        0.6035154676935327,
+        0.6511396329409913,
+        0.9929626689026801
+      ],
+      [
+        0.6465883512948437,
+        0.8884656813153724,
+        0.2326331478625632,
+        0.6599474838132136,
+        0.5118332049120832,
+        0.3338827901987898
+      ],
+      [
+        0.2962163801888931,
+        0.30227638521617134,
+        0.38730399921074976,
+        0.5915656796188847,
+        0.7168268226294442,
+        0.18823397831536806
+      ],
+      [
+        0.5482567308774601,
+        0.7607112692899054,
+        0.18968630153728433,
+        0.4458641108374239,
+        0.3619843023907853,
+        0.5932762932570517
+      ],
+      [
+        0.37355067631901984,
+        0.0955547926251582,
+        0.5018052914732747,
+        0.5997117502508938,
+        0.7724206151652895,
+        0.7290231623531551
+      ],
+      [
+        0.42954222030800376,
+        0.4711765830861528,
+        0.5105441800314506,
+        0.46908586466755653,
+        0.28765055164960146,
+        0.7570933480312159
+      ],
+      [
+        0.7315217262088214,
+        0.11179973903885279,
+        0.8994753337550863,
+        0.1493904684001336,
+        0.424128671082003,
+        0.9267963269169787
+      ],
+      [
+        0.4592408058197419,
+        0.5940936246252012,
+        0.38346244482229197,
+        0.4379933158983622,
+        0.6273706651240074,
+        0.04591844994307159
+      ],
+      [
+        0.505908123450736,
+        0.865069906891863,
+        0.26431095842754526,
+        0.6174043861164846,
+        0.5718946299045077,
+        0.4448692131353221
+      ],
+      [
+        0.27848537370127924,
+        0.4454473903001768,
+        0.5698183344049854,
+        0.14408263199244484,
+        0.05741226435057016,
+        0.30691056724398813
+      ],
+      [
+        0.0075898272269250685,
+        0.051782672561585155,
+        0.39843754885315164,
+        0.007286166573710611,
+        0.2907112260020778,
+        0.6739438288814552
+      ],
+      [
+        0.7403080092420073,
+        0.6747878452515366,
+        0.3358464247068249,
+        0.5421292578953811,
+        0.6722343423067131,
+        0.2277181253856929
+      ],
+      [
+        0.3732179789233625,
+        0.32325772342936193,
+        0.47833077246752975,
+        0.0808682423609664,
+        0.021467355785793427,
+        0.42011352505403204
+      ],
+      [
+        0.6972703379055185,
+        0.300898076980961,
+        0.6959811678537474,
+        0.28372211194693653,
+        0.28523426517177775,
+        0.6004678830114102
+      ],
+      [
+        0.44669831592085674,
+        0.05138003702495914,
+        0.26543563311384955,
+        0.6653774048973699,
+        0.9299577951405793,
+        0.5396881507889427
+      ],
+      [
+        0.7780942759268398,
+        0.22905804378619785,
+        0.9292547911146717,
+        0.8313656413838408,
+        0.9432021220278517,
+        0.9409429831327913
+      ],
+      [
+        0.6754494184598265,
+        0.8423032338812936,
+        0.7013297818876528,
+        0.7047905046675927,
+        0.4657209280098609,
+        0.5748351077048193
+      ],
+      [
+        0.5861585195793553,
+        0.9012042668565544,
+        0.47831113668856784,
+        0.8973310985013927,
+        0.4780112944821525,
+        0.6392685250645688
+      ],
+      [
+        0.9308946502163127,
+        0.4356600249583264,
+        0.46148789389375283,
+        0.6426259186213461,
+        0.7002109708735983,
+        0.0600049024091922
+      ],
+      [
+        0.32906024315672766,
+        0.14861354792270381,
+        0.38242362942739594,
+        0.2928093886077132,
+        0.33707099651037586,
+        0.9828367496212048
+      ],
+      [
+        0.46153141917872126,
+        0.6181180111609292,
+        0.864674480477151,
+        0.31471651270252776,
+        0.3873043382234235,
+        0.2391521882952029
+      ],
+      [
+        0.3825873756665136,
+        0.3938957728178246,
+        0.437461958774468,
+        0.4895717265618601,
+        0.5508700214833918,
+        0.14290990877021004
+      ],
+      [
+        0.28031030894325826,
+        0.6389942522699026,
+        0.05193432771783176,
+        0.01436549695398328,
+        0.0011820900405802,
+        0.937067518051721
+      ],
+      [
+        0.578688259131772,
+        0.49965504047587905,
+        0.7226132515459777,
+        0.5173776572829065,
+        0.3335733095189575,
+        0.09173815610632109
+      ],
+      [
+        0.547379148175389,
+        0.787670565525862,
+        0.2508811749314081,
+        0.3242270223435779,
+        0.13972908061560907,
+        0.7588632129896863
+      ],
+      [
+        0.6325043467810046,
+        0.2691407575309654,
+        0.5985299384353012,
+        0.7104933432311813,
+        0.9459838046500758,
+        0.76669341635714
+      ],
+      [
+        0.5454912901836626,
+        0.5913404105104038,
+        0.8892261777186133,
+        0.6975252218192574,
+        0.4725212652816019,
+        0.33301615660457423
+      ],
+      [
+        0.08627296114957961,
+        0.3237266736600028,
+        0.6770579189281887,
+        0.2724645268643785,
+        0.5245785523277301,
+        0.7123394971157846
+      ],
+      [
+        0.9282254190112746,
+        0.023360215871948743,
+        0.8859165566454599,
+        0.14384236705362505,
+        0.7086044645925864,
+        0.7178082905967588
+      ],
+      [
+        0.16722200578984553,
+        0.9589701154877478,
+        0.30677767601993,
+        0.9193125213910953,
+        0.1532337483114582,
+        0.5407493106991492
+      ],
+      [
+        0.3787627749200558,
+        0.35604196683329103,
+        0.599605605365468,
+        0.38458775753345653,
+        0.6456888869171192,
+        0.0484535727927147
+      ],
+      [
+        0.8551779764535418,
+        0.04995926568242337,
+        0.8250486448423454,
+        0.8590502926527066,
+        0.9720795009253675,
+        0.8340214686516985
+      ],
+      [
+        0.013159528601352779,
+        0.4016209455635146,
+        0.8761372950518148,
+        0.5732121130206075,
+        0.271138127373534,
+        0.769028236504216
+      ],
+      [
+        0.3933803492610253,
+        0.035823673411875374,
+        0.9320203780450308,
+        0.009287749693297907,
+        0.26987685966630354,
+        0.7957963580272894
+      ],
+      [
+        0.2611161662787528,
+        0.02109744269338534,
+        0.8650698627600938,
+        0.019711006232569574,
+        0.19373091987959187,
+        0.9647508563516656
+      ],
+      [
+        0.8284262005271371,
+        0.23342844363659757,
+        0.7498154357855966,
+        0.16271371750644634,
+        0.24236787449076258,
+        0.13257952407635434
+      ],
+      [
+        0.755348041699704,
+        0.9549266364309413,
+        0.050757684017503406,
+        0.9404438158898878,
+        0.9173359731754178,
+        0.3670089577113397
+      ],
+      [
+        0.5143785196856123,
+        0.6365747111279113,
+        0.8067832630643009,
+        0.6381323625038828,
+        0.3411042863639216,
+        0.1020073302989868
+      ],
+      [
+        0.9522055257485625,
+        0.4173027740170724,
+        0.904530038820016,
+        0.9220485837278578,
+        0.8710861309880387,
+        0.27335007942641204
+      ],
+      [
+        0.8109306555735101,
+        0.16358861931805066,
+        0.8424278502573441,
+        0.5224077225099814,
+        0.8255067726667984,
+        0.17580824535158335
+      ],
+      [
+        0.07403197948856939,
+        0.1796519319172744,
+        0.8970875424863958,
+        0.03253600665361418,
+        0.0975445942373527,
+        0.7263095111864352
+      ],
+      [
+        0.6342897537623228,
+        0.6992348911268996,
+        0.25206784227556805,
+        0.06472953628175991,
+        0.06587321584231022,
+        0.748608291818174
+      ],
+      [
+        0.15072714962714076,
+        0.18477855371498275,
+        0.3921937888410733,
+        0.08025607621686597,
+        0.20321022205258815,
+        0.26911206061956033
+      ],
+      [
+        0.9117765356981045,
+        0.6647406872253927,
+        0.4450093693874849,
+        0.9823218859820436,
+        0.9857762065398502,
+        0.971575028963822
+      ],
+      [
+        0.2750331528739133,
+        0.33465056182414177,
+        0.718773737314586,
+        0.15423382250681797,
+        0.21803849109438178,
+        0.022477760346945902
+      ],
+      [
+        0.8972634381402834,
+        0.7124121441989935,
+        0.5720658084186155,
+        0.8040601801598554,
+        0.6717490367882792,
+        0.13737766981799984
+      ],
+      [
+        0.2217744569359474,
+        0.9302133753835965,
+        0.06171807328981975,
+        0.7456557688032235,
+        0.12049114432627102,
+        0.2751097702326602
+      ],
+      [
+        0.6546498091194835,
+        0.2188030154693991,
+        0.1764310051128414,
+        0.6705264866360329,
+        0.4073592506845341,
+        0.9552088354724043
+      ],
+      [
+        0.24387246364980866,
+        0.3984544291544229,
+        0.565227113884231,
+        0.2750952175302816,
+        0.04441362173540002,
+        0.416151318673048
+      ],
+      [
+        0.4546140201159343,
+        0.4470498799958973,
+        0.9560689676733429,
+        0.7433339715153344,
+        0.7502685677962243,
+        0.8475798366625443
+      ],
+      [
+        0.06599095112500634,
+        0.8853282388731846,
+        0.14014955398917364,
+        0.34925806033042184,
+        0.2610124415150184,
+        0.4004167384082734
+      ],
+      [
+        0.9432224588590061,
+        0.9383339974767525,
+        0.7373271550985316,
+        0.8738461766749016,
+        0.10771627326171376,
+        0.6527603349060271
+      ],
+      [
+        0.48364715931396984,
+        0.24355695873973007,
+        0.582775833938809,
+        0.15399909769852507,
+        0.07760634903838863,
+        0.42086866440945425
+      ],
+      [
+        0.3345809623716516,
+        0.8169212296562154,
+        0.07411561089476726,
+        0.5001773494414881,
+        0.5889920227697107,
+        0.5025815114082273
+      ],
+      [
+        0.8792226276077635,
+        0.8977335574030301,
+        0.5819180760222735,
+        0.8711488902487275,
+        0.19572536963702666,
+        0.08819917310499803
+      ],
+      [
+        0.6059408049836437,
+        0.5880671132169817,
+        0.8338081681182655,
+        0.739135501524647,
+        0.42425357508894473,
+        0.006813673453832671
+      ],
+      [
+        0.32517529095270076,
+        0.560701793489251,
+        0.6987634255243301,
+        0.5301616973669511,
+        0.5009604472870802,
+        0.19616726936436432
+      ],
+      [
+        0.09491573646316301,
+        0.9462079956864136,
+        0.030970378297626625,
+        0.4593605034587703,
+        0.14779226032765802,
+        0.5967119283618353
+      ],
+      [
+        0.6823231396120365,
+        0.37869280081190404,
+        0.4478408726450702,
+        0.22949945263881413,
+        0.0108825600146109,
+        0.27845480103796005
+      ],
+      [
+        0.7002707711387532,
+        0.5773207349822338,
+        0.8055264657046775,
+        0.6376191799302022,
+        0.7222446397198299,
+        0.48727743419125946
+      ],
+      [
+        0.9771401255625778,
+        0.946098374668428,
+        0.937469811484036,
+        0.9261115881074109,
+        0.7957528666741486,
+        0.9169333962984431
+      ],
+      [
+        0.7272295437727833,
+        0.8375349941413961,
+        0.18193318406827486,
+        0.8132878497687406,
+        0.1663649981464341,
+        0.3629289297412052
+      ],
+      [
+        0.09305723951842618,
+        0.8526863864515658,
+        0.8962641506175104,
+        0.870342332520281,
+        0.8683673772086,
+        0.32284302657499614
+      ],
+      [
+        0.6059979530195216,
+        0.603801328127879,
+        0.6647752084773516,
+        0.6541001613762427,
+        0.5766017539395571,
+        0.7737381589052867
+      ],
+      [
+        0.802284933820784,
+        0.2617539188702588,
+        0.17590075886269677,
+        0.8174332194427816,
+        0.8636066911508546,
+        0.7517758328251186
+      ],
+      [
+        0.3018355258871002,
+        0.5184270799787545,
+        0.9755682397311755,
+        0.6515976376266377,
+        0.8848172447374811,
+        0.6805308576694807
+      ],
+      [
+        0.5012325332488851,
+        0.9027070666719907,
+        0.9699669142002912,
+        0.6555799205602216,
+        0.22670927461809617,
+        0.7396198208047732
+      ],
+      [
+        0.8930804300868741,
+        0.939391235534906,
+        0.8141749995161648,
+        0.4860526123617262,
+        0.33770765502872363,
+        0.38609957618901664
+      ],
+      [
+        0.46247863420214597,
+        0.6632244117223385,
+        0.7279702212078648,
+        0.2072827395240201,
+        0.1560211980130838,
+        0.4328262643548654
+      ],
+      [
+        0.04100096948518906,
+        0.19869937262170045,
+        0.41490581603689636,
+        0.027973697952885606,
+        0.027798308275938172,
+        0.8590098275518299
+      ],
+      [
+        0.328417352235626,
+        0.25251240131678326,
+        0.7060072345846068,
+        0.3073941140751368,
+        0.5512623594784487,
+        0.1337083531300722
+      ],
+      [
+        0.6358523419813017,
+        0.690691702293139,
+        0.2213714255922819,
+        0.3995457739934077,
+        0.12941029227073889,
+        0.6096454527008665
+      ],
+      [
+        0.05943131601878059,
+        0.6069807979150179,
+        0.407859635787722,
+        0.3268020624733463,
+        0.35596666674601296,
+        0.5612432802181114
+      ],
+      [
+        0.6016776579586298,
+        0.9286448369116013,
+        0.12108897719772936,
+        0.9241784315878185,
+        0.4649258261424035,
+        0.431934601632453
+      ],
+      [
+        0.9931861214263392,
+        0.9823135064650415,
+        0.5932706286033527,
+        0.4275379885933194,
+        0.0999195038744917,
+        0.9178286379250374
+      ],
+      [
+        0.4771163817186046,
+        0.9819053884393497,
+        0.10307871920772697,
+        0.9003188212726968,
+        0.8912596351019433,
+        0.9187184971824196
+      ],
+      [
+        0.32839705197456937,
+        0.30668920965713203,
+        0.7347833486498443,
+        0.5458909508108375,
+        0.7763058537598929,
+        0.5178395778135682
+      ],
+      [
+        0.5916462968417838,
+        0.4909970294226004,
+        0.04556625407899005,
+        0.24931034461204263,
+        0.43854802493130557,
+        0.7812608216865755
+      ],
+      [
+        0.035870589992955726,
+        0.9733455272866839,
+        0.06105347726067271,
+        0.7681148784358723,
+        0.3627825736751655,
+        0.2034488831906257
+      ],
+      [
+        0.004549919276850318,
+        0.9945826064049764,
+        0.01228768016105664,
+        0.9899655172121209,
+        0.711223505874343,
+        0.851892095083998
+      ],
+      [
+        0.010311516161415787,
+        0.009765758974121158,
+        0.973323548720118,
+        0.0025622852656853653,
+        0.0669303586501425,
+        0.7599020554999733
+      ],
+      [
+        0.43416459080392017,
+        0.6236863775689381,
+        0.5216327403149553,
+        0.4261118417511193,
+        0.14535214200735033,
+        0.4792202765063466
+      ],
+      [
+        0.35105259290392465,
+        0.5665365399912048,
+        0.5018230612920843,
+        0.41635239740172075,
+        0.30877191207917914,
+        0.06357524422115582
+      ],
+      [
+        0.95377448388949,
+        0.12072038225688486,
+        0.9504892984752316,
+        0.9159954728630813,
+        0.9774916851116789,
+        0.7739046861375759
+      ],
+      [
+        0.009320420221738525,
+        0.005193933909177556,
+        0.013201498526965163,
+        0.9688700823352794,
+        0.9937368660417705,
+        0.8160140727587849
+      ],
+      [
+        0.6120832364873758,
+        0.5835798093697904,
+        0.3977390081444658,
+        0.782616733873636,
+        0.8002060768122607,
+        0.522990790645567
+      ],
+      [
+        0.42980803203619106,
+        0.6352447448127332,
+        0.3450088497939457,
+        0.5930660133809557,
+        0.5718132454009406,
+        0.4069668322120597
+      ],
+      [
+        0.8072143571643926,
+        0.8283986732253683,
+        0.7732386869979849,
+        0.8233038575110718,
+        0.3715289517061724,
+        0.03644772195708266
+      ],
+      [
+        0.9103615481175917,
+        0.4798322960879333,
+        0.23888027598963216,
+        0.27528877338502394,
+        0.05261688194413878,
+        0.8923650815043077
+      ],
+      [
+        0.812037766890098,
+        0.5764768142478077,
+        0.38606023947087753,
+        0.8454287849388471,
+        0.8937644169593236,
+        0.07049507812695331
+      ],
+      [
+        0.00891152405565921,
+        0.010876026667701209,
+        0.008277955289667665,
+        0.38131452208593564,
+        0.9956202789783188,
+        0.9856251278146624
+      ],
+      [
+        0.17482723072233367,
+        0.8113372967751769,
+        0.20211658807064362,
+        0.730233469243906,
+        0.5866717212606163,
+        0.9512935653167578
+      ],
+      [
+        0.8685921394745877,
+        0.07899128672587073,
+        0.8005980256632693,
+        0.0322601187170311,
+        0.1944590408008698,
+        0.8848831308928328
+      ],
+      [
+        0.28681889656781456,
+        0.241890011549853,
+        0.7297838534151909,
+        0.4277212717059822,
+        0.5294362033540977,
+        0.3749807530154277
+      ],
+      [
+        0.5522875489133088,
+        0.8123498482602226,
+        0.13271498797272513,
+        0.7170994611841224,
+        0.1611292101135509,
+        0.5102555181875962
+      ],
+      [
+        0.29970641691349764,
+        0.8552918214580273,
+        0.20287185757469064,
+        0.9536415294063748,
+        0.8064427110807504,
+        0.8529065648941663
+      ],
+      [
+        0.6550542916717529,
+        0.8134995348174074,
+        0.6843102049676356,
+        0.6187397341775193,
+        0.5710450813833734,
+        0.23819559169522306
+      ],
+      [
+        0.5537766730418597,
+        0.43474879489512863,
+        0.41910729989017964,
+        0.2045817055373338,
+        0.16538961842376387,
+        0.9640861608936894
+      ],
+      [
+        0.45590106113140955,
+        0.6285011492371883,
+        0.3594997913008589,
+        0.3080369504670813,
+        0.2717706496488954,
+        0.6495109329819773
+      ],
+      [
+        0.28805476510878086,
+        0.5817551767226845,
+        0.25111475134857864,
+        0.27321845042039355,
+        0.3248416628927752,
+        0.3540781386217101
+      ],
+      [
+        0.4237228443404919,
+        0.7792522930922577,
+        0.6871650467064346,
+        0.5997840232523718,
+        0.4172959246294041,
+        0.19433090342448986
+      ],
+      [
+        0.30519935289346617,
+        0.7742283722675781,
+        0.4055691040214262,
+        0.9054038909071457,
+        0.5265333677146021,
+        0.4377136597679449
+      ],
+      [
+        0.9586933702707802,
+        0.8937289573724424,
+        0.06046962075180052,
+        0.680206455151191,
+        0.39383277479085904,
+        0.9565568213038272
+      ],
+      [
+        0.6182339337464472,
+        0.23827289340528576,
+        0.21573956477895412,
+        0.545064652276915,
+        0.9207810944778247,
+        0.5621396690003941
+      ],
+      [
+        0.2306970468958598,
+        0.39931685992238186,
+        0.5964283168524077,
+        0.15029327521373784,
+        0.15578681750101064,
+        0.5135919656925108
+      ],
+      [
+        0.9834300703945422,
+        0.9378139204398538,
+        0.9503211548881152,
+        0.9878636844319217,
+        0.92102921362212,
+        0.9071272118349945
+      ],
+      [
+        0.04169020270309049,
+        0.9065028763230402,
+        0.06914837774438984,
+        0.4017496958826434,
+        0.0631878830327588,
+        0.5421953462802246
+      ],
+      [
+        0.9764091119129195,
+        0.06640566763536879,
+        0.6737947829295463,
+        0.2426416966269701,
+        0.27914641924300043,
+        0.8792966063990699
+      ],
+      [
+        0.33656304761368405,
+        0.2750349625045915,
+        0.9910290175142383,
+        0.6626600103130788,
+        0.008813338633716942,
+        0.4089558975206326
+      ],
+      [
+        0.18732831278480708,
+        0.1746047876083792,
+        0.2615367320694994,
+        0.22419518437681674,
+        0.2837540915596181,
+        0.12748761425436805
+      ],
+      [
+        0.3843313416655514,
+        0.44420457332017155,
+        0.6681595246310101,
+        0.4232259870245587,
+        0.30364069910289826,
+        0.08534301897773922
+      ],
+      [
+        0.9759401965730302,
+        0.9089168728619872,
+        0.29881712689534484,
+        0.975629712167557,
+        0.9528853345140761,
+        0.7864477566486554
+      ],
+      [
+        0.9134063435557425,
+        0.38252037340004874,
+        0.7497842728557299,
+        0.7417698482407776,
+        0.6714061673295152,
+        0.8771243858693392
+      ],
+      [
+        0.3296164241379688,
+        0.23615686775968114,
+        0.9591457278904234,
+        0.31609208218289114,
+        0.31970145490750473,
+        0.4356535584286445
+      ],
+      [
+        0.6813170431309339,
+        0.3394773600496683,
+        0.2518635986369728,
+        0.6191461394519259,
+        0.8099217249238317,
+        0.4044228411260545
+      ],
+      [
+        0.28457488996232483,
+        0.3301118581183406,
+        0.5798609330564882,
+        0.43595985996528713,
+        0.5407150569176316,
+        0.9793104884680054
+      ],
+      [
+        0.5666120157209287,
+        0.5845684187935427,
+        0.31824096414908476,
+        0.5082008492181914,
+        0.4365379383798315,
+        0.036396042872504177
+      ],
+      [
+        0.11787315679132863,
+        0.26269656476619935,
+        0.059053703501001094,
+        0.027362161576795798,
+        0.04485048159403042,
+        0.9019782113904444
+      ],
+      [
+        0.6919226120275632,
+        0.9536223739071622,
+        0.14251180606625355,
+        0.9085380027173023,
+        0.6149094764350757,
+        0.7107409605036757
+      ],
+      [
+        0.20095760335796273,
+        0.6698757185465322,
+        0.22016119686433583,
+        0.696845591462082,
+        0.8802522506071353,
+        0.3394515458619935
+      ],
+      [
+        0.3203538398063879,
+        0.25217739641075376,
+        0.6937405185278341,
+        0.41019008243547045,
+        0.6184701928402612,
+        0.13730254263306874
+      ],
+      [
+        0.9416947582465773,
+        0.9080901395165476,
+        0.07860032147415592,
+        0.49235748952875236,
+        0.032848343047575834,
+        0.8027611033215517
+      ],
+      [
+        0.08489407738639958,
+        0.02416758119248693,
+        0.619283798405297,
+        0.4637738068433989,
+        0.8116712506878558,
+        0.5373238230483783
+      ],
+      [
+        0.5967064567448318,
+        0.5289780257169343,
+        0.6024033249134965,
+        0.431260079548117,
+        0.47022769077266446,
+        0.05163531403123484
+      ],
+      [
+        0.24814291494897975,
+        0.6892273688177152,
+        0.4364418467231262,
+        0.3354028041454769,
+        0.03541532298080648,
+        0.549411347310322
+      ],
+      [
+        0.20340978828151698,
+        0.4240517699641307,
+        0.5304251353560914,
+        0.4054633849715974,
+        0.36001370349623624,
+        0.36515076816162
+      ],
+      [
+        0.8045317071106598,
+        0.6649222519540975,
+        0.7176292932985892,
+        0.935737602257654,
+        0.8964440216816686,
+        0.567487970761377
+      ],
+      [
+        0.8091795369391475,
+        0.16408795420242392,
+        0.8349605782436343,
+        0.29568374094267774,
+        0.39437258540662856,
+        0.2374255906893159
+      ],
+      [
+        0.36506000826928153,
+        0.3403349983696164,
+        0.3995773504474975,
+        0.22272949258627034,
+        0.13267764904428364,
+        0.8757742008304458
+      ],
+      [
+        0.44067421708097604,
+        0.5385542203303616,
+        0.3492453240976383,
+        0.02437418126467002,
+        0.03213931434376622,
+        0.6340836348971481
+      ],
+      [
+        0.3405695048666013,
+        0.46178221864110963,
+        0.6223744391820206,
+        0.5012177176919492,
+        0.7887193420589256,
+        0.9400791279446624
+      ],
+      [
+        0.3114384146174596,
+        0.6522310740806743,
+        0.46434631816976213,
+        0.07145381802952439,
+        0.0996877951700102,
+        0.8361910336348211
+      ],
+      [
+        0.5427597456586515,
+        0.642311299979481,
+        0.6844422944420121,
+        0.6230617533338615,
+        0.5733664025332352,
+        0.3632413921591673
+      ],
+      [
+        0.9170129437941454,
+        0.8951764632655148,
+        0.8583366667920908,
+        0.5186180812892012,
+        0.3413979479732392,
+        0.19324108126285147
+      ],
+      [
+        0.41861388706308694,
+        0.5859629884242091,
+        0.3845157843382334,
+        0.4874850358180053,
+        0.41886456283549245,
+        0.14641230730322144
+      ],
+      [
+        0.5763454270059883,
+        0.3326860287264446,
+        0.08112979160705631,
+        0.21581824835112,
+        0.2648262254207737,
+        0.7437600857067611
+      ],
+      [
+        0.34783695728129516,
+        0.7429398225795205,
+        0.9677177623996287,
+        0.4694620372265387,
+        0.42558975996627363,
+        0.830867398874192
+      ],
+      [
+        0.17827492647964968,
+        0.5749381022334128,
+        0.44821657050172187,
+        0.325941431304228,
+        0.3627342296452367,
+        0.63771428546806
+      ],
+      [
+        0.49150885008412415,
+        0.8373552645180726,
+        0.859974135524771,
+        0.1097693715711488,
+        0.08811602825884632,
+        0.9085544134901842
+      ],
+      [
+        0.7751149354880493,
+        0.6970650329973457,
+        0.5721045584275775,
+        0.7167094371537281,
+        0.6833834271957452,
+        0.26773085880476677
+      ],
+      [
+        0.10166792529276847,
+        0.7362190987378372,
+        0.8535774073815503,
+        0.17998437491699107,
+        0.052763544111276685,
+        0.5951650747119921
+      ],
+      [
+        0.9112189780652045,
+        0.5097122390010298,
+        0.4459611418317015,
+        0.9130004307629679,
+        0.9049664776268492,
+        0.314722515982026
+      ],
+      [
+        0.14935153590019168,
+        0.2317430581819511,
+        0.5916262069666853,
+        0.07376313017509459,
+        0.2405781307128859,
+        0.05630518751519893
+      ],
+      [
+        0.7768922840579682,
+        0.2221435007065378,
+        0.8202762297537134,
+        0.20909563512890048,
+        0.180817221804259,
+        0.6214151065269795
+      ],
+      [
+        0.10832561194316466,
+        0.5811294902822142,
+        0.4547255390387566,
+        0.7358257043622263,
+        0.5937971714627323,
+        0.5613858751534765
+      ],
+      [
+        0.5968250372489597,
+        0.5115312528367488,
+        0.7512721328800263,
+        0.730803086361921,
+        0.7569872160423191,
+        0.44425211296813233
+      ],
+      [
+        0.44975247722058614,
+        0.06849831059112403,
+        0.637988502670169,
+        0.29997791307888255,
+        0.827806814705105,
+        0.6537603379797544
+      ],
+      [
+        0.5821391406712931,
+        0.7205487125422644,
+        0.6160420032742272,
+        0.42188452264613063,
+        0.26099913912654993,
+        0.036928505591087506
+      ],
+      [
+        0.3000716855043491,
+        0.6784180125414558,
+        0.24403437823685437,
+        0.5687532480033072,
+        0.0741614211267446,
+        0.7270376006433973
+      ],
+      [
+        0.7449231588249248,
+        0.6884083503999975,
+        0.19999722961041475,
+        0.7586969796423055,
+        0.597094797651805,
+        0.5903305482993534
+      ],
+      [
+        0.7622934276162571,
+        0.6484985554104625,
+        0.755698731497181,
+        0.7543141897655229,
+        0.8856243889268802,
+        0.38061299861616493
+      ],
+      [
+        0.35623344318062505,
+        0.14016364720860552,
+        0.8086818071538201,
+        0.09866908092656394,
+        0.25227785320429535,
+        0.6253187168796631
+      ],
+      [
+        0.5951096282830347,
+        0.45730277159580845,
+        0.40063818398147005,
+        0.6559371258543526,
+        0.7340341313279547,
+        0.0026668180124965624
+      ],
+      [
+        0.5577647422406885,
+        0.36179800265737255,
+        0.8810548528204559,
+        0.4953961749256737,
+        0.5122740721373601,
+        0.568466225213592
+      ],
+      [
+        0.7036492660006071,
+        0.32129525529269287,
+        0.5999431110775837,
+        0.658162634629726,
+        0.7012805661475999,
+        0.4411202055356924
+      ],
+      [
+        0.7366096095619503,
+        0.586185786587,
+        0.48364760567637516,
+        0.6622299167897725,
+        0.12436666044909946,
+        0.6762571448014059
+      ],
+      [
+        0.6879811424773656,
+        0.591319358273853,
+        0.5901378338349906,
+        0.7995995652653699,
+        0.7192847940589542,
+        0.23732677664325608
+      ],
+      [
+        0.5775154438518009,
+        0.6341622524098758,
+        0.7601276382519292,
+        0.6678502317411,
+        0.6490339361947975,
+        0.06507961142213511
+      ],
+      [
+        0.5912732941548284,
+        0.5692789888901421,
+        0.4386806690148878,
+        0.14742590282012757,
+        0.06800800869174037,
+        0.7311704832638394
+      ],
+      [
+        0.9880546906154857,
+        0.03421465086254357,
+        0.48859469149718876,
+        0.2750460913574826,
+        0.9725408797084436,
+        0.8942748079346955
+      ],
+      [
+        0.16150382099154742,
+        0.9462783926123656,
+        0.2925971754173024,
+        0.8726965217726443,
+        0.25517526541063446,
+        0.7036610361230751
+      ],
+      [
+        0.2410391306361135,
+        0.2803344654083766,
+        0.5672139165870377,
+        0.45064177401581584,
+        0.5047469678399792,
+        0.05816525422768139
+      ],
+      [
+        0.8814652758056994,
+        0.8802827531312769,
+        0.1332012688834561,
+        0.5631396874576067,
+        0.3472657578784475,
+        0.7805811050978849
+      ],
+      [
+        0.09551361240968866,
+        0.210635833244849,
+        0.3159493246765805,
+        0.46250108819666796,
+        0.5826990015953936,
+        0.9416459462118455
+      ],
+      [
+        0.0830797856596483,
+        0.9130185783809742,
+        0.08157606373997323,
+        0.50275381184381,
+        0.2758533589201737,
+        0.47349481233436164
+      ],
+      [
+        0.40478253766473465,
+        0.28611753945617535,
+        0.3254637437090861,
+        0.23905790277486327,
+        0.36717876980000197,
+        0.6389732486478912
+      ],
+      [
+        0.25381947834805424,
+        0.09741166840182054,
+        0.5672289325577028,
+        0.36193913712369064,
+        0.6668547767641065,
+        0.27754873893440923
+      ],
+      [
+        0.5097591457600893,
+        0.3902334931999517,
+        0.36416357426646995,
+        0.34168461951748524,
+        0.5031304949969122,
+        0.10872857029636024
+      ],
+      [
+        0.07298287202332873,
+        0.4634320584793942,
+        0.34953155071290165,
+        0.280545584451986,
+        0.22389483403045793,
+        0.6559329085546086
+      ],
+      [
+        0.6278727344237522,
+        0.9042746729716858,
+        0.3325333639532807,
+        0.8834308265891836,
+        0.4137389937055266,
+        0.9142425667989782
+      ],
+      [
+        0.101930551237256,
+        0.9157806300401268,
+        0.008133710584216351,
+        0.19646332624770416,
+        0.04369625739532127,
+        0.6583401957380265
+      ],
+      [
+        0.813588877715341,
+        0.4705027051058486,
+        0.7088365533412901,
+        0.6604192451134525,
+        0.6697276816901993,
+        0.4083618323008126
+      ],
+      [
+        0.6022556035321104,
+        0.8574594837296635,
+        0.29279169144113526,
+        0.9664731192087368,
+        0.9422141820350441,
+        0.9762870018866533
+      ],
+      [
+        0.5385464362629375,
+        0.5408894883019437,
+        0.34804118750391067,
+        0.4031360896355479,
+        0.5299511839895974,
+        0.28434209771310465
+      ],
+      [
+        0.6642479985550945,
+        0.6450402171111616,
+        0.11571513174383184,
+        0.5735443077480363,
+        0.45643102927370766,
+        0.7309890483080227
+      ],
+      [
+        0.7591359616660123,
+        0.4986956934479597,
+        0.7026523210812229,
+        0.8578748884459727,
+        0.8580059752201897,
+        0.16029325037032008
+      ],
+      [
+        0.5423492656283185,
+        0.2993359768596345,
+        0.347523485640836,
+        0.574467213889254,
+        0.6608134261834707,
+        0.40652813665558285
+      ],
+      [
+        0.18145854495973918,
+        0.6928684738000631,
+        0.26625557278415724,
+        0.5416873117019153,
+        0.43790602792195027,
+        0.2930719248501536
+      ],
+      [
+        0.32691944834019276,
+        0.4311346787501137,
+        0.7798900236156777,
+        0.5736745497341451,
+        0.47624732464441394,
+        0.3437969624823898
+      ],
+      [
+        0.35634448505658595,
+        0.7653899149456113,
+        0.35687734352220557,
+        0.892875962762564,
+        0.7886562104899592,
+        0.10375577356752118
+      ],
+      [
+        0.1394194042026381,
+        0.5382201024183086,
+        0.23826580245179954,
+        0.06200328471849727,
+        0.025651152005799805,
+        0.9312712095117883
+      ],
+      [
+        0.27286252041660364,
+        0.6597023750290512,
+        0.6556787841786045,
+        0.4543076229432346,
+        0.2756135458993475,
+        0.547494295554502
+      ],
+      [
+        0.018458924360600214,
+        0.020443934351582323,
+        0.7364477352172321,
+        0.495376520612638,
+        0.9513727770017337,
+        0.9963970975483287
+      ],
+      [
+        0.5913705622804311,
+        0.3185796474580416,
+        0.6869933126511383,
+        0.5639324795849743,
+        0.6167657837784872,
+        0.5383446849035013
+      ],
+      [
+        0.4428592266141584,
+        0.6330202220261294,
+        0.8906851278202891,
+        0.8401465101211025,
+        0.8335352179237535,
+        0.26572825314087145
+      ],
+      [
+        0.6894443147221474,
+        0.4866131699767302,
+        0.3018316585916605,
+        0.386240583106996,
+        0.49612406340998405,
+        0.017248799937487756
+      ],
+      [
+        0.2699517548437588,
+        0.7293202321216661,
+        0.9653788227617781,
+        0.9530509343655832,
+        0.9024421484585463,
+        0.6869234401785602
+      ],
+      [
+        0.7204018106681324,
+        0.9519162893317666,
+        0.457976605278606,
+        0.9626245294502496,
+        0.5884264638739947,
+        0.4598109853124299
+      ],
+      [
+        0.11484243021482061,
+        0.03364683142151032,
+        0.7853314335699151,
+        0.04181954142137149,
+        0.29967986298158716,
+        0.5086280856613538
+      ]
+    ],
+    "coverage": {
+      "0.5": {
+        "coverage": [
+          0.548828125,
+          0.5390625,
+          0.541015625,
+          0.57421875,
+          0.5390625,
+          0.490234375
+        ],
+        "wilson": [
+          [
+            0.5055212711004755,
+            0.5914077351765867
+          ],
+          [
+            0.4957545667122138,
+            0.5817886383094361
+          ],
+          [
+            0.4977065860854698,
+            0.5837137791872625
+          ],
+          [
+            0.5309925363309701,
+            0.6163395532101644
+          ],
+          [
+            0.4957545667122138,
+            0.5817886383094361
+          ],
+          [
+            0.4471673378916501,
+            0.5334468608529375
+          ]
+        ]
+      },
+      "0.8": {
+        "coverage": [
+          0.8203125,
+          0.814453125,
+          0.818359375,
+          0.81640625,
+          0.794921875,
+          0.77734375
+        ],
+        "wilson": [
+          [
+            0.7847100751881306,
+            0.8511442059893977
+          ],
+          [
+            0.7784830650129315,
+            0.8457397354113492
+          ],
+          [
+            0.78263299633789,
+            0.8493441245885558
+          ],
+          [
+            0.780557332045865,
+            0.8475426286294983
+          ],
+          [
+            0.757813742654326,
+            0.8276374552591298
+          ],
+          [
+            0.7393174041291233,
+            0.8112393515245901
+          ]
+        ]
+      },
+      "0.9": {
+        "coverage": [
+          0.912109375,
+          0.896484375,
+          0.8984375,
+          0.89453125,
+          0.890625,
+          0.888671875
+        ],
+        "wilson": [
+          [
+            0.8844149764714027,
+            0.9336658365070025
+          ],
+          [
+            0.8670780645066506,
+            0.9199854664630948
+          ],
+          [
+            0.8692344473259713,
+            0.9217062438948566
+          ],
+          [
+            0.8649245176143979,
+            0.9182618531042649
+          ],
+          [
+            0.86062566245746,
+            0.9148063877590378
+          ],
+          [
+            0.8584802269199013,
+            0.9130746630455141
+          ]
+        ]
+      },
+      "0.95": {
+        "coverage": [
+          0.939453125,
+          0.94921875,
+          0.943359375,
+          0.953125,
+          0.94921875,
+          0.943359375
+        ],
+        "wilson": [
+          [
+            0.915340639807479,
+            0.957020416686081
+          ],
+          [
+            0.9266340388165446,
+            0.9651128189324278
+          ],
+          [
+            0.9198386034432544,
+            0.9602767735524707
+          ],
+          [
+            0.9312006389371313,
+            0.9683005393140062
+          ],
+          [
+            0.9266340388165446,
+            0.9651128189324278
+          ],
+          [
+            0.9198386034432544,
+            0.9602767735524707
+          ]
+        ]
+      }
+    },
+    "recovery": {
+      "median_rmse": [
+        0.00024091765884681385,
+        0.18165443145329285,
+        0.0017157327531687767,
+        0.01602980483860846,
+        0.030038709511538857,
+        0.44600780408599255
+      ],
+      "truth_posterior_median_correlation": [
+        0.9999846853967091,
+        0.9978385415918909,
+        0.9992148106960776,
+        0.9998340379337047,
+        0.9926815115939697,
+        -0.041973330981899315
+      ],
+      "median_posterior_width90": [
+        0.0005245022475719452,
+        0.22212173938751212,
+        0.0009195689111947958,
+        0.04278536438941971,
+        0.008404430747032177,
+        1.3414784029126166
+      ],
+      "prior_width90": [
+        0.135,
+        8.91,
+        0.135,
+        2.61,
+        0.765,
+        1.35
+      ],
+      "median_width90_over_prior": [
+        0.0038852018338662603,
+        0.02492948814674659,
+        0.006811621564405894,
+        0.0163928599193179,
+        0.010986183983048597,
+        0.9936877058611974
+      ],
+      "prior_midpoint_rmse": [
+        0.04356098636756658,
+        2.770875053408706,
+        0.04330901211729393,
+        0.8798982882107513,
+        0.24822332799063374,
+        0.4370734589111061
+      ],
+      "scope": "Descriptive recovery over the same 512 validation rows and fresh fixed population c/Z; no reserved-test claim."
+    },
+    "mean_posterior_sd": [
+      0.0003950865939259529,
+      0.12527722120285034,
+      0.0014721860643476248,
+      0.018841255456209183,
+      0.015628444030880928,
+      0.42896202206611633
+    ],
+    "recovery_sha256": "4e9e623eb479b91192a4eac87f78558bb5151859e3dffcbad51da9168eea3944",
+    "observations_sha256": "1b5521044ee7a25ccb01a4e7b9c764500efd4682b2636ceb70667bfaeee5cbc0",
+    "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d",
+    "generating_c": {
+      "prior": "independent Uniform(.5,2)",
+      "namespace": 3,
+      "count": 512
+    },
+    "scope": "six marginal full-prior DKW checks per endpoint; no simultaneous claim across endpoints or arms"
+  },
+  "conditional_status": "fail",
+  "synthetic_conditional_status": "fail",
+  "seconds": 25.41778333298862,
+  "protected_inputs_unchanged": true
+}

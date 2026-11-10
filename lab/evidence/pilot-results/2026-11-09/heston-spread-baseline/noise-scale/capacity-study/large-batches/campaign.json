@@ -1,0 +1,71 @@
+{
+  "format": "heston_spread_scale_large_batch_campaign_v1",
+  "status": "complete",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/protocol.json",
+    "sha256": "f793bdb656423f4268a93640ae55e6f599ad2662a42d4f4157ed0c8018420840"
+  },
+  "started_utc": "2026-11-10T20:57:01.603611+00:00",
+  "git_revision": "290106a70f40b9954097d3ba077d75d20fe83921",
+  "arms": {
+    "1024": {
+      "status": "complete",
+      "pid": 23780,
+      "output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024.log",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_large_batch.py",
+        "--checkpoint",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000",
+        "--bank",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+        "--protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/protocol.json",
+        "--batch-size",
+        "1024",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024",
+        "--worker"
+      ],
+      "returncode": 0,
+      "seconds": 1509.7120113749988,
+      "training": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-1024/training.json",
+        "sha256": "f4e75e4e949d3455674f8c8f78b9fe3f342791fbad09791eb0e2adfafa48c193"
+      }
+    },
+    "4098": {
+      "status": "complete",
+      "pid": 23781,
+      "output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098.log",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_large_batch.py",
+        "--checkpoint",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000",
+        "--bank",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+        "--protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/protocol.json",
+        "--batch-size",
+        "4098",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098",
+        "--worker"
+      ],
+      "returncode": 0,
+      "seconds": 1060.160515167052,
+      "training": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/large-batches/batch-4098/training.json",
+        "sha256": "ee23a6f6b78a369608ab4f04b2faaab7191e55798f261588b8cf2820ce923772"
+      }
+    }
+  },
+  "automatic_retry": false,
+  "automatic_extension": false,
+  "scientific_acceptance": false,
+  "reserved_arrays_opened": false,
+  "seconds": 1509.7823754169513
+}

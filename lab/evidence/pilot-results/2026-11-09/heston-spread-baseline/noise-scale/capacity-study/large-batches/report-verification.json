@@ -1,0 +1,41 @@
+{
+  "format": "heston_spread_scale_large_batch_report_verification_v1",
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/large-batches/report.html",
+    "sha256": "39cb0bae53713fd763a533d5762b4d69bd1d4c36c2514d49e31d9fe52d3b678e"
+  },
+  "standalone_figures": 16,
+  "inline_svgs": 8,
+  "duplicate_ids": [],
+  "missing_anchors": [],
+  "missing_figure_links": [],
+  "external_asset_links": [],
+  "batch_sizes": [
+    128,
+    512,
+    1024,
+    4098
+  ],
+  "new_endpoints": 8,
+  "matched_mcmc_ready_cases": 7,
+  "source_bindings_checked": 127,
+  "new_pricing_training_or_posterior_sampling": false,
+  "visual_inspection": [
+    "new-parameter-recovery.png",
+    "learning-curves.png",
+    "selected-c-recovery.png",
+    "c-population-recovery.png"
+  ],
+  "lead_uses_final_observed_results": true,
+  "visual_inspection_sources": {
+    "evaluation_agent": [
+      "new-parameter-recovery.png",
+      "learning-curves.png"
+    ],
+    "root": [
+      "selected-c-recovery.png",
+      "c-population-recovery.png"
+    ]
+  },
+  "reporting_complete": true
+}
