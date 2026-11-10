@@ -1,0 +1,587 @@
+{
+  "format": "heston_spread_scale_capacity_study_v1",
+  "predeclared_before_fit": true,
+  "authorized_request": "Increase the bank, try two batch sizes and train for more epochs.",
+  "joint_task": {
+    "format": "heston_spread_task_v1",
+    "model": "heston",
+    "measure": "Q",
+    "parameter_names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho",
+      "c"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        10.0
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        3.0
+      ],
+      [
+        -0.95,
+        -0.1
+      ],
+      [
+        0.5,
+        2.0
+      ]
+    ],
+    "prior": "independent Uniform in physical coordinates",
+    "infer_c": true,
+    "fixed_c": null,
+    "c_bounds": [
+      0.5,
+      2.0
+    ],
+    "quote_count": 54,
+    "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+    "observation_model": "independent Gaussian with price SD c * half_spread",
+    "pricing_controls": {
+      "c_min": 0.5,
+      "numerical_fraction": 0.02,
+      "quadrature_ladder": [
+        [
+          256,
+          150.0
+        ],
+        [
+          512,
+          300.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1200.0
+        ],
+        [
+          4096,
+          2400.0
+        ],
+        [
+          8192,
+          4800.0
+        ],
+        [
+          16384,
+          9600.0
+        ]
+      ]
+    }
+  },
+  "parent_checkpoint": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000",
+    "record": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000/checkpoint.json",
+      "sha256": "7b8c2126e2da16146d8a4789ff04f53e8709a6213ad24cbf97a33e583aa061a3"
+    },
+    "model": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000/model.keras",
+      "sha256": "7b4f4ec9ce9cd2f9b184ad05c061c053997a6a1e7dfc79c0305e8cf602622656"
+    },
+    "state": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000/state.npz",
+      "sha256": "e4bb7c9bd2377073eebb585e4853a74000e9318ff61f8ae420e1f8d89d76b99a"
+    }
+  },
+  "bank": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+    "record": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank/bank.json",
+      "sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e"
+    },
+    "payload": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank/bank.npz",
+      "sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb"
+    }
+  },
+  "sources": {
+    "trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale.py",
+      "sha256": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892"
+    },
+    "evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_continuation.py",
+      "sha256": "eda6b86ed47c3aa6af0678c129eba0e4a7220d4070fed7193fe5b6e511af39b5"
+    },
+    "controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_capacity.py",
+      "sha256": "7d25e78b885a4bf6db914290388327aac85eea391bbbdaa743bc236bef8d2fb0"
+    },
+    "frozen_scale_trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_scale.py",
+      "sha256": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068"
+    },
+    "frozen_fixed_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py",
+      "sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38"
+    },
+    "full_state_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_baseline.py",
+      "sha256": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+    }
+  },
+  "arms": [
+    {
+      "batch_size": 128,
+      "contract": {
+        "format": "heston_spread_scale_expansion_protocol_v1",
+        "predeclared_before_fit": true,
+        "task_fingerprint": "7dc67dc4dc7fa210b777207fefc7211034a1bcf5eddbde10e054e4a0a86439c0",
+        "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+        "parent_checkpoint_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000",
+        "parent_checkpoint_sha256": "7b8c2126e2da16146d8a4789ff04f53e8709a6213ad24cbf97a33e583aa061a3",
+        "parent_model_sha256": "7b4f4ec9ce9cd2f9b184ad05c061c053997a6a1e7dfc79c0305e8cf602622656",
+        "parent_state_sha256": "e4bb7c9bd2377073eebb585e4853a74000e9318ff61f8ae420e1f8d89d76b99a",
+        "parent_actual_optimizer_updates": 60000,
+        "bank_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+        "bank_record_sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+        "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+        "bank_identity": {
+          "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+          "task": {
+            "format": "heston_pilot_full_campaign_task_v1",
+            "model": "heston",
+            "measure": "Q",
+            "parameter_names": [
+              "initial_variance",
+              "kappa",
+              "theta",
+              "vol_of_vol",
+              "rho",
+              "tau"
+            ],
+            "prior_bounds": [
+              [
+                0.01,
+                0.16
+              ],
+              [
+                0.1,
+                10.0
+              ],
+              [
+                0.01,
+                0.16
+              ],
+              [
+                0.1,
+                3.0
+              ],
+              [
+                -0.95,
+                -0.1
+              ],
+              [
+                0.0,
+                0.02
+              ]
+            ],
+            "prior": "independent Uniform in physical coordinates",
+            "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+            "quote_count": 54,
+            "layout": "full",
+            "c_training_bounds": [
+              0.5,
+              2.0
+            ],
+            "tau_training_bounds": [
+              0.0,
+              0.02
+            ],
+            "observation_model": {
+              "distribution": "independent Gaussian",
+              "mean": "deterministic refined Heston price",
+              "variance": "(c * observed halfspread)^2 + (tau * frozen observed market vega)^2",
+              "vega_units": "quote price per unit decimal implied volatility",
+              "conditioning": "fixed quote design, carry, market vegas and spread metadata"
+            },
+            "pricing_controls": {
+              "quadrature_ladder": [
+                [
+                  256,
+                  150.0
+                ],
+                [
+                  512,
+                  300.0
+                ],
+                [
+                  1024,
+                  600.0
+                ],
+                [
+                  2048,
+                  1200.0
+                ],
+                [
+                  4096,
+                  2400.0
+                ],
+                [
+                  8192,
+                  4800.0
+                ],
+                [
+                  16384,
+                  9600.0
+                ]
+              ],
+              "numerical_fraction": 0.02,
+              "measurement_spread_multiplier": 0.5,
+              "precision_scope": "gate relative to smallest supported measurement SD; never relaxed by tau"
+            },
+            "scope": "fixed engineering benchmark; no market-model or release acceptance"
+          },
+          "train_rows": 100000,
+          "validation_rows": 5000,
+          "test_rows": 2000,
+          "seed": 9011,
+          "producer_source_sha256": {
+            "campaign_trainer": "cef4a364eab69cfcd78ed4a20128c5d58155ff7a682520ffda8e7d841d4dc847",
+            "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+            "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+          },
+          "environment_sha256": {
+            "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+            "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+          },
+          "random_protocol": "PCG64 SeedSequence([0x43414D50, seed, split]); split0 train, split1 validation, split2 reserved test; prefix-stable physical Uniform draws",
+          "stored_latents": [
+            "initial_variance",
+            "kappa",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "excluded_latents": "tau does not affect clean prices and is sampled fresh during training"
+        },
+        "reserved_arrays_opened": false,
+        "simulation_calls": 0,
+        "train_rows": 100000,
+        "batch_size": 128,
+        "batches_per_pass": 782,
+        "tail_batch_size": 32,
+        "additional_bank_passes": 500,
+        "checkpoint_bank_passes": [
+          25,
+          100,
+          250,
+          500
+        ],
+        "additional_optimizer_updates": 391000,
+        "additional_presentations": 50000000,
+        "seed": 9011,
+        "augmentation_namespace": 501,
+        "permutation_namespace": 1162891075,
+        "paired_examples_across_batch_sizes": true,
+        "row_order": "same full per-pass permutation; unpadded final tail",
+        "schedule": {
+          "class_name": "SpreadExposureCosine",
+          "maximum": 5e-05,
+          "minimum": 5e-06,
+          "decay_bank_passes": 400,
+          "budget_axis": "exact cumulative additional presentations"
+        },
+        "source_sha256": {
+          "continuation": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892",
+          "frozen_scale": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068",
+          "frozen_fixed": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+          "full_state_helper": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+        },
+        "versions": {
+          "python": "3.12.16",
+          "bayesflow": "2.1.0",
+          "keras": "3.15.1",
+          "jax": "0.11.1",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1"
+        },
+        "environment_sha256": {
+          "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+          "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+        },
+        "max_wall_seconds": 5400,
+        "new_pricing_labels": false,
+        "automatic_extension": false,
+        "scientific_acceptance": false,
+        "smoke_test_only": false
+      },
+      "output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-128",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-128.log"
+    },
+    {
+      "batch_size": 512,
+      "contract": {
+        "format": "heston_spread_scale_expansion_protocol_v1",
+        "predeclared_before_fit": true,
+        "task_fingerprint": "7dc67dc4dc7fa210b777207fefc7211034a1bcf5eddbde10e054e4a0a86439c0",
+        "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+        "parent_checkpoint_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000",
+        "parent_checkpoint_sha256": "7b8c2126e2da16146d8a4789ff04f53e8709a6213ad24cbf97a33e583aa061a3",
+        "parent_model_sha256": "7b4f4ec9ce9cd2f9b184ad05c061c053997a6a1e7dfc79c0305e8cf602622656",
+        "parent_state_sha256": "e4bb7c9bd2377073eebb585e4853a74000e9318ff61f8ae420e1f8d89d76b99a",
+        "parent_actual_optimizer_updates": 60000,
+        "bank_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+        "bank_record_sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+        "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+        "bank_identity": {
+          "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+          "task": {
+            "format": "heston_pilot_full_campaign_task_v1",
+            "model": "heston",
+            "measure": "Q",
+            "parameter_names": [
+              "initial_variance",
+              "kappa",
+              "theta",
+              "vol_of_vol",
+              "rho",
+              "tau"
+            ],
+            "prior_bounds": [
+              [
+                0.01,
+                0.16
+              ],
+              [
+                0.1,
+                10.0
+              ],
+              [
+                0.01,
+                0.16
+              ],
+              [
+                0.1,
+                3.0
+              ],
+              [
+                -0.95,
+                -0.1
+              ],
+              [
+                0.0,
+                0.02
+              ]
+            ],
+            "prior": "independent Uniform in physical coordinates",
+            "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+            "quote_count": 54,
+            "layout": "full",
+            "c_training_bounds": [
+              0.5,
+              2.0
+            ],
+            "tau_training_bounds": [
+              0.0,
+              0.02
+            ],
+            "observation_model": {
+              "distribution": "independent Gaussian",
+              "mean": "deterministic refined Heston price",
+              "variance": "(c * observed halfspread)^2 + (tau * frozen observed market vega)^2",
+              "vega_units": "quote price per unit decimal implied volatility",
+              "conditioning": "fixed quote design, carry, market vegas and spread metadata"
+            },
+            "pricing_controls": {
+              "quadrature_ladder": [
+                [
+                  256,
+                  150.0
+                ],
+                [
+                  512,
+                  300.0
+                ],
+                [
+                  1024,
+                  600.0
+                ],
+                [
+                  2048,
+                  1200.0
+                ],
+                [
+                  4096,
+                  2400.0
+                ],
+                [
+                  8192,
+                  4800.0
+                ],
+                [
+                  16384,
+                  9600.0
+                ]
+              ],
+              "numerical_fraction": 0.02,
+              "measurement_spread_multiplier": 0.5,
+              "precision_scope": "gate relative to smallest supported measurement SD; never relaxed by tau"
+            },
+            "scope": "fixed engineering benchmark; no market-model or release acceptance"
+          },
+          "train_rows": 100000,
+          "validation_rows": 5000,
+          "test_rows": 2000,
+          "seed": 9011,
+          "producer_source_sha256": {
+            "campaign_trainer": "cef4a364eab69cfcd78ed4a20128c5d58155ff7a682520ffda8e7d841d4dc847",
+            "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+            "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+          },
+          "environment_sha256": {
+            "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+            "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+          },
+          "random_protocol": "PCG64 SeedSequence([0x43414D50, seed, split]); split0 train, split1 validation, split2 reserved test; prefix-stable physical Uniform draws",
+          "stored_latents": [
+            "initial_variance",
+            "kappa",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "excluded_latents": "tau does not affect clean prices and is sampled fresh during training"
+        },
+        "reserved_arrays_opened": false,
+        "simulation_calls": 0,
+        "train_rows": 100000,
+        "batch_size": 512,
+        "batches_per_pass": 196,
+        "tail_batch_size": 160,
+        "additional_bank_passes": 500,
+        "checkpoint_bank_passes": [
+          25,
+          100,
+          250,
+          500
+        ],
+        "additional_optimizer_updates": 98000,
+        "additional_presentations": 50000000,
+        "seed": 9011,
+        "augmentation_namespace": 501,
+        "permutation_namespace": 1162891075,
+        "paired_examples_across_batch_sizes": true,
+        "row_order": "same full per-pass permutation; unpadded final tail",
+        "schedule": {
+          "class_name": "SpreadExposureCosine",
+          "maximum": 5e-05,
+          "minimum": 5e-06,
+          "decay_bank_passes": 400,
+          "budget_axis": "exact cumulative additional presentations"
+        },
+        "source_sha256": {
+          "continuation": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892",
+          "frozen_scale": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068",
+          "frozen_fixed": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+          "full_state_helper": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+        },
+        "versions": {
+          "python": "3.12.16",
+          "bayesflow": "2.1.0",
+          "keras": "3.15.1",
+          "jax": "0.11.1",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1"
+        },
+        "environment_sha256": {
+          "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+          "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+        },
+        "max_wall_seconds": 5400,
+        "new_pricing_labels": false,
+        "automatic_extension": false,
+        "scientific_acceptance": false,
+        "smoke_test_only": false
+      },
+      "output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512.log"
+    }
+  ],
+  "original_study": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/protocol.json",
+    "sha256": "74ac585500dd0758a49113d1201c5a0119ffbc6970573c33ff61b12675639102"
+  },
+  "reference_recovery": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/reference-recovery-v2.json",
+    "sha256": "ea46493d36f9bd7027f3c559afb8765b4e33156463cd17eec6e02981ac4f5a80"
+  },
+  "baseline_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/evaluations/060000/evaluation.json",
+    "sha256": "a7702ca66f886dde7866477d7b7782fccdaf7c79dccab9b74c32d4a60b445aa9"
+  },
+  "evaluation": {
+    "batch_sizes": [
+      128,
+      512
+    ],
+    "checkpoint_bank_passes": [
+      25,
+      100,
+      250,
+      500
+    ],
+    "conditional_cases": [
+      "synthetic-broad",
+      "synthetic-market-like",
+      "market"
+    ],
+    "family_checks": 384,
+    "family_definition": "2 metrics * 8 quantities * 3 cases * 4 endpoints * 2 batch-size arms",
+    "mean_tolerance_reference_sd": 0.3,
+    "width_ratio90_limits": [
+      0.75,
+      1.25
+    ],
+    "block_bootstrap_replicates": 400,
+    "seed": 261112,
+    "population_rows": 512,
+    "posterior_draws_per_population_case": 512,
+    "conditional_draws": 4096,
+    "population_c": "reuse draw_c(512,0,261112,namespace=3); generating c is never a condition",
+    "population_gaussian": "reuse PCG64 SeedSequence([0x53504556,261112]) standard errors",
+    "sbc_scope": "six marginal full-prior DKW checks per endpoint; no simultaneous claim across endpoints or arms",
+    "baseline_scope": "original 60k endpoint is a descriptive population baseline outside the 384 conditional checks",
+    "reserved_arrays_opened": false,
+    "new_reference_sampling": false,
+    "scientific_acceptance": false
+  },
+  "campaign": {
+    "worker_wall_seconds": 5400,
+    "whole_training_wall_seconds": 5700,
+    "max_concurrent_workers": 2,
+    "automatic_retry": false
+  },
+  "comparison": {
+    "primary_budget_axis": "Equal additional examples: 500 complete100k bank passes =50m perarm.",
+    "pairing": "Identical full per-pass row permutations, c values and54 Gaussian errors per row; grouping alone differs.",
+    "learning_rate": "Explicit restart5e-5; cosine by additional examples to5e-6 over400passes, then hold5e-6 through500.",
+    "parent_learning_rate": 5e-07,
+    "attribution": "Changes relative to the old60k baseline combine bank expansion, added data exposure and an LR restart. This is not a factorial attribution study.",
+    "batch_interpretation": "At equal examples batch128 has391000 additional updates; batch512 has98000. Different update counts are part of the equal-examples batch comparison.",
+    "seed_scope": "One shared warm start and one paired augmentation stream; no across-seed stability claim."
+  },
+  "reserved_arrays_opened": false,
+  "new_pricing_labels": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false,
+  "automatic_extension": false,
+  "stop_after": "Complete declared runs and diagnostics, then reflect before grid changes or Bergomi."
+}

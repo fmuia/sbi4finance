@@ -2,6 +2,8 @@
 
 **Completed development study, 10 November 2026; no accepted neural checkpoint.** This study examines the noise-scale step of the Heston plan on the **existing 54 actual SPXW contracts**. It follows the user-authorized scale investigation in [PR #85](https://github.com/fmuia/sbi4finance/pull/85). The [offline HTML report](report.html) shows the results, recovery/SBC plots and executed network/rate code. The frozen [study protocol](protocol.json), original [reference protocol](reference-protocol.json) and [training protocol](training-protocol.json) were persisted before their respective runs. The explicit [cache recovery addendum](reference-recovery-v2.json) preserves the original targets and budgets.
 
+The subsequent user-authorized [larger-bank training comparison](capacity-study/README.md) uses separate protocols and output identities. It continues the same six-target posterior with 100k physical surfaces, batch128/512 and 500 additional complete bank passes. The results and stop below describe this original completed study; they are not overwritten by the follow-up.
+
 The five physical Heston priors, contract geometry, carry, ACT/365F clock and observed half-spread profile remain unchanged. No grid labels, spread-profile variation, additional tau/vega component, flexible-input training or Bergomi work belongs to this study. The earlier fixed-c neural failures and capped boundary reference remain under their original identities.
 
 ## Results and reflection
