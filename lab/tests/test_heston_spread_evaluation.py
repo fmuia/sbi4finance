@@ -19,16 +19,26 @@ class EvaluationTests(unittest.TestCase):
             np.savez(path, parameters=np.ones((4,32,5)))
             target = {"fixed_c":1., "infer_c":False}
             y = np.array([1.,-2.,3.])
+            diagnostic_path=Path(directory)/"diagnostics.json"
+            diagnostic_path.write_text('{"valid":"diagnostics"}')
+            products={"control":[0.,.1]}
             record = {"task":target,"design_sha256":"design","case_id":"case",
-                      "observation_sha256":evaluator.observations_digest(y)}
+                      "observations":y.tolist(),"observation_sha256":evaluator.observations_digest(y),
+                      "panel_sha256":"panel","products":products,"selected_attempt":0,
+                      "attempts":[{"diagnostics_sha256":evaluator.digest(diagnostic_path)}]}
             diagnostics = {"chain_payload_sha256":evaluator.digest(path)}
-            kwargs = dict(target=target,design_sha256="design",case_id="case",observations=y)
+            kwargs = dict(target=target,design_sha256="design",case_id="case",observations=y,
+                          panel_sha256="panel",products=products,diagnostics_path=diagnostic_path)
             evaluator.check_reference_binding(record,diagnostics,path,**kwargs)
             with self.assertRaisesRegex(ValueError,"differs"):
                 evaluator.check_reference_binding(record,diagnostics,path,**{**kwargs,"observations":y+1})
             changed = copy.deepcopy(record); changed["task"]={"fixed_c":2.,"infer_c":False}
             with self.assertRaisesRegex(ValueError,"differs"):
                 evaluator.check_reference_binding(changed,diagnostics,path,**kwargs)
+            with self.assertRaisesRegex(ValueError,"differs"):
+                evaluator.check_reference_binding(record,diagnostics,path,**{**kwargs,"products":{"control":[0.,.2]}})
+            with self.assertRaisesRegex(ValueError,"differs"):
+                evaluator.check_reference_binding(record,diagnostics,path,**{**kwargs,"panel_sha256":"different"})
             with path.open("ab") as stream:
                 stream.write(b"changed")
             with self.assertRaisesRegex(ValueError,"differs"):
@@ -44,6 +54,15 @@ class EvaluationTests(unittest.TestCase):
         np.testing.assert_array_equal(draws,saved)
         with self.assertRaises(ValueError):
             evaluator.support_report(np.array([[np.nan,1.]]),bounds)
+
+    def test_validation_arrays_reject_reshaping_nonfinite_or_wrong_physical_truths(self):
+        bounds=np.array([[.01,.16],[.1,10.]])
+        truth=np.array([[.05,1.],[.06,2.]])
+        clean=np.ones((2,3))
+        evaluator.validate_development_arrays(truth,clean,bounds,2,3)
+        for bad in (truth[:1], np.array([[np.nan,1.],[.06,2.]]), np.array([[.2,1.],[.06,2.]])):
+            with self.assertRaises(ValueError):
+                evaluator.validate_development_arrays(bad,clean,bounds,2,3)
 
     def test_biased_neural_posterior_fails_and_unconverged_reference_cannot_pass(self):
         rng=np.random.default_rng(704)

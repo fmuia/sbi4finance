@@ -59,19 +59,30 @@ def compare_draws(neural, chains, diagnostic, names, products, *, seed, replicat
 
 
 def check_reference_binding(record, diagnostics, chains_path, *, target, design_sha256,
-                            case_id, observations):
+                            case_id, observations, panel_sha256, products, diagnostics_path):
     """Reject target/data substitutions before using a converged-looking trace."""
     if (record["task"] != target or record["design_sha256"] != design_sha256
             or record["case_id"] != case_id
             or record["observation_sha256"] != observations_digest(observations)
+            or not np.array_equal(record["observations"], observations)
+            or record["panel_sha256"] != panel_sha256 or record["products"] != products
+            or record["attempts"][record["selected_attempt"]]["diagnostics_sha256"] != digest(diagnostics_path)
             or diagnostics["chain_payload_sha256"] != digest(chains_path)):
         raise ValueError("reference target, observation, design or diagnosed payload differs")
+
+
+def validate_development_arrays(truth, clean, bounds, count, quote_count):
+    if (truth.shape != (count, len(bounds)) or clean.shape != (count, quote_count)
+            or not np.isfinite(truth).all() or not np.isfinite(clean).all()
+            or np.any(truth < bounds[:, 0]) or np.any(truth > bounds[:, 1])):
+        raise ValueError("validation data shape, finiteness or physical support differs")
 
 
 def evaluate(checkpoint, panel_path, references, bank_path, *, seed=261112,
              conditional_draws=4096, validation_rows=512, validation_draws=512,
              replicates=400):
     from scripts.train_heston_spread_baseline import load_checkpoint, sample
+    from scripts.run_heston_spread_reference import load_case
     workflow, metadata = load_checkpoint(checkpoint)
     task = metadata["task"]
     panel_path, bank_path, references = Path(panel_path), Path(bank_path), Path(references)
@@ -82,7 +93,9 @@ def evaluate(checkpoint, panel_path, references, bank_path, *, seed=261112,
         raise ValueError("only the declared fixed-c=1 task and matched panel are supported")
     bank_record = json.loads((bank_path / "bank.json").read_text())
     payload = bank_path / bank_record["payload"]
-    if (metadata["bank_payload_sha256"] != bank_record["payload_sha256"]
+    if (metadata["bank_record_sha256"] != digest(bank_path / "bank.json")
+            or metadata["bank_identity"] != bank_record["identity"]
+            or metadata["bank_payload_sha256"] != bank_record["payload_sha256"]
             or digest(payload) != bank_record["payload_sha256"]):
         raise ValueError("checkpoint and validation bank payload differ")
     bounds = np.asarray(target["prior_bounds"])
@@ -93,7 +106,8 @@ def evaluate(checkpoint, panel_path, references, bank_path, *, seed=261112,
         "scientific_acceptance": False, "reserved_test_arrays_opened": False,
         "scope": "Development conditional/population checks; no final-pool or lesson acceptance."}
     for i, case in enumerate(panel["cases"]):
-        case_id, y = case["id"], np.asarray(case["observations"])
+        case_id = case["id"]
+        _, _, _, y = load_case(panel_path, case_id)
         neural = sample(workflow, task, y[None], conditional_draws, seed=seed+i)[0]
         support = support_report(neural, bounds)
         if support["material_outside_value_count"]:
@@ -112,13 +126,15 @@ def evaluate(checkpoint, panel_path, references, bank_path, *, seed=261112,
                 continue
             chains_path = Path(record["chain_payload_path"])
             check_reference_binding(record, diagnostic, chains_path, target=target,
-                design_sha256=task["design_sha256"], case_id=case_id, observations=y)
+                design_sha256=task["design_sha256"], case_id=case_id, observations=y,
+                panel_sha256=digest(panel_path), products=panel["products"], diagnostics_path=required[1])
             with np.load(chains_path, allow_pickle=False) as values:
                 chains = values["parameters"]
             retained = record["attempts"][record["selected_attempt"]]["draws"]
             if chains.shape != (record["settings"]["chains"], retained, len(names)):
                 raise ValueError("reference chain/draw dimensions differ from its run record")
-            if support_report(chains, bounds)["material_outside_value_count"]:
+            if (not np.isfinite(chains).all() or np.any(chains < bounds[:, 0])
+                    or np.any(chains > bounds[:, 1])):
                 raise ValueError("reference posterior violates declared prior support")
             entry["comparison"] = compare_draws(neural, chains, diagnostic, names,
                 panel["products"], seed=seed+100+i, replicates=replicates)
@@ -130,9 +146,8 @@ def evaluate(checkpoint, panel_path, references, bank_path, *, seed=261112,
     with np.load(payload, allow_pickle=False) as values:
         truth = values["validation_parameters"][:validation_rows].copy()
         clean = values["validation_clean"][:validation_rows].copy()
-    if len(truth) != validation_rows:
-        raise ValueError("not enough declared validation rows")
     h = np.asarray(task["records"]["half_spread"])
+    validate_development_arrays(truth, clean, bounds, validation_rows, len(h))
     rng = np.random.default_rng(np.random.SeedSequence([0x53504556, seed]))
     noisy = clean + h * rng.standard_normal(clean.shape)
     draws = np.concatenate([sample(workflow, task, noisy[start:start+16], validation_draws,

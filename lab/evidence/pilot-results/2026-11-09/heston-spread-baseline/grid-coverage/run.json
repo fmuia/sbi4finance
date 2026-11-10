@@ -1,0 +1,56 @@
+{
+  "format": "heston_spxw_grid_coverage_run_v1",
+  "historical_root": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109",
+  "raw_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/raw.json",
+  "raw_sha256": "8c730e1108e3ba0a0f7b2871799880a63eca6ad337be7e4c00de6e2989b59458",
+  "raw_size_bytes": 14091523,
+  "source_record_sha256": "2d469d987951041601cf8e0f31f45441f6d7d30e93b79d08d83a349c427d09b3",
+  "producer_source_sha256": "b251fad22bbecc8625230cbfcf16dac7a183214ba647465e805dddb9746f9f67",
+  "historical_reader_source_sha256": "7732dbca4f477e9a3cd8facacd256001b23a50d39e5ca8902e215ebd48a95f8d",
+  "input_design_sha256": {
+    "old54": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+    "symmetric": "31fbc25bda82490a3b06fa482b713ae355084dcc062fe9c4dc9c46602ed48156",
+    "scoring": "9cd827bccea60956aec65d3f0613e92c7686ffb540d47daaeab42d42167c0d00"
+  },
+  "output_sha256": {
+    "candidate.json": "5359aa5754d59fd37da0e7b1ee23a0c644251c60e44f80e577f0ce52980ba79c",
+    "summary.json": "7fedeb467cff41d28d224e31944c1f6a9c1c65acb5838e6dd37a9fc3ad9c1112",
+    "candidate-supported-revision.json": "fb33bd7803c86f8b491cff965fbf64997d5ffffbb74f2a33bbf23de5eea27710",
+    "summary-supported-revision.json": "33735204280e8450197345238845853863730a0a1571e48820f002fb2b2bc838"
+  },
+  "valuation_time_utc": "2026-11-09T20:13:37+00:00",
+  "snapshot_timestamp_utc": "2026-11-09T20:28:37+00:00",
+  "source_record_default_valuation_time_utc": "2026-11-09T20:28:37+00:00",
+  "valuation_assumption": "Original pilot: source snapshot timestamp minus assumed 15-minute delay; no bid/ask update timestamps or new source fetch.",
+  "selection_protocol": {
+    "expiry_rule": "nearest absolute ACT/365F maturity to nominal business-day label /252; ties earlier; duplicate nearest expiries flagged, not replaced",
+    "coordinate": "log(K/F)/(.16*sqrt(exact_ACT365F_T))",
+    "maximum_z_distance": 0.35,
+    "maximum_halfspread_over_mid": 0.25,
+    "target_order": [
+      -5.0,
+      -3.5,
+      -2.25,
+      -1.25,
+      -0.5,
+      0.0,
+      0.5,
+      1.0,
+      2.0
+    ],
+    "quote_tie_break": "lexicographic raw symbol",
+    "target_option_types": "puts for target_z<=0, calls for target_z>0; actual quotes must also be OTM",
+    "carry": "old exact estimates/symbols retained; new every-third paired strike within5%spot, at least15pairs, WLS halfspread SD convention",
+    "separately_declared_last_call_target_revision": 1.5,
+    "excluded_scoring_design": "preserved common raw held-out quotes remain unavailable to new fitting/carry"
+  },
+  "versions": {
+    "python": "3.12.16",
+    "numpy": "2.5.3"
+  },
+  "raw_downloaded": false,
+  "banks_opened": false,
+  "model_pricing_evaluations": 0,
+  "training_performed": false,
+  "scientific_acceptance": false
+}

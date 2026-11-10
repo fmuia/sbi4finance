@@ -17,6 +17,7 @@
   "checkpoints": [2000,10000],
   "seed": 9011,
   "posterior_family": "BayesFlow 2.1 spline coupling flow, subnet widths [128,128]",
+  "subnet_dropout": 0.05,
   "optimizer": "Adam, initial rate .0005, cosine horizon 10000, floor fraction .1",
   "input_contract": "ordered complete fixed 54-contract noisy prices divided by known half-spreads; no varying geometry or masking",
   "noise_augmentation": "fresh independent Gaussian errors on each training exposure; fixed c=1, no tau",

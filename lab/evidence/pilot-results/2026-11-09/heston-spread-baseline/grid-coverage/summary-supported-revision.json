@@ -1,0 +1,1193 @@
+{
+  "format": "heston_spxw_grid_coverage_summary_v1",
+  "buckets": [
+    {
+      "nominal_business_days": 5,
+      "target_maturity": 0.01984126984126984,
+      "expiration": "2026-11-16",
+      "maturity": 0.019266330542871638,
+      "calendar_days": 7.032210648148148,
+      "maturity_offset_calendar_days": -0.20985284391534373,
+      "duplicate_nearest_expiry": false,
+      "parser_eligible_quote_count": 480,
+      "quality_eligible_otm_count": 168,
+      "selection_rejections": {
+        "not_otm": 205,
+        "halfspread_over_mid_exceeds_25pct": 11,
+        "carry_anchor": 96
+      },
+      "targets": [
+        {
+          "target_z": -5.0,
+          "target_option_type": "put",
+          "symbol": "SPXW261116P06775000",
+          "realized_z": -5.016625978335413,
+          "distance": 0.016625978335413016,
+          "half_spread": 0.050000000000000044,
+          "halfspread_over_mid": 0.03333333333333336,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261116P06775000",
+            "z": -5.016625978335413,
+            "halfspread_over_mid": 0.03333333333333336
+          }
+        },
+        {
+          "target_z": -3.5,
+          "target_option_type": "put",
+          "symbol": "SPXW261116P07010000",
+          "realized_z": -3.4812537605690252,
+          "distance": 0.018746239430974754,
+          "half_spread": 0.07499999999999996,
+          "halfspread_over_mid": 0.02970297029702968,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261116P07010000",
+            "z": -3.4812537605690252,
+            "halfspread_over_mid": 0.02970297029702968
+          }
+        },
+        {
+          "target_z": -2.25,
+          "target_option_type": "put",
+          "symbol": "SPXW261116P07205000",
+          "realized_z": -2.2458028294367476,
+          "distance": 0.004197170563252417,
+          "half_spread": 0.10000000000000009,
+          "halfspread_over_mid": 0.01724137931034484,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261116P07205000",
+            "z": -2.2458028294367476,
+            "halfspread_over_mid": 0.01724137931034484
+          }
+        },
+        {
+          "target_z": -1.25,
+          "target_option_type": "put",
+          "symbol": "SPXW261116P07365000",
+          "realized_z": -1.2568208030003782,
+          "distance": 0.006820803000378239,
+          "half_spread": 0.20000000000000018,
+          "halfspread_over_mid": 0.012987012987013,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261116P07365000",
+            "z": -1.2568208030003782,
+            "halfspread_over_mid": 0.012987012987013
+          }
+        },
+        {
+          "target_z": -0.5,
+          "target_option_type": "put",
+          "symbol": "SPXW261116P07490000",
+          "realized_z": -0.4990146677612085,
+          "distance": 0.000985332238791492,
+          "half_spread": 0.1999999999999993,
+          "halfspread_over_mid": 0.00558659217877093,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261116P07490000",
+            "z": -0.4990146677612085,
+            "halfspread_over_mid": 0.00558659217877093
+          }
+        },
+        {
+          "target_z": 0.0,
+          "target_option_type": "put",
+          "symbol": "SPXW261116P07565000",
+          "realized_z": -0.050378165727136805,
+          "distance": 0.050378165727136805,
+          "half_spread": 0.20000000000000284,
+          "halfspread_over_mid": 0.003361344537815174,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261116P07565000",
+            "z": -0.050378165727136805,
+            "halfspread_over_mid": 0.003361344537815174
+          }
+        },
+        {
+          "target_z": 0.5,
+          "target_option_type": "call",
+          "symbol": "SPXW261116C07655000",
+          "realized_z": 0.48215103704940604,
+          "distance": 0.01784896295059396,
+          "half_spread": 0.09999999999999964,
+          "halfspread_over_mid": 0.003952569169960461,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261116C07655000",
+            "z": 0.48215103704940604,
+            "halfspread_over_mid": 0.003952569169960461
+          }
+        },
+        {
+          "target_z": 1.0,
+          "target_option_type": "call",
+          "symbol": "SPXW261116C07745000",
+          "realized_z": 1.0084557299531143,
+          "distance": 0.008455729953114277,
+          "half_spread": 0.04999999999999982,
+          "halfspread_over_mid": 0.008403361344537785,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261116C07745000",
+            "z": 1.0084557299531143,
+            "halfspread_over_mid": 0.008403361344537785
+          }
+        },
+        {
+          "target_z": 2.0,
+          "target_option_type": "call",
+          "symbol": "SPXW261116C07910000",
+          "realized_z": 1.957655149538356,
+          "distance": 0.042344850461643935,
+          "half_spread": 0.04999999999999999,
+          "halfspread_over_mid": 0.19999999999999996,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261116C07910000",
+            "z": 1.957655149538356,
+            "halfspread_over_mid": 0.19999999999999996
+          }
+        }
+      ]
+    },
+    {
+      "nominal_business_days": 10,
+      "target_maturity": 0.03968253968253968,
+      "expiration": "2026-11-23",
+      "maturity": 0.03844441273465246,
+      "calendar_days": 14.032210648148148,
+      "maturity_offset_calendar_days": -0.451916335978835,
+      "duplicate_nearest_expiry": false,
+      "parser_eligible_quote_count": 438,
+      "quality_eligible_otm_count": 156,
+      "selection_rejections": {
+        "not_otm": 180,
+        "halfspread_over_mid_exceeds_25pct": 14,
+        "carry_anchor": 88
+      },
+      "targets": [
+        {
+          "target_z": -5.0,
+          "target_option_type": "put",
+          "symbol": "SPXW261123P06475000",
+          "realized_z": -5.01131961862466,
+          "distance": 0.011319618624660244,
+          "half_spread": 0.10000000000000009,
+          "halfspread_over_mid": 0.03225806451612906,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261123P06475000",
+            "z": -5.01131961862466,
+            "halfspread_over_mid": 0.03225806451612906
+          }
+        },
+        {
+          "target_z": -3.5,
+          "target_option_type": "put",
+          "symbol": "SPXW261123P06800000",
+          "realized_z": -3.4502257448013185,
+          "distance": 0.049774255198681505,
+          "half_spread": 0.1499999999999999,
+          "halfspread_over_mid": 0.027027027027027008,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261123P06800000",
+            "z": -3.4502257448013185,
+            "halfspread_over_mid": 0.027027027027027008
+          }
+        },
+        {
+          "target_z": -2.25,
+          "target_option_type": "put",
+          "symbol": "SPXW261123P07060000",
+          "realized_z": -2.254161615660901,
+          "distance": 0.004161615660900786,
+          "half_spread": 0.15000000000000036,
+          "halfspread_over_mid": 0.01345291479820631,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261123P07060000",
+            "z": -2.254161615660901,
+            "halfspread_over_mid": 0.01345291479820631
+          }
+        },
+        {
+          "target_z": -1.25,
+          "target_option_type": "put",
+          "symbol": "SPXW261123P07290000",
+          "realized_z": -1.2322660242263963,
+          "distance": 0.017733975773603694,
+          "half_spread": 0.25,
+          "halfspread_over_mid": 0.009596928982725527,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261123P07290000",
+            "z": -1.2322660242263963,
+            "halfspread_over_mid": 0.009596928982725527
+          }
+        },
+        {
+          "target_z": -0.5,
+          "target_option_type": "put",
+          "symbol": "SPXW261123P07460000",
+          "realized_z": -0.49746537812690594,
+          "distance": 0.002534621873094056,
+          "half_spread": 0.25,
+          "halfspread_over_mid": 0.004633920296570899,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261123P07460000",
+            "z": -0.49746537812690594,
+            "halfspread_over_mid": 0.004633920296570899
+          }
+        },
+        {
+          "target_z": 0.0,
+          "target_option_type": "put",
+          "symbol": "SPXW261123P07575000",
+          "realized_z": -0.009828800104670117,
+          "distance": 0.009828800104670117,
+          "half_spread": 0.3999999999999986,
+          "halfspread_over_mid": 0.0044395116537180755,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261123P07575000",
+            "z": -0.009828800104670117,
+            "halfspread_over_mid": 0.0044395116537180755
+          }
+        },
+        {
+          "target_z": 0.5,
+          "target_option_type": "call",
+          "symbol": "SPXW261123C07695000",
+          "realized_z": 0.4911790686378289,
+          "distance": 0.008820931362171103,
+          "half_spread": 0.25,
+          "halfspread_over_mid": 0.0070921985815602835,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261123C07695000",
+            "z": 0.4911790686378289,
+            "halfspread_over_mid": 0.0070921985815602835
+          }
+        },
+        {
+          "target_z": 1.0,
+          "target_option_type": "call",
+          "symbol": "SPXW261123C07825000",
+          "realized_z": 1.025196200809925,
+          "distance": 0.025196200809924907,
+          "half_spread": 0.15000000000000036,
+          "halfspread_over_mid": 0.018404907975460166,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261123C07825000",
+            "z": 1.025196200809925,
+            "halfspread_over_mid": 0.018404907975460166
+          }
+        },
+        {
+          "target_z": 2.0,
+          "target_option_type": "call",
+          "symbol": "SPXW261123C08075000",
+          "realized_z": 2.027667793081195,
+          "distance": 0.027667793081195047,
+          "half_spread": 0.10000000000000003,
+          "halfspread_over_mid": 0.1428571428571429,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261123C08075000",
+            "z": 2.027667793081195,
+            "halfspread_over_mid": 0.1428571428571429
+          }
+        }
+      ]
+    },
+    {
+      "nominal_business_days": 21,
+      "target_maturity": 0.08333333333333333,
+      "expiration": "2026-12-09",
+      "maturity": 0.08228002917300863,
+      "calendar_days": 30.032210648148148,
+      "maturity_offset_calendar_days": -0.3844560185185165,
+      "duplicate_nearest_expiry": false,
+      "parser_eligible_quote_count": 276,
+      "quality_eligible_otm_count": 106,
+      "selection_rejections": {
+        "not_otm": 117,
+        "halfspread_over_mid_exceeds_25pct": 7,
+        "carry_anchor": 46
+      },
+      "targets": [
+        {
+          "target_z": -5.0,
+          "target_option_type": "put",
+          "symbol": "SPXW261209P06000000",
+          "realized_z": -5.113007393906517,
+          "distance": 0.11300739390651682,
+          "half_spread": 0.10000000000000009,
+          "halfspread_over_mid": 0.017857142857142873,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261209P06000000",
+            "z": -5.113007393906517,
+            "halfspread_over_mid": 0.017857142857142873
+          }
+        },
+        {
+          "target_z": -3.5,
+          "target_option_type": "put",
+          "symbol": "SPXW261209P06450000",
+          "realized_z": -3.5372288266151815,
+          "distance": 0.037228826615181454,
+          "half_spread": 0.1999999999999993,
+          "halfspread_over_mid": 0.019999999999999928,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261209P06450000",
+            "z": -3.5372288266151815,
+            "halfspread_over_mid": 0.019999999999999928
+          }
+        },
+        {
+          "target_z": -2.25,
+          "target_option_type": "put",
+          "symbol": "SPXW261209P06850000",
+          "realized_z": -2.2262304966558344,
+          "distance": 0.02376950334416561,
+          "half_spread": 0.25,
+          "halfspread_over_mid": 0.012531328320802006,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261209P06850000",
+            "z": -2.2262304966558344,
+            "halfspread_over_mid": 0.012531328320802006
+          }
+        },
+        {
+          "target_z": -1.25,
+          "target_option_type": "put",
+          "symbol": "SPXW261209P07175000",
+          "realized_z": -1.216231272946493,
+          "distance": 0.033768727053506975,
+          "half_spread": 0.3000000000000007,
+          "halfspread_over_mid": 0.007177033492822984,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261209P07175000",
+            "z": -1.216231272946493,
+            "halfspread_over_mid": 0.007177033492822984
+          }
+        },
+        {
+          "target_z": -0.5,
+          "target_option_type": "put",
+          "symbol": "SPXW261209P07410000",
+          "realized_z": -0.5140296804191716,
+          "distance": 0.01402968041917163,
+          "half_spread": 0.29999999999999716,
+          "halfspread_over_mid": 0.0038216560509553776,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261209P07410000",
+            "z": -0.5140296804191716,
+            "halfspread_over_mid": 0.0038216560509553776
+          }
+        },
+        {
+          "target_z": 0.0,
+          "target_option_type": "put",
+          "symbol": "SPXW261209P07580000",
+          "realized_z": -0.019800136330614167,
+          "distance": 0.019800136330614167,
+          "half_spread": 0.45000000000000284,
+          "halfspread_over_mid": 0.0034924330616996724,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261209P07580000",
+            "z": -0.019800136330614167,
+            "halfspread_over_mid": 0.0034924330616996724
+          }
+        },
+        {
+          "target_z": 0.5,
+          "target_option_type": "call",
+          "symbol": "SPXW261209C07760000",
+          "realized_z": 0.49156353754321375,
+          "distance": 0.008436462456786253,
+          "half_spread": 0.3000000000000007,
+          "halfspread_over_mid": 0.006085192697768777,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261209C07760000",
+            "z": 0.49156353754321375,
+            "halfspread_over_mid": 0.006085192697768777
+          }
+        },
+        {
+          "target_z": 1.0,
+          "target_option_type": "call",
+          "symbol": "SPXW261209C07925000",
+          "realized_z": 0.9499990328824243,
+          "distance": 0.050000967117575734,
+          "half_spread": 0.3000000000000007,
+          "halfspread_over_mid": 0.02142857142857148,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261209C07925000",
+            "z": 0.9499990328824243,
+            "halfspread_over_mid": 0.02142857142857148
+          }
+        },
+        {
+          "target_z": 2.0,
+          "target_option_type": "call",
+          "symbol": "SPXW261209C08300000",
+          "realized_z": 1.9573636815032296,
+          "distance": 0.04263631849677041,
+          "half_spread": 0.125,
+          "halfspread_over_mid": 0.10638297872340426,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW261209C08300000",
+            "z": 1.9573636815032296,
+            "halfspread_over_mid": 0.10638297872340426
+          }
+        }
+      ]
+    },
+    {
+      "nominal_business_days": 42,
+      "target_maturity": 0.16666666666666666,
+      "expiration": "2027-01-08",
+      "maturity": 0.16447180999492644,
+      "calendar_days": 60.03221064814815,
+      "maturity_offset_calendar_days": -0.8011226851851782,
+      "duplicate_nearest_expiry": false,
+      "parser_eligible_quote_count": 240,
+      "quality_eligible_otm_count": 99,
+      "selection_rejections": {
+        "not_otm": 103,
+        "carry_anchor": 34,
+        "halfspread_over_mid_exceeds_25pct": 4
+      },
+      "targets": [
+        {
+          "target_z": -5.0,
+          "target_option_type": "put",
+          "symbol": "SPXW270108P05600000",
+          "realized_z": -4.7366484269163855,
+          "distance": 0.26335157308361445,
+          "half_spread": 0.15000000000000036,
+          "halfspread_over_mid": 0.014778325123152743,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270108P05600000",
+            "z": -4.7366484269163855,
+            "halfspread_over_mid": 0.014778325123152743
+          }
+        },
+        {
+          "target_z": -3.5,
+          "target_option_type": "put",
+          "symbol": "SPXW270108P06100000",
+          "realized_z": -3.4186557087129863,
+          "distance": 0.0813442912870137,
+          "half_spread": 0.25,
+          "halfspread_over_mid": 0.014662756598240468,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270108P06100000",
+            "z": -3.4186557087129863,
+            "halfspread_over_mid": 0.014662756598240468
+          }
+        },
+        {
+          "target_z": -2.25,
+          "target_option_type": "put",
+          "symbol": "SPXW270108P06600000",
+          "realized_z": -2.2045539246984123,
+          "distance": 0.04544607530158773,
+          "half_spread": 0.29999999999999893,
+          "halfspread_over_mid": 0.009374999999999967,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270108P06600000",
+            "z": -2.2045539246984123,
+            "halfspread_over_mid": 0.009374999999999967
+          }
+        },
+        {
+          "target_z": -1.25,
+          "target_option_type": "put",
+          "symbol": "SPXW270108P07025000",
+          "realized_z": -1.2428140798865337,
+          "distance": 0.007185920113466304,
+          "half_spread": 0.3500000000000014,
+          "halfspread_over_mid": 0.005668016194332007,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270108P07025000",
+            "z": -1.2428140798865337,
+            "halfspread_over_mid": 0.005668016194332007
+          }
+        },
+        {
+          "target_z": -0.5,
+          "target_option_type": "put",
+          "symbol": "SPXW270108P07375000",
+          "realized_z": -0.4935147011191377,
+          "distance": 0.0064852988808623,
+          "half_spread": 1.0,
+          "halfspread_over_mid": 0.008658008658008658,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270108P07375000",
+            "z": -0.4935147011191377,
+            "halfspread_over_mid": 0.008658008658008658
+          }
+        },
+        {
+          "target_z": 0.0,
+          "target_option_type": "put",
+          "symbol": "SPXW270108P07610000",
+          "realized_z": -0.010109856228258406,
+          "distance": 0.010109856228258406,
+          "half_spread": 0.5,
+          "halfspread_over_mid": 0.002699784017278618,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270108P07610000",
+            "z": -0.010109856228258406,
+            "halfspread_over_mid": 0.002699784017278618
+          }
+        },
+        {
+          "target_z": 0.5,
+          "target_option_type": "call",
+          "symbol": "SPXW270108C07875000",
+          "realized_z": 0.5174130755556096,
+          "distance": 0.01741307555560956,
+          "half_spread": 0.7999999999999972,
+          "halfspread_over_mid": 0.012121212121212078,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270108C07875000",
+            "z": 0.5174130755556096,
+            "halfspread_over_mid": 0.012121212121212078
+          }
+        },
+        {
+          "target_z": 1.0,
+          "target_option_type": "call",
+          "symbol": "SPXW270108C08125000",
+          "realized_z": 0.9990498617573553,
+          "distance": 0.0009501382426446714,
+          "half_spread": 0.25,
+          "halfspread_over_mid": 0.01440922190201729,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270108C08125000",
+            "z": 0.9990498617573553,
+            "halfspread_over_mid": 0.01440922190201729
+          }
+        },
+        {
+          "target_z": 2.0,
+          "target_option_type": "call",
+          "symbol": "SPXW270108C08600000",
+          "realized_z": 1.8746555365321678,
+          "distance": 0.12534446346783223,
+          "half_spread": 0.15000000000000002,
+          "halfspread_over_mid": 0.08108108108108109,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270108C08600000",
+            "z": 1.8746555365321678,
+            "halfspread_over_mid": 0.08108108108108109
+          }
+        }
+      ]
+    },
+    {
+      "nominal_business_days": 63,
+      "target_maturity": 0.25,
+      "expiration": "2027-01-29",
+      "maturity": 0.2220060565702689,
+      "calendar_days": 81.03221064814815,
+      "maturity_offset_calendar_days": -10.217789351851854,
+      "duplicate_nearest_expiry": false,
+      "parser_eligible_quote_count": 996,
+      "quality_eligible_otm_count": 439,
+      "selection_rejections": {
+        "not_otm": 447,
+        "preserved_scoring_quote": 5,
+        "carry_anchor": 102,
+        "halfspread_over_mid_exceeds_25pct": 3
+      },
+      "targets": [
+        {
+          "target_z": -5.0,
+          "target_option_type": "put",
+          "symbol": "SPXW270129P05200000",
+          "realized_z": -5.090723740853841,
+          "distance": 0.09072374085384105,
+          "half_spread": 0.15000000000000036,
+          "halfspread_over_mid": 0.01345291479820631,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270129P05200000",
+            "z": -5.090723740853841,
+            "halfspread_over_mid": 0.01345291479820631
+          }
+        },
+        {
+          "target_z": -3.5,
+          "target_option_type": "put",
+          "symbol": "SPXW270129P05875000",
+          "realized_z": -3.471800489407561,
+          "distance": 0.02819951059243886,
+          "half_spread": 0.1999999999999993,
+          "halfspread_over_mid": 0.009756097560975575,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270129P05875000",
+            "z": -3.471800489407561,
+            "halfspread_over_mid": 0.009756097560975575
+          }
+        },
+        {
+          "target_z": -2.25,
+          "target_option_type": "put",
+          "symbol": "SPXW270129P06440000",
+          "realized_z": -2.2538023504432214,
+          "distance": 0.003802350443221414,
+          "half_spread": 0.3500000000000014,
+          "halfspread_over_mid": 0.009271523178807984,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270129P06440000",
+            "z": -2.2538023504432214,
+            "halfspread_over_mid": 0.009271523178807984
+          }
+        },
+        {
+          "target_z": -1.25,
+          "target_option_type": "put",
+          "symbol": "SPXW270129P06950000",
+          "realized_z": -1.242857780219244,
+          "distance": 0.007142219780756021,
+          "half_spread": 0.3500000000000014,
+          "halfspread_over_mid": 0.0047265361242403965,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270129P06950000",
+            "z": -1.242857780219244,
+            "halfspread_over_mid": 0.0047265361242403965
+          }
+        },
+        {
+          "target_z": -0.5,
+          "target_option_type": "put",
+          "symbol": "SPXW270129P07350000",
+          "realized_z": -0.5005827301617504,
+          "distance": 0.0005827301617503666,
+          "half_spread": 0.3499999999999943,
+          "halfspread_over_mid": 0.0025669233590025252,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270129P07350000",
+            "z": -0.5005827301617504,
+            "halfspread_over_mid": 0.0025669233590025252
+          }
+        },
+        {
+          "target_z": 0.0,
+          "target_option_type": "put",
+          "symbol": "SPXW270129P07625000",
+          "realized_z": -0.01334345185199266,
+          "distance": 0.01334345185199266,
+          "half_spread": 0.4000000000000057,
+          "halfspread_over_mid": 0.0018433179723502567,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270129P07625000",
+            "z": -0.01334345185199266,
+            "halfspread_over_mid": 0.0018433179723502567
+          }
+        },
+        {
+          "target_z": 0.5,
+          "target_option_type": "call",
+          "symbol": "SPXW270129C07925000",
+          "realized_z": 0.4985414897581349,
+          "distance": 0.0014585102418651075,
+          "half_spread": 0.29999999999999716,
+          "halfspread_over_mid": 0.0036496350364963156,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270129C07925000",
+            "z": 0.4985414897581349,
+            "halfspread_over_mid": 0.0036496350364963156
+          }
+        },
+        {
+          "target_z": 1.0,
+          "target_option_type": "call",
+          "symbol": "SPXW270129C08230000",
+          "realized_z": 0.999465774276917,
+          "distance": 0.0005342257230830372,
+          "half_spread": 0.25,
+          "halfspread_over_mid": 0.011876484560570071,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270129C08230000",
+            "z": 0.999465774276917,
+            "halfspread_over_mid": 0.011876484560570071
+          }
+        },
+        {
+          "target_z": 2.0,
+          "target_option_type": "call",
+          "symbol": "SPXW270129C08870000",
+          "realized_z": 1.9928433934855654,
+          "distance": 0.007156606514434616,
+          "half_spread": 0.10000000000000009,
+          "halfspread_over_mid": 0.0571428571428572,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270129C08870000",
+            "z": 1.9928433934855654,
+            "halfspread_over_mid": 0.0571428571428572
+          }
+        }
+      ]
+    },
+    {
+      "nominal_business_days": 126,
+      "target_maturity": 0.5,
+      "expiration": "2027-04-30",
+      "maturity": 0.47120696981227805,
+      "calendar_days": 171.9905439814815,
+      "maturity_offset_calendar_days": -10.50945601851851,
+      "duplicate_nearest_expiry": false,
+      "parser_eligible_quote_count": 402,
+      "quality_eligible_otm_count": 176,
+      "selection_rejections": {
+        "not_otm": 176,
+        "carry_anchor": 50
+      },
+      "targets": [
+        {
+          "target_z": -5.0,
+          "target_option_type": "put",
+          "symbol": "SPXW270430P04400000",
+          "realized_z": -5.101619025721073,
+          "distance": 0.10161902572107273,
+          "half_spread": 0.1999999999999993,
+          "halfspread_over_mid": 0.011976047904191574,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270430P04400000",
+            "z": -5.101619025721073,
+            "halfspread_over_mid": 0.011976047904191574
+          }
+        },
+        {
+          "target_z": -3.5,
+          "target_option_type": "put",
+          "symbol": "SPXW270430P05200000",
+          "realized_z": -3.5806118476504705,
+          "distance": 0.08061184765047047,
+          "half_spread": 0.29999999999999893,
+          "halfspread_over_mid": 0.009803921568627416,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270430P05200000",
+            "z": -3.5806118476504705,
+            "halfspread_over_mid": 0.009803921568627416
+          }
+        },
+        {
+          "target_z": -2.25,
+          "target_option_type": "put",
+          "symbol": "SPXW270430P06025000",
+          "realized_z": -2.2398378456280175,
+          "distance": 0.010162154371982535,
+          "half_spread": 0.3999999999999986,
+          "halfspread_over_mid": 0.006611570247933861,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270430P06025000",
+            "z": -2.2398378456280175,
+            "halfspread_over_mid": 0.006611570247933861
+          }
+        },
+        {
+          "target_z": -1.25,
+          "target_option_type": "put",
+          "symbol": "SPXW270430P06725000",
+          "realized_z": -1.239080145833639,
+          "distance": 0.010919854166361098,
+          "half_spread": 0.4000000000000057,
+          "halfspread_over_mid": 0.0033898305084746243,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270430P06725000",
+            "z": -1.239080145833639,
+            "halfspread_over_mid": 0.0033898305084746243
+          }
+        },
+        {
+          "target_z": -0.5,
+          "target_option_type": "put",
+          "symbol": "SPXW270430P07290000",
+          "realized_z": -0.5045748259297528,
+          "distance": 0.004574825929752779,
+          "half_spread": 0.5499999999999972,
+          "halfspread_over_mid": 0.0025876264408374364,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270430P07290000",
+            "z": -0.5045748259297528,
+            "halfspread_over_mid": 0.0025876264408374364
+          }
+        },
+        {
+          "target_z": 0.0,
+          "target_option_type": "put",
+          "symbol": "SPXW270430P07690000",
+          "realized_z": -0.01821735775147172,
+          "distance": 0.01821735775147172,
+          "half_spread": 0.700000000000017,
+          "halfspread_over_mid": 0.002121855107608418,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270430P07690000",
+            "z": -0.01821735775147172,
+            "halfspread_over_mid": 0.002121855107608418
+          }
+        },
+        {
+          "target_z": 0.5,
+          "target_option_type": "call",
+          "symbol": "SPXW270430C08150000",
+          "realized_z": 0.5107500890777479,
+          "distance": 0.010750089077747882,
+          "half_spread": 1.4000000000000057,
+          "halfspread_over_mid": 0.01089494163424129,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270430C08150000",
+            "z": 0.5107500890777479,
+            "halfspread_over_mid": 0.01089494163424129
+          }
+        },
+        {
+          "target_z": 1.0,
+          "target_option_type": "call",
+          "symbol": "SPXW270430C08600000",
+          "realized_z": 1.0000852032188294,
+          "distance": 8.520321882943271e-05,
+          "half_spread": 0.25,
+          "halfspread_over_mid": 0.006954102920723226,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270430C08600000",
+            "z": 1.0000852032188294,
+            "halfspread_over_mid": 0.006954102920723226
+          }
+        },
+        {
+          "target_z": 2.0,
+          "target_option_type": "call",
+          "symbol": "SPXW270430C09600000",
+          "realized_z": 2.0016300116115118,
+          "distance": 0.0016300116115117724,
+          "half_spread": 0.1499999999999999,
+          "halfspread_over_mid": 0.0638297872340425,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270430C09600000",
+            "z": 2.0016300116115118,
+            "halfspread_over_mid": 0.0638297872340425
+          }
+        }
+      ]
+    },
+    {
+      "nominal_business_days": 252,
+      "target_maturity": 1.0,
+      "expiration": "2027-09-30",
+      "maturity": 0.8903850520040588,
+      "calendar_days": 324.9905439814815,
+      "maturity_offset_calendar_days": -40.009456018518534,
+      "duplicate_nearest_expiry": false,
+      "parser_eligible_quote_count": 904,
+      "quality_eligible_otm_count": 415,
+      "selection_rejections": {
+        "not_otm": 420,
+        "preserved_scoring_quote": 5,
+        "carry_anchor": 64
+      },
+      "targets": [
+        {
+          "target_z": -5.0,
+          "target_option_type": "put",
+          "symbol": "SPXW270930P03600000",
+          "realized_z": -5.147451381640534,
+          "distance": 0.14745138164053362,
+          "half_spread": 0.20000000000000107,
+          "halfspread_over_mid": 0.010050251256281461,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270930P03600000",
+            "z": -5.147451381640534,
+            "halfspread_over_mid": 0.010050251256281461
+          }
+        },
+        {
+          "target_z": -3.5,
+          "target_option_type": "put",
+          "symbol": "SPXW270930P04600000",
+          "realized_z": -3.523869522475928,
+          "distance": 0.023869522475928218,
+          "half_spread": 0.3500000000000014,
+          "halfspread_over_mid": 0.008383233532934166,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270930P04600000",
+            "z": -3.523869522475928,
+            "halfspread_over_mid": 0.008383233532934166
+          }
+        },
+        {
+          "target_z": -2.25,
+          "target_option_type": "put",
+          "symbol": "SPXW270930P05600000",
+          "realized_z": -2.220948248710598,
+          "distance": 0.029051751289402183,
+          "half_spread": 0.5499999999999972,
+          "halfspread_over_mid": 0.0064289888953827845,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270930P05600000",
+            "z": -2.220948248710598,
+            "halfspread_over_mid": 0.0064289888953827845
+          }
+        },
+        {
+          "target_z": -1.25,
+          "target_option_type": "put",
+          "symbol": "SPXW270930P06475000",
+          "realized_z": -1.259327353782786,
+          "distance": 0.009327353782786041,
+          "half_spread": 0.5999999999999943,
+          "halfspread_over_mid": 0.003590664272890451,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270930P06475000",
+            "z": -1.259327353782786,
+            "halfspread_over_mid": 0.003590664272890451
+          }
+        },
+        {
+          "target_z": -0.5,
+          "target_option_type": "put",
+          "symbol": "SPXW270930P07250000",
+          "realized_z": -0.5105156121929748,
+          "distance": 0.01051561219297481,
+          "half_spread": 0.6500000000000057,
+          "halfspread_over_mid": 0.0021141649048625976,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270930P07250000",
+            "z": -0.5105156121929748,
+            "halfspread_over_mid": 0.0021141649048625976
+          }
+        },
+        {
+          "target_z": 0.0,
+          "target_option_type": "put",
+          "symbol": "SPXW270930P07830000",
+          "realized_z": -0.0007599934963611523,
+          "distance": 0.0007599934963611523,
+          "half_spread": 1.9000000000000057,
+          "halfspread_over_mid": 0.003937007874015759,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270930P07830000",
+            "z": -0.0007599934963611523,
+            "halfspread_over_mid": 0.003937007874015759
+          }
+        },
+        {
+          "target_z": 0.5,
+          "target_option_type": "call",
+          "symbol": "SPXW270930C08445000",
+          "realized_z": 0.5000604449118298,
+          "distance": 6.0444911829771186e-05,
+          "half_spread": 0.6500000000000057,
+          "halfspread_over_mid": 0.003254067584480629,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270930C08445000",
+            "z": 0.5000604449118298,
+            "halfspread_over_mid": 0.003254067584480629
+          }
+        },
+        {
+          "target_z": 1.0,
+          "target_option_type": "call",
+          "symbol": "SPXW270930C09105000",
+          "realized_z": 0.9984773456491824,
+          "distance": 0.0015226543508175538,
+          "half_spread": 0.5500000000000007,
+          "halfspread_over_mid": 0.00937766410912192,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270930C09105000",
+            "z": 0.9984773456491824,
+            "halfspread_over_mid": 0.00937766410912192
+          }
+        },
+        {
+          "target_z": 1.5,
+          "target_option_type": "call",
+          "symbol": "SPXW270930C09800000",
+          "realized_z": 1.4856971916341453,
+          "distance": 0.014302808365854736,
+          "half_spread": 0.2999999999999998,
+          "halfspread_over_mid": 0.02112676056338027,
+          "target_supported": true,
+          "nearest_before_spread_quality_filter": {
+            "symbol": "SPXW270930C09800000",
+            "z": 1.4856971916341453,
+            "halfspread_over_mid": 0.02112676056338027
+          }
+        }
+      ]
+    }
+  ],
+  "desired_contract_count": 63,
+  "selected_contract_count": 63,
+  "supported_quote_target_count": 63,
+  "unsupported_quote_target_count": 0,
+  "missing_quote_target_count": 0,
+  "unassessed_quote_target_count": 0,
+  "duplicate_selected_symbol_count": 0,
+  "complete_supported_quote_layout": true,
+  "snapshot_maximum_spxw_maturity": 0.8903850520040588,
+  "one_year_pm_expiry_available": false,
+  "original_one_year_and_plus2_coverage_criteria_satisfied": false,
+  "one_year_endpoint_shortfall_calendar_days": 40.009456018518534,
+  "old54_coverage": [
+    {
+      "expiration": "2026-11-30",
+      "maturity": 0.05762249492643328,
+      "calendar_days": 21.032210648148148,
+      "n": 9,
+      "minimum_z_fixed16": -3.694262095645082,
+      "maximum_z_fixed16": 0.9337889964149071,
+      "nearest_atm_abs_z_fixed16": 0.010646571516676322
+    },
+    {
+      "expiration": "2026-12-31",
+      "maturity": 0.14255400177574834,
+      "calendar_days": 52.032210648148144,
+      "n": 9,
+      "minimum_z_fixed16": -3.82985255519357,
+      "maximum_z_fixed16": 0.9597043606426352,
+      "nearest_atm_abs_z_fixed16": 0.0021813635539505768
+    },
+    {
+      "expiration": "2027-01-29",
+      "maturity": 0.2220060565702689,
+      "calendar_days": 81.03221064814815,
+      "n": 9,
+      "minimum_z_fixed16": -3.872923654988142,
+      "maximum_z_fixed16": 0.9752674605285716,
+      "nearest_atm_abs_z_fixed16": 0.004041485509028927
+    },
+    {
+      "expiration": "2027-03-31",
+      "maturity": 0.38901518899036025,
+      "calendar_days": 141.9905439814815,
+      "n": 9,
+      "minimum_z_fixed16": -3.9981912834699753,
+      "maximum_z_fixed16": 0.9933440696746264,
+      "nearest_atm_abs_z_fixed16": 0.0062970410827396465
+    },
+    {
+      "expiration": "2027-06-30",
+      "maturity": 0.6383302574835109,
+      "calendar_days": 232.9905439814815,
+      "n": 9,
+      "minimum_z_fixed16": -4.08183417690034,
+      "maximum_z_fixed16": 1.0370442186344135,
+      "nearest_atm_abs_z_fixed16": 0.00886518447391329
+    },
+    {
+      "expiration": "2027-09-30",
+      "maturity": 0.8903850520040588,
+      "calendar_days": 324.9905439814815,
+      "n": 9,
+      "minimum_z_fixed16": -4.286037452269085,
+      "maximum_z_fixed16": 1.0708270992882711,
+      "nearest_atm_abs_z_fixed16": 0.0007599934963611523
+    }
+  ],
+  "overlap_with_old54_contract_symbols": 1,
+  "historical_carry_expiries_preserved": [
+    "2026-11-30",
+    "2026-12-31",
+    "2027-01-29",
+    "2027-03-31",
+    "2027-06-30",
+    "2027-09-30"
+  ],
+  "new_carry_expiries": [
+    "2026-11-16",
+    "2026-11-23",
+    "2026-12-09",
+    "2027-01-08",
+    "2027-04-30"
+  ],
+  "union_carry_expiries": [
+    "2026-11-16",
+    "2026-11-23",
+    "2026-11-30",
+    "2026-12-09",
+    "2026-12-31",
+    "2027-01-08",
+    "2027-01-29",
+    "2027-03-31",
+    "2027-04-30",
+    "2027-06-30",
+    "2027-09-30"
+  ],
+  "carry_disjoint_from_candidate_old_fitted_and_scored": true,
+  "candidate_disjoint_from_preserved_scoring_quotes": true,
+  "parser_exclusion_counts": {
+    "excluded_early_close_expiry": 600,
+    "other_root": 10590,
+    "same_day_or_past_expiry": 574,
+    "zero_bid_or_locked_crossed_market": 418
+  },
+  "scientific_acceptance": false,
+  "model_pricing_evaluations": 0,
+  "target_overrides": [
+    {
+      "expiration": "2027-09-30",
+      "original_target_z": 2.0,
+      "revised_target_z": 1.5,
+      "reason": "Separately declared supported revision; original +2 target remains unsupported. No endpoint substitution."
+    }
+  ],
+  "scope": "Coverage geometry only. Unsupported nearest actual quotes remain flagged. No pricing labels, model fit, training, posterior acceptance or final grid selection.",
+  "revised_vs_original_records_identical": true
+}
