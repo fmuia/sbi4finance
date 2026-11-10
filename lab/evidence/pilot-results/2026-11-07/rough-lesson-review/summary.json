@@ -5,7 +5,7 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 91,
+    "tutorial_tests": 101,
     "lab_core_tests": 573,
     "lab_optional_skips": 3,
     "notebook_exports": 7,
@@ -38,7 +38,7 @@
     },
     "math_accordions_opened": [
       "Read the simulator one component at a time",
-      "What exactly is the forward-variance curve ξ₀?",
+      "What exactly is the forward-variance curve \u03be\u2080?",
       "Grid approximation and the extra Gaussian channel",
       "What does this simulation approximate?",
       "The short-maturity relationship",
@@ -75,7 +75,7 @@
     "native_known_load_and_sample_seconds": 4.970754582900554,
     "joint_point_fit_seconds": {
       "Worked joint example": 0.15046650008298457,
-      "Curve level–decay trade-off": 0.2606706670485437,
+      "Curve level\u2013decay trade-off": 0.2606706670485437,
       "Coupled volatility parameters": 0.14333424996584654,
       "Weakly informed decay": 0.13396137487143278
     },
@@ -215,7 +215,7 @@
     "lab/studies/runtime_boundary.py": "e3f95c3208b86ea88c6d16553f81edac55bc4294f08852b908a223704817ea6f",
     "lab/tests/test_full_surface_pricer_cli.py": "b286a4534d5f283728561a0f2b23fc5f6d0e582e6ef02c4c33fe564ac55501a0",
     "lab/tests/test_pricer_pymc_reference.py": "2077b03dcb0a6aa04d9b7533f65dbc41bd4c0fd93dfd931db3f2f47765a0e9fc",
-    "tutorial/notebooks/slot5_calibration.py": "480db8329b3241a4cd01e22977850791a1d2ee8b272dcdd354607d50504bccc5",
+    "tutorial/notebooks/slot5_calibration.py": "ec8c31d124cd8ca56a74d544e2e6a2671784196eb85a3193747058abfabda823",
     "tutorial/src/sbi4f_tutorial/heston_options/model.py": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
     "tutorial/src/sbi4f_tutorial/rough_options/comparison.py": "717a53025bc48c899b49cf2444ffe9e31c04e41977abfc73a80ebb7f9904e8d1",
     "tutorial/src/sbi4f_tutorial/rough_options/context_checks.py": "2c2927cdd02f3ece4314061dcd99d3be04e08e072338c9b39edca1a551d5955d",
@@ -236,7 +236,9 @@
     "tutorial/tests/test_rough_pricer_loader.py": "77a6da8159933b09c22efdb8fd1249f0645d97600d666ac6d7e910dcc84e3b60",
     "tutorial/tests/test_rough_session.py": "fade7005723db92c00306c885619ebc9b872863a32294fa8f2937e0ed527a838",
     "tutorial/tests/test_rough_studies.py": "2af10f7ad4171f113bd92f068475fbebaa46f93ac46057fe4245443250c68050",
-    "tutorial/tests/test_rough_surrogate.py": "49b4761e6de900aa3ac83f6a0355e10216d00c3a4a971821ec097be05c902f3c"
+    "tutorial/tests/test_rough_surrogate.py": "49b4761e6de900aa3ac83f6a0355e10216d00c3a4a971821ec097be05c902f3c",
+    "tutorial/src/sbi4f_tutorial/rough_options/diagnostics.py": "8f6e7ce1493eee0ac8ef421ecd21961c505bae5bcca8bd1ff2ee3abb2c80ace9",
+    "tutorial/tests/test_rough_diagnostics.py": "a94977be9433b2c5e884cf4aad7c8ffe369842960f1984d9f657483be51d6c17"
   },
   "timing_environment": {
     "system": "Darwin",
@@ -288,7 +290,7 @@
     "training_elapsed_seconds": 20.135736708994955,
     "joint_options": [
       "Worked joint example",
-      "Curve level–decay trade-off",
+      "Curve level\u2013decay trade-off",
       "Coupled volatility parameters",
       "Weakly informed decay"
     ],
@@ -341,7 +343,7 @@
       ],
       "current_joint_cases": [
         "Joint worked example",
-        "Curve level–decay trade-off",
+        "Curve level\u2013decay trade-off",
         "Coupled volatility parameters",
         "Weakly informed decay"
       ],
@@ -553,7 +555,7 @@
       },
       "math_accordions_opened": [
         "Read the simulator one component at a time",
-        "What exactly is the forward-variance curve ξ₀?",
+        "What exactly is the forward-variance curve \u03be\u2080?",
         "Grid approximation and the extra Gaussian channel",
         "What does this simulation approximate?",
         "The short-maturity relationship",
@@ -590,7 +592,7 @@
       "native_known_load_and_sample_seconds": 4.970754582900554,
       "joint_point_fit_seconds": {
         "Worked joint example": 0.15046650008298457,
-        "Curve level–decay trade-off": 0.2606706670485437,
+        "Curve level\u2013decay trade-off": 0.2606706670485437,
         "Coupled volatility parameters": 0.14333424996584654,
         "Weakly informed decay": 0.13396137487143278
       },
@@ -750,5 +752,271 @@
     "scientific_acceptance": false,
     "scope": "Forward/data/pricer teaching simulations and local least-squares points; no new reference posterior, cross-underlying model or realized-risk forecast.",
     "cache_boundary_check": "Reject symlinked caches that escape tutorial/assets before any model read."
+  },
+  "new_assets": [
+    "diagnostics/rough-known-200"
+  ],
+  "cached_diagnostic_review": {
+    "recorded_at": "2026-11-10T14:40:30+00:00",
+    "format": "rough_cached_diagnostic_review_v1",
+    "scientific_acceptance": false,
+    "reserved_test_evaluated": false,
+    "inputs": {
+      "directory": "tutorial/assets/diagnostics/rough-known-200",
+      "cases": 200,
+      "quotes_per_market": 63,
+      "curve_levels_per_market": 7,
+      "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+      "compressed_inputs_bytes": 304717,
+      "files_sha256": {
+        "ACCEPTED.json": "d4dca92805f285ca70b98000ed428e94b5c3edbe28d6975bb4fb9d5e60d38859",
+        "inputs.npz": "3ee6be73abc6b6412d2ce1fc8d2975337a41e721c497d5454dd036260034180f",
+        "panel.json": "274027d587d21fd1ebbf492b7fb69a18ad49e048d1ef3d184e5bf903fa8e8ece",
+        "task.json": "e5ae108b2a6bf39921cd61bd05db50a431c5538486466a22a2db16b66080b644"
+      },
+      "generation_root_seed": 20261110,
+      "split": "validation",
+      "selection": "All validation IDs 0..199, in generation order, with no dropped or replaced markets.",
+      "no_cached_weights_or_posterior_draws": true
+    },
+    "generation": {
+      "producer_commit": "1351dc9619225ed90c1327ff2c5f60eacd0702cf",
+      "wall_seconds": 688.4477960444055,
+      "cpu_seconds": 685.8795800000006,
+      "run_with_serialization_wall_seconds": 689.2876509591006,
+      "imports_excluded": true,
+      "workers": 1,
+      "hardware": {
+        "platform": "macOS-26.4.1-arm64-arm-64bit",
+        "machine": "arm64",
+        "logical_cpu_count": 18,
+        "workers": 1,
+        "thread_settings": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1"
+        }
+      },
+      "cpu_brand": "Apple M5 Max",
+      "versions": {
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "python": "3.12.16"
+      },
+      "numerical_policy": {
+        "blocks": [
+          {
+            "horizon": 0.03968253968253968,
+            "n_steps": 80
+          },
+          {
+            "horizon": 0.25,
+            "n_steps": 504
+          },
+          {
+            "horizon": 1.0,
+            "n_steps": 504
+          }
+        ],
+        "max_mc_se_over_quote_sigma": 0.25,
+        "max_mc_se_over_quote_sigma_last_rung": 0.5,
+        "method": "hybrid",
+        "paths_ladder": [
+          32768,
+          65536,
+          131072,
+          262144,
+          524288,
+          1048576,
+          2097152
+        ]
+      },
+      "max_mc_se_over_quote_sigma": 0.24932126999810525,
+      "per_market_median_wall_seconds": 1.2633930620504543,
+      "per_market_max_wall_seconds": 27.32738433405757,
+      "source_sha256": {
+        "gbm_bank.py": "94cac3413ec95ed90f05ed3f1934ea5ae5451068b29c105c22fb838a51b27ecc",
+        "runtime_sources.py": "22a29f40eb8d1b9be4b9c58d46028806aeb5adde8457738b013f2a999f9467e1",
+        "bergomi.py": "bfdffb8175d26a6dd46620092ffc0c205a114cb2d1e0dc523f1cd8eb96ee215f",
+        "rough_bergomi.py": "eb3f123f0bc642c224ee17718964ed01b927a482dcc03767e760aea0546ad55d",
+        "calibration/surface.py": "ec661b14550a1931b3fa20e79cfcfab102920b24e303d8aaf22e23bfd70971e0",
+        "calibration/pricing.py": "dc554bda791ee4edea22a8de2352579f9fa30b91cc6acaa0fd138d587d06921c",
+        "calibration/tasks.py": "8f24909732836d6618a2e698cd01304984426928f0b42c58786270870b74d052",
+        "calibration/bank.py": "e8a40cb9c7fadfb472bc6e48fa5874f62f9fa7afd30156bd70e44feec7596353",
+        "tutorial/src/sbi4f_tutorial/rough_options/model.py": "546d03f66fd7f1321bcc71a37bdb5cba0b5f6b41e51a1ff4e0ac13a03915bd69",
+        "tutorial/src/sbi4f_tutorial/rough_options/simulator.py": "542359c3999c2d6b55860191bf9468aeaf877820128d9e87c94cd7ecb0066bca",
+        "tutorial/src/sbi4f_tutorial/shared/bank_helpers.py": "39df3eaa28c703840c00123d8e68fb4b22551c01a76a5cf7aeee2f7e049ea452",
+        "tutorial/src/sbi4f_tutorial/shared/gbm.py": "52184ef8c6e472ae8f7a2423d3ff3ec759ddbc919edbcd238dc6eba0ca87fa1a",
+        "tutorial/src/sbi4f_tutorial/shared/pricing.py": "3f0431d77418ca04ddb676a9d6ce036dc22c097f244965a0b6de7fe34c0e353e",
+        "tutorial/src/sbi4f_tutorial/shared/surface.py": "62a51bf361174b551b1a9553c58e23ce55940c377e2478f6d7c4b708cf4eb1c8",
+        "tutorial/src/sbi4f_tutorial/shared/tasks.py": "4bc28d37c865a04a3f5d214fec5afbecf1db0ab4a2e02dd331d520fe9b08848b"
+      },
+      "full_raw_npz_sha256": "6aa31ccb4f6cb00171369dbff34d170e3ed6228cc726705059ce4967e4055b4c",
+      "benchmark_script_sha256": "9206421b345860f01423dd57954d3501b698f62169a71865bef2b9f390d37b90",
+      "scope": "Finite-grid task precision checks retained; not a continuum-accuracy certificate."
+    },
+    "native_inference_benchmark": {
+      "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+      "checkpoint_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+      "cases": 200,
+      "draws_per_market": 200,
+      "cold_seed": 20261110,
+      "warm_seed": 20261111,
+      "backend": "cpu",
+      "hardware": {
+        "python": "3.12.16",
+        "platform": "macOS-26.4.1-arm64-arm-64bit",
+        "machine": "arm64",
+        "logical_cpus": 18,
+        "cpu_brand": "Apple M5 Max",
+        "physical_memory_gib": 128
+      },
+      "versions": {
+        "bayesflow": "2.1.0",
+        "keras": "3.15.1",
+        "jax": "0.11.1",
+        "jaxlib": "0.11.1",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "matplotlib": "3.11.2"
+      },
+      "stages": {
+        "numpy_and_input_read": {
+          "status": "complete",
+          "peak_rss_before_bytes": 24477696,
+          "wall_seconds": 0.051878583151847124,
+          "cpu_seconds": 0.809805,
+          "peak_rss_after_bytes": 51593216
+        },
+        "backend_imports": {
+          "status": "complete",
+          "peak_rss_before_bytes": 51593216,
+          "wall_seconds": 9.382251166040078,
+          "cpu_seconds": 9.643759000000001,
+          "peak_rss_after_bytes": 366329856
+        },
+        "native_checkpoint_load": {
+          "status": "complete",
+          "peak_rss_before_bytes": 366329856,
+          "wall_seconds": 0.8576091250870377,
+          "cpu_seconds": 1.4373210000000007,
+          "peak_rss_after_bytes": 489275392
+        },
+        "cold_sampling": {
+          "status": "complete",
+          "peak_rss_before_bytes": 489308160,
+          "wall_seconds": 33.63357033301145,
+          "cpu_seconds": 302.546462,
+          "peak_rss_after_bytes": 3742679040
+        },
+        "warm_sampling": {
+          "status": "complete",
+          "peak_rss_before_bytes": 3742679040,
+          "wall_seconds": 33.45733483298682,
+          "cpu_seconds": 308.117852,
+          "peak_rss_after_bytes": 4284743680
+        },
+        "draw_serialization": {
+          "status": "complete",
+          "peak_rss_before_bytes": 4284743680,
+          "wall_seconds": 0.12662516604177654,
+          "cpu_seconds": 0.15349700000001576,
+          "peak_rss_after_bytes": 4284743680
+        },
+        "native_diagnostic_rendering": {
+          "status": "complete",
+          "peak_rss_before_bytes": 4284743680,
+          "wall_seconds": 1.230537084164098,
+          "cpu_seconds": 0.7861010000000306,
+          "peak_rss_after_bytes": 4284743680
+        }
+      },
+      "timing_boundary": {
+        "generation": "Excluded: input NPZ already exists.",
+        "imports": "Timed separately in a fresh Python process.",
+        "load": "Canonical native loader plus reading all estimator weights to synchronize; no forward call.",
+        "cold_sampling": "First sample call after loading; 200 markets batched together; physical-unit NumPy output synchronizes device work.",
+        "warm_sampling": "Second call at identical input/output shapes, independent random seed.",
+        "diagnostics": "Recovery and calibration rank-ECDF figures; excluded from sampling timings.",
+        "serialization": "Posterior draws, inputs and figures; excluded from sampling timings."
+      },
+      "empirical_90_percent_coverage": [
+        0.91,
+        0.91,
+        0.895
+      ],
+      "parameter_names": [
+        "hurst",
+        "eta",
+        "rho"
+      ],
+      "worker_sha256": "8358e7b019a62f69232f9d9aa80e1e65c3a03eb51d6405b3047f4e2549cf4517",
+      "scope": "Small fixed prior-predictive validation panel. Coverage is descriptive, not acceptance."
+    },
+    "browser": {
+      "url": "http://127.0.0.1:8791",
+      "page_errors": [],
+      "request_failures": [],
+      "idle_open_seconds": 3.636031833011657,
+      "opens_without_training_model_loading_or_diagnostic_sampling": true,
+      "untrained_network_has_actionable_message": true,
+      "pretrained_load_and_single_case_sample_seconds": 5.932307667098939,
+      "diagnostic_action_seconds": 38.38684079097584,
+      "diagnostic_status": "Source: pretrained network \u00b7 200 markets \u00d7 200 posterior draws.",
+      "added_diagnostic_images": 2,
+      "changing_source_clears_previous_figures": true,
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "marimo_errors": 0,
+      "math_render_errors": 0,
+      "expensive_generation_actions_invoked": false,
+      "passed": true,
+      "live_tutorial": {
+        "page_errors": [],
+        "timing_scope": "UI elapsed with concurrent checks; not a performance benchmark",
+        "tutorial_generation_and_fit_action_seconds": 16.685009208042175,
+        "tutorial_fit_status": "Generated 8 fresh markets; trained for 5 epochs (10 optimizer updates). Generation: 14.2 s; fitting including compilation: 0.5 s; total including imports and sampling: 15.2 s. These session draws are separate from the pretrained results below.",
+        "tutorial_diagnostic_action_seconds": 9.505163917085156,
+        "tutorial_diagnostic_status": "Source: tutorial network \u00b7 200 markets \u00d7 200 posterior draws.",
+        "added_diagnostic_images": 2,
+        "changing_source_clears_tutorial_figures": true,
+        "unloaded_pretrained_source_is_not_replaced_by_tutorial_fit": true,
+        "marimo_errors": 0,
+        "math_render_errors": 0,
+        "generated_markets": 8,
+        "stored_diagnostic_markets": 200,
+        "fresh_200_generation_invoked": false,
+        "passed": true
+      },
+      "timing_scope": "UI elapsed; separate from uncontended performance benchmarks",
+      "watch_reload_note": "An initial live-fit UI wait was invalidated by a notebook edit; the stable-source repeat passed.",
+      "screenshots": [
+        "01-idle.png",
+        "02-no-network.png",
+        "03-diagnostics-controls.png",
+        "04-native-recovery.png",
+        "05-native-rank-ecdf.png",
+        "06-source-change-clears.png",
+        "07-narrow.png",
+        "08-tutorial-recovery.png",
+        "09-tutorial-rank-ecdf.png"
+      ]
+    },
+    "verification": {
+      "tutorial_tests": 101,
+      "lab_core_tests": 573,
+      "lab_optional_skips": 3,
+      "notebook_exports": 7,
+      "rough_notebook_cells": 76,
+      "notebook_cell_errors": 0,
+      "runtime_boundary_symbols": 203,
+      "tutorial_tests_log_sha256": "1229abba8a8671a6284e944682653c45e021ebe5b1ccd5d9514615a2deee0e9e",
+      "lab_tests_log_sha256": "12f2863eb8f8d438ea87355cda277175f4f1f6c0f07efa4801723de487baa069",
+      "exports_log_sha256": "5b99407392dbdc7aceb93ad416f2ac24a79ddfd9a442c12328cdadf237e1ca40",
+      "final_rough_export_log_sha256": "9c95a426bbbe6e533b990e9c0f7f2346040fd8d44f55ecbe7c890e2104edfc81",
+      "release_check_log_sha256": "979231483ba5049a9e950129e009eccf2b6676a27b8576fb5fce210fdc57ff0c"
+    },
+    "scope": "Reusable inputs and optional selected-workflow diagnostics. Existing models and saved posterior evidence unchanged; no final-test or reference-posterior result."
   }
 }

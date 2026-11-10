@@ -23,6 +23,7 @@ uses the [rough-options notebook](../notebooks/slot5_calibration.py).
 | Data | Generate a prior market: paths, payoffs, conditional mean-price estimates, then independent quote noise. Explain Q versus P. | Which uncertainty would more simulation paths reduce? |
 | Two neural routes | Decompose the dense pricer and conditional flow-matching network. Fit a small pricer on clean labels and evaluate its Gaussian likelihood. | Which computation repeats for a new market? |
 | BayesFlow | Visible adapter, network, fitting and sampling code. Choose a small live fit or optional matching pretrained weights; saved results need neither. | What are training targets, and what enters inference? |
+| Check that network | Explicit recovery and rank-ECDF plots for the selected network on 200 stored validation markets, with 200 fresh draws per market. | What can a falling loss tell us, and what does it leave unchecked? |
 | Known curve | Current synthetic observation, supplied levels and focused posterior views. | Which parameter relationships remain visible? |
 | Predictive check | Explicit three-month repricing of paired draws, with fresh quote noise and a reported precision budget. | Why does adding quote noise change the data spread? |
 | Joint curve | Curve coefficients become targets; the generating curve is not supplied. | How does the inference task change? |
@@ -35,6 +36,17 @@ The small training actions demonstrate the APIs; they do not reproduce the
 longer-fit estimators. The pricer's validation rows select an epoch; they are
 not an independent final accuracy test. The tiny session pricer is not used for MCMC. Default inference views use saved
 data and results; the small forward/data simulators run locally.
+
+The optional network check uses the tutorial fit or the loaded pretrained
+workflow. Its **200 input markets are bundled**, with no saved model draws.
+They contain 63 quotes each, generated independently under the supplied-curve
+task with its original Monte Carlo precision policy. Generating them took
+**688 seconds** on one Apple M5 Max CPU worker; sampling the pretrained network
+took about **34 seconds**, with loading and plotting measured separately.
+Reusing the inputs makes this a fixed validation exercise, not an untouched
+final test. Recovery and ranks must be interpreted together; passing a rank
+check alone does not show that the estimator learned from the data.
+Fresh input generation is an [optional offline step](../../lab/plans/training-data-guide.md#fixed-rough-option-diagnostic-inputs).
 
 ## Additional studies
 
@@ -121,6 +133,7 @@ Application helpers are in `src/sbi4f_tutorial/rough_options/`:
 pricing/training-data actions, `surrogate.py` for supervised price regression,
 `comparison.py` for the Heston/Bergomi skew and smile comparison,
 `data_story.py` for payoff/quote generation and pricer validation,
+`diagnostics.py` for the fixed 200-market inputs and native BayesFlow checks,
 `context_checks.py` for necessary support bounds and `studies.py` for analytic curve/tail propagation and the optional point-fit comparison.
 Shared numerical definitions remain in `shared/`; lab workflows reuse them.
 
@@ -128,6 +141,7 @@ Run the tutorial tests, marimo check and notebook exports. Check every study
 selection, all four current joint examples, prior-width endpoints, the paired/
 shuffled switch, data/noise controls, pricer validation selections, optional native
 point fit and source invalidation. Tail integrals are checked against
-quadrature and their zero-slope limits. The
+quadrature and their zero-slope limits. For the 200-market check, verify both
+network sources and that changing the source clears the previous plots. The
 [application plan](TUTORIAL-REVIEW.md#c-refine-the-option-notebooks-in-place)
 records source scope and verification. Collaborator rehearsal remains separate.

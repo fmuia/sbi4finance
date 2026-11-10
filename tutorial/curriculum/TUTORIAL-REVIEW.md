@@ -277,6 +277,42 @@ lesson where relevant. Preserve canonical numerical laws, model identities and
 reported accuracy limits. Verify actual controls, model loaders, small examples,
 source binding, standalone exports and relevant software/numerical checks.
 
+#### Reusable diagnostic markets · 10 November 2026
+
+Keep recovery and rank checks close to the tutorial training code, following the
+Heston lesson. Rough-option data generation is a separate cost: a market is a
+63-price surface, with Monte Carlo averages refined to the task's precision
+budget, rather than a single path.
+
+Bundle 200 independent supplied-curve validation markets, including truths,
+curves, quotes and pricing-error records. Keep all cases in generation order;
+do not replace difficult rows. The input panel is bound to the task, not one
+checkpoint, so either the tutorial fit or the loaded pretrained network can use
+it. Model weights and posterior draws are not bundled in this panel.
+
+The notebook loads these small inputs by default and samples only after an
+explicit action. A network selector identifies which model is checked; changing
+the source clears the old result. Display native BayesFlow recovery in physical
+units with central 90% intervals, followed by the rank ECDF. Explain that prior
+calibration alone does not demonstrate learning. Repeatedly inspected validation
+cases are not an untouched final test, and a tiny successful fit is not evidence
+of posterior accuracy.
+
+**Measured workload:** 200 markets generated in 688.45 seconds on one CPU worker
+(Apple M5 Max); all 12,600 pricing standard errors stayed below 0.25 quote SDs.
+The compressed input file is 304,717 bytes. For the current supplied-curve native
+checkpoint, 200 markets × 200 draws took 33.63 seconds on the first call and
+33.46 seconds on a second call; reload took 0.86 seconds and rendering the two
+diagnostics took 1.23 seconds. Imports were measured separately. Keep these
+local timings distinct from a general performance claim. Offline regeneration
+uses the canonical lab worker and a caller-owned output directory.
+
+**Verification:** 101 tutorial tests, 573 core lab tests (three optional PyMC
+skips), all seven exports and release/ownership checks pass. Chrome exercises
+both actual network sources, missing-network messages and source invalidation;
+the small fit's poor recovery remains visible. No runtime/math errors or narrow
+layout overflow. Existing weights and posterior evidence remain unchanged.
+
 ## D. Develop the trajectory notebook to application parity
 
 **Retain:** the shared Heston/known-curve/joint-curve selector, daily observation

@@ -129,13 +129,24 @@ Choose how to run the lesson:
 - **Tutorial version:** train a small pricer or posterior network on fresh markets.
 - **Pretrained version:** optionally load the matching posterior weights and draw
   for the worked example. See the [model guide](../lab/plans/training-data-guide.md).
+- **Network check:** choose the trained tutorial network or loaded pretrained
+  network, then run recovery and rank-ECDF plots on **200 markets × 200 draws**.
+  The 200 input markets are bundled; posterior draws are generated when requested.
 
 The small fits demonstrate the APIs; their outputs stay separate from the saved
 accuracy checks. Monte Carlo pricing error is reported separately from quote noise.
+The network check reuses a fixed validation panel, not an untouched final test.
+It needs no new option pricing. Generating the panel took about **11½ minutes**
+on one local CPU worker; checking the pretrained network took about **34 seconds**
+for sampling, plus plotting and model loading. The input cache is about **305 KB**.
+An [optional regeneration recipe](../lab/plans/training-data-guide.md#fixed-rough-option-diagnostic-inputs)
+keeps this expensive step outside the notebook.
+
 Edit the path explorer and architecture figure in `rough_options/explorer.py`,
 the Heston comparison in `rough_options/comparison.py`,
 the supervised pricer in `rough_options/surrogate.py`, and the notebook for its
 controls and visible workflows. Lab pricer training reuses the same implementation.
+The fixed validation panel and native BayesFlow checks use `rough_options/diagnostics.py`.
 
 The **Additional studies** selector offers three short learning extensions:
 

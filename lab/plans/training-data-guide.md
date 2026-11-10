@@ -56,6 +56,65 @@ export SBI_DOWNLOADS="/absolute/path/to/your/downloads"
 mkdir -p "$SBI_DOWNLOADS"
 ```
 
+## Fixed rough-option diagnostic inputs
+
+The rough notebook includes **200 validation markets**, each with 63 noisy
+option prices, seven supplied curve levels and generating parameters for the
+checks. They live in
+[`tutorial/assets/diagnostics/rough-known-200/`](../../tutorial/assets/diagnostics/rough-known-200/):
+`task.json`, `panel.json` and `inputs.npz`. The compressed inputs are about
+**305 KB**. This panel contains no posterior draws.
+
+Train the tutorial network or load the matching pretrained network, select it
+under **Network to check**, then press **Check this network on the 200 stored
+markets**. This draws 200 samples per market and plots native BayesFlow recovery
+and rank ECDFs. It neither reprices the options nor retrains. These are fixed
+validation cases used for development, not an untouched final test.
+
+On one Apple M5 Max CPU worker, generating all 200 markets took **688.45 s**
+wall time and **685.88 CPU-s**. The original path ladder and precision policy
+were retained; every quote met MC SE ≤ 0.25 quote SD, with no failed or replaced
+markets. Pretrained inference took **33.63 s** on its first call and **33.46 s**
+warm; model loading took **0.86 s** and plotting **1.23 s**. Imports took another
+**9.38 s** in a fresh process. These are measured local costs, not guarantees
+for another machine or evidence of posterior accuracy.
+
+### Optional regeneration
+
+Keep generation outside the notebook. From `lab/`, with the locked `core`
+environment installed, choose a new output directory outside Git:
+
+```sh
+export SBI_DIAGNOSTIC_OUT="/absolute/path/to/new/rough-diagnostic-shard"
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 \
+NUMEXPR_NUM_THREADS=1 pixi run --locked -e core python - <<'PY_DIAGNOSTIC_INPUTS'
+import json
+import os
+from pathlib import Path
+from sbi4finance.calibration import bank
+
+panel = Path("../tutorial/assets/diagnostics/rough-known-200")
+task = json.loads((panel / "task.json").read_text())
+config = {
+    "task": task,
+    "root_seed": 20261110,
+    "splits": {"train": 1, "validation": 200, "test": 1},
+}
+bank.validate_config(config)
+record = bank.write_shard(
+    Path(os.environ["SBI_DIAGNOSTIC_OUT"]), config, "validation", 0, 200)
+print(f"Generated {record['examples']} markets in {record['generation_cpu_seconds']:.1f} CPU-s")
+PY_DIAGNOSTIC_INPUTS
+```
+
+Only validation IDs 0–199 are generated; the train/test declarations are required
+configuration fields. The new shard contains `arrays.npz` and its native
+`manifest.json`; it does not overwrite the bundled panel. A pricing failure
+stops generation and records the failed ID. Do not discard difficult rows or
+loosen the task to make a run pass. This command starts a new shard. After an
+interruption, keep the same task, seed and producer environment and rerun into
+a new directory. Publish lesson assets through the lab tools.
+
 ## Optional native posterior models
 
 Each native model needs its unchanged `model.keras`, `task.json` and

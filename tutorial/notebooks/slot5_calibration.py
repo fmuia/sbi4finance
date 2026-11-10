@@ -14,7 +14,7 @@ def _():
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from sbi4f_tutorial.rough_options import lesson as teaching, context_checks, studies, explorer, surrogate, comparison, data_story
+    from sbi4f_tutorial.rough_options import lesson as teaching, context_checks, studies, explorer, surrogate, comparison, data_story, diagnostics
     from sbi4f_tutorial.shared import backbones, full_surface, plots, tasks as option_tasks
 
     ROOT = mo.notebook_dir().parent
@@ -41,7 +41,7 @@ def _():
         axes[0].legend(fontsize=7)
         return fig
 
-    return (ASSETS, RESULTS, backbones, comparison, context_checks, data_story, explorer, focused_posterior,
+    return (ASSETS, RESULTS, backbones, comparison, context_checks, data_story, diagnostics, explorer, focused_posterior,
             full_surface, mo, np, option_tasks, plots, plt, studies, surrogate, teaching, time)
 
 
@@ -805,7 +805,7 @@ def _(full_surface, mo, teaching, time):
         conditions = full_surface.conditioning_data(observed_prices[None, :], task,
                                                      context_values=supplied_curve[None, :])
         posterior = workflow.sample(conditions=conditions, num_samples=128, seed=17)
-        return posterior, {"generation": generation["runtime_seconds"], "fitting": fit_seconds,
+        return workflow, posterior, {"generation": generation["runtime_seconds"], "fitting": fit_seconds,
                            "total": time.perf_counter() - started}
 
     mo.show_code()
@@ -821,20 +821,24 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(known_arrays, known_task, mo, np, train_rough, train_small_estimator):
-    mo.stop(not train_rough.value, mo.md("*Press the button to run the displayed training workflow.*"))
-    try:
-        _draws, _timing = train_small_estimator(
-            known_task, known_arrays["observations"], known_arrays["context_values"])
-    except (RuntimeError, ValueError) as _error:
-        mo.stop(True, mo.callout(mo.md(f"**Training run stopped:** {_error}. No partial or selectively accepted training sample is used."), kind="warn"))
-    mo.vstack([
-        mo.md(f"Generated 8 fresh markets; trained for 5 epochs (**10 optimizer updates**). "
-              f"Generation: **{_timing['generation']:.1f} s**; fitting including compilation: **{_timing['fitting']:.1f} s**; "
-              f"total including imports and sampling: **{_timing['total']:.1f} s**. These session draws are separate from the pretrained results below."),
-        mo.ui.table([{ "parameter": name, "session median": float(np.median(_draws[name]))}
-                     for name in known_task["parameter_names"]], selection=None, pagination=False),
-    ])
-    return
+    tutorial_workflow = None
+    _output = mo.md("*Press the button to run the displayed training workflow.*")
+    if train_rough.value:
+        try:
+            tutorial_workflow, _draws, _timing = train_small_estimator(
+                known_task, known_arrays["observations"], known_arrays["context_values"])
+            _output = mo.vstack([
+                mo.md(f"Generated 8 fresh markets; trained for 5 epochs (**10 optimizer updates**). "
+                      f"Generation: **{_timing['generation']:.1f} s**; fitting including compilation: **{_timing['fitting']:.1f} s**; "
+                      f"total including imports and sampling: **{_timing['total']:.1f} s**. These session draws are separate from the pretrained results below."),
+                mo.ui.table([{ "parameter": name, "session median": float(np.median(_draws[name]))}
+                             for name in known_task["parameter_names"]], selection=None, pagination=False),
+            ])
+        except (ImportError, RuntimeError, ValueError) as _error:
+            tutorial_workflow = None
+            _output = mo.callout(mo.md(f"**Training run stopped:** {_error}. No partial or selectively accepted training sample is used."), kind="warn")
+    _output
+    return (tutorial_workflow,)
 
 
 @app.cell(hide_code=True)
@@ -882,7 +886,7 @@ def _(backbones, full_surface, mo, time):
         # Same observed inputs as the tutorial fit; return complete physical rows.
         draws = full_surface.sample(workflow, task, prices[None, :], num_samples=512,
                                     context_values=curve[None, :], seed=17)[0]
-        return task, draws, {"load": loaded - started, "sampling": time.perf_counter() - loaded}
+        return task, workflow, draws, {"load": loaded - started, "sampling": time.perf_counter() - loaded}
 
     mo.show_code()
     return (infer_with_pretrained,)
@@ -908,19 +912,113 @@ def _(mo, pretrained_folder):
 
 @app.cell(hide_code=True)
 def _(focused_posterior, infer_with_pretrained, known_arrays, load_pretrained, mo, pretrained_folder):
-    mo.stop(not load_pretrained.value, mo.md("*Download the matching bundle, then load it here to run inference yourself.*"))
+    pretrained_workflow = None
+    _output = mo.md("*Download the matching bundle, then load it here to run inference yourself.*")
+    if load_pretrained.value:
+        try:
+            _task, pretrained_workflow, _draws, _timing = infer_with_pretrained(
+                pretrained_folder.value.strip(), known_arrays["observations"], known_arrays["context_values"])
+            _case = dict(known_arrays, neural_draws=_draws)
+            _output = mo.vstack([
+                mo.md(f"**Fresh inference from pretrained weights · 512 paired draws.** "
+                      f"Load including imports: **{_timing['load']:.1f} s**; sampling including compilation: "
+                      f"**{_timing['sampling']:.1f} s**. The saved checks below retain their original draws."),
+                focused_posterior(_task, _case),
+            ])
+        except (ImportError, OSError, ValueError, RuntimeError) as _error:
+            pretrained_workflow = None
+            _output = mo.callout(mo.md(f"**Model not loaded:** {_error}. "
+                                      "Check the folder and matching bundle in the model guide."), kind="warn")
+    _output
+    return (pretrained_workflow,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Optional: check the network on 200 stored markets
+
+    **Reuse the expensive simulations; check the model you actually trained or loaded.**
+    We bundle 200 independently simulated validation markets: generating parameters,
+    supplied curves and noisy option quotes. Loading these arrays requires no
+    Monte Carlo pricing and no model download. The action below draws new
+    posteriors from the selected network and plots recovery and posterior ranks.
+
+    These are fixed validation cases, not a new simulation on every click or an
+    untouched final test. The small tutorial fit can fail badly; a falling loss
+    or a plausible posterior for one market does not establish calibration.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(ASSETS, diagnostics, known_task, mo):
+    diagnostic_directory = ASSETS / "diagnostics" / "rough-known-200"
+    mo.stop(not diagnostic_directory.is_dir(), mo.md("*The fixed diagnostic inputs are not packaged in this checkout yet.*"))
+    _, diagnostic_metadata, diagnostic_inputs = diagnostics.load_panel(diagnostic_directory, expected_task=known_task)
+    mo.md(f"**{diagnostic_metadata['count']} stored markets**, each with 63 quotes and seven curve levels. "
+          "The generating parameters are used only to check the results; they never enter the network conditions. "
+          f"Generating this panel once took **{diagnostic_metadata['generator']['runtime_seconds']/60:.1f} minutes** "
+          f"on one CPU worker. Its bundled inputs occupy **{(diagnostic_directory/'inputs.npz').stat().st_size/1000:.0f} KB**; "
+          "reusing them avoids that simulation cost. Fresh generation is an optional offline step in the data guide.")
+    return diagnostic_inputs, diagnostic_metadata
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    diagnostic_source = mo.ui.radio(options={"Tutorial network trained above": "tutorial",
+                                            "Pretrained network loaded above": "pretrained"},
+                                    value="Tutorial network trained above", inline=True,
+                                    label="Network to check")
+    diagnostic_source
+    return (diagnostic_source,)
+
+
+@app.cell(hide_code=True)
+def _(diagnostic_source, mo, pretrained_workflow, tutorial_workflow):
+    # A source change invalidates old plots instead of reusing another model's results.
+    _source = (diagnostic_source.value, id(tutorial_workflow), id(pretrained_workflow))
+    run_diagnostics = mo.ui.run_button(label="Check this network on the 200 stored markets")
+    run_diagnostics
+    return (run_diagnostics,)
+
+
+@app.cell(hide_code=True)
+def _(diagnostics, mo):
+    def check_heldout_markets(workflow, task, inputs):
+        # Only observed quotes and supplied curves condition the network.
+        # Generating parameters are separate labels for recovery/rank checks.
+        draws = diagnostics.evaluate(workflow, task, inputs, draws=200, seed=20261110)
+        recovery, rank_ecdf = diagnostics.plot_diagnostics(task, inputs, draws)
+        return recovery, rank_ecdf
+
+    mo.show_code()
+    return (check_heldout_markets,)
+
+
+@app.cell(hide_code=True)
+def _(check_heldout_markets, diagnostic_inputs, diagnostic_source, known_task, mo,
+      pretrained_workflow, run_diagnostics, time, tutorial_workflow):
+    mo.stop(not run_diagnostics.value, mo.md("*This optional check samples the selected network; it does not simulate option prices or retrain.*"))
+    _workflow = tutorial_workflow if diagnostic_source.value == "tutorial" else pretrained_workflow
+    mo.stop(_workflow is None, mo.callout(mo.md("**No matching network is ready.** Train the tutorial network "
+        "or load the pretrained model above, then run this check."), kind="info"))
+    _started = time.perf_counter()
     try:
-        _task, _draws, _timing = infer_with_pretrained(
-            pretrained_folder.value.strip(), known_arrays["observations"], known_arrays["context_values"])
-    except (OSError, ValueError, RuntimeError) as _error:
-        mo.stop(True, mo.callout(mo.md(f"**Model not loaded:** {_error}. "
-                                      "Check the folder and matching bundle in the model guide."), kind="warn"))
-    _case = dict(known_arrays, neural_draws=_draws)
+        _recovery, _ranks = check_heldout_markets(_workflow, known_task, diagnostic_inputs)
+    except (ValueError, RuntimeError) as _error:
+        mo.stop(True, mo.callout(mo.md(f"**Diagnostic check stopped:** {_error}."), kind="warn"))
     mo.vstack([
-        mo.md(f"**Fresh inference from pretrained weights · 512 paired draws.** "
-              f"Load including imports: **{_timing['load']:.1f} s**; sampling including compilation: "
-              f"**{_timing['sampling']:.1f} s**. The saved checks below retain their original draws."),
-        focused_posterior(_task, _case),
+        mo.md(f"**Source: {diagnostic_source.value} network · 200 markets × 200 posterior draws.** "
+              f"Sampling and plotting: **{time.perf_counter()-_started:.1f} s**, including compilation if needed. "
+              "No option-price simulation is included in this time."),
+        _recovery, _ranks,
+        mo.md("Recovery compares generating values with posterior medians and central 90% intervals. "
+              "The rank ECDF checks prior-averaged calibration: a difference near zero means roughly uniform ranks; "
+              "systematic departures from the reference band motivate further checks. An estimator that returns the prior "
+              "can pass a rank check while learning nothing; inspect recovery and information gain too. "
+              "These figures describe the selected model and these stored cases, not the other estimator "
+              "or every possible market."),
     ])
     return
 

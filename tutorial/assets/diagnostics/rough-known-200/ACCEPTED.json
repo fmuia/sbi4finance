@@ -1,0 +1,10 @@
+{
+  "accepted": "2026-11-10T14:29:56+00:00",
+  "source": "compact-panel",
+  "source_sha256": {
+    "inputs.npz": "3ee6be73abc6b6412d2ce1fc8d2975337a41e721c497d5454dd036260034180f",
+    "panel.json": "274027d587d21fd1ebbf492b7fb69a18ad49e048d1ef3d184e5bf903fa8e8ece",
+    "task.json": "e5ae108b2a6bf39921cd61bd05db50a431c5538486466a22a2db16b66080b644"
+  },
+  "changes": []
+}
