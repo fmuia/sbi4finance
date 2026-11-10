@@ -71,7 +71,7 @@ $`\operatorname{Var} P \approx \nabla P^\top \operatorname{Cov}(\hat\theta)\,\na
 
 **Desk.** A team of traders managing a book of positions.
 
-**Discount factor $`D(T)`$.** Today's value of one unit of currency paid at time $`T`$:
+**Discount factor** ($`D(T)`$). Today's value of one unit of currency paid at time $`T`$:
 $`D(T) = e^{-r(T)\,T}`$, with $`r(T)`$ the interest rate for that maturity.
 
 **Down-and-in put.** A put that comes into existence only if the index reaches a barrier
@@ -97,7 +97,7 @@ counter, often with a payoff that depends on the index's path.
 liability, in an orderly transaction between market participants (the accounting
 standard IFRS 13). The mark is the bank's estimate of it.
 
-**Forward $`F(T)`$.** The price agreed today for buying the index at $`T`$, paid at
+**Forward** ($`F(T)`$). The price agreed today for buying the index at $`T`$, paid at
 $`T`$. It equals today's level grown at the interest rate less the dividend yield,
 $`F(T) = S_0\,e^{(r-q)T}`$. In this work it is read from the quotes through put–call
 parity.
@@ -105,7 +105,7 @@ parity.
 **Forward smile.** The smile that options starting at a future date will show. No listed
 option reveals it today, and models disagree about it.
 
-**Forward variance curve $`\xi_0(t)`$.** The expected future variance at each date
+**Forward variance curve** ($`\xi_0(t)`$). The expected future variance at each date
 $`t`$ under the pricing probabilities, $`\xi_0(t) = \mathbb{E}[V_t]`$. Rough Bergomi takes
 it as a curve, here described by three numbers: a short-term level, a long-term level and
 the speed between them. Not to be confused with Heston's vol of vol $`\xi`$.
@@ -114,7 +114,7 @@ the speed between them. Not to be confused with Heston's vol of vol $`\xi`$.
 proportion to the index level then, and which pays at a later date $`T_2`$. Here
 $`T_1`$ is 6 months and $`T_2`$ is 1 year. Its value depends on the forward smile.
 
-**Half-spread $`h`$.** Half the bid–ask spread, $`(\text{ask} - \text{bid})/2`$: the
+**Half-spread** ($`h`$). Half the bid–ask spread, $`(\text{ask} - \text{bid})/2`$: the
 uncertainty of a quote's price. Divided by vega, it is expressed in vol points.
 
 **Heston model.** A stochastic volatility model in which the variance reverts to a
@@ -122,7 +122,7 @@ long-run level and fluctuates in proportion to its square root (Heston, 1993). I
 parameters are $`v_0`$, $`\bar v`$, $`\kappa`$, $`\xi`$ and $`\rho`$, and its option
 prices come from a Fourier integral.
 
-**Hurst exponent $`H`$.** In rough Bergomi, the parameter that sets how rough volatility
+**Hurst exponent** ($`H`$). In rough Bergomi, the parameter that sets how rough volatility
 paths are: $`H = 1/2`$ is as rough as Brownian motion, and $`H \lt 1/2`$ is rougher.
 Estimates from data are near 0.1.
 
@@ -149,7 +149,7 @@ years.
 **MCMC (Markov chain Monte Carlo).** A family of algorithms that draw from a posterior
 using only its density up to a constant. Here it gives Heston's exact posterior.
 
-**Mean reversion $`\kappa`$.** In Heston, the speed at which the variance is pulled back
+**Mean reversion** ($`\kappa`$). In Heston, the speed at which the variance is pulled back
 to its long-run level $`\bar v`$: a gap halves in about $`\ln 2/\kappa`$ years.
 
 **Model error.** The part of the gap between quotes and model prices that comes from the
@@ -222,7 +222,7 @@ negative: low strikes have higher implied volatilities.
 **Smile.** Implied volatility as a function of strike and maturity. The name comes from
 the U shape it takes in some markets; for an index it is mostly a skew.
 
-**Spot $`S_t`$.** The index level at time $`t`$.
+**Spot** ($`S_t`$). The index level at time $`t`$.
 
 **SPX, SPXW.** Options on the S&P 500 index, listed on Cboe: European and cash-settled.
 SPXW are the series settled on the closing value, with expiries on almost every trading
@@ -235,7 +235,7 @@ so their prices include an early-exercise value; this application uses SPX inste
 **Stochastic volatility model.** A model in which the index's volatility is itself
 random, such as Heston and rough Bergomi.
 
-**Strike $`K`$.** The fixed level in an option's payoff.
+**Strike** ($`K`$). The fixed level in an option's payoff.
 
 **Structured note.** A bond-like product sold to investors whose payoff depends on an
 index through options embedded in it, such as an autocallable.
@@ -244,7 +244,7 @@ index through options embedded in it, such as an autocallable.
 Its fair strike can be computed without a model, from the prices of out-of-the-money
 options at all strikes of that maturity. The VIX index is built the same way.
 
-**Vega $`\nu`$.** The sensitivity of an option's price to its implied volatility,
+**Vega** ($`\nu`$). The sensitivity of an option's price to its implied volatility,
 $`\nu = \partial P/\partial\sigma`$. It converts an error in vol points into an error in
 price.
 
