@@ -252,7 +252,8 @@ def build(historical_root, out):
       document.getElementById('download').addEventListener('click',function(){const text=JSON.stringify(JSON.parse(document.getElementById('report-data').textContent),null,2);const url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='heston-report-data.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
       </script></main></body></html>'''])
     out=Path(out);out.parent.mkdir(parents=True,exist_ok=True)
-    out.write_text("".join(parts),encoding="utf-8")
+    rendered = "\n".join(line.rstrip() for line in "".join(parts).splitlines()) + "\n"
+    out.write_text(rendered,encoding="utf-8")
     print(json.dumps({"report":str(out),"bytes":out.stat().st_size,"sha256":digest(out),"sources":len(sources),"scientific_acceptance":False}))
 
 
