@@ -1,0 +1,49 @@
+{
+  "format": "heston_spread_engineering_probe_results_v1",
+  "cases": [
+    {
+      "validation_row": 0,
+      "checks_passed": true,
+      "bank_price_shift_over_minimum_measurement_sd": 0.0,
+      "refined_price_shift_over_minimum_measurement_sd": 2.4480686988681534e-06,
+      "refined_log_likelihood_shift": 2.627243572792165e-06,
+      "fixed_c1_log_likelihood": -8.346500789353875,
+      "joint_at_c1_log_likelihood": -8.346500789353875,
+      "conditional_c_mode_at_true_phi": 0.7592139627654982,
+      "conditional_c_density_grid_integral": 0.9999999999826329,
+      "pricing_nodes": 512,
+      "pricing_cutoff": 300.0
+    },
+    {
+      "validation_row": 1,
+      "checks_passed": true,
+      "bank_price_shift_over_minimum_measurement_sd": 0.0,
+      "refined_price_shift_over_minimum_measurement_sd": 0.0,
+      "refined_log_likelihood_shift": -0.0,
+      "fixed_c1_log_likelihood": -23.157685374123258,
+      "joint_at_c1_log_likelihood": -23.157685374123258,
+      "conditional_c_mode_at_true_phi": 1.060645196701794,
+      "conditional_c_density_grid_integral": 0.9999999999998004,
+      "pricing_nodes": 2048,
+      "pricing_cutoff": 1200.0
+    },
+    {
+      "validation_row": 2,
+      "checks_passed": true,
+      "bank_price_shift_over_minimum_measurement_sd": 0.0,
+      "refined_price_shift_over_minimum_measurement_sd": 0.0,
+      "refined_log_likelihood_shift": -0.0,
+      "fixed_c1_log_likelihood": -29.12979733484628,
+      "joint_at_c1_log_likelihood": -29.12979733484628,
+      "conditional_c_mode_at_true_phi": 1.1602403049218801,
+      "conditional_c_density_grid_integral": 0.9999999999951747,
+      "pricing_nodes": 1024,
+      "pricing_cutoff": 600.0
+    }
+  ],
+  "checks_passed": true,
+  "reserved_test_arrays_opened": false,
+  "scientific_acceptance": false,
+  "case_file_sha256": "8fc6790baf3509534229646c37b96b867f84e5d7db28c2f8fe8af2f1aee13933",
+  "scope": "Sampled label-reuse and likelihood probe; no MCMC, training, SBC or scientific acceptance."
+}
