@@ -1,0 +1,54 @@
+{
+  "format": "heston_spread_scale_report_verification_v1",
+  "reports": [
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/report.html",
+      "sha256": "dd17944e22593f9d166180490d63e51de4ec97b80a6a1e6e2b94f52ad167d65e",
+      "bytes": 1381089,
+      "inline_svg_count": 7,
+      "duplicate_ids": [],
+      "missing_internal_anchors": [],
+      "external_asset_requests": 0,
+      "source_bindings_checked": 28
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/report.html",
+      "sha256": "6869e3f819292859097130eb8c1b0a6325a898103e483faf384352b4b0b86208",
+      "bytes": 1395228,
+      "inline_svg_count": 7,
+      "duplicate_ids": [],
+      "missing_internal_anchors": [],
+      "external_asset_requests": 0,
+      "source_bindings_checked": 60
+    }
+  ],
+  "presentation_only": true,
+  "scientific_acceptance": false,
+  "browser_visual_review": {
+    "status": "passed",
+    "viewport": [
+      1440,
+      2200
+    ],
+    "final_sections": [
+      "information",
+      "scale",
+      "conditional"
+    ],
+    "recovery_plot_preview": "inspected with the same hash-bound terminal neural recovery arrays",
+    "screenshots": [
+      {
+        "path": "/private/tmp/heston-scale-final-information.png",
+        "sha256": "2b416b8ac212c96bb2899ae81518ee06cd882074b20a1394b2d29fb7e75d8821"
+      },
+      {
+        "path": "/private/tmp/heston-scale-final-scale.png",
+        "sha256": "ae6ff0577570338a0a70bf1d199001130bde91a85408f9a734bcfc0030661684"
+      },
+      {
+        "path": "/private/tmp/heston-scale-final-conditional.png",
+        "sha256": "f40862fca78fd1ccbeac547ccbf031d24479b065718fd4be4fa9a4fafedd6a66"
+      }
+    ]
+  }
+}
