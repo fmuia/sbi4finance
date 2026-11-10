@@ -7,6 +7,7 @@ and source/QA sidecars are local generated files excluded from Git.
 from __future__ import annotations
 
 import argparse
+from io import BytesIO
 import json
 from pathlib import Path
 import sys
@@ -14,10 +15,17 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from render_heston_noise_report import (
     EVIDENCE, INK, LINE, MUTED, PAGE_H, PAGE_W, PALE, ROOT, TEAL, WIDTH,
-    equation, fonts_and_styles, sha,
+    VectorArt, equation, fonts_and_styles, sha,
 )
+import matplotlib.pyplot as plt
+import numpy as np
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+from svglib.svglib import svg2rlg
+
+
+PR_HEAD = "df2cfc442de07459a8b971f070e3a6f25b0b2020"
+E_TARGETS = [-5, -3.5, -2.25, -1.25, -.5, 0, .5, 1, 2]
 
 
 WEB_SOURCES = [
@@ -35,7 +43,53 @@ WEB_SOURCES = [
      "https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/documentation/manuals-and-guides/ipa-volatility-surfaces/ipa-volatility-surfaces-eti"),
     ("7", "Zeliade: Robust calibration and arbitrage-free interpolation of SSVI slices", "30 March 2018; sections 5.1 and 6.2.",
      "https://www.zeliade.com/wp-content/uploads/whitepapers/zwp-008-RobustNoArbSSVI.pdf"),
+    ("8", "SBI4Finance PR #81: option application plan", "Collaborator proposal; reviewed at commit df2cfc4. The report adopts selected coverage ideas, not the full application scope.",
+     "https://github.com/fmuia/sbi4finance/pull/81"),
+    ("9", "PR #81: pinned observation and error-model plan", "Plan sections 3-4; written layout E uses fixed 16% reference volatility.",
+     f"https://github.com/fmuia/sbi4finance/blob/{PR_HEAD}/lab/plans/OPTION-APPLICATION-PLAN.md"),
+    ("10", "PR #81: pinned layout comparison", "layout_choice.py calls the supporting grid constructor; local information comparisons are preliminary.",
+     f"https://github.com/fmuia/sbi4finance/blob/{PR_HEAD}/lab/evidence/pilot-results/2026-11-09/design-and-error/heston/layout_choice.py"),
+    ("11", "PR #81: pinned grid and error-covariance constructor", "grid_vs_error_structure.py computes fitted ATM volatilities and uses them for its ATM-scaled candidates.",
+     f"https://github.com/fmuia/sbi4finance/blob/{PR_HEAD}/lab/evidence/pilot-results/2026-11-09/design-and-error/heston/grid_vs_error_structure.py"),
 ]
+
+
+def grid_comparison(old, design):
+    """Show physical layouts in one coordinate; candidate points are only targets."""
+    old_t = np.array([v["maturity"] for v in old["context"]["contracts"]])
+    old_k = np.log([v["strike"] for v in old["context"]["contracts"]])
+    records = design["records"]
+    current_t = np.asarray(records["maturity"])
+    current_k = np.log(np.asarray(records["strike"])/np.asarray(records["forward"]))
+    candidate_t = np.repeat(np.array([5, 10, 21, 42, 63, 126, 252])/252, 9)
+    candidate_z = np.tile(E_TARGETS, 7)
+    panels = [
+        (old_k/(.16*np.sqrt(old_t)), old_t, "Original: 63 contracts", "#526675", "o"),
+        (current_k/(.16*np.sqrt(current_t)), current_t, "Current: 54 actual quotes", "#087e88", "o"),
+        (candidate_z, candidate_t, "Proposed: nominal targets", "#87511c", "x"),
+    ]
+    with plt.rc_context({"font.family":"DejaVu Sans", "font.size":8,
+                         "svg.fonttype":"path", "axes.spines.top":False,
+                         "axes.spines.right":False}):
+        fig, axes = plt.subplots(1, 3, figsize=(6.85, 2.85), sharex=True, sharey=True)
+        for ax, (z, t, label, color, marker) in zip(axes, panels):
+            ax.scatter(z, 365*t, s=14, marker=marker, color=color, linewidths=.8)
+            ax.axvline(0, color="#b7c9ce", linewidth=.7)
+            ax.set_yscale("log")
+            ax.set(xlim=(-5.4, 2.9), ylim=(6, 440), title=label)
+            ax.set_xticks([-5, -3, -1, 0, 2])
+            ax.set_yticks([7, 14, 30, 60, 90, 180, 365],
+                          labels=["7", "14", "30", "60", "90", "180", "365"])
+            ax.minorticks_off()
+            ax.grid(alpha=.16)
+        axes[0].set_ylabel("Time to expiry (calendar-day equivalent)")
+        fig.supxlabel("Common coordinate: log(K/F) / (0.16 × √T)", fontsize=8, y=.015)
+        fig.tight_layout(pad=.75, rect=(0, .065, 1, 1))
+        buffer = BytesIO()
+        fig.savefig(buffer, format="svg")
+        plt.close(fig)
+    buffer.seek(0)
+    return VectorArt(svg2rlg(buffer), extra=5)
 
 
 def build(output):
@@ -48,6 +102,8 @@ def build(output):
         "E": ROOT / "tutorial/src/sbi4f_tutorial/shared/surface.py",
         "F": ROOT / "tutorial/assets/backbones/heston-final500/task.json",
         "G": ROOT / "tutorial/src/sbi4f_tutorial/shared/full_surface.py",
+        "H": EVIDENCE / "designs/put_heavy.json",
+        "I": ROOT / "lab/plans/SPARSE-QUOTE-CASE-PLAN.md",
     }
     current = json.loads(sources["C"].read_text())
     assert set(current["cells"]) == {"50000", "75000"}
@@ -59,6 +115,12 @@ def build(output):
     assert old["parameter_names"] == ["initial_variance", "theta", "vol_of_vol", "rho"]
     assert old["fixed_parameters"]["kappa"] == 2.
     assert len(old["context"]["quote_noise_std"]) == 63
+    design = json.loads(sources["H"].read_text())
+    assert len(design["records"]["mid"]) == 54
+    assert design["targets_z"] == [-4, -3, -2, -1.5, -1, -.5, 0, .5, 1]
+    times = np.unique(design["records"]["maturity"])
+    assert len(times) == 6
+    assert 21 < 365*times[0] < 22 and 324 < 365*times[-1] < 326
 
     story = []
     def p(text, style="body"):
@@ -92,8 +154,8 @@ def build(output):
     # 1: recommendation and concrete contrast, with proposal status unmistakable.
     add("HESTON OPTIONS / TEACHING DESIGN / 9 NOVEMBER 2026", "kicker")
     add("A simpler observation-noise<br/>baseline", "title")
-    add("A companion to <i>How we construct observation noise</i>. This revised discussion note explains the return to the original known-noise model class, documents calibration choices in finance libraries, and proposes a paired example that estimates one global noise scale.")
-    box("<b>Recommendation:</b> use a known, spread-based Gaussian scale as the core example. Add a controlled comparison that estimates a single global scale σ under the same error law. Keep the two-component τ model as a separate extension. These are proposals; no simulator, checkpoint or study evidence is changed by this report.")
+    add("Proposal for collaborator review: retain a simple Gaussian error model, compare supplied versus inferred scale, and test a fixed grid with better maturity and strike coverage. Includes calibration-library evidence and a review of PR #81.")
+    box("<b>Recommendation:</b> use known, spread-based Gaussian SDs for the core example, then estimate one global scale σ in a paired exercise. Test a modest fixed-grid coverage upgrade separately. Keep the two-component τ model and smooth discrepancy as later extensions. This report proposes work; it reports no new training or pricing study.")
     heading("Current experiment: infer an additional discrepancy scale")
     story.append(equation(r"Y_i=P_i(\phi)+\sqrt{(c h_i)^2+(\tau\nu_i)^2}\,Z_i"))
     heading("Proposed baseline: supply the error scale")
@@ -128,7 +190,7 @@ def build(output):
     story.append(equation(r"s_i^{\mathrm{proposed}}=c h_i"))
     add("The original profile prescribed 0.3 volatility points at ATM and 1.0 in the wings, converted using fixed-20% Black vega. z is standardized log-moneyness, not option delta. The proposed scale uses actual price spreads and a declared multiplier; it still does not establish that half-spread is an empirical Gaussian SD. [E-G]")
     heading("Other changes are separate from the noise simplification")
-    add("The original task inferred four physical parameters with κ = 2 fixed and ξ ≤ 1.5, on 63 normalized-grid contracts. The revised pilot uses 54 actual European SPXW quote locations, infers κ and allows ξ ≤ 3. These changes can be retained independently of the observation-noise choice. Synthetic prices were computed directly on the old grid; interpolation applied to old market readings.","small")
+    add("The original task inferred four physical parameters with κ = 2 fixed and ξ ≤ 1.5, on 63 normalized-grid contracts. The revised pilot uses 54 actual European SPXW quote locations, infers κ and allows ξ ≤ 3. These changes are separate from the noise choice. Synthetic prices were computed directly on the old grid; interpolation applied to old market readings. Pages 8-11 compare the grids and propose a staged follow-up.","small")
     box("<b>Keep:</b> the original Gaussian mechanism. <b>Replace:</b> its prescribed SD profile with a spread-anchored convention. <b>Undo:</b> the additional inferred τ term in the core example. The proposed direct-σ exercise then tests learning one scale under that same simple error law.")
     story.append(PageBreak())
 
@@ -179,8 +241,8 @@ def build(output):
     story.append(PageBreak())
 
     # 6: retain a concrete bounded sequence, with the paired extension next.
-    title(6,"The proposed core experiment")
-    add("Keep the existing 54 European SPXW quote locations, carry conventions, frozen half-spreads and five-parameter prior. Use the current wide vol-of-vol support and numerical controls. Change the observation law and posterior target only. [A, B]")
+    title(6,"Stage A: isolate the noise change")
+    add("First compare supplied and inferred scale on the preserved 54-contract SPXW design, using its prior, carry, spreads and numerical controls. Audit the revised grid separately before repeating the pair. [A, B]","small")
     heading("Simulation and amortized training")
     step(1,"Select a clean surface.","Use a five-parameter draw and its numerical prices from the preserved clean-price bank.")
     step(2,"Supply a known noise multiplier.","For a network covering specified scales, draw c from Uniform(0.5, 2) and provide it as conditioning information. It is not an unknown latent parameter with an inferred posterior.")
@@ -197,7 +259,7 @@ def build(output):
         ["Real market application", "Inspect spread-unit residuals and held-out predictions; report model inadequacy if present."],
     ], [143,WIDTH-143])
     heading("Reuse prices, establish a new inference identity")
-    add("The observation-law change alone needs no new Heston pricing labels if contracts, physical prior and accuracy requirements stay unchanged. Existing bank prices were gated against 0.5 h, independent of τ. Nevertheless, the proposed likelihood requires new matched reference posteriors, a distinct task identity and a newly trained five-target checkpoint.")
+    add("A noise-law change alone needs no new prices when contracts, physical prior and accuracy requirements stay unchanged. The existing bank was gated against 0.5 h, independently of τ. New matched references, task identities and checkpoints are still required.","small")
     box("Discarding τ coordinates from old six-target posterior draws is not this baseline: it marginalizes over τ rather than fixing its discrepancy contribution to zero. Preserve the current results and checkpoints as their original experiment. No implementation, training or reference run is performed by this report.")
     story.append(PageBreak())
 
@@ -221,23 +283,91 @@ def build(output):
     box("Sensitivity compares separate conditional assumptions. Inferring σ updates a prior using the data; the physical marginal mixes p(φ | y, σ) with <i>posterior</i> weights p(σ | y), not an equal average of three sensitivity plots. Its intervals need not be wider than every fixed-σ case. Boundary mass can flag a restrictive prior or error/model mismatch; a large fitted scale is not automatically pure measurement noise.")
     story.append(PageBreak())
 
-    # 8: concise acceptance limits plus all portable, clickable primary sources.
-    title(8,"Interpretation limits and sources")
+    # 8: compare all three stages without conflating coordinate labels and contracts.
+    title(8,"The grid: original, current, proposed")
+    add("The observation grid specifies <b>which European contracts we observe</b>: their strikes and expiries. It is separate from the Fourier integration grid used to compute their prices. Changing quote selection and changing observation noise answer different questions.")
+    story.append(equation(r"z=\frac{\log(K/F)}{a\sqrt{T}},\qquad K=F\exp(a z\sqrt{T})"))
+    add("K is strike, F is the expiry's forward, T is time in years and a is a reference volatility. The coordinate scale a = 16% is unrelated to the dimensionless noise multiplier σ. Negative z selects puts below the forward; positive z selects calls above it. z is <b>not option delta</b> or a tail probability. At z = 0, K = F: ATM here means at the forward.","small")
+    table([
+        ["Aspect", "Published original", "Current Heston pilot", "Proposed candidate"],
+        ["Contracts", "63 normalized contracts; 7 × 9", "54 actual SPXW quotes; 6 × 9", "About 63 actual SPXW quotes; 7 × 9 if supported"],
+        ["Strike selection", "Symmetric targets −2 to +2 at fixed 20%", "Targets −4 to +1, scaled once by observed ATM IV", "Uneven targets −5 to +2 at fixed 16%"],
+        ["Expiries", "5,10,21,42,63,126,252 divided by 252 years", "30 Nov 2026 to 30 Sep 2027; ACT/365F", "About 1 and 2 weeks; 1, 2, 3, 6 and 12 months; exact dates to select"],
+        ["Market observation", "Interpolate the chain onto the fixed synthetic grid", "Select actual quotes and preserve spreads", "Select distinct actual quotes near declared targets"],
+        ["During simulation", "Fixed normalized contracts", "Fixed selected contracts", "Fixed selected contracts"],
+    ],[77,137,139,WIDTH-353])
+    heading("Compare physical reach in a common coordinate")
+    add("The original ±2 at 20% is ±2.5 when displayed at 16%. Thus the proposed −5 put target doubles the original negative log-moneyness reach at the same expiry. Its +2 call target has 80% of the original positive reach. Adding +2 calls improves the <i>current 54</i>, whose calls end near +1; it does not extend the original call wing. [F, H, 8, 9]","small")
+    box("<b>Changing a label does not add information.</b> Relabelling the same K and T with 16% rather than 20% changes coordinates only. Selecting different strikes or expiries changes the observations and requires new prices for those contracts. ATM-based selection once, then freezing, also gives a valid fixed design.")
+    story.append(PageBreak())
+
+    # 9: actual coverage, literal candidate and a clearly marked target visualization.
+    title(9,"A small coverage upgrade to test")
+    add("The useful principle in PR #81 is to cover distinct information: deep puts, ATM, near calls, and short as well as later expiries. More points in an already covered region need not add as much information. This motivates an audit; it does not establish a universally optimal grid. [8, 9]")
+    story.append(grid_comparison(old, design))
+    add("All panels use the same fixed-16% display coordinate. The original and current panels use saved contract locations; crosses are <b>nominal proposed targets</b>, not selected market quotes. Candidate times use the PR's /252 labels for this sketch only; implementation retains exact ACT/365F expiry times.","tiny")
+    table([
+        ["Coverage audit", "Existing 54", "Proposed change"],
+        ["Short expiries", "Starts at 21.03 calendar days; only one expiry within a month", "Target about one and two weeks as well as one month"],
+        ["Later expiries", "Ends at 324.99 days, about 10.7 months", "Seek approximately one-year SPXW coverage"],
+        ["Puts / ATM / calls", "Deepest puts −3.69 to −4.29; |ATM z| ≤ .011; furthest calls +.93 to +1.07", "Preserve puts and ATM; test added put reach and calls near +2"],
+    ],[98,201,WIDTH-299])
+    add("<b>Starting candidate:</b> z = [−5, −3.5, −2.25, −1.25, −0.5, 0, +0.5, +1, +2] at fixed 16%, with seven approximate expiry buckets. Fifty-four quotes could also support a useful redesigned layout; 63 is a candidate count, not an acceptance criterion.","small")
+    box("Select distinct, usable actual quotes. Record target distances, half-spreads and unsupported locations. Revise the declared design when support is poor. Preserve SPXW settlement and exact timing; keep carry anchors disjoint from fitted/scored quotes and condition both designs on a common carry record. [H, I]")
+    story.append(PageBreak())
+
+    # 10: distinguish useful hypotheses and bounded source evidence from adoption.
+    title(10,"What to take from PR #81")
+    heading("Adopt the coverage principle and simple fixed inputs")
+    add("Retain the current 54 as a control; test a single revised actual-quote layout with short expiries and a less truncated call side. Keep the selected contracts fixed and use one specification for simulation, least squares, reference inference and the neural network. An arbitrary-size set encoder is unnecessary for this first comparison. [8, 9]")
+    heading("Treat layout E's numerical ranking as preliminary")
+    add("The supporting layout_choice.py calls a grid built using fitted maturity-specific ATM volatilities, about 14.30%-17.25%. The written layout E uses fixed 16%. That changes the scale of its log-moneyness offsets by about −10.6% to +7.8%; these are not percentage changes in strikes. We should evaluate the literal candidate we intend to implement. [9-11]")
+    add("The reported information calculations are local approximations at a fitted Heston point, with a fixed smooth-error covariance. They do not establish the ranking across the prior or under our simpler spread-based law. Layout E also worsens the local ρ width by about 9% or 31% in the two reported smooth-error scenarios. Better coverage has tradeoffs; there is no promise that every parameter interval becomes narrower. [9]")
+    heading("Defer the new correlated-discrepancy model")
+    add("The PR also proposes a smooth Gaussian-process error field across strike and maturity, changes the τ prior, profiles correlation lengths, and adds multi-day interpolation and a broader product study. Those are substantial additional choices. Residual smoothness is a reason to investigate such a model later, rather than make it a prerequisite for fixing coverage.")
+    add("Our current network already fails conditional reference checks on observations from <i>its own</i> independent-error simulator. Market residual smoothness therefore does not establish the cause of that approximation failure. Improving average loss alone has not resolved it. First establish matched synthetic inference for the simpler targets. [C, I]")
+    box("<b>Proposed scope for approval:</b> combine the PR's coverage goals with the single-component Gaussian examples. Keep GP discrepancy, the four-day application, broader exotic products and Bergomi for later decisions. This adopts useful ideas without requiring all of PR #81 to succeed as one project.")
+    story.append(PageBreak())
+
+    # 11: concrete development matrix, dependency order and review decisions.
+    title(11,"The combined Heston study to approve")
+    add("Use the same law, Y<sub>i</sub> = P<sub>i</sub>(φ) + σ h<sub>i</sub>Z<sub>i</sub>, in four development conditions. Keep the physical prior and numerical accuracy requirements matched. Supplied σ is a condition; inferred σ is a hidden target. [I]")
+    table([
+        ["Design", "Supplied scale", "One inferred scale"],
+        ["Existing 54", "Five-target control; reuse clean prices", "Six-target paired scale example; reuse clean prices"],
+        ["Revised fixed layout", "Test coverage under the core likelihood", "Combined coverage plus scale-inference candidate"],
+    ],[113,193,WIDTH-306])
+    heading("Execute in stages, with bounded runs")
+    step(1,"Start with the reusable 54.","Add first-nonfinite loss/state capture and establish the supplied/inferred-σ pair against new matched references. Declare update/checkpoint and wall-time limits before launch.")
+    step(2,"Audit one revised candidate.","Check actual quote support, a small representative parameter panel, price refinement and conditioning. Preserve ACT/365F, existing carry estimates where unchanged, and one common union-of-expiry carry record.")
+    step(3,"Price changed contracts once.","Pair physical parameter rows across designs; reuse unchanged clean labels. Give new designs and likelihoods distinct identities, then repeat the Gaussian pair on the revised grid.")
+    step(4,"Assess information and prediction.","Compare full versus later-smile-restricted observations; retain common carry conditions and fixed product horizons across grids. Predict withheld vanilla quotes and inspect one analytic forward-average-variance quantity plus its near-term control.")
+    step(5,"Freeze, check and reflect.","Require converged references and MC-aware conditional agreement, then fresh synthetic calibration and market residual checks. Keep the reserved final pool closed during development. Stop for reflection before Bergomi or lesson promotion.")
+    add("Reference gates: rank-normalized R-hat ≤ 1.01 and bulk/tail ESS ≥ 400. Conditional development margins include means within 0.3 reference SD and 90% width ratios in [0.75, 1.25], assessed with Monte Carlo uncertainty. A narrow posterior or falling loss alone is insufficient. Comparing 54 versus a changed layout tests a design package, not strike placement alone.","small")
+    box("<b>Decisions requested from collaborators:</b> agree the one-component Gaussian baseline and paired σ prior/range; approve layout E as a candidate subject to actual support and precision; approve the staged four-condition Heston comparison and its reflection gate. Exact revised contracts are a phase-2 deliverable, not already selected results.")
+    story.append(PageBreak())
+
+    # 12: portable primary references and reproducible local evidence.
+    title(12,"Interpretation limits and sources")
     add("Establish inference correctness first on synthetic Heston controls with realistic contracts and spread profiles. Then inspect the actual market residuals separately. Changing the error law can improve a chosen weighted fit, but does not enlarge Heston's attainable price family or guarantee model adequacy. A tight posterior around a poor fit is not calibrated real-world confidence or a model-risk reserve.","small")
     add("Known-scale sensitivity and inferred-scale uncertainty are both useful, but answer different questions. Keep the Gaussian assumption, prior and spread-to-SD convention explicit. Learning σ or τ does not validate those assumptions. No new training, reference computation or model implementation is reported here.","small")
-    heading("Primary sources checked on 9 November 2026")
+    heading("Primary sources and collaborator proposal")
     for key,label,detail,url in WEB_SOURCES:
         add(f"<b>[{key}] <link href='{url}' color='#087e88'>{label}</link></b><br/>{detail}","small")
     add("The library and practitioner sources support calibration conventions, not a universal Bayesian noise prescription. The proposed Gaussian law, half-spread conversion and c sensitivity are the report's explicit teaching recommendations.","small")
+    story.append(PageBreak())
+    title(13,"Evidence and reproducibility")
     heading("Local evidence and reproducibility")
     for key,path in sources.items():
         label = {"A":"Current task, priors and fresh-noise training", "B":"Current price checks and likelihood",
                  "C":"Current 50k/75k development comparisons", "D":"Preserved numerical-failure audit",
                  "E":"Original synthetic noise profile", "F":"Original four-target Heston task",
-                 "G":"Original known-noise conditioning and augmentation"}[key]
+                 "G":"Original known-noise conditioning and augmentation",
+                 "H":"Actual 54-contract pilot design and quote provenance",
+                 "I":"Combined Heston follow-up specification and review findings"}[key]
         relative=str(path.relative_to(ROOT)).replace("/","/<wbr/>")
         add(f"<b>[{key}] {label}</b><br/>{relative}","tiny")
-    add("Source/evidence base: study/heston-european-observations-20261109, evidence through commit 1ae1c59. The adjacent .sources.json records exact local source hashes. This revision leaves the earlier first-principles PDF intact.","tiny")
+    add("Sources checked 9 November 2026 local time. Evidence through commit 1ae1c59; combined plan builds on de4e1de; PR #81 pinned to df2cfc442de07459a8b971f070e3a6f25b0b2020. The adjacent .sources.json records exact local source hashes. GitHub proposal links require repository access. The earlier first-principles PDF remains unchanged.","tiny")
 
     output.parent.mkdir(parents=True,exist_ok=True)
     def decorate(canvas,doc):
@@ -246,23 +376,28 @@ def build(output):
         canvas.line(48,PAGE_H-35,PAGE_W-48,PAGE_H-35)
         canvas.line(48,36,PAGE_W-48,36)
         canvas.setFont("Body",8);canvas.setFillColor(MUTED)
-        canvas.drawString(48,PAGE_H-25,"HESTON / SIMPLER NOISE BASELINE")
+        canvas.drawString(48,PAGE_H-25,"HESTON / NOISE AND QUOTE COVERAGE")
         canvas.drawRightString(PAGE_W-48,PAGE_H-25,"Companion proposal - 9 November 2026")
         canvas.drawString(48,23,"Proposed specification | No new training or inference performed")
         canvas.drawRightString(PAGE_W-48,23,str(doc.page))
         canvas.restoreState()
     doc=SimpleDocTemplate(str(output),pagesize=A4,rightMargin=48,leftMargin=48,topMargin=55,bottomMargin=49,
-        title="A simpler observation-noise baseline for Heston",author="SBI4Finance",
-        subject="Contrast of inferred discrepancy and supplied spread-based noise for amortized inference")
+        title="Heston: simpler noise and improved quote coverage",author="SBI4Finance",
+        subject="Collaborator proposal: Gaussian error scales, fixed quote design and a staged Heston study")
     doc.build(story,onFirstPage=decorate,onLaterPages=decorate)
-    report={"format":"heston_simpler_noise_proposal_pdf_sources_v1","status":"proposal_not_implemented",
+    report={"format":"heston_simpler_noise_proposal_pdf_sources_v2","status":"proposal_not_implemented",
         "pdf_sha256":sha(output),"renderer_sha256":sha(__file__),
         "rendering_helper_sha256":sha(ROOT/"lab/scripts/render_heston_noise_report.py"),
         "local_inputs":{key:{"path":str(path.relative_to(ROOT)),"sha256":sha(path)} for key,path in sources.items()},
         "web_sources":[{"id":key,"title":label,"url":url,"checked":"2026-11-09"} for key,label,_,url in WEB_SOURCES],
         "paired_scale_example":{"status":"proposal_not_run","sigma_units":"dimensionless multiplier of known half-spread",
             "proposed_prior":{"family":"Uniform","bounds":[.5,2.]},"fixed_sensitivity_values":[.5,1.,2.],
-            "same_observations_across_comparison":True,"sigma_hidden_from_joint_network_conditions":True}}
+            "same_observations_across_comparison":True,"sigma_hidden_from_joint_network_conditions":True},
+        "grid_proposal":{"status":"candidate_not_selected_or_run", "pr":81,"pr_head":PR_HEAD,
+            "reference_volatility":.16,"target_z":E_TARGETS,"nominal_business_days":[5,10,21,42,63,126,252],
+            "actual_selected_expiries_use":"ACT/365F", "current_control_contracts":54,
+            "comparison_stages":["existing54_known_vs_inferred_sigma","revised_grid_known_vs_inferred_sigma"],
+            "defer_gp_discrepancy":True,"stop_before_bergomi":True}}
     output.with_suffix('.sources.json').write_text(json.dumps(report,indent=2)+'\n')
     return report
 
