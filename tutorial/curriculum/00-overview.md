@@ -17,7 +17,7 @@ For the proposed next numerical campaign, read the [experiment plan](../../lab/p
 
 | File | Slot | Presenter | Minutes |
 | --- | --- | --- | --- |
-| [01-slot1-the-problem.md](01-slot1-the-problem.md) | 1. The problem: Bayes for volatility models | Francesco | 15 |
+| [01-slot1-the-problem.md](01-slot1-the-problem.md) | 1. Introduction: Bayes for volatility models | Francesco | 15 |
 | [02-slot2-amortized-bayes.md](02-slot2-amortized-bayes.md) | 2. What is amortized Bayes? | Alex | 15 |
 | [03-slot3-architectures.md](03-slot3-architectures.md) | 3. Network architectures | Stefan, Jerry | 10 |
 | [04-slot4-heston-in-bayesflow.md](04-slot4-heston-in-bayesflow.md) | 4. A worked example in BayesFlow: Heston on the SPY smile | Stefan, Jerry | 20 |
@@ -92,7 +92,7 @@ How to read the figure: the top row is the tutorial, 115 minutes of talks in six
 
 | Slot | The question it answers | Example | What it hands to the next slot |
 | --- | --- | --- | --- |
-| 1 | Why does a calibrated volatility model need a posterior, and what does one cost? | Black–Scholes on two SPY quotes (live); the HKDE two-optima study (cached) | The cost of the posterior under richer models, and the idea of amortization |
+| 1 | How sure is the price a calibrated model gives to what the market does not quote, and how is that uncertainty computed and checked? | Beamer: one running example, Heston on simulated quotes (the fits consistent with the quotes, a product's range, the classical range against the posterior, a fixed parameter, joint draws) | The five steps of every notebook, the case for a posterior, and the idea of amortization |
 | 2 | How can a network trained on simulations return the posterior, and when does that pay? | A network learns slot 1's posterior (live); the break-even for Heston and rough Bergomi | The object to build, $q_\phi(\theta \mid y)$, and the workflow that checks it |
 | 3 | Which networks represent the posterior, and how do they read the data? | Flow matching carrying noise to SPY's Heston posterior; data shapes and their networks | The exact network configuration of slots 4 and 5 |
 | 4 | What does the workflow look like in code, when every step can be checked? | Heston on the SPY smile, against the exact posterior | The same code, a new simulator; Heston's defects on SPY |
