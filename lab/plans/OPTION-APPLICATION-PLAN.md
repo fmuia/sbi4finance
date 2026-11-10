@@ -3,6 +3,10 @@
 Plan of 9 November 2026 for the tutorial of 14 November. Part I says what we will do and
 why. Part II gives every step in detail, with the mathematics.
 
+A version in three layers is being written in
+[`option-application/`](option-application/README.md). Layer 1, the overview, is done.
+Layers 2 (walkthrough) and 3 (full detail) will replace this plan.
+
 Evidence: [`lab/evidence/pilot-results/2026-11-09/design-and-error/`](../evidence/pilot-results/2026-11-09/design-and-error/README.md)
 (this plan's checks). Two other pieces of work from 9 November are quoted:
 - the noise-reassessment session, quoted as "noise session"; its runs are not committed;
