@@ -40,7 +40,9 @@ real-data checks are therefore the quantities the market prices independently of
 - the 2-year 90% put, listed on SPX but beyond the design's last maturity.
 
 This mirrors daily practice. A desk calibrates so it can price and hedge what is not
-quoted, consistently with what is, and product control attaches a prudent range. Bayes
+quoted, consistently with what is, and product control attaches a prudent range (in the
+EU, prudent valuation at 90% confidence for market-price uncertainty and model risk,
+Regulation 2016/101). Bayes
 makes that range part of the calibration. Amortized inference (SBI) makes the posterior
 fast enough to compute for every day, and cheap enough to check its coverage on thousands
 of simulated days.
@@ -156,7 +158,8 @@ failure is reported.
 **What the ranges are not.** They are parameter uncertainty within each model, under the
 stated error model. The model-error term covers misfit on quoted points, not dynamics the
 quotes cannot reveal (for example the forward smile). D7 shows how far the two models
-disagree. None of this is a complete model-risk reserve.
+disagree. None of this is a complete model-risk reserve. Hedge ratios under the posterior
+are not shown.
 
 ## I.6 Relation to the European-quote pilot
 
@@ -896,7 +899,79 @@ a bundle format for each new task, then `pixi run manifest` and `pixi run claims
 checks before release: tutorial `pixi run test`, `test-notebooks` and `check`; lab
 `pixi run test` and `release-check`.
 
-## 13. Compute
+## 13. Tutorial integration
+
+### 13.1 Slot 4: Heston on SPX
+
+The notebook is rewritten in place; `pixi run heston-options` is unchanged.
+
+1. **The job.** What a desk calibrates for each day, and what Bayes and SBI add (I.1).
+2. **SPX data and the design.** The smile, where the quotes sit, and which region pins
+   which parameter (Section 3.1).
+3. **The error budget.** Bid–ask against model error, then the error model of Section 4:
+   the pilot's form with the smooth term.
+4. **The model.** Heston, its priors and the simulator, with the code visible, and one
+   training pair.
+5. **The amortized posterior on a synthetic case.** SBC and coverage (V3); the network
+   against the exact reference (V4).
+6. **SPX, four days.** Posterior, τ, the residual map (D5), and the held-out and market
+   checks (V5, V6).
+7. **Products.** D1–D4 and D6.
+8. **Scope.** What the ranges cover and what they do not (I.5).
+
+Retire §8 (historical SPY) from the live path. Old assets stay until a dependency-checked
+retirement batch.
+
+### 13.2 Slot 5: rough Bergomi on SPX
+
+The notebook is rewritten in place; `pixi run rough-options` is unchanged.
+
+1. **Why another model.** SPX's at-the-money skew term structure (`smile_statistics`,
+   `skew_power_law`) and Heston's residual map from slot 4.
+2. **The model.** Its curve family (Section 5.2), Monte Carlo pricing, and the accuracy
+   target.
+3. **Inference.** The same design and error model, the network, and the importance-sampling
+   reference (Section 8.2).
+4. **SPX.** Posterior, τ, residual map, and the held-out and market checks.
+5. **Products under rough Bergomi,** then D7: the two models side by side, and their
+   combination.
+6. **Scope.** What the comparison shows and what it does not.
+
+Retire §7 (historical SPY studies) from the live path.
+
+### 13.3 Slot 6: priors and misspecification
+
+D4 (half-spreads only, independent τ, smooth τ, and c from 0.5 to 2) is the material for
+the noise part. A slider maps to c and to the size of τ.
+
+## 14. Limitations and known risks
+
+1. **The smooth error can absorb parameter signal.** A flexible model error and the
+   parameters can trade off.
+   - The correlation lengths are fixed from the first two days' fits.
+   - Wider posteriors are reported as the honest result.
+   - V2 and V4 detect problems.
+2. **The error law is assumed.** It is Gaussian, with a squared-exponential correlation.
+   τ cannot separate structural model error from data or convention problems; the pilot's
+   note says the same.
+3. **The networks may still miss the references.** The pilot's 75k checkpoint does, and
+   so did the 8 November matrix. Real-data results then come from the references.
+4. **Rough Bergomi's bank carries Monte Carlo error** inside the simulated observations.
+   With the target of Section 5.2, its posteriors become slightly conservative, not
+   biased.
+5. **Fourier accuracy at extreme κ and ξ,** for short-dated deep puts. Rung checks apply,
+   and rejected draws are recorded.
+6. **Event risk inside the shortest maturity** (a US CPI release that week). The smooth
+   term absorbs it; say so.
+7. **Four days** illustrate day-to-day behaviour; they are not a history.
+8. **The ranges are within-model parameter uncertainty.** They are not a complete
+   model-risk reserve, and hedging under uncertainty is not shown.
+9. **The runtime's 63-contract assumptions** must accept a declared design (Section 12).
+10. **Raw data.** Cboe serves only the current snapshot, so each close must be fetched
+    that evening. Files stay outside Git, recorded by SHA-256.
+11. **The public site.** No unreleased results go on `site/` (AGENTS.md).
+
+## 15. Compute
 
 | Item | Estimate |
 | --- | --- |
@@ -909,7 +984,7 @@ checks before release: tutorial `pixi run test`, `test-notebooks` and `check`; l
 | D3 | Heston about 11 CPU-h; rough Bergomi about 12 CPU-h |
 | Data | four SPX closes, about 14 MB each, outside Git |
 
-## 14. Evidence index
+## 16. Evidence index
 
 - [`design-and-error/summary.json`](../evidence/pilot-results/2026-11-09/design-and-error/summary.json):
   the numbers behind I.2 and Section 3, with their scripts.
@@ -929,3 +1004,104 @@ checks before release: tutorial `pixi run test`, `test-notebooks` and `check`; l
     design `designs/put_heavy.json` and, under `training-study/`,
     `continuation-results.json`, `reference-precision.json` and
     `continuation-failure-audit.json`.
+
+
+---
+
+# Appendix A · Evidence behind the choices
+
+### A.1 The reviewer's grid issue, reassessed
+
+| Claim | Verdict |
+| --- | --- |
+| Symmetric ±2 at a fixed 20% vol | Right; the noise is tied to 20% too |
+| Put quotes reach δ = −8 to −17 | Right in substance: −8.2 to −14.5 in 20%-vol units on SPY, 21 October (−13 to −21 in at-the-money-vol units) |
+| A third of the points are far calls with almost no information | 21 of 63 at δ ≥ +1. Their low weight comes from the 20% vega conversion: 5–7 vp of effective noise against half-spreads of 0.1–0.4 vp. |
+| Some points have no quotes | Wrong: 0 of 63 lie outside quoted strikes (SPY 21 October, SPY 6 November, SPX 9 November) |
+| Re-pricing costs 1.3 CPU-h per 100k Heston surfaces and 330–370 CPU-h for rough Bergomi | Right at today's accuracy targets |
+| Fix: scale by at-the-money vol and shift towards puts | The shift is right, but only with a vol-point error model (A.3). Scaling by at-the-money vol alone is neutral on one date (A.5). |
+
+### A.2 Measured error budget
+
+| Source | Size (vp) | From |
+| --- | --- | --- |
+| Bid–ask, SPX 9 November | 0.02–0.05 at the money; 0.05–0.17 down to −6 ATM-σ; 0.11–0.25 at −6 to −8; 0.10–0.37 for calls at +2 to +3 | evidence |
+| Bid–ask, SPY 6 November | 0.04–0.13; 0.26–0.37 at δ = +2 | noise session |
+| Spline reading | about 0.01; neighbours correlate +0.38 | noise session |
+| Maturity interpolation | 0.05–0.25 (an upper bound) | noise session |
+| Early exercise (SPY only) | up to about 1.1 at the 1-year at-the-money put (binomial estimate) | noise session |
+| Heston model error | SPY: 0.8–1.2 RMS, about 99% of the variance. SPX: 1.0 RMS, 17× the half-spread. Residual correlation 0.56–0.80 across strikes, 0.85 across maturities. | noise session; evidence |
+| The tutorial's rule, in vp | SPY 21 October: δ = −2 0.44 (median); δ = +2 5.4 (median), 7.0 (max). Prior centre: 0.28–0.55. | evidence |
+| Fit of the rule | χ² 66.5 on 63 quotes (21 October); 508 (6 November) | noise session |
+
+### A.3 The reviewer's fix under three error models
+
+The grids:
+- G1, the proposal: −4…+1 in at-the-money-vol units;
+- G2, shift only: the same deltas at 20% vol;
+- G3, scale only: ±2 in at-the-money-vol units.
+
+Posterior sd is given relative to the current grid.
+
+- **Under the tutorial's rule:** G1 and G2 look 2–12× tighter for Heston and 5–25× for
+  rough Bergomi. Deep puts get only 0.003–0.03 vp of noise, so this is false precision.
+  Rough Bergomi's Monte Carlo error at δ = −4 would be 40–65× that noise.
+- **Under a consistent, independent vol-point error:**
+  - Heston, 150 prior draws, G1: v0 1.07, θ 0.89, ξ 0.83, ρ 1.48, variance swap 0.83.
+  - Rough Bergomi, 8 points, G1: H 0.58, η 0.77, ρ 1.41, variance swap 0.68.
+  - G3 stays near 1 (0.95–1.0).
+- **Under smooth model error (Heston on SPX):** widening to −6…+2 gains 23–49% on κ, θ, ξ
+  and the variance swap, while doubling the density gains 2–17%. ρ needs the
+  near-the-money calls (Section 3.3).
+
+### A.4 The variance-swap gap
+
+- **SPY, 21 October** (exact Heston posterior under the rule): Heston's variance swaps sit
+  0.6–1.7 vp below the replicated values, with bands 0.3–0.6 vp wide.
+- **SPY, 6 November,** Heston fitted on the current grid and on a put-heavy grid: the
+  1-week shortfall stays (−3.9 and −3.2 vp), and the 1-week deep put misses by 11.5 vp.
+  The short-end shortfall is real misfit.
+- **Effect of the error model:** under independent τ the bands (0.5–1.1 vp) exclude the gap
+  (−0.5 to −1.6 vp); under smooth τ the bands (1.8–3.0 vp) include it from 1 month to
+  1 year (noise session, tentative).
+- **The comparison was unequal.** In the tutorial, rough Bergomi was handed a curve
+  replicated from strikes Heston never saw. The plan gives both models the same quotes and
+  compares τ, residual maps, held-out checks and market checks (D5, D7).
+
+### A.5 Coverage by goal and by name; coordinates; alternatives
+
+| Goal | What to cover |
+| --- | --- |
+| Reprice the hedges | every liquid quote, weighted by the error model |
+| Variance or volatility swap | the whole strip into the deep puts |
+| Forward start, cliquet | ATM level and skew across the forward dates; short maturities for vol-of-vol |
+| Downside barrier, autocallable | long-dated puts down to the barrier |
+| Model comparison | where the models differ, with the same data for every model |
+
+| Name | Design | Dominant error |
+| --- | --- | --- |
+| SPX | wide and put-heavy, 1 week to 1 year | model error; European, so clean forwards |
+| SPY | as SPX | plus early exercise on puts, so prefer SPX |
+| Thin ETF (EWG: 4 expiries to 6 months; half-spreads 1.2–2 vp) | what the chain has, narrow | quote error; the prior beyond the quotes |
+| Single stock | skip earnings expiries | early exercise, dividends, events |
+
+**Coordinates.** This plan uses a fixed 16% scale, not each surface's at-the-money vol.
+- On one date, scaling by at-the-money vol adds no information (A.3, G3).
+- It makes strikes depend on the data: the simulator must place them from each simulated
+  surface's at-the-money vol, and the network must condition on them.
+- It pays off only across names and vol regimes.
+
+**Not adopted.**
+- *A set encoder over all raw quotes.* It needs variable quote layouts in simulation, and
+  is the deferred sparse-chain work (AGENTS.md).
+- *A denser symmetric grid.* Under smooth error, density adds little.
+
+### A.6 What stays right in the current implementation
+
+- a fixed observation design shared by simulator, network and reference;
+- out-of-the-money quotes in forward units, √T scaling, and maturities from 1 week to
+  1 year;
+- spline reading without extrapolation (0 points outside quoted strikes);
+- numerical accuracy tied to the error scale;
+- the recovery, SBC and reference checks. The synthetic main path is internally
+  consistent.
