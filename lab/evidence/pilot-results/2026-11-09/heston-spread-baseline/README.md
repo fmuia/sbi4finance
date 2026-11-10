@@ -2,6 +2,20 @@
 
 **Status: initial engineering checks passed; no posterior acceptance.** Implements the first increment of planning PR [#82](https://github.com/fmuia/sbi4finance/pull/82). The companion plans are [#83](https://github.com/fmuia/sbi4finance/pull/83) for flexible inputs and [#84](https://github.com/fmuia/sbi4finance/pull/84) for the gated Bergomi refresh.
 
+## Fixed-c development continuation
+
+The first c=1 network completed 10,000 finite updates in 163.04 seconds, using the declared 20,000 physical-row prefix. Its 2k and 10k checkpoints reload with identical explicitly seeded posterior draws. All 20,000 rows were seen; 1,273,952 presentations include the short final batches of each pass. The reserved test arrays remain unopened. Compact records are under [training-fixed-c1](training-fixed-c1/); full checkpoints remain outside Git under their original payload hashes.
+
+The first completed conditional comparisons **fail**. On the broad synthetic case, the 10k physical-parameter central-90% intervals are about 4.8-10.0 times reference widths; several means remain outside the declared tolerance. Prior-predictive 90% development coverage is approximately 97.1%-99.8%, indicating over-wide intervals. The actual-market query also fails reference agreement; market-model adequacy is a separate issue. The provisional evaluation files retain incomplete references as inconclusive. Lower validation loss does not accept this checkpoint or permit grid/Bergomi production.
+
+The broad and actual-market references pass parameter/product convergence and pointwise pricing checks. The market-like and boundary references were launched under the original cap and remain separate recorded runs until completed. The [local likelihood curvature diagnostic](diagnostics/likelihood-curvature.json) agrees with broad-case MCMC SDs to roughly 2%, with stable finite differences, and verifies the normalized Gaussian scale exactly; it is a local sanity check rather than a posterior replacement.
+
+A [same-state dropout diagnostic](diagnostics/dropout-stateless-update-010000.json) measures a 1.935-nat objective penalty from the inherited dropout .05, while the normalization-stage change is only about .00024 nats. Its exact producer is archived alongside it; reproduce against the frozen trainer source identified in that record (Git commit d7af9c1), not a later changed consumer. No model/optimizer/standardizer/RNG state changed during this diagnostic. The result supports, but does not prove the explanation for, a regularization effect.
+
+The [declared control protocol](dropout-control-protocol.json) allows one matched 2k/10k fit with effective dropout zero. It replays the original initialization before changing only rates, checks unchanged state arrays and original initial probes, and retains the same data, noise, row order and schedule. No noise inflation, prior change, inferred-c fit or geometry change is part of that control. Its results must be checked before another training intervention.
+
+Parallel [raw grid coverage evidence](grid-coverage/README.md) finds the literal E candidate has 62/63 supported quote targets and no one-year PM expiry. An explicit final-call +1.5 declaration supports all selected locations but selects the identical physical contracts and still misses the original +2/one-year goals. This is data-only preparation, not a priced or accepted grid revision.
+
 ## What changed
 
 The new `HestonSpreadPilot` uses one independent Gaussian price SD `c * half_spread`. The initial target fixes c=1 and infers five physical parameters. A separate target appends c with the declared illustration prior Uniform(.5,2); c is not a conditioning feature for that target. This increment implements likelihoods, deterministic seeded simulation, immutable task validation and a normalized one-dimensional conditional-c oracle. It does not yet implement or accept a neural training run.

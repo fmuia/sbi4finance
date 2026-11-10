@@ -1,0 +1,72 @@
+[
+  {
+    "updates": 1000,
+    "seconds": 24.36229662504047,
+    "batch_training_loss": -4.518331527709961,
+    "train_probe_loss": -5.930601119995117,
+    "validation_probe_loss": -5.74786376953125
+  },
+  {
+    "updates": 2000,
+    "seconds": 38.15155820804648,
+    "batch_training_loss": -6.812169551849365,
+    "train_probe_loss": -7.926389694213867,
+    "validation_probe_loss": -7.712688446044922
+  },
+  {
+    "updates": 3000,
+    "seconds": 54.21564929187298,
+    "batch_training_loss": -6.417349338531494,
+    "train_probe_loss": -8.50487232208252,
+    "validation_probe_loss": -8.349743843078613
+  },
+  {
+    "updates": 4000,
+    "seconds": 68.30881895800121,
+    "batch_training_loss": -7.746859550476074,
+    "train_probe_loss": -9.255729675292969,
+    "validation_probe_loss": -9.003251075744629
+  },
+  {
+    "updates": 5000,
+    "seconds": 82.42460629204288,
+    "batch_training_loss": -8.737651824951172,
+    "train_probe_loss": -9.51425838470459,
+    "validation_probe_loss": -9.284168243408203
+  },
+  {
+    "updates": 6000,
+    "seconds": 98.20562974992208,
+    "batch_training_loss": -8.549142837524414,
+    "train_probe_loss": -9.769271850585938,
+    "validation_probe_loss": -9.577857971191406
+  },
+  {
+    "updates": 7000,
+    "seconds": 114.21018183301203,
+    "batch_training_loss": -8.71850299835205,
+    "train_probe_loss": -10.433853149414062,
+    "validation_probe_loss": -10.174985885620117
+  },
+  {
+    "updates": 8000,
+    "seconds": 130.40242704190314,
+    "batch_training_loss": -9.0888090133667,
+    "train_probe_loss": -10.626233100891113,
+    "validation_probe_loss": -10.37009048461914
+  },
+  {
+    "updates": 9000,
+    "seconds": 146.55647845799103,
+    "batch_training_loss": -8.92367172241211,
+    "train_probe_loss": -10.830911636352539,
+    "validation_probe_loss": -10.603738784790039
+  },
+  {
+    "updates": 10000,
+    "seconds": 162.4435995419044,
+    "batch_training_loss": -9.918882369995117,
+    "train_probe_loss": -10.957487106323242,
+    "validation_probe_loss": -10.713528633117676
+  }
+]

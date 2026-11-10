@@ -1,0 +1,16 @@
+{
+  "status": "complete",
+  "completed_updates": 10000,
+  "seconds": 163.0362402498722,
+  "last_checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1/checkpoints/update-010000",
+  "same_seed_reload_exact": true,
+  "unique_rows_seen": 20000,
+  "row_presentations": 1273952,
+  "batch_size_counts": {
+    "128": 9937,
+    "32": 63
+  },
+  "ordered_row_indices_sha256": "8a93eb6668eb17bda8c78f728dc2e7edd06a203f200fd94de67f704c727ec6a6",
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false
+}

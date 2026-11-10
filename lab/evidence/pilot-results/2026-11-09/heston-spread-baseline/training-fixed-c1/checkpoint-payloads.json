@@ -1,0 +1,64 @@
+{
+  "format": "heston_spread_checkpoint_payload_summary_v1",
+  "checkpoints": {
+    "2000": {
+      "actual_optimizer_updates": 2000,
+      "model_sha256": "0df597e1f37600ba093e9809b2f71cc5b5daab539f4f4a9a6cd0a826d03193fa",
+      "state_sha256": "769487f04b8a9118827d42fbc751bd4c38d666af65638ec2f9e42f68f00e7bb1",
+      "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+      "probe_metrics": {
+        "updates": 2000,
+        "seconds": 38.15155820804648,
+        "batch_training_loss": -6.812169551849365,
+        "train_probe_loss": -7.926389694213867,
+        "validation_probe_loss": -7.712688446044922
+      },
+      "source_sha256": {
+        "trainer": "7079f9468a5b230b7860c87f6547d0ca047dbcb922eeae549a00b2a2c87c1398",
+        "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+        "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+        "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+        "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+      },
+      "architecture": {
+        "family": "spline",
+        "widths": [
+          128,
+          128
+        ],
+        "subnet_dropout": 0.05
+      },
+      "resume_supported": false
+    },
+    "10000": {
+      "actual_optimizer_updates": 10000,
+      "model_sha256": "8c531524c91fa45772603d8ab63a91655f396301ff754c7205770f06b673c4b7",
+      "state_sha256": "b432e98754c03befe04b5e348daf8d052de7e6cbee498b4ee17fd3c3e4b09258",
+      "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+      "probe_metrics": {
+        "updates": 10000,
+        "seconds": 162.4435995419044,
+        "batch_training_loss": -9.918882369995117,
+        "train_probe_loss": -10.957487106323242,
+        "validation_probe_loss": -10.713528633117676
+      },
+      "source_sha256": {
+        "trainer": "7079f9468a5b230b7860c87f6547d0ca047dbcb922eeae549a00b2a2c87c1398",
+        "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+        "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+        "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+        "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+      },
+      "architecture": {
+        "family": "spline",
+        "widths": [
+          128,
+          128
+        ],
+        "subnet_dropout": 0.05
+      },
+      "resume_supported": false
+    }
+  },
+  "payload_scope": "Full model/state metadata and arrays remain under the ignored local-artifacts directory; no release asset promoted."
+}

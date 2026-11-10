@@ -111,6 +111,47 @@ except metadata.PackageNotFoundError:
 
 @unittest.skipUnless(CORE, "requires locked BF2.1 JAX environment")
 class SpreadTrainingWorkflowTests(unittest.TestCase):
+    def test_zero_dropout_preserves_initial_arrays_and_reloads_effective_zero_rates(self):
+        import keras
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            design, bank, task, _ = fixture(root)
+            split, _ = trainer.load_clean_bank(bank, task, 128, smoke_test_only=True)
+            keras.utils.set_random_seed(9011)
+            workflow = trainer.build_workflow(task)
+            batch = trainer.adapted_batch(workflow, task, split["train"],
+                trainer.BatchPlan(128, 128, 2, 9011), 0, 9011)[-1]
+            model = workflow.estimator
+            model.build_from_data(batch)
+            model.optimizer.build(model.trainable_variables)
+            before = [[np.array(variable.value, copy=True) for variable in group]
+                      for group in trainer.model_variables(model)]
+            self.assertEqual([layer.rate for layer in trainer.dropout_layers(model)], [.05]*24)
+            proof = trainer.switch_dropout_zero(model)
+            self.assertEqual([layer.rate for layer in trainer.dropout_layers(model)], [0.]*24)
+            for arrays, group in zip(before, trainer.model_variables(model), strict=True):
+                for initial, variable in zip(arrays, group, strict=True):
+                    np.testing.assert_array_equal(initial, np.asarray(variable.value))
+            self.assertTrue(proof["array_state_unchanged"])
+            self.assertFalse(proof["original_initial_full_hash_available"])
+
+            settings = dict(train_rows=128, updates=2, probe_rows=16, log_every=2,
+                            smoke_test_only=True, checkpoint_updates=(2,))
+            trainer.run_training(design, bank, root / "default", **settings)
+            result = trainer.run_training(design, bank, root / "zero", **settings,
+                dropout_zero_control=True, control_reference=root / "default")
+            self.assertTrue(result["same_seed_reload_exact"])
+            loaded, record = trainer.load_checkpoint(root / "zero/checkpoints/update-000002")
+            self.assertEqual([layer.rate for layer in trainer.dropout_layers(loaded.estimator)], [0.]*24)
+            self.assertTrue(record["dropout_zero_control"])
+            self.assertEqual(record["architecture"]["subnet_dropout"], 0.)
+            self.assertTrue(record["paired_default_reference"]["initial_deterministic_probes_exact"])
+            for group in record["dropout_initialization_control"]["state_groups"].values():
+                self.assertEqual(group["before_sha256"], group["after_sha256"])
+            self.assertFalse(record["resume_supported"])
+            with self.assertRaisesRegex(ValueError, "requires exactly one"):
+                trainer.run_training(design, bank, root / "invalid", **settings, dropout_zero_control=True)
+
     def test_diagnostic_step_matches_native_bayesflow_update_without_advancing_probe_state(self):
         import jax
         import keras

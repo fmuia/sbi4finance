@@ -1,0 +1,70 @@
+{
+  "format": "heston_spread_local_curvature_check_v1",
+  "case_id": "synthetic-broad",
+  "panel_sha256": "8246c08c72336a819771bf481ffd46be4e09f1c2cf64dab6e6725a10229d4f1d",
+  "reference_run_sha256": "dd7871b91d2ff4f2bc9306df38eed8ff5add1beb9909244a89254ca2dbaf3454",
+  "source_sha256": "83c3db43d29de7bfcf4f98b0b51c247a32bd3ed971c0165463ccc61874a7cd35",
+  "center": [
+    0.13602578943599097,
+    3.073303734996402,
+    0.0829500398191559,
+    1.7263597677528784,
+    -0.7802816688585154
+  ],
+  "direct_gaussian_log_likelihood": -21.300010192374646,
+  "pilot_log_likelihood": -21.300010192374636,
+  "steps": [
+    {
+      "relative_step": 1e-05,
+      "physical_steps": [
+        1.5e-06,
+        9.900000000000001e-05,
+        1.5e-06,
+        2.9e-05,
+        8.5e-06
+      ],
+      "standardized_jacobian_condition": 7.409150008734785,
+      "local_fisher_sd": {
+        "initial_variance": 8.551942961927968e-05,
+        "kappa": 0.012376399222696432,
+        "theta": 0.00010801870737287347,
+        "vol_of_vol": 0.0030391496486690418,
+        "rho": 0.001036800595115319
+      },
+      "local_fisher_sd_over_reference_sd": {
+        "initial_variance": 1.0024877133152366,
+        "kappa": 0.9941970147949254,
+        "theta": 0.9925554629335139,
+        "vol_of_vol": 1.0074449594980899,
+        "rho": 0.9834942887649328
+      }
+    },
+    {
+      "relative_step": 5e-06,
+      "physical_steps": [
+        7.5e-07,
+        4.9500000000000004e-05,
+        7.5e-07,
+        1.45e-05,
+        4.25e-06
+      ],
+      "standardized_jacobian_condition": 7.409150009780143,
+      "local_fisher_sd": {
+        "initial_variance": 8.551942962313441e-05,
+        "kappa": 0.012376399222518384,
+        "theta": 0.00010801870733795976,
+        "vol_of_vol": 0.003039149647647612,
+        "rho": 0.001036800595283859
+      },
+      "local_fisher_sd_over_reference_sd": {
+        "initial_variance": 1.002487713360423,
+        "kappa": 0.9941970147806228,
+        "theta": 0.9925554626127011,
+        "vol_of_vol": 1.0074449591594972,
+        "rho": 0.9834942889248073
+      }
+    }
+  ],
+  "scientific_acceptance": false,
+  "scope": "Local linearization and exact Gaussian-scale sanity check. Fisher covariance ignores prior truncation/nonlinearity and cannot establish global posterior or neural correctness."
+}

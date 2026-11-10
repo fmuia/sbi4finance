@@ -249,6 +249,57 @@ def state_summary(model, state):
             for name, variables, arrays in zip(GROUPS, model_variables(model), state, strict=True)}
 
 
+def dropout_layers(model):
+    """Inspect existing layers; never reconstruct a different random initializer."""
+    import keras
+    return [layer for layer in model._flatten_layers(include_self=False, recursive=True)
+            if isinstance(layer, keras.layers.Dropout)]
+
+
+def switch_dropout_zero(model, *, reloading=False):
+    """Change only existing Dropout rates after original .05 initialization."""
+    layers = dropout_layers(model)
+    rates = [float(layer.rate) for layer in layers]
+    if len(layers) != 24 or any(rate not in ((0., .05) if reloading else (.05,)) for rate in rates):
+        raise ValueError("zero-dropout control requires the frozen 24-layer .05 construction")
+    before = state_summary(model, current_state(model))
+    for layer in layers:
+        layer.rate = 0.
+    after = state_summary(model, current_state(model))
+    if before != after:
+        raise RuntimeError("changing dropout rates changed learned/permutation/optimizer/standardizer/RNG arrays")
+    return {"method": "construct/build original .05 model, then change existing Dropout.rate to0 before the first update",
+            "rates_before": rates, "rates_after": [float(layer.rate) for layer in layers],
+            "array_state_unchanged": True,
+            "state_groups": {name: {"variable_count": len(rows), "before_sha256": fingerprint(rows),
+                                    "after_sha256": fingerprint(after[name])} for name, rows in before.items()},
+            "original_initial_full_hash_available": False,
+            "claim_limit": "exact within-replay before/after equality; original default run did not persist its full initial state",
+            "archive_scope": "network constructor remains .05; load_checkpoint reapplies recorded effective zero rates; exact training resume unsupported"}
+
+
+def check_control_reference(path, run, initial_metrics):
+    """Bind the paired recipe and compare the saved original deterministic probes."""
+    path = Path(path)
+    reference = json.loads((path / "run.json").read_text())
+    original_probes = json.loads((path / "initial-probes.json").read_text())
+    keys = ("task_fingerprint", "design_sha256", "bank_record_sha256", "bank_payload_sha256",
+            "train_rows", "planned_updates", "schedule_updates", "seed", "batch_size",
+            "checkpoint_updates", "probe_rows", "augmentation", "batch_plan", "optimizer_schedule",
+            "versions", "numeric_configuration")
+    if (reference.get("dropout_zero_control", False) or reference["architecture"]["subnet_dropout"] != .05
+            or any(reference[key] != run[key] for key in keys)):
+        raise ValueError("zero-dropout control differs from its original paired task/data/random/optimizer recipe")
+    if original_probes != initial_metrics:
+        raise ValueError("zero-dropout replay changed the original deterministic initial probes")
+    return {"run_directory": str(path.resolve()), "run_sha256": digest(path / "run.json"),
+            "original_producer_sha256": reference["source_sha256"]["trainer"],
+            "initial_probes_sha256": digest(path / "initial-probes.json"),
+            "initial_deterministic_probes_exact": True, "paired_recipe_fields": list(keys),
+            "original_initial_full_hash_available": False,
+            "claim_limit": "recipe and deterministic probes match; original full initial arrays were not persisted"}
+
+
 def save_state(path, state):
     write_npz(path, {f"{name}_{index:04d}": np.asarray(value)
                      for name, arrays in zip(GROUPS, state, strict=True) for index, value in enumerate(arrays)})
@@ -314,6 +365,14 @@ def load_checkpoint(directory):
     workflow = build_workflow(record["task"], record["schedule_updates"])
     workflow.load_estimator(directory / "model.keras")
     model = workflow.estimator
+    zero_control = record.get("dropout_zero_control", False)
+    if (type(zero_control) is not bool
+            or record["architecture"]["subnet_dropout"] != (0. if zero_control else .05)):
+        raise ValueError("checkpoint effective dropout metadata differs")
+    if zero_control:
+        switch_dropout_zero(model, reloading=True)
+    elif any(float(layer.rate) != .05 for layer in dropout_layers(model)):
+        raise ValueError("default checkpoint changed its .05 dropout recipe")
     actual = state_summary(model, current_state(model))
     # .keras omits auxiliary SeedGenerator state; inference uses explicit seeds.
     # Do not claim its native archive alone can reproduce future dropout draws.
@@ -369,13 +428,16 @@ def capture_failure(out, model, state, candidate, gradients, *, step, indices, q
 
 def run_training(design, bank, out, *, train_rows=20000, updates=10000, batch_size=128,
                  seed=9011, probe_rows=512, log_every=1000, wall_seconds=3600,
-                 smoke_test_only=False, checkpoint_updates=None):
+                 smoke_test_only=False, checkpoint_updates=None, dropout_zero_control=False,
+                 control_reference=None):
     """Fresh finite run. The CLI additionally enforces the process wall limit."""
     started = time.monotonic()
     if (not 0 < wall_seconds <= 3600 or seed < 0 or batch_size < 1 or probe_rows < 1 or log_every < 1
             or (not smoke_test_only and (updates != 10000 or batch_size != 128 or seed != 9011))
             or (smoke_test_only and not 1 <= updates <= 5)):
         raise ValueError("production settings are fixed; smoke permits only 1–5 updates")
+    if type(dropout_zero_control) is not bool or dropout_zero_control != (control_reference is not None):
+        raise ValueError("zero-dropout control requires exactly one original control-reference run")
     checkpoints = tuple(checkpoint_updates or ((updates,) if smoke_test_only else (2000, 10000)))
     if (any(type(value) is not int or not 1 <= value <= updates for value in checkpoints)
             or (not smoke_test_only and checkpoints != (2000, 10000))):
@@ -397,6 +459,7 @@ def run_training(design, bank, out, *, train_rows=20000, updates=10000, batch_si
     initial_batch = adapted_batch(workflow, task, data["train"], plan, 0, seed)[-1]
     model.build_from_data(keras.tree.map_structure(keras.ops.convert_to_tensor, initial_batch))
     model.optimizer.build(model.trainable_variables)
+    initialization_control = switch_dropout_zero(model) if dropout_zero_control else None
     state = current_state(model)
     step_fn = compiled_step(model)
     probes = {name: fixed_probe(workflow, task, data[name], probe_rows, seed, namespace)
@@ -408,7 +471,8 @@ def run_training(design, bank, out, *, train_rows=20000, updates=10000, batch_si
            "validation_rows_available": len(data["validation"]["clean"]),
            "seconds_scope": "run_training invocation including lazy neural imports; CLI supervisor additionally includes process/script setup",
            "checkpoint_updates": list(checkpoints), "wall_seconds": wall_seconds,
-           "architecture": {"family": "spline", "widths": [128, 128], "subnet_dropout": .05},
+           "architecture": {"family": "spline", "widths": [128, 128], "subnet_dropout": 0. if dropout_zero_control else .05},
+           "dropout_zero_control": dropout_zero_control,
            "source_sha256": {"trainer": digest(__file__), "batch_plan": digest(sys.modules[BatchPlan.__module__].__file__),
                              "spread_pilot": digest(sys.modules[HestonSpreadPilot.__module__].__file__),
                              "heston_pilot": digest(Path(sys.modules[HestonSpreadPilot.__module__].__file__).with_name("heston_pilot.py")),
@@ -425,6 +489,8 @@ def run_training(design, bank, out, *, train_rows=20000, updates=10000, batch_si
            "scientific_acceptance": False, "checkpoint_selection": "predeclared endpoints; validation never selects",
            "training_semantics": "BF2.1 stateless_train_step; same-input diagnostic gradients do not commit state",
            "resume_supported": False}
+    if dropout_zero_control:
+        run["dropout_initialization_control"] = initialization_control
     write_json(out / "run.json", run)
     curve, last_checkpoint, visits = [], None, np.zeros(train_rows, dtype=np.int64)
     row_order, batch_sizes = hashlib.sha256(), {}
@@ -447,6 +513,9 @@ def run_training(design, bank, out, *, train_rows=20000, updates=10000, batch_si
         if fields:
             metrics = initial_metrics
             raise FloatingPointError("nonfinite initial validation-stage probe")
+        if dropout_zero_control:
+            run["paired_default_reference"] = check_control_reference(control_reference, run, initial_metrics)
+            write_json(out / "run.json", run)
         write_json(out / "initial-probes.json", initial_metrics)
         for step in range(updates):
             phase = "before_update"
@@ -532,10 +601,16 @@ def main():
         parser.add_argument("--"+name, type=Path, required=True)
     parser.add_argument("--wall-seconds", type=float, default=3600.)
     parser.add_argument("--smoke-test-only", action="store_true")
+    parser.add_argument("--dropout-zero-control", action="store_true",
+                        help="paired control: replay .05 initialization then disable existing dropout layers")
+    parser.add_argument("--control-reference", type=Path,
+                        help="original .05 run directory; required only with --dropout-zero-control")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     if not 0 < args.wall_seconds <= 3600:
         parser.error("wall-seconds must be positive and at most 3600")
+    if args.dropout_zero_control != (args.control_reference is not None):
+        parser.error("--dropout-zero-control and --control-reference must be supplied together")
     if not args.worker:
         if args.out.exists():
             raise FileExistsError(args.out)
@@ -555,6 +630,7 @@ def main():
             raise SystemExit(code)
         return
     result = run_training(args.design, args.bank, args.out, wall_seconds=args.wall_seconds,
+        dropout_zero_control=args.dropout_zero_control, control_reference=args.control_reference,
         **({"smoke_test_only": True, "updates": 5, "train_rows": 128, "probe_rows": 32,
             "log_every": 5, "checkpoint_updates": (2, 5)} if args.smoke_test_only else {}))
     print(json.dumps(result), flush=True)
