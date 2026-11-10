@@ -1,0 +1,13 @@
+# Matched MCMC and neural parameter recovery
+
+**Predeclared eight-case study, 10 November 2026.** The user requested direct MCMC recovery plots to check whether MCMC can learn the spread multiplier c better than the networks. This follows the completed larger-bank experiment; no neural retraining or revised grid belongs to this comparison.
+
+The eight observations are selected from the same 512-row validation population used for neural recovery. Stable sorting by generating c and selecting zero-based ranks32/96/160/224/288/352/416/480 spans c=.5944–1.9052. Selection uses neither physical parameters nor neural errors or MCMC outcomes. Cases are never replaced after sampling. Both final networks' saved quantiles are reused on the identical observations, without new neural sampling.
+
+The sampler reads only [panel.json](panel.json): observation vectors, fixed design, prior and products. Generating parameters live separately in [truth-selection.json](truth-selection.json) and are used only for plotting and descriptive recovery metrics. All five Heston parameters and c remain unknown in each MCMC fit. No true parameter, clean price, noise realization or neural draw supplies initialization. The normalized likelihood and independent physical-coordinate Uniform priors are unchanged, including the `-54*log(c)` term.
+
+The [protocol](protocol.json) freezes native PyMC DEMetropolisZ with four sequential chains, multistart data-only initialization, 2k tuning/2k retained draws per chain and one 6k/12k escalation if the first MCMC diagnostics fail. Numerical refinement failure does not trigger escalation. Readiness requires R-hat≤1.01 and bulk/tail ESS≥400 for all six parameters and the existing variance functionals, plus sampled price/likelihood refinement checks. Each case has a cumulative900-second inner CPU/wall cap and950-second outer cap. At most two cases run concurrently, with a4500-second campaign cap and7200 seconds of allocated inner CPU; no automatic retries or extensions.
+
+The recovery figures will show truth versus posterior median and central90% intervals for every selected case, for MCMC and both networks. Nonconverged or capped cases remain visible as unresolved, not as validated posterior intervals. Eight selected cases give a recovery illustration, not SBC or an estimate of population coverage. Finite-data posterior estimates need not lie exactly on the unit line.
+
+Full chain/partial-draw payloads remain ignored local artifacts. Compact results, convergence diagnostics, checksums and standalone recovery figures will be retained here. Reserved test arrays remain unopened, and the existing bank/design/likelihood are unchanged.

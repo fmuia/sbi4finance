@@ -1,0 +1,237 @@
+{
+  "format": "heston_spread_recovery_truth_selection_v1",
+  "source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/prepare_heston_spread_recovery.py",
+    "sha256": "683b2350986d21b4e059b2a23289e4722d0abb7e25c4359990a247adc754f63b"
+  },
+  "capacity_study": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/precision-replay/protocol.json",
+    "sha256": "292e1a5be99bcde8f290f10f8a927603673030ab6197899391c6818b93771d3d"
+  },
+  "selection": {
+    "rule": "Stable-sort generating c; choose midpoint ranks of eight equal rank strata, independent of physical parameters, neural error or sampler results.",
+    "population_rows": 512,
+    "zero_based_c_ranks": [
+      32,
+      96,
+      160,
+      224,
+      288,
+      352,
+      416,
+      480
+    ],
+    "zero_based_population_indices": [
+      143,
+      253,
+      489,
+      487,
+      165,
+      441,
+      19,
+      486
+    ],
+    "replacement_of_failed_cases": false
+  },
+  "parameter_names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho",
+    "c"
+  ],
+  "prior_bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      10.0
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      3.0
+    ],
+    [
+      -0.95,
+      -0.1
+    ],
+    [
+      0.5,
+      2.0
+    ]
+  ],
+  "networks": [
+    {
+      "batch_size": 128,
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/precision-replay/evaluations/batch-128/pass-0500/evaluation.json",
+        "sha256": "d768ab319cceac589bca7d9a4b82ee104128c566f2a5efca756b044804de4538"
+      },
+      "recovery": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/precision-replay/evaluations/batch-128/pass-0500/recovery.npz",
+        "sha256": "b9a6fb9fda9d62c09828f85e90e1d2ea00461e7014e98f1a71165baf1887a1b7"
+      }
+    },
+    {
+      "batch_size": 512,
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/precision-replay/evaluations/batch-512/pass-0500/evaluation.json",
+        "sha256": "568ce1dadea01d40747bf963b5566d6d9722f1603c5a9e57cd3bfd92c3459629"
+      },
+      "recovery": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/precision-replay/evaluations/batch-512/pass-0500/recovery.npz",
+        "sha256": "7c7860f91cc524f8e423f565db7af9c8125c0f706a7b1956eb8373a6fc521582"
+      }
+    }
+  ],
+  "bank": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+    "record": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank/bank.json",
+      "sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e"
+    },
+    "payload": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank/bank.npz",
+      "sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb"
+    }
+  },
+  "population_truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d",
+  "population_observations_sha256": "1b5521044ee7a25ccb01a4e7b9c764500efd4682b2636ceb70667bfaeee5cbc0",
+  "cases": [
+    {
+      "id": "validation-00000143",
+      "row_id": "validation:00000143",
+      "population_index": 143,
+      "c_rank": 32,
+      "truth": [
+        0.025660952504742655,
+        6.930729338855893,
+        0.058214725253571444,
+        2.21232673032956,
+        -0.5165023509743016,
+        0.5944379270671275
+      ],
+      "observations_sha256": "bca5bb2d0b38cfc680ca3a3fc5501e36c8e0c32502d07501e5323400b4eee9da"
+    },
+    {
+      "id": "validation-00000253",
+      "row_id": "validation:00000253",
+      "population_index": 253,
+      "c_rank": 96,
+      "truth": [
+        0.08059802150161682,
+        0.9886572588082586,
+        0.09152107928174374,
+        1.8410097108138141,
+        -0.23516731699367996,
+        0.7937468928827707
+      ],
+      "observations_sha256": "82157fcbb965147522beee4710c66bab8635a94de56be06c1e04c6fcc78e270c"
+    },
+    {
+      "id": "validation-00000489",
+      "row_id": "validation:00000489",
+      "population_index": 489,
+      "c_rank": 160,
+      "truth": [
+        0.13833328120482316,
+        4.522220339170826,
+        0.13102552495389855,
+        1.0386736506184555,
+        -0.6075886859376936,
+        0.9653458808894497
+      ],
+      "observations_sha256": "3fbabc8234e9561920f41dd5e89ad517393d466ec39eb69e6726a53cd03c5272"
+    },
+    {
+      "id": "validation-00000487",
+      "row_id": "validation:00000487",
+      "population_index": 487,
+      "c_rank": 224,
+      "truth": [
+        0.02463269495767752,
+        2.648242664040654,
+        0.14062637980144052,
+        0.3032983080876465,
+        -0.4487757932340865,
+        1.161324974909644
+      ],
+      "observations_sha256": "9d867b828ffd70ab9721f0e074c611a3d919d3ca48041f0f190d66ab3adc177e"
+    },
+    {
+      "id": "validation-00000165",
+      "row_id": "validation:00000165",
+      "population_index": 165,
+      "c_rank": 288,
+      "truth": [
+        0.027236993261685223,
+        3.5292473890256457,
+        0.14872345557809888,
+        1.6428361905219075,
+        -0.656496602076039,
+        1.3584606320099275
+      ],
+      "observations_sha256": "a742f0e218632a59af40ab0a735ec69f9575559c742c37dac6e95013e5b4b7c8"
+    },
+    {
+      "id": "validation-00000441",
+      "row_id": "validation:00000441",
+      "population_index": 441,
+      "c_rank": 352,
+      "truth": [
+        0.07319551609581082,
+        4.895453438357795,
+        0.09213907789998203,
+        0.7181549092653309,
+        -0.8790765539162034,
+        1.5402336020474183
+      ],
+      "observations_sha256": "b3d2dedd260718009a16d0c6d9972d14f83ecac50ac57611b28bbc0b8098863f"
+    },
+    {
+      "id": "validation-00000019",
+      "row_id": "validation:00000019",
+      "population_index": 19,
+      "c_rank": 416,
+      "truth": [
+        0.021752517521732403,
+        4.328387050322456,
+        0.010548362813088548,
+        0.7474791814464562,
+        -0.3810837805274956,
+        1.7309955890964461
+      ],
+      "observations_sha256": "bd748a10d17480e72dc5e1bff3168324c2b0d36534f0f3c3b8fca8795abdabc2"
+    },
+    {
+      "id": "validation-00000486",
+      "row_id": "validation:00000486",
+      "population_index": 486,
+      "c_rank": 480,
+      "truth": [
+        0.15795026034706985,
+        3.510438054097311,
+        0.08005642052887435,
+        0.5409775054473398,
+        -0.29423178494670743,
+        1.905240636374172
+      ],
+      "observations_sha256": "fa8207f657641455d6d3ef1b0f5da0e1aa8105cd7c48a0d1ac269a0d716c695d"
+    }
+  ],
+  "reserved_arrays_opened": false,
+  "new_pricing_labels": false,
+  "new_neural_sampling": false,
+  "scope": "Report-only selected-case recovery illustration, not SBC or a population coverage estimate. The sampler never opens this file.",
+  "panel": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/panel.json",
+    "sha256": "495fbf5b8d707ab705763a8fab5020cf3c5e0b4e200cc07f6337a9df87a77fde"
+  }
+}
