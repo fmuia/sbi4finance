@@ -17,7 +17,6 @@ refine the explanations, figures and code before worrying about exact timing.
 | --- | --- | --- |
 | Heston options | [Open notebook](tutorial/notebooks/slot4_heston_bayesflow.py) | [heston_options/](tutorial/src/sbi4f_tutorial/heston_options/) |
 | Rough Bergomi options | [Open notebook](tutorial/notebooks/slot5_calibration.py) | [rough_options/](tutorial/src/sbi4f_tutorial/rough_options/) |
-| Return histories | [Open notebook](tutorial/notebooks/trajectory_inference.py) | [trajectories/](tutorial/src/sbi4f_tutorial/trajectories/) |
 
 Shared code is in [shared/](tutorial/src/sbi4f_tutorial/shared/). The lab uses
 this same code. Edit it here; there is no copying step.
