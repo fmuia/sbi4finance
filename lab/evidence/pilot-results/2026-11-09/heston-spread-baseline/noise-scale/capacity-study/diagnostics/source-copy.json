@@ -1,0 +1,13 @@
+{
+  "format": "heston_input_conditioning_source_copy_v1",
+  "executed_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/diagnostics/input_conditioning.py",
+    "sha256": "4032c5a3498e81bb8eef411552f10cb36629957d036874c28aff711823b75b59"
+  },
+  "committed_copy": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/diagnostics/input_conditioning.py",
+    "sha256": "4032c5a3498e81bb8eef411552f10cb36629957d036874c28aff711823b75b59"
+  },
+  "byte_identical": true,
+  "scope": "Exact small exploratory producer snapshot; original executed path and identity retained."
+}

@@ -1,0 +1,161 @@
+{
+  "format": "heston_spread_scale_capacity_report_verification_v1",
+  "status": "passed",
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/report.html",
+    "sha256": "a77255d8614362d681bfe13cf7314db90dfb967d840e0312b552359905ec7e3f"
+  },
+  "manifest": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/report-manifest.json",
+    "sha256": "eace656290ecbc01c104809874b21602eb5ec92a51a234a992ebd9773309315c"
+  },
+  "summary": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/summary.json",
+    "sha256": "4d0d42d7ac04e41bbd63ec7332119b426f0f0e65c2ae7b4015e6a95c627f22c0"
+  },
+  "renderer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_spread_scale_capacity_report.py",
+    "sha256": "33d2d8f36ec228ba4ce6e01ce1857dfeea33306f24ab47958f56e00e683a82f5"
+  },
+  "qa_producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/report-qa/verify_report.py",
+    "sha256": "7453eda3123ca4d1d2f8bfea9064a41e61150662668f6d7b56afcb70aef97813"
+  },
+  "scientific_scope": "Development study; no release acceptance. All384 approximate conditional comparison screens retained; full-prior marginal SBC is separate from local posterior fidelity.",
+  "manifest_and_closed_artifact_hashes_verified": 123,
+  "evaluation_source_files_verified": 22,
+  "native_payload_scope": "Native models/states and reference chains verified by byte hash only; no deserialization, inference, training or pricing.",
+  "reserved_bank_arrays_opened": false,
+  "source_and_output_protection": true,
+  "evaluated_endpoints": 8,
+  "conditional_screens": {
+    "inconclusive": 138,
+    "fail": 180,
+    "pass": 66
+  },
+  "conditional_screens_total": 384,
+  "dom": {
+    "inline_svg_figures": 7,
+    "conditional_tables": 24,
+    "conditional_parameter_product_rows": 192,
+    "conditional_metric_status_badges": 384,
+    "duplicate_ids": false,
+    "missing_anchors": false,
+    "external_asset_urls": []
+  },
+  "equal_exposure_comparison_bank_passes": 500,
+  "training": [
+    {
+      "batch_size": 128,
+      "clean_training_rows": 100000,
+      "additional_bank_passes": 500,
+      "additional_noisy_examples": 50000000,
+      "continued_updates": 391000,
+      "absolute_optimizer_updates": 451000,
+      "worker_seconds": 3110.7819972909056,
+      "c_median_rmse": 0.44704877019414474,
+      "c_median_width90": 1.3485330998897553,
+      "c_width_over_prior90": 0.9989134073257446,
+      "sbc_marginals_passed": 6,
+      "conditional_statuses": {
+        "synthetic-broad": "fail",
+        "synthetic-market-like": "fail",
+        "market": "fail"
+      }
+    },
+    {
+      "batch_size": 512,
+      "clean_training_rows": 100000,
+      "additional_bank_passes": 500,
+      "additional_noisy_examples": 50000000,
+      "continued_updates": 98000,
+      "absolute_optimizer_updates": 158000,
+      "worker_seconds": 1933.7964679999277,
+      "c_median_rmse": 0.44787529731476916,
+      "c_median_width90": 1.3454467549920084,
+      "c_width_over_prior90": 0.9966272259200062,
+      "sbc_marginals_passed": 5,
+      "conditional_statuses": {
+        "synthetic-broad": "fail",
+        "synthetic-market-like": "fail",
+        "market": "fail"
+      }
+    }
+  ],
+  "deadline": {
+    "finished_utc_derived": "2026-11-10T19:20:15.078056+00:00",
+    "original_deadline_utc": "2026-11-10T19:48:49.590152+00:00",
+    "finished_before_original_deadline": true,
+    "seconds_remaining": 1714.512096
+  },
+  "reproduction": {
+    "artifact": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/report-qa/reproduced-report.html",
+      "sha256": "5fea908ba9b66cbaaa9a3a43662c0b3755ecb752c2344340b3b526f6e16d41dd"
+    },
+    "byte_identical_to_pre_header_report": true,
+    "pre_header_report_sha256": "5fea908ba9b66cbaaa9a3a43662c0b3755ecb752c2344340b3b526f6e16d41dd",
+    "all_seven_svg_hashes_unchanged_after_header_refresh": true,
+    "remaining_html_identical_after_normalizing_lead_and_renderer_hash": true,
+    "scope": "Independent report reproduction preceded the authorized lead-paragraph update. Figures and remaining content are unchanged; current final report hash is recorded above."
+  },
+  "figures": [
+    {
+      "title": "Exploratory training covariance and projected quote noise",
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/report-qa/figure-01.png",
+      "sha256": "98a23f3d18e278579bb3facfa0ae0fb4e012641b89a4c5bc0694ba1a596782db"
+    },
+    {
+      "title": "c recovery and contraction over longer training",
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/report-qa/figure-02.png",
+      "sha256": "405aeff6b13bf21e058cde962eb6640f8fa08f662e118fb171429c3c0bee10eb"
+    },
+    {
+      "title": "Larger bank learning curves and implied next-step rates",
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/report-qa/figure-03.png",
+      "sha256": "d1647cd142ab8d6679b8cd0eaf46a4306a7f321e3a3b5830b3015fd7c6eb1a83"
+    },
+    {
+      "title": "Batch 128 six-parameter recovery",
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/report-qa/figure-04.png",
+      "sha256": "cbab8b67b2ccfc37fc48b60c1818ea7dc38cbca4831cebda9e077c7119c25467"
+    },
+    {
+      "title": "Batch 512 six-parameter recovery",
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/report-qa/figure-05.png",
+      "sha256": "48a500d72970c9022f410bfe154997879209af65a8bb70f68008629b5a014185"
+    },
+    {
+      "title": "SBC at the baseline and matched equal-exposure endpoints",
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/report-qa/figure-06.png",
+      "sha256": "9c52fd810d1e01d6f5bca286a2da1a9a6fdfaee9c162ccc7f91536d6c99b0692"
+    },
+    {
+      "title": "Conditional c posteriors against joint MCMC",
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/report-qa/figure-07.png",
+      "sha256": "609612a193c153b80c4745bdb013c61939e710e17f162698e4dee70c1644add8"
+    }
+  ],
+  "visual_review_pending": false,
+  "acceptance_claim": false,
+  "checked_at_utc": "2026-11-10T19:31:05.835684+00:00",
+  "report_inventory_bindings_verified": 52,
+  "visual_review": {
+    "status": "passed",
+    "figures_checked": 7,
+    "reviewed": [
+      "training-prior covariance and projected noise",
+      "c recovery and contraction",
+      "learning curves and implied next-step learning rates",
+      "batch128 final500-pass six-parameter recovery",
+      "batch512 final500-pass six-parameter recovery",
+      "final500-pass six-parameter SBC",
+      "conditional-c intervals against joint MCMC"
+    ],
+    "readable_labels_and_legends": true,
+    "no_material_clipping": true,
+    "source_scope_and_acceptance_language_checked": true,
+    "header_only_refresh_preserves_all_seven_svg_bytes": true
+  },
+  "header_result_summary_verified": true
+}

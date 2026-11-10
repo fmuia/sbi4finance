@@ -1,0 +1,96 @@
+{
+  "format": "heston_spread_scale_capacity_software_verification_v1",
+  "producer_source_commit": "e4a20e7",
+  "precision_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/precision-replay/protocol.json",
+    "sha256": "292e1a5be99bcde8f290f10f8a927603673030ab6197899391c6818b93771d3d"
+  },
+  "tests": {
+    "command": "Locked core-reference Python: python -m unittest discover -s tests -v",
+    "count": 703,
+    "seconds": 330.84,
+    "exit_code": 0,
+    "status": "passed",
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/verification/tests-final.log",
+      "sha256": "518a1d0dc70707663d65d62ceb3608cf61b1cff23c6a6ac4ac5c7aa002917289"
+    },
+    "initial_attempt": {
+      "count": 688,
+      "seconds": 307.983,
+      "errors": 1,
+      "cause": "New evaluator mock patched sys.modules but not the already imported package attribute; test isolation fixed without changing production evaluator.",
+      "log": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/verification/tests-initial.log",
+        "sha256": "42e779edcd62b5d9e6adaed5ff9ad42b126e073685f9cb9536d31af5fe391bb3"
+      }
+    }
+  },
+  "release_checks": {
+    "manifest_check": {
+      "exit_code": 0,
+      "status": "current",
+      "artifacts": 153,
+      "copies_refreshed": 0
+    },
+    "claims_check": {
+      "exit_code": 0,
+      "status": "current"
+    },
+    "runtime_boundary": {
+      "exit_code": 0,
+      "tutorial_owned_shared_symbols": 183,
+      "duplicate_lab_implementations": 0
+    }
+  },
+  "focused_numeric_checks": [
+    "exact production-failing c maps to finite float32 logit",
+    "all six targets at both nextafter-open prior boundaries remain finite",
+    "actual CLI checkpoint reloads through imported loader with exact state and next optimizer update",
+    "native full-state restoration, schedule serialization, paired epoch examples and tail accounting"
+  ],
+  "source_bindings": {
+    "trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_precision.py",
+      "sha256": "767a759a79d764c067d7c702ed30272965eb62a58400208bf58bab7331c9db47"
+    },
+    "evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_precision.py",
+      "sha256": "e4fcc89bf94d723189968aefb8ff8c4360a5ef6bb98679699a76f6b583625df2"
+    },
+    "controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_precision_campaign.py",
+      "sha256": "a78c2ddb9fd33e14568620c0e46f1fe52f6f4936312a91966a2965fc281f2cec"
+    },
+    "frozen_scale_trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_scale.py",
+      "sha256": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068"
+    },
+    "frozen_fixed_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py",
+      "sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38"
+    },
+    "full_state_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_baseline.py",
+      "sha256": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+    },
+    "original_expansion": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale.py",
+      "sha256": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892"
+    },
+    "shared_capacity_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_continuation.py",
+      "sha256": "eda6b86ed47c3aa6af0678c129eba0e4a7220d4070fed7193fe5b6e511af39b5"
+    }
+  },
+  "precision_failure_audit": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/precision-failure-audit.json",
+    "sha256": "15582efc534737f4ed1c4240f72d01a05a36173dee148e45402acb68e66957c7"
+  },
+  "tutorial_assets_changed": false,
+  "new_pricing_labels": false,
+  "new_reference_sampling": false,
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false,
+  "scope": "Software and numeric-transform verification only; posterior outcomes are assessed in separate endpoint evaluations."
+}

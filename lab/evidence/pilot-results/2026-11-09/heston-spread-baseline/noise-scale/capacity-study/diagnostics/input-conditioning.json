@@ -1,0 +1,667 @@
+{
+  "format": "heston_input_conditioning_exploratory_v1",
+  "scope": "exploratory training-only linear covariance geometry; no causal or performance conclusion",
+  "source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/diagnostics/input_conditioning.py",
+    "sha256": "4032c5a3498e81bb8eef411552f10cb36629957d036874c28aff711823b75b59",
+    "git_revision": "e4a20e70b3feff26214907380669ec9fe54203d6",
+    "python": "3.12.16",
+    "numpy": "2.5.3"
+  },
+  "bindings": {
+    "protocol_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/protocol.json",
+    "protocol_sha256": "76f36d6c623944a98e6b6fede7776d46dd871b97f391c3b39e6781f8d3102b16",
+    "parent_checkpoint_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000/checkpoint.json",
+    "parent_checkpoint_sha256": "7b8c2126e2da16146d8a4789ff04f53e8709a6213ad24cbf97a33e583aa061a3",
+    "task_fingerprint": "7dc67dc4dc7fa210b777207fefc7211034a1bcf5eddbde10e054e4a0a86439c0",
+    "bank_record_sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+    "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+    "train_clean": {
+      "shape": [
+        100000,
+        54
+      ],
+      "dtype": "float64",
+      "sha256": "48a73f40e37553cbc96cdd35869eea2160876a3590a8f8306b2e449e3788b9fd"
+    },
+    "half_spread": {
+      "shape": [
+        54
+      ],
+      "dtype": "float64",
+      "sha256": "0397e0d4fe666463157d45daa02208b4993d2df847c8ffa55f0ac9524ae7aea9"
+    }
+  },
+  "data_access": {
+    "named_arrays_opened": [
+      "train_clean"
+    ],
+    "train_rows": 100000,
+    "validation_opened": false,
+    "reserved_opened": false,
+    "neural_model_loaded": false,
+    "posterior_queries": 0,
+    "fitting": false
+  },
+  "method": {
+    "input": "x=P_clean/half_spread",
+    "standardization": "training-only sample mean and per-feature SD, ddof=1",
+    "clean_covariance": "Cov((x-mean)/sd)",
+    "expected_noise_covariance": "E[c^2]*diag(1/sd^2)",
+    "c_prior": [
+      0.5,
+      2.0
+    ],
+    "expected_c_squared": 1.75,
+    "pcs": "descending eigenvectors of clean covariance; noise projected as u.T N u",
+    "rounding": "cast clean x to float32, then back to float64; covariance in same standardized coordinates"
+  },
+  "summary": {
+    "clean_covariance_condition_number": 14312445771556.262,
+    "expected_noisy_covariance_condition_number": 2144268.688654393,
+    "expected_noisy_covariance_min_eigenvalue": 1.7911126950004923e-05,
+    "expected_noisy_covariance_max_eigenvalue": 38.406268697409416,
+    "top3_clean_variance_fraction": 0.9823276643037524,
+    "top5_clean_variance_fraction": 0.9955434744350659,
+    "expected_noise_trace_over_clean_trace": 8.565579718864513e-05,
+    "noise_dominant_clean_PCs": 33,
+    "feature_expected_noise_sd_quantiles_10_50_90": [
+      0.00444549266149937,
+      0.007201430172641458,
+      0.013388235850240552
+    ],
+    "pc_rounding_sd_over_noise_sd_min_median_max": [
+      5.463255370633761e-06,
+      7.114178415129049e-06,
+      9.5654715655597e-06
+    ],
+    "raw_input_cast_absolute_error_over_noise_sd_quantiles_50_90_99_max": [
+      4.8863747949430824e-06,
+      1.7498722501296994e-05,
+      3.254109104707581e-05,
+      4.6138100737649746e-05
+    ],
+    "hypothetical_expected_total_covariance_whitening_scale_min_max": [
+      0.1613611357423035,
+      236.28630120435284
+    ]
+  },
+  "principal_components": [
+    {
+      "pc": 1,
+      "clean_variance": 38.406186853228164,
+      "expected_noise_variance": 8.184401003907851e-05,
+      "noise_to_clean_variance": 2.1310110881835503e-06,
+      "noise_fraction_of_total_projected_variance": 2.1310065469849695e-06,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.516051411669421e-06
+    },
+    {
+      "pc": 2,
+      "clean_variance": 9.475474854715332,
+      "expected_noise_variance": 0.00010172545006157258,
+      "noise_to_clean_variance": 1.0735657222598233e-05,
+      "noise_fraction_of_total_projected_variance": 1.0735541969499549e-05,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 5.735186089942487e-06
+    },
+    {
+      "pc": 3,
+      "clean_variance": 5.164032164459142,
+      "expected_noise_variance": 8.421561389742114e-05,
+      "noise_to_clean_variance": 1.6308111803994062e-05,
+      "noise_fraction_of_total_projected_variance": 1.6307845853820595e-05,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.035870632588681e-06
+    },
+    {
+      "pc": 4,
+      "clean_variance": 0.41053077090788553,
+      "expected_noise_variance": 7.029327885765919e-05,
+      "noise_to_clean_variance": 0.00017122535955637664,
+      "noise_fraction_of_total_projected_variance": 0.0001711960464517683,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.047047367729271e-06
+    },
+    {
+      "pc": 5,
+      "clean_variance": 0.30312297618304285,
+      "expected_noise_variance": 0.00010663742919516566,
+      "noise_to_clean_variance": 0.0003517959296189146,
+      "noise_fraction_of_total_projected_variance": 0.00035167221276590345,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 5.463255370633761e-06
+    },
+    {
+      "pc": 6,
+      "clean_variance": 0.11234338274080781,
+      "expected_noise_variance": 0.00010420496824560736,
+      "noise_to_clean_variance": 0.0009275576870070137,
+      "noise_fraction_of_total_projected_variance": 0.0009266981210413069,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.636753470483133e-06
+    },
+    {
+      "pc": 7,
+      "clean_variance": 0.05461712349144448,
+      "expected_noise_variance": 0.0001011722009478506,
+      "noise_to_clean_variance": 0.0018523897722973045,
+      "noise_fraction_of_total_projected_variance": 0.0018489647688701115,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.42260099817675e-06
+    },
+    {
+      "pc": 8,
+      "clean_variance": 0.030665995332352553,
+      "expected_noise_variance": 4.4219112248204626e-05,
+      "noise_to_clean_variance": 0.0014419591397235219,
+      "noise_fraction_of_total_projected_variance": 0.001439882887433855,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 9.5654715655597e-06
+    },
+    {
+      "pc": 9,
+      "clean_variance": 0.015007450495354511,
+      "expected_noise_variance": 8.514689677864032e-05,
+      "noise_to_clean_variance": 0.005673641689172799,
+      "noise_fraction_of_total_projected_variance": 0.005641633084509509,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.55762397993143e-06
+    },
+    {
+      "pc": 10,
+      "clean_variance": 0.010618352653295589,
+      "expected_noise_variance": 9.406848184633994e-05,
+      "noise_to_clean_variance": 0.008859046682457298,
+      "noise_fraction_of_total_projected_variance": 0.008781253150863325,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.32122632531628e-06
+    },
+    {
+      "pc": 11,
+      "clean_variance": 0.0062478072215995115,
+      "expected_noise_variance": 6.0408974793433684e-05,
+      "noise_to_clean_variance": 0.009668828222578911,
+      "noise_fraction_of_total_projected_variance": 0.009576237229785449,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.782157087263522e-06
+    },
+    {
+      "pc": 12,
+      "clean_variance": 0.004238260336665703,
+      "expected_noise_variance": 7.700970165217753e-05,
+      "noise_to_clean_variance": 0.018170120647369697,
+      "noise_fraction_of_total_projected_variance": 0.017845859232067062,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.807311125104102e-06
+    },
+    {
+      "pc": 13,
+      "clean_variance": 0.0030286605535780257,
+      "expected_noise_variance": 7.987410886667907e-05,
+      "noise_to_clean_variance": 0.0263727504134845,
+      "noise_fraction_of_total_projected_variance": 0.025695099955508345,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.263209240898976e-06
+    },
+    {
+      "pc": 14,
+      "clean_variance": 0.0010789290908309907,
+      "expected_noise_variance": 6.892455116764582e-05,
+      "noise_to_clean_variance": 0.06388237350664089,
+      "noise_fraction_of_total_projected_variance": 0.06004646293375414,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.631909866134264e-06
+    },
+    {
+      "pc": 15,
+      "clean_variance": 0.0007992385564456507,
+      "expected_noise_variance": 8.355824621452876e-05,
+      "noise_to_clean_variance": 0.10454731636837747,
+      "noise_fraction_of_total_projected_variance": 0.09465173181726323,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.12250211075069e-06
+    },
+    {
+      "pc": 16,
+      "clean_variance": 0.0005735585772456204,
+      "expected_noise_variance": 8.493872336215813e-05,
+      "noise_to_clean_variance": 0.148090756082938,
+      "noise_fraction_of_total_projected_variance": 0.12898871913941265,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.3442229281026766e-06
+    },
+    {
+      "pc": 17,
+      "clean_variance": 0.0003961196537474778,
+      "expected_noise_variance": 8.628398141915977e-05,
+      "noise_to_clean_variance": 0.2178230254491864,
+      "noise_fraction_of_total_projected_variance": 0.1788626269148128,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.742392432942143e-06
+    },
+    {
+      "pc": 18,
+      "clean_variance": 0.0003209953394049902,
+      "expected_noise_variance": 0.00010107502313269538,
+      "noise_to_clean_variance": 0.31488003321185937,
+      "noise_fraction_of_total_projected_variance": 0.2394743438629161,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.843810478323489e-06
+    },
+    {
+      "pc": 19,
+      "clean_variance": 0.0002786624440805552,
+      "expected_noise_variance": 8.309223368100031e-05,
+      "noise_to_clean_variance": 0.29818239036538474,
+      "noise_fraction_of_total_projected_variance": 0.22969221626974828,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.625197222952017e-06
+    },
+    {
+      "pc": 20,
+      "clean_variance": 0.00017665385791356991,
+      "expected_noise_variance": 7.816061440657852e-05,
+      "noise_to_clean_variance": 0.4424506508361655,
+      "noise_fraction_of_total_projected_variance": 0.30673538160885017,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.9986310057976195e-06
+    },
+    {
+      "pc": 21,
+      "clean_variance": 8.979036535293673e-05,
+      "expected_noise_variance": 7.877508484699437e-05,
+      "noise_to_clean_variance": 0.8773222442892968,
+      "noise_fraction_of_total_projected_variance": 0.4673263990548555,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.024760236221793e-06
+    },
+    {
+      "pc": 22,
+      "clean_variance": 5.046477726515577e-05,
+      "expected_noise_variance": 9.491822432064088e-05,
+      "noise_to_clean_variance": 1.8808806748896267,
+      "noise_fraction_of_total_projected_variance": 0.6528839223657493,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.260303035137659e-06
+    },
+    {
+      "pc": 23,
+      "clean_variance": 3.1935575394993206e-05,
+      "expected_noise_variance": 7.824654466502502e-05,
+      "noise_to_clean_variance": 2.450137306036839,
+      "noise_fraction_of_total_projected_variance": 0.71015646297605,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.742072468423611e-06
+    },
+    {
+      "pc": 24,
+      "clean_variance": 2.8788441365381325e-05,
+      "expected_noise_variance": 9.11855468220965e-05,
+      "noise_to_clean_variance": 3.1674360436806746,
+      "noise_fraction_of_total_projected_variance": 0.7600443079345253,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.853570933557141e-06
+    },
+    {
+      "pc": 25,
+      "clean_variance": 1.4865171936322423e-05,
+      "expected_noise_variance": 4.4509973876814875e-05,
+      "noise_to_clean_variance": 2.994245479802129,
+      "noise_fraction_of_total_projected_variance": 0.7496398243280883,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 9.418782589652431e-06
+    },
+    {
+      "pc": 26,
+      "clean_variance": 1.3096550346318364e-05,
+      "expected_noise_variance": 7.922893714950163e-05,
+      "noise_to_clean_variance": 6.04960352569286,
+      "noise_fraction_of_total_projected_variance": 0.8581480509711763,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.451859761128942e-06
+    },
+    {
+      "pc": 27,
+      "clean_variance": 9.879160413544467e-06,
+      "expected_noise_variance": 6.202485411657482e-05,
+      "noise_to_clean_variance": 6.278352766854344,
+      "noise_fraction_of_total_projected_variance": 0.8626062747942081,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 8.022109045881878e-06
+    },
+    {
+      "pc": 28,
+      "clean_variance": 7.907762410799848e-06,
+      "expected_noise_variance": 0.00010111352759300225,
+      "noise_to_clean_variance": 12.786616787437712,
+      "noise_fraction_of_total_projected_variance": 0.927465888446889,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.354954569901419e-06
+    },
+    {
+      "pc": 29,
+      "clean_variance": 3.9923269151669114e-06,
+      "expected_noise_variance": 0.00010173638483892988,
+      "noise_to_clean_variance": 25.48297947556143,
+      "noise_fraction_of_total_projected_variance": 0.9622398982364201,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.042138216529384e-06
+    },
+    {
+      "pc": 30,
+      "clean_variance": 3.490336295893511e-06,
+      "expected_noise_variance": 0.00010417635920343616,
+      "noise_to_clean_variance": 29.847083596501257,
+      "noise_fraction_of_total_projected_variance": 0.9675820245090067,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.023350207909637e-06
+    },
+    {
+      "pc": 31,
+      "clean_variance": 1.9741005028831413e-06,
+      "expected_noise_variance": 7.994779234051186e-05,
+      "noise_to_clean_variance": 40.49833948360249,
+      "noise_fraction_of_total_projected_variance": 0.9759026502639909,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.598557638713867e-06
+    },
+    {
+      "pc": 32,
+      "clean_variance": 1.4106552493295685e-06,
+      "expected_noise_variance": 0.00011350741790735286,
+      "noise_to_clean_variance": 80.46432178329799,
+      "noise_fraction_of_total_projected_variance": 0.9877246875919488,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.1919508835191575e-06
+    },
+    {
+      "pc": 33,
+      "clean_variance": 1.124935355495858e-06,
+      "expected_noise_variance": 7.588443138915426e-05,
+      "noise_to_clean_variance": 67.45670408385851,
+      "noise_fraction_of_total_projected_variance": 0.9853922269062938,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.463850836724837e-06
+    },
+    {
+      "pc": 34,
+      "clean_variance": 7.916846262621168e-07,
+      "expected_noise_variance": 4.0992027083940264e-05,
+      "noise_to_clean_variance": 51.778228001573346,
+      "noise_fraction_of_total_projected_variance": 0.9810527932091584,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 9.232891952918447e-06
+    },
+    {
+      "pc": 35,
+      "clean_variance": 4.718556293527892e-07,
+      "expected_noise_variance": 8.502789318462249e-05,
+      "noise_to_clean_variance": 180.1989589511716,
+      "noise_fraction_of_total_projected_variance": 0.9944812044959405,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.018438509663785e-06
+    },
+    {
+      "pc": 36,
+      "clean_variance": 2.991159147003705e-07,
+      "expected_noise_variance": 9.690306754426213e-05,
+      "noise_to_clean_variance": 323.96493393315956,
+      "noise_fraction_of_total_projected_variance": 0.9969227449008216,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.712110479501001e-06
+    },
+    {
+      "pc": 37,
+      "clean_variance": 2.2928341890525146e-07,
+      "expected_noise_variance": 9.108359560175536e-05,
+      "noise_to_clean_variance": 397.2533035168781,
+      "noise_fraction_of_total_projected_variance": 0.9974890352668283,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.105854719507407e-06
+    },
+    {
+      "pc": 38,
+      "clean_variance": 1.8855904230226144e-07,
+      "expected_noise_variance": 8.197387671443619e-05,
+      "noise_to_clean_variance": 434.7385079684034,
+      "noise_fraction_of_total_projected_variance": 0.9977050456140257,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.339324872200843e-06
+    },
+    {
+      "pc": 39,
+      "clean_variance": 1.4726018780210216e-07,
+      "expected_noise_variance": 8.668622853746047e-05,
+      "noise_to_clean_variance": 588.6603149926378,
+      "noise_fraction_of_total_projected_variance": 0.9983041083576865,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.06602293494103e-06
+    },
+    {
+      "pc": 40,
+      "clean_variance": 1.244441511928542e-07,
+      "expected_noise_variance": 9.162655569356047e-05,
+      "noise_to_clean_variance": 736.2865575864993,
+      "noise_fraction_of_total_projected_variance": 0.9986436752579981,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.297234017752029e-06
+    },
+    {
+      "pc": 41,
+      "clean_variance": 6.557124760930323e-08,
+      "expected_noise_variance": 0.00010390504456001803,
+      "noise_to_clean_variance": 1584.6128958704762,
+      "noise_fraction_of_total_projected_variance": 0.9993693290445578,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.5398209542561945e-06
+    },
+    {
+      "pc": 42,
+      "clean_variance": 6.098359798496262e-08,
+      "expected_noise_variance": 0.00010534871757132182,
+      "noise_to_clean_variance": 1727.4926546199977,
+      "noise_fraction_of_total_projected_variance": 0.9994214612383067,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.3636771162554424e-06
+    },
+    {
+      "pc": 43,
+      "clean_variance": 3.019495412692834e-08,
+      "expected_noise_variance": 6.701316133789612e-05,
+      "noise_to_clean_variance": 2219.349665384413,
+      "noise_fraction_of_total_projected_variance": 0.999549620487444,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 8.39468922966321e-06
+    },
+    {
+      "pc": 44,
+      "clean_variance": 2.724282615752805e-08,
+      "expected_noise_variance": 7.818495036961526e-05,
+      "noise_to_clean_variance": 2869.9280286678445,
+      "noise_fraction_of_total_projected_variance": 0.9996516805750564,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.493350894170059e-06
+    },
+    {
+      "pc": 45,
+      "clean_variance": 1.4842682460797188e-08,
+      "expected_noise_variance": 0.00010045929463566563,
+      "noise_to_clean_variance": 6768.270823080726,
+      "noise_fraction_of_total_projected_variance": 0.9998522736013766,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.540604820411356e-06
+    },
+    {
+      "pc": 46,
+      "clean_variance": 7.535299138138193e-09,
+      "expected_noise_variance": 8.550826578170155e-05,
+      "noise_to_clean_variance": 11347.693597049256,
+      "noise_fraction_of_total_projected_variance": 0.9999118841308519,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.422372298256523e-06
+    },
+    {
+      "pc": 47,
+      "clean_variance": 5.0083745414030486e-09,
+      "expected_noise_variance": 0.00011001854489521077,
+      "noise_to_clean_variance": 21966.91640884951,
+      "noise_fraction_of_total_projected_variance": 0.9999544790693214,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.8548383749475195e-06
+    },
+    {
+      "pc": 48,
+      "clean_variance": 3.690911382855621e-09,
+      "expected_noise_variance": 7.904665171776499e-05,
+      "noise_to_clean_variance": 21416.56721560391,
+      "noise_fraction_of_total_projected_variance": 0.99995330935629,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.268563846181532e-06
+    },
+    {
+      "pc": 49,
+      "clean_variance": 1.427154264715218e-09,
+      "expected_noise_variance": 0.00011061780964411854,
+      "noise_to_clean_variance": 77509.3571725351,
+      "noise_fraction_of_total_projected_variance": 0.9999870984983622,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.917568391127932e-06
+    },
+    {
+      "pc": 50,
+      "clean_variance": 8.287316190486404e-10,
+      "expected_noise_variance": 8.137785871030155e-05,
+      "noise_to_clean_variance": 98195.67256733964,
+      "noise_fraction_of_total_projected_variance": 0.9999898163555458,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.502699421944925e-06
+    },
+    {
+      "pc": 51,
+      "clean_variance": 3.417994497761711e-10,
+      "expected_noise_variance": 6.459055438012506e-05,
+      "noise_to_clean_variance": 188972.08413419762,
+      "noise_fraction_of_total_projected_variance": 0.9999947082410992,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 8.44180341184092e-06
+    },
+    {
+      "pc": 52,
+      "clean_variance": 9.53534576015992e-11,
+      "expected_noise_variance": 7.847004340200794e-05,
+      "noise_to_clean_variance": 822938.6261992443,
+      "noise_fraction_of_total_projected_variance": 0.9999987848440296,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.950951531010225e-06
+    },
+    {
+      "pc": 53,
+      "clean_variance": 3.427748162650952e-11,
+      "expected_noise_variance": 8.07247785737084e-05,
+      "noise_to_clean_variance": 2355038.198351114,
+      "noise_fraction_of_total_projected_variance": 0.9999995753786176,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 7.508097311658377e-06
+    },
+    {
+      "pc": 54,
+      "clean_variance": 2.6834118686796653e-12,
+      "expected_noise_variance": 0.00012374544836371438,
+      "noise_to_clean_variance": 46114966.47534826,
+      "noise_fraction_of_total_projected_variance": 0.9999999783150666,
+      "clean_float32_cast_error_sd_over_expected_noise_sd": 6.221533013469512e-06
+    }
+  ],
+  "feature_sd_in_halfspread_units": [
+    112.93689856675846,
+    118.27887788908681,
+    182.45790767745842,
+    223.78593075600693,
+    203.68425179221387,
+    161.00618095856487,
+    153.38044485053325,
+    210.5204923888097,
+    291.22500412783074,
+    84.27376674290191,
+    123.0126262870724,
+    182.04897114705352,
+    178.96692682541226,
+    220.2130416535864,
+    190.68846681092361,
+    222.22886448729997,
+    253.3642042856597,
+    310.2553101875037,
+    98.74705852649285,
+    112.45964261894433,
+    118.51301297264207,
+    68.70485334743181,
+    184.01923013585963,
+    228.20543603113506,
+    76.03174961586416,
+    265.4838542200828,
+    300.38467411623674,
+    113.19264361859527,
+    110.15100698809273,
+    143.9242845262393,
+    159.75218863217145,
+    205.04517170255636,
+    110.48618853797169,
+    254.56488014187607,
+    276.7962482537681,
+    285.1522456951708,
+    83.43988985186266,
+    105.32538263338384,
+    150.9345417437859,
+    197.09080045967227,
+    190.43672950535907,
+    249.5423533963421,
+    211.9536245556923,
+    302.0509619904646,
+    373.4610773231335,
+    98.95319835101887,
+    97.21572383156233,
+    121.91645867514195,
+    183.3743845222626,
+    204.9526268680463,
+    275.3865723082864,
+    108.37027725777132,
+    310.1768423139421,
+    315.52858293234027
+  ],
+  "expected_standardized_noise_variance_diagonal": [
+    0.00013720386150147248,
+    0.00012509030667113766,
+    5.2566936517528686e-05,
+    3.4943989813236136e-05,
+    4.2181609279505234e-05,
+    6.750764395945298e-05,
+    7.43871744535531e-05,
+    3.948655945732461e-05,
+    2.0633871828216994e-05,
+    0.0002464071111234323,
+    0.00011564814400973362,
+    5.2803363939591756e-05,
+    5.463770985476388e-05,
+    3.608709954061765e-05,
+    4.8127044783171625e-05,
+    3.543538162756008e-05,
+    2.726136104973491e-05,
+    1.8180239570452752e-05,
+    0.00017946911168498038,
+    0.0001383708633209613,
+    0.0001245965364452481,
+    0.0003707346810635004,
+    5.167870589284899e-05,
+    3.360362099662702e-05,
+    0.0003027248549805002,
+    2.482914820096978e-05,
+    1.9394675026706574e-05,
+    0.00013658457092488566,
+    0.00014423182710991242,
+    8.448310952581268e-05,
+    6.857162084665049e-05,
+    4.162353434012492e-05,
+    0.00014335804337795388,
+    2.7004806678985313e-05,
+    2.2841133390068187e-05,
+    2.152209065094215e-05,
+    0.00025135678014551584,
+    0.0001577509406653851,
+    7.681760587274024e-05,
+    4.5051094037659515e-05,
+    4.825436665257631e-05,
+    2.810279501576177e-05,
+    3.895438509331792e-05,
+    1.9181280759292854e-05,
+    1.2547215505761875e-05,
+    0.00017872214853562675,
+    0.0001851676097400266,
+    0.00011773710973817712,
+    5.2042806703070617e-05,
+    4.1661132421562715e-05,
+    2.3075574791564797e-05,
+    0.0001490107771451926,
+    1.8189439130122894e-05,
+    1.757764279531846e-05
+  ],
+  "matrix_identities": {
+    "clean_covariance": {
+      "shape": [
+        54,
+        54
+      ],
+      "dtype": "float64",
+      "sha256": "4b814f59b0b4a6bcdb45399a2ea1dd0d4d9ac3963d7f20f68e8b7f67738d13a1"
+    },
+    "expected_noise_diagonal": {
+      "shape": [
+        54
+      ],
+      "dtype": "float64",
+      "sha256": "dbf60dea9d16a228aeab5c9da37f076c1fc151f0a915832cc061026920c6be74"
+    },
+    "clean_pcs": {
+      "shape": [
+        54,
+        54
+      ],
+      "dtype": "float64",
+      "sha256": "c164c554f28ba7b6068dbbb05c98bb12385f483a381ed299d6efc03534af6be0"
+    }
+  },
+  "limitations": [
+    "The physical-parameter prior and fixed design determine this unconditional covariance; local posterior geometry can differ.",
+    "Noise projected into clean PCs is generally correlated; projected diagonal variances are not a diagonalized likelihood.",
+    "Clean-only whitening would amplify an almost singular covariance. Expected total covariance includes the specified noise and is better conditioned, but no whitener was fitted or applied.",
+    "Float32 figures measure only the clean input cast, not normalization, deep-network arithmetic or likelihood accuracy.",
+    "This shows a possible optimization conditioning issue, not proof of the cause of c failure or that whitening improves training."
+  ]
+}
