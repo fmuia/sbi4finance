@@ -1,0 +1,12 @@
+{
+  "status": "complete",
+  "completed_updates": 8000,
+  "completed_bank_passes": 200,
+  "presentations": 2000000,
+  "seconds": 123.65399283310398,
+  "same_seed_reload_exact": true,
+  "paired_initial_trainable_hashes_exact": true,
+  "last_checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/checkpoints/update-008000",
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false
+}

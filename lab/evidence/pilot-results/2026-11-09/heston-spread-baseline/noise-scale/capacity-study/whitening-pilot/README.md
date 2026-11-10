@@ -1,6 +1,20 @@
 # Training-input whitening for Heston
 
-**Predeclared pilot, 10 November 2026.** [PR #87](https://github.com/fmuia/sbi4finance/pull/87), pinned at `ddf3619faf48b8f4b0ee56ee841ef24124a508d1`, adds a notebook whose saved recovery plot shows c correlation .887. It fits a full-covariance ZCA transform to noisy training quotes divided by their half-spreads. It also changes the network to FlowMatching, dropout, target constraints, optimizer/schedule and dataset exposure. Its appended c-response diagnostic has no executed result. This pilot isolates the input transform within a new matched pair, while preserving bounded targets and the spline architecture.
+**Completed controlled pilot, 10 November 2026. Whitening makes c learnable, but this small fixed-data fit is not calibrated.** The two fits have byte-identical initial trainable, non-trainable, optimizer and metric state, the same raw observations/targets, and contracts differing only in mode and fitted-input fingerprint. No financial likelihood or prior was changed.
+
+| Same 512 validation datasets | Fixed diagonal scaling | Full ZCA whitening |
+| --- | ---: | ---: |
+| c posterior-median RMSE | .44203 | .16970 |
+| c truth–median correlation | −.00116 | .92328 |
+| Median central-90% c width | 1.33845 | .36535 |
+| Nominal-90% c coverage | 87.70% | 74.02% |
+| Marginal SBC screens passed | 3/6 | 0/6 |
+
+The raw training covariance has condition number 1.09 million. Fixed per-feature scaling leaves a condition number of 2.20 million; ZCA reduces it to approximately 1. No covariance eigenvalues were floored and all 54 dimensions remain. This paired result supports an input-conditioning contribution to the earlier missed c information. It is one small matched pilot, not an across-seed or domain-wide guarantee.
+
+**Do not promote the whitened checkpoint as a calibrated posterior.** Its five physical parameters have nominal-90% coverage of only 54.9–60.9%, and c coverage is 74.0%; all six marginal SBC screens fail. The fixed-data fit has a large training/validation loss gap. Strong point recovery does not establish posterior accuracy. These failures remain in the [HTML report](report.html), [report inventory](plot-summary.json), and [independent verification](results-verification.json). No additional fits, grid changes or Bergomi work were started from this pilot.
+
+**Specification predeclared before fitting.** [PR #87](https://github.com/fmuia/sbi4finance/pull/87), pinned at `ddf3619faf48b8f4b0ee56ee841ef24124a508d1`, adds a notebook whose saved recovery plot shows c correlation .887. It fits a full-covariance ZCA transform to noisy training quotes divided by their half-spreads. It also changes the network to FlowMatching, dropout, target constraints, optimizer/schedule and dataset exposure. Its appended c-response diagnostic has no executed result. This pilot isolates the input transform within a new matched pair, while preserving bounded targets and the spline architecture.
 
 ## Which covariance is this?
 
@@ -12,7 +26,7 @@ Write `X_i = Y_i/h_i = P_i(phi)/h_i + c*Z_i`, with fixed price half-spreads h an
 Cov(X) = Cov_phi(P(phi)/h) + E[c^2] I.
 ```
 
-The first term contains correlations because one parameter vector drives the whole surface. Here `c ~ Uniform(.5,2)`, so `E[c^2]=1.75`. The common uncertain c couples error magnitudes, but creates no off-diagonal covariance of signed errors. Given phi and c, the original price-error covariance remains `c^2 diag(h_i^2)`.
+The first term contains correlations because one parameter vector drives the whole surface. This is appropriate financial coherence: different contracts are priced by one common model, rather than independent parameter draws for each quote. Here `c ~ Uniform(.5,2)`, so `E[c^2]=1.75`. The common uncertain c couples error magnitudes, but creates no off-diagonal covariance of signed errors. Given phi and c, the original price-error covariance remains `c^2 diag(h_i^2)`.
 
 Per-feature standardization rescales each quote independently, leaving correlated combinations badly scaled. Full whitening uses the sample mean mu and covariance C of noisy training X, with
 
@@ -22,7 +36,7 @@ W = Q diag(1/sqrt(max(lambda, max(lambda)*1e-8))) Q.T
 U = (X - mu) W.
 ```
 
-All 54 coordinates are retained. The positive eigenvalue floor limits amplification; it does not truncate components. If the floor is inactive, the sample training covariance of U is approximately I. Centering, fitting and matrix multiplication happen in host float64 before the final network float32 cast.
+All 54 coordinates are retained. The positive eigenvalue floor limits amplification; it does not truncate components. If the floor is inactive, the sample training covariance of U is approximately I. This normalizes second moments; it does not make the inputs independent or Gaussian, and adds no Gaussian assumption to their prior-predictive distribution. Centering, fitting and matrix multiplication happen in host float64 before the final network float32 cast.
 
 A financial interpretation is to expose both common surface moves and scaled contrasts between quotes. The new coordinates are numerical features, not individual option prices. The fixed invertible map preserves the original information and exact posterior. It changes neither Heston dynamics, priors, forwards/discounts, the half-spreads, nor c. It does not replace bid–ask weights with an empirical covariance inverse in the financial likelihood.
 
@@ -37,3 +51,5 @@ Both input transforms are fitted to the same 10,000 noisy training rows, with on
 The [protocol](protocol.json) freezes task, sources, training-row and preprocessing fingerprints before fitting. Each new checkpoint includes its native model, complete state and separately hash-bound preprocessing artifact. The public loader returns a raw-condition wrapper, so all prediction paths apply the saved transform exactly once. Smoke tests check training-only fitting, inverse reconstruction, identical initialization, source/sidecar tamper rejection, and CLI checkpoint → imported loader exact sampling and next-update state.
 
 Final diagnostics reuse the identical existing 512 validation observations and sample seeds, marginal SBC, three existing conditional datasets, and the unchanged eight-case/seven-ready MCMC panel. No new MCMC is run. Conditional errors are descriptive; this pilot has no release-acceptance family. Each direct worker is capped at 900 seconds, the training campaign at 1000 seconds, with no retries/extensions. Full payloads remain outside Git. Stop for reflection after the pilot and checks; no grid or Bergomi production follows automatically.
+
+[Software verification](verification.json) records 742 passing lab tests, 43 tutorial tests and all seven headless notebook exports. Static marimo checking exits successfully with two pre-existing empty-cell warnings. Manifest/claims and the runtime-boundary checks remain current. Full models, state, exposure arrays and conditional draws stay outside Git with hashes; the [report verification](report-verification.json) records offline rendering, source bindings and figure checks.

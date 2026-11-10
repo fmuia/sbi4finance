@@ -1,0 +1,55 @@
+{
+  "format": "heston_spread_whitening_software_verification_v1",
+  "lab_tests": {
+    "result": "pass",
+    "count": 742,
+    "seconds": 346.895,
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/software/lab-tests.log",
+      "sha256": "24f42e87d8c8c04c49db4d2eb5fef554a46a34c1e6e0363727ce4095e0281173"
+    }
+  },
+  "tutorial_tests": {
+    "result": "pass",
+    "count": 43,
+    "seconds": 1.767,
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/software/tutorial-tests.log",
+      "sha256": "8f8afe324754013b4a9bfe399a2385dcd80b33a263b1f84e5a55384466989f77"
+    }
+  },
+  "headless_notebooks": {
+    "result": "pass",
+    "count": 7,
+    "cell_errors": 0,
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/software/notebooks.log",
+      "sha256": "00137346ce1d7d9b0d45212cbc6391d7e22e5801d082387c6c022a2f8b7bffc9"
+    },
+    "first_sandbox_attempt": {
+      "result": "blocked_by_sandbox_unix_socket_permission",
+      "log": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/software/sandbox-notebook-attempt.log",
+        "sha256": "03ca40bc386adab5a24ca2aa755ded93e9bcdbd87657f0dcef8d72f203b09486"
+      }
+    },
+    "retry": "same check outside sandbox; approved and passed"
+  },
+  "marimo_check": {
+    "exit_code": 0,
+    "preexisting_empty_cell_warnings": [
+      "slot2_amortized_bayes.py:450",
+      "slot3_architectures.py:203"
+    ]
+  },
+  "release_checks": {
+    "manifest": "current;153artifacts,0copiesrefreshed",
+    "claims": "current",
+    "runtime_boundary": "183 shared symbols; no duplicated lab implementations"
+  },
+  "tutorial_assets_changed": false,
+  "reserved_test_arrays_opened": false,
+  "new_pricing_labels": false,
+  "new_reference_sampling": false,
+  "checkpoint_promoted": false
+}

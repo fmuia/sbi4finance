@@ -1,0 +1,4521 @@
+{
+  "format": "heston_spread_whitening_run_v1",
+  "task": {
+    "format": "heston_spread_scale_task_v1",
+    "target": {
+      "format": "heston_spread_task_v1",
+      "model": "heston",
+      "measure": "Q",
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho",
+        "c"
+      ],
+      "prior_bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          10.0
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          3.0
+        ],
+        [
+          -0.95,
+          -0.1
+        ],
+        [
+          0.5,
+          2.0
+        ]
+      ],
+      "prior": "independent Uniform in physical coordinates",
+      "infer_c": true,
+      "fixed_c": null,
+      "c_bounds": [
+        0.5,
+        2.0
+      ],
+      "quote_count": 54,
+      "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+      "observation_model": "independent Gaussian with price SD c * half_spread",
+      "pricing_controls": {
+        "c_min": 0.5,
+        "numerical_fraction": 0.02,
+        "quadrature_ladder": [
+          [
+            256,
+            150.0
+          ],
+          [
+            512,
+            300.0
+          ],
+          [
+            1024,
+            600.0
+          ],
+          [
+            2048,
+            1200.0
+          ],
+          [
+            4096,
+            2400.0
+          ],
+          [
+            8192,
+            4800.0
+          ],
+          [
+            16384,
+            9600.0
+          ]
+        ]
+      }
+    },
+    "physical_clean_price_task": {
+      "format": "heston_spread_baseline_task_v1",
+      "target": {
+        "format": "heston_spread_task_v1",
+        "model": "heston",
+        "measure": "Q",
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho"
+        ],
+        "prior_bounds": [
+          [
+            0.01,
+            0.16
+          ],
+          [
+            0.1,
+            10.0
+          ],
+          [
+            0.01,
+            0.16
+          ],
+          [
+            0.1,
+            3.0
+          ],
+          [
+            -0.95,
+            -0.1
+          ]
+        ],
+        "prior": "independent Uniform in physical coordinates",
+        "infer_c": false,
+        "fixed_c": 1.0,
+        "c_bounds": [
+          0.5,
+          2.0
+        ],
+        "quote_count": 54,
+        "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+        "observation_model": "independent Gaussian with price SD c * half_spread",
+        "pricing_controls": {
+          "c_min": 0.5,
+          "numerical_fraction": 0.02,
+          "quadrature_ladder": [
+            [
+              256,
+              150.0
+            ],
+            [
+              512,
+              300.0
+            ],
+            [
+              1024,
+              600.0
+            ],
+            [
+              2048,
+              1200.0
+            ],
+            [
+              4096,
+              2400.0
+            ],
+            [
+              8192,
+              4800.0
+            ],
+            [
+              16384,
+              9600.0
+            ]
+          ]
+        }
+      },
+      "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+      "records": {
+        "forward": [
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978
+        ],
+        "strike": [
+          6580.0,
+          6820.0,
+          7065.0,
+          7190.0,
+          7320.0,
+          7455.0,
+          7580.0,
+          7715.0,
+          7860.0,
+          6035.0,
+          6395.0,
+          6775.0,
+          6975.0,
+          7180.0,
+          7385.0,
+          7605.0,
+          7830.0,
+          8060.0,
+          5700.0,
+          6125.0,
+          6590.0,
+          6840.0,
+          7095.0,
+          7355.0,
+          7635.0,
+          7920.0,
+          8215.0,
+          5150.0,
+          5700.0,
+          6295.0,
+          6615.0,
+          6950.0,
+          7305.0,
+          7680.0,
+          8070.0,
+          8475.0,
+          4600.0,
+          5200.0,
+          5950.0,
+          6350.0,
+          6790.0,
+          7255.0,
+          7760.0,
+          8275.0,
+          8850.0,
+          4100.0,
+          4800.0,
+          5650.0,
+          6150.0,
+          6650.0,
+          7225.0,
+          7830.0,
+          8490.0,
+          9205.0
+        ],
+        "discount": [
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969
+        ],
+        "maturity": [
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588
+        ],
+        "option_type": [
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call",
+          "call",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call",
+          "call",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call",
+          "call",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call"
+        ],
+        "mid": [
+          6.300000000000001,
+          9.95,
+          18.25,
+          26.549999999999997,
+          40.900000000000006,
+          66.0,
+          104.94999999999999,
+          42.55,
+          10.65,
+          13.0,
+          20.2,
+          35.3,
+          49.45,
+          72.25,
+          108.55000000000001,
+          173.55,
+          66.4,
+          17.8,
+          17.3,
+          26.45,
+          45.45,
+          63.05,
+          91.65,
+          137.45,
+          219.45,
+          83.85,
+          22.65,
+          22.9,
+          35.900000000000006,
+          62.45,
+          86.80000000000001,
+          125.30000000000001,
+          188.45,
+          295.9,
+          113.95,
+          31.049999999999997,
+          28.2,
+          43.75,
+          78.6,
+          110.5,
+          163.85000000000002,
+          251.25,
+          393.8,
+          154.45,
+          39.85,
+          29.05,
+          48.1,
+          88.75,
+          129.8,
+          191.8,
+          301.5,
+          482.6,
+          185.15,
+          47.9
+        ],
+        "half_spread": [
+          0.10000000000000009,
+          0.14999999999999947,
+          0.14999999999999858,
+          0.15000000000000036,
+          0.1999999999999993,
+          0.29999999999999716,
+          0.3500000000000014,
+          0.25,
+          0.15000000000000036,
+          0.1999999999999993,
+          0.1999999999999993,
+          0.1999999999999993,
+          0.25,
+          0.25,
+          0.3500000000000014,
+          0.3500000000000085,
+          0.30000000000000426,
+          0.1999999999999993,
+          0.1999999999999993,
+          0.25,
+          0.34999999999999787,
+          0.75,
+          0.3500000000000014,
+          0.3500000000000085,
+          1.25,
+          0.3500000000000014,
+          0.25,
+          0.20000000000000107,
+          0.3000000000000007,
+          0.34999999999999787,
+          0.3999999999999986,
+          0.3999999999999986,
+          0.9500000000000028,
+          0.5,
+          0.45000000000000284,
+          0.34999999999999964,
+          0.3000000000000007,
+          0.3500000000000014,
+          0.3999999999999986,
+          0.4000000000000057,
+          0.5499999999999972,
+          0.5500000000000114,
+          0.8000000000000114,
+          0.5499999999999972,
+          0.3500000000000014,
+          0.25,
+          0.3999999999999986,
+          0.5499999999999972,
+          0.5,
+          0.6000000000000085,
+          0.6000000000000227,
+          1.9000000000000057,
+          0.6500000000000057,
+          0.5
+        ]
+      },
+      "conditioning": "complete ordered noisy prices / fixed half_spread; no additional channels",
+      "scope": "fixed-design development experiment; no scientific acceptance"
+    },
+    "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+    "records": {
+      "forward": [
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978
+      ],
+      "strike": [
+        6580.0,
+        6820.0,
+        7065.0,
+        7190.0,
+        7320.0,
+        7455.0,
+        7580.0,
+        7715.0,
+        7860.0,
+        6035.0,
+        6395.0,
+        6775.0,
+        6975.0,
+        7180.0,
+        7385.0,
+        7605.0,
+        7830.0,
+        8060.0,
+        5700.0,
+        6125.0,
+        6590.0,
+        6840.0,
+        7095.0,
+        7355.0,
+        7635.0,
+        7920.0,
+        8215.0,
+        5150.0,
+        5700.0,
+        6295.0,
+        6615.0,
+        6950.0,
+        7305.0,
+        7680.0,
+        8070.0,
+        8475.0,
+        4600.0,
+        5200.0,
+        5950.0,
+        6350.0,
+        6790.0,
+        7255.0,
+        7760.0,
+        8275.0,
+        8850.0,
+        4100.0,
+        4800.0,
+        5650.0,
+        6150.0,
+        6650.0,
+        7225.0,
+        7830.0,
+        8490.0,
+        9205.0
+      ],
+      "discount": [
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969
+      ],
+      "maturity": [
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588
+      ],
+      "option_type": [
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call"
+      ],
+      "mid": [
+        6.300000000000001,
+        9.95,
+        18.25,
+        26.549999999999997,
+        40.900000000000006,
+        66.0,
+        104.94999999999999,
+        42.55,
+        10.65,
+        13.0,
+        20.2,
+        35.3,
+        49.45,
+        72.25,
+        108.55000000000001,
+        173.55,
+        66.4,
+        17.8,
+        17.3,
+        26.45,
+        45.45,
+        63.05,
+        91.65,
+        137.45,
+        219.45,
+        83.85,
+        22.65,
+        22.9,
+        35.900000000000006,
+        62.45,
+        86.80000000000001,
+        125.30000000000001,
+        188.45,
+        295.9,
+        113.95,
+        31.049999999999997,
+        28.2,
+        43.75,
+        78.6,
+        110.5,
+        163.85000000000002,
+        251.25,
+        393.8,
+        154.45,
+        39.85,
+        29.05,
+        48.1,
+        88.75,
+        129.8,
+        191.8,
+        301.5,
+        482.6,
+        185.15,
+        47.9
+      ],
+      "half_spread": [
+        0.10000000000000009,
+        0.14999999999999947,
+        0.14999999999999858,
+        0.15000000000000036,
+        0.1999999999999993,
+        0.29999999999999716,
+        0.3500000000000014,
+        0.25,
+        0.15000000000000036,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.25,
+        0.25,
+        0.3500000000000014,
+        0.3500000000000085,
+        0.30000000000000426,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.25,
+        0.34999999999999787,
+        0.75,
+        0.3500000000000014,
+        0.3500000000000085,
+        1.25,
+        0.3500000000000014,
+        0.25,
+        0.20000000000000107,
+        0.3000000000000007,
+        0.34999999999999787,
+        0.3999999999999986,
+        0.3999999999999986,
+        0.9500000000000028,
+        0.5,
+        0.45000000000000284,
+        0.34999999999999964,
+        0.3000000000000007,
+        0.3500000000000014,
+        0.3999999999999986,
+        0.4000000000000057,
+        0.5499999999999972,
+        0.5500000000000114,
+        0.8000000000000114,
+        0.5499999999999972,
+        0.3500000000000014,
+        0.25,
+        0.3999999999999986,
+        0.5499999999999972,
+        0.5,
+        0.6000000000000085,
+        0.6000000000000227,
+        1.9000000000000057,
+        0.6500000000000057,
+        0.5
+      ]
+    },
+    "conditioning": "54 ordered noisy prices / frozen half_spread only",
+    "scale_generation": "independent fresh Uniform(.5,2) per example exposure; sixth inferred target",
+    "scope": "six-target fixed-design development experiment; no discrepancy parameter or release acceptance"
+  },
+  "task_fingerprint": "7dc67dc4dc7fa210b777207fefc7211034a1bcf5eddbde10e054e4a0a86439c0",
+  "names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho",
+    "c"
+  ],
+  "bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      10.0
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      3.0
+    ],
+    [
+      -0.95,
+      -0.1
+    ],
+    [
+      0.5,
+      2.0
+    ]
+  ],
+  "mode": "diagonal",
+  "training_protocol": {
+    "format": "heston_spread_whitening_protocol_v1",
+    "predeclared_before_fit": true,
+    "mode": "diagonal",
+    "task_fingerprint": "7dc67dc4dc7fa210b777207fefc7211034a1bcf5eddbde10e054e4a0a86439c0",
+    "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+    "bank_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+    "bank_record_sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+    "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+    "bank_identity": {
+      "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+      "task": {
+        "format": "heston_pilot_full_campaign_task_v1",
+        "model": "heston",
+        "measure": "Q",
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho",
+          "tau"
+        ],
+        "prior_bounds": [
+          [
+            0.01,
+            0.16
+          ],
+          [
+            0.1,
+            10.0
+          ],
+          [
+            0.01,
+            0.16
+          ],
+          [
+            0.1,
+            3.0
+          ],
+          [
+            -0.95,
+            -0.1
+          ],
+          [
+            0.0,
+            0.02
+          ]
+        ],
+        "prior": "independent Uniform in physical coordinates",
+        "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+        "quote_count": 54,
+        "layout": "full",
+        "c_training_bounds": [
+          0.5,
+          2.0
+        ],
+        "tau_training_bounds": [
+          0.0,
+          0.02
+        ],
+        "observation_model": {
+          "distribution": "independent Gaussian",
+          "mean": "deterministic refined Heston price",
+          "variance": "(c * observed halfspread)^2 + (tau * frozen observed market vega)^2",
+          "vega_units": "quote price per unit decimal implied volatility",
+          "conditioning": "fixed quote design, carry, market vegas and spread metadata"
+        },
+        "pricing_controls": {
+          "quadrature_ladder": [
+            [
+              256,
+              150.0
+            ],
+            [
+              512,
+              300.0
+            ],
+            [
+              1024,
+              600.0
+            ],
+            [
+              2048,
+              1200.0
+            ],
+            [
+              4096,
+              2400.0
+            ],
+            [
+              8192,
+              4800.0
+            ],
+            [
+              16384,
+              9600.0
+            ]
+          ],
+          "numerical_fraction": 0.02,
+          "measurement_spread_multiplier": 0.5,
+          "precision_scope": "gate relative to smallest supported measurement SD; never relaxed by tau"
+        },
+        "scope": "fixed engineering benchmark; no market-model or release acceptance"
+      },
+      "train_rows": 100000,
+      "validation_rows": 5000,
+      "test_rows": 2000,
+      "seed": 9011,
+      "producer_source_sha256": {
+        "campaign_trainer": "cef4a364eab69cfcd78ed4a20128c5d58155ff7a682520ffda8e7d841d4dc847",
+        "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+        "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+      },
+      "environment_sha256": {
+        "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+        "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+      },
+      "random_protocol": "PCG64 SeedSequence([0x43414D50, seed, split]); split0 train, split1 validation, split2 reserved test; prefix-stable physical Uniform draws",
+      "stored_latents": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "excluded_latents": "tau does not affect clean prices and is sampled fresh during training"
+    },
+    "reserved_arrays_opened": false,
+    "simulation_calls": 0,
+    "splits": {
+      "train": {
+        "rows": 10000,
+        "namespace": 501,
+        "augmentation_step": 0,
+        "row_id": {
+          "shape": [
+            10000
+          ],
+          "dtype": "<U14",
+          "sha256": "540c37e0bd8c1d638ea6b0445ea31734875c2151e5f9694771c5350239643da1"
+        },
+        "first_row_id": "train:00000000",
+        "last_row_id": "train:00009999",
+        "conditions": {
+          "shape": [
+            10000,
+            54
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "743533fe2dfdc681a74bdc452813f58bb2c39ced94320e08e0fbdb88a8c4c386"
+        },
+        "targets": {
+          "shape": [
+            10000,
+            6
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "520b166c325de864b98f7cbd018d17b905a37c6de3367da5c83443fe6e5ec90f"
+        },
+        "quotes": {
+          "shape": [
+            10000,
+            54
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "989c3e525b690711f71804b1f172957ca9a4516390b12a341d05f655dd3b63d4"
+        }
+      },
+      "validation": {
+        "rows": 100,
+        "namespace": 502,
+        "augmentation_step": 0,
+        "row_id": {
+          "shape": [
+            100
+          ],
+          "dtype": "<U19",
+          "sha256": "0f43e43c33f0fdeff5c4404b60068cbdf4df512eab2cd47ca70862494c66bed7"
+        },
+        "first_row_id": "validation:00000000",
+        "last_row_id": "validation:00000099",
+        "conditions": {
+          "shape": [
+            100,
+            54
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "bf8c9eb2d44e11992a57a40d8e4b79b5770a4cce96a252eec653b3aecb766529"
+        },
+        "targets": {
+          "shape": [
+            100,
+            6
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "19078c5c905c936eaadb13089f1a48e7db762bb607b76ae9c86c4784a3e480fe"
+        },
+        "quotes": {
+          "shape": [
+            100,
+            54
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "6576d37a0764083033f1a46303515dee41645f82a54e0861d75af0a1c58607ea"
+        }
+      }
+    },
+    "noise_recipe": "one independent c~Uniform(.5,2) and Gaussian vector per row; frozen before training; repeat identical noisy rows",
+    "new_pricing_labels": false,
+    "train_rows": 10000,
+    "validation_rows": 100,
+    "seed": 9011,
+    "batch_size": 256,
+    "batches_per_pass": 40,
+    "tail_batch_size": 16,
+    "planned_updates": 8000,
+    "bank_passes": 200,
+    "planned_presentations": 2000000,
+    "checkpoint_updates": [
+      8000
+    ],
+    "preprocessing_fingerprint": "2ed2c95266612dffd1a7cdc48ff0d6a9a4a3a32e29b6571941d807dbdcf3ddcc",
+    "architecture": {
+      "family": "spline",
+      "depth": 6,
+      "widths": [
+        128,
+        128
+      ],
+      "dropout": 0.0
+    },
+    "standardize": [
+      "inference_variables"
+    ],
+    "optimizer": {
+      "class_name": "Adam",
+      "schedule": {
+        "class_name": "CosineDecay",
+        "initial_learning_rate": 0.0005,
+        "decay_steps": 8000,
+        "alpha": 0.1
+      }
+    },
+    "data_order": "shared complete per-pass seeded permutation, unpadded tail; fixed noisy training rows repeated",
+    "source": {
+      "trainer": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_whitening.py",
+        "sha256": "6a7b35afc9c5beadcccb8e83cf73603cca2790a5e94b4818aed53f3e29523c9c"
+      },
+      "whitening": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/shared/whitening.py",
+        "sha256": "79d312451e7b28868b2d6a70c5646706183be16e9ecfe22c0c8d7e2db4257d58"
+      },
+      "fixed": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py",
+        "sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38"
+      },
+      "scale": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_scale.py",
+        "sha256": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068"
+      },
+      "precision": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_precision.py",
+        "sha256": "767a759a79d764c067d7c702ed30272965eb62a58400208bf58bab7331c9db47"
+      },
+      "expansion": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale.py",
+        "sha256": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892"
+      },
+      "full_state": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_baseline.py",
+        "sha256": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+      }
+    },
+    "max_wall_seconds": 900,
+    "smoke_test_only": false,
+    "target_prior_changed": false,
+    "scientific_acceptance": false,
+    "automatic_extension": false
+  },
+  "protocol_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/protocol.json",
+  "protocol_sha256": "33d1fa300bbed186deec8680695585590a6ea5e4b77af3f50afa3f895f8c68fd",
+  "bank_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+  "bank_record_sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+  "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+  "bank_identity": {
+    "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+    "task": {
+      "format": "heston_pilot_full_campaign_task_v1",
+      "model": "heston",
+      "measure": "Q",
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho",
+        "tau"
+      ],
+      "prior_bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          10.0
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          3.0
+        ],
+        [
+          -0.95,
+          -0.1
+        ],
+        [
+          0.0,
+          0.02
+        ]
+      ],
+      "prior": "independent Uniform in physical coordinates",
+      "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+      "quote_count": 54,
+      "layout": "full",
+      "c_training_bounds": [
+        0.5,
+        2.0
+      ],
+      "tau_training_bounds": [
+        0.0,
+        0.02
+      ],
+      "observation_model": {
+        "distribution": "independent Gaussian",
+        "mean": "deterministic refined Heston price",
+        "variance": "(c * observed halfspread)^2 + (tau * frozen observed market vega)^2",
+        "vega_units": "quote price per unit decimal implied volatility",
+        "conditioning": "fixed quote design, carry, market vegas and spread metadata"
+      },
+      "pricing_controls": {
+        "quadrature_ladder": [
+          [
+            256,
+            150.0
+          ],
+          [
+            512,
+            300.0
+          ],
+          [
+            1024,
+            600.0
+          ],
+          [
+            2048,
+            1200.0
+          ],
+          [
+            4096,
+            2400.0
+          ],
+          [
+            8192,
+            4800.0
+          ],
+          [
+            16384,
+            9600.0
+          ]
+        ],
+        "numerical_fraction": 0.02,
+        "measurement_spread_multiplier": 0.5,
+        "precision_scope": "gate relative to smallest supported measurement SD; never relaxed by tau"
+      },
+      "scope": "fixed engineering benchmark; no market-model or release acceptance"
+    },
+    "train_rows": 100000,
+    "validation_rows": 5000,
+    "test_rows": 2000,
+    "seed": 9011,
+    "producer_source_sha256": {
+      "campaign_trainer": "cef4a364eab69cfcd78ed4a20128c5d58155ff7a682520ffda8e7d841d4dc847",
+      "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+      "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+    },
+    "environment_sha256": {
+      "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+      "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+    },
+    "random_protocol": "PCG64 SeedSequence([0x43414D50, seed, split]); split0 train, split1 validation, split2 reserved test; prefix-stable physical Uniform draws",
+    "stored_latents": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "excluded_latents": "tau does not affect clean prices and is sampled fresh during training"
+  },
+  "reserved_arrays_opened": false,
+  "simulation_calls": 0,
+  "splits": {
+    "train": {
+      "rows": 10000,
+      "namespace": 501,
+      "augmentation_step": 0,
+      "row_id": {
+        "shape": [
+          10000
+        ],
+        "dtype": "<U14",
+        "sha256": "540c37e0bd8c1d638ea6b0445ea31734875c2151e5f9694771c5350239643da1"
+      },
+      "first_row_id": "train:00000000",
+      "last_row_id": "train:00009999",
+      "conditions": {
+        "shape": [
+          10000,
+          54
+        ],
+        "dtype": "float64",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "743533fe2dfdc681a74bdc452813f58bb2c39ced94320e08e0fbdb88a8c4c386"
+      },
+      "targets": {
+        "shape": [
+          10000,
+          6
+        ],
+        "dtype": "float64",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "520b166c325de864b98f7cbd018d17b905a37c6de3367da5c83443fe6e5ec90f"
+      },
+      "quotes": {
+        "shape": [
+          10000,
+          54
+        ],
+        "dtype": "float64",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "989c3e525b690711f71804b1f172957ca9a4516390b12a341d05f655dd3b63d4"
+      }
+    },
+    "validation": {
+      "rows": 100,
+      "namespace": 502,
+      "augmentation_step": 0,
+      "row_id": {
+        "shape": [
+          100
+        ],
+        "dtype": "<U19",
+        "sha256": "0f43e43c33f0fdeff5c4404b60068cbdf4df512eab2cd47ca70862494c66bed7"
+      },
+      "first_row_id": "validation:00000000",
+      "last_row_id": "validation:00000099",
+      "conditions": {
+        "shape": [
+          100,
+          54
+        ],
+        "dtype": "float64",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "bf8c9eb2d44e11992a57a40d8e4b79b5770a4cce96a252eec653b3aecb766529"
+      },
+      "targets": {
+        "shape": [
+          100,
+          6
+        ],
+        "dtype": "float64",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "19078c5c905c936eaadb13089f1a48e7db762bb607b76ae9c86c4784a3e480fe"
+      },
+      "quotes": {
+        "shape": [
+          100,
+          54
+        ],
+        "dtype": "float64",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "6576d37a0764083033f1a46303515dee41645f82a54e0861d75af0a1c58607ea"
+      }
+    }
+  },
+  "noise_recipe": "one independent c~Uniform(.5,2) and Gaussian vector per row; frozen before training; repeat identical noisy rows",
+  "new_pricing_labels": false,
+  "train_rows": 10000,
+  "batch_size": 256,
+  "planned_updates": 8000,
+  "seed": 9011,
+  "architecture": {
+    "family": "spline",
+    "depth": 6,
+    "widths": [
+      128,
+      128
+    ],
+    "dropout": 0.0
+  },
+  "standardize": [
+    "inference_variables"
+  ],
+  "preprocessing_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/diagonal/preprocessing.json",
+  "preprocessing_sha256": "6dc91c45c9a6026bd351003fd7a8e3e995316d378c854c701b0a78cf6348bd78",
+  "initial_trainable_hashes": [
+    "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b",
+    "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+    "ed6455da2da37daf25a89e5342fdb11488453ca52c8bfccfcb0cdd6691c3417f",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "2f2129f06ee6d59a825ab11730122fd3375e98b06dfd1e5f4207471d7108a972",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a",
+    "66f7146c5b98946557b2af9a6861c190280be668381c55d7893ff30208db2bb2",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "38dc448807b945ae71a19a5508b08e17764eaf9f26bdb449795f647aaf507675",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a",
+    "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b",
+    "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+    "db5e4d298936b3da2572a2ed06771c450b18522897fb9b8ecb48946b3206c1df",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "8632f03d4458b3b8256de8af49c9a8beb337b4724c012c21bf96dce8dadbdc86",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a",
+    "4eba956fc595694b1fc22912c63318c17952ed33b5c2dc980b14ecf6956abc98",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "2568fd3fbc4af547bd0302ecace27d68eabb1b0f9339144320be5d1621e8df08",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a",
+    "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b",
+    "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+    "9776ad225848898ed7a6c1723b78317c1175407ab22fce3a1e53e5e7915c3743",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "d12035d01f0c391696ed00b9f52cd32a718bed13d3467a714cf95e2c961079f3",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a",
+    "2611fff4cecb2241ebe79fe2454fd75a8e7908789fbe0d5390c209a01ccfc198",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "95ed0b490d8a95f9d6dd1443bc602f0dde1496eea265cebc85f718ba0b1a548c",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a",
+    "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b",
+    "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+    "d687685b2ca7137a0eb9ae9394846a2ee183cf6bcda9f0bcd3b06b69b135e586",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "9f9d47b721755bb311a0cb29a4d9ffdd1ccf8e8b22e6c5a99bdc395820570157",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a",
+    "6a468f7e72ad87ee8da4bc13e2b107bb6a809b9f0663e05cfdb726f473986b58",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "89be1a65985e7e7e14f7f0dc3887d8f932f9022eedef4d32d0ecc5d3bd980452",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a",
+    "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b",
+    "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+    "b78f570089fe16f673f8be388f3c953754086c150579c7da3f9234a94806a3e8",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "814a7fdda36f1e0a8ff6e8b6ecfff65292dce49d8404e73c8da33b70c1c210a4",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a",
+    "398a1f4af513f169a103abc17ad45b409ef13717e67685c886800e17a04a208c",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "d9a8b48554574a37b66fba917cab00f08c74244e044478934ec79cf9f82a84a8",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a",
+    "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b",
+    "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+    "0ec1e0f02715355f2c60aaf4eca7fa163ed15c70ce9b2004b82f861a1f05ac81",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "85b13b15bbadda9714b94de0a43fc1d6ec63ff5d55689c92503658e1d460ab26",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a",
+    "64bd3f3d23d555469bc9c9c130735c1e165108a478bbf578001be2290cde14ad",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "9b2d5e986f1f9fe222a53eed7132805f26653b88dc734b40022b1a25c627d981",
+    "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c",
+    "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+  ],
+  "initial_state": {
+    "trainable": [
+      {
+        "path": "basic_estimator/coupling_flow/act_norm/scale",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/act_norm/bias",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling/mlp/dense_block/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ed6455da2da37daf25a89e5342fdb11488453ca52c8bfccfcb0cdd6691c3417f"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling/mlp/dense_block/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling/mlp/dense_block_1/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2f2129f06ee6d59a825ab11730122fd3375e98b06dfd1e5f4207471d7108a972"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling/mlp/dense_block_1/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling_1/mlp_1/dense_block_2/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "66f7146c5b98946557b2af9a6861c190280be668381c55d7893ff30208db2bb2"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling_1/mlp_1/dense_block_2/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling_1/mlp_1/dense_block_3/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "38dc448807b945ae71a19a5508b08e17764eaf9f26bdb449795f647aaf507675"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling_1/mlp_1/dense_block_3/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling_1/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling/single_coupling_1/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/act_norm_1/scale",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/act_norm_1/bias",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_2/mlp_2/dense_block_4/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "db5e4d298936b3da2572a2ed06771c450b18522897fb9b8ecb48946b3206c1df"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_2/mlp_2/dense_block_4/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_2/mlp_2/dense_block_5/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "8632f03d4458b3b8256de8af49c9a8beb337b4724c012c21bf96dce8dadbdc86"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_2/mlp_2/dense_block_5/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_2/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_2/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_3/mlp_3/dense_block_6/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4eba956fc595694b1fc22912c63318c17952ed33b5c2dc980b14ecf6956abc98"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_3/mlp_3/dense_block_6/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_3/mlp_3/dense_block_7/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2568fd3fbc4af547bd0302ecace27d68eabb1b0f9339144320be5d1621e8df08"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_3/mlp_3/dense_block_7/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_3/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_1/single_coupling_3/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/act_norm_2/scale",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/act_norm_2/bias",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_4/mlp_4/dense_block_8/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9776ad225848898ed7a6c1723b78317c1175407ab22fce3a1e53e5e7915c3743"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_4/mlp_4/dense_block_8/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_4/mlp_4/dense_block_9/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d12035d01f0c391696ed00b9f52cd32a718bed13d3467a714cf95e2c961079f3"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_4/mlp_4/dense_block_9/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_4/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_4/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_5/mlp_5/dense_block_10/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2611fff4cecb2241ebe79fe2454fd75a8e7908789fbe0d5390c209a01ccfc198"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_5/mlp_5/dense_block_10/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_5/mlp_5/dense_block_11/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "95ed0b490d8a95f9d6dd1443bc602f0dde1496eea265cebc85f718ba0b1a548c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_5/mlp_5/dense_block_11/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_5/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_2/single_coupling_5/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/act_norm_3/scale",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/act_norm_3/bias",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_6/mlp_6/dense_block_12/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d687685b2ca7137a0eb9ae9394846a2ee183cf6bcda9f0bcd3b06b69b135e586"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_6/mlp_6/dense_block_12/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_6/mlp_6/dense_block_13/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9f9d47b721755bb311a0cb29a4d9ffdd1ccf8e8b22e6c5a99bdc395820570157"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_6/mlp_6/dense_block_13/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_6/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_6/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_7/mlp_7/dense_block_14/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "6a468f7e72ad87ee8da4bc13e2b107bb6a809b9f0663e05cfdb726f473986b58"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_7/mlp_7/dense_block_14/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_7/mlp_7/dense_block_15/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "89be1a65985e7e7e14f7f0dc3887d8f932f9022eedef4d32d0ecc5d3bd980452"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_7/mlp_7/dense_block_15/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_7/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_3/single_coupling_7/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/act_norm_4/scale",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/act_norm_4/bias",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_8/mlp_8/dense_block_16/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b78f570089fe16f673f8be388f3c953754086c150579c7da3f9234a94806a3e8"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_8/mlp_8/dense_block_16/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_8/mlp_8/dense_block_17/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "814a7fdda36f1e0a8ff6e8b6ecfff65292dce49d8404e73c8da33b70c1c210a4"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_8/mlp_8/dense_block_17/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_8/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_8/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_9/mlp_9/dense_block_18/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "398a1f4af513f169a103abc17ad45b409ef13717e67685c886800e17a04a208c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_9/mlp_9/dense_block_18/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_9/mlp_9/dense_block_19/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d9a8b48554574a37b66fba917cab00f08c74244e044478934ec79cf9f82a84a8"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_9/mlp_9/dense_block_19/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_9/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_4/single_coupling_9/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/act_norm_5/scale",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f46913286d895f62d646314f400fc3d7a543cf34eb4ae56df87f43dc4582a36b"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/act_norm_5/bias",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_10/mlp_10/dense_block_20/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0ec1e0f02715355f2c60aaf4eca7fa163ed15c70ce9b2004b82f861a1f05ac81"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_10/mlp_10/dense_block_20/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_10/mlp_10/dense_block_21/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "85b13b15bbadda9714b94de0a43fc1d6ec63ff5d55689c92503658e1d460ab26"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_10/mlp_10/dense_block_21/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_10/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_10/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_11/mlp_11/dense_block_22/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "64bd3f3d23d555469bc9c9c130735c1e165108a478bbf578001be2290cde14ad"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_11/mlp_11/dense_block_22/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_11/mlp_11/dense_block_23/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9b2d5e986f1f9fe222a53eed7132805f26653b88dc734b40022b1a25c627d981"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_11/mlp_11/dense_block_23/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_11/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/dual_coupling_5/single_coupling_11/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      }
+    ],
+    "non_trainable": [
+      {
+        "path": "seed_generator_3/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "421011a1b1898d35672c32605ed5476b23945b0f5aa3b178eded90b17e58c0ed"
+      },
+      {
+        "path": "seed_generator_1/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f12767d103338fc8dfab3934f4facbfb729ffcae7581438e3593e586ff6d891f"
+      },
+      {
+        "path": "seed_generator_2/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "576d4f08b03cc87d8276eb6ba2d692477e6739fbf5c7ff5d0ce55fbc981d7014"
+      },
+      {
+        "path": "seed_generator/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "813edf034addeb3509eaf0aecbaaa5ccbf4a410034569698ffa4d89eaa5b2b43"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation/variable_3",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "338c2f1eae8524d6d9965fe06605ba99536415fac6b8d74dd22247aad0a56d6f"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation/variable_4",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4747d606369acdcb7e073516c151b4789747572fd8592cb5b31a03d132995722"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation_1/variable_5",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "8276b5265fe5d36aca10631cb4b62416f5741d28138961c58633ded53bd6b574"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation_1/variable_6",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fd21a61fac45e6ddb73c5bfcd5bf3cc1045e808f27ccd131b41777f2ffc0e448"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation_2/variable_7",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2435355c62b3afb09b48d5e8d96fe03289e8a6c2c8464ef3d0b0626905c82844"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation_2/variable_8",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "e9383338ec8d5ab8adc4e212fef03aca4cc793702f05fe13b47c14f0f5bd8cb5"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation_3/variable_9",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "083c772b4b5fbf4e407588872169709f67729bbbbb950ff051e200ad67ec9ff0"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation_3/variable_10",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "39c48685813d5c50a6146533d30a8fafccf1d2b9ef9b0a94ddad126cdb6df166"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation_4/variable_11",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "29a03244e93103d4e9bd9869fad7242c590ad507a7d41990fa6d21bec9871a83"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation_4/variable_12",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "36ec4051d231a0c0bcc28743353e6c8545d1d6b1c52207b0715520289a95b02a"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation_5/variable_13",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f04014935f4f9a664558d648c21e4e522ecfa5565fc5e89dc8379354ed705b32"
+      },
+      {
+        "path": "basic_estimator/coupling_flow/random_permutation_5/variable_14",
+        "shape": [
+          6
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fc2caeac5931b74ff218362413e889755d15809bf4ee49db07db7e6dda529af"
+      },
+      {
+        "path": "basic_estimator/standardization/standardize/variable",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "basic_estimator/standardization/standardize/variable_1",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "basic_estimator/standardization/standardize/variable_2",
+        "shape": [],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      }
+    ],
+    "optimizer": [
+      {
+        "path": "adam/iteration",
+        "shape": [],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_scale_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_scale_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_bias_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_bias_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_mlp_dense_block_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_mlp_dense_block_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_mlp_dense_block_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_mlp_dense_block_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_mlp_dense_block_1_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_mlp_dense_block_1_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_mlp_dense_block_1_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_mlp_dense_block_1_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_mlp_1_dense_block_2_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_mlp_1_dense_block_2_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_mlp_1_dense_block_2_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_mlp_1_dense_block_2_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_mlp_1_dense_block_3_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_mlp_1_dense_block_3_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_mlp_1_dense_block_3_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_mlp_1_dense_block_3_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_single_coupling_1_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_1_scale_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_1_scale_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_1_bias_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_1_bias_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_mlp_2_dense_block_4_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_mlp_2_dense_block_4_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_mlp_2_dense_block_4_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_mlp_2_dense_block_4_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_mlp_2_dense_block_5_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_mlp_2_dense_block_5_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_mlp_2_dense_block_5_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_mlp_2_dense_block_5_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_2_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_mlp_3_dense_block_6_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_mlp_3_dense_block_6_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_mlp_3_dense_block_6_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_mlp_3_dense_block_6_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_mlp_3_dense_block_7_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_mlp_3_dense_block_7_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_mlp_3_dense_block_7_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_mlp_3_dense_block_7_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_1_single_coupling_3_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_2_scale_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_2_scale_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_2_bias_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_2_bias_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_mlp_4_dense_block_8_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_mlp_4_dense_block_8_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_mlp_4_dense_block_8_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_mlp_4_dense_block_8_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_mlp_4_dense_block_9_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_mlp_4_dense_block_9_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_mlp_4_dense_block_9_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_mlp_4_dense_block_9_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_4_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_mlp_5_dense_block_10_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_mlp_5_dense_block_10_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_mlp_5_dense_block_10_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_mlp_5_dense_block_10_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_mlp_5_dense_block_11_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_mlp_5_dense_block_11_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_mlp_5_dense_block_11_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_mlp_5_dense_block_11_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_2_single_coupling_5_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_3_scale_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_3_scale_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_3_bias_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_3_bias_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_mlp_6_dense_block_12_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_mlp_6_dense_block_12_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_mlp_6_dense_block_12_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_mlp_6_dense_block_12_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_mlp_6_dense_block_13_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_mlp_6_dense_block_13_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_mlp_6_dense_block_13_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_mlp_6_dense_block_13_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_6_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_mlp_7_dense_block_14_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_mlp_7_dense_block_14_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_mlp_7_dense_block_14_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_mlp_7_dense_block_14_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_mlp_7_dense_block_15_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_mlp_7_dense_block_15_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_mlp_7_dense_block_15_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_mlp_7_dense_block_15_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_3_single_coupling_7_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_4_scale_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_4_scale_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_4_bias_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_4_bias_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_mlp_8_dense_block_16_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_mlp_8_dense_block_16_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_mlp_8_dense_block_16_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_mlp_8_dense_block_16_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_mlp_8_dense_block_17_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_mlp_8_dense_block_17_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_mlp_8_dense_block_17_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_mlp_8_dense_block_17_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_8_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_mlp_9_dense_block_18_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_mlp_9_dense_block_18_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_mlp_9_dense_block_18_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_mlp_9_dense_block_18_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_mlp_9_dense_block_19_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_mlp_9_dense_block_19_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_mlp_9_dense_block_19_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_mlp_9_dense_block_19_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_4_single_coupling_9_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_5_scale_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_5_scale_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_5_bias_momentum",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_act_norm_5_bias_velocity",
+        "shape": [
+          6
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_mlp_10_dense_block_20_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_mlp_10_dense_block_20_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_mlp_10_dense_block_20_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_mlp_10_dense_block_20_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_mlp_10_dense_block_21_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_mlp_10_dense_block_21_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_mlp_10_dense_block_21_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_mlp_10_dense_block_21_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_10_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_mlp_11_dense_block_22_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_mlp_11_dense_block_22_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0fd40a533e9e90acd9423a66d45cde9bbc99c2c09d2d085f07cba5ff20628b79"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_mlp_11_dense_block_22_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_mlp_11_dense_block_22_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_mlp_11_dense_block_23_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_mlp_11_dense_block_23_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_mlp_11_dense_block_23_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_mlp_11_dense_block_23_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "93b750cdaba989a539174cb4412e859a62f568a8d1ea1c5c8f1a257d5981404c"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      },
+      {
+        "path": "adam/basic_estimator_coupling_flow_dual_coupling_5_single_coupling_11_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fea95ee6654315a11e31ce972ff371fc74f2ad8dc02dd7439dafe6ceff383e9a"
+      }
+    ],
+    "metrics": [
+      {
+        "path": "loss/total",
+        "shape": [],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "path": "loss/count",
+        "shape": [],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      }
+    ]
+  },
+  "paired_initialization": {
+    "fresh": true,
+    "same_seed": 9011,
+    "all_trainable_hashes_exact": true,
+    "comparison": "build both modes on the same targets/first rows before any update; no historical warm start"
+  },
+  "versions": {
+    "python": "3.12.16",
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "numeric_configuration": {
+    "jax_enable_x64": false,
+    "keras_floatx": "float32"
+  },
+  "environment_sha256": {
+    "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+    "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+  },
+  "source": {
+    "trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_whitening.py",
+      "sha256": "6a7b35afc9c5beadcccb8e83cf73603cca2790a5e94b4818aed53f3e29523c9c"
+    },
+    "whitening": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/shared/whitening.py",
+      "sha256": "79d312451e7b28868b2d6a70c5646706183be16e9ecfe22c0c8d7e2db4257d58"
+    },
+    "fixed": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py",
+      "sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38"
+    },
+    "scale": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_scale.py",
+      "sha256": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068"
+    },
+    "precision": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_precision.py",
+      "sha256": "767a759a79d764c067d7c702ed30272965eb62a58400208bf58bab7331c9db47"
+    },
+    "expansion": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale.py",
+      "sha256": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892"
+    },
+    "full_state": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_baseline.py",
+      "sha256": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+    }
+  },
+  "smoke_test_only": false,
+  "max_wall_seconds": 900,
+  "scientific_acceptance": false
+}

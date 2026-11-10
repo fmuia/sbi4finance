@@ -1,0 +1,66 @@
+{
+  "format": "heston_spread_whitening_campaign_v1",
+  "status": "complete",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/protocol.json",
+    "sha256": "33d1fa300bbed186deec8680695585590a6ea5e4b77af3f50afa3f895f8c68fd"
+  },
+  "started_utc": "2026-11-10T21:50:20.295676+00:00",
+  "git_revision": "1228a08b96789a293cb61f6008452187d1751c21",
+  "arms": {
+    "diagonal": {
+      "status": "complete",
+      "pid": 31813,
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_whitening.py",
+        "--bank",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+        "--task",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/task.json",
+        "--mode",
+        "diagonal",
+        "--protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/protocol.json",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/diagonal",
+        "--worker"
+      ],
+      "returncode": 0,
+      "seconds": 126.49336066702381,
+      "training": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/diagonal/training.json",
+        "sha256": "fdd285de913e684bd000d46e29a29b6819b7fdb14b7c636ad027e2842db057d6"
+      }
+    },
+    "zca": {
+      "status": "complete",
+      "pid": 31814,
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_whitening.py",
+        "--bank",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+        "--task",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/task.json",
+        "--mode",
+        "zca",
+        "--protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/protocol.json",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca",
+        "--worker"
+      ],
+      "returncode": 0,
+      "seconds": 125.4889085420873,
+      "training": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/training.json",
+        "sha256": "a2b13dc080477bcc16e419e40e81491afb2c1c197c6532bad24be9a968486a63"
+      }
+    }
+  },
+  "automatic_retry": false,
+  "automatic_extension": false,
+  "scientific_acceptance": false,
+  "seconds": 126.51155758299865
+}

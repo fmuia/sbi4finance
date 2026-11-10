@@ -1,0 +1,377 @@
+{
+  "format": "heston_whitening_results_verification_v1",
+  "status": "passed",
+  "verified_utc": "2026-11-10T21:58:55.894946+00:00",
+  "verification_source": {
+    "path": "/private/tmp/verify-heston-whitening-results-20261110.py",
+    "sha256": "9493faf9bd4aae949af259a7342977a39f6ed696e2bee079ecb6c4dd27f9cb04"
+  },
+  "scope": "independent read-only checks of actual completed training, fitted transforms, saved checkpoints and evaluation inputs; not posterior acceptance",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/protocol.json",
+    "sha256": "33d1fa300bbed186deec8680695585590a6ea5e4b77af3f50afa3f895f8c68fd"
+  },
+  "actual_pairing": {
+    "contract_differences_only": [
+      "mode",
+      "preprocessing_fingerprint"
+    ],
+    "same_initial_array_hashes_all_groups": {
+      "trainable": true,
+      "non_trainable": true,
+      "optimizer": true,
+      "metrics": true
+    },
+    "same_raw_conditions_targets_row_ids": true,
+    "same_fixed_noisy_data_across_all200_passes": true,
+    "new_training_noise_each_pass": false,
+    "same_task_prior_architecture_optimizer_schedule_seed": true,
+    "only_input_preprocessing_differs": true
+  },
+  "training_recomposition": {
+    "rows": 10000,
+    "raw_conditions": {
+      "shape": [
+        10000,
+        54
+      ],
+      "dtype": "float64",
+      "sha256": "743533fe2dfdc681a74bdc452813f58bb2c39ced94320e08e0fbdb88a8c4c386"
+    },
+    "targets": {
+      "shape": [
+        10000,
+        6
+      ],
+      "dtype": "float64",
+      "sha256": "520b166c325de864b98f7cbd018d17b905a37c6de3367da5c83443fe6e5ec90f"
+    },
+    "row_ids": {
+      "shape": [
+        10000
+      ],
+      "dtype": "<U14",
+      "sha256": "540c37e0bd8c1d638ea6b0445ea31734875c2151e5f9694771c5350239643da1"
+    },
+    "reserved_bank_arrays_opened": false,
+    "named_bank_arrays_opened": [
+      "train_clean",
+      "train_parameters",
+      "train_row_id"
+    ]
+  },
+  "arms": {
+    "diagonal": {
+      "training_seconds": 125.58668795903213,
+      "optimizer_updates": 8000,
+      "complete_passes": 200,
+      "presentations": 2000000,
+      "each_row_presentations": 200,
+      "feature_dimension": 54,
+      "state_arrays_verified": 274,
+      "raw_covariance_condition_number": 1087667.5735099223,
+      "transformed_covariance_condition_number": 2201659.189110945,
+      "floored_eigenvalue_count": 0,
+      "inverse_max_absolute_error_halfspread_units": 2.2737367544323206e-13,
+      "model_sha256": "e83d88fd8cce5b526888d32ed73871659d9c5b18bf8d3499b314fe4622027627",
+      "state_sha256": "4e9a0e62977a6b6e745760bf5cb8255909f624b761030f08abe4586cbe4317c7",
+      "preprocessing_sha256": "6dc91c45c9a6026bd351003fd7a8e3e995316d378c854c701b0a78cf6348bd78",
+      "evaluation_sha256": "a364560fd0a8319c5f7ff931afb3a4be5ce278ef52e2d295bd011af7a0126701",
+      "raw_evaluation_conditions_sha256": "b04ca46deb3482f3e8c22b84ce61e3de2b58aab5d3b2f3ff9de63b00f689e66e",
+      "transformed_evaluation_conditions_sha256": "853f3954f4f0e1d2ead029e6002000cfee8de9ec8752e3b1760fe4ddd7f59627"
+    },
+    "zca": {
+      "training_seconds": 123.65399283310398,
+      "optimizer_updates": 8000,
+      "complete_passes": 200,
+      "presentations": 2000000,
+      "each_row_presentations": 200,
+      "feature_dimension": 54,
+      "state_arrays_verified": 274,
+      "raw_covariance_condition_number": 1087667.5735099223,
+      "transformed_covariance_condition_number": 1.0000000004377472,
+      "floored_eigenvalue_count": 0,
+      "inverse_max_absolute_error_halfspread_units": 3.156941374982125e-11,
+      "model_sha256": "d4cf7361aacb7cd3f25e642921692971136964dcf3b179e0b73c1155a889561f",
+      "state_sha256": "f25b15557d6eeee33a1e102755724b1b09fe612aae6b31b30866ba8c0f6144a8",
+      "preprocessing_sha256": "422d2f1362e05539b8f26bbe9d81fe43e1f048c5e16084d27722b91787a018b2",
+      "evaluation_sha256": "ce60288332b649167c04f08c108fd3467fa4331067620ba6c93130b10dd422d8",
+      "raw_evaluation_conditions_sha256": "b04ca46deb3482f3e8c22b84ce61e3de2b58aab5d3b2f3ff9de63b00f689e66e",
+      "transformed_evaluation_conditions_sha256": "ffc7f6b449f2f317462cb733f152b17debf55d8c7eff5414814e39720707e6fb"
+    }
+  },
+  "inference_outcomes": {
+    "diagonal": {
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho",
+        "c"
+      ],
+      "coverage_nominal90": [
+        0.91015625,
+        0.90625,
+        0.908203125,
+        0.91015625,
+        0.900390625,
+        0.876953125
+      ],
+      "sbc_dkw_passed": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "sbc_dkw_passed_count": 3,
+      "sbc_dkw_total_parameters": 6,
+      "c_median_rmse": 0.44203150046766715,
+      "c_truth_median_correlation": -0.001160246671766857,
+      "c_median_width90": 1.3384474456310271,
+      "c_prior_width90": 1.35,
+      "c_coverage_nominal90": 0.876953125,
+      "physical_coverage_nominal90_min_max": [
+        0.900390625,
+        0.91015625
+      ],
+      "scientific_acceptance": false,
+      "scope": "recorded descriptive inference outcomes; artifact-verification pass does not imply posterior calibration"
+    },
+    "zca": {
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho",
+        "c"
+      ],
+      "coverage_nominal90": [
+        0.5546875,
+        0.548828125,
+        0.58203125,
+        0.609375,
+        0.548828125,
+        0.740234375
+      ],
+      "sbc_dkw_passed": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "sbc_dkw_passed_count": 0,
+      "sbc_dkw_total_parameters": 6,
+      "c_median_rmse": 0.16970159876237012,
+      "c_truth_median_correlation": 0.9232785416059516,
+      "c_median_width90": 0.36535097956657414,
+      "c_prior_width90": 1.35,
+      "c_coverage_nominal90": 0.740234375,
+      "physical_coverage_nominal90_min_max": [
+        0.548828125,
+        0.609375
+      ],
+      "scientific_acceptance": false,
+      "scope": "recorded descriptive inference outcomes; artifact-verification pass does not imply posterior calibration"
+    }
+  },
+  "outcome_interpretation": [
+    "ZCA improves c median recovery on this population but has materially low nominal90% coverage for c and all five physical parameters; all six marginal DKW screens fail.",
+    "The diagonal control retains an almost-prior c posterior; reasonable c marginal coverage does not demonstrate learning c.",
+    "Neither source/numerical consistency nor improved recovery establishes a calibrated posterior baseline."
+  ],
+  "matched_references": {
+    "predeclared_cases": 8,
+    "ready": 7,
+    "inconclusive": 1,
+    "all_same_cached512_observations": true,
+    "cases": [
+      {
+        "case_id": "validation-00000143",
+        "population_row": 143,
+        "reference_ready": true,
+        "new_neural_recovery_quantiles_present_in_both_arms": true,
+        "generating_c": 0.5944379270671275
+      },
+      {
+        "case_id": "validation-00000253",
+        "population_row": 253,
+        "reference_ready": true,
+        "new_neural_recovery_quantiles_present_in_both_arms": true,
+        "generating_c": 0.7937468928827707
+      },
+      {
+        "case_id": "validation-00000489",
+        "population_row": 489,
+        "reference_ready": true,
+        "new_neural_recovery_quantiles_present_in_both_arms": true,
+        "generating_c": 0.9653458808894497
+      },
+      {
+        "case_id": "validation-00000487",
+        "population_row": 487,
+        "reference_ready": false,
+        "new_neural_recovery_quantiles_present_in_both_arms": true,
+        "generating_c": 1.161324974909644
+      },
+      {
+        "case_id": "validation-00000165",
+        "population_row": 165,
+        "reference_ready": true,
+        "new_neural_recovery_quantiles_present_in_both_arms": true,
+        "generating_c": 1.3584606320099275
+      },
+      {
+        "case_id": "validation-00000441",
+        "population_row": 441,
+        "reference_ready": true,
+        "new_neural_recovery_quantiles_present_in_both_arms": true,
+        "generating_c": 1.5402336020474183
+      },
+      {
+        "case_id": "validation-00000019",
+        "population_row": 19,
+        "reference_ready": true,
+        "new_neural_recovery_quantiles_present_in_both_arms": true,
+        "generating_c": 1.7309955890964461
+      },
+      {
+        "case_id": "validation-00000486",
+        "population_row": 486,
+        "reference_ready": true,
+        "new_neural_recovery_quantiles_present_in_both_arms": true,
+        "generating_c": 1.905240636374172
+      }
+    ]
+  },
+  "evaluation": {
+    "same_historical512_quotes_and_truth": true,
+    "population_truth_and_rowids_exact": true,
+    "raw_and_transformed_inputs_independently_recomputed": true,
+    "preprocessor_applied_once": true,
+    "no_evaluation_refit": true,
+    "old3_conditional_references_remain_ready": true
+  },
+  "checked_file_count": 101,
+  "checked_files_sha256": {
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/protocol.json": "33d1fa300bbed186deec8680695585590a6ea5e4b77af3f50afa3f895f8c68fd",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/campaign.json": "3c3db42d1968fda39de4c023749a5a091ea97a375e633434185e7ab796d77791",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/evaluation-campaign.json": "fe894e37bf084c7b7afe94dd182f2ac377e39579539e5703977e5ad9b2bfc8c3",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_whitening.py": "6a7b35afc9c5beadcccb8e83cf73603cca2790a5e94b4818aed53f3e29523c9c",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_whitening.py": "f4a01d2d83610921abd1d4bd3e77b22cffb8cd91f3c4f5673bd9e6f3de5a100f",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/shared/whitening.py": "79d312451e7b28868b2d6a70c5646706183be16e9ecfe22c0c8d7e2db4257d58",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_whitening.py": "43dbc4c1edc3644ba838332d0280a7b33fc0fe270284b38b3e10b816e22ca523",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/task.json": "4a2c070dfa2ec19bfc6680d811af654a82840eba3a97e8eac650ffb1ea1b4a2d",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/precision-replay/protocol.json": "292e1a5be99bcde8f290f10f8a927603673030ab6197899391c6818b93771d3d",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/evaluations/060000/evaluation.json": "a7702ca66f886dde7866477d7b7782fccdaf7c79dccab9b74c32d4a60b445aa9",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/protocol.json": "74ac585500dd0758a49113d1201c5a0119ffbc6970573c33ff61b12675639102",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/reference-recovery-v2.json": "ea46493d36f9bd7027f3c559afb8765b4e33156463cd17eec6e02981ac4f5a80",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/report-manifest.json": "a4d47fc74688def7fe95ad1d8e05c02716ae5e132712969ccb310765462ff09f",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank/bank.json": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank/bank.npz": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-inputs.json": "6a799c3d6447802372749b5e7d46459d69b04f3e813348654d221b9f12045748",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-inputs.npz": "f0b503a12e9fd16bf069a86b96cf8de90d35652a33a6e31d8bb8458ead53be97",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/diagonal/run.json": "60a3930688ea21489cf610dccf9fd4d1435cef6594669909e6745ded2cbcb057",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/diagonal/training.json": "fdd285de913e684bd000d46e29a29b6819b7fdb14b7c636ad027e2842db057d6",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_scale.py": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_precision.py": "767a759a79d764c067d7c702ed30272965eb62a58400208bf58bab7331c9db47",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale.py": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_baseline.py": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/diagonal/exposure.npz": "966c309b3f6df244a2d004995eb199c2201d78bf2530669e1876a056c20d7bcb",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/diagonal/checkpoints/update-008000/checkpoint.json": "46551cf6b4a9ccd39af9b4b94ad5b9c7edba566d6721c9dd1adbe46eb80d6fac",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/diagonal/checkpoints/update-008000/model.keras": "e83d88fd8cce5b526888d32ed73871659d9c5b18bf8d3499b314fe4622027627",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/diagonal/checkpoints/update-008000/state.npz": "4e9a0e62977a6b6e745760bf5cb8255909f624b761030f08abe4586cbe4317c7",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/diagonal/checkpoints/update-008000/preprocessing.json": "6dc91c45c9a6026bd351003fd7a8e3e995316d378c854c701b0a78cf6348bd78",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/diagonal/preprocessing.json": "6dc91c45c9a6026bd351003fd7a8e3e995316d378c854c701b0a78cf6348bd78",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/evaluations/diagonal/evaluation.json": "a364560fd0a8319c5f7ff931afb3a4be5ce278ef52e2d295bd011af7a0126701",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale.py": "e0a8b73dc4828bf74a459bf53a47406bc557317293ec26474438b7e96e295db2",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/compare_heston_spread_scale.py": "8e569c02d6c9feee896558b0093826c396a31ce99c1f3f8083740e482fc6bc8b",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_baseline.py": "f899e126b4f9098b06d022b39dadd0f382d200d29ae4b8e2e52550dba808f7e0",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/validation.py": "42ebc47973d512c13ed6f6edf121a58db41b659cbc0258357350d84e8d3f04b7",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_reference.py": "191b0482fa73ec82f5e88fa3d8022c6fc502e5f9120a9b2dc37d25ceebed9eb3",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_budget_diagnostics.py": "cd0b925fda1e359926dcd1bef1a70f679bb5ce6bfd952243ada1a4d8689777ef",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_spread.py": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_pilot.py": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/model.py": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/reference.py": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/reference_initialization.py": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/calibration_reference.py": "070f3199645faabe8032132d13c6b1859d053d9b8717334d65ce157f707ef6b8",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/evaluations/diagonal/recovery.npz": "f0c9dbc685e7db5bc5e93be13c658c8b115acfd477fc302f1811cc9b4e876dbd",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/evaluations/diagonal/conditional-draws.npz": "e0d4740c523ff6c03167fbb8bf2734ff2940cfb6bdce2dc2ea47d97c5d18d555",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-broad-c-joint/run.json": "2988306a5fd573397fd779f9cf964ecd02a330debf575b20ea918e17863c258e",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-broad-c-joint/diagnostics.json": "ed8fd500ff403c45fffe726acd3b7bf15cc60d5a7b11b90e61dc5b8fc39a2a78",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-references/synthetic-broad-c-joint/attempt-1/chains.npz": "6617f373cd697807fcbfc4a79b39acc70e4bdb66643c79b9d9656df45418d533",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-market-like-c-joint/run.json": "fca67f428ac2ffe122f5bea8ab218fe1dc15c17b048db1c2e41df0b3146fa58c",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-market-like-c-joint/diagnostics.json": "7911cfc4acd7eebcfc8c32d13ca76f49a362a718d5859a9d2fd07c7fbf07faf4",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-references/synthetic-market-like-c-joint/attempt-1/chains.npz": "73f0669518e9373d7eaeeba5d02667ba5c4de4aadba061e18890ea7dac7a1cd2",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/market-c-joint/run.json": "abe607bc753e493f9d83dc2e7dfdba3e05a9b5f3bcdb4de04ac751437a96d0ac",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/market-c-joint/diagnostics.json": "ddb0a0537ccb7046ab2f41d8445c4387504b114982f9e3c19cf81d1756132317",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-references/market-c-joint/attempt-1/chains.npz": "3a18e1b5017af7b82cd0ad90ad8ff014b9d092c4b4ffcc76b8f722174ec13b6d",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/run.json": "1e15f168f1546647a12ae85361f635da9a995362da5cb1ce3e6bc4dd49c12766",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/training.json": "a2b13dc080477bcc16e419e40e81491afb2c1c197c6532bad24be9a968486a63",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/exposure.npz": "966c309b3f6df244a2d004995eb199c2201d78bf2530669e1876a056c20d7bcb",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/checkpoints/update-008000/checkpoint.json": "c09852b0ab13c436e204fecc254cedba82cec853e44a2378987abcdc4c76cf67",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/checkpoints/update-008000/model.keras": "d4cf7361aacb7cd3f25e642921692971136964dcf3b179e0b73c1155a889561f",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/checkpoints/update-008000/state.npz": "f25b15557d6eeee33a1e102755724b1b09fe612aae6b31b30866ba8c0f6144a8",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/checkpoints/update-008000/preprocessing.json": "422d2f1362e05539b8f26bbe9d81fe43e1f048c5e16084d27722b91787a018b2",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/preprocessing.json": "422d2f1362e05539b8f26bbe9d81fe43e1f048c5e16084d27722b91787a018b2",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/evaluations/zca/evaluation.json": "ce60288332b649167c04f08c108fd3467fa4331067620ba6c93130b10dd422d8",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/evaluations/zca/recovery.npz": "0eaf37d4a7169aba4ef2d769de733f19ab7ee02c62ed581bb6af127be488eb67",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/evaluations/zca/conditional-draws.npz": "be484f664ff02af87a6f0a30e5df2a2fb0bc21b51f83398068c775ffdbcdd0ca",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/panel.json": "495fbf5b8d707ab705763a8fab5020cf3c5e0b4e200cc07f6337a9df87a77fde",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000143/run.json": "8bd1e67474441b07ec30db7668a1ce1b15d9f1cc363630232be9064ea381602a",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000143/diagnostics.json": "e0882888fec42d1038092c6b9d0166766eddbfda9999c4abea3d9d30e440f8bc",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000143/posterior.json": "882f8db93ce95f5cf5c69c69237f082680b764a0dc1134ca00e0a97d74d07539",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/mcmc-recovery/references/validation-00000143/attempt-1/chains.npz": "5f3652e0bbd5b349d98dc5697cb5bdbdac8ee44502ddbf636325a16cd06e3951",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000253/run.json": "a3688f7a44ead47e1f41b55dbae0b30f9e91b47fa66b26ce130a3fc58515093e",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000253/diagnostics.json": "af39cc91b583515471a5c0ad7765973c6d3a348d1f98805d9eff2f24c6b121f1",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000253/posterior.json": "ccb466495891ead554aeb005ef2e0ec06e4a166becc5a2a406d78041ad7b67fa",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/mcmc-recovery/references/validation-00000253/attempt-1/chains.npz": "f5462f737b649ea880bbfedccb77ef13c4c9ddf8b274a9d05f7d6d6eaf74654a",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000489/run.json": "bcd5b7510ca4401cc83f05a59561fe170440f788d544459d84dc17b85ba2c1a7",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000489/diagnostics.json": "af82db39bd5a5c9657ba3389d907da886ac153c3118e836e40ed3db4ed6a2434",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000489/posterior.json": "ee2bbf3ead578069e5be77f1f0115d45f2c9061266d8301123b4660f5d93c847",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/mcmc-recovery/references/validation-00000489/attempt-1/chains.npz": "41dd38762519c3fe690bf593ab56ef892e6c6b12b45ecd8701bb676bff31ed91",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000487/run.json": "0575c13282bd5b4f27c694d121c9f59c780da9c6270418f2949141612aeb409a",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000487/diagnostics.json": "62c549e877d85bb462f39cb8a7bf005b70e443c7363bb4d5beeb2f3d5f726381",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000487/posterior.json": "14d91fe4e59d8bb382289264aa2dc064c6bcfa165908caa2d218724cdb570ea6",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000165/run.json": "1328ce5fad76d3df0706a7469d6d744c895f4e36f30ece014d68600c22eb37d1",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000165/diagnostics.json": "6610ebf0348bb7c575f2b92ea88372b835204106de44b9934b83dcf9830841fb",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000165/posterior.json": "2af531f5a46f35af5f4582fdc71479015b04285085f4e851c939bf910f844a50",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/mcmc-recovery/references/validation-00000165/attempt-1/chains.npz": "a3f5aa573df03bb3a7214d925e87c96b0ce53988ea4854a5e0e4c3d2c39cb06b",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000441/run.json": "fddb4fb7074d2eb4d89af1cc944ff155f2053c74d4e820abaf923afdacad7913",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000441/diagnostics.json": "d1b6549bca102b0778a532fba7768b5c2edacdde51b3d51705bd46215400919c",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000441/posterior.json": "78418976dce374ceff758c135d2377d6521ffb4a6298269e872eee9119af4332",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/mcmc-recovery/references/validation-00000441/attempt-1/chains.npz": "dc0532b0f174e1d126334fc2d91fbc20cefd25eec50c67effc540252d05639c3",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000019/run.json": "5349ae5ce4110e010ee755b77838e03990f5eff65f69ee50716f2cd21119c128",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000019/diagnostics.json": "fddfe3e8eb0740fd7f9a9e57216bfb966673923b251094279984b48291376297",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000019/posterior.json": "cacaa83177a03b48fd6ebaf155d1d5b01738926b52f7b003e5b3655cde0cefd8",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/mcmc-recovery/references/validation-00000019/attempt-1/chains.npz": "41faa6a2ce41a872fc313da737de58de263a43fdcc18cb7e9abb0196db650c8c",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000486/run.json": "f9797280a53fe14fcf837dbd3464393b78f0d31e1fa97dc8cbc7c8021f071d21",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000486/diagnostics.json": "b82c27e130a367a72df7e5e3550de0a512b2ff096c2db321817021ba84f4b22e",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/references/validation-00000486/posterior.json": "396babcf1e463aa3eaae35e8818a7bff86b2a5054fb627d00275e8fedd098570",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/mcmc-recovery/references/validation-00000486/attempt-1/chains.npz": "6f10bac38e1085f68d6a39cb30d20401fa86f36e0fd3105f6733e060e4f2e5a2"
+  },
+  "operations": {
+    "new_training": false,
+    "new_pricing": false,
+    "new_neural_posterior_queries": false,
+    "new_reference_sampling": false,
+    "native_model_loaded": false
+  },
+  "limitations": [
+    "Checkpoint arrays/configuration and payload hashes were inspected without loading or querying the native networks.",
+    "Same-seed checkpoint replay was exercised by the producer and focused software tests, not repeated in this read-only audit.",
+    "Seven ready references are a selected small panel, not an SBC population; the eighth remains visibly inconclusive.",
+    "Passing these checks establishes artifact consistency and the matched experiment, not posterior accuracy."
+  ]
+}

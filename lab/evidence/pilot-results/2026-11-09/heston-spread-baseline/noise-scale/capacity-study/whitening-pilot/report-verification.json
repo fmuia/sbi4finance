@@ -1,0 +1,47 @@
+{
+  "format": "heston_spread_whitening_report_verification_v1",
+  "status": "passed",
+  "scientific_acceptance": false,
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/report.html",
+    "sha256": "69c8206fc08068c02bf40135a0e21f7fd807b143f867ef121d09c56b336aa5af"
+  },
+  "manifest": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/report-manifest.json",
+    "sha256": "b8f8db7fcc6986733646dd0ecc68c8a5a3e52d666dd650c58cfa8f705a6bcb02"
+  },
+  "plot_summary": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/plot-summary.json",
+    "sha256": "4a1beaa3a597f59ef741ac63ca43f2dab1796b60f7c72dcb51942e1dd40addbf"
+  },
+  "independent_results_verification": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/results-verification.json",
+    "sha256": "a26c2742259ff7d12456b0fb6ee4836ac630a690504b3ed800fbe640c25d4c5f"
+  },
+  "source_bindings_verified": 87,
+  "compact_training_records_byte_exact": 10,
+  "final_evaluations": 2,
+  "population_rows_each": 512,
+  "selected_cases": 8,
+  "ready_selected_reference_cases": 7,
+  "standalone_figures": {
+    "png": 6,
+    "svg": 6
+  },
+  "visual_checks": [
+    "parameter-recovery.png",
+    "selected-c-recovery.png",
+    "sbc-ecdf.png"
+  ],
+  "lead_checks": {
+    "c_recovery_improved": true,
+    "zca_all_six_sbc_failures_prominent": true,
+    "nominal90_physical_coverage_range_percent": [
+      54.8828125,
+      60.9375
+    ],
+    "nominal90_c_coverage_percent": 74.0234375,
+    "not_calibrated_or_accepted_explicit": true
+  },
+  "scope": "Presentation/source/count/visual verification only. No model fitting, neural posterior queries, pricing, new MCMC or acceptance classification performed."
+}
