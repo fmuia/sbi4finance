@@ -151,6 +151,9 @@ new tasks.
 6. Develop posterior-predictive replicated-history checks. Continuation forecasts
    and future VaR/ES require joint latent-state/history conditioning, including
    rough memory; a parameter posterior alone is insufficient for that extension.
+7. Offer an explicit recovery/rank check of the workflow actually trained or
+   loaded. Generate independent validation histories once per task and reuse
+   them across checked prefixes; keep this separate from the final-cohort tables.
 
 **Completion:** participants can follow generation → training → checks →
 inference → interpretation for all three tasks. Numerical readiness is governed
@@ -220,7 +223,47 @@ The simulator uses stated fixed y-axis presets for all parameter settings.
 Manual scale changes alter only the view; outside counts and complete data
 ranges make view clipping explicit without dropping any path or return.
 
-Current verification passes: **46 tutorial tests**, all seven notebook exports
+### Optional diagnostics of the selected workflow
+
+The optional check generates **200 independent validation histories** from the
+selected source task and keeps them in session memory. One history is one data
+set; paths are not averaged into an observation. Its fixed seed and separate
+validation stream distinguish these histories from training examples and the
+single history used to illustrate inference. No diagnostic inputs or posterior
+draws are published or written to the repo.
+
+Select the trained one-year rough-known workflow or the loaded native workflow.
+Their tasks remain separate: the tutorial model supports at most 252 days,
+while each native model has its own 1,260-day task. **Days per diagnostic history**
+is separate from the single-history control and defaults to 252 days.
+All 200 histories use that length, and the
+preprocessing masks every later return and time token. Changing the prefix reuses
+the same histories; changing the source, task or workflow invalidates stale plots.
+Generating parameters and hidden paths never enter inference conditions.
+
+**Check this network on 200 independent histories** draws **200 posterior samples per history** and uses native
+BayesFlow recovery and rank-ECDF plots with physical parameter labels. These
+show how the selected model behaves at the chosen length. They complement the
+stored final-cohort table; they do not certify the tutorial fit or reverse the
+three native models' failed final calibration screens. Repeated use makes the
+session panel validation data, not an untouched final test. A prior-returning
+estimator can pass a rank check, so recovery must be read alongside ranks.
+
+Check missing-model handling, task/source changes, prefix bounds, future-data
+masking and plot invalidation. The small fit may perform poorly; keep that
+result visible rather than substituting the pretrained diagnostics.
+
+**Verification · 10 November:** 56 tutorial tests, 527 core lab tests (three
+optional PyMC skips), all seven exports (48 trajectory cells, zero errors) and
+release/ownership checks pass. Actual diagnostic sampling covers every native
+model at 252 and 137 days. Chrome checks the tutorial and loaded rough-known
+sources, session reuse across prefixes, missing networks, task/source changes
+and 760-pixel layout. Canonical generation of 200 histories took 0.016–0.074
+seconds on the local CPU, excluding imports. No new input assets are needed.
+Existing weights, posterior evidence and final calibration decisions remain
+unchanged.
+
+Earlier component verification passed: **46 tutorial tests**, all seven notebook exports
 (the trajectory lesson has 41 cells and zero errors), 12 lab runtime/parity
 tests, the 183-symbol ownership check, marimo/release checks and documentation
 links. The preceding full lab suite passed 527 tests with three optional skips;

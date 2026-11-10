@@ -146,6 +146,26 @@ not reproduce or validate the supplied five-year fits. Production-bank
 instructions and detailed input/diagnostic tables are optional.
 Parameter inference alone does not provide a conditional continuation forecast.
 
+**Check the network you used.** Choose **Network to check**, set **Days per
+diagnostic history**, then press **Check this network on 200 independent histories**.
+This length is separate from the single-history controls above. First use
+generates 200 validation histories for that task and keeps them in session
+memory. Later checks reuse them and draw 200 fresh samples per history for
+recovery and rank-ECDF plots.
+Generation took under 0.1 seconds per 200 histories in our local CPU check, so
+there is no separate diagnostic dataset to download.
+Every history uses the same chosen prefix; later returns and time tokens are
+masked. Generating parameters are labels for the checks, never model inputs.
+The one-year tutorial fit and five-year pretrained fits keep separate tasks.
+
+These independent, fixed-seed histories are reusable validation data, not an untouched final
+test. Neither the inputs nor the new posterior draws are written to the repo.
+The figures describe the selected workflow at that history length; they add a
+check of the model you just ran alongside the saved final-cohort results below.
+They do not replace those results or validate the tiny tutorial fit.
+Edit `trajectories/diagnostics.py` for this check; the shared network and masking
+code remains in `trajectories/inference.py`.
+
 **Checks are not yet satisfactory:** all three estimators failed the final
 calibration check. The Heston simulator can also produce zero-variance days
 that reveal drift exactly, which a continuous neural density cannot fully

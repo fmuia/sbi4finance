@@ -12,8 +12,9 @@ def _():
     import numpy as np
     from sbi4f_tutorial.shared import plots
     from sbi4f_tutorial.trajectories import lesson as trajectory
+    from sbi4f_tutorial.trajectories import diagnostics as path_checks, simulation as path_simulation
     plots.style()
-    return json, mo, np, plt, trajectory
+    return json, mo, np, path_checks, path_simulation, plt, trajectory
 
 
 @app.cell(hide_code=True)
@@ -607,55 +608,59 @@ def _(mo):
 
 
 @app.cell
-def _(mo, plt, train_demo_button, trajectory):
-    mo.stop(not train_demo_button.value, mo.md("The training example is idle until requested."))
-    import os as _os
-    from time import perf_counter as _clock
-    _os.environ["KERAS_BACKEND"] = "jax"
-    _os.environ["JAX_PLATFORMS"] = "cpu"
-    from sbi4f_tutorial.trajectories import simulation as _simulation, inference as _inference
-    try:
-        _start = _clock()
-        # Fresh prior/process draws supply training labels; no cached history is trained on.
-        _task = _simulation.teaching_task("rough-known", observations=252)
-        _pairs = _simulation.generate(_task, "train", start=0, count=128,
-                                      seed=20261107, backend="numpy")
-        _example = _simulation.generate(_task, "validation", start=0, count=1,
-                                        seed=20261108, backend="numpy")
-        _generation_seconds = _clock() - _start
-        _start = _clock()
-        # Fixed scaling and parameter logits happen before the routing adapter.
-        _train = _inference.training_data(_pairs, _task)
-        _workflow = _inference.build_workflow(_task, network=trajectory.TUTORIAL_NETWORK)
-        # Random-prefix augmentation masks all unrevealed returns and time tokens.
-        _prefixes = _inference.random_prefixes(
-            _task, seed=20261109, policy="uniform_log_mixture")
-        _history = _workflow.fit_offline(
-            data=_train, epochs=2, batch_size=32, augmentations=_prefixes, verbose=0)
-        _training_seconds = _clock() - _start
-        _start = _clock()
-        # Infer only for the independently generated history; undo label transforms.
-        _draws = _inference.sample(_workflow, _task, _example["observations"],
-                                   draws=128, seed=20261110)[0]
-        _sample_seconds = _clock() - _start
-        _figure, _axis = plt.subplots(figsize=(6, 2.5), layout="constrained")
-        _axis.plot([1, 2], _history.history["loss"], "o-", color="#7c3aed")
-        _axis.set(xlabel="Epoch", ylabel="Training loss", xticks=[1, 2],
-                  title="Separate one-year exercise: two training epochs")
-        _output = mo.vstack([
-            mo.md(f"**Source: newly trained tutorial model.** Generation: **{_generation_seconds:.2f} s**; "
-                  f"model construction and training: **{_training_seconds:.2f} s**; "
-                  f"128 draws: **{_sample_seconds:.2f} s**. Times describe this click only."),
-            _figure,
-            mo.ui.table(trajectory.posterior_rows(_task, _draws), selection=None, pagination=False),
-            mo.md("These intervals come from the small exercise and its independently generated history. "
-                  "Training loss and successful execution do not establish calibration. "
-                  "The supplied five-year estimator and all plots below are unchanged."),
-        ])
-    except (ImportError, OSError, RuntimeError, ValueError) as _error:
-        _output = mo.callout(mo.md("The small training example could not complete: " + str(_error)), kind="warn")
+def _(mo, path_simulation, plt, train_demo_button, trajectory):
+    tutorial_task = path_simulation.teaching_task("rough-known", observations=252)
+    tutorial_workflow = None
+    _output = mo.md("The training example is idle until requested.")
+    if train_demo_button.value:
+        import os as _os
+        from time import perf_counter as _clock
+        _os.environ["KERAS_BACKEND"] = "jax"
+        _os.environ["JAX_PLATFORMS"] = "cpu"
+        from sbi4f_tutorial.trajectories import simulation as _simulation, inference as _inference
+        try:
+            _start = _clock()
+            # Fresh prior/process draws supply training labels; no cached history is trained on.
+            _task = tutorial_task
+            _pairs = _simulation.generate(_task, "train", start=0, count=128,
+                                          seed=20261107, backend="numpy")
+            _example = _simulation.generate(_task, "validation", start=0, count=1,
+                                            seed=20261108, backend="numpy")
+            _generation_seconds = _clock() - _start
+            _start = _clock()
+            # Fixed scaling and parameter logits happen before the routing adapter.
+            _train = _inference.training_data(_pairs, _task)
+            _workflow = _inference.build_workflow(_task, network=trajectory.TUTORIAL_NETWORK)
+            # Random-prefix augmentation masks all unrevealed returns and time tokens.
+            _prefixes = _inference.random_prefixes(
+                _task, seed=20261109, policy="uniform_log_mixture")
+            _history = _workflow.fit_offline(
+                data=_train, epochs=2, batch_size=32, augmentations=_prefixes, verbose=0)
+            _training_seconds = _clock() - _start
+            _start = _clock()
+            # Infer only for the independently generated history; undo label transforms.
+            _draws = _inference.sample(_workflow, _task, _example["observations"],
+                                       draws=128, seed=20261110)[0]
+            _sample_seconds = _clock() - _start
+            _figure, _axis = plt.subplots(figsize=(6, 2.5), layout="constrained")
+            _axis.plot([1, 2], _history.history["loss"], "o-", color="#7c3aed")
+            _axis.set(xlabel="Epoch", ylabel="Training loss", xticks=[1, 2],
+                      title="Separate one-year exercise: two training epochs")
+            _output = mo.vstack([
+                mo.md(f"**Source: newly trained tutorial model.** Generation: **{_generation_seconds:.2f} s**; "
+                      f"model construction and training: **{_training_seconds:.2f} s**; "
+                      f"128 draws: **{_sample_seconds:.2f} s**. Times describe this click only."),
+                _figure,
+                mo.ui.table(trajectory.posterior_rows(_task, _draws), selection=None, pagination=False),
+                mo.md("These intervals come from the small exercise and its independently generated history. "
+                      "Training loss and successful execution do not establish calibration. "
+                      "The supplied five-year estimator and all plots below are unchanged."),
+            ])
+            tutorial_workflow = _workflow
+        except (ImportError, OSError, RuntimeError, ValueError) as _error:
+            _output = mo.callout(mo.md("The small training example could not complete: " + str(_error)), kind="warn")
     _output
-    return
+    return tutorial_task, tutorial_workflow
 
 
 @app.cell(hide_code=True)
@@ -731,6 +736,7 @@ def _(checkpoint_path, inference_mode, mo, requested_days, selection):
 @app.cell
 def _(cache_arrays, cache_task, case_choice, checkpoint_path, inference_mode, live_button, model_choice, requested_days, selection, trajectory):
     live_result, live_error, live_timing = None, None, None
+    pretrained_workflow = None
     if inference_mode.value == "live" and live_button.value:
         from time import perf_counter as _live_clock
         try:
@@ -746,10 +752,11 @@ def _(cache_arrays, cache_task, case_choice, checkpoint_path, inference_mode, li
             _candidate = {"selection": selection, "draws": _draws}
             trajectory.posterior_view(cache_task, cache_arrays, case_choice.value, requested_days, live=_candidate)
             live_result = _candidate
+            pretrained_workflow = _workflow
             live_timing = (_load_seconds, _sample_seconds)
         except (FileNotFoundError, ValueError, RuntimeError, ImportError, OSError) as _error:
             live_error = str(_error)
-    return live_error, live_result, live_timing
+    return live_error, live_result, live_timing, pretrained_workflow
 
 
 @app.cell
@@ -776,6 +783,123 @@ def _(inference_mode, live_error, live_timing, mo, posterior, requested_days):
     _contents.append(mo.md("Central 90% intervals and all density/dependence panels use the **same paired draw rows**. "
                           "The four example histories were selected before inspecting their posteriors."))
     mo.vstack(_contents)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Optional: check the network on independent histories
+
+    **A loss curve shows training progress. Does the resulting posterior recover
+    generating parameters and express uncertainty?** Check the actual tutorial
+    model you trained or the pretrained model you loaded above.
+
+    This action generates **200 independent validation histories**, then draws
+    **200 posterior samples for each**. Unlike an option surface, one history is
+    one process realization: there is no Monte Carlo option-price average to
+    compute. The full histories stay in session memory and are reused when you
+    change the diagnostic prefix; generating labels never condition the network.
+    Nothing here runs automatically or changes the supplied results.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    diagnostic_source = mo.ui.radio(
+        options={"Tutorial network trained above": "tutorial", "Pretrained network loaded above": "pretrained"},
+        value="Tutorial network trained above", label="Network to check", inline=True)
+    diagnostic_source
+    return (diagnostic_source,)
+
+
+@app.cell(hide_code=True)
+def _(cache_task, diagnostic_source, mo, trajectory, tutorial_task):
+    diagnostic_task = tutorial_task if diagnostic_source.value == "tutorial" else cache_task
+    diagnostic_days = mo.ui.slider(1, diagnostic_task["n_observations"], step=1, value=252,
+                                   label="Days per diagnostic history", show_value=True, include_input=True)
+    mo.vstack([
+        mo.md(f"**Diagnostic task: {trajectory.MODEL_LABELS[diagnostic_task['model']]} · "
+              f"maximum {diagnostic_task['n_observations']} days.** "
+              "This separate control gives every diagnostic history the same observed length. "
+              "It does not change the single example selected above. Later returns are masked."),
+        diagnostic_days,
+    ])
+    return diagnostic_days, diagnostic_task
+
+
+@app.cell(hide_code=True)
+def _():
+    # In-memory inputs only. A complete task fingerprint keeps different process
+    # laws, priors and maximum-history designs in separate panels.
+    diagnostic_panels = {}
+    return (diagnostic_panels,)
+
+
+@app.cell(hide_code=True)
+def _(diagnostic_days, diagnostic_source, diagnostic_task, mo, pretrained_workflow, tutorial_workflow):
+    # Any changed source, prefix, task or model requires a fresh explicit click.
+    _request = (diagnostic_source.value, diagnostic_days.value, diagnostic_task,
+                id(tutorial_workflow), id(pretrained_workflow))
+    run_diagnostics = mo.ui.run_button(label="Check this network on 200 independent histories")
+    run_diagnostics
+    return (run_diagnostics,)
+
+
+@app.cell(hide_code=True)
+def _(mo, path_checks):
+    def check_independent_histories(workflow, task, panel, days):
+        # The helper passes observed returns, times and masks to inference.sample.
+        # Future returns and generating parameters never enter those conditions.
+        draws = path_checks.evaluate(workflow, task, panel, days, draws=200, seed=20261111)
+        # Native BayesFlow diagnostics compare physical-unit draws with separate truths.
+        return path_checks.plot_diagnostics(task, panel, draws)
+
+    mo.show_code()
+    return (check_independent_histories,)
+
+
+@app.cell(hide_code=True)
+def _(check_independent_histories, diagnostic_days, diagnostic_panels, diagnostic_source,
+      diagnostic_task, mo, path_checks, path_simulation, pretrained_workflow,
+      run_diagnostics, tutorial_workflow):
+    mo.stop(not run_diagnostics.value, mo.md("*Choose a network and run the check when ready. "
+        "Changing the diagnostic prefix reuses the same independent histories.*"))
+    _workflow = tutorial_workflow if diagnostic_source.value == "tutorial" else pretrained_workflow
+    mo.stop(_workflow is None, mo.callout(mo.md("**No matching network is ready.** "
+        "Train the tutorial network above, or select Fresh inference and load the matching "
+        "pretrained model with the CPU-inference button above. Then run this check."), kind="info"))
+    from time import perf_counter as _diagnostic_clock
+    _key = path_simulation.task_fingerprint(diagnostic_task)
+    _reused = _key in diagnostic_panels
+    _started = _diagnostic_clock()
+    try:
+        if not _reused:
+            # Fixed seed, independent validation IDs. Keep all rows; never redraw failures.
+            diagnostic_panels[_key] = path_checks.generate_panel(diagnostic_task, count=200, seed=20261111)
+        _panel = diagnostic_panels[_key]
+        _generation_seconds = _diagnostic_clock() - _started
+        _started = _diagnostic_clock()
+        _recovery, _ranks = check_independent_histories(
+            _workflow, diagnostic_task, _panel, diagnostic_days.value)
+        _check_seconds = _diagnostic_clock() - _started
+    except (ImportError, RuntimeError, ValueError, FloatingPointError) as _error:
+        mo.stop(True, mo.callout(mo.md(f"**Diagnostic check stopped:** {_error}. "
+            "No partial or selectively accepted cohort is displayed."), kind="warn"))
+    mo.vstack([
+        mo.md(f"**Source: {diagnostic_source.value} network · 200 independent histories · "
+              f"{diagnostic_days.value} observed days each · 200 posterior draws per history.** "
+              f"Input generation: **{'reused from this session' if _reused else f'{_generation_seconds:.3f} s'}**; "
+              f"sampling and plotting: **{_check_seconds:.1f} s**, including compilation if needed."),
+        _recovery, _ranks,
+        mo.md("Recovery compares generating truths with posterior medians and central 90% intervals. "
+              "The rank ECDF checks calibration averaged over the declared prior: near-zero differences "
+              "mean roughly uniform ranks. Inspect both; returning the prior can pass a rank check without learning. "
+              "These fixed-seed validation examples are reused across prefixes. Nested prefixes are not "
+              "independent replicates, and these checks do not replace the final-test results below. "
+              "A tiny fit may perform poorly; successful execution does not establish accuracy."),
+    ])
     return
 
 

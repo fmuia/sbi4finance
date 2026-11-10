@@ -5,14 +5,16 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 46,
+    "tutorial_tests": 56,
     "notebook_exports": 7,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 183,
     "local_document_links": 53,
     "marimo_warnings": "existing empty cells in slots 2 and 3",
     "lab_runtime_parity_tests": 12,
-    "trajectory_notebook_cells": 41
+    "trajectory_notebook_cells": 48,
+    "lab_core_tests": 527,
+    "lab_optional_skips": 3
   },
   "browser": {
     "page_errors": [],
@@ -94,17 +96,19 @@
     "architecture": "arm64",
     "scope": "Local CPU; cold/warm setup differs between the benchmark and browser session. Not a performance guarantee."
   },
-  "scope": "Component explanations and fixed-axis UI for the existing session-only forward simulator and tutorial training route; optional supplied estimator remains separate. All source-bound prefix guards, prior calibration failures and Heston drift atom retained.",
+  "scope": "Interactive model/input explanations plus optional diagnostics of the actual tutorial or pretrained workflow. All task and prefix guards, final calibration failures and Heston drift-atom limitations retained. Existing weights and posterior evidence unchanged.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "3669c7f37872f4f098ad1dc6adab4952a7ee529af2e38efc1c95c559c97b63f2",
+    "tutorial/notebooks/trajectory_inference.py": "3897911a13dd19dfc07d195938f36c3337e110beda9aa39636afdc8f2afeedc1",
     "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "ffeb613f3ec53ce6930a7f9ddb2d6b0675ea84493754375cc04a8801e2f031b2",
     "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "5ed98e3d2fce3df3319e3478e08fbdd7f63f00e0f632461bbd783cebf9acac06",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "a24559e42a6656e4a53f05602650e882769708686042131606a7bd93bc82e0fb",
-    "tutorial/README.md": "28e08ccd8c3664a92334b9b8475585326954773eda635436259f7c1b7978c20c",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "1e8379cbe6bba85f02504a227633655d14692e7c82b379cae81788dd8a349f47"
+    "tutorial/README.md": "ba8c82824774726858b11ef5a48b994af4f67c66391023169d05ee94d2d0ec04",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "c81a4a2d5a042aa2c7b618fda8198ca9501acb44f55dd1480aebee7bacb1bc79",
+    "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "46294697b67209ce4c4ad9093401cc17e58612e6f0817d3c78bddad7c26922f7",
+    "tutorial/tests/test_trajectory_diagnostics.py": "8df731ae5ba31b388397cc69d23ae0e0de35ab54063ba642245c9f464ef6942b"
   },
-  "updated_at_utc": "2026-11-09T21:59:34.004280+00:00",
+  "updated_at_utc": "2026-11-10T14:58:55+00:00",
   "forward_simulator": {
     "paths": 8,
     "days": 252,
@@ -255,5 +259,430 @@
     "generating_parameter_labels": "separate training-loss route only",
     "latent_variance_in_conditions": false
   },
-  "canonical_simulation_and_inference_unchanged_this_review": true
+  "canonical_simulation_and_inference_unchanged_this_review": true,
+  "optional_diagnostics_20261110": {
+    "format": "trajectory_optional_diagnostic_review_v1",
+    "scientific_acceptance": false,
+    "reserved_test_evaluated": false,
+    "cohort": {
+      "count": 200,
+      "draws_per_history": 200,
+      "generation_seed": 20261111,
+      "split": "validation",
+      "start": 0,
+      "selection": "Every generated history in canonical order; no filtering or replacement.",
+      "storage": "Session memory only, indexed by the complete task fingerprint.",
+      "prefix": "A separate diagnostic length, identical for all histories; future returns/times masked.",
+      "source": "The actual workflow trained or loaded above; source/prefix changes clear old plots.",
+      "interpretation": "Fixed-seed validation, not a final-test result or a reversal of saved failures."
+    },
+    "generation_measurement": {
+      "format": "trajectory_diagnostic_generation_cost_v1",
+      "scope": "Canonical P-model validation histories for optional native posterior checks. No fitting, neural import or inference. No assets published.",
+      "backend": "numpy",
+      "hardware": {
+        "cpu": "Apple M5 Max",
+        "logical_cpus": 18,
+        "memory_gib": 128,
+        "platform": "macOS-26.4.1-arm64-arm-64bit"
+      },
+      "versions": {
+        "python": "3.12.16",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1"
+      },
+      "seed": 20261111,
+      "split": "validation",
+      "start": 0,
+      "count": 200,
+      "thread_settings": {
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "timing_boundary": "Only simulation.generate; imports, loading tasks and NPZ serialization excluded.",
+      "models": {
+        "heston": {
+          "wall_seconds": 0.07365587493404746,
+          "cpu_seconds": 0.07361599999999999,
+          "days": 1260,
+          "parameter_count": 5,
+          "shapes": {
+            "observations": [
+              200,
+              1260,
+              1
+            ],
+            "parameters": [
+              200,
+              5
+            ],
+            "trajectory_id": [
+              200
+            ]
+          },
+          "all_finite": true,
+          "failed_dropped_replaced_rows": 0,
+          "raw_observation_mib": 1.922607421875,
+          "task_fingerprint": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+          "input_file": "heston-inputs.npz",
+          "input_sha256": "b7d5c1374beae4c992f528f734246ef708502500f4d3a68b8705d5ab2aee0fea",
+          "first_id": "dd233e297f3ff974:20261111:validation:0",
+          "last_id": "dd233e297f3ff974:20261111:validation:199"
+        },
+        "rough-known": {
+          "wall_seconds": 0.06447433307766914,
+          "cpu_seconds": 0.06443099999999996,
+          "days": 1260,
+          "parameter_count": 4,
+          "shapes": {
+            "observations": [
+              200,
+              1260,
+              1
+            ],
+            "parameters": [
+              200,
+              4
+            ],
+            "trajectory_id": [
+              200
+            ]
+          },
+          "all_finite": true,
+          "failed_dropped_replaced_rows": 0,
+          "raw_observation_mib": 1.922607421875,
+          "task_fingerprint": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+          "input_file": "rough-known-inputs.npz",
+          "input_sha256": "cb41e58b97ca1ebf6e9e16d4dcd7b1db7654566888f9a7c65b3e24929cb5f443",
+          "first_id": "eb195dd594de03a9:20261111:validation:0",
+          "last_id": "eb195dd594de03a9:20261111:validation:199"
+        },
+        "rough-joint": {
+          "wall_seconds": 0.0668109580874443,
+          "cpu_seconds": 0.06675700000000001,
+          "days": 1260,
+          "parameter_count": 7,
+          "shapes": {
+            "observations": [
+              200,
+              1260,
+              1
+            ],
+            "parameters": [
+              200,
+              7
+            ],
+            "trajectory_id": [
+              200
+            ]
+          },
+          "all_finite": true,
+          "failed_dropped_replaced_rows": 0,
+          "raw_observation_mib": 1.922607421875,
+          "task_fingerprint": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+          "input_file": "rough-joint-inputs.npz",
+          "input_sha256": "05309d8ef9550e0c398aa05b73129573eb88858a9b24349cf62f63dea818fa73",
+          "first_id": "277c7219e49edb13:20261111:validation:0",
+          "last_id": "277c7219e49edb13:20261111:validation:199"
+        },
+        "tutorial-rough-known252": {
+          "wall_seconds": 0.01648166705854237,
+          "cpu_seconds": 0.01647399999999999,
+          "days": 252,
+          "parameter_count": 4,
+          "shapes": {
+            "observations": [
+              200,
+              252,
+              1
+            ],
+            "parameters": [
+              200,
+              4
+            ],
+            "trajectory_id": [
+              200
+            ]
+          },
+          "all_finite": true,
+          "failed_dropped_replaced_rows": 0,
+          "raw_observation_mib": 0.384521484375,
+          "task_fingerprint": "0f420661b1d8bdaaa926e57282f1b89e13afd41557ec5e5c4c5cf2f09597000e",
+          "input_file": "tutorial-rough-known252-inputs.npz",
+          "input_sha256": "d4642a465a3add4f1fd904cf283021dd2d29abecc8e529ad9cad4541affa8e3d",
+          "first_id": "0f420661b1d8bdaa:20261111:validation:0",
+          "last_id": "0f420661b1d8bdaa:20261111:validation:199"
+        }
+      },
+      "scientific_acceptance": false,
+      "reserved_test_evaluated": false,
+      "total_generation_wall_seconds": 0.22142283315770328,
+      "total_generation_cpu_seconds": 0.22127799999999995,
+      "peak_rss_bytes": 132743168,
+      "status": "complete"
+    },
+    "native_heston_joint_smoke": {
+      "format": "trajectory_native_diagnostics_smoke_v1",
+      "models": {
+        "heston": {
+          "model_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+          "task_fingerprint": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+          "source": "existing matching model outside Git; no cache payload changed",
+          "252": {
+            "shape": [
+              200,
+              200,
+              5
+            ],
+            "all_finite": true,
+            "coverage90": [
+              0.905,
+              0.9,
+              0.835,
+              0.9,
+              0.91
+            ],
+            "parameter_names": [
+              "kappa",
+              "long_variance",
+              "vol_of_vol",
+              "rho",
+              "drift"
+            ],
+            "exact_prefix": 252,
+            "paired_histories_across_lengths": true,
+            "future_returns_do_not_change_conditions": true,
+            "observed_mask_entries": 50400,
+            "padded_tokens_all_zero": true,
+            "physical_prior_bounds_checked_by_native_plot_helper": true
+          },
+          "137": {
+            "shape": [
+              200,
+              200,
+              5
+            ],
+            "all_finite": true,
+            "coverage90": [
+              0.91,
+              0.895,
+              0.845,
+              0.895,
+              0.91
+            ],
+            "parameter_names": [
+              "kappa",
+              "long_variance",
+              "vol_of_vol",
+              "rho",
+              "drift"
+            ],
+            "exact_prefix": 137,
+            "paired_histories_across_lengths": true,
+            "future_returns_do_not_change_conditions": true,
+            "observed_mask_entries": 27400,
+            "padded_tokens_all_zero": true,
+            "physical_prior_bounds_checked_by_native_plot_helper": true
+          }
+        },
+        "rough-joint": {
+          "model_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+          "task_fingerprint": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+          "source": "existing matching model outside Git; no cache payload changed",
+          "252": {
+            "shape": [
+              200,
+              200,
+              7
+            ],
+            "all_finite": true,
+            "coverage90": [
+              0.91,
+              0.895,
+              0.845,
+              0.87,
+              0.845,
+              0.905,
+              0.89
+            ],
+            "parameter_names": [
+              "hurst",
+              "eta",
+              "rho",
+              "short_variance",
+              "long_variance",
+              "decay",
+              "drift"
+            ],
+            "exact_prefix": 252,
+            "paired_histories_across_lengths": true,
+            "future_returns_do_not_change_conditions": true,
+            "observed_mask_entries": 50400,
+            "padded_tokens_all_zero": true,
+            "physical_prior_bounds_checked_by_native_plot_helper": true
+          },
+          "137": {
+            "shape": [
+              200,
+              200,
+              7
+            ],
+            "all_finite": true,
+            "coverage90": [
+              0.925,
+              0.91,
+              0.875,
+              0.9,
+              0.87,
+              0.91,
+              0.895
+            ],
+            "parameter_names": [
+              "hurst",
+              "eta",
+              "rho",
+              "short_variance",
+              "long_variance",
+              "decay",
+              "drift"
+            ],
+            "exact_prefix": 137,
+            "paired_histories_across_lengths": true,
+            "future_returns_do_not_change_conditions": true,
+            "observed_mask_entries": 27400,
+            "padded_tokens_all_zero": true,
+            "physical_prior_bounds_checked_by_native_plot_helper": true
+          }
+        }
+      },
+      "sampling_seed": 20261111,
+      "generation_seed": 20261111,
+      "count": 200,
+      "draws": 200,
+      "lengths": [
+        252,
+        137
+      ],
+      "backend": "jax/cpu",
+      "hardware": "Apple M5 Max18 logical CPUs128GiB",
+      "scope": "Session diagnostic check on independent simulated validation histories; not scientific acceptance, no final test and no revision to existing calibration verdicts.",
+      "scientific_acceptance": false,
+      "reserved_test_evaluated": false,
+      "stages": {
+        "imports": {
+          "wall_seconds": 8.362450458109379,
+          "cpu_seconds": 3.682258
+        },
+        "heston:strict_checkpoint_load": {
+          "wall_seconds": 3.0196196250617504,
+          "cpu_seconds": 7.776174000000001
+        },
+        "heston:helper_generation": {
+          "wall_seconds": 0.08744349982589483,
+          "cpu_seconds": 0.08743400000000001
+        },
+        "heston:sample252": {
+          "wall_seconds": 2.4780803329776973,
+          "cpu_seconds": 3.643305999999999
+        },
+        "heston:native_plots252": {
+          "wall_seconds": 0.5058189579285681,
+          "cpu_seconds": 0.4988639999999993
+        },
+        "heston:sample137": {
+          "wall_seconds": 0.2505897090304643,
+          "cpu_seconds": 0.8275469999999991
+        },
+        "heston:native_plots137": {
+          "wall_seconds": 0.3946250001899898,
+          "cpu_seconds": 0.39096500000000134
+        },
+        "rough-joint:strict_checkpoint_load": {
+          "wall_seconds": 0.597646625014022,
+          "cpu_seconds": 1.1553600000000017
+        },
+        "rough-joint:helper_generation": {
+          "wall_seconds": 0.09807320800609887,
+          "cpu_seconds": 0.29226699999999894
+        },
+        "rough-joint:sample252": {
+          "wall_seconds": 1.4706226659473032,
+          "cpu_seconds": 2.615342000000002
+        },
+        "rough-joint:native_plots252": {
+          "wall_seconds": 0.5013920411001891,
+          "cpu_seconds": 0.5009370000000004
+        },
+        "rough-joint:sample137": {
+          "wall_seconds": 0.27338383300229907,
+          "cpu_seconds": 0.9527389999999976
+        },
+        "rough-joint:native_plots137": {
+          "wall_seconds": 0.5380229998845607,
+          "cpu_seconds": 0.5376030000000007
+        }
+      },
+      "versions": {
+        "bayesflow": "2.1.0",
+        "keras": "3.15.1",
+        "jax": "0.11.1",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1"
+      },
+      "status": "complete",
+      "peak_rss_bytes": 1298513920,
+      "native_figures_visually_checked": true
+    },
+    "browser": {
+      "page_errors": [],
+      "timing_scope": "browser action elapsed times during concurrent verification; not isolated benchmarks",
+      "idle_no_diagnostic_generation_or_sampling": true,
+      "no_ready_network_is_explicit": true,
+      "tutorial_training_action_seconds": 1.8534553342033178,
+      "tutorial_slider_max": "252",
+      "tutorial_252_action_seconds": 0.8129909159615636,
+      "tutorial_252_status": "Source: tutorial network \u00b7 200 independent histories \u00b7 252 observed days each \u00b7 200 posterior draws per history. Input generation: 0.025 s; sampling and plotting: 0.3 s, including compilation if needed.",
+      "tutorial_137_action_seconds": 0.825261791003868,
+      "tutorial_137_status": "Source: tutorial network \u00b7 200 independent histories \u00b7 137 observed days each \u00b7 200 posterior draws per history. Input generation: reused from this session; sampling and plotting: 0.3 s, including compilation if needed.",
+      "prefix_change_invalidates_plots": true,
+      "tutorial_prefix_reuses_generated_histories": true,
+      "native_slider_max": "1260",
+      "native_single_history_load_infer_seconds": 0.8292156669776887,
+      "native_252_action_seconds": 1.3139400410000235,
+      "native_252_status": "Source: pretrained network \u00b7 200 independent histories \u00b7 252 observed days each \u00b7 200 posterior draws per history. Input generation: 0.072 s; sampling and plotting: 0.6 s, including compilation if needed.",
+      "native_137_action_seconds": 1.3389726669993252,
+      "native_137_status": "Source: pretrained network \u00b7 200 independent histories \u00b7 137 observed days each \u00b7 200 posterior draws per history. Input generation: reused from this session; sampling and plotting: 0.5 s, including compilation if needed.",
+      "native_prefix_reuses_generated_histories": true,
+      "task_panels_are_separate": true,
+      "model_changes_clear_loaded_workflow_and_diagnostics": true,
+      "source_changes_invalidate_diagnostics": true,
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "math_render_errors": 0,
+      "marimo_errors": 0,
+      "supplied_final_failures_retained": true,
+      "status": "passed"
+    },
+    "benchmark_script_sha256": {
+      "measure_generation.py": "ad2ba5d389f97baf40db4b8650c570efa62bc5624779f26cc79d1b3078073670",
+      "check_native.py": "1a1a8bad585d35ab8f1a5d7ec38c0c5a4898b6d4de6414342234090c8e3969db"
+    },
+    "verification": {
+      "tutorial_tests": 56,
+      "lab_core_tests": 527,
+      "lab_optional_skips": 3,
+      "notebook_exports": 7,
+      "trajectory_cells": 48,
+      "cell_errors": 0,
+      "runtime_boundary_symbols": 183,
+      "log_sha256": {
+        "tests": "644294be18ef5534ee261e02c579596a5cabbba9b85f1d1184450948bc04072a",
+        "lab-tests": "4a72398c5ebe6254244383a67a09f92afc5a90d5185ac8d91189ebaf62b0f027",
+        "exports": "adb100e093c5c4e7a0b72877be6844e2f50b857f945423b3920da403c9e503d6",
+        "release": "c682c302edf03d4d5a34a6116bc7d9fda65fc53f5fe9de6b58b9294c08b784fc"
+      }
+    }
+  }
 }
