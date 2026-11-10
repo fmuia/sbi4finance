@@ -1,4 +1,265 @@
-# One Gaussian scale: fixed sensitivity and joint inference
+# Heston noise scale investigation and collaborator handover
+
+## Investigation brief
+
+Investigate why the amortized posterior barely learns the shared noise multiplier **c**, although the five Heston parameters recover strongly. Separate **statistical information about c** from **failure of this neural approximation to use it**. Non-identifiability is a hypothesis to test, not the current conclusion: joint MCMC substantially contracts c in two synthetic examples, both generated at c=1. Recovery across different generating c values is the next important check.
+
+The completed source/evidence snapshot is commit `a2dd7d673dd121fb0196fc16991aa5153ab6273c`, branch `feat/heston-spread-baseline-20261109`, [PR #85](https://github.com/fmuia/sbi4finance/pull/85). This handover adds a portable copy of the existing development inputs; it does not add training or MCMC results. All paths and commands below are relative to **`lab/`**, unless explicitly prefixed with `tutorial/` or described as repository-relative.
+
+| Evidence | What it establishes |
+| --- | --- |
+| Original 20k-bank, 60k-update network | Median central-90% c width 1.336, versus prior width 1.35; c recovery RMSE .4452, versus .4371 for always returning the prior median |
+| 100k-bank, 500 extra passes, batch 128 | 50 million extra examples; final c width 1.34853, truth–median correlation −.04614, RMSE .44705 |
+| Same larger bank/exposure, batch 512 | Final c width 1.34545, truth–median correlation −.03848, RMSE .44788 |
+| Joint MCMC, broad synthetic, true c=1 | c 5%/median/95%: .9381 / 1.0974 / 1.3152 |
+| Joint MCMC, market-like synthetic, true c=1 | c 5%/median/95%: .9702 / 1.1406 / 1.3645 |
+| Actual-market joint MCMC, unknown c | Concentrates at upper prior bound 2; model/prior adequacy diagnostic, not known-truth recovery |
+
+The larger-bank runs improved validation loss and physical-parameter recovery without learning c. Good pooled marginal SBC can coexist with ignoring observations: returning the prior is a marginally calibrated procedure under prior-predictive sampling. The two existing synthetic MCMC examples show available scale information locally; they do not establish recovery throughout the prior. Read [the original report](report.html), [the larger-bank report](capacity-study/report.html) and [its exact comparison summary](capacity-study/summary.json).
+
+## Statistical model and parameter order
+
+For one surface with 54 fixed contracts,
+
+`Y_i = P_i(phi) + c * h_i * Z_i`, with independent `Z_i ~ Normal(0,1)` conditional on c.
+
+`h_i` is the frozen observed price half-spread, `(ask_i-bid_i)/2`. One dimensionless c is shared by all quotes in a surface. c varies independently between simulated surfaces. There are no learned per-quote scales, additional tau/vega noise terms, changing contract locations or changing spread profiles.
+
+| Column | Parameter | Independent Uniform prior in physical coordinates |
+| --- | --- | --- |
+| 0 | `initial_variance` (v0) | [.01, .16] |
+| 1 | `kappa` | [.1, 10] |
+| 2 | `theta` | [.01, .16] |
+| 3 | `vol_of_vol` | [.1, 3] |
+| 4 | `rho` | [−.95, −.1] |
+| 5 | `c` | [.5, 2] |
+
+The normalized log likelihood is
+
+`log L = -.5*sum(((y-P(phi))/(c*h))**2) - sum(log(c*h)) - 54/2*log(2*pi)`.
+
+Keep the `-54*log(c)` normalization. Omitting it changes inference about c. The joint posterior infers all six parameters; an oracle that fixes phi at its generating truth answers the different question `p(c | phi_truth,y)`.
+
+The neural input is the ordered 54-vector `Y/h`, followed by BayesFlow feature standardization. c is a target only. Generating physical parameters, c, clean prices and realized noise are not inference conditions. Neural `sample()` accepts **raw prices**, so do not divide by h before calling it.
+
+## Implementations to inspect
+
+| Purpose | File and callable, relative to lab/ |
+| --- | --- |
+| Task, prior support, normalized likelihood, simulation | `src/sbi4finance/calibration/heston_spread.py`: `HestonSpreadPilot`, `log_likelihood`, `simulate` |
+| Known-phi c oracle | Same module: `conditional_c_log_density`, `conditional_c_mode`; accept residuals divided by h. Instance methods also accept physical parameters and observations |
+| Adaptive checked pricing | `src/sbi4finance/calibration/heston_pilot.py`: `HestonPilot.prices`, `_checked_prices`, `_rung_prices` |
+| Authoritative Fourier pricer | Repository-relative `tutorial/src/sbi4f_tutorial/heston_options/model.py`: `characteristic_function`, `european_price`, `_european_price` |
+| Joint task, augmentation, flow, posterior sampling | `scripts/train_heston_spread_scale.py`: `make_task`, `validate_task`, `draw_c`, `augmented_batch`, `build_workflow`, `sample` |
+| Input scaling | `scripts/train_heston_spread_baseline.py`: `condition_data` |
+| Paired row order and fresh c/noise by bank pass | `scripts/continue_heston_spread_scale.py`: `epoch_order`, `epoch_data` |
+| Corrected continuation and latest checkpoint loader | `scripts/continue_heston_spread_scale_precision.py`: `host_adapt_training`, `load_checkpoint`, `run_continuation` |
+| Exact 512-dataset population | `scripts/evaluate_heston_spread_scale.py`: `population_observations` |
+| Latest evaluations and recovery metrics | `scripts/evaluate_heston_spread_scale_precision.py`: `evaluate`; `scripts/evaluate_heston_spread_scale_continuation.py`: `recovery_summary` |
+| Data-only MCMC initialization | `src/sbi4finance/calibration/reference.py`: `data_fit_initialization`; implementation in `reference_initialization.py` |
+| Native PyMC sampler and diagnostics | `src/sbi4finance/calibration/reference.py`: `sample_deterministic_reference`, `chain_diagnostics` |
+| Existing reference runner and numerical checks | `scripts/run_heston_spread_reference.py`: `run_reference`, `load_case`, `diagnose`, `price_audit` |
+| Original fixed/joint-c matrix and known-phi oracle | `scripts/run_heston_spread_scale_reference.py`: `job_spec`, `fixed_phi_oracle` |
+
+The flow is a six-block spline coupling network with two 128-unit hidden layers per conditioner. Effective dropout is **zero**. The constructor's `.05` is superseded by the saved zero-dropout control. Both corrected larger-bank branches restore model, Adam and normalization state from the same six-target 60k parent. They restart at 5e-5, cosine-decay by examples to 5e-6 over 400 passes, then hold that floor through 500 passes. Batch 128 gets 391,000 additional optimizer updates; batch 512 gets 98,000. This is an equal-example comparison, not equal optimizer updates or an isolated test of bank size.
+
+Learning curves are in `training/learning-curve.json` for the original fit and `capacity-study/precision-replay/training/batch-{128,512}/learning-curve.json` for the corrected continuations. Their adjacent `run.json`, `initial-probes.json`, `training.json` and the frozen [continuation protocol](capacity-study/precision-replay/protocol.json) record the construction, initial loss, completion and schedules. Read c recovery alongside aggregate loss; improving joint density loss alone has not indicated learning of c here.
+
+## Environment and portable recovery inputs
+
+Check out `docs/heston-c-collaborator-handover-20261110` for this handover and its portable inputs. It includes the completed Heston source from PR #85 and the sibling `tutorial/` package. Install the locked **core-reference** environment from `lab/`; the default historical BayesFlow 2.0 environment is unsuitable for these models.
+
+The handover branch supplies the README, portable inputs/manifest and saved neural recovery quantiles directly. If using the separately shared handover ZIP, unpack that overlay at the repository root. Source code and the locked environment come from the checkout; model weights are separate local artifacts.
+
+```sh
+cd /path/to/sbi4finance/lab
+pixi install --locked -e core-reference
+export PYTHONPATH=.:src:../tutorial/src
+export KERAS_BACKEND=jax
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
+c_probe_cache="$(mktemp -d "${TMPDIR:-/tmp}/heston-c-probe.XXXXXX")"
+export PYTENSOR_FLAGS="base_compiledir=$c_probe_cache,compiledir=$c_probe_cache/compiled"
+export NUMBA_CACHE_DIR="$c_probe_cache/numba-native"
+export MPLCONFIGDIR="$c_probe_cache/matplotlib"
+```
+
+The lock pins Python 3.12, BayesFlow 2.1.0, Keras 3.15.1, JAX .11.1, NumPy 2.5.3, SciPy 1.18.1 and PyMC 6.3.2. Explicit writable PyTensor **base and compiled** paths avoid the startup failures recorded in the original campaign.
+
+[recovery-inputs.json](recovery-inputs.json) contains the complete task/geometry, parameter order, products, source identities and payload checksum. [recovery-inputs.npz](recovery-inputs.npz) is a 443 KB export of the **same 512 development observations** used by the original and both final neural evaluations:
+
+| Array | Shape | Use |
+| --- | --- | --- |
+| `quotes` | (512, 54), float64 | Raw observed prices, supplied to either inference method |
+| `truth` | (512, 6), float64 | Generating values for selection and recovery reporting only |
+| `clean_prices` | (512, 54), float64 | Known-phi oracle and numerical diagnostics only |
+| `row_id` | (512,) | Stable validation-row identifiers |
+
+The export reads only the first 512 `validation_parameters` and `validation_clean` members of the preserved bank, and reproduces the original c/noise namespaces. It opens no reserved test arrays. It makes no pricing calls and creates no new observation realizations. The whole bank and model payloads are unnecessary for the MCMC API below.
+
+Load and verify the inputs; the following Python blocks can be run consecutively in one script or notebook under `.pixi/envs/core-reference/bin/python`:
+
+```python
+from pathlib import Path
+import hashlib
+import json
+import numpy as np
+from scripts import train_heston_spread_scale as neural
+from scripts.run_heston_spread_reference import values_digest
+
+E = Path("evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale")
+spec = json.loads((E / "recovery-inputs.json").read_text())
+payload = E / spec["payload"]
+assert hashlib.sha256(payload.read_bytes()).hexdigest() == spec["payload_sha256"]
+task = spec["task"]
+pilot = neural.validate_task(task)
+with np.load(payload, allow_pickle=False) as data:
+    quotes, truth, clean, row_id = [data[k].copy() for k in
+                                  ("quotes", "truth", "clean_prices", "row_id")]
+assert values_digest(quotes) == spec["observations_sha256"]
+assert values_digest(truth) == spec["truth_sha256"]
+assert values_digest(clean) == spec["clean_prices_sha256"]
+assert pilot.names == spec["parameter_names"]
+# Eight c-stratified cases, selected before looking at MCMC outcomes.
+selected = np.argsort(truth[:, 5], kind="stable")[[32, 96, 160, 224, 288, 352, 416, 480]]
+print([(int(i), str(row_id[i]), float(truth[i, 5])) for i in selected])
+```
+
+These are reused development data, not an untouched acceptance set. Different c values have different physical parameters and noise realizations here. A separate paired experiment at fixed phi would answer an additional question.
+
+## Run joint MCMC on a selected observation
+
+The direct API below uses only the portable task and raw observed prices. It avoids the absolute paths embedded in the historical campaign panels. It initializes from the likelihood and prior, never from truth or the neural posterior. Call `fit_row(int(selected[0]))` for one case; call the same function on the remaining selected rows for the small recovery panel. Give any rerun a new output root.
+
+```python
+from sbi4finance.calibration import reference
+from scripts.run_heston_spread_reference import Budget, diagnose, price_audit
+
+def fit_row(row, root=Path("../local-artifacts/heston-c-collaborator-v1"),
+            tune=2000, draws=2000, seconds=900):
+    out = root / f"row-{row:04d}"
+    out.mkdir(parents=True, exist_ok=False)
+    seed = 271110 + int(row)
+    y = quotes[row].copy()
+    budget = Budget(seconds)
+    with budget:
+        def likelihood(point):
+            budget.check()
+            return pilot.log_likelihood(point, observations=y)
+        def callback(**kwargs):
+            budget.check()
+        init = reference.data_fit_initialization(
+            likelihood, pilot.bounds, 4, seed, fit_starts=4, fit_budget=2000)
+        idata = reference.sample_deterministic_reference(
+            likelihood, pilot.bounds, pilot.names, draws=draws, tune=tune,
+            chains=4, cores=1, seed=seed, progressbar=False,
+            initialization=init, callback=callback)
+        chains = np.asarray(idata["posterior"]["parameters"].transpose(
+            "chain", "draw", "parameter").values)
+        diagnostics = diagnose(chains, pilot.names, spec["products"])
+        checks = [price_audit(pilot, chains[c, d], y)[1]
+                  for c in range(4) for d in (0, draws-1)]
+        ready = (diagnostics["mcmc_diagnostics_passed"] and
+                 all(p["pointwise_gates_passed"] for p in checks))
+        stats = {"sample_stats_" + name: value.transpose("chain", "draw").values
+                 for name, value in idata["sample_stats"].data_vars.items()
+                 if set(value.dims) == {"chain", "draw"}}
+        np.savez_compressed(out / "chains.npz", parameters=chains, **stats)
+        record = dict(row=int(row), row_id=str(row_id[row]), seed=seed,
+                      tune=tune, draws=draws, chains=4, cores=1,
+                      budget_seconds=seconds, sampler="PyMC DEMetropolisZ",
+                      input_sha256=spec["payload_sha256"], task=task,
+                      observations_sha256=values_digest(y),
+                      reference_ready=bool(ready), initialization=init,
+                      diagnostics=diagnostics, numerical_checks=checks)
+        (out / "run.json").write_text(json.dumps(record, indent=2, allow_nan=False))
+    return out
+
+# Execute explicitly when ready to sample:
+# first_result = fit_row(int(selected[0]))
+```
+
+This is a starting diagnostic run, with four sequential native PyMC **DEMetropolisZ** chains and independent physical-coordinate Uniform priors. PyMC supplies bounded transforms and their Jacobians. It is not NUTS: the deterministic Fourier likelihood is wrapped as a black-box Op without a validated gradient. In the completed two-case references, 2k tuning/2k retained draws per chain were insufficient and the declared second attempt used 6k/12k. If the first run is inconclusive, declare a new output root and explicit budget before requesting that larger run; do not combine unconverged attempts.
+
+Retain `(chain, draw, parameter)` structure. Readiness requires R-hat <=1.01 and bulk/tail ESS >=400 for **all six parameters and both variance products**, plus sampled pricing refinement. The price-difference tolerance is `.02*(.5*h)`, independent of inferred c; absolute log-likelihood refinement change must be <=.1. A timeout or failed convergence is inconclusive, not evidence of non-identifiability. The compact example saves completed traces and diagnostics; the production runner additionally records versions/source identities and partial traces on failure.
+
+For the two original synthetic cases, the existing supervised runner can also be called directly on the original machine:
+
+```sh
+.pixi/envs/core-reference/bin/python scripts/run_heston_spread_reference.py run \
+  --panel evidence/pilot-results/2026-11-09/heston-spread-baseline/references/panel.json \
+  --case synthetic-broad --infer-c --seed 261112 \
+  --budget-seconds 900 --fit-budget 2000 \
+  --out ../local-artifacts/heston-c-original-broad-v1/summary \
+  --payload-out ../local-artifacts/heston-c-original-broad-v1/payload
+```
+
+Use `synthetic-market-like` for the second observation. `--infer-c` is essential; `--c 1` alone fixes c. Both output directories must be new. This historical CLI verifies absolute declaration/design paths in sibling checkouts and will need those original files staged on another machine. Do not edit its frozen manifests or disable hash guards. The portable API above is the simpler route to a new, separately identified investigation.
+
+## Compare MCMC recovery with the saved neural results
+
+No model loading is needed for comparison on these 512 observations. For each batch, read
+
+`capacity-study/precision-replay/evaluations/batch-{128,512}/pass-0500/recovery.npz`
+
+under E. Keys are `truth` (512,6), `row_id` (512,) and `quantiles` (3,512,6), ordered **5%, median, 95%**. Assert the truths and row identifiers match the portable inputs before subsetting. For each ready MCMC trace, compute
+
+```python
+record = json.loads((first_result / "run.json").read_text())
+assert record["reference_ready"], "Keep an unconverged/failed case inconclusive"
+with np.load(first_result / "chains.npz", allow_pickle=False) as data:
+    chains = data["parameters"]
+mcmc_quantiles = np.quantile(chains.reshape(-1, 6), [.05, .5, .95], axis=0)
+```
+
+Make six generating-value versus posterior-median panels, with `y=x`, and plot central-90% intervals for **every selected case**. Offset the two neural series and MCMC slightly for readability, retaining the original true values for metrics. Keep failed/capped cases visible as inconclusive rather than dropping them silently. Report c RMSE, interval widths and truth inclusion for this subset, and show per-case diagnostics. Eight selected cases are an illustration, not a population SBC or precise coverage estimate. A known-phi oracle can be overlaid separately using
+
+```python
+row = int(selected[0])
+residual = (quotes[row] - clean[row]) / np.asarray(task["records"]["half_spread"])
+from sbi4finance.calibration.heston_spread import conditional_c_log_density
+c_grid = np.linspace(.5, 2., 1001)
+oracle_density = np.exp(conditional_c_log_density(c_grid, residual))
+```
+
+The oracle uses clean prices only for this diagnostic. Compare it with the full six-parameter MCMC marginal; do not feed clean prices or truth to either inference method.
+
+## Payloads and the next diagnostic decisions
+
+Completed joint reference summaries are in `recovery-v2-references/{synthetic-broad-c-joint,synthetic-market-like-c-joint,market-c-joint}/{run,diagnostics,posterior}.json`. Full chain paths and SHA-256s are in each run record. They remain ignored local payloads.
+
+On the original machine, let `P = Path("../local-artifacts/heston-spread-baseline-20261109/noise-scale")`. The original network is `P/"training/checkpoints/update-060000"`; the corrected final models are `P/f"capacity-study/precision-replay/batch-{batch}/checkpoints/pass-0500"`. To sample the latter:
+
+```python
+from scripts import continue_heston_spread_scale_precision as continuation
+P = Path("../local-artifacts/heston-spread-baseline-20261109/noise-scale")
+workflow, metadata = continuation.load_checkpoint(
+    P / "capacity-study/precision-replay/batch-128/checkpoints/pass-0500")
+draws = neural.sample(workflow, metadata["task"], quotes[selected[:2]],
+                      count=512, seed=261112)  # (2,512,6), raw-price inputs
+```
+
+Use this **precision** loader for the latest checkpoints; the original trainer loader expects another format. Transfer `checkpoint.json`, `model.keras` and `state.npz` together for exact-state loading. Latest model SHA-256s are `d59fe17e717670bc840adc4dcaed4fac76437f4ed6950572e06295ddafa58805` (128) and `771d3d883e8f54de1962d0bfa2d822a9157ee7f43bead8fe1fc6364756b08697` (512). The checkpoints and full clean bank are outside Git, with no published download URL recorded for this study. Native loaders also validate absolute bank/protocol/source bindings; relocation needs a separately recorded approach. Cloning the branch alone does not make those loaders portable. The supplied recovery quantiles and input export suffice for the requested matched MCMC comparison.
+
+Two implementation findings should guide further investigation:
+
+- **Fixed numerical bug:** original continuations both stopped at a valid c=1.9999999587495068 because float32 bounded-target preprocessing rounded to the endpoint. The corrected `host_adapt_training` evaluates `log(x-lower)-log(upper-x)` in NumPy float64, then casts. No clipping, redraws or prior changes were used. Both corrected runs restarted from the same original parent and completed. Use `precision-replay` evidence, not the failed or preliminary continuation outputs.
+- **Untested conditioning hypothesis:** [the training-only covariance check](capacity-study/diagnostics/input-conditioning.json) finds 98.23% of clean variance in three directions, noise dominating 33/54 smaller directions, and expected standardized noisy covariance condition number about 2.14 million. Input casting error is far smaller than the noise. These are global prior-predictive geometry diagnostics; they neither establish local non-identifiability nor prove that whitening fixes learning. No whitening experiment has been trained.
+
+First establish whether converged MCMC recovers c on the same observations across its prior range. Then inspect whether the network responds when c/noise changes at fixed phi, and audit the target transform, input standardization and c-dependent learning signal. Only after those checks choose a new representation, optimizer or training experiment. Return the selected row IDs, exact targets/seeds, all chain diagnostics, six recovery panels, c marginal comparisons and a clear distinction between model information and approximation error. The revised grid and Bergomi are separate workstreams.
+
+For focused implementation checks, run the existing tests rather than changing the frozen producers in place:
+
+```sh
+.pixi/envs/core-reference/bin/python -m unittest discover -s tests -p test_heston_spread.py -v
+.pixi/envs/core-reference/bin/python -m unittest discover -s tests -p test_heston_spread_scale_training.py -v
+.pixi/envs/core-reference/bin/python -m unittest discover -s tests -p test_heston_spread_scale_precision.py -v
+```
+
+The first covers likelihood/simulation and the conditional-c oracle; the others cover the six-target training contract and precision-safe state restoration. Code changes need new source/protocol identities and the repository's lab test/release checks. Keep the completed runs immutable.
+
+The original study record follows; its historical targets, results and protocols remain unchanged.
+
+## Original fixed and inferred scale study
 
 **Completed development study, 10 November 2026; no accepted neural checkpoint.** This study examines the noise-scale step of the Heston plan on the **existing 54 actual SPXW contracts**. It follows the user-authorized scale investigation in [PR #85](https://github.com/fmuia/sbi4finance/pull/85). The [offline HTML report](report.html) shows the results, recovery/SBC plots and executed network/rate code. The frozen [study protocol](protocol.json), original [reference protocol](reference-protocol.json) and [training protocol](training-protocol.json) were persisted before their respective runs. The explicit [cache recovery addendum](reference-recovery-v2.json) preserves the original targets and budgets.
 
