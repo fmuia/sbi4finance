@@ -4,8 +4,14 @@ Plan of 9 November 2026 for the tutorial of 14 November. Part I says what we wil
 why. Part II gives every step in detail, with the mathematics.
 
 Evidence: [`lab/evidence/pilot-results/2026-11-09/design-and-error/`](../evidence/pilot-results/2026-11-09/design-and-error/README.md)
-(this plan's checks). The noise-reassessment session of 9 November is quoted below as
-"noise session"; its runs are not committed.
+(this plan's checks). Two other pieces of work from 9 November are quoted:
+- the noise-reassessment session, quoted as "noise session"; its runs are not committed;
+- Alex's European-quote pilot, quoted as "the pilot": the note *How we construct
+  observation noise* and its branch `study/heston-european-observations-20261109`
+  (evidence through `a1d5c60`; not yet on GitHub).
+
+This plan builds on the pilot for Heston. Section I.6 says what it keeps and what it
+changes.
 
 ---
 
@@ -77,35 +83,39 @@ meaning of the noise.
 
 ## I.3 What we will build
 
-One pipeline, applied to both models:
+One pipeline, applied to both models. It starts from the pilot's Heston setup.
 
 1. **Data.** SPX closing chains of 9–12 November (European, cash-settled, so forwards from
-   put–call parity carry no early-exercise bias). From each chain:
-   - 63 implied vols on the design, read with the lab's chain code;
-   - the half-spread at each point;
-   - the held-out market checks (Section 2.6).
-2. **Design (layout E).** 7 maturities (5, 10, 21, 42, 63, 126, 252 business days) ×
-   9 points at δ ∈ {−5, −3.5, −2.25, −1.25, −0.5, 0, +0.5, +1, +2}, in standard deviations
-   of a fixed 16% vol (SPX's at-the-money level). Puts below the money, calls above.
-   - Compared with the current grid: 17–35% narrower posteriors on mean reversion,
-     long-run variance, vol-of-vol and the variance swap; ρ loses 9–31%.
-   - Layouts that drop the near-the-money calls lose ρ by up to 4×.
-3. **Error model, in implied-vol units.** Observed vol = model vol + smooth model error
-   + quote error.
-   - The quote error is each point's measured half-spread.
-   - The smooth model error has an unknown size τ, which is inferred with the model
-     parameters. Its correlation lengths are fixed from exact fits on the first two days.
-4. **Models, both inferring their own mean-variance curve from the same 63 quotes.**
-   - Heston with mean reversion free: κ, v0, θ, ξ, ρ, plus τ.
+   put–call parity carry no early-exercise bias).
+2. **Design.** The pilot's frozen put-heavy design: 54 actual SPXW quotes with their
+   strikes, expiries, forwards, discounts, half-spreads and market vegas. It is kept if it
+   meets the coverage criteria of Section 3.1:
+   - deep puts beyond −3 at-the-money standard deviations;
+   - an at-the-money point and calls out to about +2;
+   - maturities from 1 week to 1 year.
+
+   If it misses one, the missing points are added from layout E (Section 3.3). On the
+   design's own day the observations are the quotes themselves. On the other days the
+   chain is read at the same locations (Section 3.4).
+3. **Error model, in price units with frozen market vegas (the pilot's form):**
+   - the quote's half-spread times a known multiplier c;
+   - plus a model-error term of size τ, in vol points, converted through vega and
+     inferred.
+
+   The pilot draws the model error independently for each quote. Here it is smooth across
+   strikes and maturities, because the measured residuals are (Section 4.2).
+4. **Models, both inferring their own mean-variance curve from the same quotes.**
+   - Heston with κ free and the pilot's priors: v0, θ, κ, ξ, ρ, plus τ.
    - Rough Bergomi with the joint curve: H, η, ρ, plus the curve's short level, long level
      and decay, plus τ. Its curve family is Heston-shaped, so the two models get exactly
      the same information about the variance level.
-5. **Simulation banks** of clean implied vols:
-   - Heston: Fourier prices.
-   - Rough Bergomi: Monte Carlo prices to a stated accuracy.
+5. **Simulation banks** of clean prices at the design's contracts:
+   - Heston: the pilot's 100,000-surface Fourier bank.
+   - Rough Bergomi: a new Monte Carlo bank at the same contracts.
 
-   Errors are drawn fresh during training.
-6. **Networks** that output the posterior of all parameters, including τ.
+   Errors, τ and c are drawn fresh at every training exposure.
+6. **Networks** with the pilot's conditioning (prices over half-spreads, and the log
+   measurement scale), which output the posterior of all parameters, including τ.
 7. **Reference posteriors on every real day and on synthetic cases.**
    - Heston: an exact posterior, by MCMC on the Fourier likelihood.
    - Rough Bergomi: importance sampling from the network with a fixed-seed Monte Carlo
@@ -114,7 +124,7 @@ One pipeline, applied to both models:
    The networks must match these references.
 8. **Products.** Price every posterior draw with common random numbers. Read off ranges,
    prudent values and book aggregates. Compare with a point calibration, the delta method
-   and maturity-drop refits.
+   and expiry-drop refits.
 
 ## I.4 How we will know it is right
 
@@ -124,6 +134,7 @@ One pipeline, applied to both models:
 | V2 Pilot exact fits | The error model describes the residuals: whitened residuals uncorrelated, χ²/dof ≈ 1 |
 | V3 SBC and coverage on 2,000 simulations | The networks are calibrated on their own simulator |
 | V4 Network against reference, on real and synthetic days | The networks are accurate where it matters, which SBC cannot show |
+| V4b Misspecification test | Whether a network that fails on the market case fails because its training errors are independent while the market's residuals are smooth |
 | V5 Predictive check on held-out quotes | The fitted model plus error describes quotes the fit did not use |
 | V6 Market checks: model-free variance swap, listed 2-year put | Real-data quantities priced independently of the fit |
 
@@ -137,7 +148,7 @@ failure is reported.
 | D1 | One posterior prices every product. Ranges differ by what the quotes pin. |
 | D2 | Ranges aggregate coherently across a book, from the joint draws |
 | D3 | The 90% ranges contain the true price about 90% of the time, on thousands of simulated days. Only amortization makes this affordable. Compared with the delta method, refits and a point calibration. |
-| D4 | "Precise but wrong" comes from the error model: the same day under three error models |
+| D4 | "Precise but wrong" comes from the error model: the same day under several error models |
 | D5 | How wrong each model is (τ) and where (the residual map) |
 | D6 | How marks and ranges move from day to day over the four days |
 | D7 | Heston against rough Bergomi on the same information: misfit, predictive checks, market checks, product ranges, and their combination |
@@ -146,6 +157,35 @@ failure is reported.
 stated error model. The model-error term covers misfit on quoted points, not dynamics the
 quotes cannot reveal (for example the forward smile). D7 shows how far the two models
 disagree. None of this is a complete model-risk reserve.
+
+## I.6 Relation to the European-quote pilot
+
+| | The pilot | This plan | Why |
+| --- | --- | --- | --- |
+| Quotes | 54 actual SPXW quotes from one day, frozen | the same, if they meet Section 3.1; read at the same locations on the other days | actual quotes need no interpolation; one network for several days needs fixed locations |
+| Error units | price, frozen market vegas, known multiplier c | the same | equivalent to implied-vol units to first order; keeps negative simulated prices without inversion; c gives an error-sensitivity comparison |
+| Model error | independent per quote, τ ν_i U_i | smooth: U ~ N(0, K_ℓ) | Heston's residuals correlate 0.56–0.80 between neighbouring strikes and 0.85 across maturities. Networks trained on independent errors cover 18–58% (nominal 90%) when the error is smooth, and the variance-swap gap looks significant only under independent errors (noise session). |
+| τ prior | uniform on 0–2 vp | log-uniform on 0.2–5 vp | the smooth amplitude was estimated at 2.1–2.6 vp (noise session), above 2; rough Bergomi's Monte Carlo cost needs a floor above 0 |
+| Heston priors, κ free | v0, θ ~ U(0.01, 0.16); κ ~ U(0.1, 10); ξ ~ U(0.1, 3); ρ ~ U(−0.95, −0.1) | the same | the bank exists; the 9 November SPX fit (κ 7.3, ξ 2.5) lies inside; check that posteriors do not pile up at ξ = 3 |
+| Pricing tolerance | Fourier refinement within 0.01 h | the same for Heston | right when the measurement term is small |
+| Network | the 75k checkpoint fails the reference comparison on the market case (τ mean 0.00143 against 0.00609); non-finite loss at 88k, cause unresolved | the same comparison is the binding check (V4); if it fails, real-data results come from the reference | — |
+| Scope | Heston | Heston and rough Bergomi; products | — |
+
+**A possible cause of the pilot's τ gap, and its test (V4b).**
+- The pilot's network was trained only on independent errors.
+- If the market's residuals are smooth, a smooth residual of about 0.6 vp lies outside
+  the training distribution. The network may then read part of the misfit as signal and
+  underestimate τ.
+- The exact reference is unaffected, because it evaluates the likelihood directly.
+- The test, on the pilot's own setup, compares network and reference on:
+  1. synthetic cases drawn from the pilot's simulator (independent errors);
+  2. synthetic cases with a smooth error of the same size;
+  3. the market case.
+
+  It also computes the correlation of neighbouring whitened residuals at the reference
+  posterior on the market case.
+- Agreement on the first but not on the other two, together with correlated whitened
+  residuals, points to the error law rather than to optimization.
 
 ---
 
@@ -177,6 +217,7 @@ disagree. None of this is a complete model-risk reserve.
 
   This conditional structure is exact for both models and underlies every Monte Carlo
   estimator below (`lab/src/sbi4finance/calibration/products.py`).
+- **Parameters.** θ denotes either model's parameters; the pilot writes φ for Heston's.
 - **Units.** "vp" means vol points (0.01 in decimal vol).
 
 ## 2. Data: from the SPX chain to observations
@@ -221,24 +262,36 @@ half-spread in vol units
 $$h = \frac{(\text{ask}-\text{bid})/2\;/\;(D\,F)}{\sqrt T\,\varphi(d_1(\sigma_{\text{imp}}))},$$
 
 using the vega at the quote's own implied vol. This removes the 20%-vega conversion
-criticised in I.2.
+criticised in I.2. In the error model (Section 4) h is the half-spread in forward-unit
+price; h/ν is the same quantity in vol units.
 
-### 2.5 Reading onto the design (`chain.build_surface` with `deltas=LAYOUT_E, sigma_ref=0.16`)
+### 2.5 Reading the chain at the design's locations
+
+On the design's own day the observations are the frozen quotes themselves. On the other
+days, read the chain at each design location (k_i, T_i):
 
 1. **Spline per expiry.** A cubic smoothing spline of σ_imp against
-   δ = k/(0.16 √T_e), weighted by 1/h, with smoothing factor s = number of quotes.
-2. **Choice of expiries.** For a design point (δ, T), with log-moneyness k = δ·0.16·√T,
-   use the nearest expiry on each side of T whose cleaned strikes reach k. An expiry
-   whose strikes stop short is skipped, never extrapolated.
-3. **Interpolation in maturity.** Read each chosen expiry at the same k. Interpolate the
-   total implied variance σ²T linearly in T between the two expiries; with one expiry,
-   hold its vol.
-4. **Half-spread.** Interpolate the half-spread the same way. This gives h_c, without the
-   design floor.
+   δ = k/(0.16 √T_e), weighted by 1/h, with smoothing factor s = number of quotes
+   (`chain.smile_spline`).
+2. **Choice of expiries.** Use the nearest expiry on each side of T_i whose cleaned
+   strikes reach k_i. An expiry whose strikes stop short is skipped, never extrapolated.
+3. **Interpolation in maturity.** Read each chosen expiry at k_i. Interpolate the total
+   implied variance σ²T linearly in T between the two expiries; with one expiry, hold its
+   vol.
+4. **Half-spread.** Interpolate the half-spread the same way.
 5. **Record:** readings from two expiries, from one expiry, and outside quoted strikes.
    The last must be 0.
+6. **Reading error.** The spline error is about 0.01 vp. Interpolation between expiries
+   adds up to 0.05–0.25 vp (noise session; an upper bound from leaving one expiry out).
+   It is smooth across strikes, so the smooth model-error term absorbs it. τ on read days
+   therefore includes it, and is reported separately from the design's own day.
 
-The output for day t is the vector y_t ∈ ℝ⁶³ of implied vols, plus h_t ∈ ℝ⁶³.
+`chain.build_surface` reads a grid of maturities × deltas. Reading arbitrary (k_i, T_i)
+needs a small reader built from the same functions: a new `chain.read_points(rows,
+points, rate)`.
+
+The output for each day is the vector of forward-unit prices at the n design locations
+(n = 54 for the pilot's design), with their implied vols and half-spreads.
 
 ### 2.6 Held-out data, never used in fitting
 
@@ -259,104 +312,160 @@ and the listed strike nearest 0.9 F(T). Record its mid, its half-spread in vol u
 its implied vol.
 
 **(c) Held-out quotes:**
-- cleaned quotes on expiries the reading does not use;
-- quotes on used expiries with δ < −5 or δ > +2 (16%-vol units).
+- cleaned quotes not in the design: other strikes on the design's expiries, and other
+  expiries;
+- on read days, also quotes the reading does not use.
 
-## 3. Observation design: layout E
+## 3. Observation design
 
-- **Definition.** The 63 contracts, maturity-major: T ∈ {5, 10, 21, 42, 63, 126, 252}/252,
-  δ ∈ {−5, −3.5, −2.25, −1.25, −0.5, 0, +0.5, +1, +2}, k = δ·0.16·√T, put if δ ≤ 0 else
-  call. Strikes e^k in forward units. A fixed 16% scale, not each day's ATM vol:
-  - the application is one name over one week;
-  - SPX's ATM vol was 15.6–17.1% on 9 November;
-  - fixed strikes keep the simulator and the network's input layout independent of the
-    data.
-- **Why these points.**
-  - *Coverage over density.* Under smooth model error, new regions add information and
-    points near existing ones add little. Doubling the points in the current range gains
-    2–17%; widening to −6…+2 gains 23–49% on κ, θ, vol-of-vol and the variance swap.
-  - *Region roles.* Deep puts pin κ, vol-of-vol, θ and the variance swap. ATM pins v0 and
-    vol-of-vol. Calls pin ρ. Short maturities pin vol-of-vol and v0. Long maturities pin
-    θ, the variance swap and κ.
-  - *Keep 0, +0.5, +1, +2.* Without near-the-money calls, ρ degrades by 2.4–4.1× under
-    smooth error; with no ATM point, by 2.5×.
-  - *Trade-off.* Layout E against the current grid (posterior sd ratio, Heston on SPX):
+### 3.1 Coverage criteria
 
-    | Error model | κ | v0 | θ | ξ | ρ | 1-y var swap |
-    | --- | --- | --- | --- | --- | --- | --- |
-    | smooth, τ = 1 vp, ℓ = (0.75, 1.15) | 0.65 | 0.92 | 0.72 | 0.68 | 1.09 | 0.75 |
-    | smooth, τ = 2.5 vp, ℓ = (1.6, 2.0) | 0.78 | 0.81 | 0.77 | 0.83 | 1.31 | 0.78 |
+The coverage principle: cover what the goal depends on, where the name quotes reliably,
+within the model's scope. The measured roles of each region (Heston on SPX, smooth error;
+rise in posterior sd when the region is removed):
 
-  - *63 contracts* keeps the existing 7 × 9 code paths. Rough Bergomi's simulation
-    blocks already land on these maturities.
-- **SPX coverage.** On 9 November, puts were quoted to −12…−16 at-the-money standard
-  deviations up to 2 months and about −8 at 6–12 months; calls to +2.2…+3.1. Every
-  layout-E point lies inside on every day; this is checked (Section 2.5).
-- **Implementation.**
-  - A design registry in `tutorial/src/sbi4f_tutorial/shared/surface.py`:
-    `DESIGNS = {"canonical_v1": (DESIGN_DAYS, DESIGN_DELTAS, 0.20), "spx_put_heavy_v1": (DESIGN_DAYS, LAYOUT_E, 0.16)}`
-    and `design_grid(name)`.
-  - Validators compare a task's contracts with its declared design.
-    `full_surface.validate_task` currently accepts only the canonical design.
-  - Existing tasks and assets are untouched.
+| Region | Pins mostly |
+| --- | --- |
+| deep puts, below −3 ATM-σ | κ +59%, ξ +51%, θ +33%, 1-year variance swap +27% |
+| at the money | v0 +21%, ξ +25% |
+| calls above +0.5 | ρ +72% |
+| maturities up to 1 month | ξ +108%, v0 +79% |
+| maturities from 2 months | θ +303%, variance swap +287%, κ +232% |
+
+A design must therefore contain, in standard deviations of a 16% vol (SPX's
+at-the-money level; k = δ·0.16·√T):
+1. puts below δ = −3 at short and at long maturities;
+2. a point at the money, and calls at about +0.5, +1 and +2. Without the near-the-money
+   calls ρ degrades by 2.4–4.1× under smooth error;
+3. maturities from 1 week to 1 year, with at least two up to 1 month and two from
+   2 months.
+
+Coverage matters more than density. Under smooth error, doubling the points in the
+current range gains 2–17%; widening the range gains 23–49% on κ, θ, ξ and the variance
+swap.
+
+### 3.2 Adopted design: the pilot's 54 quotes
+
+- The pilot's put-heavy design
+  (`lab/evidence/pilot-results/2026-11-09/heston-observations/designs/put_heavy.json` on
+  its branch): 54 actual SPXW quotes, frozen with strike, expiry, forward, discount,
+  half-spread and market vega.
+- Before use, list its points in (δ, T) and check Section 3.1. This plan was written
+  without access to the file.
+- Each maturity is a whole number of business days from the design's valuation day,
+  which is what rough Bergomi's simulation grids need (Section 5.2). Expiries beyond
+  1 year need an extra simulation block.
+- The kernel of Section 4 uses each point's coordinates δ_i = k_i/(0.16 √T_i) and ln T_i.
+
+### 3.3 Fallback and supplement: layout E
+
+If the pilot's design misses one criterion, add the missing points from layout E. If it
+misses several, use layout E itself:
+- 7 maturities (5, 10, 21, 42, 63, 126, 252 business days) ×
+  δ ∈ {−5, −3.5, −2.25, −1.25, −0.5, 0, +0.5, +1, +2}, with k = δ·0.16·√T and puts at
+  δ ≤ 0;
+- posterior sd relative to the tutorial's current grid, Heston on SPX:
+
+  | Error model | κ | v0 | θ | ξ | ρ | 1-y var swap |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | smooth, τ = 1 vp, ℓ = (0.75, 1.15) | 0.65 | 0.92 | 0.72 | 0.68 | 1.09 | 0.75 |
+  | smooth, τ = 2.5 vp, ℓ = (1.6, 2.0) | 0.78 | 0.81 | 0.77 | 0.83 | 1.31 | 0.78 |
+
+- read with `chain.build_surface(rows, rate=…, deltas=LAYOUT_E, sigma_ref=0.16)`.
+
+### 3.4 Days after the design's own day
+
+One network serves all four days only if the locations are fixed.
+- On days 2–4, read the chain at the design's (k_i, T_i) (Section 2.5).
+- Express everything in forward units: divide prices, half-spreads and vegas by that
+  day's D(T)F(T).
+- For the network's measurement input, set that day's c to the median ratio of its
+  half-spreads to the frozen ones.
+- Keep the frozen vegas; their day-to-day change is a few percent.
+
+On 9 November, SPX puts were quoted to −12…−16 ATM-σ up to 2 months and about −8 at
+6–12 months, and calls to +2.2…+3.1. Every design point must lie inside the quoted
+strikes on every day used; this is checked.
 
 ## 4. Error model
 
-### 4.1 Observation equation
+### 4.1 Observation equation: the pilot's form, with a smooth model error
 
-For a day's vector y of 63 implied vols, with model vols σ(θ) ∈ ℝ⁶³:
+For the n design quotes, with clean model prices P(φ) in forward units:
 
-$$y = \sigma(\theta) + d + e,\qquad d \sim \mathcal N(0,\ \tau^2 K_\ell),\qquad e \sim \mathcal N(0,\ \operatorname{diag}(h^2)),$$
+$$Y = P(\phi) + c\,h \odot Z + \tau\,\nu \odot (L\,U),\qquad Z,\ U \sim \mathcal N(0, I_n)\ \text{independent},\qquad L L^\top = K_\ell.$$
 
-with the squared-exponential correlation over design coordinates (δ_c, ln T_c):
+- **h:** each quote's half-spread in forward units.
+- **c:** a known multiplier. c = 1 in the market comparison; c ~ U(0.5, 2) in training
+  (the pilot's convention). Treating a half-spread as one Gaussian sd is a convention.
+- **ν:** frozen market vegas in forward units, ν_i = √T_i φ(d₁(σ_i^mkt)), in price per
+  unit of decimal vol. They are not recomputed for each simulated φ.
+- **τ:** the model-error size in decimal vol (0.01 = 1 vp).
+- **K_ℓ:** the squared-exponential correlation over (δ_i, ln T_i):
 
-$$\big(K_\ell\big)_{cc'} = \exp\!\Big(-\frac{(\delta_c-\delta_{c'})^2}{2\ell_\delta^2} - \frac{(\ln T_c-\ln T_{c'})^2}{2\ell_T^2}\Big).$$
+  $$\big(K_\ell\big)_{ij} = \exp\!\Big(-\frac{(\delta_i-\delta_j)^2}{2\ell_\delta^2} - \frac{(\ln T_i-\ln T_j)^2}{2\ell_T^2}\Big).$$
 
-- e is the measurement error. h is the half-spread profile in vol units, fixed in the
-  task as the median over the fitted days, by design point.
-- d is the model error: smooth in strike and maturity, with size τ.
+The pilot's model is the special case K_ℓ = I: independent model error.
 
-### 4.2 Likelihood
+### 4.2 Why the model error must be smooth
 
-$$\log p(y\mid\theta,\tau) = -\tfrac12\, r^\top\Sigma^{-1} r - \tfrac12\log\det\Sigma - \tfrac{63}{2}\log 2\pi,\qquad r = y-\sigma(\theta),\quad \Sigma = \tau^2 K_\ell + \operatorname{diag}(h^2)\ (+\ \Sigma_{\text{MC}}(\theta)).$$
+The misfit is a property of the model's smile, not of individual quotes:
+- On SPX, Heston's residuals correlate 0.80 between strikes 0.5 ATM-σ apart and 0.85
+  between adjacent design maturities (evidence `heston/spx_noise_and_model_error.py`).
+- On SPY they correlate 0.56–0.78 (noise session).
 
-- Compute it with a Cholesky factor of Σ, adding 10⁻¹⁰ jitter on the diagonal of K.
-- Σ_MC is the Monte Carlo covariance of rough Bergomi's implied vols, mapped from price
-  covariance by the vegas (Section 5.2). It is zero for Heston.
+Under independent errors these residuals count as many independent pieces of evidence, so
+posteriors come out too narrow. A network trained that way covered 18–58% (nominal 90%)
+on smooth errors, and the variance-swap gap looked significant (noise session). The
+pilot's note makes the same observation: a shared τ "does not create a smooth, signed
+model-bias curve".
 
-### 4.3 Why implied-vol units
+### 4.3 Likelihood
 
-- The covariance does not depend on θ, so the exact likelihood is a fixed-form Gaussian.
-- The network sees the same quantity.
-- Cleaned real quotes always invert.
+$$\Sigma(\tau, c) = c^2\operatorname{diag}(h^2) + \tau^2\operatorname{diag}(\nu)\,K_\ell\,\operatorname{diag}(\nu)\ (+\ \Sigma_{\text{MC}}(\phi)),$$
 
-The noise session's price-space form, diag(h_price²) + V(τ_g²K + τ_n²I)V with V the vega
-at the model's own vol, is the same model to first order.
+$$\log p(y\mid\phi,\tau) = -\tfrac12\, r^\top\Sigma^{-1} r - \tfrac12\log\det\Sigma - \tfrac n2\log 2\pi,\qquad r = y-P(\phi).$$
 
-### 4.4 Size and correlation lengths
+- **Computation.** Use a Cholesky factor of Σ, with 10⁻¹⁰ jitter on the diagonal of K.
+  The log-determinant term is what stops τ from growing without bound; the pilot's note
+  makes the same point.
+- **Σ_MC** is rough Bergomi's Monte Carlo price covariance at φ (Section 5.2). It is zero
+  for Heston.
+- **Vol-unit form.** Dividing the residuals by ν gives
+  r/ν ~ N(0, c² diag((h/ν)²) + τ² K_ℓ). This is the same model as an implied-vol
+  formulation, to first order.
 
-- **Size.** τ is inferred. Prior: log-uniform on [0.2, 5] vp, the same for both models.
-  Below 0.2 vp the model error would be comparable to processing error (maturity
-  interpolation 0.05–0.25 vp) and bid–ask, which this design does not resolve.
-- **Correlation lengths, fixed per model before training,** by profile marginal
-  likelihood on the 9 and 10 November closes over ℓ_δ ∈ {0.75, 1, 1.5, 2} and
-  ℓ_T ∈ {1, 1.5, 2}:
+### 4.4 Size, correlation lengths and the independent part
 
-  $$\hat\ell = \arg\max_\ell \sum_{t\in\{9,10\}} \max_{\theta,\tau}\ \log p(y_t\mid\theta,\tau,\ell).$$
+- **τ prior.** Log-uniform on [0.2, 5] vp, the same for both models.
+  - The smooth amplitude was estimated at 2.1–2.6 vp on SPY and SPX (noise session,
+    tentative), above the pilot's cap of 2 vp.
+  - Below 0.2 vp the model error is comparable to processing error, which this design does
+    not resolve. The floor also bounds rough Bergomi's Monte Carlo cost (Section 5.2).
+  - The pilot's independent version, with τ ~ U(0, 2 vp), is kept for the comparison in
+    D4.
+- **Correlation lengths,** fixed per model before training, by profile marginal
+  likelihood on the first two days over ℓ_δ ∈ {0.75, 1, 1.5, 2} and ℓ_T ∈ {1, 1.5, 2}:
+
+  $$\hat\ell = \arg\max_\ell \sum_{t\in\{1,2\}} \max_{\phi,\tau}\ \log p(y_t\mid\phi,\tau,\ell).$$
 
   - Heston uses the Fourier likelihood.
   - Rough Bergomi uses the fixed-seed Monte Carlo pricer with Gauss–Newton steps (the
     classical route of study S6).
-  - If rough Bergomi's profile is flat across the grid, it uses Heston's ℓ, and the plan
-    says so.
-- **Independent term.** An independent model-error term τ_n is added only if the pilot
-  needs it: whitened residuals $L^{-1}r$ with lag-1 correlation above 0.3, or χ²/dof
-  well above 1 (V2).
+  - If rough Bergomi's profile is flat across the grid, it uses Heston's ℓ.
+- **Independent part.** Add an independent model-error term τ_n ν ⊙ U′ only if the pilot
+  fits need it (V2).
 
-### 4.5 What it replaces
+### 4.5 Pricing accuracy
+
+- **Heston:** the pilot's threshold. Fourier rungs must agree within 0.01 h, in float64.
+- **Rough Bergomi:** Section 5.2.
+
+### 4.6 What it replaces
 
 This replaces `quote_noise_std` for the two new tasks only. Existing task identities and
-assets are unchanged. The new tasks are `heston_spx_iv_v1` and `rough_joint_spx_iv_v1`.
+assets are unchanged. The new tasks are `heston_spx_v1`, which extends the pilot's task,
+and `rough_joint_spx_v1`.
 
 ## 5. Models
 
@@ -364,18 +473,17 @@ assets are unchanged. The new tasks are `heston_spx_iv_v1` and `rough_joint_spx_
 
 $$dV_t = \kappa(\theta - V_t)\,dt + \xi\sqrt{V_t}\,dW_t,\qquad V_0 = v_0.$$
 
-- **Inferred parameters** (each uniform on its interval, so the reference and the
-  network's logit box need no change):
-  - ln κ ∈ [ln 0.5, ln 12];
-  - v0 ∈ [0.004, 0.16];
-  - θ ∈ [0.004, 0.16];
-  - ln ξ ∈ [ln 0.2, ln 4];
-  - ρ ∈ [−0.98, −0.2];
-  - ln τ ∈ [ln 0.002, ln 0.05].
+- **Inferred parameters:** the pilot's priors, each uniform:
+  - v0 and θ on [0.01, 0.16];
+  - κ on [0.1, 10];
+  - ξ on [0.1, 3];
+  - ρ on [−0.95, −0.1];
+  - plus ln τ uniform on [ln 0.002, ln 0.05] (Section 4.4).
 
-  This covers the 9 November SPX fit (κ 7.3, ξ 2.5, ρ −0.72), which the current box
-  (κ = 2, ξ ≤ 1.5) excludes. The Feller condition is not imposed. Fourier pricing is exact
-  without it, and violating it does not invalidate the model.
+  This covers the 9 November SPX fit (κ 7.3, ξ 2.5, ρ −0.72), which the tutorial's
+  current box (κ = 2, ξ ≤ 1.5) excludes. If a day's posterior piles up against ξ = 3 or
+  κ = 10, widen the box and retrain. The Feller condition is not imposed: Fourier pricing
+  is exact without it, and violating it does not invalidate the model.
 - **Characteristic function** of ln X_T (`heston_options.model.characteristic_function`),
   with b = κ − ρξiu, d = √(b² + ξ²(u² + iu)), g = (b − d)/(b + d):
 
@@ -388,7 +496,7 @@ $$dV_t = \kappa(\theta - V_t)\,dt + \xi\sqrt{V_t}\,dW_t,\qquad V_0 = v_0.$$
   The integral uses Gauss–Legendre quadrature on [0, U] with N nodes, on the task's
   ladder (N, U) ∈ {(512, 400), (1024, 600), (2048, 1500), (4096, 3000), (8192, 6000)}. A
   rung is accepted when it and the next rung price inside the no-arbitrage bounds and
-  agree within 0.01 vp in implied vol. Use the checked pricing speed-ups merged in
+  agree within 0.01 h, the pilot's threshold. Use the checked pricing speed-ups merged in
   PR #77.
 - **Mean variance curve and variance swap:**
 
@@ -415,9 +523,9 @@ $$\xi_0(t) = \xi_s\,e^{-\lambda t} + \xi_l\,(1-e^{-\lambda t}),\qquad K_{\text{v
   exact, older cells use averaged kernels, and the convolution is done by FFT. The
   normalizer is the discrete Var(Y_i), so E[V_i] = ξ_0(t_i) holds exactly on the grid. The
   task's blocks:
-  - 10 days on 1,280 steps (prices the 5- and 10-day maturities);
-  - 3 months on 2,016 steps (21, 42, 63 days);
-  - 1 year on 2,016 steps (126, 252 days).
+  - 10 days on 1,280 steps (maturities up to 10 business days);
+  - 3 months on 2,016 steps (up to 63);
+  - 1 year on 2,016 steps (up to 252).
 - **Vanilla estimator** (`pricing.rough_block`). Conditional on the W path, ln X_T is
   Gaussian (Section 1), so each path contributes a Black–Scholes price:
 
@@ -427,86 +535,90 @@ $$\xi_0(t) = \xi_s\,e^{-\lambda t} + \xi_l\,(1-e^{-\lambda t}),\qquad K_{\text{v
   - Two zero-mean controls per maturity, $e^{\rho J_T - \frac12\rho^2 I_T} - 1$ and
     $I_T - \sum_i \xi_0(t_i)\Delta t$, with regression coefficients.
   - The standard error comes from the controlled residuals.
-- **Accuracy target.** Implied-vol standard error SE_c = SE_price,c / vega_c(σ_c) must
-  satisfy
+- **Accuracy target,** per contract i, in forward-unit price:
 
-  $$\text{SE}_c \le 0.25\,\sqrt{h_c^2 + \tau_{\min}^2},\qquad \tau_{\min} = 0.2\ \text{vp},$$
+  $$\text{SE}_i \le 0.25\,\sqrt{(c_{\min} h_i)^2 + (\tau_{\min}\,\nu_i)^2},\qquad c_{\min} = 0.5,\quad \tau_{\min} = 0.2\ \text{vp}.$$
 
-  about 0.05 vp at the money. The path ladder runs 32,768 → 2,097,152. Its stopping rule
-  is driven by a per-contract σ_c, set from the first rung's implied vol.
-  - The current target, 0.25 × the design noise, is about 0.075 vp at the money but very
-    loose in the call wing of low-vol draws. The new target is tighter there.
+  This is a quarter of the smallest total error sd the prior allows, about 0.05 vp at the
+  money. The path ladder runs 32,768 → 2,097,152 and stops per contract at this target.
+  - The tutorial's current target, 0.25 × its fixed noise, is about 0.075 vp at the money
+    but very loose in the call wing of low-vol draws. The new target is tighter there.
   - The MC covariance enters training as part of the simulated observation, and enters
-    the reference likelihood as Σ_MC (Section 4.2).
+    the reference likelihood as Σ_MC (Section 4.3).
+- **Contracts.** The design's quotes (Section 3), in forward units with the design day's
+  carry. Maturities in whole business days land on the blocks' grids: one business day is
+  128, 32 and 8 steps in the three blocks.
 
 ## 6. Simulation banks
 
-| | Heston (`heston_spx_iv_v1`) | Rough Bergomi (`rough_joint_spx_iv_v1`) |
+| | Heston (`heston_spx_v1`) | Rough Bergomi (`rough_joint_spx_v1`) |
 | --- | --- | --- |
-| Draws | 200,000 from the prior: 180k train, 10k validation, 10k test | 100,000: 90k train, 5k validation, 5k test |
-| Pricing | Fourier, quadrature ladder (Section 5.1) | hybrid-scheme MC to the target of Section 5.2 |
-| Stored per draw | θ; 63 clean implied vols; quadrature rung; refinement difference | θ; 63 implied vols; their MC standard errors and covariance; paths used per block |
-| Failures | draws that cannot be priced inside the bounds are recorded and rejected, never redrawn silently | same |
-| Seeds | `SeedSequence([task fingerprint words, example id, purpose])`, independent of batch order | same |
-| Cost | about 3–4 CPU-h | the current pilot is 3.3 CPU-h per 1,000 surfaces; the tighter target is estimated at 2–4×, i.e. 660–1,300 CPU-h for 100k. Measure on a 200-surface pilot first. |
+| Draws | the pilot's bank: 100,000 surfaces at the design's contracts, reused | 100,000: 90k train, 5k validation, 5k test |
+| Pricing | Fourier, rungs within 0.01 h | hybrid-scheme Monte Carlo to the target of Section 5.2 |
+| Stored per draw | φ; clean prices; rung; refinement difference | φ; prices; Monte Carlo covariance; paths used per block |
+| Failures | recorded and rejected, never redrawn silently | same |
+| Seeds | as in the pilot | `SeedSequence([task fingerprint words, example id, purpose])`, independent of batch order |
+| Cost | none, it exists. If the design changes (Section 3.3): about 1.3 CPU-h per 100,000 surfaces | 3.3 CPU-h per 1,000 surfaces at today's target. The tighter target is estimated at 2–4× that: 660–1,300 CPU-h. Measure on a 200-surface pilot first. |
 
-- The clean banks do not depend on τ, h or ℓ. Errors are added at training time
+- The clean banks do not depend on τ, c, h or ℓ. Errors are added at training time
   (Section 7).
-- New code: `lab/studies/spx_heston/bank.py` and `lab/studies/spx_rough/bank.py`. They
-  reuse the tutorial runtime's pricers and write a manifest with SHA-256.
+- New code: `lab/studies/spx_rough/bank.py`. It reuses the tutorial runtime's rough
+  pricer and writes a manifest with SHA-256.
 
 ## 7. Networks
 
-- **Input.** The 63 implied vols, standardized per contract with the clean bank's mean and
-  sd, stored in the task: z_c = (y_c − μ_c)/s_c.
-- **Training augmentation,** drawn fresh for every example in every epoch, extending
-  `full_surface.fresh_noise`:
-  1. τ = exp(u), u ~ U[ln 0.002, ln 0.05];
-  2. d = τ L ε with L L^⊤ = K_ℓ (Cholesky computed once) and ε ~ N(0, I₆₃);
-  3. e = h ⊙ ε′ with ε′ ~ N(0, I₆₃) independent of ε;
-  4. y = σ_bank + d + e.
+- **Conditions** (the pilot's): the quotes divided by their half-spreads, y_i/h_i, and the
+  log measurement scale log(c h_i/(D_i F_i)), both standardized. c is an input, not a
+  target.
+- **Training augmentation,** fresh at every exposure. This is the pilot's procedure, with
+  a smooth model error:
+  1. draw ln τ ~ U[ln 0.002, ln 0.05] and c ~ U(0.5, 2);
+  2. draw Z, U ~ N(0, I_n), independently;
+  3. form Y = P_bank + c h ⊙ Z + τ ν ⊙ (L U), with L the Cholesky factor of K_ℓ,
+     computed once.
 
-  τ (as ln τ) is emitted as an extra target. For rough Bergomi, σ_bank already carries
-  its Monte Carlo error.
-- **Targets.**
-  - Heston: (ln κ, v0, θ, ln ξ, ρ, ln τ).
+  For rough Bergomi, P_bank already carries its Monte Carlo error.
+- **Targets,** with the logit-box adapter:
+  - Heston: (v0, κ, θ, ξ, ρ, ln τ);
   - Rough Bergomi: (H, η, ρ, ξ_s, ξ_l, λ, ln τ).
-
-  Both use the logit-box adapter of `shared/full_surface.py`.
-- **Architecture.** BayesFlow 2.1, vector encoder, with the family and settings of each
-  current backbone.
-- **Training budget.** At least 30,000 updates (`lab/scripts/train_full_surface.py` as on
-  `main`), several seeds. On the current Heston task this takes about 100 s per fit on
-  one L40S. It is the only budget that passed rank and coverage there, and it still
-  missed the conditional checks on two of three cases (`NUMERICAL-EXPERIMENT-PLAN.md`,
-  P4).
+- **Architecture and training.** The pilot's network and training scripts for Heston
+  (`lab/scripts/train_heston_pilot.py` and `train_heston_pilot_campaign.py`, on the
+  pilot's branch), and the same settings for rough Bergomi.
+  - The pilot's 75k checkpoint fails the reference comparison, and its continuation hit a
+    non-finite loss at 88k, cause unresolved. Run V4b first: it says whether the failure
+    comes from the error law.
+  - On the tutorial's current Heston task, the 8 November matrix needed at least 30,000
+    updates to pass rank and coverage, and still missed conditional checks
+    (`NUMERICAL-EXPERIMENT-PLAN.md`, P4).
 - **Selection.** Choose the configuration and seed by V3 and V4 on synthetic cases only,
   never on the real days.
-- **Code.** New task ids keep pricing parameters and τ apart, because
+- **Code.** τ and c are kept apart from the pricing parameters, because
   `tasks.model_parameters` passes every inferred name to the pricer.
 
 ## 8. Reference posteriors
 
 ### 8.1 Heston: exact
 
-- **Likelihood.** Section 4.2 with Fourier implied vols. Add a new builder next to
-  `heston_log_likelihood` in `lab/src/sbi4finance/calibration/reference.py`.
+- **Likelihood.** Section 4.3 with Fourier prices: the pilot's normalized likelihood
+  (`lab/src/sbi4finance/calibration/heston_pilot.py`), with the smooth covariance.
 - **Sampler.** PyMC via `sample_deterministic_reference`: uniform priors, the
-  log-likelihood as a `Potential`, `DEMetropolisZ`. Four chains, 2,000 tuning steps,
+  log-likelihood as a `Potential`, `DEMetropolisZ`. Four chains, 2,000 tuning steps and
   1,000 draws each.
 - **Acceptance.** R̂ ≤ 1.01 and bulk ESS ≥ 400 for every parameter. Record seeds, chain
   structure and versions (MCMC policy).
-- **Cost.** About 12,000 likelihood evaluations per chain at 20–50 ms each, i.e. roughly
-  15–40 CPU-min per posterior.
-- **Cases.** Each SPX day under its own h, plus 8 synthetic cases spread over the prior and
-  near SPX.
+- **Cost.** About 12,000 likelihood evaluations per chain at 20–50 ms each, i.e. 15–40
+  CPU-min per posterior.
+- **Cases.** Each SPX day, plus 8 synthetic cases spread over the prior and near SPX.
+- **Comparison point.** Under the pilot's independent model, the market case gives τ mean
+  0.00609, with 90% interval [0.00516, 0.00722]. The smooth model's τ is a different
+  quantity, the amplitude of a correlated field, and is expected to be larger.
 
 ### 8.2 Rough Bergomi: importance sampling with the network as proposal
 
 - **Proposal.** Draw θ_s ~ q(θ | y) from the network, s = 1…S, with S = 1,000.
 - **Weights.**
 
-  $$\tilde w_s = \frac{p(\theta_s)\,\hat L(y\mid\theta_s)}{q(\theta_s\mid y)},\qquad \hat L = \text{Gaussian of Section 4.2 with Monte Carlo implied vols from the fixed-seed pricer and }\Sigma_{\text{MC}}.$$
+  $$\tilde w_s = \frac{p(\theta_s)\,\hat L(y\mid\theta_s)}{q(\theta_s\mid y)},\qquad \hat L = \text{Gaussian of Section 4.3 with Monte Carlo prices from the fixed-seed pricer and }\Sigma_{\text{MC}}.$$
 
   The fixed seed makes $\hat L$ a deterministic function of θ (common random numbers).
   The reference is then the exact posterior of that fixed-seed numerical model, which
@@ -519,10 +631,13 @@ $$\xi_0(t) = \xi_s\,e^{-\lambda t} + \xi_l\,(1-e^{-\lambda t}),\qquad K_{\text{v
 ## 9. Validation
 
 - **V1 · Prior predictive.** For each model, draw 10,000 surfaces from the prior with
-  errors. Every SPX day's 63 vols lie inside the 1–99% band at every point.
-- **V2 · Pilot fits on 9 and 10 November.** At the fitted (θ, τ, ℓ):
-  - whitened residuals u = L⁻¹r have lag-1 autocorrelation below 0.3 along strikes;
-  - uᵀu/63 lies within 1 ± 2√(2/63).
+  errors. Every SPX day's quotes lie inside the 1–99% band at every design point.
+- **V2 · Pilot fits on the first two days.** At the fitted (φ, τ, ℓ), with Σ = LLᵀ:
+  - whitened residuals u = L⁻¹r have lag-1 autocorrelation below 0.3 along strikes
+    within each expiry;
+  - uᵀu/n lies within 1 ± 2√(2/n).
+
+  Apply the same test to the pilot's independent-error reference on its market case.
 - **V3 · SBC and coverage.** On 2,000 test simulations, for each target:
   - the rank of the truth among 127 posterior draws is uniform on 0…127 (χ² test on 16
     bins at the 1% level, Bonferroni across targets);
@@ -532,20 +647,30 @@ $$\xi_0(t) = \xi_s\,e^{-\lambda t} + \xi_l\,(1-e^{-\lambda t}),\qquad K_{\text{v
   - ratio of 90% widths within [0.8, 1.25];
   - τ's median within ±20%;
   - each product's 5%, 50% and 95% quantiles within ±10% of the reference 90% range.
-- **V5 · Held-out quotes.** For a held-out point x* with model vol σ*(θ), the predictive
-  draw for posterior draw (θ, τ) is
+- **V4b · Misspecification test** (Section I.6). Here the reference is the exact posterior
+  under the network's own error model, evaluated on each case's data. On the pilot's
+  independent-error network, compare network and reference on:
+  1. synthetic cases from its own simulator;
+  2. synthetic cases with a smooth error of the same size;
+  3. the market case.
 
-  $$y^* \sim \mathcal N\Big(\sigma^*(\theta) + k_*^\top\Sigma^{-1}r,\ \ \tau^2 - k_*^\top\Sigma^{-1}k_* + h_*^2\Big),\qquad k_* = \tau^2 K_\ell(x^*,\text{grid}),\quad r = y-\sigma(\theta).$$
+  Agreement on the first but not on the other two, with correlated whitened residuals in
+  V2, points to the error law. Repeat all three on the smooth-error network.
+- **V5 · Held-out quotes.** For a held-out quote x* with model price P*(φ) and market vega
+  ν*, the predictive draw for posterior draw (φ, τ) is
 
-  The model error at x* is predicted from the grid residuals (kriging); h* is the quote's
-  own half-spread. Report the coverage of 90% intervals by region (beyond −5, beyond +2,
+  $$y^* \sim \mathcal N\Big(P^*(\phi) + k_*^\top\Sigma^{-1}r,\ \ \tau^2\nu_*^2 - k_*^\top\Sigma^{-1}k_* + (c\,h_*)^2\Big),\qquad k_* = \tau^2\,\nu_*\,\operatorname{diag}(\nu)\,K_\ell(\text{design}, x^*),\quad r = y-P(\phi).$$
+
+  The model error at x* is predicted from the design's residuals (kriging); h* is the
+  quote's own half-spread. Report the coverage of 90% intervals by region (beyond −5, beyond +2,
   unused expiries). Expect 80–97%; it is not tuned.
 - **V6 · Market checks,** reported per day and maturity, inside or outside the 90% band,
   not tuned:
   - the model-free variance-swap vol against the posterior of √K_var(T), at 1 m, 3 m and
     1 y;
   - the listed 2-year 90% put's implied vol against its predictive band from V5. At
-    ln T = ln 2, the model-error prediction reverts towards zero with variance up to τ².
+    ln T = ln 2, the model-error prediction reverts towards zero, with variance up to
+    τ²ν*².
 
 **What is reported if a check fails.**
 - V3 or V4 fails: real-data results come from the reference posteriors, and the network
@@ -580,7 +705,7 @@ The product pricer must be the same numerical model as the one fitted, or be che
 against it.
 
 - **Heston.** The fit uses Fourier; the products use Monte Carlo (Section 10.3).
-  - *Check.* Monte Carlo reprices the 63 grid vanillas within 0.05 vp of Fourier at the
+  - *Check.* Monte Carlo reprices the design's vanillas within 0.05 vp of Fourier at the
     posterior median, on each day.
   - *If not.* Halve the time step until it does.
 - **Rough Bergomi.** The products use the same hybrid scheme and steps per year (2,016)
@@ -718,29 +843,32 @@ against it.
 ### 10.11 Baselines
 
 - **Point calibration,** as practised: unweighted least squares in implied vol,
-  $\hat\theta = \arg\min_\theta \sum_c (y_c - \sigma_c(\theta))^2$, multi-start (8 starts)
-  in the prior box. Also the maximum-likelihood version, with τ estimated by the
-  likelihood of Section 4.2.
-- **Delta method.** At $\hat\theta$, with the Jacobian $\mathcal J = \partial\sigma/\partial\theta$
-  (central differences; common random numbers for rough Bergomi) and
-  $\hat\Sigma = \hat\tau^2 K_\ell + \operatorname{diag}(h^2)$:
+  $\hat\theta = \arg\min_\theta \sum_i (\sigma^{\text{mkt}}_i - \sigma_i(\theta))^2$, with
+  8 starts in the prior box. Also the maximum-likelihood version, with τ estimated by the
+  likelihood of Section 4.3.
+- **Delta method.** At $\hat\theta$, take the Jacobian of the design prices,
+  $\mathcal J = \partial P/\partial\theta$ (central differences; common random numbers for
+  rough Bergomi), and
+  $\hat\Sigma = c^2\operatorname{diag}(h^2) + \hat\tau^2\operatorname{diag}(\nu)K_\ell\operatorname{diag}(\nu)$.
+  Then:
 
   $$\widehat{\operatorname{Cov}}(\hat\theta) = (\mathcal J^\top\hat\Sigma^{-1}\mathcal J)^{-1},\qquad \operatorname{sd}_j = \sqrt{\nabla P_j^\top\,\widehat{\operatorname{Cov}}\,\nabla P_j},\qquad \text{range } P_j(\hat\theta)\pm1.645\,\operatorname{sd}_j,$$
 
-  with ∇P_j by central differences under common random numbers.
-- **Maturity-drop refits.** Refit with each of the 7 maturities removed in turn and take
-  the minimum to maximum of the 7 product prices. This is the "recalibrate on other
-  instrument sets" practice.
+  with the product gradients ∇P_j taken by central differences under common random
+  numbers.
+- **Expiry-drop refits.** Refit with each of the design's expiries removed in turn, and
+  take the minimum to maximum of the resulting product prices. This is the "recalibrate
+  on other instrument sets" practice.
 
 ## 11. Demonstrations
 
 | | Computation | Output |
 | --- | --- | --- |
-| D1 | Per day, model and product: posterior 5/50/95% and mark; point price; delta-method range; refit range; reserve | One table per model; a figure of ranges by product. Vanilla reprices are tight, the forward start is wide, the 2-year put is set against its listed price. |
+| D1 | Per day, model and product: posterior 5/50/95% and mark; point price; delta-method range; expiry-drop refit range; reserve | One table per model; a figure of ranges by product. Vanilla reprices are tight, the forward start is wide, the 2-year put is set against its listed price. |
 | D2 | Book reserve against the sum of standalone reserves; correlations between products across draws | Table: book vs sum, diversification ratio |
 | D3 | Simulation study. Heston: 1,000 prior draws plus 300 near SPX, 200 posterior draws each. Rough Bergomi: 300 cases, 100 draws each. For each case: truth θ*; observation with errors; network posterior; product distribution; true product price under an independent seed at 4× the paths. | Coverage of the 90% range per product, with binomial ±2 SE (±1.9% for 1,000 cases, ±3.5% for 300), against delta method, refits (300 cases) and point (0%) |
-| D4 | One day (9 November), Heston reference under three error models: half-spreads only; plus independent τ; plus smooth τ (adopted) | Variance-swap bands against the model-free value; product ranges as the error model grows |
-| D5 | Posterior of τ per day and model; posterior-mean residual map r̄ = y − E[σ(θ) ∣ y] on the 7 × 9 design | Where each model misfits, in vol points |
+| D4 | One day, Heston reference under four error models: half-spreads only (c = 1); plus independent τ (the pilot's model); plus smooth τ (adopted); the adopted model at c = 0.5 and c = 2 | Variance-swap bands against the model-free value; product ranges as the error model grows |
+| D5 | Posterior of τ per day and model; posterior-mean residual map r̄ = y − E[P(φ) ∣ y] on the design, in vol points (r̄/ν) | Where each model misfits |
 | D6 | Days 9–12 November: marks and ranges per product; daily point calibrations | Day-to-day changes of the marks against the widths of the ranges. Four days, illustrative. |
 | D7 | Heston against rough Bergomi on the same y, h, ℓ and design: τ, V5 coverage and held-out log predictive density, V6 checks, product ranges side by side | Model comparison; stacking weights on held-out quotes, $w = \arg\max_{w\in\Delta}\sum_i \log\sum_m w_m\,p_m(y^*_i\mid y)$, and the weighted mixture of product draws, stated as a combination, not a reserve |
 
@@ -760,6 +888,7 @@ replaces it.
 | `tutorial/curriculum/00-overview.md:48`; `04-slot4…md:26, 46, 63, 68`; `05-slot5…md:29, 49, 115, 131`; `06-slot6…md:28, 61` | the variance-swap gap as the case against Heston; "the design's noise" | aligned with the above (verify line numbers when editing) |
 | `tutorial/CLAIMS.md` | claims tied to the old rule or the gap | regenerated through `pixi run claims` |
 | `lab/src/sbi4finance/calibration/chain.py:147-149, 264-265` | half-spread converted with the quote's own vega, then back to price at 20% vega | not used by the new tasks (Section 2.4 keeps vol units) |
+| `tutorial/src/sbi4f_tutorial/shared/{full_surface,full_surface_teaching}.py`; the notebooks' 7 × 9 reshapes | 63-contract checks and plots | accept a declared design of any size (n = 54 for the pilot's) |
 | `tutorial/src/sbi4f_tutorial/shared/inference.py:36-40` | `use_sampler` reportedly reverses its time grid under BayesFlow 2.1 (noise session) | verify; fix if any live path calls it (`full_surface.sample` does not) |
 
 Assets enter `tutorial/assets/` only through the lab tools: `lab/studies/accept.py`, with
@@ -771,7 +900,7 @@ checks before release: tutorial `pixi run test`, `test-notebooks` and `check`; l
 
 | Item | Estimate |
 | --- | --- |
-| Heston bank, 200k | 3–4 CPU-h |
+| Heston bank | exists (the pilot's 100k); about 1.3 CPU-h per 100k if the design changes |
 | Rough bank, 100k | 660–1,300 CPU-h (pilot of 200 surfaces first) |
 | Networks | Heston about 100 s per 30,000-update fit on one L40S; rough Bergomi of the same order; 10–20 fits per model |
 | Heston references, 12 posteriors | 3–8 CPU-h |
@@ -791,3 +920,12 @@ checks before release: tutorial `pixi run test`, `test-notebooks` and `check`; l
   `data/heston-spy-exact.json`; `results/calibration/{heston,rough-pilot}/s1/bank-quality.json`
   (costs).
 - `lab/plans/NUMERICAL-EXPERIMENT-PLAN.md`, P4: the 8 November Heston training matrix.
+- The pilot (Alex, 9 November): the note *How we construct observation noise*, and the
+  branch `study/heston-european-observations-20261109`, evidence through `a1d5c60`, not
+  yet on GitHub:
+  - code: `lab/src/sbi4finance/calibration/heston_pilot.py` and
+    `lab/scripts/train_heston_pilot{,_campaign}.py`;
+  - evidence: `lab/evidence/pilot-results/2026-11-09/heston-observations/`, i.e. the
+    design `designs/put_heavy.json` and, under `training-study/`,
+    `continuation-results.json`, `reference-precision.json` and
+    `continuation-failure-audit.json`.
