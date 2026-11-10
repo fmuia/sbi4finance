@@ -1,5 +1,7 @@
 # First joint rough development bank — active work order
 
+**Observation refresh planning, 9 November 2026:** the [Bergomi observation-refresh plan](BERGOMI-OBSERVATION-REFRESH-PLAN.md) records a separate proposed port of the accepted fixed-layout Heston spread-based Gaussian setup. Read-only readiness work can proceed now; new rough numerical work remains behind the Heston noise/grid acceptance gate and a bounded exact-task precision pilot. Historical banks, allocations and producer identities below are preserved and do not authorize this refresh. PR #74's rough-lesson work remains a separate integration track.
+
 **Authorized and started on 27 October 2026, within the 1,500 allocated CPU-hour ceiling.** The [execution report](native-default-and-bank-start.md) records the frozen collection, seed audit, initial shards and current status. The [completed reliability unit](followup-results-2026-10-27.md) supports this development-bank decision. It does not certify absolute pricing bias or remove the known grid dependence. This work order adds no new infrastructure or architecture campaign.
 
 ## What we generate
