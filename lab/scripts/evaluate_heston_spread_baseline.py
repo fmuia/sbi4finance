@@ -102,6 +102,10 @@ def evaluate(checkpoint, panel_path, references, bank_path, *, seed=261112,
     names = target["parameter_names"]
     result = {"format": "heston_spread_development_evaluation_v1", "seed": seed,
         "checkpoint": str(Path(checkpoint)), "panel_sha256": digest(panel_path),
+        "checkpoint_record_sha256": digest(Path(checkpoint)/"checkpoint.json"),
+        "model_sha256": metadata["model_sha256"], "state_sha256": metadata["state_sha256"],
+        "actual_optimizer_updates": metadata["actual_optimizer_updates"],
+        "checkpoint_source_sha256": metadata["source_sha256"],
         "task": target, "source_sha256": digest(__file__), "cases": {},
         "scientific_acceptance": False, "reserved_test_arrays_opened": False,
         "scope": "Development conditional/population checks; no final-pool or lesson acceptance."}
@@ -140,6 +144,9 @@ def evaluate(checkpoint, panel_path, references, bank_path, *, seed=261112,
                 panel["products"], seed=seed+100+i, replicates=replicates)
             entry["status"] = entry["comparison"]["status"]
             entry["reference_diagnostics_passed"] = diagnostic["mcmc_diagnostics_passed"]
+            entry["reference_run_sha256"] = digest(required[0])
+            entry["reference_diagnostics_sha256"] = digest(required[1])
+            entry["reference_chain_payload_sha256"] = diagnostic["chain_payload_sha256"]
             if diagnostic.get("reference_ready") is not True:
                 entry.update(status="inconclusive", reason="matched reference is smoke, unconverged or numerically unresolved")
         result["cases"][case_id] = entry

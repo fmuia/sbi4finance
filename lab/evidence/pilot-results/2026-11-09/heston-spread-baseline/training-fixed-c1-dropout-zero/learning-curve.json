@@ -1,0 +1,72 @@
+[
+  {
+    "updates": 1000,
+    "seconds": 15.55440920800902,
+    "batch_training_loss": -6.871833801269531,
+    "train_probe_loss": -6.9037933349609375,
+    "validation_probe_loss": -6.7563982009887695
+  },
+  {
+    "updates": 2000,
+    "seconds": 22.08905924996361,
+    "batch_training_loss": -9.966773986816406,
+    "train_probe_loss": -9.813569068908691,
+    "validation_probe_loss": -9.746506690979004
+  },
+  {
+    "updates": 3000,
+    "seconds": 30.724501790944487,
+    "batch_training_loss": -10.623104095458984,
+    "train_probe_loss": -11.198492050170898,
+    "validation_probe_loss": -10.996472358703613
+  },
+  {
+    "updates": 4000,
+    "seconds": 37.30837525008246,
+    "batch_training_loss": -12.328508377075195,
+    "train_probe_loss": -12.15279769897461,
+    "validation_probe_loss": -11.98356819152832
+  },
+  {
+    "updates": 5000,
+    "seconds": 43.748013416072354,
+    "batch_training_loss": -13.125699996948242,
+    "train_probe_loss": -12.81749153137207,
+    "validation_probe_loss": -12.646660804748535
+  },
+  {
+    "updates": 6000,
+    "seconds": 50.81153537495993,
+    "batch_training_loss": -13.838977813720703,
+    "train_probe_loss": -13.736002922058105,
+    "validation_probe_loss": -13.485273361206055
+  },
+  {
+    "updates": 7000,
+    "seconds": 58.04398887511343,
+    "batch_training_loss": -14.514497756958008,
+    "train_probe_loss": -14.23705768585205,
+    "validation_probe_loss": -14.070579528808594
+  },
+  {
+    "updates": 8000,
+    "seconds": 65.73130250000395,
+    "batch_training_loss": -15.240861892700195,
+    "train_probe_loss": -14.532279968261719,
+    "validation_probe_loss": -14.353384971618652
+  },
+  {
+    "updates": 9000,
+    "seconds": 72.87808558298275,
+    "batch_training_loss": -15.06025505065918,
+    "train_probe_loss": -15.165801048278809,
+    "validation_probe_loss": -14.84642505645752
+  },
+  {
+    "updates": 10000,
+    "seconds": 80.25893975002691,
+    "batch_training_loss": -16.55812644958496,
+    "train_probe_loss": -15.500249862670898,
+    "validation_probe_loss": -15.324993133544922
+  }
+]

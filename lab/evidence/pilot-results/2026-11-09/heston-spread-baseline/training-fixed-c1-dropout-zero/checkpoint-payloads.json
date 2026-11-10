@@ -1,0 +1,74 @@
+{
+  "format": "heston_spread_checkpoint_payload_summary_v1",
+  "checkpoints": {
+    "2000": {
+      "actual_optimizer_updates": 2000,
+      "checkpoint_record_sha256": "5f56204832f9c4e64bb031081979677f6e178496dae825794f12c6c5fa7319c4",
+      "model_sha256": "c2b8ceeedeccfdd4b44f41f1c6eca05cb84b736460c54bd20cc05daa1201935d",
+      "state_sha256": "43a72a9a0c6434d9fb2dccb87eff7584aba6fc8d0dc067bf6030688ddec637af",
+      "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+      "probe_metrics": {
+        "updates": 2000,
+        "seconds": 22.08905924996361,
+        "batch_training_loss": -9.966773986816406,
+        "train_probe_loss": -9.813569068908691,
+        "validation_probe_loss": -9.746506690979004
+      },
+      "source_sha256": {
+        "trainer": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+        "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+        "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+        "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+        "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+      },
+      "architecture": {
+        "family": "spline",
+        "widths": [
+          128,
+          128
+        ],
+        "subnet_dropout": 0.0
+      },
+      "resume_supported": false,
+      "payload_bytes": {
+        "model.keras": 6255717,
+        "state.npz": 5497938
+      }
+    },
+    "10000": {
+      "actual_optimizer_updates": 10000,
+      "checkpoint_record_sha256": "4f0190fc8a87351dc4dbf2df75a338ba05a5ff9b76420d92fa700cf9832e77e1",
+      "model_sha256": "1db28d6bf52474ccdee7c6050f66a7695b4a4ddb263d2c626e81c7f0d9e90620",
+      "state_sha256": "7cb50958c41f384186f064cd53e984a1115e0c9c3d2783150c01b08b7a782348",
+      "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+      "probe_metrics": {
+        "updates": 10000,
+        "seconds": 80.25893975002691,
+        "batch_training_loss": -16.55812644958496,
+        "train_probe_loss": -15.500249862670898,
+        "validation_probe_loss": -15.324993133544922
+      },
+      "source_sha256": {
+        "trainer": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+        "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+        "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+        "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+        "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+      },
+      "architecture": {
+        "family": "spline",
+        "widths": [
+          128,
+          128
+        ],
+        "subnet_dropout": 0.0
+      },
+      "resume_supported": false,
+      "payload_bytes": {
+        "model.keras": 6255717,
+        "state.npz": 5507806
+      }
+    }
+  },
+  "payload_scope": "full model/state files and full checkpoint variable lists remain outside Git; no asset promoted"
+}

@@ -1,0 +1,87 @@
+{
+  "format": "heston_spread_development_package_manifest_v1",
+  "source_files": {
+    "producer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/plot_heston_spread_development.py",
+      "sha256": "d859cf943d57f810b51ff1563de94a71f6b6b5a992ec7353edfc01c2b4131167"
+    },
+    "baseline_run": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1/run.json",
+      "sha256": "65fed2d25922b09b33593c6f10943043c37d4fbaa90a8133fb34b09b3922bc15"
+    },
+    "control_run": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero/run.json",
+      "sha256": "aa1c08b96848b1689a9162f363e248e79b59acd28f94d9236f475cd93b5a5442"
+    },
+    "baseline_training": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1/training.json",
+      "sha256": "2f4413150ff4c4ad3c40f1dc4a40c09d591755d0937a36aaf9714a02d9bdec47"
+    },
+    "control_training": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero/training.json",
+      "sha256": "26219804a5bf2747c385baefd590ad8e68c1fdc2a3e1dcaecdfb65c76bc92b55"
+    },
+    "baseline_curve": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1/learning-curve.json",
+      "sha256": "979395e4722fea7e11f48e8770a5923026e1fe75ade4fc5f5a7075ecdb30d4fc"
+    },
+    "control_curve": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero/learning-curve.json",
+      "sha256": "0d0e10548cedf481f1c6698645d9f02dae274b42796c8a75f347be4d290f7869"
+    },
+    "baseline_initial_probes": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1/initial-probes.json",
+      "sha256": "9db92d9f016dd6bd0c59a016a84db78df5028bed59707681fb863e3d61531689"
+    },
+    "control_initial_probes": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero/initial-probes.json",
+      "sha256": "9db92d9f016dd6bd0c59a016a84db78df5028bed59707681fb863e3d61531689"
+    },
+    "baseline_10k_checkpoint_record": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1/checkpoints/update-010000/checkpoint.json",
+      "sha256": "a1fddf7b9ce6bc0506b2acc0437e493dcd33150ab6a3b822dd8b8dd68f626cd5"
+    },
+    "control_10k_checkpoint_record": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero/checkpoints/update-010000/checkpoint.json",
+      "sha256": "4f0190fc8a87351dc4dbf2df75a338ba05a5ff9b76420d92fa700cf9832e77e1"
+    },
+    "baseline_10k": {
+      "path": "evidence/pilot-results/2026-11-09/heston-spread-baseline/evaluation-update-010000-provisional.json",
+      "sha256": "f9aa11e983ab4cc858b20ccd81bf78c528b364cb1b33cd8d52d7a26d569bf5d0"
+    },
+    "control_10k": {
+      "path": "evidence/pilot-results/2026-11-09/heston-spread-baseline/evaluation-dropout-zero-update-010000-provisional.json",
+      "sha256": "639ace690e604a501c803eb5b413b98ec32e959abf0226c920ae69978bbc898e"
+    },
+    "baseline_2k": {
+      "path": "evidence/pilot-results/2026-11-09/heston-spread-baseline/evaluation-update-002000-provisional.json",
+      "sha256": "c1d0b14ad8de3ad5a3f2034b00a942cb12659a6e6ef1f42d8267f00f887119f5"
+    }
+  },
+  "copied_records": {
+    "learning-curve.json": {
+      "original_sha256": "0d0e10548cedf481f1c6698645d9f02dae274b42796c8a75f347be4d290f7869",
+      "copied_sha256": "0d0e10548cedf481f1c6698645d9f02dae274b42796c8a75f347be4d290f7869"
+    },
+    "training.json": {
+      "original_sha256": "26219804a5bf2747c385baefd590ad8e68c1fdc2a3e1dcaecdfb65c76bc92b55",
+      "copied_sha256": "26219804a5bf2747c385baefd590ad8e68c1fdc2a3e1dcaecdfb65c76bc92b55"
+    },
+    "initial-probes.json": {
+      "original_sha256": "9db92d9f016dd6bd0c59a016a84db78df5028bed59707681fb863e3d61531689",
+      "copied_sha256": "9db92d9f016dd6bd0c59a016a84db78df5028bed59707681fb863e3d61531689"
+    }
+  },
+  "generated_files_sha256": {
+    "run.json": "eb2c7a379f21b655179f16160e5d7a94ef26ab523d91b1a4fba691a2c2702598",
+    "training.json": "26219804a5bf2747c385baefd590ad8e68c1fdc2a3e1dcaecdfb65c76bc92b55",
+    "learning-curve.json": "0d0e10548cedf481f1c6698645d9f02dae274b42796c8a75f347be4d290f7869",
+    "initial-probes.json": "9db92d9f016dd6bd0c59a016a84db78df5028bed59707681fb863e3d61531689",
+    "checkpoint-payloads.json": "e954447fa61dda13f3cd040d684e8ffe2692e52cab5c0d8ea200db4977b68703",
+    "comparison.json": "3c55807fc79f64ac0187b6d4c7e5e7db532f65939e55990ea353af78b1c92a35",
+    "development-comparison.png": "e23367855389b839028ecb7ade3d437e4ca0cdb96aee09154f504910803579ff",
+    "README.md": "bddc5a012b8d850dcbe3a39c1376c953157b89961b19f2a78b61795f4350566e"
+  },
+  "scientific_acceptance": false,
+  "reserved_arrays_opened": false
+}
