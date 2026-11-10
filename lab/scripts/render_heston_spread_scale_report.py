@@ -161,6 +161,17 @@ def quantiles(record, name, *, product=False):
     return value
 
 
+def source_product_quantiles(record, name):
+    """Skip source interval metadata; validate any explicitly declared quantiles."""
+    value = record.get("products", {}).get(name)
+    if not isinstance(value, dict) or "quantiles_05_50_95" not in value:
+        return None
+    result = quantiles(record, name, product=True)
+    if result is None:
+        raise ValueError(f"missing explicitly declared product quantiles: {name}")
+    return result
+
+
 def reference_records(summary, inputs):
     result = {}
     for ref in summary.get("references", []):
@@ -180,8 +191,8 @@ def reference_records(summary, inputs):
                     raise ValueError("ready reference omits a declared parameter")
             for name in ref.get("products", {}):
                 q = quantiles(ref, name, product=True)
-                if not any((quantiles(value, name, product=True) is not None
-                            and np.array_equal(quantiles(value, name, product=True), q)) for value in raw):
+                source_quantiles = [source_product_quantiles(value, name) for value in raw]
+                if not any(value is not None and np.array_equal(value, q) for value in source_quantiles):
                     raise ValueError("reference product quantiles lack a matching compact source")
             if ref.get("joint_c") is not None:
                 expected_c = {k: v for k, v in ref["joint_c"].items() if k != "scope"}

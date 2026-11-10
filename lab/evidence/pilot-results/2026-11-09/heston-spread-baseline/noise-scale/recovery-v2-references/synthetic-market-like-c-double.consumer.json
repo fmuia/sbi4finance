@@ -1,0 +1,395 @@
+{
+  "format": "heston_spread_scale_reference_consumption_v1",
+  "status": "completed",
+  "protocol_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-reference-protocol.json",
+  "protocol_sha256": "14c016581ad1981df650758405306d6098f19ff4e74a127932f88088d77522bc",
+  "job": {
+    "id": "synthetic-market-like-c-double",
+    "case_id": "synthetic-market-like",
+    "mode": "double",
+    "runner_kwargs": {
+      "infer_c": false,
+      "c": 2.0
+    },
+    "task": {
+      "format": "heston_spread_task_v1",
+      "model": "heston",
+      "measure": "Q",
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "prior_bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          10.0
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          3.0
+        ],
+        [
+          -0.95,
+          -0.1
+        ]
+      ],
+      "prior": "independent Uniform in physical coordinates",
+      "infer_c": false,
+      "fixed_c": 2.0,
+      "c_bounds": [
+        0.5,
+        2.0
+      ],
+      "quote_count": 54,
+      "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+      "observation_model": "independent Gaussian with price SD c * half_spread",
+      "pricing_controls": {
+        "c_min": 0.5,
+        "numerical_fraction": 0.02,
+        "quadrature_ladder": [
+          [
+            256,
+            150.0
+          ],
+          [
+            512,
+            300.0
+          ],
+          [
+            1024,
+            600.0
+          ],
+          [
+            2048,
+            1200.0
+          ],
+          [
+            4096,
+            2400.0
+          ],
+          [
+            8192,
+            4800.0
+          ],
+          [
+            16384,
+            9600.0
+          ]
+        ]
+      }
+    },
+    "names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        10.0
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        3.0
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "observation_sha256": "2fff2664136ba888e2f75c83b230ec53e0f31a522f74c6801ed2654802f9ed4f",
+    "generating_c": 1.0,
+    "case_kind": "synthetic",
+    "physical_truth": [
+      0.027111476938590673,
+      4.33564875507931,
+      0.056477632243131036,
+      1.7993356588948335,
+      -0.6674551198176153
+    ],
+    "same_observations_as_fixed_c1": true,
+    "role": "synthetic inference study",
+    "evidence_out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-market-like-c-double",
+    "payload_out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-references/synthetic-market-like-c-double"
+  },
+  "source_sha256": {
+    "runner": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    },
+    "spread_likelihood": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_spread.py",
+      "sha256": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca"
+    },
+    "checked_pricer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_pilot.py",
+      "sha256": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b"
+    },
+    "runtime_model": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/model.py",
+      "sha256": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+    },
+    "reference": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/reference.py",
+      "sha256": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056"
+    },
+    "initialization": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/reference_initialization.py",
+      "sha256": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f"
+    },
+    "likelihood_op": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/pymc_reference_op.py",
+      "sha256": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b"
+    },
+    "partial_writer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/calibration_reference.py",
+      "sha256": "070f3199645faabe8032132d13c6b1859d053d9b8717334d65ce157f707ef6b8"
+    },
+    "pyproject.toml": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/pyproject.toml",
+      "sha256": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f"
+    },
+    "pixi.lock": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/pixi.lock",
+      "sha256": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+    },
+    "scale_consumer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_reference.py",
+      "sha256": "191b0482fa73ec82f5e88fa3d8022c6fc502e5f9120a9b2dc37d25ceebed9eb3"
+    },
+    "reference_binding": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_baseline.py",
+      "sha256": "f899e126b4f9098b06d022b39dadd0f382d200d29ae4b8e2e52550dba808f7e0"
+    }
+  },
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false,
+  "sampler_attempts_are_not_resumable": true,
+  "result": {
+    "status": "completed",
+    "reference_ready": true,
+    "job_id": "synthetic-market-like-c-double",
+    "run_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-market-like-c-double/run.json",
+    "run_sha256": "d62eb946819abcc847a5ca421cf0c01f97604f1dc01ebb260084b6599bf4a0c7",
+    "usage": {
+      "wall_seconds": 671.5966027500108,
+      "cpu_seconds": 667.7045029999999,
+      "limit_seconds": 900.0
+    },
+    "task": {
+      "format": "heston_spread_task_v1",
+      "model": "heston",
+      "measure": "Q",
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "prior_bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          10.0
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          3.0
+        ],
+        [
+          -0.95,
+          -0.1
+        ]
+      ],
+      "prior": "independent Uniform in physical coordinates",
+      "infer_c": false,
+      "fixed_c": 2.0,
+      "c_bounds": [
+        0.5,
+        2.0
+      ],
+      "quote_count": 54,
+      "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+      "observation_model": "independent Gaussian with price SD c * half_spread",
+      "pricing_controls": {
+        "c_min": 0.5,
+        "numerical_fraction": 0.02,
+        "quadrature_ladder": [
+          [
+            256,
+            150.0
+          ],
+          [
+            512,
+            300.0
+          ],
+          [
+            1024,
+            600.0
+          ],
+          [
+            2048,
+            1200.0
+          ],
+          [
+            4096,
+            2400.0
+          ],
+          [
+            8192,
+            4800.0
+          ],
+          [
+            16384,
+            9600.0
+          ]
+        ]
+      }
+    },
+    "observation_sha256": "2fff2664136ba888e2f75c83b230ec53e0f31a522f74c6801ed2654802f9ed4f",
+    "same_observations_as_fixed_c1": true,
+    "scientific_acceptance": false,
+    "diagnostics_sha256": "b9b5e75f65eeba6d21cc18f26c83a889ef65f60fa12038a130c10431dc5d1c47",
+    "chain_payload_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-references/synthetic-market-like-c-double/attempt-1/chains.npz",
+    "chain_payload_sha256": "bef0a0cb5c8bb2c05de9e333891f8704beb4fd6cf5acaaee94de18cae641fdef",
+    "parameter_mcmc_diagnostics": {
+      "parameters[initial_variance]": {
+        "mean": 0.02712521800110794,
+        "sd": 0.00011285585961197858,
+        "eti89_lb": 0.02694589877287077,
+        "eti89_ub": 0.02730821660180608,
+        "ess_bulk": 3032.4499202800016,
+        "ess_tail": 4212.39636902792,
+        "r_hat": 1.0014313304826277,
+        "mcse_mean": 2.0499619259048473e-06,
+        "mcse_sd": 1.2341209701327125e-06
+      },
+      "parameters[kappa]": {
+        "mean": 4.318460030956846,
+        "sd": 0.08835888231179438,
+        "eti89_lb": 4.177687647674932,
+        "eti89_ub": 4.462822476994663,
+        "ess_bulk": 2848.05835632683,
+        "ess_tail": 3920.1545924639186,
+        "r_hat": 1.0010718954810134,
+        "mcse_mean": 0.0016570370666116683,
+        "mcse_sd": 0.0009936666326983872
+      },
+      "parameters[theta]": {
+        "mean": 0.05665298670759508,
+        "sd": 0.0003390196180796545,
+        "eti89_lb": 0.056108906353175864,
+        "eti89_ub": 0.05718817075110734,
+        "ess_bulk": 2807.7553019130164,
+        "ess_tail": 4011.71529482137,
+        "r_hat": 1.0012383312274071,
+        "mcse_mean": 6.3997066840219475e-06,
+        "mcse_sd": 3.743734145144448e-06
+      },
+      "parameters[vol_of_vol]": {
+        "mean": 1.8115278525145246,
+        "sd": 0.019480211542970825,
+        "eti89_lb": 1.7804588926606881,
+        "eti89_ub": 1.842925805435906,
+        "ess_bulk": 2762.455020813823,
+        "ess_tail": 3823.909262195994,
+        "r_hat": 1.000785958185546,
+        "mcse_mean": 0.00037069880546577874,
+        "mcse_sd": 0.00022116407004394182
+      },
+      "parameters[rho]": {
+        "mean": -0.6644683891348041,
+        "sd": 0.0020577024504557823,
+        "eti89_lb": -0.6677609795526206,
+        "eti89_ub": -0.6612017006224655,
+        "ess_bulk": 2966.763270386247,
+        "ess_tail": 4295.481330185929,
+        "r_hat": 1.0006047616733802,
+        "mcse_mean": 3.7787914533907414e-05,
+        "mcse_sd": 2.1771737082902955e-05
+      }
+    },
+    "products_mcmc_diagnostics": {
+      "parameters[control]": {
+        "mean": 0.030511650783174065,
+        "sd": 9.70489796636051e-05,
+        "eti89_lb": 0.03035550545148352,
+        "eti89_ub": 0.030666455394306787,
+        "ess_bulk": 3051.698424836457,
+        "ess_tail": 4264.140563140721,
+        "r_hat": 1.0019858534033284,
+        "mcse_mean": 1.7569795597825455e-06,
+        "mcse_sd": 1.0502853619569163e-06
+      },
+      "parameters[affected]": {
+        "mean": 0.05294553995426979,
+        "sd": 0.00018555490577196431,
+        "eti89_lb": 0.05265262409061959,
+        "eti89_ub": 0.05323892491807425,
+        "ess_bulk": 2813.481238054035,
+        "ess_tail": 3754.9133104659254,
+        "r_hat": 1.0008233028758144,
+        "mcse_mean": 3.4999205382690946e-06,
+        "mcse_sd": 2.0912435675480347e-06
+      }
+    },
+    "pointwise_precision_passed": true,
+    "parameter_quantiles_05_50_95": {
+      "initial_variance": [
+        0.02694054218891627,
+        0.02712562469950721,
+        0.027313069761125457
+      ],
+      "kappa": [
+        4.174757422726668,
+        4.316773722699433,
+        4.466317351850502
+      ],
+      "theta": [
+        0.05609296383252227,
+        0.05664862074009682,
+        0.057203650974301995
+      ],
+      "vol_of_vol": [
+        1.7794484789428884,
+        1.8114909090176758,
+        1.8439860911741974
+      ],
+      "rho": [
+        -0.6678769139560283,
+        -0.6644549289151922,
+        -0.6610991564696007
+      ]
+    }
+  },
+  "seconds": 671.6170321670361
+}

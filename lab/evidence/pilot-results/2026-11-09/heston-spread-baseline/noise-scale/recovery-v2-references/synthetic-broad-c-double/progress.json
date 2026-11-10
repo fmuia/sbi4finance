@@ -1,0 +1,8 @@
+{
+  "attempt": 1,
+  "phase": "likelihood",
+  "evaluations": 146000,
+  "wall_seconds": 161.7629970421549,
+  "cpu_seconds": 157.666899,
+  "limit_seconds": 900.0
+}

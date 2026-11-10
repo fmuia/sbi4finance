@@ -1,0 +1,43 @@
+{
+  "format": "heston_spread_scale_verification_v1",
+  "full_lab_suite": {
+    "command": "python -m unittest discover -s tests -v",
+    "environment": "core-reference, KERAS_BACKEND=jax, single-thread BLAS, writable PyTensor/Numba caches",
+    "tests": 668,
+    "seconds": 213.05,
+    "status": "passed",
+    "log_path": "/private/tmp/sbi4finance-noise-scale-tests.log",
+    "log_sha256": "395add0f247b82c3d3cdfc0561bb1bd0955fee6032406681962898d5316bdcb3"
+  },
+  "later_focused_tests": [
+    {
+      "file": "tests/test_heston_spread_scale_recovery_v2.py",
+      "tests": 3,
+      "status": "passed"
+    },
+    {
+      "file": "tests/test_heston_spread_scale_comparison.py",
+      "tests": 6,
+      "status": "passed"
+    }
+  ],
+  "release_checks": {
+    "manifest": "current; 153 artifacts, zero copies refreshed",
+    "claims": "current",
+    "runtime_boundary": "183 shared symbols, no duplicated lab implementations"
+  },
+  "reference_campaign": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-campaign.json",
+    "sha256": "303e70c448b12af1ec0bc011068b16bb3c8ad48db3de5de387cb36784c0b6352",
+    "ready_jobs": 7,
+    "charged_inner_cpu_seconds_including_failures_and_preflight": 2947.855696,
+    "inner_cpu_cap": 6300,
+    "original_deadline_preserved": true,
+    "maximum_rhat": 1.0089272455516012,
+    "minimum_bulk_or_tail_ess": 421.35690769334724
+  },
+  "report_producer_sha256": "14040606cd2a6297d3669e8fe8dc1159fbb59398c14397124adccf4084a91d42",
+  "scientific_acceptance": false,
+  "reserved_test_arrays_opened": false,
+  "numerical_scope": "Reference readiness includes sampled posterior-point numerical refinement; no prior-wide pricing certificate is inferred."
+}

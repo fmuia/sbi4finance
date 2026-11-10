@@ -1,8 +1,29 @@
 # One Gaussian scale: fixed sensitivity and joint inference
 
-**Specification, 10 November 2026.** This bounded study examines the noise-scale step of the Heston plan on the **existing 54 actual SPXW contracts**. It follows the user-authorized scale investigation in [PR #85](https://github.com/fmuia/sbi4finance/pull/85). The frozen [study protocol](protocol.json) defines the scientific scope, [reference protocol](reference-protocol.json) binds the seven reference jobs and reused c=1 cases, and the separate [training protocol](training-protocol.json) must be persisted before the new fit. This specification claims no new reference, neural or release result.
+**Completed development study, 10 November 2026; no accepted neural checkpoint.** This study examines the noise-scale step of the Heston plan on the **existing 54 actual SPXW contracts**. It follows the user-authorized scale investigation in [PR #85](https://github.com/fmuia/sbi4finance/pull/85). The [offline HTML report](report.html) shows the results, recovery/SBC plots and executed network/rate code. The frozen [study protocol](protocol.json), original [reference protocol](reference-protocol.json) and [training protocol](training-protocol.json) were persisted before their respective runs. The explicit [cache recovery addendum](reference-recovery-v2.json) preserves the original targets and budgets.
 
 The five physical Heston priors, contract geometry, carry, ACT/365F clock and observed half-spread profile remain unchanged. No grid labels, spread-profile variation, additional tau/vega component, flexible-input training or Bergomi work belongs to this study. The earlier fixed-c neural failures and capped boundary reference remain under their original identities.
+
+## Results and reflection
+
+All seven new reference targets pass their declared convergence and sampled pricing checks. Fixed-scale sensitivity behaves as expected on the same observed prices:
+
+| Synthetic case | Physical 90% widths at c=.5 / c=1 | Widths at c=2 / c=1 | Joint reference c central-90% interval | 60k neural c width / joint reference width |
+| --- | --- | --- | --- | --- |
+| Broad | .477–.494 | 1.93–1.99 | [.938,1.315] | 3.48 |
+| Market-like | .495–.514 | 1.97–2.10 | [.970,1.364] | 3.33 |
+
+The fixed-scale ranges span the five physical parameters. They are descriptive changes between different assumed targets, not accuracy scores. The joint references establish useful scale information in both synthetic cases. The current neural approximation misses much of it: at 60k its median c interval width is 1.336 versus the Uniform prior's 1.35, and its posterior-median recovery RMSE is .4452 versus .4371 for the constant prior-median predictor.
+
+All six marginal population SBC screens pass at 60k. Nevertheless, the matched conditional panels fail at every predeclared endpoint (10k,50k,60k). At 60k, broad-case c has .94 reference-SD mean error and 3.48× width; market-like c has 1.03 SD error and 3.33× width. These are definite failures under the predeclared Monte Carlo-aware criteria. Strong physical-parameter recovery and reasonable pooled ECDFs coexist with these conditional errors. Neural ignorance does not establish that c is unidentifiable.
+
+The separate real-market reference concentrates at the illustration prior's upper bound: c mean 1.99904, SD .00097, central-90% interval [1.99710,1.99995], with all sampled mass above 1.95. The network also fails that matched target. Boundary pressure is a warning about residual-scale support, model/data assumptions and fit under this truncated working model; it does not identify pure quote noise or justify retrospectively widening the prior.
+
+The single six-target fit completed 60k finite updates in 480.48 seconds, with exact seeded checkpoint reload at all three endpoints. All 20k physical training rows were seen; reserved arrays remained unopened. The [neural exports](neural-evaluations/060000/evaluation.json) preserve the original population results and conditional samples. The [final comparisons](evaluations/060000/evaluation.json) consume those same samples after reference completion; no additional neural sampling or SBC recomputation occurs.
+
+Across the seven references, maximum R-hat is 1.00893 and minimum bulk/tail ESS is 421.36. The largest sampled price-refinement change is approximately 1.03e-5 of the minimum supported measurement SD, and maximum absolute log-likelihood change is 6.81e-5. These sampled checks support numerical accuracy where tested, not a prior-wide certificate. Charged reference CPU, including failed zero-draw startup work and the symbolic cache preflight, is 2,947.86 of 6,300 seconds; the original wall deadline was preserved. [Recovery records](recovery-v2-campaign.json) retain all costs and failures; [verification](verification.json) records software and compute checks.
+
+**Stop for reflection here.** The scale study is complete; neither the old fixed-c estimator nor the new joint estimator is accepted. A further neural improvement study must keep its target and comparisons explicit. Revised-grid labels, flexible inputs and Bergomi remain unstarted.
 
 ## Two inference questions on the same observations
 
