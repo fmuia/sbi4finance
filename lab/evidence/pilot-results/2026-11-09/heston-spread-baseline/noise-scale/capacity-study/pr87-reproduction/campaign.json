@@ -1,0 +1,65 @@
+{
+  "format": "heston_pr87_reproduction_campaign_v1",
+  "status": "complete",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/protocol.json",
+    "sha256": "e522de40e2cb554e18f4826a158e898aca7c5c7070304fd7fc7ef42db32ae67b"
+  },
+  "started_utc": "2026-11-10T23:46:57.067464+00:00",
+  "git_revision": "8bc3721ab0a09e3eb07ac537a87f89be2f6a89d0",
+  "jobs": [
+    {
+      "id": "training",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/reproduce_heston_pr87.py",
+        "--task",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/task.json",
+        "--protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/protocol.json",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-reproduction/training",
+        "--worker"
+      ],
+      "wall_seconds_limit": 1800,
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-reproduction/training.log",
+      "status": "complete",
+      "pid": 56382,
+      "returncode": 0,
+      "seconds": 58.281359291868284,
+      "record": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-reproduction/training/training.json",
+        "sha256": "b1479b2a75a693e30e1b2073c6128ce99967f7eec6808ee860075166a19b0ac1"
+      }
+    },
+    {
+      "id": "evaluation",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_reproduction.py",
+        "--checkpoint",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-reproduction/training/checkpoints/epoch-000200",
+        "--protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/protocol.json",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/evaluation",
+        "--payload-out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-reproduction/evaluation",
+        "--worker"
+      ],
+      "wall_seconds_limit": 900,
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-reproduction/evaluation.log",
+      "status": "complete",
+      "pid": 56488,
+      "returncode": 0,
+      "seconds": 130.95939145819284,
+      "record": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/evaluation/evaluation.json",
+        "sha256": "2faee0d467ebaae06940e464d01df7c3c28cdd70f363882946b2afec44e98cd9"
+      }
+    }
+  ],
+  "automatic_retry": false,
+  "scientific_acceptance": false,
+  "seconds": 189.24816795787774
+}

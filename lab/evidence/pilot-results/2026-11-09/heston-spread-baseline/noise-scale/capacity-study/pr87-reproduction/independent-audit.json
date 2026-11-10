@@ -1,0 +1,114 @@
+{
+  "format": "heston_pr87_independent_audit_v1",
+  "status": "passed",
+  "audited_utc": "2026-11-10T23:51:23.737318+00:00",
+  "audit_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-reproduction/independent_audit.py",
+    "sha256": "cddd9229a7d72666e2bda22bb23df8d8f1f2110b137059af4c753ba9258e03ea"
+  },
+  "protocol_sha256": "e522de40e2cb554e18f4826a158e898aca7c5c7070304fd7fc7ef42db32ae67b",
+  "source_commit": "8bc3721ab0a09e3eb07ac537a87f89be2f6a89d0",
+  "current_commit": "8bc3721ab0a09e3eb07ac537a87f89be2f6a89d0",
+  "bound_sources_and_inputs_verified": 19,
+  "preserved_artifacts": {
+    "catalog_sha256": "06abafb37105523d85c847e75ffe56e2a3f39ba6e9c1379694a47f328dee4257",
+    "files_verified": 406,
+    "bytes_verified": 231794159,
+    "all_unchanged": true
+  },
+  "training": {
+    "epochs": 200,
+    "updates": 8000,
+    "batch_size": 256,
+    "batches_per_epoch": 40,
+    "tail_batch_size": 16,
+    "distinct_training_examples": 10000,
+    "distinct_validation_examples": 100,
+    "pricing_calls_recorded": 10100,
+    "presentations": 2000000,
+    "history_entries_per_metric": 200,
+    "final_loss": 0.3313259482383728,
+    "final_validation_loss": 0.2636227011680603,
+    "optimizer": {
+      "module": "keras.optimizers",
+      "class_name": "AdamW",
+      "config": {
+        "learning_rate": {
+          "module": "keras.optimizers.schedules",
+          "class_name": "CosineDecay",
+          "config": {
+            "initial_learning_rate": 5e-05,
+            "decay_steps": 7600,
+            "alpha": 0,
+            "warmup_target": 0.0005,
+            "warmup_steps": 400
+          },
+          "registered_name": null
+        },
+        "weight_decay": 0.005,
+        "clipnorm": 1.5,
+        "global_clipnorm": null,
+        "clipvalue": null,
+        "use_ema": false,
+        "ema_momentum": 0.99,
+        "ema_overwrite_frequency": null,
+        "loss_scale_factor": null,
+        "gradient_accumulation_steps": null,
+        "beta_1": 0.9,
+        "beta_2": 0.999,
+        "epsilon": 1e-07,
+        "amsgrad": false
+      },
+      "registered_name": null
+    },
+    "native_loss": "FlowMatching velocity mean squared error; not density negative log likelihood"
+  },
+  "data": {
+    "array_metadata_verified": 18,
+    "all_saved_arrays_float64": true,
+    "sequential_seed9011_priors_bit_exact": true,
+    "seed9011_observation_noise_bit_exact": true,
+    "normalized_observations_bit_exact": true,
+    "before_after_rng_states_match": true,
+    "train_validation_and_historical512_have_no_identical_parameter_rows": true,
+    "native_validation_and_historical512_have_no_identical_quote_rows": true,
+    "independence_scope": "Independent simulator streams and no duplicate saved parameter/quote rows; statistical independence is established by generation, not by a duplicate test alone.",
+    "train_truth_sha256": "9597e484cea9f58e784312382817926081dc9e82f47a5d3ea93909702437b185",
+    "native_validation_truth_sha256": "2f706d67993aed64acec46a529ba34f82ee1db90d76bc2ac73389c379e5e3640",
+    "historical512_truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+  },
+  "whitening": {
+    "training_only": true,
+    "mean_covariance_eigenvectors_matrix_bit_exact": true,
+    "checkpoint_matches_training_file": true,
+    "floor": 0.017078732302818343,
+    "condition_number_before": 1117816.1653261979,
+    "condition_number_after": 1.0000000002877478
+  },
+  "checkpoint": {
+    "epoch": 200,
+    "updates": 8000,
+    "all_payload_hashes_match": true,
+    "full_state_arrays_verified": {
+      "trainable": 33,
+      "non_trainable": 10,
+      "optimizer": 67,
+      "metrics": 2
+    },
+    "native_archive_arrays_matching_sidecar_before_restore": {
+      "trainable": 33,
+      "non_trainable": 3,
+      "optimizer": 67,
+      "metrics": 0
+    },
+    "full_state_restoration_bit_exact": true,
+    "target_standardizer_count": 2000000
+  },
+  "no_pricing_fit_or_posterior_query_performed": true,
+  "scientific_acceptance": false,
+  "scope": "Artifact, protocol and implementation audit only; calibration and reference agreement require their separate numerical evaluation.",
+  "python": "3.12.16",
+  "numpy": "2.5.3",
+  "bayesflow": "2.1.0",
+  "seconds": 2.2185865421779454
+}

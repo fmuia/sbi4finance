@@ -1,0 +1,346 @@
+{
+  "format": "heston_pr87_reproduction_scientific_figures_v1",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/protocol.json",
+    "sha256": "e522de40e2cb554e18f4826a158e898aca7c5c7070304fd7fc7ef42db32ae67b"
+  },
+  "evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/evaluation/evaluation.json",
+    "sha256": "2faee0d467ebaae06940e464d01df7c3c28cdd70f363882946b2afec44e98cd9"
+  },
+  "native_history": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-reproduction/training/native-epoch-history.json",
+    "sha256": "fe24c40bc72cd00090611419fd885c4ddcf2404f3cc03e42ad863c4c773e34d2"
+  },
+  "producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/export_heston_pr87_reproduction_figures.py",
+    "sha256": "485e30cbbad0fa2b090010642de1a462c6ef5a151724cc7331425256fd0b7574"
+  },
+  "presentation_helper": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_reproduction.py",
+    "sha256": "e53979d3d8358347c2767033f2e758ceb68b46dd929d38915b2c4cc5fa948821"
+  },
+  "versions": {
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.3"
+  },
+  "exports": {
+    "native-learning-curves": {
+      "title": "Native training and validation objective",
+      "description": "FlowMatching objective, not density NLL; absolute magnitudes cannot be compared with historical spline losses.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/scientific-figures/native-learning-curves.png",
+          "sha256": "7726acb733dc0138be523e6d9e8e26881df93b683995ebdb7f81fba08f60f857",
+          "bytes": 89809
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/scientific-figures/native-learning-curves.svg",
+          "sha256": "28e478621c7166018fd9d651fc5d869867bd34f5ae0c229c8e596d88fbad8b3c",
+          "bytes": 23489
+        }
+      }
+    },
+    "historical-recovery": {
+      "title": "Historical full-prior six-target recovery",
+      "description": "All 512 medians and fixed-index 32 intervals; displayed raw out-of-prior results expand the y axis.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/scientific-figures/historical-recovery.png",
+          "sha256": "8646298d26173f316ad8cff3d34e894adcc4dd22de16a9de36515ea5dafe6440",
+          "bytes": 428721
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/scientific-figures/historical-recovery.svg",
+          "sha256": "ba7a18051ef32901e00077cda458b6339caf93ca2ce68503dcc1823640c02d31",
+          "bytes": 639783
+        }
+      },
+      "all_rows_plotted": 512,
+      "interval_zero_based_rows": [
+        0,
+        16,
+        32,
+        48,
+        64,
+        80,
+        96,
+        112,
+        128,
+        144,
+        160,
+        176,
+        192,
+        208,
+        224,
+        240,
+        256,
+        272,
+        288,
+        304,
+        320,
+        336,
+        352,
+        368,
+        384,
+        400,
+        416,
+        432,
+        448,
+        464,
+        480,
+        496
+      ],
+      "quantiles": [
+        0.05,
+        0.5,
+        0.95
+      ],
+      "raw_draws_clipped_or_filtered": false,
+      "axis_extents": [
+        {
+          "target": "initial_variance",
+          "plotted_y_limits": [
+            0.005931629240512848,
+            0.16460813730955123
+          ],
+          "minimum_displayed_interval": 0.016320209950208664,
+          "maximum_displayed_interval": 0.16083012521266937,
+          "minimum_all_medians": 0.009709641337394714,
+          "maximum_all_medians": 0.16056057810783386
+        },
+        {
+          "target": "kappa",
+          "plotted_y_limits": [
+            -0.25505292415618896,
+            11.135049223899841
+          ],
+          "minimum_displayed_interval": 0.816798210144043,
+          "maximum_displayed_interval": 10.863856315612793,
+          "minimum_all_medians": 0.016139984130859375,
+          "maximum_all_medians": 10.63640308380127
+        },
+        {
+          "target": "theta",
+          "plotted_y_limits": [
+            -0.0008403338491916662,
+            0.1649581767618656
+          ],
+          "minimum_displayed_interval": 0.004188158083707094,
+          "maximum_displayed_interval": 0.16081713140010834,
+          "minimum_all_medians": 0.0031072497367858887,
+          "maximum_all_medians": 0.16101059317588806
+        },
+        {
+          "target": "vol_of_vol",
+          "plotted_y_limits": [
+            -0.18874893374741078,
+            3.126513146236539
+          ],
+          "minimum_displayed_interval": -0.1098141223192215,
+          "maximum_displayed_interval": 3.0475783348083496,
+          "minimum_all_medians": -0.01643061637878418,
+          "maximum_all_medians": 2.9863667488098145
+        },
+        {
+          "target": "rho",
+          "plotted_y_limits": [
+            -1.001720526907593,
+            -0.03569878851994872
+          ],
+          "minimum_displayed_interval": -0.9787200093269348,
+          "maximum_displayed_interval": -0.05869930610060692,
+          "minimum_all_medians": -0.9615641832351685,
+          "maximum_all_medians": -0.08357506990432739
+        },
+        {
+          "target": "c",
+          "plotted_y_limits": [
+            0.36665274798870084,
+            2.3477335959672927
+          ],
+          "minimum_displayed_interval": 0.4395781457424164,
+          "maximum_displayed_interval": 2.2043933868408203,
+          "minimum_all_medians": 0.41382133960723877,
+          "maximum_all_medians": 2.300565004348755
+        }
+      ]
+    },
+    "historical-sbc": {
+      "title": "Historical full-prior marginal SBC",
+      "description": "Simultaneous DKW band over six marginal targets within this panel; descriptive reused development data, not independent acceptance.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/scientific-figures/historical-sbc.png",
+          "sha256": "2a10fe202af14ba4b9d9f7e1cfd21d5841e0c44cf5c8691b639145018088c8c4",
+          "bytes": 172285
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/scientific-figures/historical-sbc.svg",
+          "sha256": "bb6fecfcba19b8d4e3c95bf0436df2c95e3ca0b7e4d85fc5d320b5465fce2266",
+          "bytes": 89687
+        }
+      }
+    },
+    "native-recovery": {
+      "title": "Native 100-case notebook recovery",
+      "description": "All 100 saved medians; 34 fixed-index central 90% intervals. The fitted validation split is development evidence.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/scientific-figures/native-recovery.png",
+          "sha256": "dff56b7e32e304aae827fd0c5b05bf24136dfdba2203a7df803564b8a9bddb6e",
+          "bytes": 303393
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/scientific-figures/native-recovery.svg",
+          "sha256": "aafce5276ccab46fccc30675e61d06b30b3ab8edc500bc9cbb141ebcb7399d66",
+          "bytes": 245997
+        }
+      },
+      "all_rows_plotted": 100,
+      "interval_zero_based_rows": [
+        0,
+        3,
+        6,
+        9,
+        12,
+        15,
+        18,
+        21,
+        24,
+        27,
+        30,
+        33,
+        36,
+        39,
+        42,
+        45,
+        48,
+        51,
+        54,
+        57,
+        60,
+        63,
+        66,
+        69,
+        72,
+        75,
+        78,
+        81,
+        84,
+        87,
+        90,
+        93,
+        96,
+        99
+      ],
+      "quantiles": [
+        0.05,
+        0.5,
+        0.95
+      ],
+      "raw_draws_clipped_or_filtered": false,
+      "axis_extents": [
+        {
+          "target": "initial_variance",
+          "plotted_y_limits": [
+            0.003762273152824491,
+            0.17224230567226187
+          ],
+          "minimum_displayed_interval": 0.007773702498525381,
+          "maximum_displayed_interval": 0.16823087632656097,
+          "minimum_all_medians": 0.010346129536628723,
+          "maximum_all_medians": 0.1582053005695343
+        },
+        {
+          "target": "kappa",
+          "plotted_y_limits": [
+            -0.4624281566590071,
+            10.49628474228084
+          ],
+          "minimum_displayed_interval": -0.20150642096996307,
+          "maximum_displayed_interval": 10.235363006591797,
+          "minimum_all_medians": 0.17840790748596191,
+          "maximum_all_medians": 9.926050186157227
+        },
+        {
+          "target": "theta",
+          "plotted_y_limits": [
+            0.0034232725156471133,
+            0.16866847511846572
+          ],
+          "minimum_displayed_interval": 0.007357682101428509,
+          "maximum_displayed_interval": 0.16235941648483276,
+          "minimum_all_medians": 0.01047605276107788,
+          "maximum_all_medians": 0.16473406553268433
+        },
+        {
+          "target": "vol_of_vol",
+          "plotted_y_limits": [
+            -0.23604270294308663,
+            3.180718357115984
+          ],
+          "minimum_displayed_interval": -0.15469124913215637,
+          "maximum_displayed_interval": 3.0993669033050537,
+          "minimum_all_medians": 0.11267709732055664,
+          "maximum_all_medians": 2.9612457752227783
+        },
+        {
+          "target": "rho",
+          "plotted_y_limits": [
+            -1.0319171592593193,
+            -0.0766389325261116
+          ],
+          "minimum_displayed_interval": -1.0091724395751953,
+          "maximum_displayed_interval": -0.13456963002681732,
+          "minimum_all_medians": -0.9268964529037476,
+          "maximum_all_medians": -0.0993836522102356
+        },
+        {
+          "target": "c",
+          "plotted_y_limits": [
+            0.33295057341456413,
+            2.1964774020016193
+          ],
+          "minimum_displayed_interval": 0.377320259809494,
+          "maximum_displayed_interval": 2.1521077156066895,
+          "minimum_all_medians": 0.5089126825332642,
+          "maximum_all_medians": 2.105117082595825
+        }
+      ]
+    }
+  },
+  "protected_inputs": [
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/evaluation/evaluation.json",
+      "sha256": "2faee0d467ebaae06940e464d01df7c3c28cdd70f363882946b2afec44e98cd9"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/evaluation/native-recovery.npz",
+      "sha256": "ed111eb1e33cc3e3f00c04cff0aa503925a7243688209e2ff769cf92f85e0f27"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/evaluation/recovery.npz",
+      "sha256": "44ea352d5a4299cf990c4ba1d66079545c8db5d25713db12a3166dc504ed0ea1"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/protocol.json",
+      "sha256": "e522de40e2cb554e18f4826a158e898aca7c5c7070304fd7fc7ef42db32ae67b"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-reproduction/training/native-epoch-history.json",
+      "sha256": "fe24c40bc72cd00090611419fd885c4ddcf2404f3cc03e42ad863c4c773e34d2"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-reproduction/training/run.json",
+      "sha256": "b1479b2a75a693e30e1b2073c6128ce99967f7eec6808ee860075166a19b0ac1"
+    }
+  ],
+  "protected_inputs_unchanged": true,
+  "model_loaded": false,
+  "new_neural_sampling": false,
+  "new_pricing": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false,
+  "scope": "Post-run scientific plotting from saved raw-draw summaries; independent of the pre-fit frozen compact HTML presentation."
+}

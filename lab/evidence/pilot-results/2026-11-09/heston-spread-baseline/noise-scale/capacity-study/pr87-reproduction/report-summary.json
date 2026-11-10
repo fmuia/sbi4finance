@@ -1,0 +1,24 @@
+{
+  "format": "heston_pr87_reproduction_report_v1",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/protocol.json",
+    "sha256": "e522de40e2cb554e18f4826a158e898aca7c5c7070304fd7fc7ef42db32ae67b"
+  },
+  "evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/evaluation/evaluation.json",
+    "sha256": "2faee0d467ebaae06940e464d01df7c3c28cdd70f363882946b2afec44e98cd9"
+  },
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/report.html",
+    "sha256": "a908860e4950f20f4ed3105369835e5b54eaee0261547b6d304cea196d88d12f"
+  },
+  "report_bytes": 196888,
+  "inline_svg_count": 5,
+  "limit_bytes": 1048576,
+  "protected_inputs_unchanged": true,
+  "producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_reproduction.py",
+    "sha256": "e53979d3d8358347c2767033f2e758ceb68b46dd929d38915b2c4cc5fa948821"
+  },
+  "scientific_acceptance": false
+}
