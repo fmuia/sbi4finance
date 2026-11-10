@@ -1,0 +1,109 @@
+{
+  "format": "heston_spread_mcmc_recovery_report_verification_v1",
+  "status": "passed",
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/report.html",
+    "sha256": "c2da2b57662dd8ceefaedefb169661e2378ac23a44e2c798b7fbcbe1f3b20d3d"
+  },
+  "manifest": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/report-manifest.json",
+    "sha256": "a4d47fc74688def7fe95ad1d8e05c02716ae5e132712969ccb310765462ff09f"
+  },
+  "plot_summary": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/plot-summary.json",
+    "sha256": "d5490e819134c5740e0a20f8e52e38d47ba8459d377728b144d2aa26459b9e73"
+  },
+  "renderer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_spread_mcmc_recovery.py",
+    "sha256": "ad6996a8a0999eb48bd227a90a5cf267a0f5f2beaa9b979cf2846d63d37e82fa"
+  },
+  "reference_audit": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/reference-verification.json",
+    "sha256": "f1dfe902003f55bc7c23610be6c53170cac09237d031107dd3e9673ab0956b10"
+  },
+  "case_count": 8,
+  "ready_case_count": 7,
+  "unready_case_ids": [
+    "validation-00000487"
+  ],
+  "all_selected_cases_retained": true,
+  "all_six_reference_quantiles_validated": true,
+  "no_generating_truth_available_to_sampler": true,
+  "neural_model_queries": 0,
+  "sampler_or_likelihood_queries_by_report": 0,
+  "all_metrics_use_identical_seven_ready_cases": true,
+  "ready_case_metrics_match_independent_audit": true,
+  "descriptive_statistics": {
+    "mcmc": {
+      "cases": 7,
+      "c_median_rmse": 0.10002714036628951,
+      "c_truth_median_correlation": 0.9772872852044726,
+      "median_c_width90": 0.3964281497396054,
+      "mean_c_width90": 0.3592274667571367
+    },
+    "nn128": {
+      "cases": 7,
+      "c_median_rmse": 0.4669942584938512,
+      "c_truth_median_correlation": -0.2219189493246245,
+      "median_c_width90": 1.3685758709907532,
+      "mean_c_width90": 1.3611170904976981
+    },
+    "nn512": {
+      "cases": 7,
+      "c_median_rmse": 0.46906117115344664,
+      "c_truth_median_correlation": -0.15144737692413632,
+      "median_c_width90": 1.3569881319999695,
+      "mean_c_width90": 1.354042751448495
+    },
+    "prior": {
+      "cases": 7,
+      "c_median_rmse": 0.45913782516620266,
+      "c_truth_median_correlation": null,
+      "median_c_width90": 1.35,
+      "mean_c_width90": 1.35
+    }
+  },
+  "unready_reference_not_plotted_or_scored": true,
+  "dom": {
+    "inline_svg_figures": 2,
+    "duplicate_ids": false,
+    "missing_anchors": false,
+    "external_asset_urls": [],
+    "standalone_downloads_exist": true
+  },
+  "figures": {
+    "parameter-recovery.png": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/parameter-recovery.png",
+      "sha256": "b4cb74164e0f5173be46d445ef7b999ef2293817eb3fe27f7e1bfceefc1809f0"
+    },
+    "parameter-recovery.svg": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/parameter-recovery.svg",
+      "sha256": "feee6e581a9fdc840c3b0dee505f84290663a7b8848e901c7cefc87faed5108c"
+    },
+    "c-recovery.png": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/c-recovery.png",
+      "sha256": "6a043dbcd8d856f5d441bd6f8028639ec0e67d2e2b3e6179343a589d0577ff4c"
+    },
+    "c-recovery.svg": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/mcmc-recovery/c-recovery.svg",
+      "sha256": "646141d6f1211d0d9887856da2ee77e6b917517e7cb3be1961529b5f2480b202"
+    }
+  },
+  "posterior_intervals_are_central90_not_mcse": true,
+  "scope": "Selected-case joint recovery only; not SBC, a population coverage estimate or release acceptance. Case487 retained and explicitly unready; excluded from confident MCMC comparisons.",
+  "scientific_acceptance": false,
+  "visual_review_pending": false,
+  "checked_at_utc": "2026-11-10T20:43:46.600315+00:00",
+  "visual_review": {
+    "parameter_recovery_png_svg": true,
+    "c_recovery_png_svg": true,
+    "readable_axes_labels_legends": true,
+    "no_material_clipping": true,
+    "every_selected_neural_case_retained": 8,
+    "ready_joint_mcmc_cases_plotted": 7,
+    "unready_case_487_explicitly_flagged": true,
+    "posterior90_intervals_not_mcse": true
+  },
+  "float32_neural_rmse_tolerance": 1e-07,
+  "figure_scope": "Six parameters jointly inferred; all8 neural cases and all7 ready MCMC cases retain their90-percent posterior intervals. Unready487 is not scored or plotted as a valid MCMC posterior."
+}

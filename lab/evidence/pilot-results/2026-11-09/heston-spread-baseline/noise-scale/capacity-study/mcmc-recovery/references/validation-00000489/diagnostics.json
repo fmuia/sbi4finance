@@ -1,0 +1,216 @@
+{
+  "parameters": {
+    "parameters[initial_variance]": {
+      "mean": 0.13840526093720767,
+      "sd": 7.787566481917696e-05,
+      "eti89_lb": 0.13828196134789206,
+      "eti89_ub": 0.13852967991721138,
+      "ess_bulk": 2185.1784131276027,
+      "ess_tail": 3415.7447392085846,
+      "r_hat": 1.0008679966364449,
+      "mcse_mean": 1.6682494641284124e-06,
+      "mcse_sd": 1.018520983107933e-06
+    },
+    "parameters[kappa]": {
+      "mean": 4.5680841550170745,
+      "sd": 0.027161494417050475,
+      "eti89_lb": 4.525346953983793,
+      "eti89_ub": 4.611708129466103,
+      "ess_bulk": 2393.245886063569,
+      "ess_tail": 3304.6093149759263,
+      "r_hat": 1.0007451798171811,
+      "mcse_mean": 0.0005573193824763221,
+      "mcse_sd": 0.0003580053290158173
+    },
+    "parameters[theta]": {
+      "mean": 0.13094494906390458,
+      "sd": 9.907039161100205e-05,
+      "eti89_lb": 0.13078805064102056,
+      "eti89_ub": 0.13109848441112934,
+      "ess_bulk": 1974.7192803748014,
+      "ess_tail": 2837.479527597955,
+      "r_hat": 1.003015698508167,
+      "mcse_mean": 2.233171896145778e-06,
+      "mcse_sd": 1.3009981253129505e-06
+    },
+    "parameters[vol_of_vol]": {
+      "mean": 1.040215402046547,
+      "sd": 0.005343981182181379,
+      "eti89_lb": 1.0316320790098479,
+      "eti89_ub": 1.0486510973194918,
+      "ess_bulk": 2298.664098927422,
+      "ess_tail": 3555.0706681592087,
+      "r_hat": 1.002326291722574,
+      "mcse_mean": 0.00011167973362647024,
+      "mcse_sd": 6.45245710624258e-05
+    },
+    "parameters[rho]": {
+      "mean": -0.6102304816095766,
+      "sd": 0.00365652528034141,
+      "eti89_lb": -0.6161457666052526,
+      "eti89_ub": -0.6043870691889819,
+      "ess_bulk": 2212.371785875399,
+      "ess_tail": 3244.3698738996586,
+      "r_hat": 1.001981365602971,
+      "mcse_mean": 7.779196101070004e-05,
+      "mcse_sd": 4.355210740547288e-05
+    },
+    "parameters[c]": {
+      "mean": 0.9155533325929197,
+      "sd": 0.09740134570960812,
+      "eti89_lb": 0.775798587395806,
+      "eti89_ub": 1.0843418230217192,
+      "ess_bulk": 1866.1794766408134,
+      "ess_tail": 2716.2009831181417,
+      "r_hat": 1.0027301804877757,
+      "mcse_mean": 0.0022816604688757373,
+      "mcse_sd": 0.0016098765107782694
+    }
+  },
+  "mcmc_diagnostics_passed": true,
+  "scientific_acceptance": false,
+  "requirements": {
+    "r_hat_max": 1.01,
+    "ess_bulk_min": 400,
+    "ess_tail_min": 400
+  },
+  "limitations": "Also assess numerical-price refinement, products and reference uncertainty.",
+  "products": {
+    "parameters": {
+      "parameters[control]": {
+        "mean": 0.13750412640850376,
+        "sd": 6.780038886468959e-05,
+        "eti89_lb": 0.1373957309364008,
+        "eti89_ub": 0.1376105956445695,
+        "ess_bulk": 2171.1990439030906,
+        "ess_tail": 3560.4786940266054,
+        "r_hat": 1.0009857433478837,
+        "mcse_mean": 1.456541845578864e-06,
+        "mcse_sd": 8.577005267346934e-07
+      },
+      "parameters[affected]": {
+        "mean": 0.13178936689609244,
+        "sd": 9.143713246292606e-05,
+        "eti89_lb": 0.1316431754182008,
+        "eti89_ub": 0.13193064568586102,
+        "ess_bulk": 1926.0881672040532,
+        "ess_tail": 2688.4925004718357,
+        "r_hat": 1.0030141996546829,
+        "mcse_mean": 2.0907651086906584e-06,
+        "mcse_sd": 1.2011282600178538e-06
+      }
+    },
+    "mcmc_diagnostics_passed": true,
+    "scientific_acceptance": "not_assessed",
+    "requirements": {
+      "r_hat_max": 1.01,
+      "ess_bulk_min": 400,
+      "ess_tail_min": 400
+    },
+    "limitations": "Also assess numerical-price refinement, products and reference uncertainty."
+  },
+  "parameter_mcmc_diagnostics_passed": true,
+  "numerical_precision": [
+    {
+      "chain": 0,
+      "draw": 0,
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 2.3531174520030597e-06,
+      "log_likelihood_shift": 2.3084862449579456e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "chain": 0,
+      "draw": 11999,
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 2.353167474211657e-06,
+      "log_likelihood_shift": -8.208264141337275e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "chain": 1,
+      "draw": 0,
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 2.353135641897095e-06,
+      "log_likelihood_shift": -9.42340347132876e-07,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "chain": 1,
+      "draw": 11999,
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 2.353099262109024e-06,
+      "log_likelihood_shift": -2.846563175958321e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "chain": 2,
+      "draw": 0,
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 2.3531538317911306e-06,
+      "log_likelihood_shift": 1.3701116821851729e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "chain": 2,
+      "draw": 11999,
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 2.353099262109024e-06,
+      "log_likelihood_shift": -1.7887619713245415e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "chain": 3,
+      "draw": 0,
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 2.353135641897095e-06,
+      "log_likelihood_shift": -4.277286962373053e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "chain": 3,
+      "draw": 11999,
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 2.3531492843176217e-06,
+      "log_likelihood_shift": -7.074140666841981e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    }
+  ],
+  "pointwise_precision_passed": true,
+  "chain_payload_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/mcmc-recovery/references/validation-00000489/attempt-1/chains.npz",
+  "chain_payload_sha256": "41dd38762519c3fe690bf593ab56ef892e6c6b12b45ecd8701bb676bff31ed91",
+  "smoke": false,
+  "reference_ready": true
+}

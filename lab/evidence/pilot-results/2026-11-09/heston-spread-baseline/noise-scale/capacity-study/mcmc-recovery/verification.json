@@ -1,0 +1,29 @@
+{
+  "format": "heston_spread_mcmc_recovery_software_verification_v1",
+  "lab_suite": {
+    "tests": 712,
+    "result": "pass",
+    "seconds": 316.59,
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/mcmc-recovery/software-tests.log",
+      "sha256": "e0f449c674388e22f7afa913dadf2a2186dd34c256ee76e384194b06323fe3da"
+    }
+  },
+  "additional_report_tests": {
+    "tests": 4,
+    "result": "pass",
+    "test_source": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/tests/test_heston_spread_mcmc_recovery_report.py",
+      "sha256": "45c38c6b04d8e437abd0c31b886ffcbabe853db8bcfdd000be9855dbe5907c94"
+    },
+    "reason": "Report tests were added after full-suite discovery and checked separately."
+  },
+  "release_checks": {
+    "manifest": "current, 153 artifacts, 0 copies refreshed",
+    "claims": "current",
+    "runtime_boundary": "183 shared symbols, no duplicated lab implementations"
+  },
+  "tutorial_source_or_assets_changed": false,
+  "reserved_test_arrays_opened": false,
+  "new_sampling_in_verification": false
+}

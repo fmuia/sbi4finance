@@ -36,6 +36,12 @@ The [failure audit](precision-failure-audit.json) preserves both raw batches and
 
 The original deadline, 19:48:49.590152UTC, was retained. The corrected training campaign completed before 19:21UTC, without an extension. Original 25-pass evaluations and the [read-only CLI schedule compatibility](evaluation-compatibility-v1.json) remain separately recorded. The corrected producer imports its schedule class consistently and needs no compatibility shim.
 
+## Matched MCMC recovery follow-up
+
+The requested [eight-case MCMC recovery study](mcmc-recovery/README.md) is complete. Seven joint six-parameter fits pass the predeclared convergence and sampled numerical checks; one mixing failure remains visible and is not retried or replaced. On the identical seven ready validation datasets, c posterior-median RMSE is **.10003 for MCMC versus .46699/.46906 for the networks**. MCMC correlation with generating c is .97729, with mean central-90% width .35923 versus 1.36112/1.35404 for the networks. The [recovery report](mcmc-recovery/report.html) and [c plot](mcmc-recovery/c-recovery.png) show the matched comparison and all eight statuses.
+
+This new sampling study supports a failure of the neural approximation to use available scale information on the converged examples. It is a small c-stratified panel, not SBC, a population coverage estimate or a general identifiability proof. All five physical parameters were unknown to MCMC; no truth or neural output was used to initialize it. No further neural, grid or Bergomi work follows automatically.
+
 ## Reflection
 
 Increasing the bank, training duration and batch size did not make this estimator use the available scale information. This does not prove that other optimizers, initializations or representations cannot learn c. The references still show that c is informative under the specified likelihood.
