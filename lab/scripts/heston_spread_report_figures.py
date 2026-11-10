@@ -218,6 +218,85 @@ def _sbc_ecdf(evidence):
         "not fresh acceptance evidence. Passing these screens does not establish per-dataset or joint posterior accuracy.")
 
 
+def recovery_data(evidence):
+    """Read only the already saved, hash-bound population and quantile summary."""
+    directory = Path(evidence)/"sbc-development"
+    manifest = _read(directory/"manifest.json")
+    stage = next(item for item in manifest["stages"] if item["id"] == "annealed-060000")
+    paths = (directory/manifest["population"]["file"], directory/stage["quantiles_file"], directory/stage["file"])
+    expected = (manifest["population"]["sha256"], stage["quantiles_sha256"], stage["sha256"])
+    if any(hashlib.sha256(path.read_bytes()).hexdigest() != value for path,value in zip(paths,expected,strict=True)):
+        raise ValueError("recovery plot input hash differs from SBC manifest")
+    record = _read(paths[2])
+    if (record["parameter_names"] != list(_NAMES) or record["posterior_quantiles"]["levels"] != [.05,.5,.95]
+            or record["posterior_quantiles"]["sha256"] != expected[1]):
+        raise ValueError("recovery quantile order or parameter identity differs")
+    with np.load(paths[0],allow_pickle=False) as archive:
+        truth, row_ids = archive["truth"].copy(), archive["row_id"].copy()
+    with np.load(paths[1],allow_pickle=False) as archive:
+        quantiles = archive["quantiles"].copy().astype(float)
+    bounds = np.asarray(_read(Path(evidence)/"annealing/evaluation-060000.json")["task"]["prior_bounds"])
+    if (truth.shape != (512,5) or quantiles.shape != (3,512,5) or bounds.shape != (5,2)
+            or not np.isfinite(truth).all() or not np.isfinite(quantiles).all()
+            or np.any(np.diff(quantiles,axis=0) < 0)
+            or not np.array_equal(row_ids,np.array([f"validation:{i:08d}" for i in range(512)]))):
+        raise ValueError("recovery population shapes, values, quantile ordering or row IDs differ")
+    return truth, quantiles, bounds
+
+
+def _recovery(evidence, *, residual=False):
+    truth, quantiles, bounds = recovery_data(evidence)
+    selected = np.arange(0,512,16)  # Same 32 index-selected cases for every parameter.
+    if residual:
+        fig, axes = plt.subplots(1,5,figsize=(12.0,3.1),layout="constrained")
+        for i,axis in enumerate(axes):
+            center = quantiles[1,selected,i]-truth[selected,i]
+            axis.errorbar(truth[selected,i],center,
+                yerr=np.stack([quantiles[1,selected,i]-quantiles[0,selected,i],
+                               quantiles[2,selected,i]-quantiles[1,selected,i]]),
+                fmt="o",ms=3,color="#654a97",elinewidth=.8,capsize=2,alpha=.8)
+            axis.axhline(0,color="#263d48",ls="--",lw=1)
+            axis.set(title=_SYMBOLS[i],xlabel="Generating value",xlim=bounds[i])
+            axis.spines[["top","right"]].set_visible(False)
+            axis.grid(alpha=.15)
+        axes[0].set_ylabel("Posterior median − truth")
+        fig.suptitle("Same 32 cases: recovery errors and marginal 90% posterior intervals",fontsize=13)
+        return _svg(fig,"Zoomed Heston parameter recovery errors",
+            "Five panels show median-minus-truth with central 90-percent marginal posterior intervals "
+            "shifted by truth, for validation indices 0,16,...,496. Zero is correct recovery. "
+            "Vertical scales are separately chosen for each parameter, in its physical units. "
+            "This is a detail view of the same fixed subset, not additional datasets or inference.")
+    fig, all_axes = plt.subplots(2,3,figsize=(11.5,6.8),layout="constrained")
+    for i,axis in enumerate(all_axes.flat):
+        if i == 5:
+            axis.axis("off")
+            axis.text(.02,.78,"60k checkpoint\n512 simulated development datasets",transform=axis.transAxes,
+                      fontsize=11,weight="bold",va="top")
+            axis.text(.02,.51,"Grey dots: all posterior medians\nPurple bars: marginal 90% intervals\nfor 32 fixed, index-selected cases\nDashed line: perfect recovery y=x",transform=axis.transAxes,
+                      fontsize=10,linespacing=1.65,va="top")
+            axis.text(.02,.17,"No new inference. The same saved\n512-draw quantile summaries are used.\nIntervals may be tiny on the full prior scale.",transform=axis.transAxes,
+                      fontsize=9,color="#536571",linespacing=1.5,va="top")
+            continue
+        lo,hi = bounds[i];margin=.025*(hi-lo)
+        axis.scatter(truth[:,i],quantiles[1,:,i],s=10,color="#617784",alpha=.42,edgecolors="none",zorder=2)
+        axis.errorbar(truth[selected,i],quantiles[1,selected,i],
+            yerr=np.stack([quantiles[1,selected,i]-quantiles[0,selected,i],
+                           quantiles[2,selected,i]-quantiles[1,selected,i]]),
+            fmt="o",ms=2.7,color="#654a97",elinewidth=.85,capsize=2,alpha=.85,zorder=3)
+        axis.plot([lo,hi],[lo,hi],color="#263d48",ls="--",lw=1,zorder=1)
+        axis.set(title=_SYMBOLS[i],xlabel="Generating value",ylabel="Posterior median",
+                 xlim=(lo-margin,hi+margin),ylim=(lo-margin,hi+margin),aspect="equal")
+        axis.spines[["top","right"]].set_visible(False)
+        axis.grid(alpha=.15)
+    fig.suptitle("60k parameter recovery: posterior medians against generating values",fontsize=13)
+    return _svg(fig,"Heston parameter-wise recovery with posterior intervals",
+        "Five scatter panels show all 512 posterior medians against generating parameter values, "
+        "with equal x and y scales and a dashed unit line. Central 90-percent marginal posterior intervals "
+        "are shown only for 32 fixed cases: every 16th validation index 0 through 496, the same IDs for every panel. "
+        "These bars show posterior uncertainty, not Monte Carlo error of the median. "
+        "All values come from saved 60k development quantile summaries; no new sampling is performed.")
+
+
 def make_figures(evidence: Path, noise_ratios: np.ndarray) -> dict[str, str]:
     """Return self-contained SVG strings; write no output files."""
     evidence = Path(evidence)
@@ -226,4 +305,5 @@ def make_figures(evidence: Path, noise_ratios: np.ndarray) -> dict[str, str]:
                          "axes.titlesize": 11, "axes.labelsize": 10}):
         return {"conditional": _conditional(evidence), "training": _training(evidence),
                 "noise": _noise(noise_ratios), "sbc_histogram": _sbc_histogram(evidence),
-                "sbc_ecdf": _sbc_ecdf(evidence)}
+                "sbc_ecdf": _sbc_ecdf(evidence), "recovery": _recovery(evidence),
+                "recovery_errors": _recovery(evidence,residual=True)}

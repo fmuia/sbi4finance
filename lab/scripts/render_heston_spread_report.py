@@ -15,7 +15,7 @@ import sys
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from scripts.heston_spread_report_figures import make_figures
+from scripts.heston_spread_report_figures import make_figures, recovery_data
 from sbi4f_tutorial.shared import surface
 
 
@@ -116,6 +116,8 @@ def build(historical_root, out):
         "SBC zero-dropout 10k ranks": EVIDENCE/"sbc-development/zero-010000.json",
         "SBC zero-dropout 50k ranks": EVIDENCE/"sbc-development/zero-050000.json",
         "SBC lower-rate 60k ranks": EVIDENCE/"sbc-development/annealed-060000.json",
+        "Recovery generating parameters and row IDs": EVIDENCE/"sbc-development/population.npz",
+        "Recovery 60k marginal quantile summaries": EVIDENCE/"sbc-development/annealed-060000.quantiles.npz",
         "SBC extraction producer": ROOT/"lab/scripts/extract_heston_spread_sbc.py",
         "Resolved network and optimizer settings": EVIDENCE/"network-settings.json",
         "Actual fixed-c workflow and zero-dropout code": ROOT/"lab/scripts/train_heston_spread_baseline.py",
@@ -149,14 +151,14 @@ def build(historical_root, out):
       <title>Heston development report — conditional accuracy and the original comparison</title><style>''',CSS,
       '''</style></head><body><main><header><div class="eyebrow">Heston development report · 10 November 2026</div>
       <h1>What improved, what still fails, and why the comparison changed</h1>
-      <p class="lead">The latest 60k checkpoint passes all five marginal SBC rank screens on simulated development data, but does not reproduce MCMC accurately enough on either of the two completed synthetic examples. Its real-market posterior also differs substantially from MCMC. It is an improving research pilot, with conditional accuracy still unresolved.</p>
+      <p class="lead">At the latest 60k checkpoint, most generating parameters are recovered close to the unit line, and all five marginal SBC rank screens stay within their reference band. There are some outlying recoveries and measurable network/MCMC differences on individual quote surfaces. Broad recovery is strong; precise per-dataset posterior agreement remains unresolved.</p>
       <div class="actions"><button onclick="window.print()">Print / save as PDF</button><button id="download">Download report data</button></div></header>
-      <nav aria-label="Contents"><a href="#verdict">How well does it work?</a><a href="#checks">Network versus MCMC</a><a href="#sbc">SBC plots</a><a href="#training">Training progress</a><a href="#settings">Exact network, dropout and rates</a><a href="#comparison">Original versus current</a><a href="#noise">Noise construction</a><a href="#xi">What ξ means</a><a href="#choices">Why changes happened</a><a href="#next">Controlled next steps</a><a href="#sources">Sources</a></nav>''']
+      <nav aria-label="Contents"><a href="#verdict">How well does it work?</a><a href="#checks">Network versus MCMC</a><a href="#sbc">SBC plots</a><a href="#recovery">Parameter recovery</a><a href="#training">Training progress</a><a href="#settings">Exact network, dropout and rates</a><a href="#comparison">Original versus current</a><a href="#noise">Noise construction</a><a href="#xi">What ξ means</a><a href="#choices">Why changes happened</a><a href="#next">Controlled next steps</a><a href="#sources">Sources</a></nav>''']
     parts.append(frame("The findings to keep separate", '''
-      <div class="cards"><div class="card"><strong>Across 512 simulations</strong><p>5/5 marginal SBC rank screens do not reject at 60k. Nominal 90% intervals contain the truths in 91.6–93.4% of cases across parameters.</p></div>
-      <div class="card"><strong>On specific synthetic quotes</strong><p>Neither of the two completed reference cases passes every check. Broad-case means miss by up to .78 reference SD; some market-like widths are 54% too wide.</p></div>
-      <div class="card"><strong>On the real market query</strong><p>All five parameter means differ substantially from MCMC. The raw network posterior is not validated for that query.</p></div></div>
-      <p><strong>The practical assessment:</strong> removing dropout and lowering the learning rate materially improved the approximation. The model passes one averaged simulation check, while visible per-dataset errors remain. The two synthetic cases are a small development panel, not an estimate of a domain-wide failure rate. All fits here use five physical parameters, fixed c=1 and no τ.</p>
+      <div class="cards"><div class="card"><strong>Parameter recovery</strong><p>Most posterior medians track their generating values closely across 512 cases. A few larger departures appear in θ and ρ. The new recovery plots show all points.</p></div>
+      <div class="card"><strong>Population calibration</strong><p>5/5 marginal SBC rank screens do not reject at 60k. Nominal 90% intervals contain truths in 91.6–93.4% of cases across parameters: modest overcoverage.</p></div>
+      <div class="card"><strong>Reference fidelity</strong><p>Neither completed synthetic reference case passes every mean/width check. Some means miss by .4–.8 reference SD, and some widths remain too broad.</p></div></div>
+      <p><strong>The practical assessment:</strong> removing dropout and lowering the learning rate materially improved the approximation. Recovery and the latest ECDF curves are encouraging, alongside the remaining per-dataset precision errors. The real-market query has substantially larger neural/reference discrepancies and remains unvalidated. The two synthetic cases are a small development panel, not an estimate of a domain-wide failure rate. All fits here use five physical parameters, fixed c=1 and no τ.</p>
       <div class="callout warn"><strong>The correction to the earlier interpretation</strong><p>Smaller noise is a plausible source of greater approximation difficulty. The current experiments do not establish that it caused the regression. This pilot is a broader redesign, not a noise-only adaptation of the original lesson.</p></div>
       <p>Numerical and likelihood checks passed at the sampled points. Three reference cases pass convergence and sampled pricing-refinement checks. The boundary reference reached its declared time cap and remains inconclusive. No new neural checkpoint or lesson is accepted; revised-grid production and Bergomi remain gated.</p>''',"verdict"))
     parts.append(frame("What does “conditional result” mean?", '''
@@ -195,11 +197,33 @@ Prior parameter → Heston quotes + Gaussian error → 512 network posterior dra
       <p><strong>Why these plots were missing:</strong> the earlier evaluator computed SBC and saved KS/coverage summaries, but explicitly discarded the 512×5 fractional ranks before writing its JSON. The report initially showed those summaries alone. To add the plots, we repeated inference from the same four frozen checkpoints with the original validation rows, noise and sample seeds. The reproduced KS, support and coverage statistics match the saved evaluations exactly. No network was trained, no new synthetic dataset was selected and no reserved test arrays were opened.</p>'''+svg("sbc_histogram")+'''
       <p class="caption">These are the latest 60k ranks, with 10 bins and an expected uniform count of 51.2 per bin. Random departures from a flat histogram are normal. The dashed count is not a simultaneous confidence band.</p>'''+svg("sbc_ecdf")+'''
       <p>The ECDF plot makes the deviations easier to compare across runs: zero means uniform ranks. The green band is the saved simultaneous marginal DKW reference, ±.07193. At 60k, none of the five marginal rank screens rejects. It is not a claim that every conditional posterior is correct.</p>
+      <p><strong>Our reading of the curves:</strong> the latest 60k ECDFs look reasonable, and the zero-dropout runs are markedly closer to uniform than the initial dropout run. The initial dropout run is the obvious poor case. The 50k θ curve also departs clearly from the band; smaller departures in other parameters explain why that checkpoint’s numerical screen is less favorable than its overall visual impression. These are encouraging population diagnostics, with the limitations below.</p>
       <div class="table-scroll"><table><thead><tr><th>Parameter</th><th>60k rank KS</th><th>DKW threshold</th><th>Rank screen</th><th>Truth inside nominal 90% interval</th></tr></thead><tbody>'''+sbc_rows+'''</tbody></table></div>
       <p>The coverage figures also show mild overcoverage. At the 90% level, the pointwise Wilson intervals for κ and θ are approximately [90.6%,95.0%] and [90.9%,95.2%], excluding 90%. Those intervals are not adjusted across parameters or coverage levels. Thus “5/5 rank screens do not reject” must not be read as “every calibration diagnostic passes.”</p>
       <div class="callout warn"><strong>Why SBC and the per-dataset failures can coexist</strong><p>SBC averages over prior-generated datasets; biases can vary across datasets and a finite screen has limited power. It does not establish joint dependence or real-market validity. As a hypothetical illustration, returning the prior for every dataset can yield uniform SBC ranks while ignoring the observations. This is not a description of our fitted network; it shows why SBC alone cannot establish accurate use of the quotes.</p></div>
       <p>SBC remains useful for detecting systematic rank distortion across many simulations without calculating an MCMC posterior for every dataset. The fixed-quote comparisons supply the complementary check of whether the network approximates the actual posterior on particular examples.</p>
       <p>The same development pool has been reused across checkpoints and interventions. These plots help diagnose this development round; they are not fresh acceptance evidence for the chosen recipe.</p>''',"sbc"))
+    recovery_truth,recovery_quantiles,recovery_bounds=recovery_data(EVIDENCE)
+    recovery_stats={}
+    recovery_rows=[]
+    for i,name in enumerate(protocol["names"]):
+        error=recovery_quantiles[1,:,i]-recovery_truth[:,i]
+        prior_width=recovery_bounds[i,1]-recovery_bounds[i,0]
+        item={"median_absolute_error":float(np.median(np.abs(error))),
+              "rmse_as_fraction_of_prior_range":float(np.sqrt(np.mean(error**2))/prior_width),
+              "median_central90_width":float(np.median(recovery_quantiles[2,:,i]-recovery_quantiles[0,:,i]))}
+        recovery_stats[name]=item
+        recovery_rows.append(f'<tr><th>{LABELS[name]}</th><td>{item["median_absolute_error"]:.4g}</td><td>{100*item["rmse_as_fraction_of_prior_range"]:.3f}%</td><td>{item["median_central90_width"]:.4g}</td></tr>')
+    parts.append(frame("Parameter-wise recovery against the unit line",'''
+      <p>Each grey point represents one of the same 512 simulated development datasets at the latest 60k checkpoint: the generating parameter is on the x-axis, and its marginal posterior median is on the y-axis. The dashed line is y=x. Each panel uses identical x/y limits over its physical prior range.</p>'''+svg("recovery")+'''
+      <p><strong>Purple vertical bars show marginal central 90% posterior intervals</strong> (5th–95th percentiles), not Monte Carlo uncertainty in the median. To keep the figure readable, bars appear for 32 cases only: validation indices 0,16,…,496, the same IDs in every panel. Selection depends only on index, not how good the recovery looks. All 512 medians remain visible.</p>
+      <p>The bulk of points tracks the diagonal strongly. There are also a few sizeable departures, particularly in θ and ρ. A posterior median need not equal the generating truth on every noisy dataset; weakly informative observations can leave appreciable uncertainty. Reading recovery together with the intervals and SBC is more useful than treating every off-diagonal point as an approximation failure.</p>
+      <div class="table-scroll"><table><thead><tr><th>Parameter</th><th>Median absolute recovery error</th><th>RMSE / full prior range</th><th>Median marginal 90% width</th></tr></thead><tbody>'''+"".join(recovery_rows)+'''</tbody></table></div>
+      <p class="caption">These descriptive point-recovery statistics use all 512 datasets and the saved quantile summaries. They compare posterior medians with generating truths, unlike the separate fixed-quote checks comparing network and MCMC posteriors. Some intervals are barely visible on the full prior scale.</p>
+      <details><summary>Zoom in: errors and posterior widths for the same 32 interval cases</summary>'''+svg("recovery_errors")+'''
+      <p class="caption">The vertical axis is posterior median minus truth, in each parameter’s physical units; vertical scales differ across panels. A bar crossing zero contains the truth. These are the same interval cases shown in purple above, not a new or favorably selected sample.</p></details>
+      <div class="callout"><strong>How this fits with the other results</strong><p>The recovery plots and latest ECDF curves support a positive assessment of broad parameter recovery and average marginal calibration. The fixed-quote MCMC checks demand finer precision relative to very narrow posterior SDs. Strong diagonal tracking and reasonable pooled ranks can therefore coexist with the remaining mean/width discrepancies. Both findings should be reported.</p></div>
+      <p>No new training or posterior sampling was needed: this figure uses the existing hash-verified truth array and 5th/50th/95th-percentile summaries from the reproduced 60k development inference.</p>''',"recovery"))
     stages = [("Default dropout .05",10000,EVIDENCE/"evaluation-update-010000-provisional.json"),
               ("Dropout zero",10000,EVIDENCE/"evaluation-dropout-zero-update-010000-provisional.json"),
               ("Same schedule floor",25000,EVIDENCE/"evaluation-dropout-zero-update-025000.json"),
@@ -338,6 +362,9 @@ Branch B: same construction; change existing dropout rates to 0 before training
           "same_54_counterfactual_old_sd_over_halfspread":{"median":float(np.median(ratios)),"min":float(min(ratios)),"max":float(max(ratios)),"count_above_one":int(np.sum(ratios>1)),"ratios":ratios.tolist()},
           "latest_case_statuses":{k:v["status"] for k,v in latest["cases"].items()},
           "network_settings":{key:architecture[key] for key in ("resolved_architecture","optimizer","learning_rate_timeline")},
+          "recovery":{"checkpoint_updates":60000,"datasets":512,"interval_levels":[.05,.95],
+                      "interval_case_indices":list(range(0,512,16)),"summary_by_parameter":recovery_stats,
+                      "point_estimate":"posterior median","scope":"saved float32 quantile summaries; no new sampling"},
           "sbc":{ident:{key:record[key] for key in ("parameter_names","rows","draws_per_case","seed","fractional_ranks","rank_dkw","coverage","metrics_exact_match")}
                  for ident in ("default-010000","zero-010000","zero-050000","annealed-060000")
                  for record in [read(EVIDENCE/"sbc-development"/(ident+".json"))]},
