@@ -1,0 +1,176 @@
+{
+  "format": "heston_spread_annealing_payload_summary_v1",
+  "original_run_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed",
+  "original_run_sha256": "ef8ee99e3519769752187950c587b3d63413f8ecdca9b58a56e63ecd4f26bc9b",
+  "declared_protocol_sha256": "02b2f2e4a8c835b00ba74a2ab988b18cfc9e1de8b3e2dfe85c1badee73b91c06",
+  "parameter_names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "prior_bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      10.0
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      3.0
+    ],
+    [
+      -0.95,
+      -0.1
+    ]
+  ],
+  "checkpoints": {
+    "55000": {
+      "checkpoint_record": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/checkpoints/update-055000/checkpoint.json",
+        "sha256": "efc27b6494ade7c6845e7e4f05ac28be3e8a60d5e736375723285cd84d711087"
+      },
+      "model_payload": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/checkpoints/update-055000/model.keras",
+        "sha256": "bde7286ea35bc0c9f25fb8fe7938a57990ba7baf1861348c780c958e7e699118",
+        "bytes": 6255685,
+        "included_in_git": false
+      },
+      "full_state_payload": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/checkpoints/update-055000/state.npz",
+        "sha256": "3bab92c096af7ebcbf4ca658942ed169d2f46f4cc365f23dbd2a26040b64bbd6",
+        "bytes": 5503712,
+        "included_in_git": false
+      },
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/annealing/evaluation-055000.json",
+        "sha256": "4f37d10b70a92d35f33f7593017d992d8cd452a033d65965f93fc980455d8d0a"
+      },
+      "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+      "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+      "panel_sha256": "8246c08c72336a819771bf481ffd46be4e09f1c2cf64dab6e6725a10229d4f1d",
+      "source_sha256": {
+        "trainer": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+        "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+        "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+        "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+        "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+        "continuation": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b",
+        "annealing": "6e0b34ff99ddd6ad57518a8ae711e1b2fb7d632a562547aade3602966731f1e4"
+      },
+      "optimizer_schedule": {
+        "module": "keras.optimizers.schedules",
+        "class_name": "PiecewiseConstantDecay",
+        "config": {
+          "boundaries": [
+            54999
+          ],
+          "values": [
+            5e-06,
+            5e-07
+          ],
+          "name": "heston_spread_two_stage_annealing"
+        },
+        "registered_name": null
+      },
+      "reload_proof": {
+        "all_array_hashes_exact": true,
+        "variable_counts": {
+          "trainable": 84,
+          "non_trainable": 46,
+          "optimizer": 169,
+          "metrics": 2
+        },
+        "variable_mapping": "saved group/index/shape/dtype/hash; Keras constructor name counters and model-root prefixes can change on archive reload",
+        "archive_path_changes": {
+          "trainable": 84,
+          "non_trainable": 46,
+          "optimizer": 168,
+          "metrics": 0
+        },
+        "state_sha256": "3bab92c096af7ebcbf4ca658942ed169d2f46f4cc365f23dbd2a26040b64bbd6",
+        "seeded_draws_exact": true,
+        "schedule_exact": true
+      },
+      "scientific_acceptance": false
+    },
+    "60000": {
+      "checkpoint_record": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/checkpoints/update-060000/checkpoint.json",
+        "sha256": "65d86acbee1590322e712e5f33208a7041aa37d01dcbbd6dd33e4aa88e165c2d"
+      },
+      "model_payload": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/checkpoints/update-060000/model.keras",
+        "sha256": "3974e65e7596984a050647cec07c376604a18a2094145abfdfce842519733fb6",
+        "bytes": 6255685,
+        "included_in_git": false
+      },
+      "full_state_payload": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/checkpoints/update-060000/state.npz",
+        "sha256": "816df44911c369af40a91756726f0cdac6710a47514d204c7c16c14a24f7c883",
+        "bytes": 5500837,
+        "included_in_git": false
+      },
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/annealing/evaluation-060000.json",
+        "sha256": "064d9fa9dc5de2a3c2e871c93fed6dcd9857ba3f93163eb63cde07ef8a539b68"
+      },
+      "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+      "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+      "panel_sha256": "8246c08c72336a819771bf481ffd46be4e09f1c2cf64dab6e6725a10229d4f1d",
+      "source_sha256": {
+        "trainer": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+        "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+        "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+        "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+        "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+        "continuation": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b",
+        "annealing": "6e0b34ff99ddd6ad57518a8ae711e1b2fb7d632a562547aade3602966731f1e4"
+      },
+      "optimizer_schedule": {
+        "module": "keras.optimizers.schedules",
+        "class_name": "PiecewiseConstantDecay",
+        "config": {
+          "boundaries": [
+            54999
+          ],
+          "values": [
+            5e-06,
+            5e-07
+          ],
+          "name": "heston_spread_two_stage_annealing"
+        },
+        "registered_name": null
+      },
+      "reload_proof": {
+        "all_array_hashes_exact": true,
+        "variable_counts": {
+          "trainable": 84,
+          "non_trainable": 46,
+          "optimizer": 169,
+          "metrics": 2
+        },
+        "variable_mapping": "saved group/index/shape/dtype/hash; Keras constructor name counters and model-root prefixes can change on archive reload",
+        "archive_path_changes": {
+          "trainable": 84,
+          "non_trainable": 46,
+          "optimizer": 168,
+          "metrics": 0
+        },
+        "state_sha256": "816df44911c369af40a91756726f0cdac6710a47514d204c7c16c14a24f7c883",
+        "seeded_draws_exact": true,
+        "schedule_exact": true
+      },
+      "scientific_acceptance": false
+    }
+  },
+  "scope": "Both diagnostic endpoints retained; large models/state remain outside Git; no accepted checkpoint."
+}

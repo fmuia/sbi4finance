@@ -1,0 +1,4079 @@
+{
+  "format": "heston_spread_baseline_run_v1",
+  "task": {
+    "format": "heston_spread_baseline_task_v1",
+    "target": {
+      "format": "heston_spread_task_v1",
+      "model": "heston",
+      "measure": "Q",
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "prior_bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          10.0
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          3.0
+        ],
+        [
+          -0.95,
+          -0.1
+        ]
+      ],
+      "prior": "independent Uniform in physical coordinates",
+      "infer_c": false,
+      "fixed_c": 1.0,
+      "c_bounds": [
+        0.5,
+        2.0
+      ],
+      "quote_count": 54,
+      "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+      "observation_model": "independent Gaussian with price SD c * half_spread",
+      "pricing_controls": {
+        "c_min": 0.5,
+        "numerical_fraction": 0.02,
+        "quadrature_ladder": [
+          [
+            256,
+            150.0
+          ],
+          [
+            512,
+            300.0
+          ],
+          [
+            1024,
+            600.0
+          ],
+          [
+            2048,
+            1200.0
+          ],
+          [
+            4096,
+            2400.0
+          ],
+          [
+            8192,
+            4800.0
+          ],
+          [
+            16384,
+            9600.0
+          ]
+        ]
+      }
+    },
+    "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+    "records": {
+      "forward": [
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978
+      ],
+      "strike": [
+        6580.0,
+        6820.0,
+        7065.0,
+        7190.0,
+        7320.0,
+        7455.0,
+        7580.0,
+        7715.0,
+        7860.0,
+        6035.0,
+        6395.0,
+        6775.0,
+        6975.0,
+        7180.0,
+        7385.0,
+        7605.0,
+        7830.0,
+        8060.0,
+        5700.0,
+        6125.0,
+        6590.0,
+        6840.0,
+        7095.0,
+        7355.0,
+        7635.0,
+        7920.0,
+        8215.0,
+        5150.0,
+        5700.0,
+        6295.0,
+        6615.0,
+        6950.0,
+        7305.0,
+        7680.0,
+        8070.0,
+        8475.0,
+        4600.0,
+        5200.0,
+        5950.0,
+        6350.0,
+        6790.0,
+        7255.0,
+        7760.0,
+        8275.0,
+        8850.0,
+        4100.0,
+        4800.0,
+        5650.0,
+        6150.0,
+        6650.0,
+        7225.0,
+        7830.0,
+        8490.0,
+        9205.0
+      ],
+      "discount": [
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969
+      ],
+      "maturity": [
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588
+      ],
+      "option_type": [
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call"
+      ],
+      "mid": [
+        6.300000000000001,
+        9.95,
+        18.25,
+        26.549999999999997,
+        40.900000000000006,
+        66.0,
+        104.94999999999999,
+        42.55,
+        10.65,
+        13.0,
+        20.2,
+        35.3,
+        49.45,
+        72.25,
+        108.55000000000001,
+        173.55,
+        66.4,
+        17.8,
+        17.3,
+        26.45,
+        45.45,
+        63.05,
+        91.65,
+        137.45,
+        219.45,
+        83.85,
+        22.65,
+        22.9,
+        35.900000000000006,
+        62.45,
+        86.80000000000001,
+        125.30000000000001,
+        188.45,
+        295.9,
+        113.95,
+        31.049999999999997,
+        28.2,
+        43.75,
+        78.6,
+        110.5,
+        163.85000000000002,
+        251.25,
+        393.8,
+        154.45,
+        39.85,
+        29.05,
+        48.1,
+        88.75,
+        129.8,
+        191.8,
+        301.5,
+        482.6,
+        185.15,
+        47.9
+      ],
+      "half_spread": [
+        0.10000000000000009,
+        0.14999999999999947,
+        0.14999999999999858,
+        0.15000000000000036,
+        0.1999999999999993,
+        0.29999999999999716,
+        0.3500000000000014,
+        0.25,
+        0.15000000000000036,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.25,
+        0.25,
+        0.3500000000000014,
+        0.3500000000000085,
+        0.30000000000000426,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.25,
+        0.34999999999999787,
+        0.75,
+        0.3500000000000014,
+        0.3500000000000085,
+        1.25,
+        0.3500000000000014,
+        0.25,
+        0.20000000000000107,
+        0.3000000000000007,
+        0.34999999999999787,
+        0.3999999999999986,
+        0.3999999999999986,
+        0.9500000000000028,
+        0.5,
+        0.45000000000000284,
+        0.34999999999999964,
+        0.3000000000000007,
+        0.3500000000000014,
+        0.3999999999999986,
+        0.4000000000000057,
+        0.5499999999999972,
+        0.5500000000000114,
+        0.8000000000000114,
+        0.5499999999999972,
+        0.3500000000000014,
+        0.25,
+        0.3999999999999986,
+        0.5499999999999972,
+        0.5,
+        0.6000000000000085,
+        0.6000000000000227,
+        1.9000000000000057,
+        0.6500000000000057,
+        0.5
+      ]
+    },
+    "conditioning": "complete ordered noisy prices / fixed half_spread; no additional channels",
+    "scope": "fixed-design development experiment; no scientific acceptance"
+  },
+  "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+  "names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      10.0
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      3.0
+    ],
+    [
+      -0.95,
+      -0.1
+    ]
+  ],
+  "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+  "design_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/evidence/pilot-results/2026-11-09/heston-observations/designs/put_heavy.json",
+  "bank_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+  "bank_record_sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+  "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+  "bank_identity": {
+    "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+    "task": {
+      "format": "heston_pilot_full_campaign_task_v1",
+      "model": "heston",
+      "measure": "Q",
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho",
+        "tau"
+      ],
+      "prior_bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          10.0
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          3.0
+        ],
+        [
+          -0.95,
+          -0.1
+        ],
+        [
+          0.0,
+          0.02
+        ]
+      ],
+      "prior": "independent Uniform in physical coordinates",
+      "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+      "quote_count": 54,
+      "layout": "full",
+      "c_training_bounds": [
+        0.5,
+        2.0
+      ],
+      "tau_training_bounds": [
+        0.0,
+        0.02
+      ],
+      "observation_model": {
+        "distribution": "independent Gaussian",
+        "mean": "deterministic refined Heston price",
+        "variance": "(c * observed halfspread)^2 + (tau * frozen observed market vega)^2",
+        "vega_units": "quote price per unit decimal implied volatility",
+        "conditioning": "fixed quote design, carry, market vegas and spread metadata"
+      },
+      "pricing_controls": {
+        "quadrature_ladder": [
+          [
+            256,
+            150.0
+          ],
+          [
+            512,
+            300.0
+          ],
+          [
+            1024,
+            600.0
+          ],
+          [
+            2048,
+            1200.0
+          ],
+          [
+            4096,
+            2400.0
+          ],
+          [
+            8192,
+            4800.0
+          ],
+          [
+            16384,
+            9600.0
+          ]
+        ],
+        "numerical_fraction": 0.02,
+        "measurement_spread_multiplier": 0.5,
+        "precision_scope": "gate relative to smallest supported measurement SD; never relaxed by tau"
+      },
+      "scope": "fixed engineering benchmark; no market-model or release acceptance"
+    },
+    "train_rows": 100000,
+    "validation_rows": 5000,
+    "test_rows": 2000,
+    "seed": 9011,
+    "producer_source_sha256": {
+      "campaign_trainer": "cef4a364eab69cfcd78ed4a20128c5d58155ff7a682520ffda8e7d841d4dc847",
+      "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+      "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+    },
+    "environment_sha256": {
+      "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+      "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+    },
+    "random_protocol": "PCG64 SeedSequence([0x43414D50, seed, split]); split0 train, split1 validation, split2 reserved test; prefix-stable physical Uniform draws",
+    "stored_latents": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "excluded_latents": "tau does not affect clean prices and is sampled fresh during training"
+  },
+  "reserved_arrays_opened": false,
+  "simulation_calls": 0,
+  "train_rows": 20000,
+  "planned_updates": 60000,
+  "schedule_updates": 10000,
+  "seed": 9011,
+  "batch_size": 128,
+  "validation_rows_available": 5000,
+  "seconds_scope": "run_training invocation including lazy neural imports; CLI supervisor additionally includes process/script setup",
+  "checkpoint_updates": [
+    55000,
+    60000
+  ],
+  "wall_seconds": 900,
+  "architecture": {
+    "family": "spline",
+    "widths": [
+      128,
+      128
+    ],
+    "subnet_dropout": 0.0
+  },
+  "dropout_zero_control": true,
+  "source_sha256": {
+    "trainer": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+    "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+    "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+    "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+    "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+    "continuation": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b",
+    "annealing": "6e0b34ff99ddd6ad57518a8ae711e1b2fb7d632a562547aade3602966731f1e4"
+  },
+  "environment_sha256": {
+    "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+    "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+  },
+  "git_revision": "233ae93ee7e32a6718e42fd6814c4fac087623ca",
+  "versions": {
+    "python": "3.12.16",
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "devices": [
+    "cpu:0"
+  ],
+  "optimizer_schedule": {
+    "serialized": {
+      "module": "keras.optimizers.schedules",
+      "class_name": "PiecewiseConstantDecay",
+      "config": {
+        "boundaries": [
+          54999
+        ],
+        "values": [
+          5e-06,
+          5e-07
+        ],
+        "name": "heston_spread_two_stage_annealing"
+      },
+      "registered_name": null
+    },
+    "absolute_step_rates": {
+      "50000": 4.999999873689376e-06,
+      "54999": 4.999999873689376e-06,
+      "55000": 4.999999987376214e-07,
+      "59999": 4.999999987376214e-07,
+      "60000": 4.999999987376214e-07
+    },
+    "all_saved_array_hashes_unchanged_at_assignment": true,
+    "other_adam_configuration_unchanged": true,
+    "old_serialized": {
+      "module": "keras.optimizers.schedules",
+      "class_name": "CosineDecay",
+      "config": {
+        "initial_learning_rate": 0.0005,
+        "decay_steps": 10000,
+        "alpha": 0.1,
+        "name": "CosineDecay",
+        "warmup_target": null,
+        "warmup_steps": 0
+      },
+      "registered_name": null
+    }
+  },
+  "numeric_configuration": {
+    "jax_enable_x64": false,
+    "keras_floatx": "float32"
+  },
+  "augmentation": "PCG64 SeedSequence([0x53505244, seed, namespace, step]); namespace0 train,1 fixed train probe,2 fixed validation probe; independent Gaussian SD exactly halfspread",
+  "batch_plan": "BatchPlan seeded pass permutations; probes never advance training streams",
+  "probe_rows": {
+    "train": 512,
+    "validation": 512
+  },
+  "scientific_acceptance": false,
+  "checkpoint_selection": "predeclared endpoints; validation never selects",
+  "training_semantics": "BF2.1 stateless_train_step; same-input diagnostic gradients do not commit state",
+  "resume_supported": false,
+  "dropout_initialization_control": {
+    "method": "construct/build original .05 model, then change existing Dropout.rate to0 before the first update",
+    "rates_before": [
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05
+    ],
+    "rates_after": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "array_state_unchanged": true,
+    "state_groups": {
+      "trainable": {
+        "variable_count": 84,
+        "before_sha256": "5b1c1246289eec3da94d24c3ed348984d69af7092393031a4845ebcb94455168",
+        "after_sha256": "5b1c1246289eec3da94d24c3ed348984d69af7092393031a4845ebcb94455168"
+      },
+      "non_trainable": {
+        "variable_count": 46,
+        "before_sha256": "0fd7c2983430f91764bb0db8d7c7c085de0d50ef1c71c7e6c70c89fedf812f1a",
+        "after_sha256": "0fd7c2983430f91764bb0db8d7c7c085de0d50ef1c71c7e6c70c89fedf812f1a"
+      },
+      "optimizer": {
+        "variable_count": 169,
+        "before_sha256": "9a2103e4fbe3f949bc2b73dc7bbd0c9ca1c56a0faaa700319f0ecffa32a274ae",
+        "after_sha256": "9a2103e4fbe3f949bc2b73dc7bbd0c9ca1c56a0faaa700319f0ecffa32a274ae"
+      },
+      "metrics": {
+        "variable_count": 2,
+        "before_sha256": "b1c5f0b7871ea6a806f3cb8274e896bf9bfe5f9ea1f7c51ac381db11b01b8a06",
+        "after_sha256": "b1c5f0b7871ea6a806f3cb8274e896bf9bfe5f9ea1f7c51ac381db11b01b8a06"
+      }
+    },
+    "original_initial_full_hash_available": false,
+    "claim_limit": "exact within-replay before/after equality; original default run did not persist its full initial state",
+    "archive_scope": "network constructor remains .05; load_checkpoint reapplies recorded effective zero rates; exact training resume unsupported"
+  },
+  "paired_default_reference": {
+    "run_directory": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1",
+    "run_sha256": "65fed2d25922b09b33593c6f10943043c37d4fbaa90a8133fb34b09b3922bc15",
+    "original_producer_sha256": "7079f9468a5b230b7860c87f6547d0ca047dbcb922eeae549a00b2a2c87c1398",
+    "initial_probes_sha256": "9db92d9f016dd6bd0c59a016a84db78df5028bed59707681fb863e3d61531689",
+    "initial_deterministic_probes_exact": true,
+    "paired_recipe_fields": [
+      "task_fingerprint",
+      "design_sha256",
+      "bank_record_sha256",
+      "bank_payload_sha256",
+      "train_rows",
+      "planned_updates",
+      "schedule_updates",
+      "seed",
+      "batch_size",
+      "checkpoint_updates",
+      "probe_rows",
+      "augmentation",
+      "batch_plan",
+      "optimizer_schedule",
+      "versions",
+      "numeric_configuration"
+    ],
+    "original_initial_full_hash_available": false,
+    "claim_limit": "recipe and deterministic probes match; original full initial arrays were not persisted"
+  },
+  "actual_optimizer_updates": 50000,
+  "model_sha256": "b0bf8d570d73885a66a965a43c405039ca3f417c0db4c394202ad9552586e869",
+  "state_sha256": "469c3dcd3b1b8eeeacd0c4c9880fd259b73f1fd1c3557225818008408d669e62",
+  "state": {
+    "trainable": [
+      {
+        "path": "coupling_flow/act_norm_6/scale",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c823bf88d915b37ef908dffcf5fc7c12d64e729bc7fb704d563be5a4387b1f57"
+      },
+      {
+        "path": "coupling_flow/act_norm_6/bias",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2a3b14bb960aacbc2fd724c053904a88e1a1029293950545b167a6f289b692dc"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_12/mlp_12/dense_block_24/dense/kernel",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "353f86ec1b153772e20a89dd89f986ad415dd9f58445030dbfbd121891ecb6f0"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_12/mlp_12/dense_block_24/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "7abbb1f6e025713f5988ce828c2a5ecd2bcb275033b3e6eb443ae2d7ec65adee"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_12/mlp_12/dense_block_25/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4d0bb1fc1922fa9f04cc6f945a8338822ddd4ed134b8225bd5732fb2f6b9d708"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_12/mlp_12/dense_block_25/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b73c99716a088009282ba5ab4e36631fa7b48d17c1040186e0c67ea7ddbad74d"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_12/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f0f3d648f5f3a6b7c66e97c81831dbd65f2b11f131ad57a49ce342aa0c4d142b"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_12/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b4d7513776ba3f699c63f38dc0bfff0425a97159e202c37148a1e57a3582c76b"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_13/mlp_13/dense_block_26/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "e312ec54a9099e5b83f9aa32d904b3a8dd8ba9a6dba2737e3493bee8d764442a"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_13/mlp_13/dense_block_26/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d1c6a5f6daafdcd94f3e85ad0cf8b724aff1f8b7dac8839b2fceb52614d83aa3"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_13/mlp_13/dense_block_27/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0c3317ee6a57a7f14b851a4d728994a10c8440a288f3e3579dcdb8fff695964c"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_13/mlp_13/dense_block_27/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "293fc33299a3e861fa7f4168450997ed94e0857b6e892cec075a04b76be6565d"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_13/output_projector/kernel",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4af8eadb2caca4f59720859623e8486db355d63f1011c9a506cc5c25b8905f5e"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_6/single_coupling_13/output_projector/bias",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "dab6c2a12f1e266e211c8164099647708f6e586326e77f5d37a4b1fc1b6622e0"
+      },
+      {
+        "path": "coupling_flow/act_norm_7/scale",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "dde04756eacc691df6b3d5f3d7dc0177c099513bf0c50c88cc10ed11f124895e"
+      },
+      {
+        "path": "coupling_flow/act_norm_7/bias",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b9132c51b9a7436aed6f3f71ae65cd279a7805770266a1db52c262aa2025f37b"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_14/mlp_14/dense_block_28/dense/kernel",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "a0e56c90f35b6eb0d8cbda10b053cfca58de5d894a0c2be2eab3913b0782a6ca"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_14/mlp_14/dense_block_28/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2d304004599e208f71fb82bf1090a8cacbd6a413c5ca01df4126e149c0cf4c08"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_14/mlp_14/dense_block_29/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "7ff2150899e4fa07e532bdbb0d630d78909dc76a4481edf7defa9a1125813c9c"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_14/mlp_14/dense_block_29/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "67a2685aa02a930b05e853af74f0c061575a849732885b29dd122f03e838c474"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_14/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c167d052f2ac498c1c2eb541cbc69bc23b4ee80fbdb6eebaba3cc5426282eebc"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_14/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "426000d99ae010fffb5890954af6416bdcd6cd40ac57a77fec0da7ad1c94801c"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_15/mlp_15/dense_block_30/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b3f76ca812548d2a103e03c1f08ff24b7f2bb67befc827419e12d139945d84b5"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_15/mlp_15/dense_block_30/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4bfdb0d8d1beaf71f6fc96c00515f511c3e87cf9cb3611529721e3be1eacf661"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_15/mlp_15/dense_block_31/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2d1093784d0fdfee6687986e4431085c826263a37d4e529e071699075032ea5d"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_15/mlp_15/dense_block_31/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9cff3c5b2949e26bce987d9d2c96e02d4242902984e6ff8f86aadaefd49f4c55"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_15/output_projector/kernel",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "e16a2a7c5722975910e3561be62d48681a3261fccdde514d109753201917b8d1"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_7/single_coupling_15/output_projector/bias",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "a3a600fb03127d69856227af58c084f59fafb4a323fb9a03a5eedd4518d1ed97"
+      },
+      {
+        "path": "coupling_flow/act_norm_8/scale",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "77ca594346633bf3884f959a560f42cb6d424812c53ada961ec233f0ddb6df90"
+      },
+      {
+        "path": "coupling_flow/act_norm_8/bias",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "29982ca9771b9363dc1d8adc106252d38fca105b4620d0a362caf768ee9410bf"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_16/mlp_16/dense_block_32/dense/kernel",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "7e47716f9756ae88e21890d9df2ec9c3da75c694d3a03cb409822547778c17e6"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_16/mlp_16/dense_block_32/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "5c24f397bea5ce213aec1c5aa80c9e535de9e7ad00e7818fd5070ba61f0007a2"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_16/mlp_16/dense_block_33/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "242cd4a7be4663485b4b1834011c07354c9516aa5e9928db0dfebc1f615ea927"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_16/mlp_16/dense_block_33/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b7d9ad8653aedd46ef0572ac1ca2f5d55da89b98c517dee33fbbac97e26f0206"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_16/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "77a60f7a174f12467d6cc240d979f8ec14d26e3a7a5082dd195409d56e5446ae"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_16/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b6fd0072c4917c2d044deb3b1fbd02f3d3242a11fe3a5532bb60a8a60f4ea342"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_17/mlp_17/dense_block_34/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "edfa841fb2ff39963c54447ce55cc5c887da5ac893171a9a1a35522a4716308c"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_17/mlp_17/dense_block_34/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "1b14ac3b3bdb8b183af2206188f90e9041c9211ba62a61855f5a4901203aa269"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_17/mlp_17/dense_block_35/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "74aaa13dd4a54037cc61c852b639bd8399351e0ab515e248f28ad8cf381eabd2"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_17/mlp_17/dense_block_35/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "6549d34752554a124c16e016548b4d6b002a29ed476697bb7041ed3df9abbe1f"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_17/output_projector/kernel",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d886b139fbae5da24f9ad66c5a736de98d832867246b24d6038c39a53cbce8a7"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_8/single_coupling_17/output_projector/bias",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0541287bff0cea47bb690023ab0d0a1a22d6b3c6dd7a42f91117fb2e202d4737"
+      },
+      {
+        "path": "coupling_flow/act_norm_9/scale",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b4445d4fc723d67aa0da51235b5e4016c08fe5b16191f57064f585fe817d3b2d"
+      },
+      {
+        "path": "coupling_flow/act_norm_9/bias",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "816285aa25d90b19e2c529e8dde7c646abcfc11e1deffe17f20d433ed3accc6a"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_18/mlp_18/dense_block_36/dense/kernel",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "08aba24bae89d61d91cfaacd427df7671aa80b0506cac58a0e951a1865474405"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_18/mlp_18/dense_block_36/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d465331733fde2caff42a7aa70f2d8881b9d77d1eb46da53ed034aa6a313cf52"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_18/mlp_18/dense_block_37/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "25009f084337a5747704cb8b0fa61e398cbcd26f5c38d37bb7441ad60dcd41bd"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_18/mlp_18/dense_block_37/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3291a75e4bb43b1e9ae7a21a8ddf996ad0835d555771640a241babb5f92c2595"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_18/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "19f27ac95d8025aa83f75aea8f4cae67dadf344509d8f49e3cf573932d97d8cb"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_18/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4ddf9032bed458d7759f34e7fec1380edea5be0ad2e7cffb0d1dd451af73c596"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_19/mlp_19/dense_block_38/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "5cffc472db0130ad6238604b85e859b28dd8e28b53004e5f72fe547229cdcd63"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_19/mlp_19/dense_block_38/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "30b24262e8097401a1160c95b1b9abf8d09176e502623ca55fd2181d73e3e6d1"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_19/mlp_19/dense_block_39/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "5dc43b1a0c2b5c917cac5a9f5bf4c31cb3006226ee0428e17925c18f12e18356"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_19/mlp_19/dense_block_39/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "db87e5b56310ad8d02bb70860a15f2f28f09e8abf9e1314df8168e76c9fe2e85"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_19/output_projector/kernel",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "a0df9ff86aa82067d4cba8caff8082723a706fa4695ad8ed64e6f8c2fc0cc8c9"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_9/single_coupling_19/output_projector/bias",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "054302eecf27c09f965a7b28228085d29f4ac827e20b4aecf5f425553b06331b"
+      },
+      {
+        "path": "coupling_flow/act_norm_10/scale",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d4e4d561a24dcc8f4a6f9044c01b7558af914c855cd2b9c78763b6cdb963c8c"
+      },
+      {
+        "path": "coupling_flow/act_norm_10/bias",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "db0f2fd8deaad8514c03d66e9b12a9cd53d47c3cf453dcc6ec97b2cebb32fab5"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_20/mlp_20/dense_block_40/dense/kernel",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b924886e195154c9efec8b7f01bb67dfe44eaa75f7758aa5078c65bd5633c477"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_20/mlp_20/dense_block_40/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "e9800a60685acbca5b797814b09383a2d91aa0e6ed0a0151941a5ee2d3592076"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_20/mlp_20/dense_block_41/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "cd77342736676c3b42f9d0900b90881cb913ead280841e3289d81a0997728090"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_20/mlp_20/dense_block_41/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "15e20785cde8a75d9033de9e0b91e9c511f581b0d59ada445f1bb19242fa3adf"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_20/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fd7108011d964b6fba47cbc8fdad83171a41bb76c647764f34a6be884730955c"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_20/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0c493e1bc6ecc6cae8342a8a8e173799cf02303aac6017a27fad5030f221522e"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_21/mlp_21/dense_block_42/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9d673944a26685e6bb9e3143c06f5caaa5746f9c9105e1ebba4a30baa87409d7"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_21/mlp_21/dense_block_42/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "404f000b8efe5b8f3d6520c13f5b58296552ffba494dd71c0aa8add781ac48b6"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_21/mlp_21/dense_block_43/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9fdf49de100acfb8642371ff112cff07407923ff7fb8d26a3e6cb62792bac1b0"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_21/mlp_21/dense_block_43/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4affccc64453576c9b0c82ea87dab770025b717d095ac7ede435ce5c40903b97"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_21/output_projector/kernel",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "df6e296324583e89f8ac733bb268f3a10f8a47491919007fbec6fba8b37c9fa2"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_10/single_coupling_21/output_projector/bias",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "43287921a4233432789a30de22b98183295b800e99668ef4701ba1fcece40607"
+      },
+      {
+        "path": "coupling_flow/act_norm_11/scale",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "7c32f7af379a68edbf8f97571dc5d0d0e2085dd346f98567315d840891d49e7a"
+      },
+      {
+        "path": "coupling_flow/act_norm_11/bias",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "54ae5c9a89e33abae5a42451bec42f0aa3561475526560894d244860d5d1f3a1"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_22/mlp_22/dense_block_44/dense/kernel",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d0bba05455399c9504cc12900c94d648c194681c0b67fb1466d9b2b47b48a276"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_22/mlp_22/dense_block_44/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3a67bdcc187a66f223b047fda6d988abe501a79c09ee11716f4c04feb0c50f2f"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_22/mlp_22/dense_block_45/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0325cdb19e1fd2fafe16ea9803607a7c1fe047269e7f8c0ad8b4afffb393bc35"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_22/mlp_22/dense_block_45/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "eb462c0487d0e5d951d1b30d201f641dc08fed2474ff77d5628ff741be481513"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_22/output_projector/kernel",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ae1634618c3baf946e2630c75f00f2b6cac54c01b751ec8ff1c84fc45e77414f"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_22/output_projector/bias",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9861476f228ac871b98663c686388a09f2c5f67f6e6f4939a9c5de8982915b49"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_23/mlp_23/dense_block_46/dense/kernel",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "bdd4ce75875841656d9e7059034df85cde3194258bf3e77f6f3f2c87c6d09648"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_23/mlp_23/dense_block_46/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0707d6ca1c2075fb350947b10413aa44fd6bd60b557a23dd8258fa08c0ba3697"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_23/mlp_23/dense_block_47/dense/kernel",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b3febe83e69bc7599e123d3c7ff0256f3bb6ef40cd63591974734ad27753b37d"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_23/mlp_23/dense_block_47/dense/bias",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b3d49342cff399210e469b9773fed1bd6a66b672d9f83f42f37c3ccd1f355ea6"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_23/output_projector/kernel",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "17b506d76e74cf24e20181dbb75decc7352a4b56e4737cec20d760312430342d"
+      },
+      {
+        "path": "coupling_flow/dual_coupling_11/single_coupling_23/output_projector/bias",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c25c4eaf849cfab736acbd2a3cf6f03ee0891d5b9dfeb9ad7e40d75fcc8d9289"
+      }
+    ],
+    "non_trainable": [
+      {
+        "path": "seed_generator_56/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9df72808d64f9ee1fd880936a623bbbb3d6fd3cbbc8195f35dc420ffa13ebffc"
+      },
+      {
+        "path": "seed_generator_30/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f12767d103338fc8dfab3934f4facbfb729ffcae7581438e3593e586ff6d891f"
+      },
+      {
+        "path": "seed_generator_28/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "576d4f08b03cc87d8276eb6ba2d692477e6739fbf5c7ff5d0ce55fbc981d7014"
+      },
+      {
+        "path": "seed_generator_29/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "813edf034addeb3509eaf0aecbaaa5ccbf4a410034569698ffa4d89eaa5b2b43"
+      },
+      {
+        "path": "coupling_flow/random_permutation_6/variable",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "1ffe72d0b411813fb21ef32a8455d8d33a1e2361f419a7f16f9ee4ecdaafd39a"
+      },
+      {
+        "path": "coupling_flow/random_permutation_6/variable_1",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "82318f8fb907a4187914066d6aafdc8aef412e4c0b8651755c7690d7efc2b67d"
+      },
+      {
+        "path": "seed_generator_31/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "71d236b07921c3e13fe34a56b575c93affef7db91dbdff13b71e60f1778f2e3e"
+      },
+      {
+        "path": "seed_generator_32/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "660b97c9f3a1e5621af3272fa2b31f9ab6f20c5a4fdb2e98dcc00aeb8e1b5d4a"
+      },
+      {
+        "path": "seed_generator_33/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ec37c7805942bc72303de11615cb64f39db9c9800316af1476bd643620529dac"
+      },
+      {
+        "path": "seed_generator_34/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "8e906dc9dc36c9eb9b64c8f4db21fb826585fc06b856ca56d51838a993ddc32c"
+      },
+      {
+        "path": "coupling_flow/random_permutation_7/variable_2",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "837b52179502e3efdb4c8316edc97a225c82e0f71f788cb55dd0e3278a945c00"
+      },
+      {
+        "path": "coupling_flow/random_permutation_7/variable_3",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "209e2615ffe07204faa3ed4a4113601d898b5c54714184be37498276b02e060c"
+      },
+      {
+        "path": "seed_generator_35/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "a28110558a0c6e887718f62a5927e3e23f8de5a4de88c1fe22ecbac31c5e6d77"
+      },
+      {
+        "path": "seed_generator_36/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f103daad1266860a26b4914e0b58130e534c128857e9e909f71e13d8080e4951"
+      },
+      {
+        "path": "seed_generator_37/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "a2cd7d957199e8d3bf59cf1d58989dfe65b31682b7bc907d9e3b8c5e60eaa623"
+      },
+      {
+        "path": "seed_generator_38/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "cc47bfa375ba4c93eb4502b00892db5573578b146db1e73e4e0f076f31b1f40e"
+      },
+      {
+        "path": "coupling_flow/random_permutation_8/variable_4",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c1ccd604a12498821e062bcc2974fc1eca34bd21fd043be579a1913af7712d1e"
+      },
+      {
+        "path": "coupling_flow/random_permutation_8/variable_5",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "275341a9f9de5f99216ce34c42ac3a33328ec375c7294cf0bdc8c63c05293a22"
+      },
+      {
+        "path": "seed_generator_39/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ae4d21a9b8ebeb9c323473ec589f03b0f77a81806abf5f47fde08e5af74c9f02"
+      },
+      {
+        "path": "seed_generator_40/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "aa98c202c988032ae20a1a5317255d006fc7bf24de319e587c76b9ebf513065e"
+      },
+      {
+        "path": "seed_generator_41/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f054293721b2609126eb13673fa590146a26a0f48b2d85fa9ae06d0341a331a1"
+      },
+      {
+        "path": "seed_generator_42/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "19456078a61aaa29b2fb3d1e8ad4f92edd7105207106313a4bd26c6120b688a5"
+      },
+      {
+        "path": "coupling_flow/random_permutation_9/variable_6",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "837b52179502e3efdb4c8316edc97a225c82e0f71f788cb55dd0e3278a945c00"
+      },
+      {
+        "path": "coupling_flow/random_permutation_9/variable_7",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "209e2615ffe07204faa3ed4a4113601d898b5c54714184be37498276b02e060c"
+      },
+      {
+        "path": "seed_generator_43/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "72aeb5572879b9cead2a551949a2d59ca11c155ed55c11e4d7b285a0b71d3ddc"
+      },
+      {
+        "path": "seed_generator_44/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "16791cc2bbfa649ea40d368288806041b43e5d43bc4a10a1d298d056ceb793fe"
+      },
+      {
+        "path": "seed_generator_45/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4613d640da279196c1f7a951c5610747c848d66646f7d3a5be22308a8c1a995b"
+      },
+      {
+        "path": "seed_generator_46/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "1f2d57c045275ac03fa7025afb0e5e5a76efcf4960464f0456c830a6286c3685"
+      },
+      {
+        "path": "coupling_flow/random_permutation_10/variable_8",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "e799d5aa713eb3c6382b1ff53b69176c0d4fcd4bf13ea2f1c0741c41946d4128"
+      },
+      {
+        "path": "coupling_flow/random_permutation_10/variable_9",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "1751d3cd7c09b4b0189b16e756420ca85c5033c2d4522f3326795a12d255bd8f"
+      },
+      {
+        "path": "seed_generator_47/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "deb0d0b8420eccfc80e86a2fe28f1b15a621e7644d0503514dc0e5fda658ad4b"
+      },
+      {
+        "path": "seed_generator_48/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f22982116b9a4ac62e45796f939d569f56bc807a301ad107b5792ba15c5f5fc3"
+      },
+      {
+        "path": "seed_generator_49/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fd628cb0f3e09553ed5ca25a6e7bb12e0d2bd4138e2662151cba5622e532a98e"
+      },
+      {
+        "path": "seed_generator_50/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "cef683794c34d89b09adc03d3796bc7ba207b821db4c9ad0fd3579c4819c44a6"
+      },
+      {
+        "path": "coupling_flow/random_permutation_11/variable_10",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d34a934bd6fb920d258868133d694d8d25f5b33710f34b648681de2a9884a970"
+      },
+      {
+        "path": "coupling_flow/random_permutation_11/variable_11",
+        "shape": [
+          5
+        ],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0414067d24b7e36501b081b0b2e219f23c8dcc8d62308be9098178b034a9b801"
+      },
+      {
+        "path": "seed_generator_51/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "8aebafd3eec40106a28e084f4dcdc1b001a24477de767500b82dff9d48f9d303"
+      },
+      {
+        "path": "seed_generator_52/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3238a50cf1881fc63888cce69fc180b52f2168587ab35a1fa6edfea85c9c77fb"
+      },
+      {
+        "path": "seed_generator_53/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "cd293798bdb7ebadb044d970199f93d566e06cfd6dadfb084021ae5c809d3914"
+      },
+      {
+        "path": "seed_generator_54/seed_generator_state",
+        "shape": [
+          2
+        ],
+        "dtype": "uint32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "71fd29dfd15cc25c7163603a909b96411a6dbf9b9183042c7c7b5033db9260f7"
+      },
+      {
+        "path": "basic_estimator/standardization_1/standardize/variable_12",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "5245f74b151107144827d5e67189e2a493edb24154149242b27aeba63c710574"
+      },
+      {
+        "path": "basic_estimator/standardization_1/standardize/variable_13",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c0e3ac66ef142988cc292025a52fe531aa8f6f8c26af78fa3cd00fa7d4cb2e02"
+      },
+      {
+        "path": "basic_estimator/standardization_1/standardize/variable_14",
+        "shape": [],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "872123763331585af8c456848024944629dc1e0432e8f4fac8bacb8d909eadc1"
+      },
+      {
+        "path": "basic_estimator/standardization_1/standardize_1/variable_15",
+        "shape": [
+          54
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "70b04e19269fd1eefa80bb3fa64e8f97d6990a8e857eeb464042097065873529"
+      },
+      {
+        "path": "basic_estimator/standardization_1/standardize_1/variable_16",
+        "shape": [
+          54
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "90cc4c972413cd59ab14baa258f6abad33cb0b36677b0584a8c4cb93257faa95"
+      },
+      {
+        "path": "basic_estimator/standardization_1/standardize_1/variable_17",
+        "shape": [],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "872123763331585af8c456848024944629dc1e0432e8f4fac8bacb8d909eadc1"
+      }
+    ],
+    "optimizer": [
+      {
+        "path": "adam/iteration",
+        "shape": [],
+        "dtype": "int32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "5a8b351238c5624a1894ef2f5a4bd688ac6fb7714e32f3976ff067a66dfd7d53"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_6_scale_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "091ff056245d501e8d52bc39bff993f1349b55e313f6ca7750ca71ffa4ad166f"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_6_scale_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d5bd479a3493eb450c0c7e0a7bb368d5ea1de6778218068e88c8195e1c4231c9"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_6_bias_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "758398515908601d92cb79b8289fb692b0379133808171135d400e70af2303e2"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_6_bias_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "1ac93513106276a339c2689a01b27afcc8ff8cb2d9f359b7bb6438dfba65f04f"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_mlp_12_dense_block_24_dense_kernel_momentum",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "8f1aacd90abd3d738cabe602aa18294a7f04f484bc46bec9c3e3e160de7cea8d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_mlp_12_dense_block_24_dense_kernel_velocity",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "6ee9ca6a56f08d035ac349d1d372e180b3df7bfdb70ef7b32f44a8bc9d25574c"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_mlp_12_dense_block_24_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "32c6fb8e66c6db95e20e9bc4269ebd55bfb2afad363c08a002bb280ddd887a4d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_mlp_12_dense_block_24_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3b7756a4aa05db81969040fc715f2bdf6ed6d426ce92ff44953cf94c48ce3b69"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_mlp_12_dense_block_25_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ff1a54a9f0aa6070f9daae14fd1a9e4044c02d829ce68127b2d5d71515089f84"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_mlp_12_dense_block_25_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "417b304825edf18f8b2629b5feb2206dbcdbc829b6f0ff17bd7b0e19de1c0f47"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_mlp_12_dense_block_25_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "dde56dc250115eca36166c03d0beac71da1f76cea6cc0652fd651792f56e8de1"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_mlp_12_dense_block_25_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0952440555b42076b520977a07cfd5694382818ebbb4e16cb4161bbb579356d4"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fba1a1bd453e9a800719ddbded0ab74be310d2a11d5338bbf9efb941f39f024d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "15eb2b4da747ff64b9ebacab74e0e30dade4dc4cc32d3bf19467e11d56000474"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b40b68980040b253ec927bf3cfe1d142d62f45cad956e1af91fb389b8a7218c8"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_12_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "83e3624b619690b85725451145ecd701e2d614ec46c04e954f062c1a16ebdd4b"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_mlp_13_dense_block_26_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4d2ca8fea38ddad78796990b8eda10a5224ca10c8cd0d330946bce05801146d8"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_mlp_13_dense_block_26_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "23db6ee17340e629ff6444a94395c52bb20a7930b6d2d96be6f6e4d886a133ab"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_mlp_13_dense_block_26_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "8ad0698efcbb959fb31b909e4d355e61cfdf9fdc0e52383752bd483c251824dd"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_mlp_13_dense_block_26_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "abf77a7a0de17cc27ef7bff636dc398405897eea877b007e5d71e5daac05954d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_mlp_13_dense_block_27_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2b2b2b0e7f9540285357113487d3aa2dec4a42266c7fd1719e41b1f5f0b49263"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_mlp_13_dense_block_27_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4a5c936fcee4dea0ec018b782e944c40635e2f717c8daf46cf9d1fbbda063f4a"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_mlp_13_dense_block_27_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4158a7fdc45219726c2f7933fb7ce1166b2c2d1556219a2ccf19d461e8b6c74c"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_mlp_13_dense_block_27_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2976488207e98f1789321a4b6dec1264923c746bdf9f3902f7affcafaca6ce2e"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "5b28f0c373415ca38cdc384b96acb5c8abb9c07eac5f3fac0bab1c7e08450bb4"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f5e109de237f65b9091434027e4eeefa28c6c7329c788dd3be21524a7c7c33a4"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_output_projector_bias_momentum",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "364f79c3d8f1a155aa7b7475e3cc1a084854abf046171249bf24e4451d048a7d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_6_single_coupling_13_output_projector_bias_velocity",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b3cc69ccd9c1e2db7ecc7e960a4987fba94448d588bd208bf04d3578ee85bce2"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_7_scale_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "297bb2a65107e9d5cd38c8b7c3958433fb71d96ded9e7677218f4499745cbf6d"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_7_scale_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9357d3ebb32ff0821d0de39612110179964d72b8038266d0ac98607678bacfd0"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_7_bias_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "39c93cba81c8564cef001dd53de846e3f30bd3c1b27aad6d22463f6559eca097"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_7_bias_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "6494c355508ed71e47a374ff3981a36cd51cefb718e357a708175dd497566e47"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_mlp_14_dense_block_28_dense_kernel_momentum",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "29621d4ce1290826a41dcd608e94ef46adfc7dcf50613686e962265815246e47"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_mlp_14_dense_block_28_dense_kernel_velocity",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d69e9c37a937eba9d86ef69ce2a055c00c82d350871276a71462038a3b08c570"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_mlp_14_dense_block_28_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9af0ca063f41ed684eb725773ef95fcefe2532fb01c3d9f954c9f1ba620c75b5"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_mlp_14_dense_block_28_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ce7f0eaac62366d7ead6a40a0e7eea5786c6f589178a459b99ab9a4384165372"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_mlp_14_dense_block_29_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c5410e1c3e02d81ce1c92d9f31c4b34841eb23ed0c008c59699e3d298e860b2d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_mlp_14_dense_block_29_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "44581f45e88ba87e20eff5df53d15f742e1525dfb112a989e5614fa986eced70"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_mlp_14_dense_block_29_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d3dae7452dc32ce72e64cfdc0ff5e1f8dfd8035fbfa7c7656991cce1ae5c94a3"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_mlp_14_dense_block_29_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "5cfd55e7219d91b84433d3b483c030267bdfc05003fb51bbc422cf456a304389"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "22bd43be24280492ec5e36f0c0b651af649b3af4802ab0ffc32af95b79921005"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "42e612c5427c11ae08b807cf9255dc88f95fce9a5c8f32ad6c61b84be0d9c475"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "832967acbf067a3e10098dee4e37e631d8535a0b10a0bfbf898e9ae536ec8e37"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_14_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2deacd15434731a4f5336cacf2da32b1acba16d24ddfacf245bd4e6d914f6464"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_mlp_15_dense_block_30_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "518b96ad12b0ee98ab97fd174f62890412eec2f974d86b330a18078fcecf1474"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_mlp_15_dense_block_30_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9c33a9b967cb386246f5751c120368195457f9434947a260281392a82ee7d7d2"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_mlp_15_dense_block_30_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ce67273f3fa3e7ad2fd19d6c22c62b0bea57593aac2b7e2471a8d89b54bc246d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_mlp_15_dense_block_30_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c3d53d02aab2edc15deb5a4d8fbe37e3a6a648b0397efff65dd97b96638b5abf"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_mlp_15_dense_block_31_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "85d41fa7e48730352c8904d63d123f3529661a6a5632d3cfb61df000c850a898"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_mlp_15_dense_block_31_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "7e7d982e12525aa0d047c332b2cbe4f7873f6c274f391147036786b5b2130963"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_mlp_15_dense_block_31_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "5126dd6dd0a5579cfea4f521c0e8999f5fe9abb607a281c3cd959431186ff1fd"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_mlp_15_dense_block_31_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "8bf3ecddde8dd1b118a322f4af08086845e8973b718d04c52597f7e834128b90"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f7ad3497049adff32fb6b9a45d373926de2ff0ee67f12ca23a2caa4382d1eaa6"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "a671a6fe5db4ded045ce8fc9c5e133ce7bd32beca04edfc4770269e860f45cd8"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_output_projector_bias_momentum",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b11785546e68db8adff2be7cc9ddbad0c81296ec39528b10ca4f14173520feb1"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_7_single_coupling_15_output_projector_bias_velocity",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "bf2871a57caa7a67a6a4b2b10034fe295f5e0cdaacfabcc1ca41066007fd71e6"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_8_scale_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f6733629f45b9d7b062a4543765d5f9fb24d58af85c85aeffd57cf26db532804"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_8_scale_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "d9d458497e080d84b69d9f9a930d4e164ff84e5f0e4b397dacb86d2f69696672"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_8_bias_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3affe9f4432971fd16df07750fd9efb0246f243ea8800a369bfab12698160f56"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_8_bias_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2cfbe952353a1439abcb5a9a5009f952ed6749f0c3c6924085773212b8c53e92"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_mlp_16_dense_block_32_dense_kernel_momentum",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "30a72318bce1dbdb5d23dda0dd9199d6e140ea08041c4f0eff87d5dce7942b86"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_mlp_16_dense_block_32_dense_kernel_velocity",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c7186735014dd5d35a2b727ea3e12f403d276c2873cb9668c9c36ef0f945b78d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_mlp_16_dense_block_32_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "1f3e0c722f676046894fdcf2a5bb9d4724a943ccca3a1292c33a385830460742"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_mlp_16_dense_block_32_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "15a68bd7ee5a8d75ff4cf435b99bb80a114328476ff6f534a465008f06981fcf"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_mlp_16_dense_block_33_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "878c094b7d37318375202e1aa5a3b3302d29e3ca13ac09a3a48cd3c1403c597d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_mlp_16_dense_block_33_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "cded336f9757eea6bbde6d0447a915e3ba3eafa4fb9662691ca2b1c0b37df0d4"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_mlp_16_dense_block_33_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2aff59c7f9cf88a57c58fdacc0862c906465ae36666e212276541cc04167ea67"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_mlp_16_dense_block_33_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "21df587bddb74b2f47034bd0770d45b9196e85ad9c7ee69a3070ef3ca4187da1"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c398dd978a801862ab4eda83e7090d0b5279483b5a8521ccb771e553e10b052e"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "346c933bc520521edd600c4117c0d4bc2e4b2e38a5889338ac9f6e35156ccb86"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "af2f5fcfc66bf2167476d2076169242d7c549107381d1bdc1a71af77a9147ed4"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_16_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "1cfea3134f78216ab6dcff827e854956f49ad9a2d15af04f0e9d7e2257015458"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_mlp_17_dense_block_34_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "59e899af845e39ecfbc7479bf87c2628847b77017389fa1a28f49510cbd2a891"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_mlp_17_dense_block_34_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f78f807d586449d092a6730e0884b646c06a6f61157c9f07f9e2d7a991323d58"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_mlp_17_dense_block_34_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "01b8c388201a9bb888679e073e22532461cb41916020a75f83391ccfb0e2f34a"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_mlp_17_dense_block_34_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "e4548618913ccbc130081e449f9a8e853b97b1338804116c76c4b2195b845ca0"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_mlp_17_dense_block_35_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "a06be94cecde33121f1dc44f6ebaf8a0db5586eebe9c960d7f085bf8d3ae6de9"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_mlp_17_dense_block_35_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "6bf3c08b5a27e0ad6a5c66da054f9cf7d3106d356d3f003ba143c4f1d33944d6"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_mlp_17_dense_block_35_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "624eec10de512bf384cdda7c2b1aaef7723f514f3e243eeb485692370db90e2e"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_mlp_17_dense_block_35_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0a54cfe4439b84b0804351bc85215e839212799ed97ea63f0193ab4fcb4af8f9"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2617d43c30a022d8232f63166fc2677daa390d8962e82aed2aa940b832ebca7a"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "71f337fcc137bb01923d0a7528d0e31f84014f9a99b134622d26c7a08067164b"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_output_projector_bias_momentum",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "61c6e9be50d7f85667b149dd9bc4f5df341f8753cd74d2107ec0a4e3c8afde5d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_8_single_coupling_17_output_projector_bias_velocity",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fdb209512fbb926466d72b966a1c59f753a6726c9d6e7f864e8efd9095971559"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_9_scale_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f3e78aad9cef932b00900b315427ae6063f5b16546c1600fa9a7d888bf56da38"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_9_scale_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3b15ab145f0a685777d9507a93858a98bf94bc12d9c79d31e0cfbe479a7f807d"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_9_bias_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c98685bf2a3cf3ebd8e3a713960283535a322e91813bb4c0418e802de017f7e5"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_9_bias_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ed39b0ef53ae46c0deb386ed3c3069da97a4b3dceb41187d9be3aaeae5c8bf6b"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_mlp_18_dense_block_36_dense_kernel_momentum",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "23dcb3cccc0aed7e93c2755cd351ff3fed60283a14eeef2223fbc1887aa61c07"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_mlp_18_dense_block_36_dense_kernel_velocity",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "82287674fa5b80d754e4e5aead313a3a0f97cc17247d72a86b0c08c60b1dfe0a"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_mlp_18_dense_block_36_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3de195e4c64c7cce5ef564af5c2d1ce175111e500da210fb016aa271c8ab05ca"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_mlp_18_dense_block_36_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "99fbbb6f78bfaa14c1b19b1376f64a5cd801731a3fa97e33f6592df2325b9493"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_mlp_18_dense_block_37_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3097dda45208e17deb84cb3be4bc078f8136fc60a045ba2388501da1693e3e81"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_mlp_18_dense_block_37_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "eb0414fd8c945cee4b7de2ffd712bfcc27b8ef218907b322643351f0241831eb"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_mlp_18_dense_block_37_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "090db3771101264f39108b8b6164851afdc5fd3691bbc9ef4f80cffd63b1f2d7"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_mlp_18_dense_block_37_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "80b8b9e46afacb8d12751a366a0063fcefcf67562d02697553656f08918f8149"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4d5aa804a124e3979cdec70ead53b0a9fef0c7c9e6bfe7a525652e169261f94d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2102f42aaea30a70bc170fe23622ddd9167e6bdc2d17ee02204a363d8b1775ed"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "352fc295f5305d67d6715d2d5a3fd75f55cc9b709493592f2d8c352422901587"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_18_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "04373b9f9f7b1c768c3f0284bd022ac8645b8ab75fa15c392255b43fdb1e45fe"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_mlp_19_dense_block_38_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ac7b4e2cc4e5f935911ce0a406bc0120b5d3f96c97161e10499f4b4100f4d184"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_mlp_19_dense_block_38_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "a797834297776deb3030e3fd09a95db584119e7e15046a2561882c0e4c965af8"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_mlp_19_dense_block_38_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "a1db541bbeebcff1511b3b9f4b0d62b7af8221d03ae849b113e37c487930120c"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_mlp_19_dense_block_38_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "fb454caddd4fcd0d6607f15ba6677616fe92c6c3a62b21bd6f816e878fd5527f"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_mlp_19_dense_block_39_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ead22075890739ed5136506c917644beae471be51332707c761a07b645e12543"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_mlp_19_dense_block_39_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "edc1b635350decfa8a2950935ee3790c321cfdf89572f50e05db3026e5cf0462"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_mlp_19_dense_block_39_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "92cae3c3de92189ad25c887be611a15f120580f8a565391e0e53bdf30f6bf4f3"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_mlp_19_dense_block_39_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b89c41fcc5bb0b38f97bd5bf1e2d53f627a3bbed0ed678a92815bd29c809feec"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "06ae1e3d7a18a1535329eb3a80be17b9b58834e9ee68f820bf0c97a3e34738bc"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3526350fff70c770d5c74231a4da0a7b36c7264ceee1d76f212f90803334da69"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_output_projector_bias_momentum",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0ff6cf55af47fbceb87c4aa74a04e1342f12a60d5d91a09cb0474b6c96626e7b"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_9_single_coupling_19_output_projector_bias_velocity",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "03b2b7ad3d1fa87399d62cfca77af191944836134a751d1162de153419179329"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_10_scale_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "50d8449b75188a7c245398072e78aceb32ea4315dd9b4274d6be53006699c587"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_10_scale_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "bb39efc4e030e939e7a8ff569d1466b29d6cdaca555bcf042ca60be9b16b7b4d"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_10_bias_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "82e0b18c093d80c58e6852f7aa30f91bf462db1d66bb136f8df767365f9a08d0"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_10_bias_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "5f882f20cdd794bb733111be1b2da6f8379b7a8b69f775cc0a49de6a5a902fa3"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_mlp_20_dense_block_40_dense_kernel_momentum",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "70214e1baaaba5729fd71d64b597ca050d9960435406ebf612d233b31e246098"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_mlp_20_dense_block_40_dense_kernel_velocity",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3d72a05728f90cdf31358b1c335ec01bc41ccb205ae78dd73e9347144aae4ae6"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_mlp_20_dense_block_40_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "98f14c1d071af5d604c00a600439aba8e26e4338ab36c3343caeca0ab5bd8d12"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_mlp_20_dense_block_40_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "aebc761af047126bcb82679aa7beebaf90b5d953a3e8a9d5611562e09aa1a3a4"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_mlp_20_dense_block_41_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "a918740a473c4dd1e3e21782197396bed432dfacc43c9ed928a8ae6d854b43e9"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_mlp_20_dense_block_41_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f8a7be9ecb8c6c23a03a1ead613d1f1229980d753a3abb13bca6630924c39a7e"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_mlp_20_dense_block_41_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "870ec69353f257ce29776594768b51a37955346dd466c27699b4cada9ec5f7b7"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_mlp_20_dense_block_41_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "007858ff5d1357510cd9166634afe9e8b81c45bc52ab09d6197db7fe423106dd"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "5758f77e7b68b44b4c69ba92977287650a26dd9d5fdb678b9f92220d34e5e8ab"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2b9e7aa2fcdc2f63b52c3541b24f5fc210cfe8d3c26b31b4f41e4399157c01a8"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "e1410fba3ebb2b39b7bc6a693eb80c0ddc4f82861c52588a5309bec8d1ca6f11"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_20_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "8e7b975d6bd543f5ccb2f3f51f60479f78d18b66d11188e30d5f2f5850f41be8"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_mlp_21_dense_block_42_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "314471d8f84a3e2bbf4b0faacde547798659163bfa0ce51e0147a5c6f81f1a47"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_mlp_21_dense_block_42_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "29c03db94e8fbc785da10bb80314cd9f90efb7dc879fe3ded36178e882a63a43"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_mlp_21_dense_block_42_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c8a234562fdd94b6e037edd90d65052b24779671b394a9c3d3546ac02cfc16fe"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_mlp_21_dense_block_42_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b0b7bb9287f8edd7e72871ca7039fbdf5474530dd04bceb350a97045710e95cf"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_mlp_21_dense_block_43_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "40515ad13e5673a700bf5d0e08c678ff2e2c7e810798fa9f64db4e0e01925808"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_mlp_21_dense_block_43_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c8fac9ff3ede782a211eaa660e645a41c573492407be54951bf98561845dd57f"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_mlp_21_dense_block_43_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "94577e734b0e49b1de300c0c9de1b1bcc1f6cf715fa32144e5ffe3f50b0d53cb"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_mlp_21_dense_block_43_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "19559da7d2aba7bd0d6a5551f93adfeb9ab670fa552c6160151be8165c2a5bfc"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c065c3436c3a4ea2637d4579c863b787d0fcc9a59bdd1f9a8d049dfc8e9260e5"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "e4cb9b66f2fc90312915d1c96033236278d23c42e833e4eb476ef3a8002b2193"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_output_projector_bias_momentum",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "1686a0228e2099102654f9177abd3a283ce3b092ccc4d4199d7e407de6a67f43"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_10_single_coupling_21_output_projector_bias_velocity",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "bf0b01980dfaccdcb4280442d49577a6545cb31f6816a7e90240b53f512b9374"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_11_scale_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c0fec06b2f09a9ce033448df034a3019a8a2e05e48d517685210832965969ce6"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_11_scale_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "23b0e6bce4379d36fcacb13a9ffcb706e22d39b829a8175656cb041caf4677e7"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_11_bias_momentum",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "8cba65c1f259e7f066e1d12881163f26eb6ed404226888354ef66b39af8ddf17"
+      },
+      {
+        "path": "adam/coupling_flow_act_norm_11_bias_velocity",
+        "shape": [
+          5
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "0845db07fd9d6ea90faa9bf06d39f64aa670a798593be418cc74d5048d3c7744"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_mlp_22_dense_block_44_dense_kernel_momentum",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "b60006176c0696bb202b0d86a3d0959141955fa31ad0ffcbcd1ad33fc16e539d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_mlp_22_dense_block_44_dense_kernel_velocity",
+        "shape": [
+          56,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ddfcbb7f189c70c3d3036cb5ece0a24e55b3fead021e0b14e03a46f171dce877"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_mlp_22_dense_block_44_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3219dfb10458894b10a60697c56f1b9aa95c9e6f0526181555b86f2cd92d93bd"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_mlp_22_dense_block_44_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "341b63d303f6eac8e2753a59ddba01409f4ad14a6bde903f6ac40c223e97c60d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_mlp_22_dense_block_45_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "e121567ab769bc2a36928f22c03f8d13e04e0863029c0cc5f92dfd9ad9f87400"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_mlp_22_dense_block_45_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "35eb9246e867cafac4cef73059663141112310adb7ee039bc3535599134ba23b"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_mlp_22_dense_block_45_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "db002cb14c19b6210443aaec5290cec94d408c657eec2c2861ea416b91856399"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_mlp_22_dense_block_45_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "8bf900105d28be6bb83c52389638907a4af315a64de015787c2e0465d02b9113"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ea4b6f6feb7420d0e45b2b63035a9ec0d2ae8ef070e0be9dd3e22346268d72f1"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "ff40b3346d5008798fdba303a91c350e27a510d859e6eca497b9f9cd1d88514b"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_output_projector_bias_momentum",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "912e0c22469a47196956904e88970d1ccb1d6db0e899f86401c7ae9b556f1ddd"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_22_output_projector_bias_velocity",
+        "shape": [
+          153
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "f709d0c31a675908ba4a6f3b5375244692246292693fe9dc7275a6d99a205ef5"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_mlp_23_dense_block_46_dense_kernel_momentum",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "a18373efc92a9b6931c046a5d528365d044e38e043318d540e5b04ffb3ac5bc5"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_mlp_23_dense_block_46_dense_kernel_velocity",
+        "shape": [
+          57,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "34ee1c2b6657b7099dbe349ba421a52f69773704b7027b4944bace046931728d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_mlp_23_dense_block_46_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "074374c9155f72381df1b11fb46b79edde330b846f72ba812ece5449b4e9a629"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_mlp_23_dense_block_46_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2078020456f0c218253bc2f744a566e0a4264693a316f9064223bd8f49eced4d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_mlp_23_dense_block_47_dense_kernel_momentum",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "2e7fb57a797ccccb338c8f2455368175ce11867dbb940b4e011e5cf0327097e0"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_mlp_23_dense_block_47_dense_kernel_velocity",
+        "shape": [
+          128,
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "46f832cbd0938813adab097e08b30bac4667792f6c2d375a310cd16634664304"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_mlp_23_dense_block_47_dense_bias_momentum",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "c70381bd98670509b198070d73cc088b12360ae57bfb7688e41539802d76bf5d"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_mlp_23_dense_block_47_dense_bias_velocity",
+        "shape": [
+          128
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "3ca140acaca76a463a277ea87774a052b716691ab732440ebad737a9bdcbe4b5"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_output_projector_kernel_momentum",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "87bef614196d3374182fe505976c47f17e9f15b2ca41b5f70945407c58d7a7dc"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_output_projector_kernel_velocity",
+        "shape": [
+          128,
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "96d8dbe6525c58ce924cd7d3b49fbfa3671dc5602d515aaee33f183a82e13c13"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_output_projector_bias_momentum",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "9235fe1cf54003c423c2e1a551042d027726a2688e0eecb7755565bc219dad42"
+      },
+      {
+        "path": "adam/coupling_flow_dual_coupling_11_single_coupling_23_output_projector_bias_velocity",
+        "shape": [
+          102
+        ],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "4f6e38550b755c7d2122cfcbe079604ac005e7ee9bbc28ea3a341c912608b693"
+      }
+    ],
+    "metrics": [
+      {
+        "path": "loss/total",
+        "shape": [],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "1c52f126e0cb3110bd0d66307d09ce8af51effcc1587733fc719912b0d376256"
+      },
+      {
+        "path": "loss/count",
+        "shape": [],
+        "dtype": "float32",
+        "all_finite": true,
+        "nonfinite_count": 0,
+        "sha256": "872123763331585af8c456848024944629dc1e0432e8f4fac8bacb8d909eadc1"
+      }
+    ]
+  },
+  "probe_metrics": {
+    "updates": 50000,
+    "seconds": 298.33555229217745,
+    "batch_training_loss": -16.452733993530273,
+    "train_probe_loss": -16.362688064575195,
+    "validation_probe_loss": -16.10476303100586
+  },
+  "resume_scope": "state sidecar retained; no exact continuation proof supplied",
+  "continuation": {
+    "format": "heston_spread_zero_continuation_protocol_v1",
+    "start_updates": 10000,
+    "target_updates": 50000,
+    "checkpoint_updates": [
+      25000,
+      50000
+    ],
+    "schedule_updates": 10000,
+    "learning_rates": {
+      "10000": 5.0000002374872565e-05,
+      "25000": 5.0000002374872565e-05,
+      "50000": 5.0000002374872565e-05
+    },
+    "wall_seconds": 900,
+    "smoke_test_only": false,
+    "parent_checkpoint_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero/checkpoints/update-010000",
+    "parent_checkpoint_sha256": "4f0190fc8a87351dc4dbf2df75a338ba05a5ff9b76420d92fa700cf9832e77e1",
+    "parent_model_sha256": "1db28d6bf52474ccdee7c6050f66a7695b4a4ddb263d2c626e81c7f0d9e90620",
+    "parent_state_sha256": "7cb50958c41f384186f064cd53e984a1115e0c9c3d2783150c01b08b7a782348",
+    "frozen_trainer_sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+    "continuation_source_sha256": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b",
+    "restoration": {
+      "all_array_hashes_exact": true,
+      "variable_counts": {
+        "trainable": 84,
+        "non_trainable": 46,
+        "optimizer": 169,
+        "metrics": 2
+      },
+      "variable_mapping": "saved group/index/shape/dtype/hash; Keras constructor name counters and model-root prefixes can change on archive reload",
+      "archive_path_changes": {
+        "trainable": 84,
+        "non_trainable": 46,
+        "optimizer": 168,
+        "metrics": 0
+      },
+      "state_sha256": "7cb50958c41f384186f064cd53e984a1115e0c9c3d2783150c01b08b7a782348"
+    },
+    "absolute_data_and_noise_steps": true,
+    "reserved_arrays_opened": false,
+    "scope": "one zero-dropout continuation only; no generic checkpoint-resume or scientific acceptance claim"
+  },
+  "resume_protocol_sha256": "07383100c5e436ae0f5fd3f3553306ee37f09ea817e6b5d9ea6f7b466d7cbf88",
+  "parent_actual_optimizer_updates": 50000,
+  "annealing": {
+    "protocol_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/annealing-protocol.json",
+    "protocol_sha256": "02b2f2e4a8c835b00ba74a2ab988b18cfc9e1de8b3e2dfe85c1badee73b91c06",
+    "restoration": {
+      "all_array_hashes_exact": true,
+      "variable_counts": {
+        "trainable": 84,
+        "non_trainable": 46,
+        "optimizer": 169,
+        "metrics": 2
+      },
+      "variable_mapping": "saved group/index/shape/dtype/hash; Keras constructor name counters and model-root prefixes can change on archive reload",
+      "archive_path_changes": {
+        "trainable": 0,
+        "non_trainable": 0,
+        "optimizer": 0,
+        "metrics": 0
+      },
+      "state_sha256": "469c3dcd3b1b8eeeacd0c4c9880fd259b73f1fd1c3557225818008408d669e62"
+    },
+    "learning_rate_assignment": {
+      "serialized": {
+        "module": "keras.optimizers.schedules",
+        "class_name": "PiecewiseConstantDecay",
+        "config": {
+          "boundaries": [
+            54999
+          ],
+          "values": [
+            5e-06,
+            5e-07
+          ],
+          "name": "heston_spread_two_stage_annealing"
+        },
+        "registered_name": null
+      },
+      "absolute_step_rates": {
+        "50000": 4.999999873689376e-06,
+        "54999": 4.999999873689376e-06,
+        "55000": 4.999999987376214e-07,
+        "59999": 4.999999987376214e-07,
+        "60000": 4.999999987376214e-07
+      },
+      "all_saved_array_hashes_unchanged_at_assignment": true,
+      "other_adam_configuration_unchanged": true,
+      "old_serialized": {
+        "module": "keras.optimizers.schedules",
+        "class_name": "CosineDecay",
+        "config": {
+          "initial_learning_rate": 0.0005,
+          "decay_steps": 10000,
+          "alpha": 0.1,
+          "name": "CosineDecay",
+          "warmup_target": null,
+          "warmup_steps": 0
+        },
+        "registered_name": null
+      }
+    },
+    "absolute_data_and_noise_steps": true
+  }
+}

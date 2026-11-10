@@ -1,0 +1,235 @@
+{
+  "format": "heston_spread_annealing_package_manifest_v1",
+  "declared_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/annealing-protocol.json",
+    "sha256": "02b2f2e4a8c835b00ba74a2ab988b18cfc9e1de8b3e2dfe85c1badee73b91c06"
+  },
+  "original_run_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed",
+  "original_run_sha256": "ef8ee99e3519769752187950c587b3d63413f8ecdca9b58a56e63ecd4f26bc9b",
+  "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+  "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+  "panel_sha256": "8246c08c72336a819771bf481ffd46be4e09f1c2cf64dab6e6725a10229d4f1d",
+  "source_sha256": {
+    "annealing": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/anneal_heston_spread_baseline.py",
+      "sha256": "6e0b34ff99ddd6ad57518a8ae711e1b2fb7d632a562547aade3602966731f1e4"
+    },
+    "trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py",
+      "sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38"
+    },
+    "continuation": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_baseline.py",
+      "sha256": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+    },
+    "evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_baseline.py",
+      "sha256": "f899e126b4f9098b06d022b39dadd0f382d200d29ae4b8e2e52550dba808f7e0"
+    },
+    "reference": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    },
+    "batch_plan": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_full_surface_budget.py",
+      "sha256": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07"
+    },
+    "spread_pilot": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_spread.py",
+      "sha256": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca"
+    },
+    "heston_pilot": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_pilot.py",
+      "sha256": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b"
+    },
+    "heston_model": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/model.py",
+      "sha256": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+    }
+  },
+  "copied_json_files": {
+    "evaluation-055000.json": {
+      "original_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/evaluation-055000.json",
+      "original_sha256": "4f37d10b70a92d35f33f7593017d992d8cd452a033d65965f93fc980455d8d0a",
+      "evidence_sha256": "4f37d10b70a92d35f33f7593017d992d8cd452a033d65965f93fc980455d8d0a",
+      "exact_bytes_match": true,
+      "bytes": 66817
+    },
+    "evaluation-060000.json": {
+      "original_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/evaluation-060000.json",
+      "original_sha256": "064d9fa9dc5de2a3c2e871c93fed6dcd9857ba3f93163eb63cde07ef8a539b68",
+      "evidence_sha256": "064d9fa9dc5de2a3c2e871c93fed6dcd9857ba3f93163eb63cde07ef8a539b68",
+      "exact_bytes_match": true,
+      "bytes": 66837
+    },
+    "initial-probes.json": {
+      "original_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/initial-probes.json",
+      "original_sha256": "225b2b84997a1bb4f25e4c495ce7954f694ac7b7d6339c1f5691b4a02bfb7391",
+      "evidence_sha256": "225b2b84997a1bb4f25e4c495ce7954f694ac7b7d6339c1f5691b4a02bfb7391",
+      "exact_bytes_match": true,
+      "bytes": 93
+    },
+    "learning-curve.json": {
+      "original_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/learning-curve.json",
+      "original_sha256": "62cc2309f88aca109b66291ce793a78da3ff865d47ba717a564f84028565736a",
+      "evidence_sha256": "62cc2309f88aca109b66291ce793a78da3ff865d47ba717a564f84028565736a",
+      "exact_bytes_match": true,
+      "bytes": 2064
+    },
+    "resume-protocol.json": {
+      "original_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/resume-protocol.json",
+      "original_sha256": "6de9c9db76d78af4753efb8a0967e26b01d2738ba708d7992276101b86f00a43",
+      "evidence_sha256": "6de9c9db76d78af4753efb8a0967e26b01d2738ba708d7992276101b86f00a43",
+      "exact_bytes_match": true,
+      "bytes": 1934
+    },
+    "run.json": {
+      "original_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/run.json",
+      "original_sha256": "ef8ee99e3519769752187950c587b3d63413f8ecdca9b58a56e63ecd4f26bc9b",
+      "evidence_sha256": "ef8ee99e3519769752187950c587b3d63413f8ecdca9b58a56e63ecd4f26bc9b",
+      "exact_bytes_match": true,
+      "bytes": 125718
+    },
+    "training.json": {
+      "original_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/training.json",
+      "original_sha256": "1d163a4af06757e553db1bbf70d8b1b876c18a5536b8326b8ebc104abd320f59",
+      "evidence_sha256": "1d163a4af06757e553db1bbf70d8b1b876c18a5536b8326b8ebc104abd320f59",
+      "exact_bytes_match": true,
+      "bytes": 2346
+    }
+  },
+  "package_files": {
+    "README.md": {
+      "sha256": "2be461d747faa0d11ac417a87767ede2bd1fd07cbbe6c3f17b3e97e3cfaabf7d",
+      "bytes": 3053
+    },
+    "checkpoint-payloads.json": {
+      "sha256": "210b55ace12b363820905e923fe2785592231051c8080742bb44612a764f5112",
+      "bytes": 8026
+    }
+  },
+  "evaluations": {
+    "55000": {
+      "conditional_status": "fail",
+      "case_statuses": {
+        "synthetic-broad": "fail",
+        "synthetic-market-like": "fail",
+        "synthetic-boundary": "inconclusive",
+        "market": "fail"
+      },
+      "individual_parameter_statuses": {
+        "synthetic-broad": {
+          "initial_variance": "fail",
+          "kappa": "fail",
+          "theta": "fail",
+          "vol_of_vol": "fail",
+          "rho": "fail",
+          "control": "fail",
+          "affected": "fail"
+        },
+        "synthetic-market-like": {
+          "initial_variance": "inconclusive",
+          "kappa": "pass",
+          "theta": "pass",
+          "vol_of_vol": "fail",
+          "rho": "fail",
+          "control": "fail",
+          "affected": "pass"
+        },
+        "synthetic-boundary": {},
+        "market": {
+          "initial_variance": "fail",
+          "kappa": "fail",
+          "theta": "fail",
+          "vol_of_vol": "fail",
+          "rho": "fail",
+          "control": "fail",
+          "affected": "fail"
+        }
+      },
+      "population_rank_dkw_passed": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "population_90_coverage": [
+        0.904296875,
+        0.931640625,
+        0.919921875,
+        0.916015625,
+        0.91015625
+      ]
+    },
+    "60000": {
+      "conditional_status": "fail",
+      "case_statuses": {
+        "synthetic-broad": "fail",
+        "synthetic-market-like": "fail",
+        "synthetic-boundary": "inconclusive",
+        "market": "fail"
+      },
+      "individual_parameter_statuses": {
+        "synthetic-broad": {
+          "initial_variance": "fail",
+          "kappa": "inconclusive",
+          "theta": "fail",
+          "vol_of_vol": "fail",
+          "rho": "fail",
+          "control": "fail",
+          "affected": "inconclusive"
+        },
+        "synthetic-market-like": {
+          "initial_variance": "inconclusive",
+          "kappa": "pass",
+          "theta": "pass",
+          "vol_of_vol": "fail",
+          "rho": "fail",
+          "control": "fail",
+          "affected": "pass"
+        },
+        "synthetic-boundary": {},
+        "market": {
+          "initial_variance": "fail",
+          "kappa": "fail",
+          "theta": "fail",
+          "vol_of_vol": "fail",
+          "rho": "fail",
+          "control": "fail",
+          "affected": "fail"
+        }
+      },
+      "population_rank_dkw_passed": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "population_90_coverage": [
+        0.916015625,
+        0.931640625,
+        0.93359375,
+        0.91796875,
+        0.92578125
+      ]
+    }
+  },
+  "completed_updates": 60000,
+  "additional_updates": 10000,
+  "fit_attempts": 1,
+  "runtime_seconds_including_checks_and_evaluations": 99.85578804207034,
+  "final_fixed_probe_timestamp_seconds": 75.04363350011408,
+  "final_probe_timestamp_scope": "Timestamp before final checkpoint/reload and both evaluations; not fit-only duration.",
+  "final_validation_probe_loss": -17.228944778442383,
+  "all_finite": true,
+  "checkpoint_reload_exact": true,
+  "protected_inputs_unchanged": true,
+  "reserved_arrays_opened": false,
+  "price_calls": 0,
+  "scientific_acceptance": false,
+  "accepted_checkpoint": null,
+  "further_fit_launched": false,
+  "scope": "One predeclared bounded learning-rate comparison. All outcomes retained; pooled development calibration does not certify conditional posterior fidelity."
+}

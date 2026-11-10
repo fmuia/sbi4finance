@@ -1,0 +1,61 @@
+{
+  "protocol_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/annealing-protocol.json",
+  "protocol_sha256": "02b2f2e4a8c835b00ba74a2ab988b18cfc9e1de8b3e2dfe85c1badee73b91c06",
+  "restoration": {
+    "all_array_hashes_exact": true,
+    "variable_counts": {
+      "trainable": 84,
+      "non_trainable": 46,
+      "optimizer": 169,
+      "metrics": 2
+    },
+    "variable_mapping": "saved group/index/shape/dtype/hash; Keras constructor name counters and model-root prefixes can change on archive reload",
+    "archive_path_changes": {
+      "trainable": 0,
+      "non_trainable": 0,
+      "optimizer": 0,
+      "metrics": 0
+    },
+    "state_sha256": "469c3dcd3b1b8eeeacd0c4c9880fd259b73f1fd1c3557225818008408d669e62"
+  },
+  "learning_rate_assignment": {
+    "serialized": {
+      "module": "keras.optimizers.schedules",
+      "class_name": "PiecewiseConstantDecay",
+      "config": {
+        "boundaries": [
+          54999
+        ],
+        "values": [
+          5e-06,
+          5e-07
+        ],
+        "name": "heston_spread_two_stage_annealing"
+      },
+      "registered_name": null
+    },
+    "absolute_step_rates": {
+      "50000": 4.999999873689376e-06,
+      "54999": 4.999999873689376e-06,
+      "55000": 4.999999987376214e-07,
+      "59999": 4.999999987376214e-07,
+      "60000": 4.999999987376214e-07
+    },
+    "all_saved_array_hashes_unchanged_at_assignment": true,
+    "other_adam_configuration_unchanged": true,
+    "old_serialized": {
+      "module": "keras.optimizers.schedules",
+      "class_name": "CosineDecay",
+      "config": {
+        "initial_learning_rate": 0.0005,
+        "decay_steps": 10000,
+        "alpha": 0.1,
+        "name": "CosineDecay",
+        "warmup_target": null,
+        "warmup_steps": 0
+      },
+      "registered_name": null
+    }
+  },
+  "absolute_data_and_noise_steps": true
+}

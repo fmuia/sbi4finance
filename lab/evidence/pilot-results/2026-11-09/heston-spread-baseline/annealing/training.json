@@ -1,0 +1,63 @@
+{
+  "status": "complete",
+  "completed_updates": 60000,
+  "continued_updates": 10000,
+  "seconds": 99.85578804207034,
+  "checkpoint_reload_proofs": {
+    "55000": {
+      "all_array_hashes_exact": true,
+      "variable_counts": {
+        "trainable": 84,
+        "non_trainable": 46,
+        "optimizer": 169,
+        "metrics": 2
+      },
+      "variable_mapping": "saved group/index/shape/dtype/hash; Keras constructor name counters and model-root prefixes can change on archive reload",
+      "archive_path_changes": {
+        "trainable": 84,
+        "non_trainable": 46,
+        "optimizer": 168,
+        "metrics": 0
+      },
+      "state_sha256": "3bab92c096af7ebcbf4ca658942ed169d2f46f4cc365f23dbd2a26040b64bbd6",
+      "seeded_draws_exact": true,
+      "schedule_exact": true
+    },
+    "60000": {
+      "all_array_hashes_exact": true,
+      "variable_counts": {
+        "trainable": 84,
+        "non_trainable": 46,
+        "optimizer": 169,
+        "metrics": 2
+      },
+      "variable_mapping": "saved group/index/shape/dtype/hash; Keras constructor name counters and model-root prefixes can change on archive reload",
+      "archive_path_changes": {
+        "trainable": 84,
+        "non_trainable": 46,
+        "optimizer": 168,
+        "metrics": 0
+      },
+      "state_sha256": "816df44911c369af40a91756726f0cdac6710a47514d204c7c16c14a24f7c883",
+      "seeded_draws_exact": true,
+      "schedule_exact": true
+    }
+  },
+  "evaluations": {
+    "55000": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/evaluation-055000.json",
+      "sha256": "4f37d10b70a92d35f33f7593017d992d8cd452a033d65965f93fc980455d8d0a"
+    },
+    "60000": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-annealed/evaluation-060000.json",
+      "sha256": "064d9fa9dc5de2a3c2e871c93fed6dcd9857ba3f93163eb63cde07ef8a539b68"
+    }
+  },
+  "annealing_row_presentations": 1273856,
+  "all_parent_array_hashes_restored": true,
+  "protected_inputs_unchanged": true,
+  "reserved_arrays_opened": false,
+  "fit_attempts": 1,
+  "automatic_extension": false,
+  "scientific_acceptance": false
+}
