@@ -28,7 +28,6 @@ def _():
     return (
         ASSETS,
         CHECKPOINTS,
-        CHECKS,
         RESULTS,
         bf,
         mo,
@@ -221,7 +220,7 @@ def _(ASSETS, mo):
 
 @app.cell(hide_code=True)
 def _(backbone_case, backbones, mo, np, plt, teaching):
-    _task, _, _a = backbones.load_example(backbone_case.value)
+    _task, _, _a = backbones.load_example(backbone_case)
     _clean = teaching.heston_smile(_task, _a["truth"])
     _sd = np.asarray(_task["context"]["quote_noise_std"])
     _maturities = np.array([c["maturity"] for c in _task["context"]["contracts"]])
@@ -253,10 +252,10 @@ def _(backbone_case, backbones, mo, np, plt, teaching):
 def _(ASSETS, mo):
     mo.vstack([
         mo.md(r"""
-        ## 4 Two neural approaches: learn the price or learn the posterior
+        ## 4 Two simulation-based inference paths: learn the price or learn the posterior
 
         A pricer surrogate solves the forward simulation. An amortized posterior solves the inverse problem.
-        Both reuse simulations, but they learn different functions:
+        Both reuse simulations, but they learn different functionals:
 
         | | Neural pricer + Bayesian sampler | Amortized posterior |
         |:---|:---|:---|
@@ -265,11 +264,6 @@ def _(ASSETS, mo):
         | At a new observation | evaluate the cheap surrogate inside a new MCMC run | condition the network and draw parameters |
         | Main approximation to check | surrogate error, then sampler convergence | posterior approximation and sampling error |
         | Changing prior/noise | often reuse the pricer, then run a new chain | generally requires a newly compatible estimator |
-
-        Neither route turns a posterior into a single best-fit parameter. A
-        neural pricer does not itself return uncertainty; the Bayesian sampler
-        supplies it. A posterior network learns a conditional distribution,
-        including dependence between parameters.
         """),
         mo.image(ASSETS / "illustrations" / "heston-workflow-20261101" / "two-amortization-routes.png"),
         mo.accordion({"The two mathematical targets": mo.md(r"""
@@ -298,32 +292,46 @@ def _(mo):
     mo.md(r"""
     ### Building and training the posterior estimator
 
-    ```python
-    # The adapter performs necessary transformations before passing simulations through the networks
+    | Object | Used here | Dimension |
+    |:---|:---|---:|
+    | Observed data $y$ | noisy option prices (`inference_conditions`) | 63 |
+    | Summary $h(y)$ | none; the fixed vector enters directly | n/a |
+    | Flow state $z_t$ | transformed $v_0,\theta,\sigma_v,\rho$ coordinates | 4 |
+    | Flow time $t$ | scalar time | 1 |
+    | Velocity output | transformed parameter-space velocity | 4 |
+
+    The $9\times7$ contract grid and quote-noise schedule are fixed by the task and absorbed into the training distribution. Neither is an additional network input. The cell below builds the workflow and trains it only when the button immediately after it is pressed. This is a small live fit, not the archived estimator used later.
+    """)
+    return
+
+
+@app.cell
+def _(BOUNDS, NAMES, bf, mo, simulator, train_button):
+    mo.stop(not train_button.value, mo.md("Training is off. Press the button below to fit the small network."))
+
+    # 1. Define the adapter - this is your preprocessing step
     adapter = bf.Adapter()
 
-    # Here, we first declare the parameter bounds (similar to Stan or PyMC)
-    for name, (lower, upper) in zip(parameter_names, bounds):
+    for parameter_name, (lower, upper) in zip(NAMES, BOUNDS, strict=True):
         adapter = adapter.constrain(
-            name,
+            parameter_name,
             lower=lower,
             upper=upper,
             inclusive="none",
         )
-
-    # Next, we instruct BayesFlow which quantities should be inferred from which other quantities
+    
     adapter = (
         adapter
-        .concatenate(parameter_names, into="inference_variables")
+        .concatenate(NAMES, into="inference_variables")
         .rename("observations", "inference_conditions")
     )
 
-    # Flow matching is one of the many inference networks available
+    # 2. Define the inference network
     network = bf.networks.FlowMatching(
-        subnet_kwargs={"widths": [128, 128]},
+        subnet_kwargs={"widths": [128, 128]}
     )
 
-    # The workflow object connects simulator, adapter, and networks
+    # 3. Wrap everything into a "workflow" 
     workflow = bf.BasicWorkflow(
         simulator=simulator,
         adapter=adapter,
@@ -331,55 +339,106 @@ def _(mo):
         standardize="all"
     )
 
-    # We can train with an unlimited stream of simulations or use pre-simulated
-    # data sets with .fit_offline / .fit_disk
+    # 4. A very quick training - don't do this at home :)
     history = workflow.fit_online(
         epochs=15,
         batch_size=64,
         num_batches_per_epoch=2,
+        verbose=0
     )
 
-    # Once trained, the Heston model can be calibrated immediately to any options chain
-    posterior = workflow.sample(
-        conditions={"observations": observed_prices[None, :]},
-        num_samples=1000,
-    )
-    ```
+    loss_figure = bf.diagnostics.loss(history)
 
-    The results below use cached draws from a larger network trained before the tutorial. The button later in the notebook builds and trains a smaller network during this session so that the complete workflow remains runnable.
+    loss_figure
+    return (workflow,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    train_button = mo.ui.run_button(label="Train the small BayesFlow network (15 epochs)")
+    train_button
+    return (train_button,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Check the network just trained
+
+    Recovery checks location and spread across held-out simulations. The calibration ECDF checks the posterior ranks. Both figures describe this live network only.
     """)
+    return
+
+
+@app.cell
+def _(NAMES, bf, mo, plots, simulator, teaching, time, workflow):
+    heldout_data = simulator.sample(200)
+    sampling_started = time.perf_counter()
+    heldout_draws = workflow.sample(
+        conditions={"observations": heldout_data["observations"]},
+        num_samples=200
+    )
+
+    sampling_seconds = time.perf_counter() - sampling_started
+    parameter_labels = [teaching.LABELS[name] for name in NAMES]
+
+    recovery_figure = bf.diagnostics.recovery(
+        estimates=heldout_draws,
+        targets=heldout_data,
+        variable_keys=NAMES,
+        uncertainty_agg_kwargs={"prob": 0.68},
+        variable_names=parameter_labels,
+        color=plots.SERIES[0],
+    )
+
+    calibration_figure = bf.diagnostics.calibration_ecdf(
+        estimates=heldout_draws,
+        targets=heldout_data,
+        variable_keys=NAMES,
+        variable_names=parameter_labels,
+        difference=True,
+        legend_location="upper right",
+        rank_ecdf_color=plots.SERIES[0],
+        fill_color=plots.BASELINE,
+    )
+
+    mo.vstack([
+        mo.md(f"200 held-out posteriors with 200 draws each in **{sampling_seconds:.1f} s** "
+              f"({1000 * sampling_seconds / 200:.0f} ms per data set), including the first sampling call's compilation."),
+        recovery_figure,
+        calibration_figure,
+    ])
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ## 5. Infer parameters from one synthetic observation
+    ## 5. Load cached neural draws and the PyMC reference
 
-    We use one synthetic set of 63 noisy prices. The neural draws come from the pretrained estimator, and a [PyMC](https://www.pymc.io/index.html) numerical reference targets the same observation, prior, and likelihood.
+    We now leave the small demonstration network and load one synthetic set of 63 noisy prices. Its neural draws come from the larger pretrained estimator. The stored [PyMC](https://www.pymc.io/index.html) chains target the same observation, prior, and Fourier likelihood.
 
     ```python
     task, report, case = backbones.load_example("heston-final500")
     observed_prices = case["observations"]
     posterior_draws = case["neural_draws"]
+    reference_draws = case["reference_chains"]
     ```
     """)
     return
 
 
 @app.cell
-def _(mo):
+def _():
     from sbi4f_tutorial.shared import backbones
 
-    backbone_case = mo.ui.dropdown(options={"Synthetic option quotes": "heston-final500"},
-                                    value="Synthetic option quotes", label="Observed data set")
-    backbone_case
+    backbone_case = "heston-final500"
     return backbone_case, backbones
 
 
 @app.cell(hide_code=True)
 def _(backbone_case, backbones, mo, np, plt):
-    _task, _report, _arrays = backbones.load_example(backbone_case.value)
+    _task, _report, _arrays = backbones.load_example(backbone_case)
     _contracts = _task["context"]["contracts"]
     _noise = np.asarray(_task["context"]["quote_noise_std"])
     _maturities = np.asarray([c["maturity"] for c in _contracts])
@@ -455,7 +514,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(backbone_case, backbones, mo, np, plt, teaching):
-    _task, _report, _a = backbones.load_example(backbone_case.value)
+    _task, _report, _a = backbones.load_example(backbone_case)
     _draw_sets = {"neural posterior": _a["neural_draws"],
                   "PyMC reference": _a["reference_chains"]}
     _predictive = teaching.heston_posterior_predictive(
@@ -497,7 +556,8 @@ def _(mo):
     mo.md(r"""
     ## 7. Calibration: do uncertainty statements work across repeated data sets?
 
-    **Financial calibration** infers model parameters from quotes. **Statistical calibration** asks whether the resulting uncertainty statements behave as advertised across repeated simulations. A 90% interval should contain the truth in about 90% of repeated simulations. One posterior or a falling training loss cannot establish that, so we apply several distinct checks:
+    - **Financial calibration** infers model parameters from quotes.
+    - **Statistical calibration** asks whether the resulting uncertainty statements behave as advertised across repeated simulations. A 90% interval should contain the truth in about 90% of repeated simulations. One posterior or a falling training loss cannot establish that, so we apply several distinct checks:
 
     | Check | Slogan | What to look for |
     |:---|:---|:---|
@@ -619,7 +679,7 @@ def _(CHECKPOINTS, bf, np, teaching):
         return {"observations": prices + NOISE * _rng.standard_normal(len(NOISE))}
 
     simulator = bf.make_simulator([prior, observation_model])
-    return BOUNDS, NAMES, NOISE, heston_task, simulator
+    return BOUNDS, NAMES, heston_task, simulator
 
 
 @app.cell(hide_code=True)
@@ -645,7 +705,7 @@ def _(RESULTS, np, prior_button, simulator, surface, teaching):
     spy_iv = teaching.implied_vol_grid(spy_prices)
     _k, _maturity, _kind, grid_delta = teaching.design_arrays()
     grid_days = np.rint(_maturity * surface.TRADING_DAYS)
-    return grid_days, grid_delta, prior_iv, spy_iv, spy_prices
+    return grid_days, grid_delta, prior_iv, spy_iv
 
 
 @app.cell(hide_code=True)
@@ -687,65 +747,6 @@ def _(CHECKPOINTS, RESULTS, mo, teaching):
     | Pricing error | below 0.1 noise sd on every quote ({100 * _bank['share_of_quotes_above_0_1']:.0f}% above) |
     | Training | {_training['training']['epochs']} epochs in {_training['timing_seconds']['training_including_compile'] / 60:.0f} minutes on {_training['cpu_count']} cores, best validation loss at epoch {_training['training']['selected_epoch']} |
     """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Train a small network
-
-    The cached results load immediately from the archived estimator. The button below constructs a separate, smaller workflow and trains it on fresh simulations during this session. Its loss curve demonstrates the native BayesFlow training path; it does not reproduce or validate the archived fit.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    train_button = mo.ui.run_button(label="Train a small native BayesFlow 2.1 network explicitly")
-    train_button
-    return (train_button,)
-
-
-@app.cell(hide_code=True)
-def _(BOUNDS, NAMES, bf, mo, np, plots, plt, simulator, time, train_button):
-    mo.stop(not train_button.value, mo.md("*Press the button to train a small network for 15 online epochs.*"))
-    _adapter = bf.Adapter()
-    for _name, (_lower, _upper) in zip(NAMES, BOUNDS, strict=True):
-        _adapter = _adapter.constrain(
-            _name,
-            lower=_lower,
-            upper=_upper,
-            inclusive="none",
-        )
-    _adapter = (
-        _adapter.convert_dtype("float64", "float32")
-        .concatenate(NAMES, into="inference_variables")
-        .rename("observations", "inference_conditions")
-    )
-    _network = bf.networks.FlowMatching(
-        subnet_kwargs={"widths": [128, 128]},
-    )
-    _workflow = bf.BasicWorkflow(
-        simulator=simulator,
-        adapter=_adapter,
-        inference_network=_network,
-        standardize=["inference_variables", "inference_conditions"],
-    )
-    _start = time.perf_counter()
-    _history = _workflow.fit_online(
-        epochs=15,
-        batch_size=64,
-        num_batches_per_epoch=2,
-        verbose=0,
-    )
-    _fig, _ax = plt.subplots(figsize=(6.0, 3.0), constrained_layout=True)
-    _loss = _history.history["loss"]
-    _ax.plot(np.arange(1, len(_loss) + 1), _loss, color=plots.SERIES[0], marker="o", markersize=3)
-    _ax.set_xlabel("epoch")
-    _ax.set_ylabel("flow-matching loss")
-    _ax.set_title(f"15 online epochs, {time.perf_counter() - _start:.0f} s", loc="left")
-    _fig
     return
 
 
@@ -798,14 +799,9 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, mo, teaching):
+def _(RESULTS, teaching):
     _report = teaching.load_json(RESULTS / "heston" / "s3" / "heston-check.json")
     _chains = _report["summary"]["chain_checks"]
-    mo.vstack([
-        mo.ui.table(teaching.agreement_rows(_report, key="network_vs_chain"), selection=None, pagination=False),
-        mo.md(f"The neural posterior agrees with the MCMC reference on **{sum(c['network_vs_chain'] for c in _chains)} of {len(_chains)}** selected smiles."),
-
-    ])
     return
 
 
@@ -847,227 +843,9 @@ def _(RESULTS, comparison_case, heston_task, mo, np, plt, teaching):
         _ax.set_yticks([])
     _axes2[0].set_ylabel("posterior density")
     _axes2[0].legend(fontsize=7, loc="upper left")
-    _notice = (mo.callout(mo.md("**Case 2001 is a genuine interval miss.** Both the neural and numerical posteriors exclude the generating vol-of-variance and correlation from their 95% marginal intervals. The saved seed reproduces the case, whose likelihood favors a shifted, strongly correlated region. A credible interval need not contain the truth in every simulation, and one miss does not determine calibration."), kind="warn")
-        if _row == 2001 else mo.md("The dotted line is the generating value. Compare the methods in physical units, and inspect joint dependence as well as these marginals."))
-    mo.vstack([_overview, mo.md("The path panels illustrate the generating parameters; they are not recovered latent paths or calibration inputs. The third panel shows the saved Fourier-price observation with noise."), _fig, _notice,
+
+    mo.vstack([_overview, mo.md("The path panels illustrate the generating parameters; they are not recovered latent paths or calibration inputs. The third panel shows the saved Fourier-price observation with noise."), _fig,
         mo.accordion({"Numerical reference scope and source": mo.md(f"Archived case ID: `{_row}`. The reference uses the Fourier likelihood and four Metropolis chains initialized from neural draws. Mixing diagnostics are reassuring but cannot rule out an unvisited mode. The observations, truths, and posterior arrays are preserved; the original raw bank is unavailable. In case 2001, the truth is 3.03 and 3.33 reference SDs below the vol-of-variance and correlation means, and their posterior correlation is 0.887.")}),
-    ])
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Historical study: inference on SPY
-
-    The saved SPY reference uses MCMC with the Fourier likelihood. Seven of eight optimizer starts reach the same optimum, and four dispersed chains agree. This notebook does not contain a current neural posterior for the same SPY quotes, so the remaining comparison cells stop explicitly.
-    """)
-    return
-
-
-@app.cell
-def _(ASSETS, mo, np):
-    exact_spy = np.load(ASSETS / "data" / "heston-spy-exact.npy")
-    network_spy = None
-    network_seconds = None
-    mo.md("**Historical market observation.** The saved Fourier-reference draws below concern SPY. A neural comparison for these same quotes is not included; the synthetic posterior above belongs to a different observation.")
-    return exact_spy, network_seconds, network_spy
-
-
-@app.cell
-def _(CHECKS, teaching):
-    heston_checks = teaching.load_json(CHECKS / "heston_checks.json")
-    return (heston_checks,)
-
-
-@app.cell(hide_code=True)
-def _(NAMES, exact_spy, mo, network_seconds, network_spy, teaching):
-    mo.stop(network_spy is None, mo.md("A neural posterior for these SPY quotes is not included in this lesson."))
-    _labels = [teaching.LABELS[n] for n in NAMES]
-    _rows = []
-    for _j, _name in enumerate(_labels):
-        _rows.append({
-            "parameter": _name,
-            "exact mean ± sd": f"{exact_spy[:, _j].mean():.4f} ± {exact_spy[:, _j].std():.4f}",
-            "network mean ± sd": f"{network_spy[:, _j].mean():.4f} ± {network_spy[:, _j].std():.4f}",
-            "mean gap, exact sd": round((network_spy[:, _j].mean() - exact_spy[:, _j].mean()) / exact_spy[:, _j].std(), 2),
-            "width ratio": round(network_spy[:, _j].std() / exact_spy[:, _j].std(), 2),
-        })
-    mo.vstack([
-        mo.md(f"2,000 network draws in **{network_seconds:.1f} s**; the exact chain took about 9 CPU-minutes."),
-        mo.ui.table(_rows, selection=None, pagination=False),
-        teaching.pairs({"exact posterior (MCMC)": exact_spy, "network": network_spy}, _labels, figsize=(7.0, 7.0)),
-    ])
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    **Classical comparison.** Least squares with a Gauss–Newton interval can agree with the posterior when its mass is interior, unimodal, and locally quadratic. Many liquid quotes do not guarantee those conditions, so the comparison must be checked.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(NAMES, exact_spy, heston_checks, mo, network_spy, np, teaching):
-    mo.stop(network_spy is None, mo.md("A neural posterior for these SPY quotes is not included in this lesson."))
-    _gn = heston_checks["cases"]["full grid, kappa fixed"]["parameters"]
-    _rows = []
-    for _j, _name in enumerate(NAMES):
-        _e = np.quantile(exact_spy[:, _j], [0.05, 0.95])
-        _n = np.quantile(network_spy[:, _j], [0.05, 0.95])
-        _g = _gn[_name]["gauss_newton_90"]
-        _rows.append({"parameter": teaching.LABELS[_name], "exact posterior, 90%": f"{_e[0]:.4f} to {_e[1]:.4f}",
-                      "network, 90%": f"{_n[0]:.4f} to {_n[1]:.4f}", "Gauss–Newton, 90%": f"{_g[0]:.4f} to {_g[1]:.4f}",
-                      "Gauss–Newton width / exact": round((_g[1] - _g[0]) / (_e[1] - _e[0]), 2)})
-    mo.vstack([
-        mo.ui.table(_rows, selection=None, pagination=False),
-        mo.md("""The methods agree here. The network's advantage is amortized speed, not a different target. They can disagree with fewer quotes or weakly identified inputs, as shown in slots 1 and 5.
-
-        *Source of the Gauss–Newton column:* `lab/checks/heston_checks.py`."""),
-    ])
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    **Model-price check.** Re-price 200 posterior draws and compare them with SPY. This propagates parameter uncertainty without fresh quote errors; the posterior predictive above adds those errors to generate replicated observations.
-    """)
-    return
-
-
-@app.cell
-def _(NOISE, heston_task, mo, network_spy, np, spy_prices, teaching):
-    mo.stop(network_spy is None, mo.md("A neural posterior for these SPY quotes is not included in this lesson."))
-    _rows = np.random.default_rng(6).choice(len(network_spy), 200, replace=False)
-    repriced = np.array([teaching.heston_smile(heston_task, network_spy[i]) for i in _rows])
-    repriced_iv = np.array([teaching.implied_vol_grid(p) for p in repriced])
-    residuals = (spy_prices - repriced.mean(axis=0)) / NOISE
-    return repriced_iv, residuals
-
-
-@app.cell(hide_code=True)
-def _(
-    grid_days,
-    grid_delta,
-    mo,
-    np,
-    plots,
-    plt,
-    repriced_iv,
-    residuals,
-    spy_iv,
-    teaching,
-):
-    _fig, _axes = plt.subplots(1, 3, figsize=(11.0, 3.4), sharey=False, constrained_layout=True)
-    for _ax, _days in zip(_axes, (5, 21, 252)):
-        _r = np.flatnonzero(grid_days == _days)
-        _lo, _hi = np.quantile(repriced_iv[:, _r], [0.05, 0.95], axis=0)
-        _ax.fill_between(grid_delta[_r], 100 * _lo, 100 * _hi, color=plots.SERIES[0], alpha=0.35, label="posterior, 90%")
-        _ax.plot(grid_delta[_r], 100 * spy_iv[_r], "o", color=plots.SERIES[1], markersize=4, label="SPY")
-        _ax.set_title(teaching.TENORS[_days], loc="left")
-        _ax.set_xlabel("standardized moneyness δ")
-    _axes[0].set_ylabel("implied volatility (%)")
-    _axes[0].legend(fontsize=8)
-    mo.vstack([_fig, mo.md(f"Root-mean-square residual of the posterior-mean prices: **{np.sqrt(np.mean(residuals**2)):.2f} noise units**, with {np.sum(np.abs(residuals) <= 2)} of 63 quotes within two. The loose wing noise at SPY's low volatility makes the fit look better there than it is.")])
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Historical study: model assumptions and derived quantities
-
-    The posterior is precise. Three of its consequences deserve attention.
-    """)
-    return
-
-
-@app.cell
-def _(exact_spy, np, surface, teaching):
-    feller_ratio = exact_spy[:, 2] ** 2 / (2 * 2.0 * exact_spy[:, 1])
-    variance_swap_vol = teaching.heston_variance_swap_vol(exact_spy[:, 0], exact_spy[:, 1], 2.0, surface.DESIGN_DAYS)
-    SPY_VARIANCE_SWAP_VOL = np.array([13.6, 15.0, 16.2, 17.6, 18.4, 20.1, 21.8])  # replicated from the chain (study S8)
-    return SPY_VARIANCE_SWAP_VOL, feller_ratio, variance_swap_vol
-
-
-@app.cell(hide_code=True)
-def _(
-    SPY_VARIANCE_SWAP_VOL,
-    feller_ratio,
-    mo,
-    np,
-    plots,
-    plt,
-    surface,
-    variance_swap_vol,
-):
-    _fig, (_left, _right) = plt.subplots(1, 2, figsize=(11.0, 3.6), constrained_layout=True,
-                                         gridspec_kw={"width_ratios": [1, 1.5]})
-    _left.hist(feller_ratio, bins=50, color=plots.SERIES[0], alpha=0.8)
-    _left.axvline(1.0, color=plots.INK, linestyle="--", label="Feller limit")
-    _left.set_xlabel("σ_v² / (2κθ)")
-    _left.set_yticks([])
-    _left.legend(fontsize=8)
-    _left.set_title("the Feller ratio over the posterior", loc="left")
-    _q = np.quantile(variance_swap_vol, [0.05, 0.5, 0.95], axis=0)
-    _days = surface.DESIGN_DAYS
-    _right.fill_between(_days, _q[0], _q[2], color=plots.SERIES[0], alpha=0.3, label="Heston posterior, 90%")
-    _right.plot(_days, _q[1], color=plots.SERIES[0])
-    _right.plot(_days, SPY_VARIANCE_SWAP_VOL, "o", color=plots.SERIES[1], label="SPY, replicated from the chain")
-    _right.set_xscale("log")
-    _right.set_xticks(_days, ["1w", "2w", "1m", "2m", "3m", "6m", "1y"])
-    _right.minorticks_off()
-    _right.set_ylabel("variance-swap volatility (%)")
-    _right.legend(fontsize=8, loc="upper left")
-    _right.set_title("variance swaps: the posterior against the market", loc="left")
-    _gaps = _q[1] - SPY_VARIANCE_SWAP_VOL
-    mo.vstack([_fig, mo.md(f"""
-    - **The Feller condition fails on every draw**: the ratio runs from {feller_ratio.min():.1f} to {feller_ratio.max():.1f}, so vol-of-vol is about {np.sqrt(np.median(feller_ratio)):.1f} times its Feller limit. The variance boundary is accessible, but violating this sufficient condition does not by itself invalidate Heston.
-
-    - **Heston's variance swaps sit below the market** by {-_gaps[1:].max():.1f} to {-_gaps[1:].min():.1f} volatility points from two weeks to one year, while the posterior's 90% band is less than one point wide. The curve is tied to smile parameters, and the market replication uses strikes outside the 63-quote grid.
-
-    Precise, and wrong for a product the smile does not pin down.
-    """)])
-    return
-
-
-@app.cell(hide_code=True)
-def _(heston_checks, mo, plots, plt):
-    _free = heston_checks["cases"]["full grid, kappa free"]
-    _fixed = heston_checks["cases"]["full grid, kappa fixed"]
-    _kq = _free["parameters"]["kappa"]["posterior_q05_q50_q95"]
-    _profile = heston_checks["kappa_profile"]
-    _kap = [p["kappa"] for p in _profile]
-    _chi2 = [p["chi2"] for p in _profile]
-    _names = {"variance_swap": "63-day variance swap", "volatility_swap": "63-day volatility swap",
-              "forward_start_call": "forward start, 3 to 6 months", "put_out_of_grid": "2-year 90% put"}
-    _shift_rows = []
-    for _p, _label in _names.items():
-        _a = _fixed["products"][_p]["posterior_q05_q50_q95"]
-        _b = _free["products"][_p]["posterior_q05_q50_q95"]
-        _shift_rows.append({"product": _label, "κ = 2: median and 90% range": f"{_a[1]:.4f} ({_a[0]:.4f} to {_a[2]:.4f})",
-                            "κ free: median and 90% range": f"{_b[1]:.4f} ({_b[0]:.4f} to {_b[2]:.4f})",
-                            "shift of the median": f"{100 * (_b[1] / _a[1] - 1):+.1f}%",
-                            "ranges overlap": "yes" if (_b[0] <= _a[2] and _a[0] <= _b[2]) else "no"})
-    _fig, _ax = plt.subplots(figsize=(6.6, 3.2), constrained_layout=True)
-    _ax.plot(_kap, _chi2, "o-", color=plots.INK)
-    _ax.axvspan(_kq[0], _kq[2], color=plots.SERIES[0], alpha=0.25, label="posterior of κ, 90%")
-    _ax.axvline(2.0, color=plots.SERIES[1], linestyle="--", label="κ fixed in slot 4")
-    _ax.set_xscale("log")
-    _ax.set_xticks(_kap, [f"{k:g}" for k in _kap])
-    _ax.minorticks_off()
-    _ax.set_xlabel("mean reversion κ (fixed in each least-squares fit)")
-    _ax.set_ylabel("χ² on 63 quotes")
-    _ax.legend(fontsize=8)
-    _ax.set_title("the smile's verdict on κ", loc="left")
-    mo.vstack([
-        mo.md(f"**κ = 2 is a choice, and the smile disagrees with it.** When inferred, the exact posterior median is **{_kq[1]:.1f}**, with a 90% interval from {_kq[0]:.1f} to {_kq[2]:.1f}, and the fit improves from χ² {_fixed['best_chi2']:.1f} to {_free['best_chi2']:.1f}. Fixing κ is a zero-width prior, so every posterior and product price above is conditional on that choice."),
-        _fig,
-        mo.ui.table(_shift_rows, selection=None, pagination=False),
-        mo.md("Product prices are in forward units under exact posteriors with κ fixed and free (`lab/checks/heston_checks.py`). Inferring κ requires a new task, simulation bank, and five-target estimator; editing the task file cannot change the existing four-target network. This stored check is independent of the unavailable SPY neural comparison."),
     ])
     return
 
@@ -1084,9 +862,12 @@ def _(mo):
     5. **Preserve dependence and assumptions.** Carry paired posterior draws into derived quantities. Every result remains conditional on the model, prior, noise, and fixed parameters.
 
     **Next:** rough Bergomi keeps the option-inference problem but changes the variance dynamics and conditioning assumptions.
-
-    *Evidence and code:* the [curriculum](../curriculum/04-slot4-heston-in-bayesflow.md); studies S1–S3 in `assets/results/calibration/heston/`; the historical SPY reference in `assets/data/`; and the Gauss–Newton and κ quick checks in `assets/quick-checks/`.
     """)
+    return
+
+
+@app.cell
+def _():
     return
 
 
