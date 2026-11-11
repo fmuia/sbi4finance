@@ -163,63 +163,70 @@ range does not cover.
 
 ## Notation and conventions
 
-- **Time.** Valuation at a close, time 0. The plan counts maturities in business days
-  from the valuation session (NYSE holidays, `chain.trading_days`), $`T = \text{days}/252`$.
-  Alex's frozen design records exact settlement times under ACT/365F (actual seconds over
-  365 days). The two conventions must be reconciled before rough Bergomi's grids are
-  built (step 4).
-- **Spot, forward, discount.** $`S_t`$ is the index, $`F(t)`$ the forward for maturity
-  $`t`$, $`D(t)`$ the discount factor. With deterministic rates and dividend yield,
+**Time.** Valuation at a close, time 0. The plan counts maturities in business days
+from the valuation session (NYSE holidays, `chain.trading_days`), $`T = \text{days}/252`$.
+Alex's frozen design records exact settlement times under ACT/365F (actual seconds over
+365 days). The two conventions must be reconciled before rough Bergomi's grids are
+built (step 4).
 
-  ```math
-  S_t = F(t)\,X_t,\qquad X_0 = 1,\qquad \frac{dX_t}{X_t} = \sqrt{V_t}\,dB_t,\qquad B = \rho\,W + \sqrt{1-\rho^2}\,W^{\perp},
-  ```
+**Spot, forward, discount.** $`S_t`$ is the index, $`F(t)`$ the forward for maturity
+$`t`$, $`D(t)`$ the discount factor. With deterministic rates and dividend yield,
 
-  where $`V`$ is the instantaneous variance, $`W`$ drives $`V`$, and $`W^{\perp}`$ is
-  independent of $`W`$.
-- **Forward units.** A put with strike $`K`$ and maturity $`T`$ is worth
-  $`D(T)F(T)\,\mathbb{E}[(\tilde K - X_T)^+]`$ with $`\tilde K = K/F(T)`$; its
-  log-moneyness is $`k = \ln \tilde K`$, and its standardized moneyness
-  $`\delta = k/(0.16\sqrt T)`$. Model prices are computed in these units.
-- **Implied volatility and vega.** $`\sigma_{\text{imp}}(k,T)`$ reproduces a forward-unit
-  price through Black–Scholes; the forward-unit vega is
-  $`\nu = \partial P/\partial\sigma = \sqrt T\,\varphi(d_1)`$.
-- **Half-spreads.** $`h^P_i`$ is quote $`i`$'s half-spread in forward-unit price (the
-  code's `half_spread`); $`h_i = h^P_i/\nu_i`$ is the same in vol points, at the quote's
-  own implied volatility.
-- **Integrated quantities along a path.**
+```math
+S_t = F(t)\,X_t,\qquad X_0 = 1,\qquad \frac{dX_t}{X_t} = \sqrt{V_t}\,dB_t,\qquad B = \rho\,W + \sqrt{1-\rho^2}\,W^{\perp},
+```
 
-  ```math
-  I_t = \int_0^t V_s\,ds,\qquad J_t = \int_0^t \sqrt{V_s}\,dW_s,\qquad J^{\perp}_t = \int_0^t \sqrt{V_s}\,dW^{\perp}_s ,
-  ```
+where $`V`$ is the instantaneous variance, $`W`$ drives $`V`$, and $`W^{\perp}`$ is
+independent of $`W`$.
 
-  so that, by Itô's formula for $`\ln X`$,
+**Forward units.** A put with strike $`K`$ and maturity $`T`$ is worth
+$`D(T)F(T)\,\mathbb{E}[(\tilde K - X_T)^+]`$ with $`\tilde K = K/F(T)`$; its
+log-moneyness is $`k = \ln \tilde K`$, and its standardized moneyness
+$`\delta = k/(0.16\sqrt T)`$. Model prices are computed in these units.
 
-  ```math
-  \ln X_t = \rho\,J_t + \sqrt{1-\rho^2}\,J^{\perp}_t - \tfrac12\,I_t,\qquad J^{\perp}_t \mid W \sim \mathcal N(0, I_t).
-  ```
+**Implied volatility and vega.** $`\sigma_{\text{imp}}(k,T)`$ reproduces a forward-unit
+price through Black–Scholes; the forward-unit vega is
+$`\nu = \partial P/\partial\sigma = \sqrt T\,\varphi(d_1)`$.
 
-  The conditional law holds because, given the whole path of $`W`$, $`J^{\perp}_t`$ is an
-  integral of a known function against an independent Brownian motion. This structure is
-  exact for both models and underlies every Monte Carlo estimator of steps 4 and 9
-  (`lab/src/sbi4finance/calibration/products.py`).
-- **Units.** One vol point ("vp") is 0.01 in decimal volatility.
-- **Parameters and their code names.**
+**Half-spreads.** $`h^P_i`$ is quote $`i`$'s half-spread in forward-unit price (the
+code's `half_spread`); $`h_i = h^P_i/\nu_i`$ is the same in vol points, at the quote's
+own implied volatility.
 
-  | Symbol | Meaning | Code name |
-  | --- | --- | --- |
-  | $`v_0`$ | Heston initial variance | `initial_variance` |
-  | $`\bar{v}`$ | Heston long-run variance | `theta` |
-  | $`\kappa`$ | Heston mean-reversion speed | `kappa` |
-  | $`\xi`$ | Heston vol of vol | `vol_of_vol` |
-  | $`\rho`$ | correlation of index and variance shocks (both models) | `rho` |
-  | $`H`$, $`\eta`$ | rough Bergomi Hurst exponent and vol of vol | `hurst`, `eta` |
-  | $`\xi_s`$, $`\xi_l`$, $`\lambda`$ | rough Bergomi curve: short level, long level, decay | `short_variance`, `long_variance`, `decay` |
-  | $`c`$ | multiplier of the half-spread | `c` |
-  | $`\tau`$ | model-error size, decimal volatility | `tau` |
+**Integrated quantities along a path.**
 
-  $`\theta`$ denotes either model's full parameter vector; Alex's code writes `phi` for
-  Heston's.
+```math
+I_t = \int_0^t V_s\,ds,\qquad J_t = \int_0^t \sqrt{V_s}\,dW_s,\qquad J^{\perp}_t = \int_0^t \sqrt{V_s}\,dW^{\perp}_s ,
+```
+
+so that, by Itô's formula for $`\ln X`$,
+
+```math
+\ln X_t = \rho\,J_t + \sqrt{1-\rho^2}\,J^{\perp}_t - \tfrac12\,I_t,\qquad J^{\perp}_t \mid W \sim \mathcal N(0, I_t).
+```
+
+The conditional law holds because, given the whole path of $`W`$, $`J^{\perp}_t`$ is an
+integral of a known function against an independent Brownian motion. This structure is
+exact for both models and underlies every Monte Carlo estimator of steps 4 and 9
+(`lab/src/sbi4finance/calibration/products.py`).
+
+**Units.** One vol point ("vp") is 0.01 in decimal volatility.
+
+**Parameters and their code names.**
+
+| Symbol | Meaning | Code name |
+| --- | --- | --- |
+| $`v_0`$ | Heston initial variance | `initial_variance` |
+| $`\bar{v}`$ | Heston long-run variance | `theta` |
+| $`\kappa`$ | Heston mean-reversion speed | `kappa` |
+| $`\xi`$ | Heston vol of vol | `vol_of_vol` |
+| $`\rho`$ | correlation of index and variance shocks (both models) | `rho` |
+| $`H`$, $`\eta`$ | rough Bergomi Hurst exponent and vol of vol | `hurst`, `eta` |
+| $`\xi_s`$, $`\xi_l`$, $`\lambda`$ | rough Bergomi curve: short level, long level, decay | `short_variance`, `long_variance`, `decay` |
+| $`c`$ | multiplier of the half-spread | `c` |
+| $`\tau`$ | model-error size, decimal volatility | `tau` |
+
+$`\theta`$ denotes either model's full parameter vector; Alex's code writes `phi` for
+Heston's.
 
 ## 1. What has a price, and what does not
 
@@ -237,27 +244,30 @@ range does not cover.
 
 ### 1.2 Discount and forward
 
-- **Discount.** $`D(T) = e^{-r(T)T}`$, with $`r(T)`$ linear in $`T`$ between that day's
-  3-month and 2-year Treasury constant-maturity yields, converted from bond-equivalent
-  yield $`y`$ to continuous compounding, $`r = 2\ln(1 + y/2)`$ (`chain.rate_curve`).
-- **Forward, from put–call parity.** A call minus a put with the same strike and maturity
-  pays $`(S_T-K)^+ - (K-S_T)^+ = S_T - K`$ at $`T`$, whatever happens, so its price is that
-  of a forward contract:
+**Discount.** $`D(T) = e^{-r(T)T}`$, with $`r(T)`$ linear in $`T`$ between that day's
+3-month and 2-year Treasury constant-maturity yields, converted from bond-equivalent
+yield $`y`$ to continuous compounding, $`r = 2\ln(1 + y/2)`$ (`chain.rate_curve`).
 
-  ```math
-  C(K,T) - P(K,T) = D(T)\,\big(F(T) - K\big)\quad\Longrightarrow\quad F(T) = K + \frac{C(K,T) - P(K,T)}{D(T)} .
-  ```
+**Forward, from put–call parity.** A call minus a put with the same strike and maturity
+pays $`(S_T-K)^+ - (K-S_T)^+ = S_T - K`$ at $`T`$, whatever happens, so its price is that
+of a forward contract:
 
-  We take the median of this over the six strike pairs nearest the money
-  (`chain.forward_given_discount`). SPX is European, so parity holds with no
-  early-exercise term; for SPY's American puts it does not, which biased both the forward
-  and the smile by up to about 1.1 vp at the 1-year at-the-money put (noise session,
-  binomial estimate).
-- **Between expiries** (used by the barrier product), $`\ln F(t)`$ is interpolated
-  linearly in $`t`$.
-- Alex's frozen design stores each expiry's parity regression: forward, discount, implied
-  rate, their conditional standard errors and the anchor contracts. Every third paired
-  near-spot strike is reserved for this "carry" and never used as an observation.
+```math
+C(K,T) - P(K,T) = D(T)\,\big(F(T) - K\big)\quad\Longrightarrow\quad F(T) = K + \frac{C(K,T) - P(K,T)}{D(T)} .
+```
+
+We take the median of this over the six strike pairs nearest the money
+(`chain.forward_given_discount`). SPX is European, so parity holds with no
+early-exercise term; for SPY's American puts it does not, which biased both the forward
+and the smile by up to about 1.1 vp at the 1-year at-the-money put (noise session,
+binomial estimate).
+
+**Between expiries** (used by the barrier product), $`\ln F(t)`$ is interpolated
+linearly in $`t`$.
+
+Alex's frozen design stores each expiry's parity regression: forward, discount, implied
+rate, their conditional standard errors and the anchor contracts. Every third paired
+near-spot strike is reserved for this "carry" and never used as an observation.
 
 ### 1.3 Cleaning (`chain.clean_expiration`)
 
@@ -555,30 +565,34 @@ As implemented in `rough_options/simulator.py`:
 V_t = \xi_0(t)\,\exp\!\Big(\eta\,Y_t - \tfrac12\,\eta^2\,\mathrm{Var}(Y_t)\Big),\qquad Y_t = \sqrt{2H}\int_0^t (t-s)^{H-1/2}\,dW_s,\qquad \frac{dX_t}{X_t} = \sqrt{V_t}\,dB_t .
 ```
 
-- **Variance of the driver.** $`\mathrm{Var}(Y_t) = 2H\int_0^t (t-s)^{2H-1}\,ds = t^{2H}`$.
-- **Mean.** $`Y_t`$ is Gaussian, so $`\mathbb{E}[e^{\eta Y_t - \frac12\eta^2\mathrm{Var}(Y_t)}] = 1`$
-  and $`\mathbb{E}[V_t] = \xi_0(t)`$: the curve is the expected future variance.
-- **Roughness.** For $`H \lt 1/2`$ the kernel $`(t-s)^{H-1/2}`$ diverges as $`s \to t`$:
-  the latest shocks dominate, and paths are rougher than Brownian motion. The
-  at-the-money skew then grows like $`T^{H-1/2}`$ as $`T \to 0`$. Whether rough models fit
-  SPX better than Markovian ones is disputed (Abi Jaber and Li, 2024); D7 compares the two
-  on our data.
-- **The curve,** Heston-shaped (`pricing.heston_variance_values`):
+**Variance of the driver.** $`\mathrm{Var}(Y_t) = 2H\int_0^t (t-s)^{2H-1}\,ds = t^{2H}`$.
 
-  ```math
-  \xi_0(t) = \xi_s\,e^{-\lambda t} + \xi_l\,\big(1 - e^{-\lambda t}\big),\qquad K_{\text{var}}(T) = \xi_l + (\xi_s - \xi_l)\,\frac{1 - e^{-\lambda T}}{\lambda T} .
-  ```
+**Mean.** $`Y_t`$ is Gaussian, so $`\mathbb{E}[e^{\eta Y_t - \frac12\eta^2\mathrm{Var}(Y_t)}] = 1`$
+and $`\mathbb{E}[V_t] = \xi_0(t)`$: the curve is the expected future variance.
 
-  It is the same family as Heston's $`\mathbb{E}[V_t]`$, with $`\xi_s`$, $`\xi_l`$ and
-  $`\lambda`$ in the roles of $`v_0`$, $`\bar{v}`$ and $`\kappa`$. Both models therefore
-  learn the variance level from the same quotes in the same way, and the variance-swap
-  check (V6) treats them equally. In the current tutorial, rough Bergomi was handed a curve
-  replicated from strikes Heston never saw.
-- **Priors,** uniform (the current joint task's bounds): $`H`$ 0.02 to 0.35, $`\eta`$ 0.5
-  to 3.5, $`\rho`$ −0.99 to −0.2, $`\xi_s`$ and $`\xi_l`$ 0.01 to 0.16, $`\lambda`$ 0.25 to
-  8 per year. Alex's refresh plan treats these as starting controls to review, and keeps
-  difficult low-$`H`$, high-$`\eta`$ cases rather than narrowing the prior for numerical
-  convenience.
+**Roughness.** For $`H \lt 1/2`$ the kernel $`(t-s)^{H-1/2}`$ diverges as $`s \to t`$:
+the latest shocks dominate, and paths are rougher than Brownian motion. The
+at-the-money skew then grows like $`T^{H-1/2}`$ as $`T \to 0`$. Whether rough models fit
+SPX better than Markovian ones is disputed (Abi Jaber and Li, 2024); D7 compares the two
+on our data.
+
+**The curve,** Heston-shaped (`pricing.heston_variance_values`):
+
+```math
+\xi_0(t) = \xi_s\,e^{-\lambda t} + \xi_l\,\big(1 - e^{-\lambda t}\big),\qquad K_{\text{var}}(T) = \xi_l + (\xi_s - \xi_l)\,\frac{1 - e^{-\lambda T}}{\lambda T} .
+```
+
+It is the same family as Heston's $`\mathbb{E}[V_t]`$, with $`\xi_s`$, $`\xi_l`$ and
+$`\lambda`$ in the roles of $`v_0`$, $`\bar{v}`$ and $`\kappa`$. Both models therefore
+learn the variance level from the same quotes in the same way, and the variance-swap
+check (V6) treats them equally. In the current tutorial, rough Bergomi was handed a curve
+replicated from strikes Heston never saw.
+
+**Priors,** uniform (the current joint task's bounds): $`H`$ 0.02 to 0.35, $`\eta`$ 0.5
+to 3.5, $`\rho`$ −0.99 to −0.2, $`\xi_s`$ and $`\xi_l`$ 0.01 to 0.16, $`\lambda`$ 0.25 to
+8 per year. Alex's refresh plan treats these as starting controls to review, and keeps
+difficult low-$`H`$, high-$`\eta`$ cases rather than narrowing the prior for numerical
+convenience.
 
 **Simulation.** The hybrid scheme of Bennedsen, Lunde and Pakkanen: the singular last cell
 of the kernel is simulated exactly, older cells with averaged kernels, the convolution by
@@ -843,37 +857,39 @@ grid (under smooth error, density adds little).
 Two observation laws are now on the table, and the choice between them is the main open
 decision of this application.
 
-- **Spread only** (Alex's adopted baseline, PRs #82 and #85):
+**Spread only** (Alex's adopted baseline, PRs #82 and #85):
 
-  ```math
-  y_i = P_i(\theta) + c\,h^P_i\,Z_i,\qquad Z_i \sim \mathcal N(0,1)\ \text{independent}.
-  ```
+```math
+y_i = P_i(\theta) + c\,h^P_i\,Z_i,\qquad Z_i \sim \mathcal N(0,1)\ \text{independent}.
+```
 
-  The primary teaching target fixes $`c = 1`$ and infers the five Heston parameters.
-  Fixed-scale sensitivity applies $`c`$ = 0.5, 1 and 2 to the same observed prices
-  (Alex's references give physical widths about half and twice those at $`c = 1`$). A
-  separate extension infers $`c \sim U(0.5, 2)`$ jointly. Alex's stated rule: Heston can
-  fail to fit a real chain even when inference is correct; report that rather than
-  inflate a noise scale until the market looks well explained.
-- **Spread plus smooth model error** (this plan):
+The primary teaching target fixes $`c = 1`$ and infers the five Heston parameters.
+Fixed-scale sensitivity applies $`c`$ = 0.5, 1 and 2 to the same observed prices
+(Alex's references give physical widths about half and twice those at $`c = 1`$). A
+separate extension infers $`c \sim U(0.5, 2)`$ jointly. Alex's stated rule: Heston can
+fail to fit a real chain even when inference is correct; report that rather than
+inflate a noise scale until the market looks well explained.
 
-  ```math
-  y = P(\theta) + c\,h^P \odot Z + \tau\,\nu \odot (L\,U),\qquad Z,\,U \sim \mathcal N(0, I_n)\ \text{independent},\qquad L L^\top = K_\ell ,
-  ```
+**Spread plus smooth model error** (this plan):
 
-  with $`c`$ known (1 on market data, drawn in training), $`\tau`$ the model-error size in
-  decimal volatility, inferred, and $`K_\ell`$ the squared-exponential correlation over
-  $`(\delta_i, \ln T_i)`$:
+```math
+y = P(\theta) + c\,h^P \odot Z + \tau\,\nu \odot (L\,U),\qquad Z,\,U \sim \mathcal N(0, I_n)\ \text{independent},\qquad L L^\top = K_\ell ,
+```
 
-  ```math
-  (K_\ell)_{ij} = \exp\!\Big(-\frac{(\delta_i-\delta_j)^2}{2\ell_\delta^2} - \frac{(\ln T_i-\ln T_j)^2}{2\ell_T^2}\Big).
-  ```
+with $`c`$ known (1 on market data, drawn in training), $`\tau`$ the model-error size in
+decimal volatility, inferred, and $`K_\ell`$ the squared-exponential correlation over
+$`(\delta_i, \ln T_i)`$:
 
-  The spread-only law is the special case $`\tau = 0`$.
-- **Earlier laws, for reference:** the original lesson used a fixed implied-volatility
-  profile converted with Black–Scholes vega at 20%; the completed $`\tau`$ pilot used
-  independent errors with standard deviation $`\sqrt{(c\,h^P_i)^2 + (\tau\,\nu_i)^2}`$ and
-  $`\tau \sim U(0, 2\ \text{vp})`$.
+```math
+(K_\ell)_{ij} = \exp\!\Big(-\frac{(\delta_i-\delta_j)^2}{2\ell_\delta^2} - \frac{(\ln T_i-\ln T_j)^2}{2\ell_T^2}\Big).
+```
+
+The spread-only law is the special case $`\tau = 0`$.
+
+**Earlier laws, for reference:** the original lesson used a fixed implied-volatility
+profile converted with Black–Scholes vega at 20%; the completed $`\tau`$ pilot used
+independent errors with standard deviation $`\sqrt{(c\,h^P_i)^2 + (\tau\,\nu_i)^2}`$ and
+$`\tau \sim U(0, 2\ \text{vp})`$.
 
 Half-spread as one Gaussian standard deviation is a convention in every version.
 
@@ -973,24 +989,27 @@ such smooth directions.
 
 ### 6.5 Settings of the smooth-error law
 
-- **Prior of the model-error size** $`\tau`$: log-uniform on $`[0.2, 5]`$ vp, for both models. The smooth amplitude
-  was estimated at 2.1–2.6 vp (noise session, tentative), above the pilot's cap of 2.
-  Below 0.2 vp, model error is comparable to processing error, which this design does not
-  resolve, and the floor bounds rough Bergomi's Monte Carlo cost (step 4). The pilot's
-  independent version is kept for D4.
-- **Correlation lengths,** fixed per model before training by profile likelihood on the
-  first two days:
+**Prior of the model-error size** $`\tau`$: log-uniform on $`[0.2, 5]`$ vp, for both models. The smooth amplitude
+was estimated at 2.1–2.6 vp (noise session, tentative), above the pilot's cap of 2.
+Below 0.2 vp, model error is comparable to processing error, which this design does not
+resolve, and the floor bounds rough Bergomi's Monte Carlo cost (step 4). The pilot's
+independent version is kept for D4.
 
-  ```math
-  \hat\ell = \arg\max_\ell \sum_{t \in \{1, 2\}} \max_{\theta, \tau} \log p(y_t \mid \theta, \tau, \ell),\qquad \ell_\delta \in \{0.75, 1, 1.5, 2\},\quad \ell_T \in \{1, 1.5, 2\}.
-  ```
+**Correlation lengths,** fixed per model before training by profile likelihood on the
+first two days:
 
-  Heston uses the Fourier likelihood; rough Bergomi the fixed-seed Monte Carlo pricer with
-  Gauss–Newton steps (the classical route of study S6); if rough Bergomi's profile is flat,
-  it uses Heston's $`\ell`$.
-- **An independent model-error part** $`\tau_n\,\nu \odot U'`$ is added only if V2 needs it.
-- **The multiplier** $`c`$: 1 on the design's own day; on other days as decided in step 5.4;
-  $`U(0.5, 2)`$ in training, as a known input.
+```math
+\hat\ell = \arg\max_\ell \sum_{t \in \{1, 2\}} \max_{\theta, \tau} \log p(y_t \mid \theta, \tau, \ell),\qquad \ell_\delta \in \{0.75, 1, 1.5, 2\},\quad \ell_T \in \{1, 1.5, 2\}.
+```
+
+Heston uses the Fourier likelihood; rough Bergomi the fixed-seed Monte Carlo pricer with
+Gauss–Newton steps (the classical route of study S6); if rough Bergomi's profile is flat,
+it uses Heston's $`\ell`$.
+
+**An independent model-error part** $`\tau_n\,\nu \odot U'`$ is added only if V2 needs it.
+
+**The multiplier** $`c`$: 1 on the design's own day; on other days as decided in step 5.4;
+$`U(0.5, 2)`$ in training, as a known input.
 
 ### 6.6 What it replaces
 

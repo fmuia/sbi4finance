@@ -345,27 +345,31 @@ V_t = \xi_0(t)\,\exp\!\Big(\eta\,Y_t - \tfrac12\,\eta^2\,t^{2H}\Big),\qquad Y_t 
 and the index follows $`dX_t/X_t = \sqrt{V_t}\,dB_t`$ with $`dB_t\,dW_t = \rho\,dt`$.
 Since $`\mathrm{Var}(Y_t) = t^{2H}`$, the correction term makes $`\mathbb{E}[V_t] = \xi_0(t)`$:
 the curve $`\xi_0`$ is the expected future variance.
-- The **Hurst exponent** $`H`$ sets the roughness. The kernel $`(t-s)^{H-1/2}`$ blows up
-  as $`s \to t`$ when $`H \lt 1/2`$, so the latest shocks weigh most and paths are much
-  rougher than Brownian motion; estimates from realized volatility put $`H`$ near 0.1. As
-  a result the at-the-money skew grows like a power of maturity, $`T^{H-1/2}`$, as maturity
-  shrinks: the shape index smiles show. Whether this makes rough Bergomi the better
-  model for SPX is debated (Abi Jaber and Li, 2024, argue it fails on the smile's global
-  shape); step 10 (D7) compares the two models on our data.
-- $`\eta`$ is the vol of vol, and $`\rho`$ the correlation.
-- The curve has the same shape as Heston's expected variance:
 
-  ```math
-  \xi_0(t) = \xi_s\,e^{-\lambda t} + \xi_l\,\big(1 - e^{-\lambda t}\big),
-  ```
+The **Hurst exponent** $`H`$ sets the roughness. The kernel $`(t-s)^{H-1/2}`$ blows up
+as $`s \to t`$ when $`H \lt 1/2`$, so the latest shocks weigh most and paths are much
+rougher than Brownian motion; estimates from realized volatility put $`H`$ near 0.1. As
+a result the at-the-money skew grows like a power of maturity, $`T^{H-1/2}`$, as maturity
+shrinks: the shape index smiles show. Whether this makes rough Bergomi the better
+model for SPX is debated (Abi Jaber and Li, 2024, argue it fails on the smile's global
+shape); step 10 (D7) compares the two models on our data.
 
-  with a short-term level $`\xi_s`$, a long-term level $`\xi_l`$ and a speed
-  $`\lambda`$. So both models learn the variance level from the same quotes in the same
-  way, and the variance-swap check (step 8) treats them equally. In the earlier tutorial
-  rough Bergomi was handed a curve replicated from strikes Heston never saw, which made
-  the comparison unequal.
-- Priors, uniform: $`H`$ from 0.02 to 0.35, $`\eta`$ from 0.5 to 3.5, $`\rho`$ from −0.99
-  to −0.2, $`\xi_s`$ and $`\xi_l`$ from 0.01 to 0.16, $`\lambda`$ from 0.25 to 8.
+$`\eta`$ is the vol of vol, and $`\rho`$ the correlation.
+
+The curve has the same shape as Heston's expected variance:
+
+```math
+\xi_0(t) = \xi_s\,e^{-\lambda t} + \xi_l\,\big(1 - e^{-\lambda t}\big),
+```
+
+with a short-term level $`\xi_s`$, a long-term level $`\xi_l`$ and a speed
+$`\lambda`$. So both models learn the variance level from the same quotes in the same
+way, and the variance-swap check (step 8) treats them equally. In the earlier tutorial
+rough Bergomi was handed a curve replicated from strikes Heston never saw, which made
+the comparison unequal.
+
+**Priors,** uniform: $`H`$ from 0.02 to 0.35, $`\eta`$ from 0.5 to 3.5, $`\rho`$ from −0.99
+to −0.2, $`\xi_s`$ and $`\xi_l`$ from 0.01 to 0.16, $`\lambda`$ from 0.25 to 8.
 
 *Pricing.* There is no formula, only Monte Carlo simulation. The hybrid scheme of
 Bennedsen, Lunde and Pakkanen simulates $`Y`$ exactly near the singular point of the
@@ -438,19 +442,22 @@ change by a few percent a day), and the day's half-spreads enter through the mul
 $`c`$ of step 6. Alex's baseline instead uses actual quotes only and treats another day
 as another design; the choice is open (Layer 3, step 5.4).
 
-**Data kept out of the fit,** for the checks of step 8:
-- the **model-free variance swap**: for each expiry whose strikes reach far enough into
-  both wings, the total variance
+**Data kept out of the fit,** for the checks of step 8.
 
-  ```math
-  w(T) = 2\int \mathrm{OTM}(k)\,e^{-k}\,dk ,
-  ```
+*The model-free variance swap.* For each expiry whose strikes reach far enough into both
+wings, the total variance
 
-  over the out-of-the-money prices in forward units, read at 1, 3 and 12 months as a
-  volatility $`\sqrt{w(T)/T}`$ (the VIX construction);
-- the **listed 2-year 90% put**: the December 2028 expiry, at the listed strike nearest
-  $`0.9\,F(T)`$;
-- **held-out quotes**: every cleaned quote that is not in the design.
+```math
+w(T) = 2\int \mathrm{OTM}(k)\,e^{-k}\,dk ,
+```
+
+over the out-of-the-money prices in forward units, read at 1, 3 and 12 months as a
+volatility $`\sqrt{w(T)/T}`$ (the VIX construction).
+
+*The listed 2-year 90% put:* the December 2028 expiry, at the listed strike nearest
+$`0.9\,F(T)`$.
+
+*Held-out quotes:* every cleaned quote that is not in the design.
 
 ## 6. How quotes differ from the model
 
@@ -462,21 +469,24 @@ The third ingredient links the first two: it is the likelihood.
 y_i = P_i(\theta) + \nu_i\,\big(c\,h_i\,Z_i + \tau\,U_i\big),\qquad Z \sim \mathcal N(0, I),\quad U \sim \mathcal N(0, K_\ell),\quad Z,\ U\ \text{independent}.
 ```
 
-- $`P_i(\theta)`$ is the model's price, and $`\nu_i`$ the quote's market vega, frozen.
-- $`h_i`$ is the quote's half-spread in vol points, frozen with the design, and $`c`$ a
-  known multiplier: 1 on the design's own day; on the other days, the median ratio of
-  that day's half-spreads to the frozen ones (step 5); drawn between 0.5 and 2 in
-  training, so that the network handles tighter and wider quotes. Reading a half-spread
-  as one standard deviation is a convention.
-- $`\tau`$ is the size of the model error, in vol points, inferred with $`\theta`$.
-- $`K_\ell`$ is the correlation between quotes, squared-exponential in their coordinates:
+$`P_i(\theta)`$ is the model's price, and $`\nu_i`$ the quote's market vega, frozen.
 
-  ```math
-  \big(K_\ell\big)_{ij} = \exp\!\Big(-\frac{(\delta_i-\delta_j)^2}{2\ell_\delta^2} - \frac{(\ln T_i-\ln T_j)^2}{2\ell_T^2}\Big).
-  ```
+$`h_i`$ is the quote's half-spread in vol points, frozen with the design, and $`c`$ a
+known multiplier: 1 on the design's own day; on the other days, the median ratio of
+that day's half-spreads to the frozen ones (step 5); drawn between 0.5 and 2 in
+training, so that the network handles tighter and wider quotes. Reading a half-spread
+as one standard deviation is a convention.
 
-  Nearby quotes have correlated model errors; the lengths $`\ell_\delta`$ and $`\ell_T`$
-  say how near is near.
+$`\tau`$ is the size of the model error, in vol points, inferred with $`\theta`$.
+
+$`K_\ell`$ is the correlation between quotes, squared-exponential in their coordinates:
+
+```math
+\big(K_\ell\big)_{ij} = \exp\!\Big(-\frac{(\delta_i-\delta_j)^2}{2\ell_\delta^2} - \frac{(\ln T_i-\ln T_j)^2}{2\ell_T^2}\Big).
+```
+
+Nearby quotes have correlated model errors; the lengths $`\ell_\delta`$ and $`\ell_T`$
+say how near is near.
 
 Divided by $`\nu_i`$, the equation says that in vol points, to first order,
 $`\sigma_i^{\text{market}} - \sigma_i^{\text{model}}(\theta) \approx c\,h_i Z_i + \tau\,U_i`$:
@@ -728,18 +738,20 @@ full-truncation Euler scheme with 4 steps per business day, for rough Bergomi th
 hybrid scheme as the bank. The check: the simulation reprices the design's options within
 0.05 vol points of the Fourier prices at the posterior median, on each day.
 
-**Baselines.**
-- *Point calibration:* least squares in implied volatility (8 starts) and its
-  maximum-likelihood version. A value with no range.
-- *Delta method* at $`\hat\theta`$, with $`J_P = \partial P/\partial\theta`$ the Jacobian
-  of the design's prices and $`\hat\Sigma`$ the error covariance at the fit:
+**Baselines.** Three simpler answers, for comparison.
 
-  ```math
-  \widehat{\mathrm{Cov}}(\hat\theta) = \big(J_P^\top \hat\Sigma^{-1} J_P\big)^{-1},\qquad \mathrm{sd}_j = \sqrt{\nabla P_j^\top\,\widehat{\mathrm{Cov}}(\hat\theta)\,\nabla P_j},\qquad \text{range } P_j(\hat\theta) \pm 1.645\,\mathrm{sd}_j .
-  ```
+*Point calibration:* least squares in implied volatility (8 starts) and its
+maximum-likelihood version. A value with no range.
 
-- *Expiry-drop refits:* refit with each of the design's expiries removed in turn, and
-  take the minimum to maximum of the product values.
+*Delta method* at $`\hat\theta`$, with $`J_P = \partial P/\partial\theta`$ the Jacobian
+of the design's prices and $`\hat\Sigma`$ the error covariance at the fit:
+
+```math
+\widehat{\mathrm{Cov}}(\hat\theta) = \big(J_P^\top \hat\Sigma^{-1} J_P\big)^{-1},\qquad \mathrm{sd}_j = \sqrt{\nabla P_j^\top\,\widehat{\mathrm{Cov}}(\hat\theta)\,\nabla P_j},\qquad \text{range } P_j(\hat\theta) \pm 1.645\,\mathrm{sd}_j .
+```
+
+*Expiry-drop refits:* refit with each of the design's expiries removed in turn, and
+take the minimum to maximum of the product values.
 
 ## 10. What the results will show, and what they will not
 
