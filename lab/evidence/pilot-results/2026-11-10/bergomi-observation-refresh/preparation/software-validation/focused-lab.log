@@ -1,0 +1,18 @@
+test_covariance_nonfinite_or_asymmetry_is_rejected (test_rough_actual_layout_pilot.PreparationTests.test_covariance_nonfinite_or_asymmetry_is_rejected) ... ok
+test_curve_construction_is_only_prior_evaluation_no_kernel (test_rough_actual_layout_pilot.PreparationTests.test_curve_construction_is_only_prior_evaluation_no_kernel) ... ok
+test_failed_Heston_diagnostics_cannot_bind_and_worker_rechecks_hash (test_rough_actual_layout_pilot.PreparationTests.test_failed_Heston_diagnostics_cannot_bind_and_worker_rechecks_hash) ... ok
+test_heston_condition_rejects_incomplete_and_secondary_results (test_rough_actual_layout_pilot.PreparationTests.test_heston_condition_rejects_incomplete_and_secondary_results) ... ok
+test_mocked_failure_preserves_completed_blocks_and_no_retry (test_rough_actual_layout_pilot.PreparationTests.test_mocked_failure_preserves_completed_blocks_and_no_retry) ... ok
+test_mocked_finest_replay_keeps_full_covariance_without_MC (test_rough_actual_layout_pilot.PreparationTests.test_mocked_finest_replay_keeps_full_covariance_without_MC) ... ok
+test_mocked_negative_variance_cannot_complete_or_pass_target (test_rough_actual_layout_pilot.PreparationTests.test_mocked_negative_variance_cannot_complete_or_pass_target) ... ok
+test_mocked_worker_retains_blocks_covariance_and_DF_axes_without_MC (test_rough_actual_layout_pilot.PreparationTests.test_mocked_worker_retains_blocks_covariance_and_DF_axes_without_MC) ... ok
+test_portable_staged_evaluation_requires_identical_bytes_and_diagnostics (test_rough_actual_layout_pilot.PreparationTests.test_portable_staged_evaluation_requires_identical_bytes_and_diagnostics) ... ok
+test_preparation_has_no_MC_and_stays_inside_existing_ceiling (test_rough_actual_layout_pilot.PreparationTests.test_preparation_has_no_MC_and_stays_inside_existing_ceiling) ... ok
+test_replay_seeds_are_explicit_and_batches_are_distinct (test_rough_actual_layout_pilot.PreparationTests.test_replay_seeds_are_explicit_and_batches_are_distinct) ... ok
+test_sources_priors_and_original_known_knots_are_bound (test_rough_actual_layout_pilot.PreparationTests.test_sources_priors_and_original_known_knots_are_bound) ... ok
+test_worker_refuses_unallocated_or_ungated_execution_before_MC (test_rough_actual_layout_pilot.PreparationTests.test_worker_refuses_unallocated_or_ungated_execution_before_MC) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.389s
+
+OK

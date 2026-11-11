@@ -1,0 +1,185 @@
+{
+  "format": "rough_actual_layout_lab_software_validation_v1",
+  "status": "passed",
+  "verified_utc": "2026-11-11T04:05:34.490067+00:00",
+  "exit_code": 0,
+  "lab_tests": {
+    "tests": 858,
+    "seconds": 380.435,
+    "new_preparation_cases_collected": 13,
+    "new_preparation_case_results": [
+      "test_covariance_nonfinite_or_asymmetry_is_rejected (test_rough_actual_layout_pilot.PreparationTests.test_covariance_nonfinite_or_asymmetry_is_rejected) ... ok",
+      "test_curve_construction_is_only_prior_evaluation_no_kernel (test_rough_actual_layout_pilot.PreparationTests.test_curve_construction_is_only_prior_evaluation_no_kernel) ... ok",
+      "test_failed_Heston_diagnostics_cannot_bind_and_worker_rechecks_hash (test_rough_actual_layout_pilot.PreparationTests.test_failed_Heston_diagnostics_cannot_bind_and_worker_rechecks_hash) ... ok",
+      "test_heston_condition_rejects_incomplete_and_secondary_results (test_rough_actual_layout_pilot.PreparationTests.test_heston_condition_rejects_incomplete_and_secondary_results) ... ok",
+      "test_mocked_failure_preserves_completed_blocks_and_no_retry (test_rough_actual_layout_pilot.PreparationTests.test_mocked_failure_preserves_completed_blocks_and_no_retry) ... ok",
+      "test_mocked_finest_replay_keeps_full_covariance_without_MC (test_rough_actual_layout_pilot.PreparationTests.test_mocked_finest_replay_keeps_full_covariance_without_MC) ... ok",
+      "test_mocked_negative_variance_cannot_complete_or_pass_target (test_rough_actual_layout_pilot.PreparationTests.test_mocked_negative_variance_cannot_complete_or_pass_target) ... ok",
+      "test_mocked_worker_retains_blocks_covariance_and_DF_axes_without_MC (test_rough_actual_layout_pilot.PreparationTests.test_mocked_worker_retains_blocks_covariance_and_DF_axes_without_MC) ... ok",
+      "test_portable_staged_evaluation_requires_identical_bytes_and_diagnostics (test_rough_actual_layout_pilot.PreparationTests.test_portable_staged_evaluation_requires_identical_bytes_and_diagnostics) ... ok",
+      "test_preparation_has_no_MC_and_stays_inside_existing_ceiling (test_rough_actual_layout_pilot.PreparationTests.test_preparation_has_no_MC_and_stays_inside_existing_ceiling) ... ok",
+      "test_replay_seeds_are_explicit_and_batches_are_distinct (test_rough_actual_layout_pilot.PreparationTests.test_replay_seeds_are_explicit_and_batches_are_distinct) ... ok",
+      "test_sources_priors_and_original_known_knots_are_bound (test_rough_actual_layout_pilot.PreparationTests.test_sources_priors_and_original_known_knots_are_bound) ... ok",
+      "test_worker_refuses_unallocated_or_ungated_execution_before_MC (test_rough_actual_layout_pilot.PreparationTests.test_worker_refuses_unallocated_or_ungated_execution_before_MC) ... ok"
+    ]
+  },
+  "log": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation/software-validation/lab-tests.log",
+    "sha256": "dc523a18d0a5e9b2486d6ac1af2f88fcddad24e40f8227ffdc4e5264f88ebab7"
+  },
+  "source_snapshot": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation/software-validation/lab-source-snapshot.json",
+    "sha256": "3187c671c33f23b08216af32470e26e782cdf409cee2315fd0039bc0fac14c50"
+  },
+  "work_order": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation/work-order.json",
+    "sha256": "b9bf6e3fa2453b808589cd6e3ad6549789106fbae3bd57f6a80def5d13ead830"
+  },
+  "source_bindings": {
+    "actual_layout": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/rough_options/actual_layout.py",
+      "sha256": "17205a19c52928c9781592eb596fd5b4d711b08c4a123a78b259454b605d8552"
+    },
+    "rough_model": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/rough_options/model.py",
+      "sha256": "546d03f66fd7f1321bcc71a37bdb5cba0b5f6b41e51a1ff4e0ac13a03915bd69"
+    },
+    "rough_simulator": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/rough_options/simulator.py",
+      "sha256": "542359c3999c2d6b55860191bf9468aeaf877820128d9e87c94cd7ecb0066bca"
+    },
+    "runtime_pricing": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/shared/pricing.py",
+      "sha256": "12fb0a54c1c2e98cfa2feea2e37ccd18b5fe9d0280249ecb11d9abf04387c9d4"
+    },
+    "runtime_tasks": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/shared/tasks.py",
+      "sha256": "fa2e3ab505ace28c5442ea9ecc66fe688b180439a33798b4c77d8c528704e8a5"
+    },
+    "lab_curve_helpers": {
+      "relative_path": "lab/src/sbi4finance/calibration/pricing.py",
+      "sha256": "e0e1cc1da9b08ab83cd2fb095c8657da05477e788fcdae04435abddaa3fe89ca"
+    },
+    "lab_task_helpers": {
+      "relative_path": "lab/src/sbi4finance/calibration/tasks.py",
+      "sha256": "0b7ac3011ca25cea335c81efc6eb12f8f7d622ccb20c83e5a24794cb28219519"
+    },
+    "pilot": {
+      "relative_path": "lab/src/sbi4finance/calibration/rough_actual_layout_pilot.py",
+      "sha256": "f2eab502fa933f83f7dc2d58f6d5f0d82c50a5796cf8859c4c5375b2d8a94bc7"
+    },
+    "controlled_crn_helper": {
+      "relative_path": "lab/evidence/pilot-results/2026-10-28/known-pricing-validation/known_rough_pricing_check_20261028.py",
+      "sha256": "007edba3796be584a15153c0449b3b527a97cacbe1bb622f4e4ecda77c92a01a"
+    },
+    "rough_compatibility": {
+      "relative_path": "lab/src/sbi4finance/rough_bergomi.py",
+      "sha256": "eb3f123f0bc642c224ee17718964ed01b927a482dcc03767e760aea0546ad55d"
+    },
+    "bergomi_compatibility": {
+      "relative_path": "lab/src/sbi4finance/bergomi.py",
+      "sha256": "bfdffb8175d26a6dd46620092ffc0c205a114cb2d1e0dc523f1cd8eb96ee215f"
+    },
+    "grid_coupling": {
+      "relative_path": "lab/src/sbi4finance/bergomi_refinement.py",
+      "sha256": "c8a6a2b5a82a4446374b7b7dda2b270a648a9742fde019115747f1604f099b04"
+    },
+    "budget_helper": {
+      "relative_path": "lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    },
+    "prepare_cli": {
+      "relative_path": "lab/scripts/prepare_rough_actual_layout_pilot.py",
+      "sha256": "a344448784c7740a9229b6a82ba3f359c2d491ea2ed1e5bd8749a0912c48bfb2"
+    },
+    "worker_cli": {
+      "relative_path": "lab/scripts/run_rough_actual_layout_pilot.py",
+      "sha256": "5f922b9c5cca7d2ab31ede728ea56c011b0b9109e138f81fe42d161f17a925ef"
+    },
+    "legacy_bank_identity": {
+      "relative_path": "lab/src/sbi4finance/calibration/bank.py",
+      "sha256": "e8a40cb9c7fadfb472bc6e48fa5874f62f9fa7afd30156bd70e44feec7596353"
+    },
+    "legacy_json_identity": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/shared/bank_helpers.py",
+      "sha256": "39df3eaa28c703840c00123d8e68fb4b22551c01a76a5cf7aeee2f7e049ea452"
+    },
+    "heston_readiness": {
+      "relative_path": "lab/scripts/render_heston_pr87_100k.py",
+      "sha256": "27b75ef36d94fb842a8de2905fc6f2ab98382b6420ae500c30683ed00d5fa88e"
+    },
+    "heston_grid_report": {
+      "relative_path": "lab/scripts/render_heston_pr87_grid.py",
+      "sha256": "4bfa32452a132c34dc41d8620299063bc0eea14f4d79692f275804504da11fd8"
+    },
+    "heston_followup_report": {
+      "relative_path": "lab/scripts/render_heston_pr87_followup.py",
+      "sha256": "480b00d066a2ebc788218e3839b1d08cada9d8744c9a3dafc49fa1bdd92cc672"
+    }
+  },
+  "all_frozen_preparation_and_guard_sources_unchanged": true,
+  "command": "python -m unittest discover -s tests -v",
+  "working_directory": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab",
+  "executed_python": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+  "environment": {
+    "KERAS_BACKEND": "jax",
+    "PYTHONPATH": ".:tests:src:../tutorial/src",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "MPLCONFIGDIR": "/private/tmp/rough-actual-layout-final-lab-matplotlib",
+    "NUMBA_CACHE_DIR": "/private/tmp/rough-actual-layout-final-lab-numba",
+    "PYTENSOR_FLAGS": "base_compiledir=/private/tmp/rough-actual-layout-final-lab-pytensor"
+  },
+  "read_only_source_review": {
+    "status": "no_remaining_issue",
+    "scope": [
+      "new actual-layout task/curve/conditioning boundary",
+      "new conditional rough pilot preparation, memory accounting, guards and block assembly"
+    ],
+    "financial_and_array_checks": [
+      "DF normalization and covariance scaling on both quote axes",
+      "seven exact expiries and immutable original prior/curve family",
+      "supplied piecewise curve evaluated on all actual/refined simulation nodes",
+      "joint generating curve excluded from inference conditions",
+      "CRN stream ownership and finest replay pairing",
+      "controlled/raw/joint/difference covariance block placement"
+    ],
+    "reviewed_guards": [
+      "necessary Heston diagnostics rechecked at binding and worker time",
+      "negative covariance diagonals rejected without clipping",
+      "exact component/case/path/grid/stream recipe validated",
+      "static memory allowance below the declared 32 GiB allocation",
+      "48 components \u00d7 600 seconds = 28,800 CPU seconds; maximum 2 workers; no retry or escalation"
+    ],
+    "static_memory_audit": {
+      "pair_chunk": 2048,
+      "maximum_grid_steps": 7184,
+      "maximum_innovation_shape": [
+        2048,
+        7184,
+        3
+      ],
+      "maximum_fft_size": 16384,
+      "conservative_array_allowance_bytes": 16147021824,
+      "allocation_bytes": 34359738368,
+      "scope": "64 float64 path arrays plus16 complex128 FFT arrays plus16 retained payoff/control copies; not measured peak RSS"
+    },
+    "no_MC_or_rough_pricing_executed_for_review": true
+  },
+  "coordinated_tutorial_validation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation/software-validation/tutorial-validation.json",
+    "sha256": "f5229b3751e9588aa7ada08700d082d6af9832f82941b811f1dc3adac30590d4"
+  },
+  "prior_heston845_lab_verification": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/software-validation/lab-verification.json",
+    "sha256": "770a41698c6e18d8d1fe030f5059ce42b83a3c306cc4f886026e91a1dbb2cb99"
+  },
+  "prior_heston845_record_unchanged": true,
+  "scope": "Full lab unit/integration discovery, including test-only native workflow checks and mocked new rough workers. No production bank, neural query, rough Monte Carlo study or cluster job was launched by this verifier.",
+  "rough_study_MC_executed": false,
+  "cluster_jobs_submitted": false,
+  "installs_performed": false,
+  "production_bank_or_models_launched_by_verifier": false,
+  "scientific_acceptance": false
+}

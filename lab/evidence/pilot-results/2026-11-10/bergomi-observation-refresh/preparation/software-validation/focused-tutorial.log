@@ -1,0 +1,11 @@
+test_actual_times_and_original_prior_knots_are_unchanged (test_rough_actual_layout.ActualLayoutTests.test_actual_times_and_original_prior_knots_are_unchanged) ... ok
+test_hidden_prior_noise_and_rounding_changes_fail_closed (test_rough_actual_layout.ActualLayoutTests.test_hidden_prior_noise_and_rounding_changes_fail_closed) ... ok
+test_joint_curve_never_enters_inference_conditions (test_rough_actual_layout.ActualLayoutTests.test_joint_curve_never_enters_inference_conditions) ... ok
+test_knot_crossing_retains_piecewise_law_and_discrete_control_mean (test_rough_actual_layout.ActualLayoutTests.test_knot_crossing_retains_piecewise_law_and_discrete_control_mean) ... ok
+test_refined_nodes_replay_supplied_curve_without_moving_knots (test_rough_actual_layout.ActualLayoutTests.test_refined_nodes_replay_supplied_curve_without_moving_knots) ... ok
+test_units_and_covariance_use_both_DF_axes (test_rough_actual_layout.ActualLayoutTests.test_units_and_covariance_use_both_DF_axes) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.015s
+
+OK

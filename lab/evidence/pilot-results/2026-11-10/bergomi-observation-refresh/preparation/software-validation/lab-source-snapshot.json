@@ -1,0 +1,33 @@
+{
+  "snapshot_utc": "2026-11-11T03:58:14.834083+00:00",
+  "sources": {
+    "tutorial/src/sbi4f_tutorial/rough_options/actual_layout.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/rough_options/actual_layout.py",
+      "sha256": "17205a19c52928c9781592eb596fd5b4d711b08c4a123a78b259454b605d8552"
+    },
+    "tutorial/tests/test_rough_actual_layout.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/tests/test_rough_actual_layout.py",
+      "sha256": "e003bdf92e4e7d9cb306eda2b510c7d3aadc47505de39da3cfec719f9c2b6489"
+    },
+    "lab/src/sbi4finance/calibration/rough_actual_layout_pilot.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/rough_actual_layout_pilot.py",
+      "sha256": "f2eab502fa933f83f7dc2d58f6d5f0d82c50a5796cf8859c4c5375b2d8a94bc7"
+    },
+    "lab/scripts/prepare_rough_actual_layout_pilot.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/prepare_rough_actual_layout_pilot.py",
+      "sha256": "a344448784c7740a9229b6a82ba3f359c2d491ea2ed1e5bd8749a0912c48bfb2"
+    },
+    "lab/scripts/run_rough_actual_layout_pilot.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_rough_actual_layout_pilot.py",
+      "sha256": "5f922b9c5cca7d2ab31ede728ea56c011b0b9109e138f81fe42d161f17a925ef"
+    },
+    "lab/tests/test_rough_actual_layout_pilot.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/tests/test_rough_actual_layout_pilot.py",
+      "sha256": "846f6d162662cbd4ae3d2608254d1748de6f5b5e53b0525bab0910975af8086d"
+    }
+  },
+  "work_order": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation/work-order.json",
+    "sha256": "b9bf6e3fa2453b808589cd6e3ad6549789106fbae3bd57f6a80def5d13ead830"
+  }
+}
