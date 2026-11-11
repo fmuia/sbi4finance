@@ -25,8 +25,11 @@ HERE = Path(__file__).resolve().parent
 OUT = HERE.parent / "images"
 DATA = json.loads((HERE / "data.json").read_text())
 
-LABELS = {"initial_variance": "$v_0$", "kappa": r"$\kappa$", "theta": r"$\bar v$",
-          "vol_of_vol": r"$\xi$", "rho": r"$\rho$", "c": "$c$"}
+LABELS = {"initial_variance": "$v_0$", "kappa": r"$\kappa$", "theta": r"$v_\infty$",
+          "vol_of_vol": r"$\sigma_v$", "rho": r"$\rho$", "c": "$c$"}
+SIGMA_REF = DATA["design"]["reference_volatility"]  # 0.16: the scale of the standardized moneyness delta
+CASE_TITLES = {"synthetic-market-like": "Simulated quotes, market-like", "synthetic-broad":
+               "Simulated quotes, stressed market", "market": "SPX quotes, 9 November 2026"}
 NAMES = DATA["parameters"]
 PARAM_COLORS = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"]
 plt.rcParams.update({"font.size": 9.5, "axes.titlesize": 10, "axes.labelsize": 9.5,
@@ -49,7 +52,7 @@ def design():
                                                "mid", "half_spread", "target_z")}
     out["put"] = np.asarray(d["option_type"]) == "put"
     out["expiration"] = np.asarray(d["expiration"])
-    out["z"] = np.log(out["strike"] / out["forward"]) / (0.16 * np.sqrt(out["maturity"]))
+    out["delta"] = np.log(out["strike"] / out["forward"]) / (SIGMA_REF * np.sqrt(out["maturity"]))
     return out
 
 
@@ -112,6 +115,59 @@ def expiry_label(d, t):
     return f"{d['expiration'][m][0]} ({t * 365:.0f} d)"
 
 
+# ---------------------------------------------------------------- simulation from the prior
+
+LADDER = ((256, 150.0), (512, 300.0), (1024, 600.0), (2048, 1200.0), (4096, 2400.0),
+          (8192, 4800.0), (16384, 9600.0))  # Gauss-Legendre nodes and cutoff: the study's quadrature ladder
+_RUNGS = {}
+
+
+def _rung(index, d):
+    if index not in _RUNGS:
+        nodes, cutoff = LADDER[index]
+        x, w = np.polynomial.legendre.leggauss(nodes)
+        u = 0.5 * cutoff * (x + 1)
+        _RUNGS[index] = (u, 0.5 * cutoff * w / (u * u + 0.25),
+                         np.exp(1j * u[None, :] * np.log(d["forward"] / d["strike"])[:, None]))
+    return _RUNGS[index]
+
+
+def heston_surface(theta, d):
+    """The 63 Heston prices for theta = (v0, kappa, v_inf, sigma_v, rho, ...).
+
+    Lewis integral with the Black control variate (integrand: Black minus Heston characteristic
+    function), refined on the ladder until two rungs agree within 0.01 half-spreads on every quote.
+    """
+    v0, kappa, v_inf, sigma_v, rho = theta[:5]
+    pars = heston_parameters({"kappa": kappa, "theta": v_inf, "vol_of_vol": sigma_v, "rho": rho})
+    maturities, index = np.unique(d["maturity"], return_inverse=True)
+    total = v_inf * maturities + (v0 - v_inf) * (-np.expm1(-kappa * maturities)) / kappa
+    base = black(d["forward"], d["strike"], d["discount"], d["maturity"],
+                 np.sqrt(total[index] / d["maturity"]), d["put"])
+    scale = d["discount"] * np.sqrt(d["forward"] * d["strike"]) / np.pi
+    previous = None
+    for r in range(1, len(LADDER)):
+        u, weights, phase = _rung(r, d)
+        phi_heston = model.characteristic_function(u[None, :] - 0.5j, maturities[:, None], pars, v0)
+        phi_black = np.exp(-0.5 * total[:, None] * (u[None, :] ** 2 + 0.25))
+        price = base + scale * (np.real(phase * (phi_black - phi_heston)[index]) @ weights)
+        if previous is not None and np.max(np.abs(price - previous) / d["half_spread"]) <= 0.01:
+            return previous
+        previous = price
+    raise ValueError("quadrature ladder exhausted")
+
+
+def prior_simulation(n=3000, seed=20261111):
+    """n draws of theta from the prior, their 63 clean prices, and x = y / h with y = P + c h eps."""
+    d = design()
+    rng = np.random.default_rng(seed)
+    bounds = np.asarray(DATA["prior_bounds"])
+    theta = rng.uniform(bounds[:, 0], bounds[:, 1], size=(n, 6))
+    clean = np.array([heston_surface(row, d) for row in theta])
+    y = clean + theta[:, 5:6] * d["half_spread"] * rng.standard_normal(clean.shape)
+    return {"theta": theta, "clean": clean, "x": y / d["half_spread"]}
+
+
 # ---------------------------------------------------------------- figures
 
 def fig_smile_design():
@@ -123,24 +179,24 @@ def fig_smile_design():
     fig, (a, b) = plt.subplots(1, 2, figsize=(10.2, 3.9), gridspec_kw={"width_ratios": [1.15, 1]})
     for t in np.unique(d["maturity"]):
         m = d["maturity"] == t
-        o = np.argsort(d["z"][m])
-        a.plot(d["z"][m][o], 100 * iv[m][o], "o-", ms=3.5, lw=1.2, color=colors[t],
+        o = np.argsort(d["delta"][m])
+        a.plot(d["delta"][m][o], 100 * iv[m][o], "o-", ms=3.5, lw=1.2, color=colors[t],
                label=expiry_label(d, t))
-    a.set_xlabel("standardized moneyness $z = \\ln(K/F)/(0.16\\sqrt{T})$")
+    a.set_xlabel("standardized moneyness $\\delta = \\ln(K/F)/(\\sigma_{\\mathrm{ref}}\\sqrt{T})$, $\\sigma_{\\mathrm{ref}}$ = 16%")
     a.set_ylabel("implied volatility (%)")
     a.set_title("The smile: SPX implied volatility at the 63 quotes")
     a.axvline(0, color="0.75", lw=0.8, zorder=0)
     a.legend(title="expiry (days to expiry)", frameon=False, ncol=1, fontsize=7.5, title_fontsize=8)
     days = d["maturity"] * 365
-    sc = b.scatter(d["z"], days, c=100 * hs, cmap="magma_r", s=46, vmin=0, vmax=0.3,
+    sc = b.scatter(d["delta"], days, c=100 * hs, cmap="magma_r", s=46, vmin=0, vmax=0.3,
                    marker="o", edgecolors="0.3", linewidths=0.4)
-    for z, t, put, spread in zip(d["z"], days, d["put"], 100 * hs):
+    for z, t, put, spread in zip(d["delta"], days, d["put"], 100 * hs):
         b.annotate("P" if put else "C", (z, t), fontsize=5.5, ha="center", va="center",
                    color="white" if spread > 0.12 else "black")
     b.set_yscale("log")
     b.set_yticks([7, 14, 30, 60, 90, 180, 330])
     b.set_yticklabels(["1 w", "2 w", "1 m", "2 m", "3 m", "6 m", "11 m"])
-    b.set_xlabel("standardized moneyness $z$")
+    b.set_xlabel("standardized moneyness $\\delta$")
     b.set_ylabel("time to expiry")
     b.set_title("The design: 9 places per expiry, puts (P) and calls (C)")
     cb = fig.colorbar(sc, ax=b, pad=0.02)
@@ -162,26 +218,26 @@ def fig_heston_misfit():
     for t in unique[[0, 4, 6]]:
         m = d["maturity"] == t
         f, dsc = d["forward"][m][0], d["discount"][m][0]
-        zz = np.linspace(d["z"][m].min() - 0.2, d["z"][m].max() + 0.2, 60)
+        zz = np.linspace(d["delta"][m].min() - 0.2, d["delta"][m].max() + 0.2, 60)
         kk = f * np.exp(0.16 * np.sqrt(t) * zz)
         put = zz <= 0
         p = heston_prices(MARKET, f, kk, dsc, t, put)
         a.plot(zz, 100 * implied_vol(p, f, kk, dsc, t, put), "-", color=colors[t], lw=1.4)
-        a.plot(d["z"][m], 100 * iv[m], "o", ms=4.5, color=colors[t], label=expiry_label(d, t))
-    a.set_xlabel("standardized moneyness $z$")
+        a.plot(d["delta"][m], 100 * iv[m], "o", ms=4.5, color=colors[t], label=expiry_label(d, t))
+    a.set_xlabel("standardized moneyness $\\delta$")
     a.set_ylabel("implied volatility (%)")
     a.set_title("Market quotes (dots) and Heston's best fit (lines)")
     a.legend(frameon=False, title="expiry", title_fontsize=8)
     for t in unique:
         m = d["maturity"] == t
-        o = np.argsort(d["z"][m])
-        b.plot(d["z"][m][o], residual[m][o], "o-", ms=3, lw=1.1, color=colors[t],
+        o = np.argsort(d["delta"][m])
+        b.plot(d["delta"][m][o], residual[m][o], "o-", ms=3, lw=1.1, color=colors[t],
                label=expiry_label(d, t))
     med = 100 * np.median(hs)
     b.axhspan(-med, med, color="#e45756", alpha=0.35, lw=0, label=f"± median half-spread ({med:.2f} vp)")
     b.axhline(0, color="0.4", lw=0.7)
     rms = np.sqrt(np.nanmean(residual ** 2))
-    b.set_xlabel("standardized moneyness $z$")
+    b.set_xlabel("standardized moneyness $\\delta$")
     b.set_ylabel("market minus model (vol points)")
     b.set_title(f"Heston's misses: {rms:.1f} vol points RMS, smooth across strikes")
     b.legend(frameon=False, fontsize=6.8, ncol=2, loc="upper right")
@@ -191,7 +247,7 @@ def fig_heston_misfit():
     along, across = [], []
     for i, t in enumerate(unique):
         m = np.flatnonzero(d["maturity"] == t)
-        r = residual[m[np.argsort(d["z"][m])]]
+        r = residual[m[np.argsort(d["delta"][m])]]
         along += list(zip(r[:-1], r[1:]))
         if i + 1 < len(unique):
             n = np.flatnonzero(d["maturity"] == unique[i + 1])
@@ -306,40 +362,109 @@ def fig_products():
     save(fig, "products.png")
 
 
-def fig_whitening():
-    """Two-quote illustration of whitening, and the controlled comparison for c."""
-    rng = np.random.default_rng(3)
-    n, c = 600, 1.3
-    common = rng.normal(0, 150, n)
-    x = np.column_stack([common + c * rng.standard_normal(n), common + 0.9 * c * rng.standard_normal(n)])
-    mu, cov = x.mean(0), np.cov(x, rowvar=False)
-    lam, q = np.linalg.eigh(cov)
-    u = (x - mu) @ (q / np.sqrt(lam)) @ q.T
+def fig_whitening_comparison():
+    """Controlled comparison (54-quote design, same network and data): c recovered with and without whitening."""
     w = DATA["whitening"]
     truth = np.asarray(w["truth_c"])
-    fig, axs = plt.subplots(1, 4, figsize=(11.6, 3.0))
-    axs[0].scatter(x[:, 0], x[:, 1], s=3, color="0.35")
-    axs[0].set_title("Two quotes across the prior")
-    axs[0].set_xlabel("quote 1 / half-spread")
-    axs[0].set_ylabel("quote 2 / half-spread")
-    axs[1].scatter(u[:, 0], u[:, 1], s=3, color="#2ca02c")
-    axs[1].set_aspect("equal")
-    axs[1].set_title("Same inputs, whitened")
-    axs[1].set_xlabel("whitened coordinate 1")
-    axs[1].set_ylabel("whitened coordinate 2")
-    for ax, key, title in ((axs[2], "diagonal_c_quantiles", "Scaled one input at a time"),
-                           (axs[3], "zca_c_quantiles", "Whitened inputs")):
-        q50 = np.asarray(w[key])[1]
+    fig, axs = plt.subplots(1, 2, figsize=(7.4, 3.3), sharey=True)
+    for ax, key, title, color in ((axs[0], "diagonal_c_quantiles", "Each input scaled on its own", "#d62728"),
+                                  (axs[1], "zca_c_quantiles", "Whitened inputs", "#2ca02c")):
+        q05, q50, q95 = np.asarray(w[key])
         r = np.corrcoef(truth, q50)[0, 1]
+        shown = np.arange(0, len(truth), 9)
         ax.plot([0.5, 2], [0.5, 2], color="0.6", lw=0.8)
-        ax.scatter(truth, q50, s=4, color="#d62728" if key.startswith("diag") else "#2ca02c")
+        ax.errorbar(truth[shown], q50[shown], yerr=[q50[shown] - q05[shown], q95[shown] - q50[shown]],
+                    fmt="none", ecolor=color, alpha=0.35, lw=0.8)
+        ax.scatter(truth, q50, s=5, color=color, zorder=3)
         ax.set_xlim(0.45, 2.05)
-        ax.set_ylim(0.45, 2.05)
-        ax.set_title(f"{title}: correlation {abs(r) if abs(r) < 0.005 else r:.2f}")
+        ax.set_ylim(0.3, 2.2)
+        ax.set_title(f"{title}\ncorrelation of truth and median: {abs(r) if abs(r) < 0.005 else r:.2f}")
         ax.set_xlabel("true $c$")
-        ax.set_ylabel("posterior median of $c$")
+    axs[0].set_ylabel("posterior median of $c$, with 90% intervals")
     fig.tight_layout()
-    save(fig, "whitening.png")
+    save(fig, "whitening-comparison.png")
+
+
+def fig_whitening_spectrum(sim):
+    """Why the inputs are whitened, on the prior simulation of the 63-quote design.
+
+    mu and Sigma are fitted on the first 2,000 simulated inputs x = y/h; the other panels use the
+    remaining 1,000. c_hat is the root mean square of the coordinates of x - mu along the principal
+    directions whose variance is below twice E[c^2] = 1.75, the variance of the quote errors.
+    """
+    x, c = sim["x"], sim["theta"][:, 5]
+    fit, held = slice(0, 2000), slice(2000, None)
+    mu = x[fit].mean(axis=0)
+    lam, vec = np.linalg.eigh(np.cov(x[fit], rowvar=False))
+    lam, vec = lam[::-1], vec[:, ::-1]
+    coords = (x[held] - mu) @ vec                      # coordinates along the principal directions
+    white = coords / np.sqrt(lam) @ vec.T              # ZCA-whitened inputs
+    noise = 1.75
+    low = lam < 2 * noise
+    c_hat = np.sqrt(np.mean(coords[:, low] ** 2, axis=1))
+    k = np.arange(1, len(lam) + 1)
+    fig, axs = plt.subplots(1, 4, figsize=(13.2, 3.3))
+    axs[0].semilogy(k[~low], lam[~low], "o", ms=3.5, color="#4c78a8", label="set by the parameters")
+    axs[0].semilogy(k[low], lam[low], "o", ms=3.5, color="#f58518", label=f"quote errors only ({low.sum()} directions)")
+    axs[0].axhline(noise, color="0.4", ls="--", lw=0.9)
+    axs[0].text(2, noise * 1.6, r"$\mathbb{E}[c^2] = 1.75$", fontsize=8, color="0.3")
+    axs[0].set_xlabel("principal direction $k$")
+    axs[0].set_ylabel(r"variance $\lambda_k$")
+    axs[0].set_title(r"Variance of $x = y/h$ by direction")
+    axs[0].legend(frameon=False, fontsize=7.5, loc="upper right")
+    for ax, values, title in ((axs[1], x[held], "|correlation| of the 63 inputs"),
+                              (axs[2], white, "after whitening")):
+        image = ax.imshow(np.abs(np.corrcoef(values, rowvar=False)), vmin=0, vmax=1, cmap="Blues")
+        ax.set_title(title)
+        ax.set_xlabel("quote $i$")
+        ax.set_ylabel("quote $j$")
+    fig.colorbar(image, ax=axs[2], shrink=0.8, pad=0.03)
+    axs[3].plot([0.5, 2], [0.5, 2], color="0.6", lw=0.8)
+    axs[3].scatter(c[held], c_hat, s=5, color="#f58518")
+    axs[3].set_xlabel("true $c$")
+    axs[3].set_ylabel(r"$\hat c$: size of $x$ along the orange directions")
+    axs[3].set_title("The error scale is in the small directions")
+    fig.tight_layout()
+    save(fig, "whitening-spectrum.png")
+    scaled = np.linalg.eigvalsh(np.corrcoef(x[fit], rowvar=False))
+    return {"fit_rows": 2000, "held_out_rows": int(len(c[held])),
+            "largest_variance": float(lam[0]), "smallest_variance": float(lam[-1]),
+            "condition_number": float(lam[0] / lam[-1]),
+            "condition_number_each_input_scaled": float(scaled[-1] / scaled[0]),
+            "share_of_variance_in_first_three_directions": float(lam[:3].sum() / lam.sum()),
+            "directions_below_twice_noise_variance": int(low.sum()),
+            "mean_variance_of_those_directions": float(lam[low].mean()),
+            "c_hat_correlation_with_c": float(np.corrcoef(c[held], c_hat)[0, 1]),
+            "c_hat_relative_rms_error": float(np.sqrt(np.mean((c_hat / c[held] - 1) ** 2))),
+            "largest_abs_correlation_after_whitening": float(np.max(np.abs(
+                np.corrcoef(white, rowvar=False) - np.eye(len(lam)))))}
+
+
+def fig_prior_predictive(sim):
+    """150 smiles simulated from the prior (clean prices) against the market, at three expiries."""
+    d = design()
+    market_iv = implied_vol(d["mid"], d["forward"], d["strike"], d["discount"], d["maturity"], d["put"])
+    unique = np.unique(d["maturity"])
+    fig, axs = plt.subplots(1, 3, figsize=(10.4, 3.2), sharey=True)
+    for ax, t in zip(axs, unique[[0, 4, 6]]):
+        m = np.flatnonzero(d["maturity"] == t)
+        m = m[np.argsort(d["delta"][m])]
+        for row in sim["clean"][:150]:
+            iv = implied_vol(row[m], d["forward"][m], d["strike"][m], d["discount"][m], d["maturity"][m], d["put"][m])
+            ax.plot(d["delta"][m], 100 * iv, color="#4c78a8", alpha=0.13, lw=0.8)
+        ax.plot(d["delta"][m], 100 * market_iv[m], "o-", color="#f58518", ms=3.5, lw=1.6, label="market")
+        ax.set_title(expiry_label(d, t))
+        ax.set_xlabel(r"standardized moneyness $\delta$")
+    axs[0].set_ylabel("implied volatility (%)")
+    axs[0].set_ylim(0, 75)
+    axs[0].plot([], [], color="#4c78a8", lw=0.8, label="150 draws from the prior")
+    axs[0].legend(frameon=False, loc="upper right")
+    fig.tight_layout()
+    save(fig, "prior-predictive.png")
+    rank = (sim["x"] < (d["mid"] / d["half_spread"])[None, :]).mean(axis=0)
+    return {"simulated_data_sets": int(len(sim["x"])),
+            "market_quote_percentile_min": float(100 * rank.min()),
+            "market_quote_percentile_max": float(100 * rank.max())}
 
 
 def fig_heston_calibration():
@@ -399,10 +524,9 @@ def fig_heston_recovery():
 def fig_heston_reference():
     """Network against reference posterior on the three test cases, in units of the reference width."""
     cases = DATA["heston_300k"]["cases"]
-    titles = {"synthetic-broad": "Simulated surface, broad", "synthetic-market-like":
-              "Simulated surface, market-like", "market": "SPX market quotes"}
+    titles = CASE_TITLES
     fig, axs = plt.subplots(1, 3, figsize=(10.4, 3.6), sharey=True)
-    for ax, key in zip(axs, ("synthetic-broad", "synthetic-market-like", "market")):
+    for ax, key in zip(axs, ("synthetic-market-like", "synthetic-broad", "market")):
         case = cases[key]
         ref = np.asarray(case["reference_quantiles_05_50_95"])
         net = np.asarray(case["neural_quantiles_05_50_95"])
@@ -471,10 +595,10 @@ def fig_information_by_region():
     full = sds(np.ones(len(jac), bool))
     t = d["maturity"]
     regions = {
-        "deep puts\n$z \\leq -2.25$": d["target_z"] <= -2.25,
-        "near puts\n$z$ = −1.25, −0.5": (d["target_z"] > -2.25) & (d["target_z"] < 0),
-        "at the money\n$z = 0$": d["target_z"] == 0,
-        "calls\n$z > 0$": d["target_z"] > 0,
+        "deep puts\n$\\delta \\leq -2.25$": d["target_z"] <= -2.25,
+        "near puts\n$\\delta$ = −1.25, −0.5": (d["target_z"] > -2.25) & (d["target_z"] < 0),
+        "at the money\n$\\delta = 0$": d["target_z"] == 0,
+        "calls\n$\\delta > 0$": d["target_z"] > 0,
         "expiries up to\n1 month": t <= 31 / 365,
         "expiries from\n2 months": t >= 59 / 365,
     }
@@ -528,49 +652,205 @@ def fig_variance_strip():
 
 
 def fig_push_forward():
-    """Schematic: posterior draws pushed through a product, with mark and prudent value."""
-    rng = np.random.default_rng(11)
-    cov = [[1.0, -0.8], [-0.8, 1.0]]
-    draws = rng.multivariate_normal([0, 0], cov, 1000)
-    value = 100 + 1.4 * draws[:, 0] - 0.6 * draws[:, 1] + 0.25 * draws[:, 0] ** 2
-    mark, q10 = value.mean(), np.quantile(value, 0.10)
-    fig, (a, b) = plt.subplots(1, 2, figsize=(9.6, 3.3))
-    a.scatter(draws[:, 0], draws[:, 1], s=3, color="#4c78a8", alpha=0.6)
-    a.set_xlabel("parameter 1")
-    a.set_ylabel("parameter 2")
-    a.set_title("Posterior draws: each is one complete model")
-    b.hist(value, bins=45, color="#9ecae1", edgecolor="white")
-    b.axvline(mark, color="black", lw=1.5, label=f"mark (mean) = {mark:.1f}")
-    b.axvline(q10, color="#d62728", lw=1.5, ls="--", label=f"prudent value (10% quantile) = {q10:.1f}")
-    b.annotate("", xy=(q10, b.get_ylim()[1] * 0.9), xytext=(mark, b.get_ylim()[1] * 0.9),
-               arrowprops={"arrowstyle": "<->", "color": "0.3"})
-    b.text((mark + q10) / 2, b.get_ylim()[1] * 0.93, "reserve", ha="center", fontsize=8)
-    b.set_xlabel("product value under each draw")
-    b.set_title("Pushed through the pricer: a distribution of values")
-    b.legend(frameon=False, loc="upper right", fontsize=7.5)
-    fig.suptitle("Schematic", x=0.02, ha="left", fontsize=8, color="0.4")
+    """The exact SPX posterior of Heston (1,000 reference draws) and what it implies for one product.
+
+    Left: draws of (kappa, v_inf), coloured by the later-window variance strike. Right: the strike
+    under every draw, as a volatility, with the mark, the 5-95% range and the prudent value.
+    """
+    case = DATA["references_regenerated"]["market"]
+    draws = np.asarray(case["draws"])
+    window = DATA["design"]["products"]["affected"]
+    strike = 100 * np.sqrt(np.asarray(case["window_variance_draws"])[:, 1])
+    mark, q05, q10, q95 = strike.mean(), *np.quantile(strike, [0.05, 0.10, 0.95])
+    fig, (a, b) = plt.subplots(1, 2, figsize=(10.0, 3.5), gridspec_kw={"width_ratios": [1, 1.15]})
+    sc = a.scatter(draws[:, 1], 100 * np.sqrt(draws[:, 2]), c=strike, s=6, cmap="viridis")
+    fig.colorbar(sc, ax=a, pad=0.02).set_label("variance strike of each draw (%)")
+    a.set_xlabel(r"mean reversion $\kappa$")
+    a.set_ylabel(r"long-run volatility $\sqrt{v_\infty}$ (%)")
+    a.set_title(r"Posterior draws $\theta^{(s)}$: each is one complete model")
+    b.hist(strike, bins=40, color="#9ecae1", edgecolor="white")
+    top = b.get_ylim()[1]
+    b.axvspan(q05, q95, color="0.85", alpha=0.6, lw=0, label=f"90% range: {q05:.2f}% to {q95:.2f}%")
+    b.axvline(mark, color="black", lw=1.5, label=f"mark (mean): {mark:.2f}%")
+    b.axvline(q10, color="#d62728", lw=1.5, ls="--", label=f"prudent value, long (10% quantile): {q10:.2f}%")
+    b.annotate("", xy=(q10, top * 0.86), xytext=(mark, top * 0.86), arrowprops={"arrowstyle": "<->", "color": "0.3"})
+    b.text((mark + q10) / 2, top * 0.89, "reserve", ha="center", fontsize=8)
+    b.set_ylim(0, top * 1.45)
+    b.set_xlabel(f"variance strike, {365 * window[0]:.0f} to {365 * window[1]:.0f} days, as volatility (%)")
+    b.set_title(r"The same draws through the product: $g(\theta^{(s)})$")
+    b.legend(frameon=True, facecolor="white", edgecolor="none", framealpha=0.95, loc="upper left", fontsize=7.5)
     fig.tight_layout()
     save(fig, "posterior-to-product.png")
+    short = 100 * np.sqrt(np.asarray(case["window_variance_draws"])[:, 0])
+    summary = lambda v: {"mean": float(v.mean()), "sd": float(v.std(ddof=1)), "q05": float(np.quantile(v, 0.05)),
+                         "q10": float(np.quantile(v, 0.10)), "q95": float(np.quantile(v, 0.95)),
+                         "reserve_long": float(v.mean() - np.quantile(v, 0.10))}
+    corr = np.corrcoef(draws[:, :5], rowvar=False)
+    i, j = max(((a_, b_) for a_ in range(5) for b_ in range(a_)), key=lambda q: abs(corr[q]))
+    return {"draws": int(len(strike)), "short_window_volatility_percent": summary(short),
+            "later_window_volatility_percent": summary(strike),
+            "strongest_parameter_correlation": {"pair": [NAMES[j], NAMES[i]], "value": float(corr[i, j])}}
 
 
 def fig_costs():
-    """CPU time for one posterior: measured (Heston MCMC, network) or derived from measured pricing (rough)."""
-    rows = [("Network, after training", 164 / 615, "under 1 second"),
-            ("Heston, MCMC reference", 898, "7–15 minutes (measured)"),
-            ("Rough Bergomi, importance sampling", 108 * 1000, "16–30 hours (1,000 pricings\nof 1–2 minutes each)")]
-    fig, ax = plt.subplots(figsize=(8.4, 2.4))
-    colors = ["#2ca02c", "#4c78a8", "#f58518"]
-    for i, (label, seconds, text) in enumerate(rows):
-        ax.barh(i, seconds, left=0.05, color=colors[i], height=0.55)
-        ax.text(seconds * 1.4, i, text, va="center", fontsize=8.5)
+    """CPU time for one posterior, from the number of pricings of the 63 quotes each method needs.
+
+    Heston MCMC: measured (accepted runs of the regenerated references). Network: 615 posteriors in
+    164 s. Rough Bergomi: pricings times the measured 1-2 CPU-minutes per pricing (derived, not run).
+    """
+    runs = [case["accepted_run"] for case in DATA["references_regenerated"].values()]
+    evaluations = int(round(np.mean([r["likelihood_evaluations"] for r in runs]), -3))
+    low, high = min(r["cpu_seconds"] for r in runs), max(r["cpu_seconds"] for r in runs)
+    rows = [("Network, after training\n(no pricing)", 164 / 615, 164 / 615, "0.3 seconds", "#2ca02c"),
+            (f"Heston, MCMC\n({evaluations:,} pricings)", low, high, f"{low / 60:.0f}–{high / 60:.0f} minutes (measured)", "#4c78a8"),
+            ("Rough Bergomi, importance sampling\nfrom the network (1,000 pricings)", 1000 * 60, 1000 * 105,
+             "17–29 hours", "#f58518"),
+            (f"Rough Bergomi, MCMC\n({evaluations:,} pricings; not run)", evaluations * 60, evaluations * 105,
+             "100–180 days", "#e45756")]
+    fig, ax = plt.subplots(figsize=(9.0, 3.0))
+    for i, (label, lo, hi, text, color) in enumerate(rows):
+        ax.barh(i, hi, left=0.05, color=color, height=0.55, alpha=0.45)
+        ax.barh(i, lo, left=0.05, color=color, height=0.55)
+        ax.text(hi * 1.5, i, text, va="center", fontsize=8.5)
     ax.set_xscale("log")
-    ax.set_xlim(0.05, 3e7)
-    ax.set_xticks([1, 60, 3600, 86400, 86400 * 30])
-    ax.set_xticklabels(["1 second", "1 minute", "1 hour", "1 day", "1 month"])
+    ax.set_xlim(0.05, 2e9)
+    ax.set_xticks([1, 60, 3600, 86400, 86400 * 30, 86400 * 365])
+    ax.set_xticklabels(["1 second", "1 minute", "1 hour", "1 day", "1 month", "1 year"])
     ax.set_yticks(range(len(rows)))
-    ax.set_yticklabels([r[0] for r in rows])
+    ax.set_yticklabels([r[0] for r in rows], fontsize=8.5)
+    ax.invert_yaxis()
     ax.set_title("CPU time for one posterior")
     save(fig, "posterior-costs.png")
+    return {"mcmc_likelihood_evaluations": [r["likelihood_evaluations"] for r in runs],
+            "mcmc_cpu_minutes_accepted_run": [round(r["cpu_seconds"] / 60, 1) for r in runs],
+            "mcmc_cpu_minutes_first_run": [round(case["first_run"]["cpu_seconds"] / 60, 1)
+                                           for case in DATA["references_regenerated"].values()],
+            "rough_mcmc_cpu_days": [round(evaluations * 60 / 86400), round(evaluations * 105 / 86400)]}
+
+
+def fig_flow_matching():
+    """Flow matching on a one-parameter toy, with the exact velocity field (no network).
+
+    theta ~ U(-2, 2), y = theta^3 / 4 + 0.3 eps. As in BayesFlow: z_t = (1 - t) theta + t z_1 with
+    noise z_1 ~ N(0, 1) at t = 1, and v(z, t, y) = E[z_1 - theta | z_t = z, y] = (z - E[theta | z_t = z, y]) / t,
+    computed by quadrature on a grid of theta. Sampling integrates dz/dt = v from t = 1 to t = 0.01.
+    """
+    sigma, grid = 0.3, np.linspace(-2, 2, 1201)
+
+    def log_posterior(y):
+        lp = -(y - grid ** 3 / 4) ** 2 / (2 * sigma ** 2)
+        return lp - lp.max() - np.log(np.trapezoid(np.exp(lp - lp.max()), grid))
+
+    def velocity(z, t, lp):
+        logw = lp[None, :] - (z[:, None] - (1 - t) * grid[None, :]) ** 2 / (2 * t * t)
+        w = np.exp(logw - logw.max(axis=1, keepdims=True))
+        return (z - (w * grid).sum(axis=1) / w.sum(axis=1)) / t
+
+    times = np.linspace(1, 0.01, 160)
+    rng = np.random.default_rng(5)
+    cases = {1.0: "#d62728", -0.2: "#1f77b4"}
+    paths, ends, report = {}, {}, {}
+    for y in cases:
+        lp = log_posterior(y)
+        z = rng.standard_normal(1500)
+        track = [z.copy()]
+        for a, b in zip(times[:-1], times[1:]):          # Heun steps from t = a down to t = b
+            k1 = velocity(z, a, lp)
+            z = z + 0.5 * (b - a) * (k1 + velocity(z + (b - a) * k1, b, lp))
+            track.append(z.copy())
+        paths[y], ends[y] = np.array(track), z / (1 - times[-1])
+        density = np.exp(lp)
+        exact_mean = np.trapezoid(grid * density, grid)
+        exact_sd = np.sqrt(np.trapezoid((grid - exact_mean) ** 2 * density, grid))
+        report[str(y)] = {"exact_mean": float(exact_mean), "exact_sd": float(exact_sd),
+                          "flow_mean": float(ends[y].mean()), "flow_sd": float(ends[y].std())}
+
+    theta = rng.uniform(-2, 2, 400)                       # training pairs: theta, its y, independent noise
+    y_sim = theta ** 3 / 4 + sigma * rng.standard_normal(400)
+    noise = rng.standard_normal(400)
+    shown = {y: np.flatnonzero(np.abs(y_sim - y) < 0.12)[:10] for y in cases}   # ten pairs near each observation
+    fig, (a, b, c) = plt.subplots(1, 3, figsize=(12.0, 3.7), sharey=True, gridspec_kw={"width_ratios": [1, 1, 0.62]})
+    for n in range(150):
+        a.plot([1, 0], [noise[n], theta[n]], color="0.78", lw=0.4, zorder=1)
+    for y, color in cases.items():
+        for n in shown[y]:
+            a.plot([1, 0], [noise[n], theta[n]], color=color, lw=1.1, zorder=3)
+    a.set_title("Training pairs: straight lines from noise $z_1$\nto a simulated parameter $\\theta$")
+    for y, color in cases.items():
+        b.plot(times, paths[y][:, :22], color=color, lw=0.7, alpha=0.75)
+        c.hist(ends[y], bins=np.linspace(-2.1, 2.1, 64), density=True, orientation="horizontal", color=color, alpha=0.35)
+        c.plot(np.exp(log_posterior(y)), grid, color=color, lw=1.4, label=f"exact posterior, $y$ = {y:g}")
+    b.set_title("Sampling: follow the averaged velocity\nfrom $t = 1$ to $t = 0$, for two observations $y$")
+    c.set_title("End points $z_0$ (bars) against\nthe exact posteriors (lines)")
+    c.legend(frameon=True, facecolor="white", edgecolor="none", framealpha=0.9, fontsize=7.5, loc="lower right")
+    c.set_xlabel("density")
+    for ax in (a, b):
+        ax.set_xlim(1.02, -0.02)
+        ax.set_xlabel("time $t$  (noise at $t = 1$, posterior at $t = 0$)")
+    a.set_ylabel(r"flow state $z_t$  (at $t = 0$: the parameter $\theta$)")
+    a.set_ylim(-3, 3)
+    for y, color in cases.items():
+        a.plot([], [], color=color, lw=1.2, label=f"pairs with $y$ near {y:g}")
+    a.plot([], [], color="0.7", lw=0.8, label="other pairs")
+    a.legend(frameon=True, facecolor="white", edgecolor="none", framealpha=0.9, fontsize=7.5, loc="lower left")
+    fig.tight_layout()
+    save(fig, "flow-matching.png")
+    return report
+
+
+def fig_network():
+    """What the estimator takes in and returns, at training and at use (diagram)."""
+    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+
+    fig, ax = plt.subplots(figsize=(12.6, 5.1))
+    ax.set_xlim(0, 126)
+    ax.set_ylim(3, 54)
+    ax.axis("off")
+
+    def box(x, y, w, h, title, body, face="#eef4fb", edge="#4c78a8"):
+        ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.3,rounding_size=1.2", fc=face, ec=edge, lw=1.1))
+        ax.text(x + w / 2, y + h - 2.3, title, ha="center", va="top", fontsize=9, fontweight="bold")
+        ax.text(x + w / 2, y + h - 5.6, body, ha="center", va="top", fontsize=8.2, linespacing=1.45)
+
+    def arrow(x0, y0, x1, y1, color="0.35", style="-|>", rad=0.0):
+        ax.add_patch(FancyArrowPatch((x0, y0), (x1, y1), arrowstyle=style, mutation_scale=11, color=color, lw=1.1,
+                                     connectionstyle=f"arc3,rad={rad}"))
+
+    ax.text(0.5, 52.5, "Training: once per model and design (the 63 contracts and their half-spreads)", fontsize=10.5,
+            fontweight="bold", va="top")
+    top, height, width = 31.5, 15.5, 21.6
+    training = [("Prior", "draw $\\theta^{(n)} \\sim p(\\theta)$\n6 numbers:\n$v_0, \\kappa, v_\\infty, \\sigma_v, \\rho, c$"),
+                ("Pricer", "$P(\\theta^{(n)})$\n63 model prices\n(Heston: Fourier integral)"),
+                ("Error model", "$y^{(n)}_i = P_i(\\theta^{(n)}) + c^{(n)} h_i\\,\\varepsilon^{(n)}_i$\n63 simulated quotes"),
+                ("Bank", "$N$ = 300,000 pairs\n$(\\theta^{(n)},\\ y^{(n)})$"),
+                ("Fit", "whitening $(\\mu, W)$\nfrom 10,000 rows;\nvelocity network $v_\\phi$\nby flow matching")]
+    for i, (title, body) in enumerate(training):
+        x = 0.8 + i * 25.1
+        box(x, top, width, height, title, body, face="#fdf1e3" if i == 4 else "#eef4fb", edge="#f58518" if i == 4 else "#4c78a8")
+        if i:
+            arrow(x - 3.5, top + height / 2, x - 0.4, top + height / 2)
+
+    ax.text(0.5, 25.6, "Use: any quotes of these contracts, 0.3 s, no pricing", fontsize=10.5,
+            fontweight="bold", va="top")
+    bottom = 4.5
+    use = [("Quotes", "$y \\in \\mathbb{R}^{63}$\nmid prices of the 63 options"),
+           ("Scale and whiten", "$x = y / h$\n$\\tilde{x} = W\\,(x - \\mu) \\in \\mathbb{R}^{63}$"),
+           ("Flow", "draw $z_1 \\sim \\mathcal{N}(0, I_6)$; solve\n$dz_t/dt = v_\\phi(z_t,\\ t,\\ \\tilde{x})$\nfrom $t = 1$ to $t = 0$"),
+           ("Back to parameter units", "$\\theta = m_\\theta + s_\\theta \\odot z_0$\n($m_\\theta$, $s_\\theta$: mean and s.d. of\neach parameter over the bank)"),
+           ("Posterior draws", "$\\theta^{(1)}, \\dots, \\theta^{(S)} \\sim q_\\phi(\\theta \\mid y)$\none per noise draw $z_1$")]
+    for i, (title, body) in enumerate(use):
+        x = 0.8 + i * 25.1
+        box(x, bottom, width, height, title, body, face="#e8f5e9" if i == 4 else "#eef4fb", edge="#2ca02c" if i == 4 else "#4c78a8")
+        if i:
+            arrow(x - 3.5, bottom + height / 2, x - 0.4, bottom + height / 2)
+    fit_x = 0.8 + 4 * 25.1 + width / 2
+    for offset, column, label in ((-5, 1, "$\\mu,\\ W$"), (0, 2, "$\\phi$"), (5, 3, "$m_\\theta,\\ s_\\theta$")):
+        x0, y0 = fit_x + offset, top - 0.7
+        x1, y1 = 0.8 + column * 25.1 + width / 2 + 4, bottom + height + 0.7
+        arrow(x0, y0, x1, y1, color="#f58518")
+        ax.text(x0 + 0.24 * (x1 - x0), y0 + 0.24 * (y1 - y0), label, color="#b35c00", fontsize=9, ha="center",
+                va="center", bbox={"fc": "white", "ec": "none", "pad": 1.2})
+    save(fig, "network-inputs-outputs.png")
 
 
 def tau_information():
@@ -585,7 +865,7 @@ def tau_information():
     lt = np.log(d["maturity"])
     out = []
     for lz, lt_len in ((0.75, 1.15), (1.6, 2.0)):
-        kern = np.exp(-(d["z"][:, None] - d["z"][None, :]) ** 2 / (2 * lz ** 2)
+        kern = np.exp(-(d["delta"][:, None] - d["delta"][None, :]) ** 2 / (2 * lz ** 2)
                       - (lt[:, None] - lt[None, :]) ** 2 / (2 * lt_len ** 2))
         inflation = float(np.ones(len(kern)) @ kern @ np.ones(len(kern)) / len(kern))
         for tau_vp in (1.0, 2.5):
@@ -606,14 +886,19 @@ def main():
     fig_smile_design()
     numbers["misfit"] = fig_heston_misfit()
     fig_products()
-    fig_whitening()
+    simulation = prior_simulation()
+    numbers["whitening_spectrum"] = fig_whitening_spectrum(simulation)
+    numbers["prior_predictive"] = fig_prior_predictive(simulation)
+    fig_whitening_comparison()
+    fig_network()
+    numbers["flow_matching_toy"] = fig_flow_matching()
     fig_heston_calibration()
     fig_heston_recovery()
     fig_heston_reference()
     numbers["information_by_region"] = fig_information_by_region()
     numbers["variance_strip"] = fig_variance_strip()
-    fig_push_forward()
-    fig_costs()
+    numbers["posterior_to_product"] = fig_push_forward()
+    numbers["posterior_costs"] = fig_costs()
     (HERE / "numbers.json").write_text(json.dumps(numbers, indent=1) + "\n")
     print(json.dumps(numbers, indent=1))
 

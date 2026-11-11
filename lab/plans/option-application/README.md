@@ -11,7 +11,9 @@ others, so a reader can go one layer deeper on any step.
 | [2. Walkthrough](2-walkthrough.md) | Each step with its reasoning, its formulas and the numbers behind each choice | about 30 minutes |
 | [3. Full detail](3-full-detail.md) | Every definition, derivation, setting and check; the results, their sources, and what remains | reference |
 
-The [glossary](glossary.md) explains the finance and statistics terms the layers use.
+The [glossary](glossary.md) explains the finance and statistics terms the layers use. The
+symbols are those of the tutorial's Heston notebook, and every quantity is defined by a
+formula where it first appears.
 Textbook background (Itô calculus, Black–Scholes, Heston's Fourier formula, the rough
 Bergomi simulation scheme) is in the [course](../../../course/README.md).
 

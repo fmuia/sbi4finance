@@ -94,8 +94,8 @@ risk-weighted assets; deductions such as AVAs reduce it.
 $`\varphi(u) = \mathbb{E}[e^{iu\ln X_T}]`$. Heston's is known in closed form, and one
 Fourier integral turns it into an option price.
 
-**Cholesky factor.** For a covariance matrix $`\Sigma`$, the lower-triangular $`L`$ with
-$`LL^\top = \Sigma`$. Multiplying independent normals by $`L`$ gives correlated ones.
+**Cholesky factor.** For a covariance matrix $`\Gamma`$, the lower-triangular $`L`$ with
+$`LL^\top = \Gamma`$. Multiplying independent normals by $`L`$ gives correlated ones.
 
 **Close-out costs.** The cost of exiting a position at the bid or ask rather than the mid;
 an AVA category of its own (Article 10 of Regulation 2016/101).
@@ -173,17 +173,19 @@ active market. Level 2: other observable inputs. Level 3: significant inputs nob
 quotes; banks disclose how sensitive such values are to reasonably possible alternative
 inputs.
 
-**Feller condition.** In Heston, $`2\kappa\bar{v} \ge \xi^2`$: it keeps the variance
+**Feller condition.** In Heston, $`2\kappa v_\infty \ge \sigma_v^2`$: it keeps the variance
 away from zero. Violating it is allowed; the model and its Fourier prices remain valid.
 
 **Fisher information.** The expected curvature of the log-likelihood in the parameters. Its
 inverse approximates the parameters' covariance; small eigenvalues mark directions the
 data barely constrain.
 
-**Flow matching.** A way to train a generative network by regression: the network learns
-a velocity field that carries simple noise into the target distribution, and drawing from
-the target means solving an ordinary differential equation from noise draws. Its optimum
-is the posterior. Used here through BayesFlow 2.1.
+**Flow matching.** A way to train a network that turns random noise into draws from a
+target distribution. Each training example joins a simulated parameter vector to a noise
+vector by a straight line; the network learns, by least squares, the average velocity of
+these lines at every point and time. Drawing from the posterior then means starting from
+noise and following that velocity, which is solving an ordinary differential equation.
+Used here through BayesFlow 2.1.
 
 **Forward** ($`F(T)`$). The price agreed today for buying the index at $`T`$, paid at
 $`T`$. It equals today's level grown at the interest rate less the dividend yield,
@@ -206,8 +208,8 @@ probabilities.
 
 **Forward variance curve** ($`\xi_0(t)`$). The expected future variance at each date
 $`t`$ under the pricing probabilities, $`\xi_0(t) = \mathbb{E}[V_t]`$. Rough Bergomi takes
-it as a curve, here described by three numbers: a short-term level, a long-term level and
-the speed between them. Not to be confused with Heston's vol of vol $`\xi`$.
+it as a curve, here described by three numbers: a short-term level $`\xi_s`$, a long-term
+level $`\xi_l`$ and the speed $`\lambda`$ between them.
 
 **Full-truncation Euler scheme.** A time-stepping scheme for Heston's variance that
 replaces negative values by zero in the drift and the volatility, so the simulation stays
@@ -221,7 +223,7 @@ sample.
 
 **Heston model.** A stochastic volatility model in which the variance reverts to a
 long-run level and fluctuates in proportion to its square root (Heston, 1993). Its
-parameters are $`v_0`$, $`\bar{v}`$, $`\kappa`$, $`\xi`$ and $`\rho`$, and its option
+parameters are $`v_0`$, $`v_\infty`$, $`\kappa`$, $`\sigma_v`$ and $`\rho`$, and its option
 prices come from a Fourier integral.
 
 **Hurst exponent** ($`H`$). In rough Bergomi, the parameter that sets how rough volatility
@@ -263,7 +265,7 @@ years.
 using only its density up to a constant. Here it gives Heston's exact posterior.
 
 **Mean reversion** ($`\kappa`$). In Heston, the speed at which the variance is pulled back
-to its long-run level $`\bar{v}`$: a gap halves in about $`\ln 2/\kappa`$ years.
+to its long-run level $`v_\infty`$: a gap halves in about $`\ln 2/\kappa`$ years.
 
 **Model error.** The part of the gap between quotes and model prices that comes from the
 model being wrong rather than from the quotes. On SPX it is smooth across strikes and
@@ -294,6 +296,10 @@ tail of the weights is. Below 0.7 the estimate is reliable.
 over many simulated observations; conditional checks compare single posteriors with
 reference posteriors. Population checks can pass while single posteriors are wrong.
 
+**Posterior draw.** One parameter vector $`\theta^{(s)}`$ sampled from the posterior. A
+set of draws represents the posterior: any summary (mean, quantile, the value of a
+product) is computed from them.
+
 **Posterior.** The distribution of the parameters given the data:
 $`p(\theta \mid y) \propto p(y \mid \theta)\,p(\theta)`$.
 
@@ -302,8 +308,16 @@ discounted payoff; also called the risk-neutral measure. Under them the index gr
 average at the interest rate less its dividend yield. Their existence is equivalent to
 the absence of riskless profits.
 
+**Pricing.** Here, one computation of the model's 63 prices $`P(\theta)`$ at one
+parameter vector. It is the unit of cost: one likelihood evaluation needs one pricing, a
+posterior by MCMC about 146,000, the bank 300,000, a posterior from the trained network
+none.
+
 **Prior.** The distribution of the parameters before seeing the data: which values are
 considered plausible.
+
+**Prior predictive check.** Simulating surfaces from the prior and the error model, and
+checking that the real quotes look like a possible draw.
 
 **Product control.** The bank function, independent of the traders, that verifies the
 marks against market data and computes valuation adjustments such as AVAs.
@@ -347,6 +361,9 @@ Gatheral, 2016). It is priced only by Monte Carlo simulation.
 **Rough volatility.** Volatility whose paths are rougher than Brownian motion's. It makes
 the skew steepen at short maturities, as index smiles do.
 
+**Scaled residual** ($`r_i`$). $`r_i(\theta) = (y_i - P_i(\theta))/h_i`$: the model's miss
+on quote $`i`$, in half-spreads. Under the error model its typical size is $`c`$.
+
 **SBC (simulation-based calibration).** A check of a posterior method: draw parameters
 from the prior, simulate data, compute the posterior; if the posterior is right, the rank
 of the true parameter among the posterior draws is uniformly distributed. Also called the
@@ -355,6 +372,10 @@ rank test.
 **SBI (simulation-based inference).** Inference that only needs to simulate data from
 the model, not to evaluate its likelihood. Here, a neural network trained on simulated
 pairs of parameters and quotes.
+
+**Simulated surface.** One set of 63 prices at the design's contracts, produced by the
+generative model: parameters drawn from the prior, priced by the model, with errors
+added.
 
 **Skew.** The slope of implied volatility against strike. For an equity index it is
 negative: low strikes have higher implied volatilities.
@@ -380,9 +401,15 @@ so their prices include an early-exercise value; this application uses SPX inste
 distance $`d`$: near 1 for nearby points, near 0 beyond a few lengths $`\ell`$. It makes
 the model error a smooth random curve.
 
-**Standardized moneyness** ($`z`$). $`z = \ln(K/F(T))/(0.16\sqrt{T})`$: the distance of a
-strike from the forward in standard deviations of the log index at expiry, at a fixed 16%
-volatility. It is a coordinate for placing strikes, not the option's delta.
+**Standardized moneyness** ($`\delta`$).
+$`\delta = \ln(K/F(T))/(\sigma_{\text{ref}}\sqrt{T})`$ with $`\sigma_{\text{ref}} = 0.16`$:
+the distance of a strike from the forward in units of the standard deviation the log
+index would have at expiry under a 16% volatility. It only places and labels strikes;
+prices use the actual strikes. The design's files call it `z`.
+
+**Standardized unknowns** ($`\tilde\theta`$). Each unknown minus its mean over the bank,
+divided by its standard deviation over the bank, so that all six have comparable sizes for
+the network. The network's draws are converted back to the original units.
 
 **Stochastic volatility model.** A model in which the index's volatility is itself
 random, such as Heston and rough Bergomi.
@@ -396,6 +423,11 @@ index through options embedded in it, such as an autocallable.
 Its fair strike can be computed without a model, from the prices of out-of-the-money
 options at all strikes of that maturity. The VIX index is built the same way.
 
+**Velocity field.** A rule that gives, for a point at a position and a time, the direction
+and speed of its motion. In flow matching the network is the velocity field
+$`v_\phi(z_t, t, \tilde x)`$: it takes the current point, the time and the whitened quotes,
+and returns six numbers.
+
 **Vega** ($`\nu`$). The sensitivity of an option's price to its implied volatility,
 $`\nu = \partial P/\partial\sigma`$. It converts an error in vol points into an error in
 price.
@@ -406,8 +438,8 @@ per vol point by which realized volatility exceeds the strike.
 **VIX.** Cboe's volatility index: approximately the 30-day variance-swap rate on the
 S&P 500, computed from SPX option prices and quoted as a volatility.
 
-**Vol of vol.** How much volatility itself fluctuates: $`\xi`$ in Heston, $`\eta`$ in
-rough Bergomi.
+**Vol of vol.** How much volatility itself fluctuates: $`\sigma_v`$ in Heston (the
+volatility of the variance), $`\eta`$ in rough Bergomi.
 
 **Vol point.** 0.01 of implied volatility: from 20% to 21% is one vol point.
 
@@ -418,7 +450,8 @@ today. Unlike the variance swap, it cannot be replicated with listed options alo
 value also depends on the vol of vol.
 
 **Whitening (ZCA).** A fixed linear change of input coordinates, fitted on training
-simulations, that makes the inputs uncorrelated with unit variance:
-$`u = W(x - \mu)`$, $`W = Q\,\mathrm{diag}(\lambda)^{-1/2}Q^\top`$ from the
-eigendecomposition of their covariance. It loses no information and lets a network read
-small residuals hidden under large common moves.
+simulations, that makes the inputs uncorrelated with unit variance. With $`\mu`$ the mean
+of the scaled quotes $`x = y/h`$ and $`\Sigma = U\,\mathrm{diag}(\lambda_1, \dots, \lambda_{63})\,U^\top`$
+their covariance: $`\tilde x = W(x - \mu)`$,
+$`W = U\,\mathrm{diag}(\lambda_1^{-1/2}, \dots, \lambda_{63}^{-1/2})\,U^\top`$. It loses no
+information and lets a network read small errors hidden under large common moves.

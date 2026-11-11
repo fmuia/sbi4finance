@@ -1,8 +1,10 @@
 """Collect the compact data behind the figures of the option-application documentation.
 
 The sources are evidence files of the Heston study (PR #85, branch
-`feat/heston-spread-baseline-20261109`). Pass each file's path; the script copies only
-the fields the figures need into `data.json`, with the SHA-256 of every source.
+`feat/heston-spread-baseline-20261109`) and the regenerated reference posteriors of the
+Heston notebook (`lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/`, branch
+`claude/trusting-dijkstra-hmgvcm`). Pass each file's path; the script copies only the
+fields the figures need into `data.json`, with the SHA-256 of every source.
 
     python extract_data.py \
         --design   .../revised-grid/cv-preparation/design.json \
@@ -10,6 +12,9 @@ the fields the figures need into `data.json`, with the SHA-256 of every source.
         --recovery .../revised-grid/recovery-bank-independent/300k-300/evaluation/recovery.npz \
         --whitening-diagonal .../whitening-pilot/evaluations/diagonal/recovery.npz \
         --whitening-zca .../whitening-pilot/evaluations/zca/recovery.npz \
+        --reference-comparison .../heston-actual63-notebook/reference-comparison.json \
+        --reference-draws .../heston-actual63-notebook/reference-display-draws.npz \
+        --notebook-commit <commit of the notebook branch> \
         --commit 1c276bb72c1a8d43d1055327934f359708ba1e3f
 """
 
@@ -30,6 +35,12 @@ REPO_PATHS = {
     "whitening-diagonal": EVIDENCE + "noise-scale/capacity-study/whitening-pilot/evaluations/diagonal/recovery.npz",
     "whitening-zca": EVIDENCE + "noise-scale/capacity-study/whitening-pilot/evaluations/zca/recovery.npz",
 }
+NOTEBOOK_EVIDENCE = "lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/"
+NOTEBOOK_PATHS = {
+    "reference-comparison": NOTEBOOK_EVIDENCE + "reference-comparison.json",
+    "reference-draws": NOTEBOOK_EVIDENCE + "reference-display-draws.npz",
+}
+DISPLAY_DRAWS = 1000  # reference draws kept per case for the figures (every second display draw)
 
 
 def sha256(path):
@@ -42,9 +53,10 @@ def rounded(values, digits=7):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    for name in ("design", "evaluation", "recovery", "whitening-diagonal", "whitening-zca"):
+    for name in (*REPO_PATHS, *NOTEBOOK_PATHS):
         parser.add_argument(f"--{name}", required=True, type=Path)
     parser.add_argument("--commit", required=True)
+    parser.add_argument("--notebook-commit", required=True)
     parser.add_argument("--out", type=Path, default=HERE / "data.json")
     args = parser.parse_args()
 
@@ -56,6 +68,30 @@ def main():
     recovery = np.load(args.recovery)
     diagonal = np.load(args.whitening_diagonal)
     zca = np.load(args.whitening_zca)
+    comparison_file = json.loads(args.reference_comparison.read_text())
+    draws_file = np.load(args.reference_draws)
+
+    references = {}
+    for name, case in comparison_file["cases"].items():
+        parameters = case["parameters"]
+        accepted = case["attempts"][case["selected_attempt"]]
+        stride = draws_file[f"{name}__parameters"].reshape(-1, 6).shape[0] // DISPLAY_DRAWS
+        references[name] = {
+            "mean": rounded([parameters[p]["regenerated_mean"] for p in PARAMETERS], 9),
+            "sd": rounded([parameters[p]["regenerated_sd"] for p in PARAMETERS], 9),
+            "quantiles_05_50_95": rounded([parameters[p]["regenerated_q05_q50_q95"] for p in PARAMETERS], 9),
+            "truth": None if case["physical_truth"] is None else rounded([*case["physical_truth"], case["generating_c"]], 9),
+            "accepted_run": {"tune": accepted["tune"], "draws": accepted["draws"],
+                             "likelihood_evaluations": accepted["likelihood_evaluations"],
+                             "cpu_seconds": round(accepted["cpu_seconds"], 1)},
+            "first_run": {"tune": case["attempts"][0]["tune"], "draws": case["attempts"][0]["draws"],
+                          "likelihood_evaluations": case["attempts"][0]["likelihood_evaluations"],
+                          "cpu_seconds": round(case["attempts"][0]["cpu_seconds"], 1)},
+            "draws": [[float(f"{v:.6g}") for v in row]
+                      for row in draws_file[f"{name}__parameters"].reshape(-1, 6)[::stride]],
+            "window_variance_draws": [[float(f"{v:.6g}") for v in row]
+                                      for row in draws_file[f"{name}__products"].reshape(-1, 2)[::stride]],
+        }
 
     cases = {}
     for name, case in evaluation["cases"].items():
@@ -102,6 +138,11 @@ def main():
             "draws_per_row": population["draws_per_case"],
             "coverage": {level: rounded(entry["coverage"], 6)
                          for level, entry in population["coverage"].items()},
+            "coverage_wilson95": {level: rounded(entry["wilson"], 6)
+                                  for level, entry in population["coverage"].items()},
+            "mean_posterior_sd": rounded(population["mean_posterior_sd"], 9),
+            "outside_prior_per_parameter": [count / population["support"]["samples"] for count in
+                                            population["support"]["outside_prior"]["per_dimension_count"]],
             "sbc_ks": rounded(population["rank_dkw"]["rank_ks"], 6),
             "sbc_bound": population["rank_dkw"]["dkw_bound"],
             "sbc_passed": population["rank_dkw"]["passed"],
@@ -119,6 +160,7 @@ def main():
             "zca_c_quantiles": rounded(zca["quantiles"][:, :, 5]),
             "condition_number": {"raw": 1.09e6, "per_feature": 2.20e6, "zca": 1.0},
         },
+        "references_regenerated": references,
         "sources": {
             "repository": "fmuia/sbi4finance",
             "branch": "feat/heston-spread-baseline-20261109",
@@ -126,6 +168,10 @@ def main():
             "files": {name: {"path": path, "sha256": sha256(getattr(args, name.replace("-", "_")))}
                       for name, path in REPO_PATHS.items()},
             "condition_numbers": "whitening-pilot/README.md of the same commit",
+            "notebook_branch": "claude/trusting-dijkstra-hmgvcm",
+            "notebook_commit": args.notebook_commit,
+            "notebook_files": {name: {"path": path, "sha256": sha256(getattr(args, name.replace("-", "_")))}
+                               for name, path in NOTEBOOK_PATHS.items()},
         },
     }
     args.out.write_text(json.dumps(data, separators=(",", ":")) + "\n")
