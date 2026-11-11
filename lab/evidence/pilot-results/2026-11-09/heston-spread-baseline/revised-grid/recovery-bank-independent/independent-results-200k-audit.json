@@ -1,0 +1,485 @@
+{
+  "format": "heston_pr87_grid_recovery_independent_audit_v1",
+  "status": "results_verified",
+  "audited_utc": "2026-11-11T04:18:36.403083+00:00",
+  "audit_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/audit_heston_pr87_grid_recovery.py",
+    "sha256": "4c0090661065dce86c519698f6a70160862830762122424894c00e201f8b67bc"
+  },
+  "source_commit": "f53f652",
+  "campaign_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/campaign-protocol.json",
+    "sha256": "3f5954baf7a27505ddb777e20e55fb60907532b1147cfb441c1827d61ef38c1d"
+  },
+  "original_failed_campaign": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/campaign.json",
+    "sha256": "f283467e3fbd67f1ea0006920763e5c1e091110918735741d99c465339a005d1"
+  },
+  "bank_and_fit_contracts_exactly_equal_original_attempt": true,
+  "protected_artifacts": {
+    "manifest": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/preserved-artifacts-before.json",
+      "sha256": "3bf4626a321a75a0f79cd66ca4b3db219caaf4139249288c4a9f8601dab83d89"
+    },
+    "files": 1017,
+    "bytes": 1005968791,
+    "all_unchanged": true
+  },
+  "saved_numerical_crosscheck": {
+    "record": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/old54-numerical-crosscheck.json",
+      "sha256": "30d41a20763f206190eff41c06346e00b142fe97afbbee6d2716c40fa4b1f85a"
+    },
+    "accepted_old_points": 98,
+    "maximum_accepted_difference_over_minimum_sd": 0.00024678793134391675,
+    "aggregates_and_bound_sources_verified_without_pricing": true
+  },
+  "references": {
+    "synthetic-broad": {
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/synthetic-broad/run.json",
+        "sha256": "a13f11e5870152a57907881dd23b79802a61cb2cb5ae85c93fe33253dd9ccc01"
+      },
+      "status": "completed",
+      "reference_ready": true,
+      "observation_sha256": "ff18699bae051e16340596a4dfdd557d28db2ef491eead3a9cbd98d2fc174d67",
+      "attempts": 2,
+      "diagnostics": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/synthetic-broad/diagnostics.json",
+        "sha256": "84777463992fb8d0774c69df24888dc595336cef79b563f991a41c50344f9c43"
+      },
+      "chain_payload": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/references/synthetic-broad/attempt-1/chains.npz",
+        "sha256": "357bd522d3092dc03c2fbd01787f2bdc3d24463e512022fad193bf195c989f5e"
+      },
+      "mcmc_diagnostics_passed": true,
+      "pointwise_precision_passed": true
+    },
+    "synthetic-market-like": {
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/synthetic-market-like/run.json",
+        "sha256": "bcbdabd6122ebe9358f2dbddce2583516b623229963456d36144365c275e8079"
+      },
+      "status": "completed",
+      "reference_ready": true,
+      "observation_sha256": "070cd0e93495edd09c9147cf7105571e1c300910113615e55630a5f5e287e6ea",
+      "attempts": 2,
+      "diagnostics": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/synthetic-market-like/diagnostics.json",
+        "sha256": "d8758b1ee0d06816500a45d39aaf78da92a560ec6bd5430c2e991e55eea1be38"
+      },
+      "chain_payload": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/references/synthetic-market-like/attempt-1/chains.npz",
+        "sha256": "6f64d045e4bf8907f78d598d00a529db73b5b8ad2464425c807970d9dd005bd9"
+      },
+      "mcmc_diagnostics_passed": true,
+      "pointwise_precision_passed": true
+    },
+    "market": {
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/market/run.json",
+        "sha256": "ce5664eb0d8832214d80cf96f2376681416a21a31580d1cedb6eb83622ba0f92"
+      },
+      "status": "completed",
+      "reference_ready": true,
+      "observation_sha256": "0d27cd709bd319608c6af4e6c1dd4a9be43e40ac3134638806e695b1dd7f6861",
+      "attempts": 2,
+      "diagnostics": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/market/diagnostics.json",
+        "sha256": "efa37466a4bc242598d5d97e04222d06d2adc19147855aa367e22737640b5395"
+      },
+      "chain_payload": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/references/market/attempt-1/chains.npz",
+        "sha256": "7af686d421d128c79728c2ecf42db4026c675043467a20ec7c24b8e19c572a4d"
+      },
+      "mcmc_diagnostics_passed": true,
+      "pointwise_precision_passed": true
+    }
+  },
+  "runs": {
+    "200k-300": {
+      "protocol": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/protocol.json",
+        "sha256": "c8d1a7b0fffb0c04bc7e6ad1d0b50c458a125114ffc579d43c57a069994060ec"
+      },
+      "training": {
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/200k-300/training/run.json",
+          "sha256": "593777a43fb3c02e420df6e00355146b041182e3b9d30d8af127fc87ea57cd91"
+        },
+        "epochs": 300,
+        "batch_size": 256,
+        "batches_per_epoch": 782,
+        "tail_batch_rows": 64,
+        "presentations": 60000000,
+        "optimizer_updates": 234600,
+        "best_validation_epoch": 272,
+        "native_optimizer_schedule": {
+          "initial_learning_rate": 5e-05,
+          "decay_steps": 222870,
+          "alpha": 0,
+          "warmup_target": 0.0005,
+          "warmup_steps": 11730
+        },
+        "checkpoints": [
+          {
+            "epoch": 100,
+            "directory": "epoch-000100",
+            "state_arrays_verified": 112,
+            "optimizer_updates": 78200,
+            "standardizer_presentations": 20000000
+          },
+          {
+            "epoch": 200,
+            "directory": "epoch-000200",
+            "state_arrays_verified": 112,
+            "optimizer_updates": 156400,
+            "standardizer_presentations": 40000000
+          },
+          {
+            "epoch": 250,
+            "directory": "epoch-000250",
+            "state_arrays_verified": 112,
+            "optimizer_updates": 195500,
+            "standardizer_presentations": 50000000
+          },
+          {
+            "epoch": 300,
+            "directory": "epoch-000300",
+            "state_arrays_verified": 112,
+            "optimizer_updates": 234600,
+            "standardizer_presentations": 60000000
+          },
+          {
+            "epoch": 272,
+            "directory": "best-validation",
+            "state_arrays_verified": 112,
+            "optimizer_updates": 212704,
+            "standardizer_presentations": 54400000
+          }
+        ]
+      },
+      "saved_result_checks": [
+        {
+          "role": "primary",
+          "epoch": 300,
+          "evaluation": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation/evaluation.json",
+            "sha256": "0e5e01ebf8c2d1d4b77b4a0cd872d0249fb14995d9d27487368debead9b3f29e"
+          },
+          "populations": {
+            "native_validation": {
+              "raw_draws": 30000,
+              "independent_results_match": true,
+              "observation_sha256": "602ddc7975c6959b614c8041a7959b26f38aefc33d0e3b9df8a9fa3541b4372d",
+              "truth_sha256": "2f706d67993aed64acec46a529ba34f82ee1db90d76bc2ac73389c379e5e3640",
+              "coverage90": [
+                0.95,
+                0.85,
+                0.97,
+                0.87,
+                0.97,
+                0.88
+              ],
+              "sbc_passed": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "outside_prior_sample_fraction": 0.034833333333333334,
+              "nonphysical_sample_fraction": 3.3333333333333335e-05
+            },
+            "population": {
+              "raw_draws": 262144,
+              "independent_results_match": true,
+              "observation_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+              "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d",
+              "coverage90": [
+                0.978515625,
+                0.912109375,
+                0.939453125,
+                0.91796875,
+                0.921875,
+                0.88671875
+              ],
+              "sbc_passed": [
+                false,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "outside_prior_sample_fraction": 0.04296112060546875,
+              "nonphysical_sample_fraction": 0.00025177001953125
+            }
+          },
+          "conditional_cases": {
+            "synthetic-broad": {
+              "independent_results_match": true,
+              "raw_draws": 4096,
+              "standardized_mean_error": [
+                2.2652149887050914,
+                0.07477521303839439,
+                1.276984747429459,
+                0.02644715049417243,
+                1.6517657508537036,
+                0.5261436897232049
+              ],
+              "width_ratio": [
+                2.072527279670466,
+                1.6048571076552687,
+                2.4326149571745384,
+                1.7913541038082448,
+                3.305076985740911,
+                1.3500595480345337
+              ],
+              "max_absolute_correlation_difference": 0.550441408581422,
+              "outside_prior_sample_fraction": 0.0
+            },
+            "synthetic-market-like": {
+              "independent_results_match": true,
+              "raw_draws": 4096,
+              "standardized_mean_error": [
+                0.6352572422007797,
+                0.23900428700595658,
+                0.2060537303770279,
+                0.18553939116681797,
+                0.4320386959056689,
+                0.035013536852018794
+              ],
+              "width_ratio": [
+                3.290428253891103,
+                1.0689422582400907,
+                1.5438639504026368,
+                1.2101441498909398,
+                2.8598652129776885,
+                1.2446531721592027
+              ],
+              "max_absolute_correlation_difference": 0.425570462390824,
+              "outside_prior_sample_fraction": 0.0
+            },
+            "market": {
+              "independent_results_match": true,
+              "raw_draws": 4096,
+              "standardized_mean_error": [
+                18.157318912217328,
+                7.548956170011599,
+                9.646964725643357,
+                5.367113307456575,
+                22.451316602188015,
+                31.974640068795825
+              ],
+              "width_ratio": [
+                3.4284904573933748,
+                1.5868292335396519,
+                2.2957196413593253,
+                1.6313241964451504,
+                4.502750653518731,
+                58.210126910023526
+              ],
+              "max_absolute_correlation_difference": 0.6069232308875714,
+              "outside_prior_sample_fraction": 0.769775390625
+            }
+          },
+          "same_sampling_and_sbc_seed_contract": true,
+          "raw_calibration_coverage_support_recovery_and_ready_reference_dependence_recomputed": true,
+          "necessary_diagnostics_pass": false
+        },
+        {
+          "role": "secondary",
+          "epoch": 272,
+          "evaluation": {
+            "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation-best-validation/evaluation.json",
+            "sha256": "4d78068aa33e15f26d80f7e72b92f3995bf880dca11e6ffadd5184fae51513f0"
+          },
+          "populations": {
+            "native_validation": {
+              "raw_draws": 30000,
+              "independent_results_match": true,
+              "observation_sha256": "602ddc7975c6959b614c8041a7959b26f38aefc33d0e3b9df8a9fa3541b4372d",
+              "truth_sha256": "2f706d67993aed64acec46a529ba34f82ee1db90d76bc2ac73389c379e5e3640",
+              "coverage90": [
+                0.96,
+                0.89,
+                0.97,
+                0.85,
+                0.96,
+                0.88
+              ],
+              "sbc_passed": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "outside_prior_sample_fraction": 0.035,
+              "nonphysical_sample_fraction": 3.3333333333333335e-05
+            },
+            "population": {
+              "raw_draws": 262144,
+              "independent_results_match": true,
+              "observation_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+              "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d",
+              "coverage90": [
+                0.98046875,
+                0.900390625,
+                0.93359375,
+                0.904296875,
+                0.931640625,
+                0.88671875
+              ],
+              "sbc_passed": [
+                false,
+                true,
+                false,
+                true,
+                true,
+                true
+              ],
+              "outside_prior_sample_fraction": 0.04418182373046875,
+              "nonphysical_sample_fraction": 0.000274658203125
+            }
+          },
+          "conditional_cases": {
+            "synthetic-broad": {
+              "independent_results_match": true,
+              "raw_draws": 4096,
+              "standardized_mean_error": [
+                2.086319777980137,
+                0.5529741978611801,
+                1.2477266702633003,
+                1.0136883434552781,
+                0.25576234327234654,
+                0.5575703420825529
+              ],
+              "width_ratio": [
+                2.1346170080206885,
+                1.638778607163978,
+                2.502956992941047,
+                1.8285964721996102,
+                3.3166350896421277,
+                1.3593250597393156
+              ],
+              "max_absolute_correlation_difference": 0.552374575250047,
+              "outside_prior_sample_fraction": 0.0
+            },
+            "synthetic-market-like": {
+              "independent_results_match": true,
+              "raw_draws": 4096,
+              "standardized_mean_error": [
+                2.1287670863215955,
+                0.13096529440179716,
+                0.25567142448699126,
+                0.014045931004164965,
+                0.10106316396017448,
+                0.044189328581572346
+              ],
+              "width_ratio": [
+                3.4663832248554267,
+                1.0877456955419131,
+                1.602708112000979,
+                1.2434754615263255,
+                2.979126509197637,
+                1.23589760840449
+              ],
+              "max_absolute_correlation_difference": 0.43153262712968543,
+              "outside_prior_sample_fraction": 0.0
+            },
+            "market": {
+              "independent_results_match": true,
+              "raw_draws": 4096,
+              "standardized_mean_error": [
+                16.8251934226443,
+                7.479230238541609,
+                9.192652917913662,
+                5.246145493133467,
+                21.81567838099083,
+                37.532183779780745
+              ],
+              "width_ratio": [
+                3.6368116209684436,
+                1.6254207460323955,
+                2.3916175015193994,
+                1.675992339584417,
+                4.667475972762658,
+                58.96314221090029
+              ],
+              "max_absolute_correlation_difference": 0.6246477855540067,
+              "outside_prior_sample_fraction": 0.801513671875
+            }
+          },
+          "same_sampling_and_sbc_seed_contract": true,
+          "raw_calibration_coverage_support_recovery_and_ready_reference_dependence_recomputed": true,
+          "necessary_diagnostics_pass": false
+        }
+      ]
+    }
+  },
+  "no_pricing_fit_model_load_or_posterior_query_performed": true,
+  "reserved_arrays_opened": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false,
+  "scope": "Independent saved-data/state/result audit; reused development screens are necessary checks and do not establish official quality.",
+  "python": "3.12.16",
+  "numpy": "2.5.3",
+  "bank": {
+    "record": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/bank/bank.json",
+      "sha256": "54d8a5bd0993e2838ace1c77471a321fa30f87bf1f7b834112e3dd8f2de3f996"
+    },
+    "data": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/bank/data.npz",
+      "sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4"
+    },
+    "arrays": 29,
+    "train_rows": 300000,
+    "paired_old54_truth_rows": 200000,
+    "appended_iid_rows": 100000,
+    "native_validation_rows": 100,
+    "historical_rows": 512,
+    "checked_price_calls": 300612,
+    "exact_prior_noise_quote_rng_reconstruction": true,
+    "standard_normal_hashes": {
+      "train": "8355c7e1aefd7a3cc2bcc449d46eaa5efd841096e186d7a63f5f03fe67eda178",
+      "validation": "d8286efebd420a76d5c1ace927a2c3eaef6ca4df113ca9b4557f8e76da02ed0e",
+      "historical": "d5dc66179f0527410366fa255fe758e4005f7ba3b4458c851c76c8f833b88715"
+    },
+    "all_saved_clean_prices_within_existing_financial_bound_tolerance": true,
+    "appended_prior_hash": "4979cbfc1511f1d9352682dafdebfe0dc5d622919c056136f5a84dbe41b938f2",
+    "shared_contract_indices": [
+      [
+        51,
+        59
+      ]
+    ],
+    "shared_residual_checks": {
+      "train": {
+        "paired_rows": 200000,
+        "max_standard_normal_reconstruction_error": 1.1124434706744069e-13,
+        "max_rounding_bound": 2.0224066400701545e-12,
+        "max_absolute_clean_shift": 1.3146632227289956e-05
+      },
+      "validation": {
+        "paired_rows": 100,
+        "max_standard_normal_reconstruction_error": 0.0,
+        "max_rounding_bound": 1.5700743168546674e-12,
+        "max_absolute_clean_shift": 6.019340617058333e-07
+      }
+    },
+    "training_unique_physical_rows": 300000,
+    "overlap_native100": 0,
+    "overlap_historical512": 0,
+    "new63_first10k_only_whitening_exact": true,
+    "whitening": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/bank/whitening.json",
+      "sha256": "1423b9b5bbb753a6ade0b82b83a489c6097faf5580f191ca427d03775c24c78d"
+    }
+  },
+  "seconds": 4.267505042022094
+}
