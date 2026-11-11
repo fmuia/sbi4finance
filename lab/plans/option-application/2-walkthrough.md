@@ -137,15 +137,42 @@ $`k = \ln(K/F(T))`$.
 **Implied volatility and the smile.** The Black–Scholes formula prices an option as if
 the index had a constant volatility $`\sigma`$. The $`\sigma`$ that reproduces a quote is
 its **implied volatility**. Across strikes and maturities it forms the **smile**; for SPX,
-mostly a downward **skew**. On 9 November, SPX's at-the-money implied volatility was
-15.6–17.1% across maturities, and deep puts were far higher. We measure strike distances
-in standard deviations at a fixed 16% volatility,
+mostly a downward **skew**. On 9 November, the at-the-money implied volatility of the
+pilot's six expiries rose from 14.7% at 3 weeks to 17.1% at 11 months, and deep puts were
+far higher.
+
+**Strike coordinates.** A strike's distance from the forward is counted in standard
+deviations of the log index at expiry, $`k/(\sigma\sqrt T)`$. Two choices of $`\sigma`$
+matter here, and they place the same number at different strikes. The plan uses a
+**fixed 16%** volatility, near SPX's at-the-money level:
 
 ```math
 \delta = \frac{k}{0.16\,\sqrt T},
 ```
 
-so $`\delta = -3`$ is a strike three standard deviations below the forward. A quote's
+so $`\delta = -3`$ is a strike three 16%-volatility standard deviations below the
+forward. Layout E, the coverage criteria, the reading of later days and every design
+reported "in $`\delta`$" use this scale. Alex's pilot instead **selected** its 54 quotes
+in each expiry's own at-the-money units,
+
+```math
+z = \frac{k}{\sigma_{\text{ATM}}(T)\,\sqrt T},
+```
+
+where $`\sigma_{\text{ATM}}(T)`$ is the Black–Scholes implied volatility, from the mid,
+of the eligible out-of-the-money quote whose strike is nearest the forward $`F(T)`$ of
+that expiry in the 9 November snapshot. Eligible means a positive, uncrossed bid and
+ask, a half-spread at most 25% of the mid, and not one of the quotes reserved to
+estimate the forward by put–call parity. This quote is also the design's own
+at-the-money point. On the six expiries $`\sigma_{\text{ATM}}`$ was 14.72%, 15.30%,
+15.54%, 15.90%, 16.61% and 17.13%. It was computed once, from the observed chain, and
+the selected strikes were then frozen: $`z`$ is not recomputed on another day or on a
+simulated surface.
+
+The two are related by $`\delta = z\,\sigma_{\text{ATM}}(T)/0.16`$, a factor of 0.92 to
+1.07 on the pilot's expiries: the pilot's deepest target, $`z = -4`$, is
+$`\delta \approx -3.7`$ at 3 weeks and $`-4.3`$ at 11 months. The tutorial's current
+grid uses a fixed 20% instead; its $`\pm 2`$ is $`\pm 2.5`$ in $`\delta`$. A quote's
 **vega** $`\nu`$, the sensitivity of its price to its implied volatility (in forward
 units $`\nu = \sqrt T\,\varphi(d_1)`$, with $`\varphi`$ the standard normal density),
 converts between price and vol points.
@@ -156,8 +183,10 @@ its ask is not above its bid, if its spread exceeds 50% of its mid, if its mid v
 the no-arbitrage bounds, or if its implied volatility jumps away from its neighbours'.
 The **half-spread**, converted to vol points at the quote's own implied volatility, says
 how precisely the market prices it. On SPX, 9 November: 0.02–0.05 vol points at the
-money, 0.05–0.17 down to $`\delta \approx -6`$, 0.11–0.25 between $`-6`$ and $`-8`$, and
-0.10–0.37 for calls at $`+2`$ to $`+3`$ (first checks).
+money, 0.05–0.17 down to $`-6`$, 0.11–0.25 between $`-6`$ and $`-8`$, and 0.10–0.37 for
+calls at $`+2`$ to $`+3`$ (first checks). These distances are in at-the-money standard
+deviations, with each expiry's at-the-money volatility read from its smile at $`k = 0`$,
+not in $`\delta`$.
 
 **The products.** Banks sell over-the-counter products on the index, often inside
 **structured notes** sold to investors. Three are marked; two more quantities serve as
@@ -400,18 +429,21 @@ grid, avoids reading errors on the design's own day.
 
 **Why heavy in puts: what each region pins.** First checks measured, for Heston on SPX
 with smooth model error, how much the posterior standard deviation of each quantity rises
-when one region of quotes is removed:
+when one region of quotes is removed. The regions are in at-the-money standard deviations
+of the Heston fit to SPX, whose at-the-money volatility is 14.3–17.3% across the design
+maturities:
 
 | Region removed | Rise in posterior standard deviation |
 | --- | --- |
-| Deep puts, below $`\delta = -3`$ | $`\kappa`$ +59%, $`\xi`$ +51%, $`\bar{v}`$ +33%, 1-year variance swap +27% |
+| Deep puts, below $`-3`$ | $`\kappa`$ +59%, $`\xi`$ +51%, $`\bar{v}`$ +33%, 1-year variance swap +27% |
 | At the money, within 0.5 of it | $`v_0`$ +21%, $`\xi`$ +25% |
-| Calls, above $`\delta = +0.5`$ | $`\rho`$ +72% |
+| Calls, above $`+0.5`$ | $`\rho`$ +72% |
 | Maturities up to 1 month | $`\xi`$ +108%, $`v_0`$ +79%, $`\kappa`$ +63% |
 | Maturities from 2 months | $`\bar{v}`$ +303%, variance swap +287%, $`\kappa`$ +232% |
 
-**Coverage criteria.** The design must contain, with $`\delta`$ in units of the 16%
-volatility:
+**Coverage criteria.** Restated in $`\delta`$ (fixed 16%), which puts each region's
+boundary at 0.93 to 1.12 times the log-moneyness the checks used, the design must
+contain:
 1. puts below $`\delta = -3`$, at short and at long maturities;
 2. a point at the money, and calls near $`+0.5`$, $`+1`$ and $`+2`$ (without the
    near-the-money calls the uncertainty of $`\rho`$ grows 2.4 to 4.1 times);
@@ -424,11 +456,14 @@ range narrows $`\kappa`$, $`\bar{v}`$, $`\xi`$ and the variance swap by 23–49%
 checks).
 
 **The pilot's 54 quotes, checked.** Alex's pilot used 54 quotes on six expiries from 21
-to 325 days, nine per expiry from $`\delta \approx -4`$ to $`+1`$, with half-spreads of
-0.02–0.10 vol points. They meet the put criterion but miss the 1-week maturity, the second
-maturity under a month, and the $`+2`$ calls. The design is therefore rebuilt as actual
-quotes at the targets of "layout E" (7 maturities from 1 week to 1 year, times 9 values of
-$`\delta`$ from −5 to +2): 62 of the 63 targets are quoted, there is no 1-year expiry
+to 325 days, with half-spreads of 0.02–0.10 vol points. On each expiry they were selected
+at nine targets $`z`$ = −4, −3, −2, −1.5, −1, −0.5, 0, +0.5, +1, in that expiry's own
+at-the-money units, and each lies within 0.07 of its target. In $`\delta`$ the deepest
+puts are at −3.7 to −4.3 and the furthest calls at +0.93 to +1.07. They meet the put
+criterion but miss the 1-week maturity, the second maturity under a month, and the
+$`+2`$ calls. The design is therefore rebuilt as actual quotes at the targets of
+"layout E" (7 maturities from 1 week to 1 year, times 9 values of $`\delta`$ from −5 to
++2, at the fixed 16%): 62 of the 63 targets are quoted, there is no 1-year expiry
 settled on the close, and the last call is revised to $`+1.5`$ (Alex's audit). The final
 contract list is not frozen yet.
 
@@ -513,7 +548,7 @@ it explained everything.
 | --- | --- |
 | Bid–ask on SPX | 0.02–0.37, depending on the region (step 1) |
 | Reading the chain on the other days | 0.01–0.25 |
-| Heston's model error on SPX | 1.0 root mean square, 17 times the median half-spread; correlation 0.80 between strikes half a standard deviation apart, 0.85 between adjacent maturities (first checks) |
+| Heston's model error on SPX | 1.0 root mean square, 17 times the median half-spread; correlation 0.80 between strikes half an at-the-money standard deviation apart, 0.85 between adjacent maturities (first checks) |
 | Heston's model error on SPY | 0.8–1.2 root mean square, about 99% of the residual variance (noise session) |
 
 The model error dominates, and it is smooth.
@@ -522,7 +557,8 @@ The model error dominates, and it is smooth.
 the Black–Scholes vega at a fixed 20% volatility times 0.3 vol points at the money,
 rising to 1.0 in the wings. That is about 8 times SPY's bid–ask. In vol points it equals
 the stated values only where a quote's own volatility is 20%: SPY's far calls get 5–7 vol
-points, its puts at $`\delta = -2`$ get 0.4–0.9. It is neither quote noise nor a stated
+points, its puts at −2 (in the tutorial's 20% units) get 0.4–0.9. It is neither quote
+noise nor a stated
 model error, but an unestimated, independent allowance that alone sets every posterior
 width.
 

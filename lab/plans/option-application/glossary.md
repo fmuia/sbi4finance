@@ -29,7 +29,10 @@ normals with flipped sign), which cancels part of the Monte Carlo noise.
 **Ask.** The lowest price at which someone currently offers to sell. See *bid*.
 
 **At the money.** An option whose strike is at, or near, the forward level of the index.
-"At-the-money volatility" is the implied volatility there.
+"At-the-money volatility" is the implied volatility there. In the pilot,
+$`\sigma_{\text{ATM}}(T)`$ is the implied volatility, from the mid, of the eligible
+out-of-the-money quote whose strike is nearest the forward of expiry $`T`$ in the
+9 November snapshot: 14.7% at 3 weeks to 17.1% at 11 months.
 
 **Autocallable.** A structured note that pays coupons and is redeemed early ("called
 automatically") if the index is above a set level on an observation date. If the index
@@ -221,8 +224,8 @@ points, through their correlation. Here: the model error at an unused quote, fro
 residuals at the design's quotes.
 
 **Layout E.** The plan's target observation design: 7 maturities from 1 week to 1 year,
-times 9 standardized strikes from −5 to +2 (puts below the money, calls above), realized
-as actual quotes.
+times 9 values of $`\delta`$ (fixed 16% scale; see *log-moneyness*) from −5 to +2 (puts
+below the money, calls above), realized as actual quotes.
 
 **Likelihood.** The probability (density) of the observed data given the parameters,
 $`p(y \mid \theta)`$, seen as a function of $`\theta`$.
@@ -231,8 +234,18 @@ $`p(y \mid \theta)`$, seen as a function of $`\theta`$.
 over the counter.
 
 **Log-moneyness.** $`k = \ln(K/F(T))`$: how far a strike is from the forward, on a log
-scale. The design measures it in standard deviations at 16% volatility,
-$`\delta = k/(0.16\sqrt{T})`$.
+scale. Divided by $`\sigma\sqrt{T}`$ it counts standard deviations of the log index at
+expiry at volatility $`\sigma`$. Two scales matter most:
+- $`\delta = k/(0.16\sqrt{T})`$, at a fixed 16% volatility: the plan's coordinate, used
+  for layout E, the coverage criteria and to report any design;
+- $`z = k/(\sigma_{\text{ATM}}(T)\sqrt{T})`$, at each expiry's own at-the-money
+  volatility (see *at the money*): the coordinate in which the pilot selected its 54
+  quotes, once, before freezing them.
+
+They are related by $`\delta = z\,\sigma_{\text{ATM}}(T)/0.16`$. The tutorial's current
+grid uses a fixed 20%: its $`\pm 2`$ is $`\pm 2.5`$ in $`\delta`$. The first checks also
+count "at-the-money standard deviations", with the at-the-money volatility read from the
+smile or from a Heston fit; Layer 3 (notation) lists every scale and where it is used.
 
 **Mark; mark to market; mark to model.** The mark is the value a bank assigns to a
 position at the end of a day, for its P&L and balance sheet. Marking to market values a

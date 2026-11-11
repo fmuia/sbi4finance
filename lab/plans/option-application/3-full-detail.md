@@ -184,6 +184,38 @@ $`D(T)F(T)\,\mathbb{E}[(\tilde K - X_T)^+]`$ with $`\tilde K = K/F(T)`$; its
 log-moneyness is $`k = \ln \tilde K`$, and its standardized moneyness
 $`\delta = k/(0.16\sqrt T)`$. Model prices are computed in these units.
 
+**Strike coordinates.** $`k/(\sigma\sqrt T)`$ counts a strike's distance from the
+forward in standard deviations of $`\ln S_T`$ at volatility $`\sigma`$. Four scales
+appear in this layer, and every moneyness number is in one of them:
+1. $`\delta = k/(0.16\sqrt T)`$, **fixed 16%.** The plan's coordinate: layout E's
+   targets, the coverage criteria as stated in step 5.1, the reading spline of step 5.4,
+   the correlation kernel of step 6, and every table that reports a design "in
+   $`\delta`$".
+2. $`z = k/(\sigma_{\text{ATM}}(T)\sqrt T)`$, **the pilot's selection coordinate**
+   (`build_design` in `lab/scripts/run_heston_observation_pilot.py`, pilot branch). For
+   each expiry, $`F(T)`$ and $`D(T)`$ come from the weighted least-squares put–call
+   parity regression on the carry anchors (every third strike, within 5% of spot, with
+   both a call and a put quoted), and $`T`$ is ACT/365F to the 16:00 New York
+   settlement. The eligible quotes are the SPXW PM-settled quotes that are out of the
+   money relative to $`F(T)`$ (puts at $`K \le F`$, calls above), have a positive,
+   uncrossed bid and ask and a half-spread at most 25% of the mid, and are not carry
+   anchors. $`\sigma_{\text{ATM}}(T)`$ is the Black–Scholes implied volatility, from
+   the mid, of the eligible quote with the smallest $`|k|`$, which is also the design's
+   target $`z = 0`$. On the 9 November snapshot it is 14.72%, 15.30%, 15.54%, 15.90%,
+   16.61% and 17.13% on the six expiries (step 5.2). It was computed once, from the
+   observed chain, and the selected strikes were frozen; $`z`$ is not recomputed on
+   another day or on a simulated surface. Conversion: $`\delta = z\,\sigma_{\text{ATM}}(T)/0.16`$.
+3. **"At-the-money standard deviations" in the first checks**
+   (`lab/evidence/pilot-results/2026-11-09/design-and-error/`): the same form with
+   $`\sigma_{\text{ATM}}`$ obtained differently. For the SPX half-spread profile, the
+   quoted reach and the model-error residuals and their correlations (steps 1.4, 5.4
+   and 6), it is read from the 9 November smile at $`k = 0`$. For the design
+   comparisons and the regions' roles (steps 5.1, 5.3 and 5.6), it is the Heston fit's
+   at-the-money volatility at the seven design maturities, 14.30–17.25%. A location
+   restated in $`\delta`$ lies at 0.93 to 1.12 times the log-moneyness the checks used.
+4. **The tutorial's fixed 20%** (`SIGMA_REF = 0.20`): its symmetric $`\pm 2`$ grid, its
+   noise rule and the replication criterion. Its $`\pm 2`$ is $`\pm 2.5`$ in $`\delta`$.
+
 **Implied volatility and vega.** $`\sigma_{\text{imp}}(k,T)`$ reproduces a forward-unit
 price through Black–Scholes; the forward-unit vega is
 $`\nu = \partial P/\partial\sigma = \sqrt T\,\varphi(d_1)`$.
@@ -656,19 +688,22 @@ the same error-scale parameters. Neither sees information the other does not.
 
 The principle: cover what the goal depends on, where the name quotes reliably, within the
 model's scope. First checks measured each region's role (Heston on SPX, smooth model
-error; rise in posterior standard deviation when the region is removed):
+error, on a grid from −6 to +2 with 17 points per maturity; rise in posterior standard
+deviation when the region is removed). The regions are in at-the-money standard
+deviations of the Heston fit (scale 3 of the notation), not in $`\delta`$:
 
 | Region removed | $`\kappa`$ | $`v_0`$ | $`\bar{v}`$ | $`\xi`$ | $`\rho`$ | 1-year variance swap |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Deep puts, below $`\delta = -3`$ | +59% | +9% | +33% | +51% | +3% | +27% |
+| Deep puts, below $`-3`$ | +59% | +9% | +33% | +51% | +3% | +27% |
 | Near puts, $`-3`$ to $`-0.5`$ | +3% | +4% | +5% | +2% | +4% | +4% |
 | At the money, within 0.5 | +17% | +21% | +9% | +25% | +15% | +11% |
 | Calls above $`+0.5`$ | +11% | +9% | +6% | +17% | +72% | +7% |
 | Maturities up to 1 month | +63% | +79% | +3% | +108% | +15% | +1% |
 | Maturities from 2 months | +232% | +24% | +303% | +15% | +37% | +287% |
 
-A design must therefore contain, in standard deviations of a 16% volatility (SPX's
-at-the-money level):
+A design must therefore contain the following, restated in $`\delta`$ (fixed 16%, near
+SPX's at-the-money level), which puts each boundary at 0.93 to 1.12 times the
+log-moneyness of the checks:
 1. puts below $`\delta = -3`$ at short and at long maturities;
 2. a point at the money, and calls at about $`+0.5`$, $`+1`$ and $`+2`$; without the
    near-the-money calls the uncertainty of $`\rho`$ grows 2.4 to 4.1 times;
@@ -686,16 +721,22 @@ was checked for this layer. It holds 54 actual SPXW quotes from an intraday snap
 the 9 November chain (15:13 New York time, index 7,571.54), frozen with strike, expiry, forward, discount,
 half-spread, implied volatility and vega:
 
-| Expiry | Calendar days | Quotes | $`\delta`$ from | to | Half-spreads (vp) |
-| --- | ---: | ---: | ---: | ---: | --- |
-| 30 Nov 2026 | 21 | 9 | −3.69 | +0.93 | 0.04–0.09 |
-| 31 Dec 2026 | 52 | 9 | −3.83 | +0.96 | 0.03–0.10 |
-| 29 Jan 2027 | 81 | 9 | −3.87 | +0.98 | 0.03–0.09 |
-| 31 Mar 2027 | 142 | 9 | −4.00 | +0.99 | 0.03–0.06 |
-| 30 Jun 2027 | 233 | 9 | −4.08 | +1.04 | 0.03–0.08 |
-| 30 Sep 2027 | 325 | 9 | −4.29 | +1.07 | 0.02–0.07 |
+| Expiry | Calendar days | Quotes | $`\sigma_{\text{ATM}}(T)`$ | $`\delta`$ from | to | Half-spreads (vp) |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| 30 Nov 2026 | 21 | 9 | 14.72% | −3.69 | +0.93 | 0.04–0.09 |
+| 31 Dec 2026 | 52 | 9 | 15.30% | −3.83 | +0.96 | 0.03–0.10 |
+| 29 Jan 2027 | 81 | 9 | 15.54% | −3.87 | +0.98 | 0.03–0.09 |
+| 31 Mar 2027 | 142 | 9 | 15.90% | −4.00 | +0.99 | 0.03–0.06 |
+| 30 Jun 2027 | 233 | 9 | 16.61% | −4.08 | +1.04 | 0.03–0.08 |
+| 30 Sep 2027 | 325 | 9 | 17.13% | −4.29 | +1.07 | 0.02–0.07 |
 
-Each expiry carries targets near $`\delta`$ = −4, −3, −2, −1.5, −1, −0.5, 0, +0.5, +1.
+The quotes were selected in the pilot's coordinate $`z`$, not in $`\delta`$ (scale 2 of
+the notation): on each expiry, the nearest distinct eligible quote to each target
+$`z`$ = −4, −3, −2, −1.5, −1, −0.5, 0, +0.5, +1, with every selected quote within 0.07 of
+its target (the script rejects a distance above 0.35). The $`\delta`$ columns convert
+them, $`\delta = z\,\sigma_{\text{ATM}}(T)/0.16`$: the quote selected for $`z = -4`$ lands
+at $`\delta = -3.69`$ at 21 days and $`-4.29`$ at 325 days, because $`\sigma_{\text{ATM}}`$
+rises with maturity.
 Against the criteria:
 - deep puts below −3 at short and long maturities: **met** (−3.7 to −4.3);
 - an at-the-money point and calls at +0.5 and +1: **met**; calls at +2: **missed**
@@ -715,7 +756,8 @@ smaller than Heston's measured misfit on SPX (step 6).
   $`\delta \in`$ {−5, −3.5, −2.25, −1.25, −0.5, 0, +0.5, +1, +2}, with
   $`k = 0.16\,\delta\sqrt T`$ and puts at $`\delta \le 0`$.
 - **Posterior standard deviation relative to the tutorial's current grid** (Heston on
-  SPX, first checks):
+  SPX, first checks; E's targets placed in at-the-money units of the Heston fit, scale 3,
+  and the correlation lengths $`\ell`$ in the same units):
 
   | Error model | $`\kappa`$ | $`v_0`$ | $`\bar{v}`$ | $`\xi`$ | $`\rho`$ | 1-year variance swap |
   | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -723,8 +765,10 @@ smaller than Heston's measured misfit on SPX (step 6).
   | Smooth, $`\tau`$ = 2.5 vp, $`\ell`$ = (1.6, 2.0) | 0.78 | 0.81 | 0.77 | 0.83 | 1.31 | 0.78 |
 
   E narrows everything except $`\rho`$, which it widens by 9–31%.
-- **Audit against the actual chain (Alex's study):** 62 of the 63 literal targets have a
-  supported actual SPXW quote; there is no 1-year PM-settled expiry; an explicit revision
+- **Audit against the actual chain (Alex's study):** nearest distinct actual quotes to the
+  targets in $`\delta`$ at the fixed 16%, flagged when more than 0.35 away. 62 of the 63
+  literal targets have a supported actual SPXW quote; there is no 1-year PM-settled
+  expiry; an explicit revision
   of the last call to +1.5 supports every selected location but still misses the +2 and
   1-year goals.
 - **Rules agreed in Alex's work order:** select distinct actual European PM-settled
@@ -732,8 +776,10 @@ smaller than Heston's measured misfit on SPX (step 6).
   targets and provenance; revise unsupported targets explicitly; never interpolate an
   artificial observation or substitute an AM-settled contract silently; freeze strikes,
   exact settlement times and quote types; keep carry anchors disjoint from fitted quotes.
-- **Caveats** (Alex's review of this plan's evidence): the layout comparison used per-expiry
-  at-the-money scales while E is written at a fixed 16%; the Fisher comparisons assume
+- **Caveats** (Alex's review of this plan's evidence): the layout comparison placed E's
+  targets with the Heston fit's per-maturity at-the-money volatilities (14.30–17.25%)
+  while E is written at a fixed 16%, so its strikes differ from the literal E by a factor
+  of 0.89 to 1.08 in log-moneyness; the Fisher comparisons assume
   smooth error; under the spread-only law E's optimality is not established. The literal
   actual-quote candidate is to be evaluated under the intended likelihood on a small
   representative panel before production labels.
@@ -784,9 +830,10 @@ to +2.2 to +3.1.
 
 ### 5.5 Data held out of every fit
 
-- **Model-free variance swap.** For each expiry whose cleaned strip reaches $`\delta \le -8`$
-  and $`\delta \ge 1.8`$ in 20%-volatility units (the existing replication criterion;
-  with `sigma_ref=0.16`, pass `replication_deltas=(-10, 2.25)` to keep the same reach),
+- **Model-free variance swap.** For each expiry whose cleaned strip reaches −8 and +1.8
+  in 20%-volatility units, which is $`\delta \le -10`$ and $`\delta \ge 2.25`$ (the existing
+  replication criterion; with `sigma_ref=0.16`, pass `replication_deltas=(-10, 2.25)` to
+  keep the same reach),
   compute $`w(T_e)`$ by the trapezoid rule over the strip (step 1.6), interpolate $`w`$
   linearly in $`T`$ to 21, 63 and 252 business days, and report $`\sqrt{w(T)/T}`$.
   Discretization, truncation and jumps are reported as a tolerance, not tuned away.
@@ -803,8 +850,8 @@ to +2.2 to +3.1.
 | Claim | Verdict |
 | --- | --- |
 | Symmetric ±2 at a fixed 20% volatility | Right; the noise rule is tied to 20% too |
-| Put quotes reach $`\delta`$ = −8 to −17 | Right in substance: −8.2 to −14.5 in 20%-volatility units on SPY, 21 October (−13 to −21 in at-the-money units) |
-| A third of the points are far calls with almost no information | 21 of 63 at $`\delta \ge +1`$. Their low weight comes from the 20% vega conversion: 5–7 vp of effective noise against half-spreads of 0.1–0.4 vp |
+| Put quotes reach −8 to −17 standard deviations | Right in substance: −8.2 to −14.5 in 20%-volatility units on SPY, 21 October (−13 to −21 in at-the-money units) |
+| A third of the points are far calls with almost no information | 21 of 63 at +1 or beyond in 20% units. Their low weight comes from the 20% vega conversion: 5–7 vp of effective noise against half-spreads of 0.1–0.4 vp |
 | Some points have no quotes | Wrong: 0 of 63 lie outside quoted strikes (SPY 21 October and 6 November, SPX 9 November) |
 | Repricing costs 1.3 CPU-h per 100k Heston surfaces and 330–370 CPU-h for rough Bergomi | Right at today's accuracy targets |
 | Fix: scale by at-the-money volatility and shift towards puts | The shift is right, but only with a vol-point error model; scaling alone is neutral on one date |
@@ -814,7 +861,8 @@ units (the proposal); G2, the same deltas at 20%; G3, ±2 in at-the-money units.
 standard deviation relative to the current grid:
 - *Under the tutorial's rule:* G1 and G2 look 2–12 times tighter for Heston and 5–25 times
   for rough Bergomi, because deep puts get only 0.003–0.03 vp of noise: false precision.
-  Rough Bergomi's Monte Carlo error at $`\delta = -4`$ would be 40–65 times that noise.
+  Rough Bergomi's Monte Carlo error at −4 at-the-money standard deviations would be
+  40–65 times that noise.
 - *Under a consistent, independent vol-point error:* Heston (150 prior draws), G1: $`v_0`$
   1.07, $`\bar{v}`$ 0.89, $`\xi`$ 0.83, $`\rho`$ 1.48, variance swap 0.83. Rough Bergomi
   (8 points), G1: $`H`$ 0.58, $`\eta`$ 0.77, $`\rho`$ 1.41, variance swap 0.68. G3 stays
@@ -840,11 +888,21 @@ standard deviation relative to the current grid:
 | Thin ETF (EWG: 4 expiries to 6 months; half-spreads 1.2–2 vp) | what the chain has, narrow | quote error; the prior beyond the quotes |
 | Single stock | skip earnings expiries | early exercise, dividends, events |
 
-**Coordinates.** The plan uses a fixed 16% scale, not each surface's at-the-money
-volatility. On one date, scaling by at-the-money volatility adds no information (G3); it
-makes strike locations depend on the data, so the simulator would place them from each
-simulated surface and the network would have to condition on them; it pays off only
-across names and volatility regimes.
+**Coordinates.** The plan states its targets at a fixed 16% ($`\delta`$), not at each
+surface's at-the-money volatility. "Scaling by at-the-money volatility" can mean two
+different things:
+- *Once, to choose contracts* that are then frozen, as the pilot did with
+  $`\sigma_{\text{ATM}}(T)`$ (scale 2 of the notation). This only decides which strikes
+  are used: the simulator and the network see fixed $`(k_i, T_i)`$ either way. On
+  9 November it moves a target by the factor $`\sigma_{\text{ATM}}(T)/0.16`$ = 0.92–1.07
+  relative to the same number in $`\delta`$.
+- *On every surface*, simulated or observed on another day. Then strike locations depend
+  on the data: the simulator would place them from each simulated surface and the network
+  would have to condition on them. On one date this adds no information (G3); it pays off
+  only across names and volatility regimes.
+
+The plan rejects the second. The first is only a way to choose strikes; layout E chooses
+them at fixed-16% targets instead.
 
 **Not adopted.** A set encoder over all raw quotes (it needs variable quote layouts in
 simulation: the deferred sparse-chain work, now sequenced by #83); a denser symmetric
@@ -938,7 +996,7 @@ order. Working in prices keeps negative simulated prices usable without inversio
 | --- | --- | --- |
 | Bid–ask, SPX 9 November | 0.02–0.05 at the money; 0.05–0.17 down to −6; 0.11–0.25 at −6 to −8; 0.10–0.37 for calls at +2 to +3 | first checks |
 | Bid–ask, the pilot's 54 quotes | 0.02–0.10, median 0.04 | this layer, from the design file |
-| Bid–ask, SPY 6 November | 0.04–0.13; 0.26–0.37 at $`\delta = +2`$ | noise session |
+| Bid–ask, SPY 6 November | 0.04–0.13; 0.26–0.37 at +2 on the tutorial's grid (20% units) | noise session |
 | Spline reading | about 0.01; neighbours correlate +0.38 | noise session |
 | Interpolation between expiries | 0.05–0.25 (upper bound) | noise session |
 | Early exercise (SPY only) | up to about 1.1 at the 1-year at-the-money put | noise session |
@@ -1014,11 +1072,12 @@ $`U(0.5, 2)`$ in training, as a known input.
 ### 6.6 What it replaces
 
 The tutorial's current rule adds independent price noise equal to the Black–Scholes vega
-at 20% volatility times 0.3 vp at the money, rising to 1.0 at $`|\delta| \ge 2`$ (in 20%
-units). It is about 8 times SPY's bid–ask and 6–15 times SPX's at the money. In vol
-points it equals the stated values only where a quote's own volatility is 20%: on SPY,
-21 October, the median effective noise is 0.44 vp at $`\delta = -2`$ and 5.4 vp
-(maximum 7.0) at $`\delta = +2`$; at the prior's centre, 0.28–0.55. Its fit: $`\chi^2`$ =
+at 20% volatility times 0.3 vp at the money, rising to 1.0 at 2 or more standard
+deviations in 20% units (scale 4 of the notation). It is about 8 times SPY's bid–ask and
+6–15 times SPX's at the money. In vol points it equals the stated values only where a
+quote's own volatility is 20%: on SPY, 21 October, the median effective noise is 0.44 vp
+at −2 and 5.4 vp (maximum 7.0) at +2, both in 20% units; at the prior's centre,
+0.28–0.55. Its fit: $`\chi^2`$ =
 66.5 on 63 quotes (21 October), 508 (6 November). It is neither quote noise nor a stated
 model error, but an unestimated, independent allowance that alone sets every posterior
 width. It is replaced for the new tasks only; existing task identities and assets are

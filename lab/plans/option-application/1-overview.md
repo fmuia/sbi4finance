@@ -182,10 +182,14 @@ The design needs every region of the smile, because each region pins something d
 - short maturities: the vol of vol; longer ones: the long-run level.
 
 A region left out leaves its quantities loose, and with them the products that depend on
-them. Alex's pilot used 54 quotes from 3 weeks to 11 months, with calls only up to one
-standard deviation above today's level, so it lacks the shortest maturities and the far
-calls. The design is therefore being rebuilt from 1 week to 1 year, with calls further
-out: 63 target places, 62 of which the market quotes.
+them. Strike distances are counted in standard deviations of the index at expiry at a
+fixed 16% volatility, $`\delta = \ln(K/F)/(0.16\sqrt T)`$, close to SPX's at-the-money
+level (14.7–17.1% on 9 November). Alex's pilot used 54 quotes from 3 weeks to 11 months,
+chosen at nine targets per expiry from −4 to +1 measured with that expiry's own
+at-the-money volatility instead of 16%. In $`\delta`$ its puts reach −3.7 to −4.3 and
+its calls only +0.9 to +1.1, so it lacks the shortest maturities and the far calls. The
+design is therefore being rebuilt from 1 week to 1 year, at targets from $`\delta = -5`$
+to $`+2`$: 63 target places, 62 of which the market quotes.
 
 ## 6. How quotes differ from the model
 
