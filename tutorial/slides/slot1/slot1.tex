@@ -2,13 +2,12 @@
 % Uses the tutorial's bayesops theme unchanged; compile with LuaLaTeX (the theme needs it).
 % In the Overleaf project: upload this file and figures/slot1/, then Menu > Main document > slot1.tex.
 %
-% Two kinds of evidence, never mixed on one slide and labelled on each:
-%   - ILLUSTRATION (slides 2, 3, 6 to 9): one running example, a thin option chain simulated from Heston, the model
-%     right by construction, and one exotic, a forward-start call whose two dates are quoted. It shows a mechanism.
+% Two kinds of evidence, labelled on each slide that shows one:
+%   - ILLUSTRATION (slides 7 to 9 and 11): one running example, a thin option chain simulated from Heston, the model
+%     right by construction, and one exotic, a forward-start call. It shows a mechanism.
 %     tutorial/slides/slot1/illustration.py computes it.
-%   - RESULT (slides 10 to 13): what the tutorial's Heston study on 63 SPX quotes recorded as of 11 November 2026
-%     (the Heston SPX notebook, lab/notebooks/heston_spx_calibration.py, and its run records). The numbers are in
-%     tutorial/slides/slot1/recorded-results.json, each with its source.
+%   - RESULT (slide 12, and two backup frames): what the tutorial's Heston study on 63 SPX quotes recorded as of
+%     11 November 2026. The numbers are in tutorial/slides/slot1/recorded-results.json, each with its source.
 % tutorial/slides/slot1/export_figures.py draws every figure and prints every number the slides quote.
 % Dashes are typed as Unicode (–): the theme's title fonts do not turn -- into a dash.
 % Speaker notes are in \note{}; Beamer prints them only with \setbeameroption{show notes on second screen}.
@@ -127,12 +126,12 @@
 % sentences on the slide. Style: plain statements, in logical order; each key line follows from the previous one.
 %
 % The argument, in five parts:
-%   1. the problem (slides 1–3): a calibration is one fit among many, so the price of an exotic has a range;
-%   2. the exercise (4–5): volatility models are the example; the steps and the questions are general;
-%   3. why Bayes (6–9): what a posterior is, where the classical route gives the same range, where it does not;
-%   4. why simulation-based inference (10–13): the cost of a posterior, amortized inference, the test it makes
-%      affordable, and what the tests have found so far;
-%   5. the close (14–16): the takeaways, the team, the rest of the tutorial.
+%   1. why uncertainty, and what Bayes offers (slides 1–2);
+%   2. the example and the exercise (3–5): volatility models are the example; the steps and the questions are general;
+%   3. Bayes for calibration (6–11): prior and likelihood, the posterior as draws, from posterior to prices, why
+%      Bayes, and what happens when the quotes run thin;
+%   4. the cost of a posterior, and the handover to amortized inference (12–13);
+%   5. the close (14–16): the summary, the team, the rest of the tutorial.
 
 % ════════════════════════════════════════════════════════════════════════════
 % Uncertainty, Bayes, and the example
@@ -284,18 +283,35 @@ quotes. Bayes' rule multiplies the two and returns the posterior: not one parame
 weighted. Least squares returns its peak, when the prior is flat.}
 \end{frame}
 
+\begin{frame}{Prior and Likelihood}
+\key{The prior says what is plausible. The likelihood \highlight{scores} it.}
+\fig{0.94}{prior-likelihood.pdf}
+\pairs[illustration]{\pair{Prior}{one range per parameter}}{\pair{Likelihood}{errors scaled by bid–ask}}
+      {\pair{Least squares}{this likelihood, maximized}}
+\note{The two ingredients, on an example: seven quotes at six months, simulated from Heston. On the left, the prior: a
+range for each parameter, before any quote. Each grey curve is the smile of one parameter set drawn from it. The prior
+allows a wide family of smiles. On the right, the likelihood. It scores a parameter set by how far its prices fall
+from the quotes, measured in bid–ask half-spreads, with normal errors. The magenta smile misses by about one
+half-spread: likely. The dashed one misses by ten: possible under the prior, very unlikely given the quotes. Least
+squares maximizes exactly this likelihood. Bayes keeps the whole score, and multiplies it by the prior.}
+\end{frame}
+
 \begin{frame}{What a Posterior Looks Like}
-\key{The posterior shows what the quotes \highlight{pin}, and what they leave open.}
-\fig{0.94}{posterior-cloud.pdf}
-\pairs[illustration]{\pair{Example}{14 simulated quotes}}{\pair{Left open}{mean reversion, vol of vol}}
-      {\pair{Least squares}{the region in magenta}}
-\note{Here is a posterior, for a thin chain: fourteen quotes at two expiries, simulated from Heston. Each dot is a
-parameter set, drawn in proportion to its weight. On the right, the quotes pin the long-run volatility and the
-correlation. On the left they leave a ridge open: a fast mean reversion with a high vol of vol fits as well as a slow
-one with a low vol of vol. The magenta region is the classical answer: least squares with a quadratic approximation,
-which also gives ranges. Where the quotes are informative the two coincide: on the Heston notebook's 63 quotes, within
-2 percent. Where they are not, as on the left, the quadratic region runs out of the prior's box, and the posterior
-follows the ridge inside it.}
+\only<1>{\key{A posterior is computed as \highlight{draws}, by a sampler.}}%
+\only<2>{\key{The draws show what the quotes \highlight{pin}, and what they leave open.}}%
+\only<3>{\key{Least squares keeps the peak, and a \highlight{quadratic} region around it.}}
+\only<1>{\fig{0.94}{posterior-1.pdf}}\only<2>{\fig{0.94}{posterior-2.pdf}}\only<3>{\fig{0.94}{posterior-3.pdf}}
+\pairs[illustration]{\pair{Example}{14 simulated quotes}}
+      {\uncover<2->{\pair{Left open}{a curved valley}}}
+      {\uncover<3>{\pair{The notebook's 63 quotes}{both agree within 2\%}}}
+\note{The posterior has no formula. It is computed as draws, by a sampling algorithm such as Markov chain Monte Carlo.
+Here is one: it starts from a guess, proposes a move, and accepts it more often when the fit improves. After a few
+hundred steps it has found where the posterior is, and it stays there. Second step: 4,000 draws, for fourteen quotes
+at two expiries. On the right, the quotes pin today's volatility and the correlation. On the left they leave a curved
+valley open: a slow reversion to a high long-run volatility fits as well as a fast reversion to a low one. Third step:
+the classical answer, least squares with a quadratic approximation, which also gives ranges. Where the quotes pin the
+parameters it matches the posterior: on the Heston notebook's 63 quotes, within 2 percent. Along the valley it does
+not: its region is straight, and the posterior bends.}
 \end{frame}
 
 \begin{frame}{From Posterior to Prices}
@@ -387,20 +403,16 @@ for any new data set. Stefan explains how, in the next talk.}
 % The close: takeaways, the team, the rest of the tutorial
 
 \begin{frame}{Summary}
-\gap{\large\TitleFont\color{aviation}
-\begin{enumerate}\setlength\itemsep{1.1em}
-\item A calibration is an estimate. Bayes turns it into a distribution: over parameters, and over prices.
-\item With informative quotes, classical ranges agree with it. Bayes is the general case, and it states what is
-assumed.
-\item Amortized inference makes the posterior fast enough to use, and to test.
-\end{enumerate}\par}\gap
-{\small\color{aviation!70}The examples are volatility models; the method is general. For your own model: is a range
-needed, what does it cost, and how is it checked?\par}\vspace{\footgap}
-\note{Three statements. A calibration is an estimate, and Bayes turns it into a distribution: over parameters, and
-over the price of anything computed from them. With informative quotes, classical ranges agree with it; Bayes is the
-general case, and it states what is assumed. Amortized inference makes the posterior fast enough to use, and to test.
-The examples are volatility models, and the method is general. For your own model, keep three questions through the
-tutorial: is a range needed, what does it cost, and how would you check it?}
+\key{Bayes returns a \highlight{distribution}. Amortization makes it fast.}
+\fig{0.97}{summary.pdf}
+\pairs{\pair{A calibration is an estimate}{Bayes: a distribution}}
+      {\pair{Draws price every product}{a mark, a range, a reserve}}
+      {\pair{A posterior is costly}{amortization pays once}}
+\note{Three pictures to take away. A calibration is an estimate, and Bayes turns it into a distribution over
+parameters: it shows what the quotes pin and what they leave open, with the assumptions stated. Every draw prices
+every product, so each price gets a range, a mark and a reserve. With informative quotes the classical ranges agree;
+Bayes is the general case. And a posterior is costly, from minutes to months, unless the cost is paid once: that is
+amortized inference, and the rest of this tutorial. The examples are volatility models; the method is general.}
 \end{frame}
 
 \begin{frame}{The Team}

@@ -307,59 +307,38 @@ def range_handles():
 # The illustrations
 
 
-def figure_many_fits(data, step):
-    """The opening example: quotes at the product's two dates, and the price of the product, which nobody quotes.
+def figure_prior_likelihood(data):
+    """What a prior and a likelihood are, on the opening example's 6-month quotes.
 
-    Step 1 shows the quotes, the least-squares fit and the price it gives the forward-start call. Step 2 adds a fan of
-    posterior draws: on the quotes they cannot be told apart, and each gives the forward start its own price.
+    Left: the 6-month smiles of parameter sets drawn from the prior, before any quote. Right: the quotes, and two of
+    those smiles scored against them: the best fit, and one that misses by several half-spreads.
     """
-    key = key_of(HOOK)
-    fig, axes = canvas(0.97, HEIGHT, ncols=3, gridspec_kw={"width_ratios": [1, 1, 1.3]})
-    quotes = data["hook/quotes"]
-    for ax, months in zip(axes[:2], SMILE_STRIKES, strict=True):
-        strikes = 100 * data[f"hook/{months}/strikes"]
-        if step == 2:
-            ax.plot(strikes, percent(data[f"hook/{months}/fan"]).T, color=POSTERIOR, lw=0.5, alpha=0.22, zorder=2)
-        ax.plot(strikes, percent(data[f"hook/{months}/fit"]), color=CLASSICAL, lw=1.5, zorder=3)
-        quoted = np.isclose(quotes[:, 1], months / 12.0)
-        mid, low, high = (percent(quotes[quoted, j]) for j in (2, 3, 4))
-        ax.errorbar(100 * quotes[quoted, 0], mid, yerr=[mid - low, high - mid], fmt="o", color=INK, ms=3.0, lw=0.9,
-                    capsize=1.8, capthick=0.9, zorder=5)
-        ax.set_title("quoted: 6 months" if months == 6 else "quoted: 1 year", loc="left")
-        ax.set_xlabel("strike (% of forward)")
-        ax.set(xlim=(strikes[0], strikes[-1]), ylim=(10, 40))
+    months = 6
+    quotes = il.readings()[HOOK]
+    strikes = data[f"hook/{months}/strikes"]
+    rng = np.random.default_rng(il.SEED)
+    thetas = il.LOWER + (il.UPPER - il.LOWER) * rng.uniform(size=(FAN, len(il.NAMES)))
+    smiles = np.array([il.smile(theta, months / 12.0, strikes) for theta in thetas])
+    misfit = np.sqrt(quotes.sum_of_squares(thetas) / quotes.n)
+    poor = int(np.argmin(np.abs(misfit - 10.0)))  # a prior draw that misses by about ten half-spreads
+    fig, axes = canvas(0.94, HEIGHT, ncols=2)
+    axes[0].plot(100 * strikes, percent(smiles).T, color=INK_2, lw=0.5, alpha=0.25)
+    axes[0].set_title("the prior: smiles before any quote", loc="left")
+    points = data["hook/quotes"]
+    quoted = np.isclose(points[:, 1], months / 12.0)
+    mid, low, high = (percent(points[quoted, j]) for j in (2, 3, 4))
+    axes[1].plot(100 * strikes, percent(smiles[poor]), color=INK_2, lw=1.2, ls=DASHED, zorder=2)
+    axes[1].plot(100 * strikes, percent(data[f"hook/{months}/fit"]), color=CLASSICAL, lw=1.5, zorder=3)
+    axes[1].errorbar(100 * points[quoted, 0], mid, yerr=[mid - low, high - mid], fmt="o", color=INK, ms=3.0, lw=0.9,
+                     capsize=1.8, capthick=0.9, zorder=5)
+    axes[1].set_title("the likelihood: the quotes score each smile", loc="left")
+    handles = [key_line(INK, marker="o", ms=2.6, lw=0.8), key_line(CLASSICAL, lw=1.5),
+               key_line(INK_2, lw=1.2, ls=DASHED)]
+    legend_above(fig, handles, ["quotes ± half-spread", f"misses by {float(data['hook/misfit_fit']):.1f} half-spreads: likely",
+                                f"misses by {misfit[poor]:.0f} half-spreads: unlikely"])
+    for ax, top in zip(axes, (60, 45), strict=True):
+        ax.set(xlim=(100 * strikes[0], 100 * strikes[-1]), ylim=(5, top), xlabel="strike (% of forward), 6 months")
     axes[0].set_ylabel("implied volatility (%)")
-    axes[1].tick_params(labelleft=False)
-
-    ax = axes[2]  # the product: one price per parameter set, on a line
-    prices = percent(data[f"{key}/forward_start/draws"])[:FAN]
-    least, truth = float(percent(data[f"{key}/forward_start/point"])), float(percent(data["truth/forward_start"]))
-    ax.set_facecolor(UNQUOTED)
-    ax.plot([least, least], [0.25, 0.71], color=CLASSICAL, lw=1.6, zorder=4)
-    if step == 1:
-        ax.text(least, 0.76, f"best fit: {least:.2f}", ha="center", va="bottom", fontsize=7.4, color=INK)
-    else:
-        ax.vlines(prices, 0.34, 0.62, color=POSTERIOR, lw=0.7, alpha=0.6, zorder=3)
-        ax.plot([truth, truth], [0.25, 0.71], color=INK, lw=1.1, ls=DASHED, zorder=5)
-        ax.annotate("", xy=(prices.min(), 0.80), xytext=(prices.max(), 0.80), zorder=6,
-                    arrowprops={"arrowstyle": "|-|,widthA=0.28,widthB=0.28", "color": INK, "lw": 0.9, "shrinkA": 0,
-                                "shrinkB": 0})
-        ax.text(0.5 * (prices.min() + prices.max()), 0.84, f"{prices.min():.2f} to {prices.max():.2f}", ha="center",
-                va="bottom", fontsize=7.4, color=INK)
-    ax.set(xlim=(np.floor(5 * prices.min()) / 5 - 0.2, np.ceil(5 * prices.max()) / 5 + 0.2), ylim=(0, 1), yticks=[])
-    ax.spines["left"].set_visible(False)
-    ax.grid(False)
-    ax.text(0.5, 0.045, "strike set in 6 months, paid at 1 year", transform=ax.transAxes, ha="center", va="bottom",
-            fontsize=6.8, color=MUTED)
-    ax.set_title("not quoted: forward-start call", loc="left")
-    ax.set_xlabel("its price, per 100 of forward")
-
-    handles = [key_line(INK, marker="o", ms=2.6, lw=0.8), key_line(CLASSICAL, lw=1.5)]
-    labels = ["quotes ± half-spread", "least-squares fit"]
-    if step == 2:
-        handles += [key_line(POSTERIOR, lw=1.1), key_line(INK, lw=1.1, ls=DASHED)]
-        labels += [f"{FAN} other fits", "generating parameters"]
-    legend_above(fig, handles, labels)
     return fig
 
 
@@ -393,8 +372,29 @@ def figure_price_range(data):
     return fig
 
 
-def figure_posterior_cloud(data):
-    """The posterior of the opening example in two planes, with least squares and its Gauss-Newton region."""
+def sampler_path(quotes, draws, steps=600, seed=7):
+    """The first steps of a random-walk Metropolis chain on the posterior, as parameter sets, from a far start."""
+    rng = np.random.default_rng(seed)
+    box = lambda theta: np.log((theta - il.LOWER) / (il.UPPER - theta))  # noqa: E731
+    factor = np.linalg.cholesky(0.5 * np.cov(box(draws).T))
+    u = box(np.array([0.09, 2.0, 0.1024, 1.0, -0.3]))[None, :]  # a guess: volatility 30%, staying there; a mild skew
+    value = il.log_posterior(quotes, u)[0]
+    path = [u[0]]
+    for _ in range(steps):
+        proposal = u + rng.standard_normal(u.shape) @ factor.T
+        new_value = il.log_posterior(quotes, proposal)[0]
+        if np.log(rng.uniform()) < new_value[0] - value[0]:
+            u, value = proposal, new_value
+        path.append(u[0])
+    return il.to_theta(np.array(path))
+
+
+def figure_posterior(data, step):
+    """The posterior of the opening example in two planes, built in three steps.
+
+    Step 1: a sampler's first steps, from a far start to where the posterior is. Step 2: the posterior draws. Step 3:
+    least squares and its quadratic region, and the generating parameters.
+    """
     key = key_of(HOOK)
     draws, result = data[f"{key}/draws"], classical_fit(data, key)
     fig, axes = canvas(0.94, HEIGHT, ncols=2, gridspec_kw={"width_ratios": [1.3, 1.0]})
@@ -403,23 +403,72 @@ def figure_posterior_cloud(data):
         return 100 * np.sqrt(np.clip(variance, 0, None))
 
     planes = (  # x and y parameters with their scales, title, labels, and the prior box as the axis limits
-        (1, 3, np.asarray, np.asarray, "left open by the quotes",
-         "speed of mean reversion κ (per year)", "vol of vol σᵥ", (0.1, 10.0), (0.1, 3.0)),
-        (2, 4, volatility, np.asarray, "pinned by the quotes",
-         "long-run volatility (%)", "correlation ρ", (10.0, 40.0), (-0.95, -0.10)),
+        (1, 2, np.asarray, volatility, "left open by the quotes",
+         "speed of mean reversion κ (per year)", "long-run volatility (%)", (0.1, 10.0), (10.0, 40.0)),
+        (0, 4, volatility, np.asarray, "pinned by the quotes",
+         "today's volatility (%)", "correlation ρ", (10.0, 40.0), (-0.95, -0.10)),
     )
+    path = sampler_path(il.readings()[HOOK], draws[:, :5]) if step == 1 else None
     for ax, (i, j, x_scale, y_scale, title, xlabel, ylabel, xlim, ylim) in zip(axes, planes, strict=True):
-        ax.scatter(x_scale(draws[:, i]), y_scale(draws[:, j]), s=2.0, color=POSTERIOR, alpha=0.16, lw=0, zorder=2)
-        outline = il.gauss_newton_ellipse(result, i, j)
-        ax.plot(x_scale(outline[:, 0]), y_scale(outline[:, 1]), color=CLASSICAL, lw=1.0, zorder=3)
-        ax.plot(x_scale(result.theta[i]), y_scale(result.theta[j]), "o", color=CLASSICAL, ms=4.2, mec="white",
-                mew=0.7, zorder=4)
-        ax.plot(x_scale(il.TRUTH[i]), y_scale(il.TRUTH[j]), "+", color=INK, ms=6.5, mew=1.1, zorder=5)
+        if step == 1:
+            ax.plot(x_scale(path[:, i]), y_scale(path[:, j]), "-o", color=POSTERIOR, lw=0.6, ms=1.8, alpha=0.8,
+                    zorder=2)
+            ax.plot(x_scale(path[0, i]), y_scale(path[0, j]), "o", mfc="white", mec=POSTERIOR, ms=4.5, mew=1.0,
+                    zorder=3)
+        else:
+            ax.scatter(x_scale(draws[:, i]), y_scale(draws[:, j]), s=2.0, color=POSTERIOR, alpha=0.16, lw=0, zorder=2)
+        if step == 3:
+            outline = il.gauss_newton_ellipse(result, i, j)
+            ax.plot(x_scale(outline[:, 0]), y_scale(outline[:, 1]), color=CLASSICAL, lw=1.0, zorder=3)
+            ax.plot(x_scale(result.theta[i]), y_scale(result.theta[j]), "o", color=CLASSICAL, ms=4.2, mec="white",
+                    mew=0.7, zorder=4)
+            ax.plot(x_scale(il.TRUTH[i]), y_scale(il.TRUTH[j]), "+", color=INK, ms=6.5, mew=1.1, zorder=5)
         ax.set(xlim=xlim, ylim=ylim, xlabel=xlabel, ylabel=ylabel)
-        ax.set_title(title, loc="left")
-    handles = [key_line(POSTERIOR, marker="o", ms=3.0, lw=0), key_line(CLASSICAL, marker="o", ms=3.6, lw=1.0),
-               key_line(INK, marker="+", ms=6, mew=1.1, lw=0)]
-    legend_above(fig, handles, ["posterior draws", "least squares and its 90% region", "generating parameters"])
+        if step > 1:
+            ax.set_title(title, loc="left")
+    if step == 1:
+        handles = [key_line(POSTERIOR, marker="o", mfc="white", ms=4.5, mew=1.0, lw=0),
+                   key_line(POSTERIOR, marker="o", ms=1.8, lw=0.6)]
+        labels = ["a starting guess", f"a sampler's first {len(path) - 1} steps"]
+    else:
+        handles, labels = [key_line(POSTERIOR, marker="o", ms=3.0, lw=0)], [f"{len(draws):,} posterior draws"]
+    if step == 3:
+        handles += [key_line(CLASSICAL, marker="o", ms=3.6, lw=1.0), key_line(INK, marker="+", ms=6, mew=1.1, lw=0)]
+        labels += ["least squares and its quadratic 90% region", "generating parameters"]
+    legend_above(fig, handles, labels)
+    return fig
+
+
+def figure_summary(data):
+    """The talk in three pictures: a posterior, the prices it gives a product, and what an exact posterior costs."""
+    key = key_of(HOOK)
+    draws, prices = data[f"{key}/draws"], percent(data[f"{key}/forward_start/draws"])
+    cost = costs()
+    fig, axes = canvas(0.97, HEIGHT, ncols=3)
+    axes[0].scatter(draws[:, 1], 100 * np.sqrt(draws[:, 2]), s=2.0, color=POSTERIOR, alpha=0.16, lw=0)
+    axes[0].set(xlim=(0.1, 10.0), ylim=(10.0, 40.0), xlabel="mean reversion", ylabel="long-run volatility (%)")
+    axes[0].set_title("a distribution", loc="left")
+    axes[1].hist(prices, bins=40, color=POSTERIOR, alpha=0.5, lw=0, rwidth=0.88)
+    for x, dashes in ((prices.mean(), "-"), (np.quantile(prices, 0.9), DASHED)):
+        axes[1].axvline(x, color=INK, lw=1.0, ls=dashes)
+    axes[1].set(yticks=[], xlabel="price of an exotic")
+    axes[1].spines["left"].set_visible(False)
+    axes[1].grid(False)
+    axes[1].set_title("a range for a price", loc="left")
+    rows = (("exact,\nHeston", [60 * x for x in cost["heston_minutes"]], INK),
+            ("exact,\nrough Bergomi", [86400 * x for x in cost["rough_mcmc_days"]], MUTED),
+            ("amortized", [cost["network_seconds"]] * 2, POSTERIOR))
+    for y, (name, span, colour) in enumerate(rows):
+        axes[2].plot(span, [y, y], color=colour, lw=5.0, solid_capstyle="round")
+        axes[2].plot(span[:1], [y], "o", color=colour, ms=5.0)
+    axes[2].set_xscale("log")
+    axes[2].set_xticks([1, 3600, 86400 * 365], ["1 s", "1 hour", "1 year"])
+    axes[2].minorticks_off()
+    axes[2].set_yticks(range(len(rows)), [name for name, _, _ in rows])
+    axes[2].set(xlim=(0.05, 86400 * 365 * 8), ylim=(len(rows) - 0.4, -0.6), xlabel="CPU time for one posterior")
+    axes[2].tick_params(axis="y", length=0)
+    axes[2].grid(axis="y", visible=False)
+    axes[2].set_title("a cost, paid once", loc="left")
     return fig
 
 
@@ -697,16 +746,17 @@ def main():
     data = load(args.recompute)
     with tempfile.TemporaryDirectory() as folder:
         style(add_rubik(args.rubik, Path(folder)) if args.rubik else ["DejaVu Sans"])
-        save(figure_many_fits(data, 1), "many-fits-1")
-        save(figure_many_fits(data, 2), "many-fits-2")
+        save(figure_prior_likelihood(data), "prior-likelihood")
+        for step in (1, 2, 3):
+            save(figure_posterior(data, step), f"posterior-{step}")
         save(figure_price_range(data), "price-range")
-        save(figure_posterior_cloud(data), "posterior-cloud")
         save(figure_ranges_by_quotes(data), "ranges-by-quotes")
         save(figure_assumption(data), "assumption")
         save(figure_joint_draws(data), "joint-draws")
         save(figure_posterior_cost(), "posterior-cost")
         save(figure_coverage(), "coverage")
-    print(f"9 figures in {OUT}")
+        save(figure_summary(data), "summary")
+    print(f"12 figures in {OUT}")
     report(data)
     stale = stale_numbers(data)
     print("\nslot1.tex quotes these numbers as printed above." if not stale else
