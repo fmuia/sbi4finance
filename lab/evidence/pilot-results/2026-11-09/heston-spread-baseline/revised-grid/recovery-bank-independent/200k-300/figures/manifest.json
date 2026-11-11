@@ -1,0 +1,669 @@
+{
+  "format": "heston_pr87_grid_scientific_figures_v1",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/protocol.json",
+    "sha256": "c8d1a7b0fffb0c04bc7e6ad1d0b50c458a125114ffc579d43c57a069994060ec"
+  },
+  "evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation/evaluation.json",
+    "sha256": "0e5e01ebf8c2d1d4b77b4a0cd872d0249fb14995d9d27487368debead9b3f29e"
+  },
+  "secondary_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation-best-validation/evaluation.json",
+    "sha256": "4d78068aa33e15f26d80f7e72b92f3995bf880dca11e6ffadd5184fae51513f0"
+  },
+  "native_history": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/200k-300/training/native-epoch-history.json",
+    "sha256": "772605739e520ca88314e052bc4e672938dea143b8d99388c76f34cc4bf976fc"
+  },
+  "producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/export_heston_pr87_grid_figures.py",
+    "sha256": "94f53e3ba395b8b98f852c2ba7a62a56cf0ca47a0a26f8ce290cd13014ac0834"
+  },
+  "archived_plotting_helper": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/export_heston_pr87_reproduction_figures.py",
+    "sha256": "485e30cbbad0fa2b090010642de1a462c6ef5a151724cc7331425256fd0b7574"
+  },
+  "versions": {
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.3"
+  },
+  "exports": {
+    "native-learning-curves": {
+      "title": "200k new63 native300-epoch training and validation objective",
+      "description": "60,000,000 presentations on the new63-quote target; compare60m for old54/200k300. More simulations also increase optimization budget.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/native-learning-curves.png",
+          "sha256": "d042022f107cd1ca8ddbe95446fc41ab217599882d66c26ee6259acb0922e9e5",
+          "bytes": 93197
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/native-learning-curves.svg",
+          "sha256": "49bbc6c7c7edbaebb9f340f87d4999f89a1ef380314fb24bb80201789608e156",
+          "bytes": 25290
+        }
+      }
+    },
+    "primary-native-recovery": {
+      "title": "200k new63 primary, epoch300: 100 datasets \u00d7 300 raw draws",
+      "description": "Every saved median; fixed-index central90% intervals; displayed out-of-prior intervals expand the axis.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/primary-native-recovery.png",
+          "sha256": "555f3562d3f4bdeda35a2ce17a275004af0cd104e9dcb4f6557eb844501b9246",
+          "bytes": 284565
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/primary-native-recovery.svg",
+          "sha256": "823a77292d472c083b48bceb2764fe44553e5e31de73d8e6e19cc2fc35bf102f",
+          "bytes": 249821
+        }
+      },
+      "all_rows_plotted": 100,
+      "interval_zero_based_rows": [
+        0,
+        3,
+        6,
+        9,
+        12,
+        15,
+        18,
+        21,
+        24,
+        27,
+        30,
+        33,
+        36,
+        39,
+        42,
+        45,
+        48,
+        51,
+        54,
+        57,
+        60,
+        63,
+        66,
+        69,
+        72,
+        75,
+        78,
+        81,
+        84,
+        87,
+        90,
+        93,
+        96,
+        99
+      ],
+      "quantiles": [
+        0.05,
+        0.5,
+        0.95
+      ],
+      "raw_draws_clipped_or_filtered": false,
+      "axis_extents": [
+        {
+          "target": "initial_variance",
+          "plotted_y_limits": [
+            0.00624410854279995,
+            0.16399154974520205
+          ],
+          "minimum_displayed_interval": 0.011261766776442528,
+          "maximum_displayed_interval": 0.16023565828800201,
+          "minimum_all_medians": 0.011485923081636429,
+          "maximum_all_medians": 0.1594676524400711
+        },
+        {
+          "target": "kappa",
+          "plotted_y_limits": [
+            -0.1521344518661499,
+            10.437512526512146
+          ],
+          "minimum_displayed_interval": 0.16844479739665985,
+          "maximum_displayed_interval": 10.02017879486084,
+          "minimum_all_medians": 0.23979496955871582,
+          "maximum_all_medians": 10.185378074645996
+        },
+        {
+          "target": "theta",
+          "plotted_y_limits": [
+            0.00625,
+            0.16375
+          ],
+          "minimum_displayed_interval": 0.011232971213757992,
+          "maximum_displayed_interval": 0.14955884218215942,
+          "minimum_all_medians": 0.01172572746872902,
+          "maximum_all_medians": 0.15628179907798767
+        },
+        {
+          "target": "vol_of_vol",
+          "plotted_y_limits": [
+            -0.011267052777111528,
+            3.0734455378726127
+          ],
+          "minimum_displayed_interval": 0.062178485095500946,
+          "maximum_displayed_interval": 2.873873710632324,
+          "minimum_all_medians": 0.11302655935287476,
+          "maximum_all_medians": 2.9792819023132324
+        },
+        {
+          "target": "rho",
+          "plotted_y_limits": [
+            -0.97125,
+            -0.07875
+          ],
+          "minimum_displayed_interval": -0.9239206314086914,
+          "maximum_displayed_interval": -0.1452605128288269,
+          "minimum_all_medians": -0.9322322607040405,
+          "maximum_all_medians": -0.10365855693817139
+        },
+        {
+          "target": "c",
+          "plotted_y_limits": [
+            0.39057429879903793,
+            2.0392542853951454
+          ],
+          "minimum_displayed_interval": 0.42982858419418335,
+          "maximum_displayed_interval": 1.9834650754928589,
+          "minimum_all_medians": 0.4906863272190094,
+          "maximum_all_medians": 1.929518699645996
+        }
+      ]
+    },
+    "primary-native-sbc": {
+      "title": "All six marginal SBC screens",
+      "description": "Six-marginal DKW band within this panel; reused development data, no independent acceptance.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/primary-native-sbc.png",
+          "sha256": "5fc8bd77d1955edda1b65f793a1b781844b563f52e6d91008be6bb658abec3ab",
+          "bytes": 182328
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/primary-native-sbc.svg",
+          "sha256": "89e7ee48be39e3df8aca52b8bbdd6e73578b1a1dee5b6c0848504197f6268eec",
+          "bytes": 89817
+        }
+      }
+    },
+    "primary-historical-recovery": {
+      "title": "200k new63 primary, epoch300: 512 datasets \u00d7 512 raw draws",
+      "description": "Every saved median; fixed-index central90% intervals; displayed out-of-prior intervals expand the axis.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/primary-historical-recovery.png",
+          "sha256": "dfdc89b1197bf9ffe936453fd5914e61e13845a128f529f0b426960a610d5b6a",
+          "bytes": 355770
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/primary-historical-recovery.svg",
+          "sha256": "8bb6be99143e4a06b4b9e59106028ae69a15aabd552563ff14788e5b32cdc115",
+          "bytes": 637832
+        }
+      },
+      "all_rows_plotted": 512,
+      "interval_zero_based_rows": [
+        0,
+        16,
+        32,
+        48,
+        64,
+        80,
+        96,
+        112,
+        128,
+        144,
+        160,
+        176,
+        192,
+        208,
+        224,
+        240,
+        256,
+        272,
+        288,
+        304,
+        320,
+        336,
+        352,
+        368,
+        384,
+        400,
+        416,
+        432,
+        448,
+        464,
+        480,
+        496
+      ],
+      "quantiles": [
+        0.05,
+        0.5,
+        0.95
+      ],
+      "raw_draws_clipped_or_filtered": false,
+      "axis_extents": [
+        {
+          "target": "initial_variance",
+          "plotted_y_limits": [
+            0.006249548211693764,
+            0.1637685233205557
+          ],
+          "minimum_displayed_interval": 0.02505231834948063,
+          "maximum_displayed_interval": 0.15721212327480316,
+          "minimum_all_medians": 0.010174304246902466,
+          "maximum_all_medians": 0.16001807153224945
+        },
+        {
+          "target": "kappa",
+          "plotted_y_limits": [
+            -0.1550416350364685,
+            10.247683942317963
+          ],
+          "minimum_displayed_interval": 1.2361648082733154,
+          "maximum_displayed_interval": 9.954794883728027,
+          "minimum_all_medians": 0.09264230728149414,
+          "maximum_all_medians": 9.988629341125488
+        },
+        {
+          "target": "theta",
+          "plotted_y_limits": [
+            0.00625,
+            0.16375
+          ],
+          "minimum_displayed_interval": 0.013935571536421776,
+          "maximum_displayed_interval": 0.15410514175891876,
+          "minimum_all_medians": 0.010060854256153107,
+          "maximum_all_medians": 0.15905240178108215
+        },
+        {
+          "target": "vol_of_vol",
+          "plotted_y_limits": [
+            0.027208372950553894,
+            3.0805724412202835
+          ],
+          "minimum_displayed_interval": 0.11988736689090729,
+          "maximum_displayed_interval": 2.9815266132354736,
+          "minimum_all_medians": 0.0999075174331665,
+          "maximum_all_medians": 3.007873296737671
+        },
+        {
+          "target": "rho",
+          "plotted_y_limits": [
+            -0.991065377369523,
+            -0.0757142212241888
+          ],
+          "minimum_displayed_interval": -0.9692713022232056,
+          "maximum_displayed_interval": -0.10500505566596985,
+          "minimum_all_medians": -0.9573696255683899,
+          "maximum_all_medians": -0.09750829637050629
+        },
+        {
+          "target": "c",
+          "plotted_y_limits": [
+            0.4405881501734257,
+            2.0380344353616238
+          ],
+          "minimum_displayed_interval": 0.47862258553504944,
+          "maximum_displayed_interval": 1.9963405132293701,
+          "minimum_all_medians": 0.4866698384284973,
+          "maximum_all_medians": 1.971134901046753
+        }
+      ]
+    },
+    "primary-historical-sbc": {
+      "title": "All six marginal SBC screens",
+      "description": "Six-marginal DKW band within this panel; reused development data, no independent acceptance.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/primary-historical-sbc.png",
+          "sha256": "d7586121ba22ded627614b3fe7980f97c8206fd9b191a520d6d438bd2fb5dc3e",
+          "bytes": 167635
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/primary-historical-sbc.svg",
+          "sha256": "6cce5502c9f954bf0ee51471d7ee3e83ac5b9a8724b0dc1cac3834f4fac83915",
+          "bytes": 89988
+        }
+      }
+    },
+    "secondary-native-recovery": {
+      "title": "200k new63 secondary, epoch272: 100 datasets \u00d7 300 raw draws",
+      "description": "Every saved median; fixed-index central90% intervals; displayed out-of-prior intervals expand the axis.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/secondary-native-recovery.png",
+          "sha256": "43d4005380ce9e646fd33a0dd90e86317a9b5edf781ebba477c3d3c739e2623e",
+          "bytes": 284407
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/secondary-native-recovery.svg",
+          "sha256": "1bd373f25b5466520aa6085b643aedd7c333747c9a44ea8cc5ccd13c0aa8030f",
+          "bytes": 249819
+        }
+      },
+      "all_rows_plotted": 100,
+      "interval_zero_based_rows": [
+        0,
+        3,
+        6,
+        9,
+        12,
+        15,
+        18,
+        21,
+        24,
+        27,
+        30,
+        33,
+        36,
+        39,
+        42,
+        45,
+        48,
+        51,
+        54,
+        57,
+        60,
+        63,
+        66,
+        69,
+        72,
+        75,
+        78,
+        81,
+        84,
+        87,
+        90,
+        93,
+        96,
+        99
+      ],
+      "quantiles": [
+        0.05,
+        0.5,
+        0.95
+      ],
+      "raw_draws_clipped_or_filtered": false,
+      "axis_extents": [
+        {
+          "target": "initial_variance",
+          "plotted_y_limits": [
+            0.00624405936896801,
+            0.1639935658723116
+          ],
+          "minimum_displayed_interval": 0.011312725022435188,
+          "maximum_displayed_interval": 0.1602376252412796,
+          "minimum_all_medians": 0.01146983727812767,
+          "maximum_all_medians": 0.15944057703018188
+        },
+        {
+          "target": "kappa",
+          "plotted_y_limits": [
+            -0.15207024574279784,
+            10.434880075454712
+          ],
+          "minimum_displayed_interval": 0.16429558396339417,
+          "maximum_displayed_interval": 10.00617504119873,
+          "minimum_all_medians": 0.232987642288208,
+          "maximum_all_medians": 10.182809829711914
+        },
+        {
+          "target": "theta",
+          "plotted_y_limits": [
+            0.00625,
+            0.16375
+          ],
+          "minimum_displayed_interval": 0.011322900652885437,
+          "maximum_displayed_interval": 0.1494138538837433,
+          "minimum_all_medians": 0.011819273233413696,
+          "maximum_all_medians": 0.15618056058883667
+        },
+        {
+          "target": "vol_of_vol",
+          "plotted_y_limits": [
+            -0.007765773124992853,
+            3.0733601408079267
+          ],
+          "minimum_displayed_interval": 0.06559436768293381,
+          "maximum_displayed_interval": 2.8783082962036133,
+          "minimum_all_medians": 0.11561357975006104,
+          "maximum_all_medians": 2.9810397624969482
+        },
+        {
+          "target": "rho",
+          "plotted_y_limits": [
+            -0.97125,
+            -0.07875
+          ],
+          "minimum_displayed_interval": -0.9282333254814148,
+          "maximum_displayed_interval": -0.14488807320594788,
+          "minimum_all_medians": -0.93253493309021,
+          "maximum_all_medians": -0.10428597033023834
+        },
+        {
+          "target": "c",
+          "plotted_y_limits": [
+            0.38713613003492353,
+            2.03933814316988
+          ],
+          "minimum_displayed_interval": 0.42647427320480347,
+          "maximum_displayed_interval": 1.98478102684021,
+          "minimum_all_medians": 0.4893076419830322,
+          "maximum_all_medians": 1.9313066005706787
+        }
+      ]
+    },
+    "secondary-native-sbc": {
+      "title": "All six marginal SBC screens",
+      "description": "Six-marginal DKW band within this panel; reused development data, no independent acceptance.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/secondary-native-sbc.png",
+          "sha256": "f5fd23d67714c3382741c6f6086bd2a52563ea971b4ffd80d10287f677ad55ef",
+          "bytes": 181514
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/secondary-native-sbc.svg",
+          "sha256": "9a2ad8eceb05f0ff090388eaefaab9ce10dc4e17c98d1412d01acb9efcb6c416",
+          "bytes": 89735
+        }
+      }
+    },
+    "secondary-historical-recovery": {
+      "title": "200k new63 secondary, epoch272: 512 datasets \u00d7 512 raw draws",
+      "description": "Every saved median; fixed-index central90% intervals; displayed out-of-prior intervals expand the axis.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/secondary-historical-recovery.png",
+          "sha256": "cae8d67ad516130b788860ac59d4932322409574b36239bd1cd1b2e1e842f895",
+          "bytes": 355947
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/secondary-historical-recovery.svg",
+          "sha256": "691f2d8e4858e41eb5624a05b97e942ee105486b439f656d52b49024451e4ecf",
+          "bytes": 637812
+        }
+      },
+      "all_rows_plotted": 512,
+      "interval_zero_based_rows": [
+        0,
+        16,
+        32,
+        48,
+        64,
+        80,
+        96,
+        112,
+        128,
+        144,
+        160,
+        176,
+        192,
+        208,
+        224,
+        240,
+        256,
+        272,
+        288,
+        304,
+        320,
+        336,
+        352,
+        368,
+        384,
+        400,
+        416,
+        432,
+        448,
+        464,
+        480,
+        496
+      ],
+      "quantiles": [
+        0.05,
+        0.5,
+        0.95
+      ],
+      "raw_draws_clipped_or_filtered": false,
+      "axis_extents": [
+        {
+          "target": "initial_variance",
+          "plotted_y_limits": [
+            0.00625,
+            0.16375
+          ],
+          "minimum_displayed_interval": 0.025051113218069077,
+          "maximum_displayed_interval": 0.15726731717586517,
+          "minimum_all_medians": 0.010095510631799698,
+          "maximum_all_medians": 0.15998491644859314
+        },
+        {
+          "target": "kappa",
+          "plotted_y_limits": [
+            -0.16064695715904237,
+            10.247820657491683
+          ],
+          "minimum_displayed_interval": 1.2339513301849365,
+          "maximum_displayed_interval": 9.977578163146973,
+          "minimum_all_medians": 0.0871737003326416,
+          "maximum_all_medians": 9.987074851989746
+        },
+        {
+          "target": "theta",
+          "plotted_y_limits": [
+            0.00625,
+            0.16375
+          ],
+          "minimum_displayed_interval": 0.014081548899412155,
+          "maximum_displayed_interval": 0.15405206382274628,
+          "minimum_all_medians": 0.010150160640478134,
+          "maximum_all_medians": 0.15899600088596344
+        },
+        {
+          "target": "vol_of_vol",
+          "plotted_y_limits": [
+            0.027204724550247195,
+            3.0846062934398653
+          ],
+          "minimum_displayed_interval": 0.12218637764453888,
+          "maximum_displayed_interval": 2.9840502738952637,
+          "minimum_all_medians": 0.10292661190032959,
+          "maximum_all_medians": 3.0118110179901123
+        },
+        {
+          "target": "rho",
+          "plotted_y_limits": [
+            -0.9928954355418682,
+            -0.07600899413228035
+          ],
+          "minimum_displayed_interval": -0.9710648059844971,
+          "maximum_displayed_interval": -0.10258729755878448,
+          "minimum_all_medians": -0.9587355852127075,
+          "maximum_all_medians": -0.09783962368965149
+        },
+        {
+          "target": "c",
+          "plotted_y_limits": [
+            0.43691348358988763,
+            2.038124061375856
+          ],
+          "minimum_displayed_interval": 0.475037544965744,
+          "maximum_displayed_interval": 1.9981493949890137,
+          "minimum_all_medians": 0.4847854673862457,
+          "maximum_all_medians": 1.97406005859375
+        }
+      ]
+    },
+    "secondary-historical-sbc": {
+      "title": "All six marginal SBC screens",
+      "description": "Six-marginal DKW band within this panel; reused development data, no independent acceptance.",
+      "files": {
+        "png": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/secondary-historical-sbc.png",
+          "sha256": "05d8017407759bab4008639b54e97502d5b1cbb4909d2ce7159aba3c8ec536b4",
+          "bytes": 170915
+        },
+        "svg": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/figures/secondary-historical-sbc.svg",
+          "sha256": "2a3e2f654ca31b36df378fe32ad9f5cc82eec28d3880b769138e09d9495ede88",
+          "bytes": 90004
+        }
+      }
+    }
+  },
+  "protected_inputs": [
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation-best-validation/evaluation.json",
+      "sha256": "4d78068aa33e15f26d80f7e72b92f3995bf880dca11e6ffadd5184fae51513f0"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation-best-validation/native-recovery.npz",
+      "sha256": "1c0f3bd70832249f184c4baaa5cabfad05bbfbe922d3aeef66244c84f263a32c"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation-best-validation/recovery.npz",
+      "sha256": "d0f64465d1808259355091f02d0cacc45d9ea4ac08e06ffc59090abda942a240"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation/evaluation.json",
+      "sha256": "0e5e01ebf8c2d1d4b77b4a0cd872d0249fb14995d9d27487368debead9b3f29e"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation/native-recovery.npz",
+      "sha256": "4ee059d91b9307f459456b2f5780446fb0e9380b52eebb59e89489389ec65678"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation/recovery.npz",
+      "sha256": "3a5afa3ae9a1ad23faf1dafdb3eeb4beb075a5c197dc4b1dda9c2f7e7806c1d6"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/protocol.json",
+      "sha256": "c8d1a7b0fffb0c04bc7e6ad1d0b50c458a125114ffc579d43c57a069994060ec"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/200k-300/training/checkpoints/best-validation/checkpoint.json",
+      "sha256": "f7866062e87abf4564bc2a563efc2757eee54dc873fe5acf730b0cf9bdf1c1bc"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/200k-300/training/checkpoints/epoch-000300/checkpoint.json",
+      "sha256": "7ccbc8a5f59df85a1b3b2572d4c758039c2342576d0980dbf29474b07162a40e"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/200k-300/training/native-epoch-history.json",
+      "sha256": "772605739e520ca88314e052bc4e672938dea143b8d99388c76f34cc4bf976fc"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/200k-300/training/run.json",
+      "sha256": "593777a43fb3c02e420df6e00355146b041182e3b9d30d8af127fc87ea57cd91"
+    }
+  ],
+  "protected_inputs_unchanged": true,
+  "model_loaded": false,
+  "new_neural_sampling": false,
+  "new_pricing": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false
+}
