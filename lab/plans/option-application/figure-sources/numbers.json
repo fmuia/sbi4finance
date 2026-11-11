@@ -1,0 +1,140 @@
+{
+ "tau_information": [
+  {
+   "lengths": [
+    0.75,
+    1.15
+   ],
+   "tau_vp": 1.0,
+   "relative_sd": 0.108,
+   "effective_directions": 42.9,
+   "level_shift_sd_factor": 2.91
+  },
+  {
+   "lengths": [
+    0.75,
+    1.15
+   ],
+   "tau_vp": 2.5,
+   "relative_sd": 0.0991,
+   "effective_directions": 50.9,
+   "level_shift_sd_factor": 2.91
+  },
+  {
+   "lengths": [
+    1.6,
+    2.0
+   ],
+   "tau_vp": 1.0,
+   "relative_sd": 0.1506,
+   "effective_directions": 22.0,
+   "level_shift_sd_factor": 4.69
+  },
+  {
+   "lengths": [
+    1.6,
+    2.0
+   ],
+   "tau_vp": 2.5,
+   "relative_sd": 0.1336,
+   "effective_directions": 28.0,
+   "level_shift_sd_factor": 4.69
+  }
+ ],
+ "misfit": {
+  "rms_vp": 1.3814350911833029,
+  "median_half_spread_vp": 0.06421596164997895,
+  "max_abs_vp": 6.0406877666713985,
+  "price_rms_in_half_spreads": 13.372080230047816,
+  "neighbour_strike_correlation": 0.6627202279668125,
+  "adjacent_expiry_correlation": 0.9360404443885391,
+  "rms_vp_by_expiry_days": {
+   "7": 2.185036171980861,
+   "14": 1.8487202921672177,
+   "30": 1.4098116671524492,
+   "60": 0.8553916235738849,
+   "81": 0.9312573145956436,
+   "172": 0.8424034109676174,
+   "325": 0.9328682260723766
+  }
+ },
+ "information_by_region": {
+  "regions": [
+   "deep puts $z \\leq -2.25$",
+   "near puts $z$ = \u22121.25, \u22120.5",
+   "at the money $z = 0$",
+   "calls $z > 0$",
+   "expiries up to 1 month",
+   "expiries from 2 months"
+  ],
+  "columns": [
+   "$v_0$",
+   "$\\kappa$",
+   "$\\bar v$",
+   "$\\xi$",
+   "$\\rho$",
+   "short-window variance",
+   "later-window variance"
+  ],
+  "rise_percent": [
+   [
+    55.8,
+    76.1,
+    74.5,
+    86.5,
+    2.6,
+    78.7,
+    71.1
+   ],
+   [
+    20.6,
+    8.7,
+    20.1,
+    7.6,
+    16.8,
+    20.6,
+    24.5
+   ],
+   [
+    4.2,
+    2.5,
+    0.7,
+    2.3,
+    4.1,
+    2.5,
+    0.4
+   ],
+   [
+    123.5,
+    29.5,
+    53.1,
+    76.7,
+    790.6,
+    122.0,
+    75.9
+   ],
+   [
+    143.9,
+    69.7,
+    23.1,
+    91.7,
+    9.5,
+    105.7,
+    11.1
+   ],
+   [
+    100.8,
+    846.2,
+    1502.0,
+    106.5,
+    157.0,
+    38.8,
+    1683.5
+   ]
+  ]
+ },
+ "variance_strip": {
+  "strip_vol": 0.2180772518698072,
+  "formula_vol": 0.21891345947166652
+ }
+}
