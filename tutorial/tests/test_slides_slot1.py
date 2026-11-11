@@ -1,6 +1,8 @@
 """The running example of the slot 1 slides: its design, pricing formulas, error law and two routes to a range."""
 
+import hashlib
 import importlib.util
+import json
 from pathlib import Path
 import unittest
 
@@ -43,6 +45,16 @@ class DesignTests(unittest.TestCase):
         for reading in readings.values():
             np.testing.assert_array_equal(reading.observed, full.observed[:reading.n])
             np.testing.assert_array_equal(reading.half_spread, il.SPX["half_spread"][:reading.n])
+
+    def test_the_observed_surface_is_the_notebooks_market_like_case(self):
+        stored = json.loads(il.CASE_FILE.read_text())
+        observed = np.asarray(stored["observations"], dtype="<f8")  # index points, as the lab hashed them
+        self.assertEqual(hashlib.sha256(observed.tobytes()).hexdigest(),
+                         stored["source"]["observations"]["observations_sha256"])
+        np.testing.assert_allclose(il.readings()["325 days"].observed * il.SPX["index_points"], observed, rtol=1e-14)
+        np.testing.assert_array_equal(stored["truth"], il.TRUTH)
+        clean, _ = il._observed()  # raises unless the slides' prices give the notebook's clean prices to the gate
+        self.assertEqual(clean.shape, (63,))
 
     def test_the_generating_parameters_are_consistent_with_the_quotes(self):
         reading = il.readings()["325 days"]

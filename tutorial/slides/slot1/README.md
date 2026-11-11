@@ -12,8 +12,9 @@ in [`curriculum/01-slot1-the-problem.md`](../../curriculum/01-slot1-the-problem.
 | `figures/slot1/*.pdf` | The 8 figures the deck includes, in the theme's colours, as vector PDFs drawn at the size the slides show them |
 | `figures/slot1/*.jpg` | The four presenters' photos, cropped square as on the tutorial's webpage |
 | `export_figures.py` | Regenerates the figures and prints every number the slides quote |
-| `illustration.py` | The running example behind seven of the figures: Heston on simulated quotes |
+| `illustration.py` | The running example behind seven of the figures: Heston on the Heston notebook's simulated quotes |
 | `spx-design.json` | The tutorial's 63-quote SPX design of 9 November 2026 (strikes, maturities, forwards, discounts, half-spreads), with its source |
+| `market-like-case.json` | The Heston notebook's simulated case "market-like parameters": its 63 observed prices, generating parameters and noise draws, with their source |
 
 ## The argument
 
@@ -85,23 +86,30 @@ the tutorial's own dependencies, and `fontTools` for `--rubik`.
 
 The running example takes about half an hour to compute on four cores, mostly five posteriors by importance
 sampling. Its numbers are cached under `tutorial/.cache/slides-slot1/`, which Git ignores, and reused until
-`illustration.py`, `spx-design.json` or the settings at the top of `export_figures.py` change; `--recompute` ignores
-the cache. The
-script ends by printing every number the slides quote, and lists those that `slot1.tex` does not contain. After a
+`illustration.py`, `spx-design.json`, `market-like-case.json` or the settings at the top of `export_figures.py`
+change; `--recompute` ignores the cache. The script ends by printing every number the slides quote, and lists those that `slot1.tex` does not contain. After a
 change to the example, update the slides it names (2, 3, 6, 7, 8, 9 and the first backup frame) and the curriculum
 page.
 
 ## The running example
 
-Seven figures come from one example, so that the argument stays on one case. It uses the tutorial's own setting
-(the option application, `lab/plans/option-application/`, results as of 11 November 2026):
+Seven figures come from one example, so that the argument stays on one case. It is the simulated case
+"market-like parameters" of the tutorial's Heston notebook (`lab/notebooks/heston_spx_calibration.py`, on branch
+`claude/trusting-dijkstra-hmgvcm` as of 11 November 2026), in the setting of the option application
+(`lab/plans/option-application/`):
 
 - **Design.** The strikes, maturities, forwards, discounts and half-spreads of the 63 actual SPX quotes of
   9 November 2026: 9 strikes at standardized moneyness z = ln(K/F)/(0.16√T) from −5 to +2 on each of 7 expiries,
   from 7 to 325 days ([`spx-design.json`](spx-design.json), copied with its source from the application's record).
-  The market's mids are not used: the example's quotes are simulated.
+  The figures show them, as the notebook does, at δ = ln(K/F)/(0.20√T), from about −4 to 1.6. The market's mids are
+  not used.
+- **Quotes.** The notebook's 63 observed prices of the case ([`market-like-case.json`](market-like-case.json), copied
+  with their source and SHA-256 from its conditional panel): the slides and the notebook read the same numbers. The
+  slides' pricer reproduces the case's clean prices to within 10⁻⁵ of a half-spread, which `illustration.py` checks
+  on every load.
 - **Model and truth.** Heston with the application's parameters (v₀, κ, v∞, σ_v, ρ; the lab documents write v̄ and ξ) and their uniform prior box, at the
-  application's reference case "market-like, simulated" (v₀ 0.0271, κ 4.34, v∞ 0.0565, σ_v 1.80, ρ −0.667).
+  notebook's case "market-like parameters", the application's reference case "market-like, simulated" (v₀ 0.0271,
+  κ 4.34, v∞ 0.0565, σ_v 1.80, ρ −0.667).
 - **Error law.** The application's: each quote is the model price plus c × its half-spread × a standard normal, with
   c = 1 in the simulation. In the posterior c is inferred under its prior U(0.5, 2), with the likelihood's −n ln c
   term; the classical route estimates it by maximum likelihood, √(R/n), R the sum of squared misses in half-spreads.
@@ -115,8 +123,8 @@ For each reading the example computes the least-squares fit with its Gauss–New
 range of a product, and the posterior.
 
 - **It is an illustration, not a result of the tutorial.** The model is right by construction, the quote errors are
-  independent, and one simulated surface is shown. The seed is the date of the tutorial, fixed before any figure was
-  drawn. On the real SPX quotes Heston misses by about 13 half-spreads and c goes to its upper bound of 2 (the
+  independent, and one simulated surface is shown, the notebook's (its noise draws are a little small: 0.93 half-spreads
+  root mean square over the 63 quotes, against 1 expected). On the real SPX quotes Heston misses by about 13 half-spreads and c goes to its upper bound of 2 (the
   application's Section 6.5); the example, generated with c = 1, does not show that misfit.
 - **Prices** are Lewis Fourier integrals with the analytic Black control variate of the application (its Section 4.1),
   on the tutorial runtime's Heston characteristic function: the 7-day put at z = −5 is worth about 10⁻⁴ of the

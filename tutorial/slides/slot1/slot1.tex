@@ -1,14 +1,14 @@
 % Slot 1 of the ICAIF '26 tutorial: the introduction, Bayes for volatility models (15 minutes).
 % Uses the tutorial's bayesops theme unchanged; compile with LuaLaTeX (the theme needs it).
 % In the Overleaf project: upload this file and figures/slot1/, then Menu > Main document > slot1.tex.
-% The figures come from tutorial/slides/slot1/export_figures.py: seven from one running example (Heston on simulated
-% quotes with the tutorial's SPX design and error law, the model right by construction) and one from the checks of the
-% option application's Heston network on 512 simulated surfaces.
+% The figures come from tutorial/slides/slot1/export_figures.py: seven from one running example (Heston on the simulated
+% "market-like" SPX quotes of the Heston notebook, lab/notebooks/heston_spx_calibration.py, the model right by
+% construction) and one from the checks of the notebook's Heston network on 512 simulated surfaces.
 % Dashes are typed as Unicode (–): the theme's title fonts do not turn -- into a dash.
 % Speaker notes are in \note{}; Beamer prints them only with \setbeameroption{show notes on second screen}.
 % Numbers on the main slides are of three kinds: the running example's (an illustration; export_figures.py prints
-% each of them), results of the option application as of 11 November 2026 (lab/plans/option-application, the
-% section is named where a number is used), and facts about the programme.
+% each of them), results of the Heston notebook and of the option application as of 11 November 2026
+% (lab/plans/option-application, the section is named where a number is used), and facts about the programme.
 \documentclass[aspectratio=169]{beamer}
 
 \usepackage[cover]{bayesops}
@@ -138,8 +138,8 @@ compute and check that uncertainty.}
 \pairs{\pair{Example}{Heston, simulated SPX}}
       {\uncover<2>{\pair{Misfit, in half-spreads}{best 1.01, rest 1.05–1.48}}}
       {\uncover<2>{\pair{In 6 months, at the money}{volatility 14.7–18.1\%}}}
-\note{First step: 18 option quotes on one index, at 7 and 14 days, on the strikes of the tutorial's SPX design, each
-with its half-spread. Least squares returns one parameter set. Its curve passes through the quotes, and it also gives
+\note{First step: 18 option quotes on one index, at 7 and 14 days, each with its half-spread: the first two expiries
+of the simulated SPX quotes that the tutorial's Heston notebook calls market-like. Least squares returns one parameter set. Its curve passes through the quotes, and it also gives
 the smile that the model expects in six months, for options that run from there to one year. No option quotes that
 forward smile, and a forward-start call depends on it. Second step: 120 other parameter sets, drawn from the
 posterior. On the quoted expiries they cannot be told apart: each misses the quotes by about one half-spread, as the
@@ -295,11 +295,12 @@ posteriors.}
 \column{0.32\textwidth}\bignum{a day}{rough Bergomi}{63 quotes priced by Monte Carlo}
 \column{0.32\textwidth}\bignum{no formula}{return histories}{a hidden variance path}
 \end{columns}
-\source{One posterior on the 63 SPX quotes: Heston 9–18 CPU-min by MCMC; rough Bergomi about 17–29 CPU-h by importance
-sampling, at 1–2 CPU-min per pricing of the quotes (option application, Section 7.1).}
-\note{The posterior has a cost. Sampling it takes thousands to tens of thousands of evaluations of the model. For
-Heston one evaluation prices the 63 quotes by Fourier integrals in a few milliseconds, so one exact posterior takes
-minutes. For rough Bergomi one evaluation is a Monte Carlo run of one to two CPU-minutes, so one posterior takes about
+\source{One posterior on the 63 SPX quotes: Heston 14–27 CPU-min by MCMC (the Heston notebook's PyMC reference); rough
+Bergomi about 17–29 CPU-h by importance sampling, at 1–2 CPU-min per pricing of the quotes (option application,
+Section 7.1).}
+\note{The posterior has a cost. Sampling it takes thousands of evaluations of the model, and often far more. For
+Heston one evaluation prices the 63 quotes by Fourier integrals in about 10 milliseconds; the notebook's exact
+posterior uses about 180,000 of them, in 14 to 27 minutes. For rough Bergomi one evaluation is a Monte Carlo run of one to two CPU-minutes, so one posterior takes about
 a day, even by importance sampling from a good proposal. For return histories the likelihood has no formula at all: it
 integrates over a hidden variance path. One posterior is affordable. A desk needs one per name per day, and testing a
 method needs hundreds.}
@@ -322,11 +323,12 @@ method needs hundreds.}
 \pairs{\pair{Needs}{a simulator and a prior}}{\pair{New data}{a posterior in under a second}}
       {\pair{Valid}{for data like its training data}}
 \source{Cranmer, Brehmer and Louppe (2020); BayesFlow: Radev et al.\ (2022). Heston on SPX: 300,000 simulated surfaces,
-30 minutes of training, about 0.3 s per posterior (option application, Sections 7.3 and 7.5).}
+under an hour of training on a laptop CPU (the Heston notebook), about 0.3 s per posterior (option application,
+Section 7.5).}
 \note{Simulation-based inference removes the cost per data set. Parameters are drawn from the prior, data are simulated
 from them, and a network is trained once on these pairs to return the posterior. It needs a simulator and a prior, and
 no formula for the likelihood. For Heston on the tutorial's 63 SPX quotes the network is trained on 300,000 simulated
-surfaces in half an hour, and then returns a posterior in about a third of a second. The cost has moved into training:
+surfaces in under an hour on a laptop, and then returns a posterior in about a third of a second. The cost has moved into training:
 it is amortized. The network is accurate only for data like those it was trained on: data that the prior and the
 error model can produce, on the design it was trained for. In the next talk Alexander explains how this works and
 when it pays.}
@@ -337,7 +339,7 @@ when it pays.}
 \fig{0.92}{coverage.pdf}
 \pairs{\pair{The test}{512 simulated surfaces}}{\pair{90\% intervals}{89–92\% ($v_0$: 97.5\%)}}
       {\pair{Rough Bergomi, 300 exact}{5,000–9,000 CPU-h}}
-\source{The option application's Heston network, six targets (Section 8.2); costs from its Section 7.1.}
+\source{The Heston notebook's network, six targets (option application, Section 8.2); costs from its Section 7.1.}
 \note{A range is useful only if it can be trusted. On simulated data the truth is known, so the test is direct: over
 many simulated data sets a 90\% range must contain the truth 90\% of the time. This is a frequentist test of a
 Bayesian answer, averaged over the prior. It needs hundreds of posteriors: for rough Bergomi, 300 exact posteriors
@@ -346,10 +348,12 @@ generated, at an estimated 47 to 59 hours on 192 CPUs: about as much as one such
 posterior on that design. The figure shows the test for the tutorial's Heston network on 512 simulated surfaces. For
 five of its six targets the measured coverage follows the stated one; for today's variance the intervals are too
 wide, 97.5\% at a stated 90\%. The test is necessary, not sufficient: a network that returned the prior would pass
-it too, so the network is also compared with exact posteriors. A passed test says that the network returns the
-posterior of the stated model, for data like its training data. On the SPX quotes of 9 November, Heston misses by far
-more than any error the training allowed, so the market lies outside what the network saw, and the market results use
-the exact posterior. Whether the model describes the market is a separate check, taken up later today.}
+it too, so the network is also compared with exact posteriors. On the notebook's simulated quotes its means lie
+within one reference standard deviation, and its intervals are 1.05 to 2.9 times as wide: conservative, not exact
+(Section 8.3). A passed test says that the network returns the posterior of the stated model, for data like its
+training data. On the SPX quotes of 9 November, Heston misses by 13 half-spreads, root mean square, and the error
+scale $c$ runs to its upper bound of 2: the market lies outside what the network saw, and the market results use the
+exact posterior. Whether the model describes the market is a separate check, taken up later today.}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
@@ -436,9 +440,9 @@ inference, with Alexander.}
 \column{0.42\textwidth}
 \textbf{Model and data}\par\vspace{2pt}
 \begin{tabular}{@{}L{0.19\linewidth}L{0.73\linewidth}@{}}
-Model & Heston, $v_0 = 0.0271$, $\kappa = 4.34$, $v_\infty = 0.0565$, $\sigma_v = 1.80$, $\rho = -0.667$: the application's
-market-like case \\[1pt]
-Quotes & the tutorial's 63 SPX strikes, $z$ from $-5$ to $2$, 7 expiries of 7 to 325 days \\[1pt]
+Model & Heston, $v_0 = 0.0271$, $\kappa = 4.34$, $v_\infty = 0.0565$, $\sigma_v = 1.80$, $\rho = -0.667$: the Heston
+notebook's market-like case \\[1pt]
+Quotes & its 63 simulated quotes on the SPX strikes, $\delta$ from $-4$ to $1.6$, 7 expiries of 7 to 325 days \\[1pt]
 Errors & $c$ times the half-spread; $c = 1$, inferred on $[0.5, 2]$ \\[1pt]
 Prior & uniform on the application's box, as on slide 6 \\[1pt]
 Method & importance sampling, 3,884 to 5,558 effective draws; at 7 days 274, then Metropolis moves \\
@@ -516,7 +520,7 @@ is an accepted basis for a prudent value is a proposal, not current practice.}
 A grid & one or two parameters & teaching examples \\
 A Gaussian (Laplace) approximation & a posterior close to a normal, at one mode & the course's thin chains, with the
 prior \\
-Markov chain Monte Carlo & $10^4$ or more evaluations of the model & Heston on SPX, the reference: 9–18 CPU-min \\
+Markov chain Monte Carlo & $10^4$ or more evaluations of the model & Heston on SPX, the reference: 14–27 CPU-min \\
 Importance sampling & a good proposal, such as a fit or a network & this deck's example; rough Bergomi on SPX, with the
 network as proposal: about 17–29 CPU-h \\
 Amortized inference & one training run on simulations & under a second per data set; checkable at scale \\

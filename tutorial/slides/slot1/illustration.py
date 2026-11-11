@@ -1,13 +1,16 @@
 """The deck's running example: Heston on simulated SPX quotes, with the model true by construction.
 
 The design is the tutorial's (`spx-design.json`): the strikes, maturities, forwards, discounts and half-spreads of
-the 63 actual SPX quotes of 9 November 2026, 9 strikes at standardized moneyness z = ln(K/F)/(0.16 sqrt T) on each
-of 7 expiries from 7 to 325 days. One parameter set, the option application's reference case "market-like,
-simulated", generates the 63 prices in forward units, and each is observed once with the application's error law
+the 63 actual SPX quotes of 9 November 2026, 9 strikes on each of 7 expiries from 7 to 325 days, selected at
+z = ln(K/F)/(0.16 sqrt T) from -5 to 2. The figures show them, as the Heston SPX notebook does, at standardized
+moneyness delta = ln(K/F)/(0.20 sqrt T), from about -4 to 1.6. The observed surface is the notebook's simulated case
+"market-like parameters" (`market-like-case.json`): the 63 prices generated at its parameters and observed once with
+the application's error law
 
     y_i = P_i(theta) + c h_i Z_i,    Z_i independent standard normals,    c = 1,
 
-h_i the quote's own half-spread. A *reading* keeps the quotes up to a last expiry, so the same surface can be read
+h_i the quote's own half-spread. The slides use the notebook's own draws Z_i, so they and the notebook read the same
+63 numbers. A *reading* keeps the quotes up to a last expiry, so the same surface can be read
 with quotes that reach 325 days or stop at 7 days. For a reading this module computes
 
 - the classical route: least squares in half-spreads from several starts, the error scale by maximum likelihood,
@@ -27,9 +30,10 @@ with quotes that reach 325 days or stop at 7 days. For a reading this module com
 
 Prices are Lewis Fourier integrals with the analytic Black control variate of the option application (its section
 4.1), built on the tutorial runtime's Heston characteristic function: the 7-day put at z = -5 is worth about 1e-4 of
-the forward and a half-spread about 1e-5, which the plain formula cannot resolve. Everything is deterministic given
-SEED. These are illustrations for slides, not results of the tutorial: the model is right by construction, the quote
-errors are independent, and one simulated surface is shown.
+the forward and a half-spread about 1e-5, which the plain formula cannot resolve. They reproduce the notebook's clean
+prices of the case to within 1e-5 of a half-spread. The samplers are deterministic given SEED. These are
+illustrations for slides, not results of the tutorial: the model is right by construction, the quote errors are
+independent, and one simulated surface is shown.
 """
 
 from dataclasses import dataclass
@@ -46,9 +50,11 @@ from sbi4f_tutorial.shared import gbm, surface
 
 HERE = Path(__file__).resolve().parent
 DESIGN_FILE = HERE / "spx-design.json"
+CASE_FILE = HERE / "market-like-case.json"
+DISPLAY_REFERENCE = 0.20  # the notebook's standardized moneyness: delta = ln(K/F) / (0.20 sqrt T)
 
 NAMES = ("v0", "kappa", "long_run", "vol_of_vol", "rho")  # the order of the option application
-# The option application's reference case "market-like, simulated" (generating c = 1): its section 8.1.
+# The notebook's case "market-like parameters" (generating c = 1), the application's section 8.1; market-like-case.json.
 TRUTH = np.array([0.027111476938590673, 4.33564875507931, 0.056477632243131036, 1.7993356588948335,
                   -0.6674551198176153])
 C_TRUE = 1.0
@@ -56,7 +62,7 @@ C_TRUE = 1.0
 LOWER = np.array([0.01, 0.1, 0.01, 0.1, -0.95])
 UPPER = np.array([0.16, 10.0, 0.16, 3.0, -0.10])
 C_LOWER, C_UPPER = 0.5, 2.0
-SEED = 20261114  # the day of the tutorial; chosen before looking at any figure
+SEED = 20261114  # the samplers' seed: the day of the tutorial, chosen before looking at any figure
 RUNG, CHECK_RUNG = (2048, 1200.0), (4096, 2400.0)  # Gauss-Legendre nodes and cutoff; the gate compares the two
 GATE = 0.01  # the application's accuracy gate: refinement moves no price by more than 0.01 of its half-spread
 START, END = 0.5, 1.0  # the forward-start call: struck at the money in 6 months, paid at 1 year
@@ -73,6 +79,7 @@ def _load_design():
         "maturity": np.array([q["maturity"] for q in quotes]),
         "put": np.array([q["option_type"] == "put" for q in quotes]),
         "half_spread": np.array([q["half_spread"] for q in quotes]) / (discount * forward),  # forward units
+        "index_points": discount * forward,  # a price in forward units times this is in index points
         "expiry": expiry,
         "target_z": np.array([q["target_z"] for q in quotes]),
         "windows": stored["windows"],
@@ -232,11 +239,25 @@ PRODUCTS = {"forward_start": forward_start_call, "forward_variance": forward_var
 # A reading of the simulated surface
 
 
-def _observed(seed=SEED):
+def _load_case():
+    stored = json.loads(CASE_FILE.read_text())
+    same = stored["parameters"] == list(NAMES) and np.array_equal(stored["truth"], TRUTH)
+    if not same or stored["generating_c"] != C_TRUE:
+        raise ValueError("market-like-case.json does not hold the generating parameters of this module")
+    return np.asarray(stored["observations"]) / SPX["index_points"], np.asarray(stored["noise_draws"])
+
+
+def _observed():
+    """The clean prices at the generating parameters and the notebook's observed surface, in forward units."""
     clean = quote_prices(TRUTH)
     if gate(TRUTH) > GATE:
         raise ValueError("the Fourier integral is not converged to the gate at the generating parameters")
-    return clean, clean + C_TRUE * SPX["half_spread"] * np.random.default_rng(seed).standard_normal(len(clean))
+    observed, draws = _load_case()
+    # The case was generated as clean + c h Z with the lab's pricer: the slides' pricer must give the same clean prices.
+    generated = clean + C_TRUE * SPX["half_spread"] * draws
+    if np.max(np.abs(observed - generated) / SPX["half_spread"]) > GATE:
+        raise ValueError("the slides' prices differ from the notebook's clean prices by more than the gate")
+    return clean, observed
 
 
 def _log_c_integral(r2, n):
@@ -304,9 +325,9 @@ class Reading:
         return mid, low, high
 
 
-def readings(seed=SEED):
-    """The five nested readings of one simulated surface, keyed by their last expiry ('325 days' ... '7 days')."""
-    _, observed = _observed(seed)
+def readings():
+    """The five nested readings of the notebook's surface, keyed by their last expiry ('325 days' ... '7 days')."""
+    _, observed = _observed()
     out = {}
     for reach, expiries in READINGS.items():
         n = 9 * expiries

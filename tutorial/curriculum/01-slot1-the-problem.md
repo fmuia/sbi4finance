@@ -57,8 +57,8 @@ that uncertainty computed and checked?
 | 6:10–7:20 | Where the Methods Agree | "Where the quotes determine the price, the two ranges agree"; the forward start's classical and posterior ranges as the quotes stop at 325, 81, 30, 14 and 7 days; facts: the classical range, where the quotes decide, quotes at 7 days only | The running example; the Bernstein–von Mises theorem |
 | 7:20–8:30 | What the Quotes Leave Open | "What the quotes leave open is set by an assumption"; the forward start's range with κ fixed at 2, 4 and 8, fitted, and under the posterior; facts: fix it, fit it freely, state a prior | The running example; Bergomi 2003; Janek et al. 2011 |
 | 8:30–9:20 | One Set of Draws | "One set of posterior draws prices every product, consistently"; two products under the same draws, and a book; facts: a draw, a product, a book | The running example |
-| 9:20–10:10 | The Cost of a Posterior | "A posterior takes thousands of model evaluations. A book or a validation takes hundreds of posteriors"; minutes, a day, no formula | Option application, Section 7.1 |
-| 10:10–11:10 | Amortized Inference | "A network trained once on simulations returns the posterior for new data in under a second"; the pipeline; facts: what it needs, new data, where it is valid | Cranmer et al. 2020; Radev et al. 2022; option application, Sections 7.3 and 7.5 |
+| 9:20–10:10 | The Cost of a Posterior | "A posterior takes thousands of model evaluations. A book or a validation takes hundreds of posteriors"; minutes, a day, no formula | The Heston notebook's PyMC references; option application, Section 7.1 |
+| 10:10–11:10 | Amortized Inference | "A network trained once on simulations returns the posterior for new data in under a second"; the pipeline; facts: what it needs, new data, where it is valid | Cranmer et al. 2020; Radev et al. 2022; the Heston notebook; option application, Section 7.5 |
 | 11:10–12:10 | A Posterior That Can Be Tested | "A 90% range must contain the truth 90% of the time"; stated against measured coverage of the Heston network on 512 simulated surfaces, six targets; facts: the test, the 90% intervals, the cost of 300 exact rough-Bergomi posteriors | Option application, Sections 7.1 and 8.2 |
 | 12:10–13:00 | Summary | Three statements, and three questions for the audience's own model | — |
 | 13:00–13:40 | The Team | The four presenters: photo, affiliation, background, parts | The tutorial's webpage |
@@ -74,10 +74,12 @@ and the references.
 
 ## The running example
 
-Heston with known parameters generates the 63 quotes of the tutorial's SPX design of 9 November 2026: 9 strikes at
-standardized moneyness z from −5 to +2 on 7 expiries from 7 to 325 days, each observed once with the option
-application's error law, c × its own half-spread × a standard normal, with c = 1. The parameters are the application's
-reference case "market-like, simulated", and the prior is its uniform box, with c inferred under U(0.5, 2). The same
+The example is the simulated case "market-like parameters" of the tutorial's Heston notebook
+(`lab/notebooks/heston_spx_calibration.py`), the same 63 numbers: Heston with known parameters, close to those that
+fit the market, prices the 63 SPX quotes of 9 November 2026 (9 strikes at standardized moneyness δ from about −4 to
+1.6 on 7 expiries from 7 to 325 days), and each price is observed once with the error law of the notebook and the
+option application, c × its own half-spread × a standard normal, with c = 1. The prior is the notebook's uniform box,
+with c inferred under U(0.5, 2). The same
 surface is read with quotes up to 325, 81, 30, 14 and 7 days. Slides 2, 3, 6, 8 and 9 use the quotes up to 14 days;
 slide 7 uses all five readings. The product is the application's forward-start call, struck at the money in
 6 months and paid at 1 year; slide 9 holds it against the listed 325-day at-the-money call. The classical route is
@@ -85,8 +87,7 @@ least squares with the delta method, with c by maximum likelihood; the posterior
 [`slides/slot1/README.md`](../slides/slot1/README.md) gives the method, its checks and its limits.
 
 The example is an illustration, labelled so on the slides ("simulated quotes") and in the backup. The model is right
-by construction, the quote errors are independent, and one surface is shown, with a seed fixed before any figure was
-drawn. It supports statements about a mechanism, not about a market: on the real quotes Heston misses by about
+by construction, the quote errors are independent, and one surface is shown, the notebook's. It supports statements about a mechanism, not about a market: on the real quotes Heston misses by about
 13 half-spreads and c goes to its bound (option application, Section 6.5).
 
 ## Why Bayes, and what the slot does not claim
@@ -138,8 +139,10 @@ The application's numbers are as of 11 November 2026 (`lab/plans/option-applicat
 | The forward start's 90% range, delta method against posterior: 4.65–4.67 and 4.65–4.67 (quotes up to 325 days), 4.66–4.70 and 4.66–4.70 (81 days), 4.59–4.74 and 4.58–4.77 (30 days), 4.35–4.75 and 4.31–4.89 (14 days); at 7 days the fit sits on the upper bound of κ and has no range, the posterior gives 2.40–8.56 | the running example | illustration |
 | κ fixed at 2, 4 and 8 on the 14-day quotes: 4.41–5.10, 4.37–4.84 and 4.35–4.67; error scale by maximum likelihood 1.17, 1.04 and 1.08, against 1.01 with κ fitted | the running example | illustration |
 | 90% widths: the forward start 0.57, the 325-day call 0.64, the forward start minus the call 0.08; correlation across draws 0.996 | the running example | illustration |
-| One exact posterior on the 63 SPX quotes: Heston 9–18 CPU-min by MCMC; rough Bergomi about 17–29 CPU-h by importance sampling, at 1–2 CPU-min per pricing; 300 exact rough-Bergomi posteriors 5,000–9,000 CPU-h | option application, Section 7.1 | recorded; rough Bergomi estimated from its pricing cost |
-| The Heston network: 300,000 simulated surfaces, 30 minutes of training, about 0.3 s per posterior | option application, Sections 7.3 and 7.5 | recorded |
+| One exact posterior on the 63 SPX quotes: Heston 14–27 CPU-min by MCMC (about 180,000 pricings of the quotes, one core) | the Heston notebook's PyMC references (`lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/`) | recorded |
+| Rough Bergomi about 17–29 CPU-h per exact posterior by importance sampling, at 1–2 CPU-min per pricing; 300 exact rough-Bergomi posteriors 5,000–9,000 CPU-h | option application, Section 7.1 | estimated from its pricing cost |
+| The Heston network: 300,000 simulated surfaces, under an hour of training on a laptop CPU; about 0.3 s per posterior | the Heston notebook; option application, Section 7.5 | recorded |
+| Against the exact posterior on the notebook's simulated quotes, the network's means lie within one reference standard deviation and its intervals are 1.05 to 2.9 times as wide; on SPX, Heston misses by 13 half-spreads and c runs to its bound of 2 | option application, Section 8.3; the notebook's run record | recorded |
 | The rough-Bergomi bank: 47–59 hours on 192 CPUs | option application, Section 7.3 | estimate; being generated |
 | Coverage of the Heston network on 512 simulated surfaces, six targets: 50.0–67.6%, 78.9–92.6%, 89.3–97.5% and 93.2–99.2% at 50, 80, 90 and 95%; at 90%, 89–92% for five targets and 97.5% for v₀ | option application, Section 8.2 | recorded |
 | On the SPX quotes the network is outside its training range; market results use the exact posterior | option application, Section 8.3 | recorded |
@@ -175,26 +178,26 @@ through the lab's tools; until then the slides name the application's sections.
    certainty. A profile-likelihood range would still exist there, and it too would be set by the box.
 3. **"So the prior is doing the work."** Where the quotes are silent, yes, and it must: the classical habits are
    priors of zero width, or none. Bayes states the width, and the width can be tested.
-4. **"Your example is simulated, and the model is true."** Yes, and it is labelled so. It uses the tutorial's design
-   and error law: the strikes, expiries and half-spreads of the 63 SPX quotes of 9 November, and an error scale c that
-   is inferred. It shows the mechanism. On the real quotes Heston misses by about 13 half-spreads and c goes to its
+4. **"Your example is simulated, and the model is true."** Yes, and it is labelled so. It is the Heston notebook's
+   own simulated case: the strikes, expiries and half-spreads of the 63 SPX quotes of 9 November, generated with
+   c = 1, with an error scale c that is inferred. It shows the mechanism. On the real quotes Heston misses by about 13 half-spreads and c goes to its
    bound of 2; the notebooks show that misfit and what it means for the ranges.
 5. **"Banks already meet the rules."** They do. A posterior adds a range derived from the data, with a stated prior,
    that can be tested by coverage. That it is an accepted basis for a prudent value is a proposal.
-6. **"Heston calibrates in a second; why a network?"** One exact Heston posterior is affordable (9 to 18 CPU-minutes),
+6. **"Heston calibrates in a second; why a network?"** One exact Heston posterior is affordable (14 to 27 CPU-minutes),
    and the Heston part computes it as the reference. A validation needs hundreds of posteriors, a book one per name
    per day, and rough Bergomi has no fast pricer: about a day per exact posterior.
 7. **"Why trust a network?"** Only as far as it passes its checks: coverage on simulated data, agreement with an exact
    posterior where one exists, and data like its training data. The Heston network passes the first two on simulated
    surfaces (with intervals for v₀ too wide) and fails the third on the SPX quotes, so the market results use the
    exact posterior.
-10. **"Do you retrain every day?"** In the tutorial one network serves one snapshot's design (strikes, expiries,
-   half-spreads); a new design needs its own simulations and network (option application, Section 5.1). A network that
-   takes the design as an input is the way to daily use, and the tutorial does not show it.
 8. **"Does the range cover model risk?"** No. It is one model's parameter uncertainty under a stated error model. Two
    models on the same data show part of the rest.
 9. **"Why not my model?"** The method does not depend on the model: a prior, a simulator and an error model are the
    first step, and the other four are the same.
+10. **"Do you retrain every day?"** In the tutorial one network serves one snapshot's design (strikes, expiries,
+   half-spreads); a new design needs its own simulations and network (option application, Section 5.1). A network that
+   takes the design as an input is the way to daily use, and the tutorial does not show it.
 
 ## What is left out, and why
 

@@ -4,14 +4,14 @@ Run from tutorial/:
 
     python slides/slot1/export_figures.py [--rubik PATH/TO/Rubik-Variable.ttf] [--recompute]
 
-Seven of the eight PDFs come from the deck's running example (`illustration.py`: Heston on simulated quotes with
-the tutorial's SPX design and error law, the model right by construction; the opening figure has two steps). The
+Seven of the eight PDFs come from the deck's running example (`illustration.py`: Heston on the simulated
+"market-like" quotes of the Heston SPX notebook, the model right by construction; the opening figure has two steps). The
 eighth, `coverage`, plots the checks of the option application's Heston network on 512 simulated surfaces; its
 numbers are copied below from the application's record, since the slides' code reads nothing outside tutorial/.
 The example takes about half an hour on four cores, mostly five posteriors by importance sampling; its numbers are
-cached under tutorial/.cache/ (ignored by Git) and reused until `illustration.py`, `spx-design.json`, the settings
-below or `compute` change, or --recompute is given. The script ends by printing every number the slides quote, and
-says which of them `slot1.tex` does not contain.
+cached under tutorial/.cache/ (ignored by Git) and reused until `illustration.py`, `spx-design.json`,
+`market-like-case.json`, the settings below or `compute` change, or --recompute is given. The script ends by
+printing every number the slides quote, and says which of them `slot1.tex` does not contain.
 
 With --rubik (the variable font in the Overleaf project's fonts/ folder, or Google Fonts' Rubik[wght].ttf) the
 figures use Rubik like the slides; without it, matplotlib's default sans-serif. The PDFs land in
@@ -59,6 +59,22 @@ COVERAGE = {
     },
 }
 
+# The Heston SPX notebook's PyMC reference for the same 63 quotes (its case "market-like parameters"): four
+# DEMetropolisZ chains of 12,000 draws, the exact Fourier likelihood, the same priors. Quantiles 5%, 50%, 95% of the
+# parameters, from lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/references/synthetic-market-like/
+# posterior.json (SHA-256 c83e9d38...cb32), and of the later-window variance as a volatility in %, from the 2,000
+# draws of reference-display-draws.npz (SHA-256 a78a3510...4976), branch claude/trusting-dijkstra-hmgvcm, 2462b64.
+# The slides' posterior of the 325-day reading (all 63 quotes) is compared with it in the report.
+REFERENCE = {
+    "v0": (0.027049986642360135, 0.027121354481854792, 0.02719199434877243),
+    "kappa": (4.344922436891941, 4.410009460940039, 4.473384904009994),
+    "long_run": (0.056044411660073436, 0.05632057884911886, 0.056608758574305855),
+    "vol_of_vol": (1.8048672590115284, 1.817400469384277, 1.8300057457417425),
+    "rho": (-0.6671271733545702, -0.6657683915740334, -0.6644440875540412),
+    "c": (0.7727821652192872, 0.8959219539247977, 1.0540524714863415),
+    "forward_variance": (22.94, 22.9776, 23.0153),
+}
+
 # The theme's colours (aviation #15153B, neonlake #6969FF) and the figures' second colour.
 INK, INK_2, MUTED, GRID, BASELINE = "#15153b", "#3f3f63", "#7c7c99", "#e7e7f1", "#c4c4d6"
 POSTERIOR, CLASSICAL = "#6969ff", "#c2187a"  # periwinkle: the posterior; magenta: least squares and its ranges
@@ -67,8 +83,11 @@ TEXT_WIDTH = 5.51  # inches: the 140 mm text width of a 16:9 Beamer frame
 HOOK = "14 days"  # the reading of the opening example: 18 quotes, at 7 and 14 days
 FIXED_KAPPA = (2.0, 4.0, 8.0)  # the habit of fixing the mean reversion, at three values
 FAN = 120  # posterior curves drawn in a fan
-Z_QUOTED = np.linspace(-5.0, 2.0, 57)  # standardized moneyness along a quoted expiry
-Z_FORWARD = np.linspace(-3.0, 2.0, 41)  # along the forward smile, 6 months to 1 year
+# Standardized moneyness delta = ln(K/F) / (0.20 sqrt T), the Heston SPX notebook's coordinate (the design's
+# z = 1.25 delta).
+# The grids are the strikes of z from -5 to 2 and from -3 to 2.
+Z_QUOTED = np.linspace(-4.0, 1.6, 57)  # along a quoted expiry
+Z_FORWARD = np.linspace(-2.4, 1.6, 41)  # along the forward smile, 6 months to 1 year
 PRODUCTS = il.PRODUCTS
 # The 7-day reading's posterior is a thin curved ridge along which the box sets the ends: its proposal is adapted over
 # more rounds and more slices, to a flatter posterior, with more draws from the prior, before the Metropolis moves.
@@ -90,7 +109,7 @@ def _posterior(reach):
 
 
 def _strikes(z, maturity):
-    return np.exp(np.asarray(z) * il.SPX_REFERENCE * np.sqrt(maturity))
+    return np.exp(np.asarray(z) * il.DISPLAY_REFERENCE * np.sqrt(maturity))
 
 
 def compute():
@@ -130,7 +149,7 @@ def compute():
     reading, draws = readings[HOOK], posteriors[HOOK].draws[:, :5]
     fit = data[f"{key_of(HOOK)}/fit"]
     mid, low, high = reading.implied_quotes()
-    z = np.log(il.SPX["strike"][:reading.n]) / (il.SPX_REFERENCE * np.sqrt(il.SPX["maturity"][:reading.n]))
+    z = np.log(il.SPX["strike"][:reading.n]) / (il.DISPLAY_REFERENCE * np.sqrt(il.SPX["maturity"][:reading.n]))
     data["hook/quotes"] = np.column_stack([z, il.SPX["maturity"][:reading.n], mid, low, high])
     data["hook/misfit"] = np.array([np.sqrt(reading.sum_of_squares(theta) / reading.n) for theta in draws])
     data["hook/misfit_fit"] = np.sqrt(data[f"{key_of(HOOK)}/sum_of_squares"] / reading.n)
@@ -157,7 +176,8 @@ def load(recompute=False):
     """The cached numbers, recomputed when the example, its design, the settings above or `compute` have changed."""
     recipe = json.dumps([HOOK, FIXED_KAPPA, FAN, Z_QUOTED.tolist(), Z_FORWARD.tolist(), sorted(PRODUCTS), THIN,
                          inspect.getsource(compute)])
-    source = (HERE / "illustration.py").read_bytes() + (HERE / "spx-design.json").read_bytes()
+    inputs = ("illustration.py", "spx-design.json", "market-like-case.json")
+    source = b"".join((HERE / name).read_bytes() for name in inputs)
     key = hashlib.sha256(source + recipe.encode()).hexdigest()[:16]
     path = CACHE / f"illustration-{key}.npz"
     if recompute or not path.exists():
@@ -283,7 +303,7 @@ def figure_many_fits(data, step):
         ax.errorbar(quotes[quoted, 0], mid, yerr=[mid - low, high - mid], fmt="o", color=INK, ms=2.6, lw=0.8,
                     capsize=1.5, capthick=0.8, zorder=5)
         ax.set_title(f"quoted: {int(round(365 * maturity))} days", loc="left")
-        ax.set_xlabel("moneyness z")
+        ax.set_xlabel("moneyness δ")
         ax.set_xlim(Z_QUOTED[0] - 0.2, Z_QUOTED[-1] + 0.2)
     ax = axes[-1]
     ax.set_facecolor("#f5f5fd")
@@ -299,7 +319,7 @@ def figure_many_fits(data, step):
                 va="bottom", ha="left")
     ax.plot(Z_FORWARD, percent(data["hook/forward/fit"]), color=CLASSICAL, lw=1.3, zorder=3)
     ax.set_title("not quoted: the smile in 6 months", loc="left")
-    ax.set_xlabel("moneyness z, from 6 months to 1 year")
+    ax.set_xlabel("moneyness δ, from 6 months to 1 year")
     ax.set_xlim(Z_FORWARD[0] - 0.2, Z_FORWARD[-1] + 0.2)
     axes[0].set_ylabel("implied volatility (%)")
     handles = [key_line(INK, marker="o", ms=2.3, lw=0.7), key_line(CLASSICAL, lw=1.3)]
@@ -526,8 +546,8 @@ def report(data):
     """Every number the example gives, printed so that slot1.tex and the curriculum page can be checked against it."""
     key = key_of(HOOK)
     start = percent(data[f"{key}/forward_start/draws"])
-    print(f"\nrunning example, seed {il.SEED}: (v0, kappa, long-run variance, vol of vol, rho) = {il.TRUTH.tolist()}, "
-          f"c = {il.C_TRUE}")
+    print(f"\nrunning example, the notebook's market-like case (sampler seed {il.SEED}): "
+          f"(v0, kappa, long-run variance, vol of vol, rho) = {il.TRUTH.tolist()}, c = {il.C_TRUE}")
     print(f"under the generating parameters: forward-start call {percent(data['truth/forward_start']):.2f}, "
           f"later-window variance {percent(data['truth/forward_variance']):.2f}% volatility, 325-day call "
           f"{percent(data['truth/last_call']):.2f}, per 100 of forward")
@@ -563,6 +583,16 @@ def report(data):
               f"{low:.2f} to {high:.2f}, sum of squares {float(data[f'{k}/sum_of_squares']):.1f} (fitted: "
               f"{float(data[f'{key}/sum_of_squares']):.1f}), c {float(data[f'{k}/c']):.2f} (fitted: "
               f"{float(data[f'{key}/c']):.2f})")
+    full = data[f"{key_of(il.REACH[0])}/draws"]
+    fv = percent(data[f"{key_of(il.REACH[0])}/forward_variance/draws"])
+    print("  all 63 quotes against the notebook's PyMC reference, 5% / 50% / 95% (shift of each quantile in"
+          " reference 90% widths):")
+    for i, name in enumerate(il.NAMES + ("c", "forward_variance")):
+        mine = quantiles(full[:, i] if i < 6 else fv)
+        ref = np.array(REFERENCE[name])
+        shift = (mine - ref) / (ref[2] - ref[0])
+        print(f"    {name:16s} slides {mine[0]:.5g} / {mine[1]:.5g} / {mine[2]:.5g}; "
+              f"PyMC {ref[0]:.5g} / {ref[1]:.5g} / {ref[2]:.5g}; shifts {shift[0]:+.2f} {shift[1]:+.2f} {shift[2]:+.2f}")
     last = percent(data[f"{key}/last_call/draws"])
     print(f"  correlation of the forward start and the 325-day call across draws: {np.corrcoef(start, last)[0, 1]:.3f}")
     for name, number in quoted_numbers(data).items():
