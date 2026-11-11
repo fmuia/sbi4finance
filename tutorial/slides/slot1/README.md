@@ -100,8 +100,8 @@ Seven figures come from one example, so that the argument stays on one case. It 
   9 November 2026: 9 strikes at standardized moneyness z = ln(K/F)/(0.16√T) from −5 to +2 on each of 7 expiries,
   from 7 to 325 days ([`spx-design.json`](spx-design.json), copied with its source from the application's record).
   The market's mids are not used: the example's quotes are simulated.
-- **Model and truth.** Heston with the application's parameters (v₀, κ, v̄, ξ, ρ) and their uniform prior box, at the
-  application's reference case "market-like, simulated" (v₀ 0.0271, κ 4.34, v̄ 0.0565, ξ 1.80, ρ −0.667).
+- **Model and truth.** Heston with the application's parameters (v₀, κ, v∞, σ_v, ρ; the lab documents write v̄ and ξ) and their uniform prior box, at the
+  application's reference case "market-like, simulated" (v₀ 0.0271, κ 4.34, v∞ 0.0565, σ_v 1.80, ρ −0.667).
 - **Error law.** The application's: each quote is the model price plus c × its half-spread × a standard normal, with
   c = 1 in the simulation. In the posterior c is inferred under its prior U(0.5, 2), with the likelihood's −n ln c
   term; the classical route estimates it by maximum likelihood, √(R/n), R the sum of squared misses in half-spreads.

@@ -153,7 +153,7 @@ the parameters that generated the quotes, which a simulation knows and a market 
 \fig{0.88}{price-range.pdf}
 \pairs{\pair{Product}{forward-start call}}{\pair{Mark and 10\% point}{4.58 and 4.37 per 100}}
       {\pair{Prudent value, long}{the 10\% point}}
-\note{The product is the tutorial's forward-start call: its strike is set in six months at the index level of that
+\note{The product is the tutorial's forward-start call: its strike is set in six months, at the money forward on that
 day, and it pays at one year. It is priced under each posterior draw. The mean of these prices is the mark, 4.58 per
 100 of forward; least squares gives 4.55, and the parameters that generated the quotes 4.66. For a position the bank
 owns, the prudent value is the 10\% point, 4.37, the price at which it is 90\% confident it could sell, and the
@@ -436,7 +436,7 @@ inference, with Alexander.}
 \column{0.42\textwidth}
 \textbf{Model and data}\par\vspace{2pt}
 \begin{tabular}{@{}L{0.19\linewidth}L{0.73\linewidth}@{}}
-Model & Heston, $v_0 = 0.0271$, $\kappa = 4.34$, $\bar v = 0.0565$, $\xi = 1.80$, $\rho = -0.667$: the application's
+Model & Heston, $v_0 = 0.0271$, $\kappa = 4.34$, $v_\infty = 0.0565$, $\sigma_v = 1.80$, $\rho = -0.667$: the application's
 market-like case \\[1pt]
 Quotes & the tutorial's 63 SPX strikes, $z$ from $-5$ to $2$, 7 expiries of 7 to 325 days \\[1pt]
 Errors & $c$ times the half-spread; $c = 1$, inferred on $[0.5, 2]$ \\[1pt]
