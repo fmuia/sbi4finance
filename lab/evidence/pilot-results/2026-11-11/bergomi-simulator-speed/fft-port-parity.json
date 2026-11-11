@@ -1,0 +1,175 @@
+{
+  "old_script": "/private/tmp/bergomi-fft-lowfruit.py",
+  "ported_module": "tutorial/src/sbi4f_tutorial/rough_options/_pricing_fft_experiments.py",
+  "checks": [
+    {
+      "variant": "cached_exact",
+      "hurst": 0.025,
+      "steps": 622,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.025,
+      "steps": 1241,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.025,
+      "steps": 664,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.025,
+      "steps": 1327,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.025,
+      "steps": 1791,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.025,
+      "steps": 950,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.025,
+      "steps": 1796,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.12,
+      "steps": 622,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.12,
+      "steps": 1241,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.12,
+      "steps": 664,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.12,
+      "steps": 1327,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.12,
+      "steps": 1791,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.12,
+      "steps": 950,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "cached_exact",
+      "hurst": 0.12,
+      "steps": 1796,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.025,
+      "steps": 622,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.025,
+      "steps": 1241,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.025,
+      "steps": 664,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.025,
+      "steps": 1327,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.025,
+      "steps": 1791,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.025,
+      "steps": 950,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.025,
+      "steps": 1796,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.12,
+      "steps": 622,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.12,
+      "steps": 1241,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.12,
+      "steps": 664,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.12,
+      "steps": 1327,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.12,
+      "steps": 1791,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.12,
+      "steps": 950,
+      "bitwise_equal": true
+    },
+    {
+      "variant": "fast_length",
+      "hurst": 0.12,
+      "steps": 1796,
+      "bitwise_equal": true
+    }
+  ],
+  "scope": "Small direct-driver parity establishes exact numerical operations retained by source port; full timing records remain the original temporary adapters."
+}

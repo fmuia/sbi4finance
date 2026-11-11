@@ -31,12 +31,12 @@
   "production_deployed": false,
   "logs": {
     "tutorial": {
-      "path": "/private/tmp/bergomi-correctness-tutorial-tests.log",
-      "sha256": "b46db1b30277ea11addd2d5267d58e661afe1edabdb187aad0d0b41890895b3d"
+      "path": "/private/tmp/bergomi-compiled-tutorial-tests.log",
+      "sha256": "18a09cce78b1456efde972724da4346aef7129f494f05d0420e149f160f27525"
     },
     "lab_targeted": {
-      "path": "/private/tmp/bergomi-correctness-lab-tests.log",
-      "sha256": "80238c7f7e1f242a83549503b5e061a9ab7a5334897fd4fd2324e27597550348"
+      "path": "/private/tmp/bergomi-compiled-lab-tests.log",
+      "sha256": "317cc650f4e30850d6e45cc3e9cd27e69f809e2f0a74f80a33f567f5f846e4ca"
     }
   },
   "independent_mathematical_checks": {
@@ -54,5 +54,24 @@
       "Does not certify prior-wide or pointwise MC interval coverage",
       "Oscar/compiler parity and adaptive longer-rung rollout remain untested"
     ]
+  },
+  "compiled_and_fft_followup": {
+    "variant_combinations": 6,
+    "tests_per_combination": 10,
+    "passed_tests": 60,
+    "skipped_tests": 0,
+    "results": "variant-correctness.json",
+    "cython_compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "build_flags": [
+      "-O3",
+      "-fno-fast-math",
+      "-ffp-contract=off"
+    ],
+    "full_surface_paths_per_block": 32768,
+    "full_surface_repeats": 3,
+    "sources_changed_in_production": false,
+    "dependencies_installed_in_production": false,
+    "oscar_benchmark_performed": false,
+    "provenance_note": "Full FFT/profile/RNG measurements used temporary adapters; ported reproducible scripts were smoke-tested, with exact source mappings and 28 FFT driver comparisons retained."
   }
 }

@@ -85,6 +85,87 @@ Separate exploratory results provide context:
 - Changing chunk sizes from 128 through 4,096 pairs showed no convincing
   improvement over the current 2,048. [Chunk sweep](chunk-sweep.json).
 
+## Cython and further measured improvements
+
+The follow-up built an actual Cython extension with Cython 3.3.1 and Apple
+Clang 21, using `-O3 -fno-fast-math -ffp-contract=off`. It uses typed memoryviews,
+releases the GIL, and implements the same serial integration loop, endpoint and
+finite checks as Numba. Compiler dependencies, generated C, objects and the
+extension stayed in `/private/tmp`; the existing environment was not changed.
+
+| Same full-surface experiment | Original reference | Numba | Cython |
+| --- | ---: | ---: | ---: |
+| Typical | 11.459 s | 5.411 s | 5.284 s |
+| Low H / high eta | 10.802 s | 5.087 s | 5.334 s |
+
+Three alternating repeats gave Cython **2.4% faster in one case and 4.9% slower
+in the other**. Its isolated integration kernel was only 1.8–1.9% faster.
+There is **no consistent additional full-surface gain over warmed Numba**.
+All outputs and diagnostics were bit-for-bit equal. See
+[Cython measurements and build hashes](cython-comparison.json).
+
+The [optimized profile](optimized-profile.json) explains the limit: FFT/driver
+work takes about **41.5%**, normal generation **29.5%**, and the compiled
+integration loop **20.5%**. Doubling only that loop's speed would improve total
+time by about 11%; eliminating its cost entirely would cap the improvement at
+26%. Numba already compiles that loop. Compiling the surrounding Python does
+not automatically accelerate the native FFT or random generator calls.
+
+More useful improvements were measured separately:
+
+| Full 63-quote surface | Current Numba | Cached FFT + in-place product | Also shorter FFT padding |
+| --- | ---: | ---: | ---: |
+| Typical | 5.315 s | 5.102 s | 4.612 s |
+| Low H / high eta | 5.382 s | 4.956 s | 4.559 s |
+
+Caching the kernel transform and multiplying the spectra in place gives
+**1.04–1.09×** additional speed, with bitwise equality of all diagnostics.
+Choosing shorter valid convolution lengths gives **1.15–1.18×** relative to
+current Numba, including those changes. All lengths remain at least `2*n-1`,
+which prevents circular wraparound in the linear convolution; the simulation
+time grid is unchanged. Lengths shrink from
+`[2048,4096,2048,4096,4096,2048,4096]` to
+`[1250,2500,1350,2700,3600,1920,3600]`. Maximum observed price change was
+`1.11e-16`, MCSE change `8.13e-20`, and covariance change `5.29e-23`.
+[FFT comparison](fft-comparison.json).
+
+The optional `PreparedHybridDriver` research adapter implements those two
+variants. No production caller selects it. It matched the originally timed
+temporary adapters bit-for-bit in 28 driver comparisons over both variants,
+two H values and every actual grid length. See
+[port equivalence checks](fft-port-parity.json). The ported benchmark was
+smoke-tested; its full timings were not rerun solely for the script relocation.
+
+Reusing the standard-normal output buffer, with the same PCG64 draws, reduced a
+full surface from 5.366 to 5.212 seconds (**about 3%**) with bitwise-equal outputs.
+[Buffer measurements](rng-buffer-comparison.json). A scalar pair-loop fusion
+experiment improved only the integration kernel by 2–4%, suggesting less than
+1% total benefit; it was not promoted. [Micro results](pair-loop-fusion.json).
+Removing raw-control diagnostics saved less than 1%, so retaining them is useful.
+
+A separate microbenchmark found SFC64 normal draws about 22% faster than PCG64,
+which would model about 5.6% total benefit at the measured RNG share. This was
+not a full-surface test or statistical qualification. It changes the realized
+streams and needs an explicit new RNG identity; it is a lower-priority option.
+PCG64DXSM offered no gain and Philox was slower here.
+[Bit-generator measurements](rng-bitgenerators.json).
+
+These gains were measured in separate experiments and must not simply be
+multiplied into a promised combined speedup. All timings are local warmed CPU
+measurements; no Oscar performance or current-campaign ETA is inferred.
+
+**Correctness:** all 60 executions of the ten existing independent mathematical
+and support/parity tests passed across Numba/Cython and
+reference/cached/short-padding FFT combinations, with no skips. These include
+causal-sum coefficients, actual-grid antithetic symmetry, scalar integration,
+analytic Black prices, chunk tails, endpoint overflow and fallback checks.
+[Results and test-source hashes](variant-correctness.json).
+
+The existing 65 tutorial and 45 selected lab tests also pass. Full FFT/profile
+and RNG timing experiments were run with temporary adapters before porting;
+their original and ported source identities are recorded in
+[port provenance](profile-port-provenance.json).
+
 ## Other opportunities and implementation order
 
 [The pipeline audit](pipeline-audit.json) finds that startup and summary storage
@@ -107,8 +188,9 @@ seven expiries similarly changes grids and cross-expiry MC covariance. Those
 are separate numerical experiments after the conservative kernel optimization.
 Adding inferred `c` itself costs only observation augmentation, not repricing.
 
-Recommended next sequence: run the matched benchmark on one allocated Oscar
-CPU, extend parity checks to adaptive and difficult longer-rung cases, then
+Recommended next sequence: keep the Numba kernel, prioritize the cached FFT and
+shorter padding, and measure their combination with buffer reuse on one
+allocated Oscar CPU. Extend parity checks to adaptive and difficult longer-rung cases, then
 declare a **new** producer/backend identity binding the acceleration helper
 and compiler/environment. Integrate worker refilling separately. Existing
 source-bound campaign journals must continue with their original producer;
@@ -128,6 +210,29 @@ The output path must be new. The script opens only committed synthetic metadata,
 does not validate that historical pilot as a current production admission, and
 never opens production journals or submits jobs. It binds the new research
 source and the historical task separately.
+
+Additional commands, also from `lab/` with the same environment variables and
+`PYTHONPATH`, write new outputs only:
+
+```sh
+python scripts/benchmark_rough_fft.py --out /private/tmp/rough-fft-new.json
+python scripts/benchmark_rough_rng.py --out /private/tmp/rough-rng-new.json
+python scripts/profile_rough_pricing_speed.py --out /private/tmp/rough-profile-new.json
+```
+
+For Cython, use a separate installation of Cython 3.3.1 on `PYTHONPATH` and an
+available C compiler; the runtime dependency set is unchanged:
+
+```sh
+python scripts/benchmark_rough_cython.py --build-dir /private/tmp/rough-cython-new \
+  --out /private/tmp/rough-cython-new.json
+python scripts/check_rough_pricing_experiments.py \
+  --cython-extension /private/tmp/rough-cython-new/lib/EXTENSION_FILENAME \
+  --out /private/tmp/rough-variant-checks-new.json
+```
+
+Use the actual extension filename from the build record. Omitting
+`--cython-extension` checks the three Numba/FFT combinations only.
 
 **Passed:** 65 tutorial tests (including eight acceleration checks and four
 independent mathematical checks), 45 lab

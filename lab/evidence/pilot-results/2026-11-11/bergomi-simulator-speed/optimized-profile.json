@@ -1,0 +1,125 @@
+{
+  "platform": "macOS-26.4.1-arm64-arm-64bit",
+  "numpy": "2.5.3",
+  "numba": "0.68.0",
+  "paths_per_block": 32768,
+  "case": "joint-00-typical",
+  "repeats": [
+    {
+      "total_seconds": 5.357461582869291,
+      "components_seconds": {
+        "rng": 1.5395958330482244,
+        "helper_normal_validation": 0.08196475030854344,
+        "helper_curve": 0.051071456633508205,
+        "driver_including_fft": 2.2643057492095977,
+        "compiled_reducer": 1.096177788451314,
+        "overflow_certificate": 0.16005870955996215,
+        "payoffs": 0.07048933138139546,
+        "other": 0.09379796427674592
+      },
+      "component_counts": {
+        "rng": 56,
+        "helper_normal_validation": 56,
+        "helper_curve": 56,
+        "driver_including_fft": 56,
+        "compiled_reducer": 56,
+        "overflow_certificate": 112,
+        "payoffs": 112
+      }
+    },
+    {
+      "total_seconds": 5.155358416959643,
+      "components_seconds": {
+        "rng": 1.5209626678843051,
+        "helper_normal_validation": 0.0721590812318027,
+        "helper_curve": 0.049248583847656846,
+        "driver_including_fft": 2.1384658811148256,
+        "compiled_reducer": 1.0583242480643094,
+        "overflow_certificate": 0.1556833351496607,
+        "payoffs": 0.06653549638576806,
+        "other": 0.09397912328131497
+      },
+      "component_counts": {
+        "rng": 56,
+        "helper_normal_validation": 56,
+        "helper_curve": 56,
+        "driver_including_fft": 56,
+        "compiled_reducer": 56,
+        "overflow_certificate": 112,
+        "payoffs": 112
+      }
+    },
+    {
+      "total_seconds": 5.040446291910484,
+      "components_seconds": {
+        "rng": 1.4751077133696526,
+        "helper_normal_validation": 0.07205416169017553,
+        "helper_curve": 0.04951999569311738,
+        "driver_including_fft": 2.0877801259048283,
+        "compiled_reducer": 1.046698208199814,
+        "overflow_certificate": 0.153047077357769,
+        "payoffs": 0.06490791379474103,
+        "other": 0.09133109590038657
+      },
+      "component_counts": {
+        "rng": 56,
+        "helper_normal_validation": 56,
+        "helper_curve": 56,
+        "driver_including_fft": 56,
+        "compiled_reducer": 56,
+        "overflow_certificate": 112,
+        "payoffs": 112
+      }
+    }
+  ],
+  "median_total_seconds": 5.155358416959643,
+  "median_component_seconds": {
+    "rng": 1.5209626678843051,
+    "helper_normal_validation": 0.0721590812318027,
+    "helper_curve": 0.04951999569311738,
+    "driver_including_fft": 2.1384658811148256,
+    "compiled_reducer": 1.0583242480643094,
+    "overflow_certificate": 0.1556833351496607,
+    "payoffs": 0.06653549638576806,
+    "other": 0.09379796427674592
+  },
+  "component_fractions": {
+    "rng": 0.29502559179605753,
+    "helper_normal_validation": 0.013996908729841192,
+    "helper_curve": 0.009605538875863774,
+    "driver_including_fft": 0.41480450206524716,
+    "compiled_reducer": 0.20528625993931432,
+    "overflow_certificate": 0.030198353355512082,
+    "payoffs": 0.012906085475431824,
+    "other": 0.018194266371117408
+  },
+  "reducer_amdahl_2x_speedup": 1.1143838459343232,
+  "reducer_amdahl_infinite_speedup": 1.2583147233916434,
+  "diagnostics_toggle_longest_block4096pairs": [
+    {
+      "diagnostics": true,
+      "seconds": 0.26435537496581674
+    },
+    {
+      "diagnostics": false,
+      "seconds": 0.26262704096734524
+    },
+    {
+      "diagnostics": false,
+      "seconds": 0.261871709022671
+    },
+    {
+      "diagnostics": true,
+      "seconds": 0.2647917498834431
+    },
+    {
+      "diagnostics": true,
+      "seconds": 0.27740566595457494
+    },
+    {
+      "diagnostics": false,
+      "seconds": 0.265617584111169
+    }
+  ],
+  "scope": "Warmed local serial NumPyFFT+Numba actual63 fixedfirst32768path surface; nested components separated; driver includes own validation scans; other includes Python dispatch, controls, regressions, summary bookkeeping. No production edits."
+}
