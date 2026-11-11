@@ -1,6 +1,6 @@
 # Revised actual-63 Heston grid study
 
-**In preparation.** The user authorized the revised-grid comparison and explicitly retained the recent broad prior. One new300k bank supports fresh200k-prefix and300k-full fits, each300epochs. The existing old54/200k/300 fit remains the control. Bergomi run preparation and initiation are conditionally authorized once the revised Heston setup works; no model or tutorial asset is accepted by preparation alone.
+**Running: shared bank generation and target-matched MCMC references; posterior results pending.** The user authorized the revised-grid comparison and explicitly retained the recent broad prior. One new300k bank supports fresh200k-prefix and300k-full fits, each300epochs. The existing old54/200k/300 fit remains the control. Bergomi run preparation and initiation are conditionally authorized once the revised Heston setup works; no model or tutorial asset is accepted by preparation alone.
 
 ## Financial task and actual quotes
 

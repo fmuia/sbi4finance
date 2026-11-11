@@ -1,0 +1,68 @@
+{
+  "format": "heston_grid_cv_lab_verification_v1",
+  "status": "passed",
+  "verified_utc": "2026-11-11T03:17:26.852036+00:00",
+  "tests": 840,
+  "seconds": 368.922,
+  "grid_cases_collected": 29,
+  "log": {
+    "path": "/private/tmp/grid-cv-lab-tests.log",
+    "sha256": "bcbaf92ddfee905d0dcafaa8c4884c74972dd164225db3145755c295e1f473f4"
+  },
+  "tutorial_verification": {
+    "path": "/private/tmp/grid-cv-tutorial-verification.json",
+    "sha256": "22e804b47bdb8049b68a48141657fb68363ee1c76c0c9b0fef6964fb7a06cafa"
+  },
+  "executed_python": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+  "environment": {
+    "KERAS_BACKEND": "jax",
+    "PYTHONPATH": ".:tests:src:../tutorial/src",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "MPLCONFIGDIR": "/private/tmp/grid-cv-lab-matplotlib",
+    "NUMBA_CACHE_DIR": "/private/tmp/grid-cv-lab-numba",
+    "PYTENSOR_FLAGS": "base_compiledir=/private/tmp/grid-cv-lab-pytensor"
+  },
+  "sources_after_suite": {
+    "lab/scripts/reproduce_heston_pr87_grid.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/reproduce_heston_pr87_grid.py",
+      "sha256": "0c2aa3bd168e6659e71c8119c746bd9b3980558acae33d8526031ff07918227f"
+    },
+    "lab/scripts/run_heston_pr87_grid.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_pr87_grid.py",
+      "sha256": "486cee8f37f89da274c8298c0fa4a9bd71da95e556e9ae1f3f84cbb4187c15b2"
+    },
+    "lab/scripts/run_heston_pr87_grid_reference.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_pr87_grid_reference.py",
+      "sha256": "601aa5596c234d4f6bc2fc37d34b30c90e50e5c4eb9d0f6271d11ed734aea918"
+    },
+    "lab/scripts/evaluate_heston_pr87_grid.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_grid.py",
+      "sha256": "265e327f8392598c927a3ea5d45fa56030fdec957870cde2a9a462d826d22a60"
+    },
+    "lab/scripts/render_heston_pr87_grid.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_grid.py",
+      "sha256": "4bfa32452a132c34dc41d8620299063bc0eea14f4d79692f275804504da11fd8"
+    },
+    "lab/scripts/export_heston_pr87_grid_figures.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/export_heston_pr87_grid_figures.py",
+      "sha256": "94f53e3ba395b8b98f852c2ba7a62a56cf0ca47a0a26f8ce290cd13014ac0834"
+    },
+    "lab/src/sbi4finance/calibration/heston_grid.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_grid.py",
+      "sha256": "adebd7b9d3532ee8d180c4ae94ea400f2bb798818916123879ed6219fe870927"
+    },
+    "tutorial/src/sbi4f_tutorial/heston_options/control_variate.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/control_variate.py",
+      "sha256": "ad2908472eed00688a1ffc8b53eb0187ef9f47a02d3be761589211da90ebf566"
+    },
+    "tutorial/src/sbi4f_tutorial/shared/gbm.py": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/shared/gbm.py",
+      "sha256": "52184ef8c6e472ae8f7a2423d3ff3ec759ddbc919edbcd238dc6eba0ca87fa1a"
+    }
+  },
+  "installs_performed": false,
+  "production_bank_or_models_launched_by_verifier": false,
+  "scientific_acceptance": false
+}
