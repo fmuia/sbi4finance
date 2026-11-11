@@ -2,64 +2,64 @@
 
 The 15-minute opening talk, *Introduction: Bayes for volatility models*, as Beamer source in the tutorial's BayesOps
 theme. The workshop opens with Beamer talks (introduction, amortized Bayes, architectures) and then works through the
-application notebooks; this deck is the first talk. It has 16 content frames after the title page, one of them in two
-steps, and 7 backup frames after `\appendix`. The plan, the minute map, and the source and status of every number are
+application notebooks; this deck is the first talk. It has 16 content frames after the title page, one of them in
+three steps, and 11 backup frames after `\appendix`. The plan, the minute map, and the source and status of every number are
 in [`curriculum/01-slot1-the-problem.md`](../../curriculum/01-slot1-the-problem.md).
 
 | File | What |
 |---|---|
 | `slot1.tex` | The deck: a main document of its own, using `\usepackage[cover]{bayesops}` like the project's `main.tex` |
-| `figures/slot1/*.pdf` | The 9 figures the deck includes, in the theme's colours, as vector PDFs drawn at the size the slides show them |
+| `figures/slot1/*.pdf` | The 11 figures the deck includes, in the theme's colours, as vector PDFs drawn at the size the slides show them |
 | `figures/slot1/*.jpg` | The four presenters' photos, cropped square as on the tutorial's webpage |
 | `export_figures.py` | Regenerates the figures and prints every number the slides quote |
-| `illustration.py` | The running example behind seven of the figures: a thin option chain simulated from Heston |
+| `illustration.py` | The running example behind most of the figures: a thin option chain simulated from Heston, and a forward-start call |
 | `check_posterior.py` | An independent check of the example's posteriors by Metropolis chains; nothing on the slides depends on it |
-| `recorded-results.json` | The recorded results of the Heston SPX study that slides 10 to 13 quote, each with its source file, commit and SHA-256 |
+| `recorded-results.json` | The recorded results of the Heston SPX study that slide 12 and two backup frames quote, each with its source file, commit and SHA-256 |
 | `spx-design.json` | The tutorial's 63-quote SPX design of 9 November 2026 (strikes, maturities, forwards, discounts, half-spreads), with its source |
 | `market-like-case.json` | The Heston notebook's simulated case "market-like parameters": its 63 observed prices, generating parameters and noise draws, with their source |
 
 ## The argument
 
-The talk has five parts, and each key line follows from the previous one.
+The talk introduces Bayes for volatility calibration and sets up the rest of the tutorial. It has five parts.
 
-1. **The problem** (slides 1–3). A model calibrated to quoted options prices exotics, which the market does not
-   quote. The calibration is one fit among many that match the quotes, so the price it gives an exotic has a range.
-2. **The exercise** (slides 4–5). Volatility models are the example. The five steps (model, simulate, train, infer,
-   check) and the questions they answer are general; the methods are the message, more than the examples.
-3. **Why Bayes** (slides 6–9). The posterior keeps every fit, weighted. Where the quotes determine the price, the
-   classical range and the posterior agree, and the deck says so, also for the Heston notebook's own 63 quotes. What
-   the quotes leave open is set by an assumption: an assumed value fits the quotes as well as any other and leaves
-   no trace in the fit, a prior states its width. One set of draws then prices every product, and a book.
-4. **Why simulation-based inference** (slides 10–13). An exact posterior costs minutes for Heston and months for
-   rough Bergomi. A network trained once on simulations returns it in 0.3 seconds, which makes its coverage testable.
-   The tests say where the network holds and where it does not.
-5. **The close** (slides 14–16). Three takeaways, the team, and the rest of the tutorial.
+1. **Why uncertainty, why Bayes** (slides 1–2). Valuation, regulation, risk and trading each need a range, not one
+   number. Bayes treats what is unknown as a distribution.
+2. **The example and the exercise** (slides 3–5). A model calibrated to quoted options prices what the market does
+   not quote. Volatility models are the example; the five steps (model, simulate, train, infer, check) and the
+   questions they answer are general.
+3. **Bayes for calibration** (slides 6–11). Bayes' rule; what a prior and a likelihood are; the posterior, computed
+   as draws by a sampler, and what it shows; from the posterior to the price of an exotic; why Bayes; and what
+   happens when the quotes run thin. Least squares with a quadratic approximation also gives ranges, and the deck
+   says so: it is the limit of Bayes when the quotes are informative.
+4. **The cost, and what comes next** (slides 12–13). An exact posterior costs minutes to months. Amortized inference
+   pays that cost once: one handover slide, to the next talk.
+5. **The close** (slides 14–16). A summary in three pictures, the team, and the rest of the tutorial.
+
+The validation of the network (the coverage test and the checks) is not part of this talk: it belongs to the worked
+example. Those slides are in the backup.
 
 ## Two kinds of evidence
 
-The deck shows two kinds of evidence, never on the same slide. The rule above the strip of facts carries a tag that
-says which one a slide shows.
+The rule above a slide's strip of facts carries a tag that says which kind of evidence the slide shows.
 
 | Tag | Slides | What it is | Where it comes from |
 |---|---|---|---|
-| ILLUSTRATION · SIMULATED QUOTES | 2, 3, 6, 7, 8, 9 | One running example: a thin option chain simulated from Heston, the model right by construction, and one exotic, a forward-start call. It shows a mechanism. | `illustration.py` |
-| RESULT · HESTON ON SPX · AS OF 11 NOV | 10, 11, 12, 13 | What the tutorial's Heston study on 63 SPX quotes had recorded on 11 November 2026 | `recorded-results.json` |
+| ILLUSTRATION · SIMULATED QUOTES | 7, 8, 9, 11, and two backup frames | One running example: a thin option chain simulated from Heston, the model right by construction, and one exotic, a forward-start call. It shows a mechanism. | `illustration.py` |
+| RESULT · HESTON ON SPX · AS OF 11 NOV | 12, and two backup frames | What the tutorial's Heston study on 63 SPX quotes had recorded on 11 November 2026 | `recorded-results.json` |
 
-Slide 13 states the status of every result with a mark and a legend: a check that holds, one that holds with a
-caveat, one that raised a flag, and one still to come. Slide 10 separates measured costs from estimated ones by
-colour and by label. On 11 November the status was:
+Slide 12 gives costs as orders of magnitude from the tutorial's own runs, and marks the rough Bergomi costs as
+estimated. The backup frames *The Coverage Test* and *What the Checks Find* give the network's status on
+11 November:
 
 | Check | Status | Recorded |
 |---|---|---|
 | Speed | holds | 0.27 s per posterior (615 posteriors in 164 s), against 14.0 to 26.6 CPU-minutes for an exact posterior |
 | Coverage on 512 simulated surfaces | holds for 5 of 6 parameters | 90% intervals contain the truth 89.3 to 92.4% of the time for κ, v∞, σ_v, ρ and c; 97.5% for v₀, whose intervals are too wide |
 | Against exact posteriors on two simulated surfaces | caveat | means within 0.96 exact standard deviations; 90% intervals 1.05 to 2.9 times as wide as the exact ones |
-| On the SPX quotes of 9 November | flag | Heston misses the quotes by 13.4 half-spreads (root mean square), so they are unlike the network's training data; the market results use the exact posterior |
 | Rough Bergomi | pending | the simulation bank was being generated; no result is shown |
 
 These are development results (`scientific_acceptance` is false in their run records), not studies of the claims
-ledger, and the deck cites no claim of the ledger. Update slide 13 and `recorded-results.json` together if the
-record changes before the talk.
+ledger, and the deck cites no claim of the ledger. The deck does not quote Heston's misfit on the SPX quotes.
 
 ## How a slide is written
 
@@ -74,10 +74,10 @@ Every main slide has one reading order, so that the audience knows what to read 
 Write plain statements, not slogans, and keep the logical order. Explanations go in the speaker notes (`\note{}`),
 never in sentences on the slide. No paragraphs, cards or blocks on the main slides; a table only where the table is
 the content, as a list of one-line rows (the six questions, the five checks) or of one row per part (the programme).
-The backup frames after `\appendix` hold the rest. One slide, *One Fit Among Many*, has two steps: the quotes with
-the best fit, then the other fits and the maturity nobody quotes.
+The backup frames after `\appendix` hold the rest. One slide, *What a Posterior Looks Like*, has three steps: a
+sampler's first steps, the posterior draws, then least squares with its quadratic region.
 
-The speaker notes hold about 1,700 words for 14 minutes 20 seconds, about 120 words a minute.
+The speaker notes hold about 1,630 words for 14 minutes 20 seconds, about 115 words a minute.
 
 ## In the Overleaf project
 
@@ -88,7 +88,7 @@ as it is.
 
 The deck adds a few helpers to the theme, at the top of `slot1.tex`: `\key` and `\pairs` for the reading order above,
 with `\pairs[illustration]` and `\pairs[result]` for the evidence tag; `\gap`, `\footgap`, `\fig` and `\figmax` for
-the vertical layout; `\holds`, `\caveat`, `\flagged` and `\pending` for the status marks of slide 13; `\detail` for
+the vertical layout; `\holds`, `\caveat`, `\flagged` and `\pending` for the status marks of the checks; `\detail` for
 the backup frames; `\highlight`, `\source` for a source line, `\person` for a presenter, `\rowrule` for the light rule
 between the rows of a list, the ragged table column `L`, and the diagram styles, which apply only inside a picture
 opened with `[deck]`. If the theme already defines one of these names, LaTeX stops at that line: rename the helper.
@@ -123,7 +123,7 @@ The running example takes about ten minutes to compute on four cores, mostly fiv
 under `tutorial/.cache/slides-slot1/`, which Git ignores, and reused until `illustration.py`, `spx-design.json`,
 `market-like-case.json` or the computation in `export_figures.py` changes; `--recompute` ignores the cache. The
 script ends by printing every number the slides quote, and lists those that `slot1.tex` does not contain. After a
-change to the example, update the slides it names (2, 3, 6, 7, 8, 9 and the backup frames) and the curriculum page.
+change to the example, update the slides it names (7, 8, 9, 11 and the backup frames) and the curriculum page.
 
 ## The running example
 
@@ -149,8 +149,8 @@ chain is thinner and quoted less tightly, as for a single stock, so that what th
   and it pays at 1 year. Slide 9 adds a second forward start, struck in 9 months.
 - **Readings.** The same surface is read with fewer and fewer quoted expiries, always including 1 year, when the
   product pays: all five expiries (35 quotes), 1 month to 1 year (28), 3 months to 1 year (21), 6 months and 1 year
-  (14), and 1 year only (7). Slides 2, 3, 6 and 9 use the two expiries that are the product's own dates; slide 8
-  uses the one expiry; slide 7 uses all five readings.
+  (14), and 1 year only (7). Slides 7, 8 and 9 use the two expiries that are the product's own dates; slide 11
+  uses all five readings; the backup frame *What an Assumption Does* uses the one expiry.
 
 **Why the product's dates are quoted.** The talk is about exotics: products whose price the quotes do not fix even
 where the quotes are. With quotes at 6 months and at 1 year, the options fix the distribution at each date, and the
@@ -195,7 +195,7 @@ What was checked:
 - **The classical route** was checked on the notebook's own data. On its 63 simulated quotes
   (`market-like-case.json` on the design of `spx-design.json`), the least-squares 90% intervals of this code match
   the notebook's exact posterior (four MCMC chains of 12,000 draws) for all five Heston parameters: widths within 2%
-  and centres within 0.03 posterior standard deviations. Slide 7 quotes this, a backup frame shows the table, and a
+  and centres within 0.03 posterior standard deviations. Slides 8 and 11 quote this, a backup frame shows the table, and a
   test repeats it.
 
 **Why these samplers, and their limits.** The tutorial's environment does not include PyMC, and the slides' code may
@@ -209,13 +209,16 @@ quotes as results are the Heston notebook's PyMC references.
 
 **It is an illustration, not a result of the tutorial.** The model is right by construction, the quote errors are
 independent, and one simulated surface is shown. It supports statements about a mechanism, not about a market. On
-the real SPX quotes the open question is the model, not the parameters: Heston misses the quotes by 13 half-spreads.
-The backup frame *The Example and the Notebook* sets the two side by side.
+the tutorial's 63 SPX quotes the same calculation gives ranges too narrow to see, which is why the example thins the
+chain. The backup frame *The Example and the Notebook* sets the two side by side.
+
+The sampler's path on the first step of slide 8 is a short random-walk Metropolis chain on the same posterior, run
+by `export_figures.py` from a fixed starting guess; it illustrates how draws are obtained and feeds no number.
 
 ## The recorded results
 
-Slides 10 to 13 and two backup frames quote the Heston SPX study as recorded on 11 November 2026. The numbers are
+Slide 12 and two backup frames quote the Heston SPX study as recorded on 11 November 2026. The numbers are
 copied into [`recorded-results.json`](recorded-results.json) with the branch, path, commit and SHA-256 of each source
-file, because the slides' code reads nothing outside `tutorial/`. The costs of rough Bergomi on slide 10 are not
+file, because the slides' code reads nothing outside `tutorial/`. The costs of rough Bergomi on slide 12 are not
 measured: they are the Heston run's 146,000 pricings (or 1,000 pricings for importance sampling) at the 60 to 105
 CPU-seconds that one rough-Bergomi pricing of the quotes takes, and the slide labels them "estimated".

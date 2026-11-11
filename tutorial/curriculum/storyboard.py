@@ -39,12 +39,12 @@ TUTORIAL = ("The tutorial: one smile, three models, 115 minutes", [
 
 SLOTS = {
     1: ("Slot 1, 15 minutes, Beamer slides", [
-        ("The problem:\na price needs\na range", 3, "F", "slide"),
-        ("The exercise:\nfive steps,\nsix questions", 1.75, "F", "slide"),
-        ("Why Bayes: the posterior, where the\nclassical range agrees, what the\nquotes leave open, one set of draws",
-         4.25, "F", "slide"),
-        ("Why simulation-based inference:\ncost, amortization, a test,\nwhat the checks find", 4, "F", "slide"),
-        ("Summary,\nthe team,\nthe rest", 2, "F", "slide"),
+        ("Why uncertainty,\nwhy Bayes", 1.75, "F", "slide"),
+        ("The example:\nfive steps,\nsix questions", 2.5, "F", "slide"),
+        ("Bayes for calibration: prior and likelihood, the posterior as draws,\nfrom posterior to prices, why Bayes, "
+         "thin quotes", 6.75, "F", "slide"),
+        ("The cost;\nnext: amortized\ninference", 1.75, "F", "slide"),
+        ("Summary,\nthe team,\nthe rest", 2.25, "F", "slide"),
     ]),
     2: ("Slot 2, 15 minutes", [
         ("Two ways\nto pay", 2, "A", "slide"),
