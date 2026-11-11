@@ -1,0 +1,37 @@
+{
+  "format": "rough_actual_layout_portable_deployment_summary_v1",
+  "status": "passed",
+  "source_revision": "3e979d94bc1966f62b917236a9e9963cc37029b7",
+  "work_order": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation-portable/work-order.json",
+    "sha256": "38455e9565681ea502cac33116f92c27f2d3396eb3ff06c0248b251e9f9edb45"
+  },
+  "remote_record": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation-portable/source-deployment-3e979d9/remote-preflight/deployment.json",
+    "sha256": "499ca1d14f9f2f3961a9917c2fa89e2c5c452bcf5dde4c9deb8749b35951e7ae"
+  },
+  "preflight_producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation-portable/source-deployment-3e979d9/preflight-runner.py",
+    "sha256": "f1e29bef2028f8eacc6aa95866db84926746edf415644f232632558bce40d38c"
+  },
+  "console": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation-portable/source-deployment-3e979d9/preflight-console.log",
+    "sha256": "2beceaeb79757a093b7f3f54eec62c138c96fcec4e0958f4cb668467e70bf80f"
+  },
+  "archive_sha256": "db3f4b3bff54ac507fd13cce451aa7534ee3f63ffeb904de143ca0e04dc15daa",
+  "archive_bytes": 110915578,
+  "archive_transfer_verified": true,
+  "all23_source_bindings_verified": true,
+  "execution_versions_match": true,
+  "source_imports_from_new_root": true,
+  "check_sources_outside_repo_cwd": "passed",
+  "authoritative_panel_sha256": "cbb2c2c31890c6a6ffb45eedf255cb0d7e1ff223c6801c918d11eff7d8fe19c6",
+  "original_stored_cases_bitexact": true,
+  "original_failed_attempt_preserved": true,
+  "condition_created": false,
+  "worker_invoked": false,
+  "rough_MC_executed": false,
+  "pricing_executed": false,
+  "slurm_jobs_submitted": false,
+  "scientific_acceptance": false
+}

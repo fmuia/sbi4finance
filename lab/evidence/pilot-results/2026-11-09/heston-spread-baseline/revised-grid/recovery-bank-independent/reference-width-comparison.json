@@ -1,0 +1,359 @@
+{
+  "format": "heston_pr87_grid_reference_width_comparison_v1",
+  "status": "complete",
+  "created_utc": "2026-11-11T04:30:53.636079+00:00",
+  "consumer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/compare_heston_pr87_grid_reference_widths.py",
+    "sha256": "25928bb6dbe0452db42ba21ba4c2f559adf39146d970fb5a14201c71055645e2"
+  },
+  "archived_consumer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/reference-width-comparison-consumer.py",
+    "sha256": "25928bb6dbe0452db42ba21ba4c2f559adf39146d970fb5a14201c71055645e2"
+  },
+  "old54_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/evaluation/evaluation.json",
+    "sha256": "9775827e47d2e93c6b3735ab0d5a2a042929be9741adf4979bbcc0f3d3037f7c"
+  },
+  "new63_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation/evaluation.json",
+    "sha256": "0e5e01ebf8c2d1d4b77b4a0cd872d0249fb14995d9d27487368debead9b3f29e"
+  },
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/protocol.json",
+    "sha256": "c8d1a7b0fffb0c04bc7e6ad1d0b50c458a125114ffc579d43c57a069994060ec"
+  },
+  "preparation_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/preparation-protocol.json",
+    "sha256": "5338fd41ac6b92a0205fb801bb473cea01a46390ac24e97deef5937a15a686b6"
+  },
+  "conditional_truth_audit": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/conditional-truth-audit.json",
+    "sha256": "2674172cf072bce9e57e619a4c5abc5bb56befa8b4f2c112ae8ae726ae77f8bb"
+  },
+  "old_panel": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/panel.json",
+    "sha256": "8246c08c72336a819771bf481ffd46be4e09f1c2cf64dab6e6725a10229d4f1d"
+  },
+  "new_panel": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/conditional-panel.json",
+    "sha256": "824b765095b7549a65c2f120701c6eaa2a78a88bd34a40965f1972584651258b"
+  },
+  "parameter_names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho",
+    "c"
+  ],
+  "prior_bounds_unchanged": true,
+  "prior_bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      10.0
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      3.0
+    ],
+    [
+      -0.95,
+      -0.1
+    ],
+    [
+      0.5,
+      2.0
+    ]
+  ],
+  "cases": {
+    "synthetic-broad": {
+      "old_reference_quantiles_05_50_95": [
+        [
+          0.1358787618916264,
+          3.0514695536081944,
+          0.08274540086495426,
+          1.7209012144054605,
+          -0.7821949485159517,
+          0.9381102520662465
+        ],
+        [
+          0.1360298112978263,
+          3.0734470112275853,
+          0.08294570971757184,
+          1.726396589214763,
+          -0.7802520763067545,
+          1.0973667469920052
+        ],
+        [
+          0.13618384396689726,
+          3.09574158378314,
+          0.08314928840383279,
+          1.7320380503636152,
+          -0.7783864015469429,
+          1.3152228326432758
+        ]
+      ],
+      "new_reference_quantiles_05_50_95": [
+        [
+          0.13591781194551752,
+          3.063436901744283,
+          0.08287619913391336,
+          1.7196508245080289,
+          -0.7815520104258702,
+          0.8469075174335229
+        ],
+        [
+          0.13602281690637044,
+          3.080626120107781,
+          0.08305275882214329,
+          1.7235306534137973,
+          -0.7807671888799409,
+          0.9797911614677128
+        ],
+        [
+          0.13612378678120182,
+          3.0981034127713607,
+          0.08322872511075634,
+          1.7274610331243891,
+          -0.7800087910447779,
+          1.1575823843659472
+        ]
+      ],
+      "old_width90": [
+        0.0003050820752708572,
+        0.04427203017494552,
+        0.0004038875388785307,
+        0.011136835958154734,
+        0.003808546969008786,
+        0.37711258057702923
+      ],
+      "new_width90": [
+        0.0002059748356842972,
+        0.03466651102707763,
+        0.00035252597684297393,
+        0.007810208616360281,
+        0.0015432193810922534,
+        0.3106748669324243
+      ],
+      "new_over_old_width90": [
+        0.6751456489255527,
+        0.7830341389380454,
+        0.8728320210666273,
+        0.701295111619329,
+        0.40519898891883493,
+        0.8238252525467409
+      ],
+      "physical_width_ratio_range": [
+        0.40519898891883493,
+        0.8728320210666273
+      ],
+      "generating_truth": [
+        0.13606576993442382,
+        3.0827415084102587,
+        0.08283978188501408,
+        1.72407461760237,
+        -0.7807145844719824,
+        1.0
+      ],
+      "same_synthetic_physical_and_c_truth": true,
+      "old_observations_sha256": "ee684695a1671219e9b45037a498b82286d032ac9f464b185e00d94735eb45a8",
+      "new_observations_sha256": "ff18699bae051e16340596a4dfdd557d28db2ef491eead3a9cbd98d2fc174d67",
+      "realized_observations_differ": true
+    },
+    "synthetic-market-like": {
+      "old_reference_quantiles_05_50_95": [
+        [
+          0.027019687295743867,
+          4.231759414714202,
+          0.05632866209748543,
+          1.7929922626841932,
+          -0.6663801565414463,
+          0.9702011368219547
+        ],
+        [
+          0.027124923780863876,
+          4.317097542169205,
+          0.05664661406133539,
+          1.8111315793374634,
+          -0.6644773240143279,
+          1.140646158204679
+        ],
+        [
+          0.027231756049688374,
+          4.399524815516146,
+          0.05697840254661529,
+          1.8294919888602337,
+          -0.6625379230957251,
+          1.3644979012718297
+        ]
+      ],
+      "new_reference_quantiles_05_50_95": [
+        [
+          0.027047712608327383,
+          4.345283010541781,
+          0.05604060034904054,
+          1.804828292140583,
+          -0.6670834565408237,
+          0.7723611780284239
+        ],
+        [
+          0.02712031259269798,
+          4.41027055508354,
+          0.05631978774928506,
+          1.8174927900480449,
+          -0.6657558209302661,
+          0.8964484528213446
+        ],
+        [
+          0.027192120428487156,
+          4.47545097365241,
+          0.056605922551602565,
+          1.8304333182959407,
+          -0.664444982610856,
+          1.051785486597091
+        ]
+      ],
+      "old_width90": [
+        0.0002120687539445068,
+        0.1677654008019438,
+        0.0006497404491298611,
+        0.03649972617604047,
+        0.0038422334457212104,
+        0.39429676444987494
+      ],
+      "new_width90": [
+        0.0001444078201597726,
+        0.13016796311062873,
+        0.0005653222025620228,
+        0.025605026155357757,
+        0.002638473929967633,
+        0.2794243085686672
+      ],
+      "new_over_old_width90": [
+        0.6809481240105772,
+        0.7758927793717079,
+        0.8700738938434691,
+        0.7015128286678949,
+        0.6867031811682061,
+        0.708664979684836
+      ],
+      "physical_width_ratio_range": [
+        0.6809481240105772,
+        0.8700738938434691
+      ],
+      "generating_truth": [
+        0.027111476938590673,
+        4.33564875507931,
+        0.056477632243131036,
+        1.7993356588948335,
+        -0.6674551198176153,
+        1.0
+      ],
+      "same_synthetic_physical_and_c_truth": true,
+      "old_observations_sha256": "2fff2664136ba888e2f75c83b230ec53e0f31a522f74c6801ed2654802f9ed4f",
+      "new_observations_sha256": "070cd0e93495edd09c9147cf7105571e1c300910113615e55630a5f5e287e6ea",
+      "realized_observations_differ": true
+    },
+    "market": {
+      "old_reference_quantiles_05_50_95": [
+        [
+          0.027074693740054636,
+          3.5805307622704046,
+          0.05551391098439879,
+          1.468568617297965,
+          -0.6848572952497352,
+          1.997103390564277
+        ],
+        [
+          0.02724581984855852,
+          3.7082999666043874,
+          0.0561160794722416,
+          1.494267503505942,
+          -0.6811519643198055,
+          1.9993444777221954
+        ],
+        [
+          0.02741725787635506,
+          3.8447706600321103,
+          0.05671923608261043,
+          1.5214479919894064,
+          -0.677460333488804,
+          1.9999519515169792
+        ]
+      ],
+      "new_reference_quantiles_05_50_95": [
+        [
+          0.027899535941327387,
+          4.902189244100288,
+          0.052953053578669744,
+          1.773409087542481,
+          -0.6997005294815059,
+          1.997877860931088
+        ],
+        [
+          0.02806820009295445,
+          5.068975714558078,
+          0.05349013764538078,
+          1.8045089182197465,
+          -0.6966927201494171,
+          1.99950061777657
+        ],
+        [
+          0.028233633531086114,
+          5.240657457210989,
+          0.0540513395027504,
+          1.8357350261239582,
+          -0.6936692458583354,
+          1.999959785913299
+        ]
+      ],
+      "old_width90": [
+        0.0003425641363004224,
+        0.26423989776170576,
+        0.0012053250982116404,
+        0.05287937469144133,
+        0.007396961760931187,
+        0.0028485609527022504
+      ],
+      "new_width90": [
+        0.00033409758975872644,
+        0.3384682131107004,
+        0.0010982859240806567,
+        0.06232593858147717,
+        0.0060312836231704026,
+        0.0020819249822108254
+      ],
+      "new_over_old_width90": [
+        0.9752847842359337,
+        1.2809125948721587,
+        0.9111947687061364,
+        1.1786436383780612,
+        0.8153730975095832,
+        0.7308690306366218
+      ],
+      "physical_width_ratio_range": [
+        0.8153730975095832,
+        1.2809125948721587
+      ],
+      "generating_truth": null,
+      "same_synthetic_physical_and_c_truth": false,
+      "old_observations_sha256": "e55bc1a754740303e906c35ad7595d93eff27a99178ef64315ba2b09f0e1aed6",
+      "new_observations_sha256": "0d27cd709bd319608c6af4e6c1dd4a9be43e40ac3134638806e695b1dd7f6861",
+      "realized_observations_differ": true
+    }
+  },
+  "chain_arrays_opened": false,
+  "model_loads": 0,
+  "new_pricing_or_posterior_queries": 0,
+  "reserved_arrays_opened": false,
+  "scope": "Descriptive MCMC90% width change for two realized observation tasks. Geometry, measured spreads and most noise vectors differ; this is not a causal put-shift attribution, prior-wide optimality claim or evidence of neural calibration.",
+  "scientific_acceptance": false
+}

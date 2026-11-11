@@ -1,0 +1,14 @@
+{
+  "format": "rough_actual_layout_portable_outside_cwd_proof_v1",
+  "status": "passed",
+  "cwd": "/tmp",
+  "work_order": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-portable-20261110/preparation/work-order.json",
+    "sha256": "38455e9565681ea502cac33116f92c27f2d3396eb3ff06c0248b251e9f9edb45"
+  },
+  "sources_verified": 23,
+  "condition_created": false,
+  "worker_invoked": false,
+  "pricing_executed": false,
+  "slurm_jobs_submitted": false
+}
