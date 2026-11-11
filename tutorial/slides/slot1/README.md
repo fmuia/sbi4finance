@@ -158,7 +158,11 @@ range of a product, and the posterior.
     started from dispersed least-squares fits (R-hat at most 1.008, at least 487 effective draws): means within 0.06
     standard deviations, standard deviations within 10% (the sampler's tails of κ and the long-run variance are a
     little longer), the forward start's 5%, 50% and 95% points within 2% of the width of its 90% range.
-  - *7 days*: the same check, with 80,000 draws after 40,000, is being rerun on this surface.
+  - *7 days*, against four chains of 80,000 draws after 40,000 (R-hat at most 1.006, at least 690 effective draws):
+    means within 0.06 standard deviations and standard deviations within 5%; the forward start's points agree within
+    5% of its range (1.23 to 7.00 here, 1.48 to 7.03 by the chains: the sampler's lower tail, at the slowest
+    reversion, is a little longer). This is the least precise of the five readings, and slide 7 uses it only to show
+    a range set by the box.
 
   The chains are not part of this folder, because PyMC is not a dependency of the tutorial.
 
