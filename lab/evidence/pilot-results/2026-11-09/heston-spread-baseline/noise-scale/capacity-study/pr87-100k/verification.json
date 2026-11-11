@@ -1,0 +1,136 @@
+{
+  "format": "heston_pr87_100k_verification_v1",
+  "status": "passed",
+  "verified_utc": "2026-11-11T00:50:53.662555+00:00",
+  "pre_fit_source_commit": "48b0193b2f790d2060de328c89a36f838b427925",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/protocol.json",
+    "sha256": "102d88b501790c33bff246346aae4d2172014728efb113afc6d1ffc3459c815d"
+  },
+  "campaign": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/campaign.json",
+    "sha256": "c149b3ac699c02f0ba2dd42073286551bee9bfd5c7bd079415a1bdadb053fc14"
+  },
+  "primary_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/evaluation/evaluation.json",
+    "sha256": "8ae608e7068eac95a2ddacdd794cdffa04986d1a14b614263f2156a87b00bc68"
+  },
+  "secondary_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/evaluation-best-validation/evaluation.json",
+    "sha256": "99165687ca2c684a42b01b22c8dd39c31530cacb9f56348345989da1f691f373"
+  },
+  "independent_audit": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/independent-audit.json",
+    "sha256": "0b00ee1ff20a86893f8b3451fbd55ecf59e56e1543f29f35bcae0064f1ec8e7d"
+  },
+  "native_metadata_audit": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/native-metadata-audit.json",
+    "sha256": "1548c9ccea01fe32dacff2e6853ab708395aefcae46e88accfdef67d0e5cc797"
+  },
+  "full_lab_tests": {
+    "count": 789,
+    "seconds": 362.878,
+    "status": "passed",
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/lab-tests.log",
+      "sha256": "6ccdf45abaa8fded5df1c608f904a7fbcc71494a0b26b9c160acd4dc976a39c6"
+    },
+    "scope": "Full lab discovery against frozen 100k/200-epoch sources before the later 300-epoch follow-up sources."
+  },
+  "focused_evaluation_tests": {
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/focused-evaluation-tests.log",
+      "sha256": "46240b64745006ec309e48cd05e1fc13d60e03782181654f2d4721ddb4701c97"
+    },
+    "status": "passed"
+  },
+  "native_final_source_smoke": {
+    "verification": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/native-smoke-verification.json",
+      "sha256": "2aab9c856acda583eddf9f8f5bd183662364feee5837fc74c78b88d04ceed536"
+    },
+    "train_rows": 256,
+    "appended_rows": 128,
+    "validation_rows": 32,
+    "epochs": 2,
+    "optimizer_updates": 2,
+    "parent_prefix_validation_and_whitening_exact": true,
+    "strict_full_state_seeded_reload_passed": true
+  },
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/report.html",
+    "sha256": "30ae19ecc86adda79c3ad6f97aab04469c071c64d36f5117753b76df2a8bae2b"
+  },
+  "report_checks": {
+    "bytes": 425417,
+    "inline_svg_count": 11,
+    "external_resources": 0,
+    "below_one_MiB": true,
+    "primary_and_predeclared_secondary_present": true
+  },
+  "standalone_figures": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/scientific-figures/manifest.json",
+    "sha256": "d0cfc56e42b58cc0f6ecb9f4472de2accaeed3b7dddc4114a6953814e0e91935"
+  },
+  "figure_checks": {
+    "pairs": 9,
+    "all_file_hashes_and_sizes_exact": true,
+    "all_pngs_and_svgs_parse": true,
+    "all_plotted_values_inside_expanded_y_axes": true,
+    "visual_qa": [
+      "primary-historical-recovery",
+      "primary-historical-sbc",
+      "native-learning-curves",
+      "secondary-historical-recovery"
+    ],
+    "visual_result": "Readable six-target panels, interval bars, labels and legends; no observed overlaps or clipped displayed values."
+  },
+  "release_checks": {
+    "manifest": "153 artifacts, 0 copies refreshed",
+    "claims": "current",
+    "runtime_boundary": "passed",
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/release-checks.log",
+      "sha256": "15d5e28649e1d8f321d5859f8aeb5337eb0d451d2f13c4f80a59c1ba6249f701"
+    }
+  },
+  "compact_training_exports": [
+    {
+      "source": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-100k/training/run.json",
+      "copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/training/run.json",
+      "sha256": "7d859994e692c0a24116ef32c134e5792a3264b95bbb89b601cb6027708f6401",
+      "bytes_equal": true
+    },
+    {
+      "source": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-100k/training/native-history.json",
+      "copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/training/native-history.json",
+      "sha256": "2981f1b646e1966ea873fa1551b0919426fc88c1d3c0843989129adfc01cf843",
+      "bytes_equal": true
+    },
+    {
+      "source": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-100k/training/native-epoch-history.json",
+      "copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/training/native-epoch-history.json",
+      "sha256": "16f163692b13b8f0d6649a50cfa5f83891ef2099dfe0469864f973fe3a67757a",
+      "bytes_equal": true
+    },
+    {
+      "source": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-100k/training/generation-progress.json",
+      "copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/training/generation-progress.json",
+      "sha256": "6d0a25478d6e429425f6f5f7d319cb23d8d4ffed54395b4d832d8db3ce07ce0b",
+      "bytes_equal": true
+    }
+  ],
+  "preserved_historical_files": 469,
+  "all_preserved_historical_files_unchanged": true,
+  "raw_draws_clipped_filtered_or_resampled": false,
+  "reserved_arrays_opened": false,
+  "new_reference_sampling": false,
+  "official_quality_established": false,
+  "scientific_acceptance": false,
+  "promotion": false,
+  "followup_authorization": "Fresh unchanged-recipe 100k/300 epochs, then fresh 200k/300 epochs only if existing diagnostics remain insufficient; separate frozen identities and budgets.",
+  "final_preserved_historical_hash_recheck": {
+    "files": 469,
+    "all_unchanged": true
+  }
+}

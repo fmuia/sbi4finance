@@ -1,0 +1,133 @@
+{
+  "format": "heston_pr87_100k_report_v1",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/protocol.json",
+    "sha256": "102d88b501790c33bff246346aae4d2172014728efb113afc6d1ffc3459c815d"
+  },
+  "evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/evaluation/evaluation.json",
+    "sha256": "8ae608e7068eac95a2ddacdd794cdffa04986d1a14b614263f2156a87b00bc68"
+  },
+  "secondary_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/evaluation-best-validation/evaluation.json",
+    "sha256": "99165687ca2c684a42b01b22c8dd39c31530cacb9f56348345989da1f691f373"
+  },
+  "parent_10k_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/evaluation/evaluation.json",
+    "sha256": "2faee0d467ebaae06940e464d01df7c3c28cdd70f363882946b2afec44e98cd9"
+  },
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/report.html",
+    "sha256": "30ae19ecc86adda79c3ad6f97aab04469c071c64d36f5117753b76df2a8bae2b"
+  },
+  "report_bytes": 425417,
+  "inline_svg_count": 11,
+  "limit_bytes": 1048576,
+  "protected_inputs_unchanged": true,
+  "producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_100k.py",
+    "sha256": "27b75ef36d94fb842a8de2905fc6f2ab98382b6420ae500c30683ed00d5fa88e"
+  },
+  "readiness": {
+    "primary_final": {
+      "panels": {
+        "native_validation": {
+          "finite": true,
+          "all_six_nominal90_within_wilson95": false,
+          "all_six_sbc_inside_dkw": true,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": false
+        },
+        "population": {
+          "finite": true,
+          "all_six_nominal90_within_wilson95": false,
+          "all_six_sbc_inside_dkw": false,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": false
+        }
+      },
+      "conditional_cases": {
+        "synthetic-broad": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": true,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        },
+        "synthetic-market-like": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": true,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        },
+        "market": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        }
+      },
+      "necessary_diagnostics_pass": false,
+      "official_quality_established": false,
+      "scientific_acceptance": false,
+      "promotion": false,
+      "scope": "Descriptive necessary checks using existing marginal and conditional conventions; no new acceptance family or independent held-out confirmation."
+    },
+    "secondary_best_validation": {
+      "panels": {
+        "native_validation": {
+          "finite": true,
+          "all_six_nominal90_within_wilson95": false,
+          "all_six_sbc_inside_dkw": true,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": false
+        },
+        "population": {
+          "finite": true,
+          "all_six_nominal90_within_wilson95": false,
+          "all_six_sbc_inside_dkw": false,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": false
+        }
+      },
+      "conditional_cases": {
+        "synthetic-broad": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": true,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        },
+        "synthetic-market-like": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": true,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        },
+        "market": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        }
+      },
+      "necessary_diagnostics_pass": false,
+      "official_quality_established": false,
+      "scientific_acceptance": false,
+      "promotion": false,
+      "scope": "Descriptive necessary checks using existing marginal and conditional conventions; no new acceptance family or independent held-out confirmation."
+    }
+  },
+  "scientific_acceptance": false,
+  "promotion": false
+}

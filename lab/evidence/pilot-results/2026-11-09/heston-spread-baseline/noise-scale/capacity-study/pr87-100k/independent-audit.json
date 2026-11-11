@@ -1,0 +1,415 @@
+{
+  "format": "heston_pr87_100k_independent_audit_v1",
+  "status": "complete",
+  "audited_utc": "2026-11-11T00:42:08.569307+00:00",
+  "audit_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-100k/training/auditconsumer.py",
+    "sha256": "a515f43833704fa8f2233e1d139ad94ba0f7e0976c6a033901522fb5e744de33"
+  },
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/protocol.json",
+    "sha256": "102d88b501790c33bff246346aae4d2172014728efb113afc6d1ffc3459c815d"
+  },
+  "source_commit": "48b0193",
+  "current_commit": "48b0193b2f790d2060de328c89a36f838b427925",
+  "bound_source_and_input_hashes_verified": true,
+  "data": {
+    "payload": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-100k/training/data.npz",
+      "sha256": "9bea36d788187307ecaa4422ebe570f2f8e829c184dd6bace4e58deebcc6634a"
+    },
+    "arrays": 18,
+    "train_rows": 100000,
+    "new_rows": 90000,
+    "retained_prefix_rows": 10000,
+    "unchanged_validation_rows": 100,
+    "quote_count": 54,
+    "targets": 6,
+    "all_arrays_native_float64_and_finite": true,
+    "parent_prefix_and_validation_exact_including_dtype": true,
+    "pricing_calls_recorded": 90000,
+    "seed": 9011,
+    "prior_block_order_exact": true,
+    "gaussian_quote_stream_exact": true,
+    "all_three_parent_rng_states_exact": true,
+    "append_before_and_after_rng_states_exact": true,
+    "appended_parameter_hashes": {
+      "initial_variance": "ef3f8a02dac20ee970f9ba9a9e72a42e33bb1c1ff7f6ed1058104baae65efd9c",
+      "kappa": "5fde8fcbd71f9ea836211efcd312e9f02a3007fd6185fbf10f44bf69b1d815f5",
+      "theta": "9b5c13b0a33641b509bf73436ec10ee135b99e4597941156262c7dc32c61b5fc",
+      "vol_of_vol": "de6d1ae170a198b23a8f353a6a0c11d6806a614aa11c95790d6e19faeae60369",
+      "rho": "91661afcde45d9412818d205c0e8fea56038e3a3aa91dff28570f4b896028d0a",
+      "c": "b14176434a27a02fffff94e8600799d2070ef84650bafc1e32b440905681ebbe"
+    },
+    "appended_standard_normal_hash": "40d1bd6cfcdf3203b2c8b110ef59dcab909762d1407cce0d2d88aae4c851b163",
+    "distinct_training_physical_parameter_rows": 100000,
+    "training_physical_overlap_native_validation": 0,
+    "training_physical_overlap_historical512": 0,
+    "opened_data_payloads": [
+      "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-100k/training/data.npz",
+      "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-reproduction/training/data.npz",
+      "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-inputs.npz"
+    ]
+  },
+  "whitening": {
+    "bytes_exact_parent": true,
+    "training_rows": 10000,
+    "original_only_fit_reconstructed_exactly": true,
+    "floor_used": false,
+    "max_whitened_covariance_error": 5.3171134162255385e-11
+  },
+  "no_pricing_fit_model_load_or_posterior_query_performed": true,
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false,
+  "scope": "Independent saved-array/provenance audit; no new neural, pricing or reference evaluations.",
+  "python": "3.12.16",
+  "numpy": "2.5.3",
+  "preserved_artifacts": {
+    "manifest": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/preserved-artifacts-before.json",
+      "sha256": "34ba6b81ea8969c6dc56506e450d9873838553781b9602401e1d4b04f7c78a46"
+    },
+    "files": 469,
+    "bytes": 287856619,
+    "all_unchanged": true
+  },
+  "training": {
+    "run": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-100k/training/run.json",
+      "sha256": "7d859994e692c0a24116ef32c134e5792a3264b95bbb89b601cb6027708f6401"
+    },
+    "epochs": 200,
+    "batch_size": 256,
+    "batches_per_epoch": 391,
+    "tail_batch_rows": 160,
+    "presentations": 20000000,
+    "optimizer_updates": 78200,
+    "best_validation_epoch": 187,
+    "native_optimizer_budget": {
+      "updates": 78200,
+      "warmup_steps": 3910,
+      "decay_steps": 74290,
+      "initial_learning_rate": 5e-05,
+      "warmup_target": 0.0005,
+      "alpha": 0
+    },
+    "checkpoints": [
+      {
+        "epoch": 20,
+        "directory": "epoch-000020",
+        "state_arrays_verified": 112,
+        "optimizer_updates": 7820,
+        "standardizer_presentations": 2000000
+      },
+      {
+        "epoch": 50,
+        "directory": "epoch-000050",
+        "state_arrays_verified": 112,
+        "optimizer_updates": 19550,
+        "standardizer_presentations": 5000000
+      },
+      {
+        "epoch": 75,
+        "directory": "epoch-000075",
+        "state_arrays_verified": 112,
+        "optimizer_updates": 29325,
+        "standardizer_presentations": 7500000
+      },
+      {
+        "epoch": 83,
+        "directory": "epoch-000083",
+        "state_arrays_verified": 112,
+        "optimizer_updates": 32453,
+        "standardizer_presentations": 8300000
+      },
+      {
+        "epoch": 100,
+        "directory": "epoch-000100",
+        "state_arrays_verified": 112,
+        "optimizer_updates": 39100,
+        "standardizer_presentations": 10000000
+      },
+      {
+        "epoch": 150,
+        "directory": "epoch-000150",
+        "state_arrays_verified": 112,
+        "optimizer_updates": 58650,
+        "standardizer_presentations": 15000000
+      },
+      {
+        "epoch": 200,
+        "directory": "epoch-000200",
+        "state_arrays_verified": 112,
+        "optimizer_updates": 78200,
+        "standardizer_presentations": 20000000
+      },
+      {
+        "epoch": 187,
+        "directory": "best-validation",
+        "state_arrays_verified": 112,
+        "optimizer_updates": 73117,
+        "standardizer_presentations": 18700000
+      }
+    ],
+    "data_only_or_equal_compute_comparison": false
+  },
+  "independent_saved_result_checks": [
+    {
+      "role": "primary",
+      "epoch": 200,
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/evaluation/evaluation.json",
+        "sha256": "8ae608e7068eac95a2ddacdd794cdffa04986d1a14b614263f2156a87b00bc68"
+      },
+      "populations": {
+        "native_validation": {
+          "raw_draws": 30000,
+          "independent_results_match": true,
+          "observation_sha256": "2b59f1a493c91177f691e727a40ff113bb7a255588a23273702eea622a6f3193",
+          "truth_sha256": "2f706d67993aed64acec46a529ba34f82ee1db90d76bc2ac73389c379e5e3640",
+          "coverage90": [
+            0.97,
+            0.97,
+            0.97,
+            0.96,
+            0.98,
+            0.92
+          ],
+          "sbc_passed": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "outside_prior_sample_fraction": 0.05636666666666667,
+          "nonphysical_sample_fraction": 0.0003333333333333333
+        },
+        "population": {
+          "raw_draws": 262144,
+          "independent_results_match": true,
+          "observation_sha256": "1b5521044ee7a25ccb01a4e7b9c764500efd4682b2636ceb70667bfaeee5cbc0",
+          "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d",
+          "coverage90": [
+            0.96484375,
+            0.943359375,
+            0.978515625,
+            0.943359375,
+            0.95703125,
+            0.890625
+          ],
+          "sbc_passed": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ],
+          "outside_prior_sample_fraction": 0.062091827392578125,
+          "nonphysical_sample_fraction": 0.00194549560546875
+        }
+      },
+      "conditional_cases": {
+        "synthetic-broad": {
+          "independent_results_match": true,
+          "raw_draws": 4096,
+          "standardized_mean_error": [
+            0.006604696282994866,
+            2.9422090962061365,
+            0.1677031468824543,
+            0.10208934553716684,
+            0.1443044923362,
+            0.3450011571220453
+          ],
+          "width_ratio": [
+            2.723407038578723,
+            2.22908860236123,
+            3.3871164872176447,
+            2.3513808726817365,
+            2.796438282470593,
+            1.2024092663212274
+          ],
+          "max_absolute_correlation_difference": 0.5253294188970229,
+          "outside_prior_sample_fraction": 0.0
+        },
+        "synthetic-market-like": {
+          "independent_results_match": true,
+          "raw_draws": 4096,
+          "standardized_mean_error": [
+            1.301985331047041,
+            0.5438421042578583,
+            0.6130711403275739,
+            1.323866885680543,
+            3.4279757833041073,
+            0.2798664484996693
+          ],
+          "width_ratio": [
+            4.841294123683296,
+            1.1139897278485644,
+            1.9406697017234618,
+            1.3222809924879986,
+            2.7199908969550406,
+            1.284718292641
+          ],
+          "max_absolute_correlation_difference": 0.5673658199291883,
+          "outside_prior_sample_fraction": 0.0
+        },
+        "market": {
+          "independent_results_match": true,
+          "raw_draws": 4096,
+          "standardized_mean_error": [
+            17.339359349228975,
+            5.189887364705785,
+            2.4957047511323136,
+            3.928516099024991,
+            18.30582676616179,
+            384.3682102080065
+          ],
+          "width_ratio": [
+            4.679940021099291,
+            1.8250277543746802,
+            2.1592379786931946,
+            2.542699626936871,
+            2.832778368115554,
+            197.43645921868364
+          ],
+          "max_absolute_correlation_difference": 0.2945548009712888,
+          "outside_prior_sample_fraction": 0.00048828125
+        }
+      },
+      "same_sampling_and_sbc_seed_contract": true,
+      "raw_calibration_coverage_support_recovery_and_dependence_recomputed": true
+    },
+    {
+      "role": "secondary",
+      "epoch": 187,
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/evaluation-best-validation/evaluation.json",
+        "sha256": "99165687ca2c684a42b01b22c8dd39c31530cacb9f56348345989da1f691f373"
+      },
+      "populations": {
+        "native_validation": {
+          "raw_draws": 30000,
+          "independent_results_match": true,
+          "observation_sha256": "2b59f1a493c91177f691e727a40ff113bb7a255588a23273702eea622a6f3193",
+          "truth_sha256": "2f706d67993aed64acec46a529ba34f82ee1db90d76bc2ac73389c379e5e3640",
+          "coverage90": [
+            0.98,
+            0.97,
+            0.97,
+            0.95,
+            0.98,
+            0.94
+          ],
+          "sbc_passed": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "outside_prior_sample_fraction": 0.0572,
+          "nonphysical_sample_fraction": 0.0003333333333333333
+        },
+        "population": {
+          "raw_draws": 262144,
+          "independent_results_match": true,
+          "observation_sha256": "1b5521044ee7a25ccb01a4e7b9c764500efd4682b2636ceb70667bfaeee5cbc0",
+          "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d",
+          "coverage90": [
+            0.96484375,
+            0.94921875,
+            0.978515625,
+            0.935546875,
+            0.953125,
+            0.896484375
+          ],
+          "sbc_passed": [
+            false,
+            true,
+            false,
+            false,
+            false,
+            true
+          ],
+          "outside_prior_sample_fraction": 0.06377410888671875,
+          "nonphysical_sample_fraction": 0.002025604248046875
+        }
+      },
+      "conditional_cases": {
+        "synthetic-broad": {
+          "independent_results_match": true,
+          "raw_draws": 4096,
+          "standardized_mean_error": [
+            0.10835103213377352,
+            2.7972500672226905,
+            0.7449514248681536,
+            0.007731701103667286,
+            0.19212254988496555,
+            0.317782114329402
+          ],
+          "width_ratio": [
+            2.7534211373929183,
+            2.2482980008978384,
+            3.43052266952582,
+            2.38483371634114,
+            2.8193150095293382,
+            1.2227132881682254
+          ],
+          "max_absolute_correlation_difference": 0.5385289174839168,
+          "outside_prior_sample_fraction": 0.0
+        },
+        "synthetic-market-like": {
+          "independent_results_match": true,
+          "raw_draws": 4096,
+          "standardized_mean_error": [
+            0.9243893685189893,
+            0.5119930790363799,
+            0.3638204347128341,
+            1.5636033444107598,
+            3.6299366301238085,
+            0.24170967222642092
+          ],
+          "width_ratio": [
+            4.914225537241215,
+            1.1177287543618843,
+            1.9722412485710563,
+            1.3394946164353974,
+            2.735589238692552,
+            1.295140763512404
+          ],
+          "max_absolute_correlation_difference": 0.5655517414412844,
+          "outside_prior_sample_fraction": 0.0
+        },
+        "market": {
+          "independent_results_match": true,
+          "raw_draws": 4096,
+          "standardized_mean_error": [
+            17.79415677591913,
+            5.202580606903923,
+            2.508017381363899,
+            3.8496826274293574,
+            17.914843163902333,
+            388.2559281719418
+          ],
+          "width_ratio": [
+            4.72183217509776,
+            1.8268733696950135,
+            2.185297932576724,
+            2.5578929043085403,
+            2.8567972221608233,
+            198.38771727615503
+          ],
+          "max_absolute_correlation_difference": 0.2959868941382925,
+          "outside_prior_sample_fraction": 0.00048828125
+        }
+      },
+      "same_sampling_and_sbc_seed_contract": true,
+      "raw_calibration_coverage_support_recovery_and_dependence_recomputed": true
+    }
+  ],
+  "seconds": 1.381136666983366
+}

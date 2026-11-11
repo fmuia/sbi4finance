@@ -1,0 +1,30 @@
+{
+  "status": "complete",
+  "producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/reproduce_heston_pr87_100k.py",
+    "sha256": "f58f9bd5adb3a01582a641adfb4e733224883c2f00146bc4397bc8084e3255af"
+  },
+  "protocol": {
+    "path": "/private/tmp/pr87-100k-producer-native-smoke-protocol.json",
+    "sha256": "866b4f7d67ab43836fc0e0553604b76101541f5dea669c949b2c4d634a1c2181"
+  },
+  "run": {
+    "path": "/private/tmp/pr87-100k-producer-native-smoke-training/run.json",
+    "sha256": "af3dda2908f69e2e018bbc2d8c446e73a45def801721b0eb109989ef0dee0ad1"
+  },
+  "train_rows": 256,
+  "appended_rows": 128,
+  "validation_rows": 32,
+  "epochs": 2,
+  "optimizer_updates": 2,
+  "parent_prefix_exact": true,
+  "validation_exact": true,
+  "whitening_bytes_exact": true,
+  "raw_sample_shape": [
+    2,
+    3,
+    6
+  ],
+  "full_state_deterministic_reload": true,
+  "best_epoch": 2
+}

@@ -1,0 +1,16 @@
+Matplotlib is building the font cache; this may take a moment.
+test_distinct_minimum_requires_full_secondary (tests.test_heston_pr87_100k_evaluation.CompactReportTests.test_distinct_minimum_requires_full_secondary) ... ok
+test_matplotlib_export_has_new_identity_and100k_label (tests.test_heston_pr87_100k_evaluation.CompactReportTests.test_matplotlib_export_has_new_identity_and100k_label) ... ok
+test_readiness_checks_every_target_and_no_acceptance (tests.test_heston_pr87_100k_evaluation.CompactReportTests.test_readiness_checks_every_target_and_no_acceptance) ... ok
+test_same_final_minimum_omits_secondary (tests.test_heston_pr87_100k_evaluation.CompactReportTests.test_same_final_minimum_omits_secondary) ... ok
+test_saved_panels_must_match_parent_truths (tests.test_heston_pr87_100k_evaluation.CompactReportTests.test_saved_panels_must_match_parent_truths) ... ok
+test_two_full_endpoints_stay_compact_and_offline (tests.test_heston_pr87_100k_evaluation.CompactReportTests.test_two_full_endpoints_stay_compact_and_offline) ... ok
+test_duplicate_best_epoch200_is_never_secondary (tests.test_heston_pr87_100k_evaluation.EndpointTests.test_duplicate_best_epoch200_is_never_secondary) ... ok
+test_final_and_distinct_minimum_only (tests.test_heston_pr87_100k_evaluation.EndpointTests.test_final_and_distinct_minimum_only) ... ok
+test_raw_diagnostics_are_frozen_parent_helpers (tests.test_heston_pr87_100k_evaluation.EndpointTests.test_raw_diagnostics_are_frozen_parent_helpers) ... ok
+test_unchanged_sampling_contract_and_no_equal_compute_claim (tests.test_heston_pr87_100k_evaluation.EndpointTests.test_unchanged_sampling_contract_and_no_equal_compute_claim) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 2.834s
+
+OK
