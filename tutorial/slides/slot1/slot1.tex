@@ -85,16 +85,15 @@
   \draw[aviation!45, line width=0.6pt, dash pattern=on 1.3pt off 1pt] (0, 0) circle[radius=1.85];
   \foreach \x in {-0.75, 0, 0.75} \fill[aviation!45] (\x, 0) circle[radius=0.19];}}
 \newcommand\statuskey[2]{\scalebox{0.62}{#1}\hspace{1.3mm}#2\hspace{6mm}}  % an entry of the legend under the checks
-% A presenter: \person{photo}{name}{affiliation}{background}{parts of the tutorial}
-\newcommand\person[5]{{\centering
+% A presenter: \person{photo}{name}{affiliation}{background}
+\newcommand\person[4]{{\centering
   \tikz\node[circle, minimum size=17mm, inner sep=0pt, draw=aviation!20, line width=0.4pt,
              path picture={\node at (path picture bounding box.center)
                {\includegraphics[width=17mm]{figures/slot1/#1}};}] {};\par\vspace{4pt}
   {\small\TitleFont\color{aviation}#2\par}\vspace{1pt}
-  {\scriptsize\color{aviation!60}#3\par}\vspace{5pt}
-  {\scriptsize\color{aviation}#4\par}\vspace{5pt}
-  {\fontsize{5.5}{7}\selectfont\color{aviation!55}\MakeUppercase{Presents}\par}\vspace{1pt}
-  {\scriptsize\color{aviation}#5\par}}}
+  {\scriptsize\color{aviation!60}#3\par}\vspace{6pt}
+  {\fontsize{5.5}{7}\selectfont\color{aviation!55}\MakeUppercase{Background}\par}\vspace{1pt}
+  {\scriptsize\color{aviation}#4\par}}}
 % Diagram styles, switched on per picture with [deck] so that they cannot change the theme's own drawings
 \tikzset{deck/.style={
   box/.style={draw=aviation!35, fill=aviation!4, rounded corners=3pt, align=center, font=\footnotesize,
@@ -136,9 +135,43 @@
 %   5. the close (14–16): the takeaways, the team, the rest of the tutorial.
 
 % ════════════════════════════════════════════════════════════════════════════
-% The problem and the exercise
+% Uncertainty, Bayes, and the example
 
-\begin{frame}{The Problem}
+\begin{frame}{Uncertainty in Finance}
+\key{A number without a range is not enough to \highlight{decide}.}
+\gap{\small
+\begin{tabular}{@{}L{0.22\linewidth}L{0.75\linewidth}@{}}
+{\TitleFont Valuation} & a mark, and a reserve for what the market does not quote \\ \rowrule
+{\TitleFont Regulation} & a value at 90\% confidence; the sensitivity of fair values \\ \rowrule
+{\TitleFont Risk} & limits and capital rest on estimated parameters \\ \rowrule
+{\TitleFont Trading} & hedges and position sizes inherit the estimation error \\
+\end{tabular}\par}\gap
+\source{Commission Delegated Regulation (EU) 2016/101 (prudent valuation), Article 9; IFRS 13, paragraph 93(h).}
+\note{Finance runs on estimates: a volatility, a correlation, the parameters of a model. Decisions are taken on them,
+so their uncertainty matters. A valuation needs a mark, and a reserve where the market gives no price. Regulation
+asks for it explicitly: European prudent valuation asks for a value at 90 percent confidence, and accounting
+standards for the sensitivity of fair values to inputs that cannot be observed. Risk limits and capital rest on
+estimated parameters. Hedges and position sizes inherit the estimation error. In each case one number is not enough:
+what is needed is a distribution.}
+\end{frame}
+
+\begin{frame}{What Bayes Offers}
+\key{Bayes treats what is unknown as a \highlight{distribution}.}
+\gap{\small
+\begin{tabular}{@{}L{0.33\linewidth}L{0.64\linewidth}@{}}
+{\TitleFont One language} & parameters, predictions, prices: all distributions \\ \rowrule
+{\TitleFont Prior knowledge counts} & what is known before the data is stated, not hidden \\ \rowrule
+{\TitleFont Uncertainty propagates} & anything computed from the parameters gets a range \\ \rowrule
+{\TitleFont It can be checked} & simulate from the model, and compare with the data \\
+\end{tabular}\par}\gap
+\note{Bayesian inference is a general way to get that distribution. Everything unknown is described by a
+distribution: the parameters, and anything computed from them. What is known before the data comes in is stated, as a
+prior, not hidden in a choice of bounds or starting points. Uncertainty propagates: a price, a hedge, a forecast each
+get a range. And the result can be checked, by simulating from the model and comparing with the data. The rest of
+this talk makes these four points concrete on one example.}
+\end{frame}
+
+\begin{frame}{The Example: Volatility Models}
 \key{A calibrated model prices what the market does \highlight{not quote}.}
 \gap{\centering
 \begin{tikzpicture}[deck, box/.append style={minimum height=1.95cm, text width=1.95cm}]
@@ -164,11 +197,12 @@
 \pairs{\pair{Quoted}{listed options}}{\pair{Not quoted}{priced by the model}}
       {\pair{The question}{how sure is that price?}}
 \source{De Spiegeleer, Madan, Reyners and Schoutens (2018); Schoutens, Simons and Tistaert (2004).}
-\note{Every day a desk calibrates a volatility model to the options the market quotes, for many underlyings, and uses
-it to value products the market does not quote: forward starts, barrier options, volatility swaps. The calibration is
-an estimate from noisy quotes, yet the value is reported as one number. Schoutens, Simons and Tistaert fitted seven
-models to one option surface: all fitted well, and their exotic prices differed substantially. The question of this
-tutorial: how sure is that number, and how is its uncertainty computed and checked?}
+\note{We make this concrete on one example: the calibration of volatility models. Every day a desk calibrates a model
+to the options the market quotes, for many underlyings, and uses it to value products the market does not quote:
+forward starts, barrier options, volatility swaps. The calibration is an estimate from noisy quotes, yet the value is
+reported as one number. Schoutens, Simons and Tistaert fitted seven models to one option surface: all fitted well, and
+their exotic prices differed substantially. So: how sure is that number, and how is its uncertainty computed and
+checked?}
 \end{frame}
 
 \begin{frame}{An Exercise in Inference}
@@ -208,9 +242,9 @@ applies to it.}
 \leavevmode{\scriptsize\color{aviation!55}\MakeUppercase{Question}} &
   \leavevmode{\scriptsize\color{aviation!55}\MakeUppercase{In today's examples}} \\ \rowrule
 {\TitleFont Which parameters fit the data?} & the posterior of a volatility model \\ \rowrule
-{\TitleFont How uncertain is what they imply?} & the range of a product nobody quotes \\ \rowrule
-{\TitleFont What do the data determine?} & which quotes pin which parameter \\ \rowrule
-{\TitleFont How wrong is the model?} & the misfit, and the inferred error scale \\ \rowrule
+{\TitleFont How uncertain is what they imply?} & the price range of unquoted products \\ \rowrule
+{\TitleFont What do the data determine?} & which parameters the quotes pin \\ \rowrule
+{\TitleFont How wrong is the model?} & is the best configuration still very wrong? \\ \rowrule
 {\TitleFont Can the answer be trusted?} & coverage on simulations; exact posteriors \\ \rowrule
 {\TitleFont Can it be done every day?} & a fraction of a second, after training \\
 \end{tabular}\par}\gap
@@ -224,18 +258,21 @@ what transfers to your own model.}
 % ════════════════════════════════════════════════════════════════════════════
 % Bayes for calibration
 
-\begin{frame}{Calibration as Inference}
+\begin{frame}{Calibration: The Bayesian Way}
 \key{Bayes' rule turns the quotes into a \highlight{distribution} over parameters.}
 \gap{\centering
 \begin{tikzpicture}[deck, box/.append style={text width=3.5cm, minimum height=1.75cm},
                     sign/.style={font=\Large\TitleFont, text=aviation!70}]
   \node[box] (prior) {\textbf{Prior}\\[2pt] {\scriptsize plausible parameters,\\[-1pt] before the quotes}};
+  \node[under, below=3pt of prior] {e.g. long-run volatility\\between 10\% and 40\%};
   \node[sign, right=0.3cm of prior] (times) {$\times$};
   \node[box, right=0.3cm of times] (fit) {\textbf{Likelihood}\\[2pt] {\scriptsize how well they price the quotes,\\[-1pt]
     given their bid–ask}};
   \node[sign, right=0.3cm of fit] (gives) {$\propto$};
   \node[box, focus, right=0.3cm of gives] (posterior) {\textbf{Posterior}\\[2pt] {\scriptsize every parameter set,\\[-1pt]
     weighted}};
+  \node[under, below=3pt of fit] {a quote is the model's price\\plus noise the size of its bid–ask};
+  \node[under, below=3pt of posterior] {computed as draws,\\by sampling algorithms};
 \end{tikzpicture}\par}\gap
 \pairs{\pair{Quotes}{$y_i = P_i(\theta) + c\,h_i\,\varepsilon_i$}}
       {\pair{Prior}{$p(\theta, c)$}}
@@ -261,7 +298,7 @@ which also gives ranges. Where the quotes are informative the two coincide: on t
 follows the ridge inside it.}
 \end{frame}
 
-\begin{frame}{From Posterior to Products}
+\begin{frame}{From Posterior to Prices}
 \key{Each draw prices the exotic. Together the prices form a \highlight{range}.}
 \fig{0.90}{price-range.pdf}
 \pairs[illustration]{\pair{Product}{forward-start call}}{\pair{Mark and 90\% point}{4.70 and 4.92 per 100}}
@@ -279,17 +316,19 @@ them today with consensus data and expert ranges.}
 \gap{\small
 \begin{tabular}{@{}L{0.40\linewidth}L{0.57\linewidth}@{}}
 {\TitleFont It states the assumptions} & bounds, fixed parameters, penalties: a prior \\ \rowrule
+{\TitleFont Least squares assumes too} & normal errors, fixed weights, a flat prior \\ \rowrule
 {\TitleFont It answers the desk's question} & the distribution of a price, for any product \\ \rowrule
 {\TitleFont It shows what the quotes fix} & which parameters are pinned, which trade off \\ \rowrule
 {\TitleFont It checks the model} & simulated quotes, against the market's \\ \rowrule
 {\TitleFont It is the general case} & least squares is its limit, when quotes are rich \\
 \end{tabular}\par}\gap
-\note{Why Bayes? Five reasons. First, calibration already uses priors, unstated: bounds, fixed parameters, penalties,
-starting from yesterday's fit. Bayes states them, and lets the data overrule them. Second, it answers the question a
-desk has: not which parameters, but what is the distribution of this price. Third, the posterior's shape shows what
-the quotes determine. Fourth, it checks the model: simulate quotes from the posterior and compare them with the
-market. Fifth, it is the general case. Least squares with a quadratic approximation also gives ranges, and it is the
-limit of Bayes when the quotes are informative. The next slide shows both regimes.}
+\note{Why Bayes? First, calibration already uses priors, unstated: bounds, fixed parameters, penalties, starting from
+yesterday's fit. Bayes states them, and lets the data overrule them. And least squares is not free of assumptions
+either: it is the best fit under normal errors of fixed relative size and a flat prior. Second, Bayes answers the
+question a desk has: not which parameters, but what is the distribution of this price. Third, the posterior's shape
+shows what the quotes determine. Fourth, it checks the model: simulate quotes from the posterior and compare them with
+the market. Last, it is the general case. Least squares with a quadratic approximation also gives ranges, and it is
+the limit of Bayes when the quotes are informative. The next slide shows both regimes.}
 \end{frame}
 
 \begin{frame}{When the Quotes Run Thin}
@@ -313,40 +352,36 @@ set largely by the prior, and it says so.}
 \begin{frame}{The Cost of a Posterior}
 \key{One exact posterior costs \highlight{minutes to months} of computing.}
 \fig{0.97}{posterior-cost.pdf}
-\pairs[result]{\pair{One exact posterior}{146,000 pricings}}{\pair{To validate the method}{512 posteriors}}
-      {\pair{Rough Bergomi, estimated}{140–250 CPU-years}}
-\note{A posterior has a cost. Sampling it takes about 146,000 pricings of the quotes. For Heston on the tutorial's 63
-SPX quotes a pricing takes milliseconds, and the exact posterior 14 to 27 CPU-minutes: measured. For rough Bergomi a
-pricing is a Monte Carlo run of one to two CPU-minutes, so the same chain would take 100 to 180 CPU-days: estimated,
-not run. Importance sampling from a good proposal brings that to about a day. And one posterior is not enough:
-validating the method on simulated data takes hundreds of them, for rough Bergomi more than a century of CPU time. The
-last row is the same Heston posterior from a trained network: 0.3 seconds.}
+\pairs[result]{\pair{A sampler needs}{about 100,000 pricings}}{\pair{Heston pricing}{Fourier: milliseconds each}}
+      {\pair{Rough Bergomi pricing}{Monte Carlo: minutes each}}
+\source{Orders of magnitude from our own runs on the tutorial's 63 SPX quotes. Rough Bergomi: estimated, not run.}
+\note{The catch is the cost. A posterior is computed as draws, and a sampler such as Markov chain Monte Carlo needs on
+the order of a hundred thousand pricings of the quotes: 146,000 in our Heston runs. Heston prices by Fourier integral,
+in milliseconds, so its exact posterior takes 14 to 27 CPU-minutes. Rough Bergomi prices by Monte Carlo, one to two
+CPU-minutes per pricing, so the same sampler would take months: an estimate, we have not run it. These are our own
+numbers, and orders of magnitude. The last row is the same Heston posterior from a network trained in advance: a
+fraction of a second. That is the subject of the next talk.}
 \end{frame}
 
-\begin{frame}{Amortized Inference}
-\key{Simulate and train once. Then a posterior costs \highlight{0.3 seconds}.}
+\begin{frame}{Next: Amortized Inference}
+\key{Train a network once, on simulations. Then every posterior is \highlight{fast}.}
 \gap{\centering
 \begin{tikzpicture}[deck, box/.append style={text width=2.2cm, minimum height=1.45cm}]
   \node[box] (prior) {\textbf{Prior}\\[2pt] {\scriptsize plausible\\[-1pt] parameters}};
   \node[box, right=0.36cm of prior] (sim) {\textbf{Simulator}\\[2pt] {\scriptsize model prices\\[-1pt] plus errors}};
   \node[box, right=0.36cm of sim] (bank) {\textbf{A bank}\\[2pt] {\scriptsize of simulated\\[-1pt] pairs}};
   \node[box, focus, right=0.36cm of bank] (net) {\textbf{A network}\\[2pt] {\scriptsize trained once}};
-  \node[box, right=0.36cm of net] (draws) {\textbf{Posterior draws}\\[2pt] {\scriptsize 0.3 s per data set}};
+  \node[box, right=0.36cm of net] (draws) {\textbf{Posterior draws}\\[2pt] {\scriptsize in a fraction\\[-1pt] of a second}};
   \node[box, above=0.34cm of net, fill=orchid!8, draw=orchid!50, minimum height=0.62cm] (today) {\textbf{New data}};
   \foreach \a/\b in {prior/sim, sim/bank, bank/net, net/draws} \draw[arr] (\a) -- (\b);
   \draw[arr] (today) -- (net);
 \end{tikzpicture}\par}\gap
-\pairs[result]{\pair{Needs}{a simulator and a prior}}{\pair{Paid once}{300,000 simulations}}
-      {\pair{Valid}{near its training data}}
-\source{Cranmer, Brehmer and Louppe (2020); BayesFlow: Radev et al.\ (2022). The simulations take as many pricings as
-two exact posteriors; training took under an hour on a laptop CPU.}
-\note{How? Simulation-based inference. Draw parameters from the prior, simulate data from them, and train a network
-once on these pairs to return the posterior. It needs a simulator and a prior, and no formula for the likelihood. For
-Heston on the 63 SPX quotes the bank is 300,000 simulated surfaces, about as many pricings as two exact posteriors,
-and training took under an hour on a laptop. After that, every posterior costs 0.3 seconds. The cost has not
-disappeared: it is paid once. That is amortization. Two conditions: the network is valid only for data its simulator
-could have produced, and its accuracy has to be tested, on simulated data where the truth is known. The next talks
-show how.}
+\pairs{\pair{Needs}{a simulator and a prior}}{\pair{Pays}{once, in training}}
+      {\pair{Next}{Stefan T. Radev, 11:15}}
+\note{So the power of Bayes comes at a price, and the rest of the tutorial is about paying it once. Draw parameters
+from the prior, simulate data from them, and train a network on these pairs to return the posterior. It needs a
+simulator and a prior, and no formula for the likelihood. After training, a posterior takes a fraction of a second,
+for any new data set. Stefan explains how, in the next talk.}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
@@ -373,20 +408,19 @@ tutorial: is a range needed, what does it cost, and how would you check it?}
 \gap
 \begin{columns}[T,onlytextwidth]
 \column{0.235\textwidth}\person{francesco-muia.jpg}{Francesco Muia}{Muia AI \& Analytics Solutions · PyMC Labs}
-  {Bayesian data science consulting; computational finance}{Introduction; rough Bergomi}
+  {Bayesian data science consulting; computational finance}
 \column{0.235\textwidth}\person{alexander-fengler.jpg}{Alexander Fengler}{Brown University}
-  {Simulation-based inference; probabilistic modelling; hedge funds}{Amortized inference; rough Bergomi}
+  {Simulation-based inference; probabilistic modelling}
 \column{0.235\textwidth}\person{stefan-radev.jpg}{Stefan T. Radev}{Rensselaer Polytechnic Institute}
-  {Lead developer of BayesFlow; Bayesian statistics and AI}{Architectures; Heston; advanced topics}
+  {Lead developer of BayesFlow; Bayesian statistics and AI}
 \column{0.235\textwidth}\person{jerry-huang.jpg}{Jerry M. Huang}{Rensselaer Polytechnic Institute}
-  {Core developer of BayesFlow; simulation-based inference}{Advanced topics}
+  {Core developer of BayesFlow; simulation-based inference}
 \end{columns}
 \gap
 \note{A few words on the team. Stefan Radev is the lead developer of BayesFlow, the library used throughout, and Jerry
 Huang is one of its core developers; both are at Rensselaer. Alexander Fengler, at Brown, works on simulation-based
-inference and has worked in hedge funds. I am a consultant in Bayesian data science, with a background in theoretical
-physics and computational finance. Between us: people who build the method, and people who have used models in
-industry.}
+inference and probabilistic modelling. I am a consultant in Bayesian data science, with a background in theoretical
+physics and computational finance. Between us: people who build the method, and people who apply it.}
 \end{frame}
 
 \begin{frame}{The Rest of the Tutorial}
@@ -404,21 +438,21 @@ industry.}
 {\footnotesize
 \begin{tabular}{@{}L{0.07\linewidth}L{0.65\linewidth}L{0.21\linewidth}@{}}
 \leavevmode{\TitleFont\color{neonlake}11:15} & {\TitleFont Amortized Bayesian inference}\newline
-  {\scriptsize\color{aviation!60}how a network learns a posterior, and when it pays} & Alexander Fengler \\ \rowrule
+  {\scriptsize\color{aviation!60}how a network learns a posterior, and when it pays} & Stefan T. Radev \\ \rowrule
 \leavevmode{\TitleFont\color{neonlake}11:30} & {\TitleFont Neural network architectures}\newline
   {\scriptsize\color{aviation!60}which networks, for which data} & Stefan T. Radev \\ \rowrule
 \leavevmode{\TitleFont\color{neonlake}11:40} & {\TitleFont Worked example: Heston}\newline
-  {\scriptsize\color{aviation!60}the five steps in BayesFlow, against an exact posterior} & Stefan T. Radev \\ \rowrule
+  {\scriptsize\color{aviation!60}the five steps in BayesFlow, against an exact posterior} & Alexander Fengler \\ \rowrule
 \leavevmode{\TitleFont\color{neonlake}12:00} & {\TitleFont Rough Bergomi and application}\newline
   {\scriptsize\color{aviation!60}a model priced only by simulation; from posterior to products} &
   Francesco Muia\newline Alexander Fengler \\ \rowrule
 \leavevmode{\TitleFont\color{neonlake}12:30} & {\TitleFont Advanced topics and open questions}\newline
   {\scriptsize\color{aviation!60}where the method stops, and what is open} & Stefan T. Radev\newline Jerry M. Huang \\
 \end{tabular}\par}\gap
-\note{The rest of the tutorial adds one building block at a time. Alexander explains how a network learns a posterior
-and when that pays. Stefan presents the networks, and then runs the five steps on Heston in BayesFlow, where an exact
+\note{The rest of the tutorial adds one building block at a time. Stefan explains how a network learns a posterior and
+when that pays, and presents the networks. Alexander then runs the five steps on Heston in BayesFlow, where an exact
 posterior checks every claim. Alexander and I then take rough Bergomi, a model priced only by simulation. Stefan and
-Jerry close with advanced topics and open questions. Next: amortized Bayesian inference, with Alexander.}
+Jerry close with advanced topics and open questions. Next: amortized Bayesian inference, with Stefan.}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════

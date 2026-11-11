@@ -500,13 +500,13 @@ def figure_posterior_cost():
     """CPU time for one posterior on the 63 SPX quotes: exact methods, measured or derived, and the trained network."""
     cost = costs()
     rows = (  # name, method, range in seconds, value, status, colour, measured
-        ("Heston", "exact posterior, by MCMC", [60 * x for x in cost["heston_minutes"]],
+        ("Heston", "Fourier pricing, MCMC", [60 * x for x in cost["heston_minutes"]],
          "{:.0f}–{:.0f} CPU-minutes".format(*cost["heston_minutes"]), "measured", INK, True),
-        ("Rough Bergomi", "exact, by importance sampling", [3600 * x for x in cost["rough_sampling_hours"]],
+        ("Rough Bergomi", "Monte Carlo pricing, importance sampling", [3600 * x for x in cost["rough_sampling_hours"]],
          "{:.0f}–{:.0f} CPU-hours".format(*cost["rough_sampling_hours"]), "estimated", INK, False),
-        ("Rough Bergomi", "exact posterior, by MCMC", [86400 * x for x in cost["rough_mcmc_days"]],
+        ("Rough Bergomi", "Monte Carlo pricing, MCMC", [86400 * x for x in cost["rough_mcmc_days"]],
          "100–180 CPU-days", "estimated, not run", INK, False),
-        ("Heston", "trained network", [cost["network_seconds"]] * 2,
+        ("Heston", "network trained in advance", [cost["network_seconds"]] * 2,
          f"{cost['network_seconds']:.1f} seconds", "measured, after training", POSTERIOR, True),
     )
     fig, ax = canvas(0.97, HEIGHT)
@@ -521,7 +521,7 @@ def figure_posterior_cost():
         named_row(ax, y, name, method)
     ax.set_xscale("log")
     ax.set_xlim(0.1, 2.2e9)
-    ax.set_xticks([1, 60, 3600, 86400, 86400 * 30, 86400 * 365], ["1 s", "1 min", "1 hour", "1 day", "1 month", "1 year"])
+    ax.set_xticks([1, 60, 3600, 86400, 86400 * 365], ["1 s", "1 min", "1 hour", "1 day", "1 year"])
     ax.minorticks_off()
     ax.set_yticks([])
     ax.set_ylim(3.85, -0.6)
@@ -580,26 +580,17 @@ def reserve(mark, point90):
 def quoted_numbers(data):
     """Every number the slides quote, as {description: text}: the report prints them and the deck is checked for them."""
     key = key_of(HOOK)
-    first, second = percent(data[f"{key}/forward_start/draws"]), percent(data[f"{key}/late_start/draws"])
+    first = percent(data[f"{key}/forward_start/draws"])
     mark, point90 = first.mean(), np.quantile(first, 0.9)
-    low, high = np.quantile(data["hook/misfit"], [0.05, 0.95])
     assumed = percent(data["assumed/forward_start"])
     quoted = {
-        "the best fit's misfit in half-spreads": f"{float(data['hook/misfit_fit']):.2f}",
-        "the posterior draws' misfit in half-spreads": f"{low:.1f}–{high:.1f}",
-        f"the forward start under the {FAN} fits": f"{first[:FAN].min():.2f} to {first[:FAN].max():.2f}",
         "the least-squares price": f"{percent(data[f'{key}/forward_start/point']):.2f}",
         "the mark": f"{mark:.2f}", "the 90% point": f"{point90:.2f}", "the reserve": f"{reserve(mark, point90):.2f}",
         "the reserve as a share of the mark": f"{100 * reserve(mark, point90) / mark:.0f}",
         "the generating price": f"{percent(data['truth/forward_start']):.2f}",
         "one expiry: the best fit's price with today's volatility assumed at its lowest": f"{assumed[0]:.2f}",
         "one expiry: the best fit's price with today's volatility assumed at its highest": f"{assumed[-1]:.2f}",
-        "one expiry: the misfit under every assumed value": f"{float(np.max(data['assumed/misfit'])):.2f}",
     }
-    for name, values in (("the forward start", first), ("the later forward start", second),
-                         ("the book", first - second)):
-        q = quantiles(values)
-        quoted[f"the 90% width of {name}"] = f"{q[2] - q[0]:.2f}"
     for reach in il.READINGS:
         k = key_of(reach)
         low, high = percent(data[f"{k}/forward_start/delta"])
