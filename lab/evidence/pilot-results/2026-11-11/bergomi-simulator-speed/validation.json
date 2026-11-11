@@ -1,6 +1,6 @@
 {
   "tutorial_tests": {
-    "command": "python -m unittest discover -s tests -v (from tutorial/)",
+    "command": "pixi run --as-is test (from tutorial/)",
     "tests": 65,
     "passed": true
   },
@@ -24,15 +24,16 @@
   },
   "initial_campaign_fixture_checks": {
     "errors": 5,
-    "reason": "Historical source-bound production work-order correctly rejects changed tutorial/shared/pricing.py in this worktree. Historical evidence and producer guards were left unchanged. These tests require a fresh research fixture before a production integration PR."
+    "reason": "Historical source-bound production work orders correctly reject changed pricing source. Test-only temporary current-source fixtures now exercise the unchanged validators without rewriting production evidence.",
+    "resolved_by": "lab/tests/rough_actual_layout_fixtures.py and 34 passing fake-kernel fixture/orchestration tests; historical-source negative test retained"
   },
-  "full_lab_suite_run": false,
-  "notebook_exports_run": false,
+  "full_lab_suite_run": true,
+  "notebook_exports_run": true,
   "production_deployed": false,
   "logs": {
     "tutorial": {
-      "path": "/private/tmp/bergomi-compiled-tutorial-tests.log",
-      "sha256": "18a09cce78b1456efde972724da4346aef7129f494f05d0420e149f160f27525"
+      "path": "/private/tmp/bergomi-pr-tutorial-tests.log",
+      "sha256": "5fbde654826efa32b99f124fff4b582304037507e964043eb6b083c182f56d0e"
     },
     "lab_targeted": {
       "path": "/private/tmp/bergomi-compiled-lab-tests.log",
@@ -73,5 +74,67 @@
     "dependencies_installed_in_production": false,
     "oscar_benchmark_performed": false,
     "provenance_note": "Full FFT/profile/RNG measurements used temporary adapters; ported reproducible scripts were smoke-tested, with exact source mappings and 28 FFT driver comparisons retained."
+  },
+  "pr_preparation": {
+    "lab_full_suite": {
+      "command": "pixi run --as-is -e core-reference test",
+      "tests": 902,
+      "passed_in_full_run": 901,
+      "errors_in_full_run": 1,
+      "clean_exit": false,
+      "environment_error": "PyTensor attempted to create its compiled cache under /Users/afengler/.pytensor, outside sandbox writable roots.",
+      "affected_test": "test_pricer_pymc_reference.PricerLikelihoodTests.test_tiny_real_pymc_emulator_sampling_and_partial_trace",
+      "affected_test_rerun_passed": true,
+      "rerun_environment": "PYTENSOR_FLAGS=base_compiledir=/private/tmp/bergomi-pr-pytensor",
+      "log": {
+        "path": "/private/tmp/bergomi-pr-lab-tests-final.log",
+        "sha256": "8cc24f7a2831188fb4d89f8919def75ac572054421f48daccbfd4e20ea7a4ea2"
+      },
+      "rerun_log": {
+        "path": "/private/tmp/bergomi-pr-pymc-test.log",
+        "sha256": "da629aed3535123762d18c5c8d1c2aaad260eea5d159e22ae48ef42376864d11"
+      }
+    },
+    "notebook_exports": {
+      "command": "pixi run --as-is test-notebooks",
+      "notebooks": 7,
+      "cell_errors": 0,
+      "passed": true,
+      "log": {
+        "path": "/private/tmp/bergomi-pr-notebooks-final.log",
+        "sha256": "dd9823c85611bc8b2a09eb3edeaf5fcd6e07003f4a2c33b7d77313fe74a0719d"
+      }
+    },
+    "notebook_check": {
+      "command": "pixi run --as-is check",
+      "passed": true,
+      "existing_empty_cell_warnings": 2,
+      "log": {
+        "path": "/private/tmp/bergomi-pr-notebook-check-final.log",
+        "sha256": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649"
+      }
+    },
+    "release_check": {
+      "command": "pixi run --as-is -e core-reference release-check",
+      "passed": true,
+      "log": {
+        "path": "/private/tmp/bergomi-pr-release.log",
+        "sha256": "8ef17eb02238b31db249af80b55c5dda4440397f59fe474a7750dbd673aed89a"
+      }
+    },
+    "fixture_checks": {
+      "tests": 34,
+      "passed": true,
+      "log": {
+        "path": "/private/tmp/bergomi-fresh-fixture-tests.log",
+        "sha256": "ece344bd1f26026686ecefaf5a239520d8e807a2f7513bd509cabe1701c03554"
+      }
+    },
+    "compiler_metadata_check": {
+      "passed": true,
+      "record": "compiler-metadata-check.json"
+    },
+    "validation_environment": "Read-only access to pinned core-reference dependencies through an isolated system-site-packages venv, with .pth bindings to this worktree; pixi --as-is prevents environment/lock changes.",
+    "oscar_actions": false
   }
 }

@@ -1,0 +1,49 @@
+{
+  "format": "rough_cython_compiler_metadata_check_v1",
+  "paths_per_block": 128,
+  "build": {
+    "seconds": 1.446558249881491,
+    "flags": [
+      "-O3",
+      "-fno-fast-math",
+      "-ffp-contract=off"
+    ],
+    "cython": "3.3.1",
+    "binary_path": "/private/tmp/bergomi-pr-cython-smoke/lib/_bergomi_pricing_cython.cpython-312-darwin.so",
+    "binary_sha256": "93de341b15cd9f4a09ad67662b5f5fd402f84df87bf504c8766aac4b233a82b7",
+    "compiler_command": [
+      "/usr/bin/cc",
+      "-fno-strict-overflow",
+      "-Wsign-compare",
+      "-Wunreachable-code",
+      "-DNDEBUG",
+      "-O2",
+      "-Wall",
+      "-fPIC",
+      "-O2",
+      "-isystem",
+      "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/.pixi/envs/core-reference/include",
+      "-fdebug-prefix-map=/Users/runner/miniforge3/conda-bld/python-split_1793013977335/work=/usr/local/src/conda/python-split-3.12.16",
+      "-arch",
+      "arm64",
+      "-fPIC",
+      "-O2",
+      "-isystem",
+      "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/.pixi/envs/core-reference/include",
+      "-fdebug-prefix-map=/Users/runner/miniforge3/conda-bld/python-split_1793013977335/work=/usr/local/src/conda/python-split-3.12.16",
+      "-arch",
+      "arm64"
+    ],
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)"
+  },
+  "sources": {
+    "lab/scripts/benchmark_rough_cython.py": "83893b0003e6a32b604e4a0680977b07e629f23afa472e2a9b8fbd7d00912203",
+    "tutorial/src/sbi4f_tutorial/shared/pricing.py": "8886a2e4597ae0b7796fb640e3c89e5d3911631b843fbb60c442d7bae0ac26c2",
+    "tutorial/src/sbi4f_tutorial/rough_options/_pricing_acceleration.py": "34f26ffcac779c4f772c71c39d1774e7eb35c3b3bf1afab8651406ee3c5f36a7",
+    "tutorial/src/sbi4f_tutorial/rough_options/simulator.py": "542359c3999c2d6b55860191bf9468aeaf877820128d9e87c94cd7ecb0066bca",
+    "tutorial/src/sbi4f_tutorial/rough_options/model.py": "546d03f66fd7f1321bcc71a37bdb5cba0b5f6b41e51a1ff4e0ac13a03915bd69",
+    "tutorial/src/sbi4f_tutorial/rough_options/_pricing_cython.pyx": "28195a6afb99b270546ba289f427e3acadba0a07c1ddadf7d8b642f6b5721be2"
+  },
+  "all_outputs_bitwise_equal": true,
+  "scope": "PR metadata-only correction smoke: build uses CC=/usr/bin/cc and records the actual configured compiler. Original full timing records remain unchanged at commit787b88e."
+}

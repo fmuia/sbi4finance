@@ -9,12 +9,13 @@ from unittest.mock import patch
 import numpy as np
 from sbi4finance.calibration import rough_actual_layout_overnight_bank as bank
 from sbi4finance.calibration import rough_actual_layout_old_budget_bank as previous
+from rough_actual_layout_fixtures import current_portable
 
 
 class OvernightBankTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
-        self.parent=bank.ROOT/"lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation-portable/work-order.json"
+        _,self.parent=current_portable(self.root)
         old=bank.pilot.read(bank.ROOT/"lab/evidence/pilot-results/2026-11-11/bergomi-observation-refresh/joint-legacy-budget-1000/plan.json")
         self.policy=old["numerical_policy"];self.old=old
 

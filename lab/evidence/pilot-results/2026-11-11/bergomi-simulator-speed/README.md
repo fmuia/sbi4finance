@@ -92,6 +92,10 @@ Clang 21, using `-O3 -fno-fast-math -ffp-contract=off`. It uses typed memoryview
 releases the GIL, and implements the same serial integration loop, endpoint and
 finite checks as Numba. Compiler dependencies, generated C, objects and the
 extension stayed in `/private/tmp`; the existing environment was not changed.
+The original measurement script is preserved at commit `787b88e`. A later
+metadata-only correction records the compiler actually configured by setuptools
+instead of assuming `clang`; a fresh `CC=/usr/bin/cc` build and reduced
+comparison passed. [Compiler metadata check](compiler-metadata-check.json).
 
 | Same full-surface experiment | Original reference | Numba | Cython |
 | --- | ---: | ---: | ---: |
@@ -260,8 +264,20 @@ antithetic pair averages as its independent samples, never the two signs as
 independent paths. These checks do not certify prior-wide discretization bias
 or pointwise coverage of MC uncertainty from same-batch fitted controls.
 
-Five attempted frozen production-fixture tests reject the changed pricing
-source, as the producer guard requires. The historical work order was not
-rewritten to make them pass. A fresh research fixture and the full lab/notebook
-release checks remain part of a future integration PR; no PR or deployment
-is included in this investigation.
+The initial frozen production-fixture tests rejected the changed pricing
+source, as the producer guard requires. For PR validation, fake-kernel
+orchestration tests now create temporary current-source identities while keeping
+the authoritative panel and ancestry unchanged. The historical work orders and
+production validators were not modified. A separate negative test verifies
+that historical preparation rejects a changed source before creating output.
+The 34 affected fixture/orchestration checks pass. No deployment is included.
+
+PR preparation ran the complete lab suite: 902 tests were exercised, with 901
+passing and one sandbox error when PyTensor tried to write its compiled cache
+under the user home directory. That test passed on rerun with
+`PYTENSOR_FLAGS=base_compiledir=/private/tmp/bergomi-pr-pytensor`; the full run
+itself retained its one-error exit status. All 65 tutorial tests, seven notebook
+exports with zero cell errors, and release checks passed. Notebook checks passed
+with two existing empty-cell warnings. Exact outcomes and log hashes are in
+[the validation record](validation.json). The validation environment was
+isolated from the running producer environments, and Oscar was not modified.

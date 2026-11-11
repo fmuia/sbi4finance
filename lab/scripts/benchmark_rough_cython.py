@@ -54,10 +54,19 @@ def build_kernel(directory):
     spec = importlib.util.spec_from_file_location("_bergomi_pricing_cython", binary)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
+    compiler_command = list(getattr(command.compiler, "compiler_so", None)
+                            or getattr(command.compiler, "compiler", None) or [])
+    compiler_version = "not available"
+    if compiler_command:
+        try:
+            compiler_version = subprocess.check_output(
+                [*compiler_command, "--version"], text=True, stderr=subprocess.STDOUT).splitlines()[0]
+        except (OSError, subprocess.CalledProcessError, IndexError):
+            pass  # Preserve a successful build when compiler version reporting is unavailable.
     return module.terminal_moments, {"seconds": time.perf_counter()-started,
         "flags": FLAGS, "cython": Cython.__version__, "binary_path": str(binary),
         "binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(),
-        "compiler": subprocess.check_output(["clang", "--version"], text=True).splitlines()[0]}
+        "compiler_command": compiler_command, "compiler": compiler_version}
 
 
 def compare_kernel(first, second):

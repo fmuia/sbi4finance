@@ -8,12 +8,14 @@ import unittest
 from unittest.mock import patch
 import numpy as np
 from scripts import benchmark_rough_actual_layout_base as benchmark
+from rough_actual_layout_fixtures import current_bank_plan
 
 
 class BaseCostBenchmarkTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
-        self.parent=benchmark.bank.ROOT/"lab/evidence/pilot-results/2026-11-11/bergomi-observation-refresh/joint-clean-128/plan.json"
+        historical=benchmark.bank.ROOT/"lab/evidence/pilot-results/2026-11-11/bergomi-observation-refresh/joint-clean-128/plan.json"
+        _,self.parent=current_bank_plan(self.root,historical,benchmark.bank)
         self.path=self.root/"work-order.json";self.work=benchmark.prepare(self.parent,self.path)
 
     def test_four_fixed_rows_and_cost_profile(self):
