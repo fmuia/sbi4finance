@@ -65,9 +65,9 @@ The deck loads `unicode-math` with Latin Modern Math and the `array`, `booktabs`
 as Unicode (–), because the theme's title fonts do not turn `--` into a dash.
 
 **The deck has not been compiled with the real theme.** After the update of 11 November it was compiled with
-LuaLaTeX (TeX Live 2023) against a stand-in that has the theme's two colours and a frame body 14 mm shorter than that
-of Beamer's default layout, with Latin Modern Sans as the text font (Inter and Rubik were not available); no frame
-overflows. After the upload, check that no frame overflows in the real theme. If one does, lower that figure's height in `export_figures.py` (the second
+LuaLaTeX (TeX Live 2023) against a stand-in that has the theme's colours, Rubik titles on Inter text, a frame title
+with an accent rule and a footline; no frame overflows. After the upload, check that no frame overflows in the real
+theme. If one does, lower that figure's height in `export_figures.py` (the second
 argument of `canvas`) and export again.
 
 Speaker notes are in `\note{}`; Beamer prints them only with `\setbeameroption{show notes on second screen}`.
@@ -81,7 +81,8 @@ pixi run --locked python slides/slot1/export_figures.py --rubik PATH/TO/fonts/Ru
 ```
 
 `--rubik` takes the variable font from the Overleaf project's `fonts/` folder, or Google Fonts' `Rubik[wght].ttf`, so
-that the figures use the slides' typeface; without it they use matplotlib's default sans-serif. The script needs only
+that the figures use the slides' typeface; without it they use matplotlib's default sans-serif. The committed figures
+were drawn with `--rubik`. The script needs only
 the tutorial's own dependencies, and `fontTools` for `--rubik`.
 
 The running example takes about half an hour to compute on four cores, mostly five posteriors by importance
@@ -145,21 +146,19 @@ range of a product, and the posterior.
   7-day reading the posterior is a thin curved ridge whose ends are set by the box: there the proposal is adapted over
   six rounds to the likelihood to the power 0.3, with eight slices and 30% of the proposals from the prior, up to
   150,000 proposals, and the 4,000 resampled draws are then moved by 100 sweeps of differential-evolution Metropolis
-  at the posterior. The script reports the effective sample size (3,884 to 5,558 on four readings; 274 on the
+  at the posterior. The script reports the effective sample size (1,259 to 5,442 on four readings; 452 on the
   7-day reading, before its moves) and the share of failed pricings (0.02% to 0.04%, counted as zero likelihood).
-- **Three of the five posteriors were compared once with four PyMC DEMetropolisZ chains** on the same target (the
-  five Heston parameters and c, uniform priors, the same likelihood), started from dispersed least-squares fits:
-  - *325 days* (4 × 20,000 draws after 10,000 tuning steps; R-hat at most 1.002, at least 3,335 effective draws):
-    posterior means agree within 0.05 posterior standard deviations, standard deviations within 4%, and the 5%, 50%
-    and 95% points of the forward start within 2% of the width of its 90% range.
-  - *14 days*, the opening example (4 × 40,000 after 20,000; R-hat at most 1.008, at least 534): means within 0.04
-    standard deviations, standard deviations within 13% (the sampler's tail of the long-run variance is a little
-    longer), the forward start's points within 1% of its range.
-  - *7 days* (4 × 80,000 after 40,000; R-hat at most 1.011, at least 508): the chains themselves mix slowly along the
-    ridge. Means agree within 0.2 standard deviations and standard deviations within 14%; the forward start's points
-    agree within 6% of its range (2.40 to 8.56 here, 2.49 to 8.21 by the chains). Importance sampling alone, before the
-    moves, had left the slow-reversion end of the ridge under-weighted; the comparison caught it. This is the least
-    precise of the five readings, and slide 7 uses it only to show a range set by the box.
+- **The posteriors were checked against Markov chain Monte Carlo** on the same target (the five Heston parameters and
+  c, uniform priors, the same likelihood):
+  - *325 days*, all 63 quotes: against the Heston notebook's own PyMC reference for this case (four DEMetropolisZ
+    chains of 12,000 draws, `lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/`). Every 5%, 50% and 95%
+    point of the six parameters and of the later-window variance agrees within 0.02 of the reference's 90% width;
+    `export_figures.py` prints the comparison.
+  - *14 days*, the opening example, against four DEMetropolisZ chains of 40,000 draws after 20,000 tuning steps,
+    started from dispersed least-squares fits (R-hat at most 1.008, at least 487 effective draws): means within 0.06
+    standard deviations, standard deviations within 10% (the sampler's tails of κ and the long-run variance are a
+    little longer), the forward start's 5%, 50% and 95% points within 2% of the width of its 90% range.
+  - *7 days*: the same check, with 80,000 draws after 40,000, is being rerun on this surface.
 
   The chains are not part of this folder, because PyMC is not a dependency of the tutorial.
 

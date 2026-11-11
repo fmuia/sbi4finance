@@ -93,6 +93,7 @@ PRODUCTS = il.PRODUCTS
 # more rounds and more slices, to a flatter posterior, with more draws from the prior, before the Metropolis moves.
 THIN = {"7 days": {"adapt": (6000,) * 6, "pieces": 8, "temper": 0.3, "prior_share": 0.3, "most": 150000}}
 DASHED = (0, (4, 2))
+BOUND_NAMES = {"v0": "v₀", "kappa": "κ", "long_run": "the long-run variance", "vol_of_vol": "σ_v", "rho": "ρ"}
 RANGE_LEGEND = ("least squares, delta method", "posterior, 5% to 95%", "price under the generating parameters")
 
 
@@ -348,10 +349,11 @@ def figure_price_range(data):
     for x, colour, dashes, side, shift, height, text in marks:
         ax.plot([x, x], [0, (height - 0.04) * top], color=colour, lw=1.0, ls=dashes)
         ax.text(x + shift, height * top, text, ha=side, va="bottom", fontsize=6.5, color=INK_2, linespacing=1.15)
-    ax.annotate("", xy=(point10, 0.80 * top), xytext=(mark, 0.80 * top),
+    # The reserve above the bars, its label on the arrow on a white ground so that no line runs through it.
+    ax.annotate("", xy=(point10, 1.06 * top), xytext=(mark, 1.06 * top),
                 arrowprops={"arrowstyle": "<->", "color": INK, "lw": 0.7, "shrinkA": 0, "shrinkB": 0})
-    ax.text(0.5 * (mark + point10), 0.83 * top, f"reserve {mark - point10:.2f}", ha="center", va="bottom",
-            fontsize=6.5, color=INK)
+    ax.text(0.5 * (mark + point10), 1.06 * top, f"reserve {mark - point10:.2f}", ha="center", va="center",
+            fontsize=6.5, color=INK, zorder=5, bbox={"boxstyle": "square,pad=0.15", "fc": "white", "ec": "none"})
     ax.set(xlim=(low - pad, high + pad), ylim=(0, 1.62 * top), yticks=[])
     ax.spines["left"].set_visible(False)
     ax.grid(False)
@@ -391,7 +393,7 @@ def figure_posterior_cloud(data):
 def figure_ranges_by_reach(data):
     """The forward-start call's 90% range, classical and posterior, as the quotes stop earlier and earlier."""
     rows = il.REACH
-    fig, ax = canvas(0.92, 1.40)
+    fig, ax = canvas(0.92, 1.58)
     left, right = 4.0, 5.3  # the thinnest reading's posterior runs beyond both ends: drawn clipped, with its numbers
     for y, reach in enumerate(rows):
         key = key_of(reach)
@@ -399,25 +401,28 @@ def figure_ranges_by_reach(data):
         low, high = percent(data[f"{key}/forward_start/delta"])
         if np.isfinite(low):
             whisker(ax, y - 0.17, low, high, point, CLASSICAL)
-        else:
-            ax.plot([point], [y - 0.17], "o", mfc="white", mec=CLASSICAL, ms=3.2, mew=0.9, zorder=4)
-            bounds = " and ".join(str(b) for b in data[f"{key}/on_bound"]).replace("kappa", "κ")
-            ax.text(point + 0.03, y - 0.17, f"no range: the fit is on the bound of {bounds}", va="center",
-                    ha="left", fontsize=6.3, color=INK_2)
+        else:  # the fit is on a bound of the box: its price, drawn at the edge when outside the axis, and no range
+            shown = min(max(point, left + 0.01), right - 0.01)
+            ax.plot([shown], [y - 0.17], "o", mfc="white", mec=CLASSICAL, ms=3.2, mew=0.9, zorder=4, clip_on=False)
+            bounds = " and ".join(BOUND_NAMES.get(str(b), str(b)) for b in data[f"{key}/on_bound"])
+            ax.text(shown + 0.03, y - 0.17, f"least squares {point:.2f}, {bounds} on its bound: no range",
+                    va="center", ha="left", fontsize=6.3, color=INK_2, zorder=5,
+                    bbox={"boxstyle": "square,pad=0.1", "fc": "white", "ec": "none"})
         q = percent(quantiles(data[f"{key}/forward_start/draws"]))
         if q[0] < left or q[2] > right:
             ax.annotate("", xy=(left, y + 0.17), xytext=(right, y + 0.17), zorder=3,
                         arrowprops={"arrowstyle": "<|-|>,head_length=0.3,head_width=0.15", "color": POSTERIOR,
                                     "lw": 1.7, "shrinkA": 0, "shrinkB": 0})
-            ax.text(right - 0.02, y + 0.17 + 0.3, f"posterior {q[0]:.2f} to {q[2]:.2f}", ha="right", va="center",
-                    fontsize=6.3, color=INK_2)
+            ax.text(right - 0.02, y + 0.17 + 0.12, f"posterior {q[0]:.2f} to {q[2]:.2f}, beyond both ends",
+                    ha="right", va="top", fontsize=6.3, color=INK_2, zorder=5,
+                    bbox={"boxstyle": "square,pad=0.1", "fc": "white", "ec": "none"})
         else:
             whisker(ax, y + 0.17, q[0], q[2], q[1], POSTERIOR)
     ax.set_xlim(left, right)
     ax.axvline(float(percent(data["truth/forward_start"])), color=INK, lw=0.8, ls=DASHED, zorder=1)
     labels = [f"quotes up to {reach} ({int(data[f'{key_of(reach)}/quotes'])})" for reach in rows]
     rows_axis(ax, range(len(rows)), labels, "forward-start call, 6 months to 1 year, per 100 of forward")
-    ax.set_ylim(len(rows) - 1 + 0.85, -0.6)
+    ax.set_ylim(len(rows) - 1 + 1.2, -0.6)
     legend_above(fig, range_handles(), RANGE_LEGEND)
     return fig
 

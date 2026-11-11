@@ -59,7 +59,7 @@ that uncertainty computed and checked?
 | 8:30–9:20 | One Set of Draws | "One set of posterior draws prices every product, consistently"; two products under the same draws, and a book; facts: a draw, a product, a book | The running example |
 | 9:20–10:10 | The Cost of a Posterior | "A posterior takes thousands of model evaluations. A book or a validation takes hundreds of posteriors"; minutes, a day, no formula | The Heston notebook's PyMC references; option application, Section 7.1 |
 | 10:10–11:10 | Amortized Inference | "A network trained once on simulations returns the posterior for new data in under a second"; the pipeline; facts: what it needs, new data, where it is valid | Cranmer et al. 2020; Radev et al. 2022; the Heston notebook; option application, Section 7.5 |
-| 11:10–12:10 | A Posterior That Can Be Tested | "A 90% range must contain the truth 90% of the time"; stated against measured coverage of the Heston network on 512 simulated surfaces, six targets; facts: the test, the 90% intervals, the cost of 300 exact rough-Bergomi posteriors | Option application, Sections 7.1 and 8.2 |
+| 11:10–12:10 | A Posterior That Can Be Tested | "A 90% range must contain the truth 90% of the time"; stated against measured coverage of the Heston network on 512 simulated surfaces, six targets; facts: the test, the 90% intervals, the cost of 300 exact rough-Bergomi posteriors | The Heston notebook's network; option application, Sections 7.1, 8.2 and 8.3 |
 | 12:10–13:00 | Summary | Three statements, and three questions for the audience's own model | — |
 | 13:00–13:40 | The Team | The four presenters: photo, affiliation, background, parts | The tutorial's webpage |
 | 13:40–14:30 | The Rest of the Tutorial | "Each part adds one building block"; the timeline, and one row per part: the time, the part over what it adds, the presenters | The tutorial's webpage |
@@ -133,12 +133,12 @@ The application's numbers are as of 11 November 2026 (`lab/plans/option-applicat
 
 | Number | Source | Status |
 | --- | --- | --- |
-| 18 quotes at 7 and 14 days; root-mean-square misfit 1.01 half-spreads for the best fit, 1.05 to 1.48 for the posterior draws (5% to 95%) | the running example | illustration |
-| At-the-money forward volatility, 6 months to 1 year: 14.7% to 18.1% across 120 posterior draws (fit 16.1%, generating parameters 16.5%) | the running example | illustration |
-| The forward-start call with quotes up to 14 days: least squares 4.55, mark 4.58, 10% point 4.37, reserve 0.21 (5% of the mark), per 100 of forward; 4.66 under the generating parameters | the running example | illustration |
-| The forward start's 90% range, delta method against posterior: 4.65–4.67 and 4.65–4.67 (quotes up to 325 days), 4.66–4.70 and 4.66–4.70 (81 days), 4.59–4.74 and 4.58–4.77 (30 days), 4.35–4.75 and 4.31–4.89 (14 days); at 7 days the fit sits on the upper bound of κ and has no range, the posterior gives 2.40–8.56 | the running example | illustration |
-| κ fixed at 2, 4 and 8 on the 14-day quotes: 4.41–5.10, 4.37–4.84 and 4.35–4.67; error scale by maximum likelihood 1.17, 1.04 and 1.08, against 1.01 with κ fitted | the running example | illustration |
-| 90% widths: the forward start 0.57, the 325-day call 0.64, the forward start minus the call 0.08; correlation across draws 0.996 | the running example | illustration |
+| 18 quotes at 7 and 14 days; root-mean-square misfit 0.67 half-spreads for the best fit, 0.70 to 0.99 for the posterior draws (5% to 95%) | the running example | illustration |
+| At-the-money forward volatility, 6 months to 1 year: 15.6% to 18.5% across 120 posterior draws (fit 16.8%, generating parameters 16.5%) | the running example | illustration |
+| The forward-start call with quotes up to 14 days: least squares 4.75, mark 4.79, 10% point 4.59, reserve 0.19 (4% of the mark), per 100 of forward; 4.66 under the generating parameters | the running example | illustration |
+| The forward start's 90% range, delta method against posterior: 4.66–4.67 and 4.66–4.67 (quotes up to 325 days), 4.65–4.68 and 4.65–4.68 (81 days), 4.67–4.77 and 4.66–4.78 (30 days), 4.55–4.95 and 4.54–5.06 (14 days); at 7 days the fit sits on the upper bound of the long-run variance and has no range, the posterior gives 1.23–7.00. With all 63 quotes the posterior matches the Heston notebook's PyMC reference to 0.02 of its 90% widths | the running example | illustration |
+| κ fixed at 2, 4 and 8 on the 14-day quotes: 4.69–5.10, 4.57–4.87 and 4.44–4.73; sums of squared misses in half-spreads 9.3, 8.3 and 17.0, against 8.2 with κ fitted; with κ at 2 the range misses the generating price, 4.66 | the running example | illustration |
+| 90% widths: the forward start 0.52, the 325-day call 0.53, the forward start minus the call 0.08; correlation across draws 0.989 | the running example | illustration |
 | One exact posterior on the 63 SPX quotes: Heston 14–27 CPU-min by MCMC (about 180,000 pricings of the quotes, one core) | the Heston notebook's PyMC references (`lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/`) | recorded |
 | Rough Bergomi about 17–29 CPU-h per exact posterior by importance sampling, at 1–2 CPU-min per pricing; 300 exact rough-Bergomi posteriors 5,000–9,000 CPU-h | option application, Section 7.1 | estimated from its pricing cost |
 | The Heston network: 300,000 simulated surfaces, under an hour of training on a laptop CPU; about 0.3 s per posterior | the Heston notebook; option application, Section 7.5 | recorded |
@@ -174,8 +174,9 @@ through the lab's tools; until then the slides name the application's sections.
 1. **"With a flat prior this is just least squares."** At its peak, yes, and slide 6 says so. The posterior keeps the
    other fits too; they matter where the quotes leave something open (slides 7 and 8).
 2. **"A careful classical analysis gives the same range."** Where the quotes determine the price it does, and slide 7
-   shows it. The delta method stops when the fit runs to a bound, and a fixed parameter then replaces it with false
-   certainty. A profile-likelihood range would still exist there, and it too would be set by the box.
+   shows it. The delta method stops when the fit runs to a bound, and fixing a parameter then puts the range where the
+   fixed value says: with κ at 2 it misses the generating price (slide 8). A profile-likelihood range would still exist
+   there, and it too would be set by the box.
 3. **"So the prior is doing the work."** Where the quotes are silent, yes, and it must: the classical habits are
    priors of zero width, or none. Bayes states the width, and the width can be tested.
 4. **"Your example is simulated, and the model is true."** Yes, and it is labelled so. It is the Heston notebook's
