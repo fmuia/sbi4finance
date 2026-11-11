@@ -2,11 +2,11 @@
 
 *Layer 1 of 3 · about 10 minutes · [Index](README.md) · [Layer 2](2-walkthrough.md) · [Layer 3](3-full-detail.md) · [Glossary](glossary.md)*
 
-*10 November 2026: what we are building for the tutorial of 14 November
+*11 November 2026: what we are building for the tutorial of 14 November
 ([PR #81](https://github.com/fmuia/sbi4finance/pull/81)). There are no results yet;
 "first checks" are quick runs of 9 November. The details are in
-[Layer 2](2-walkthrough.md) and [Layer 3](3-full-detail.md), which also integrates the results
-pushed on 10 November.*
+[Layer 2](2-walkthrough.md) and [Layer 3](3-full-detail.md), which also integrates every
+result Alex and Stefan pushed by the end of 10 November.*
 
 ## Goals
 
@@ -243,7 +243,7 @@ training the network. After that, each day's posterior takes seconds; the cost i
 One requirement surfaced on 10 November: the network must see its inputs **whitened**,
 that is, rotated and rescaled so that they are uncorrelated with unit variance. Without
 that, a network ignored the error scale entirely, although the data determine it; with
-it, the scale is learned (Layer 3, step 7).
+it, the scale is learned, though not yet with correct uncertainty (Layer 3, step 7).
 
 ## 8. Checking it
 
@@ -260,9 +260,11 @@ checks:
 | V6 | Do they match two prices never fitted: the **variance swap**, priced from all the listed options without a model (as the VIX index is), and a listed 2-year put? |
 
 If V3 or V4 fails, the results on real days come from the exact posterior, and the
-failure is reported. No Heston network passes V4 yet: the latest ones learn the error
-scale but give intervals that are too narrow, and the next fix is being tested (Layer 3,
-steps 7 and 8).
+failure is reported. No Heston network passes V4 yet. The latest ones learn the error
+scale, but their intervals for the model parameters are wrong in opposite directions:
+too narrow for Alex's network, far too wide for the reproduction of Stefan's notebook
+recipe. The next tests, fresh errors at every training pass and then more distinct
+training surfaces, are specified but not yet run (Layer 3, steps 7 and 8).
 
 ## 9. From the posterior to the products
 

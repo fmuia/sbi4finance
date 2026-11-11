@@ -3,14 +3,16 @@
 *Layer 3 of 3 · reference · [Index](README.md) · [Layer 1](1-overview.md) ·
 [Layer 2](2-walkthrough.md) · [Glossary](glossary.md)*
 
-*State on the evening of 10 November 2026, for the tutorial of 14 November. This layer
-replaces the plan of 9 November ([PR #81](https://github.com/fmuia/sbi4finance/pull/81)):
-it keeps every item of that plan, adds the derivations, and integrates the results pushed
-on 10 November by Alex ([#82](https://github.com/fmuia/sbi4finance/pull/82) to
+*State on 11 November 2026, for the tutorial of 14 November. This layer replaces the plan
+of 9 November ([PR #81](https://github.com/fmuia/sbi4finance/pull/81)): it keeps every
+item of that plan, adds the derivations, and integrates every result pushed by the end of
+10 November (New York time) by Alex ([#74](https://github.com/fmuia/sbi4finance/pull/74),
+[#82](https://github.com/fmuia/sbi4finance/pull/82) to
 [#85](https://github.com/fmuia/sbi4finance/pull/85),
 [#87](https://github.com/fmuia/sbi4finance/pull/87)) and Stefan
 ([#86](https://github.com/fmuia/sbi4finance/pull/86),
-[#87](https://github.com/fmuia/sbi4finance/pull/87)). Where those results change the
+[#87](https://github.com/fmuia/sbi4finance/pull/87)), the last of them Alex's
+reproduction of Stefan's notebook recipe (step 7.5). Where those results change the
 plan, the step says so; [Where we are, and what remains](#where-we-are-and-what-remains)
 lists what is settled, what is running and what is still to be decided.*
 
@@ -19,9 +21,9 @@ lists what is settled, what is running and what is still to be decided.*
   [`design-and-error/`](../../evidence/pilot-results/2026-11-09/design-and-error/README.md).
 - "Noise session": exact fits and test networks of 9 November from a separate session;
   not committed, quoted where used, tentative.
-- "Alex's study": the spread-noise study and its whitening and checkpoint-replay
-  diagnostics, in draft PR #85 and its handover PR #87, with the work orders in #82, #83
-  and #84.
+- "Alex's study": the spread-noise study, its whitening and checkpoint-replay
+  diagnostics and its reproduction of Stefan's notebook recipe, in draft PR #85 and its
+  handover PR #87, with the work orders in #82, #83 and #84.
 - "The pilot": Alex's European-quote pilot of 9 November, now on GitHub as branch
   `study/heston-european-observations-20261109` (evidence through `78cf9de`).
 
@@ -1272,15 +1274,16 @@ decay from $`5\times10^{-4}`$ to $`5\times10^{-5}`$, six-block spline coupling f
 Stefan's notebook (PR #87, `lab/notebooks/heston_6_parameter_bayesflow.ipynb`) found the
 fix: ZCA on $`y/h^P`$, flow matching (three 128-unit layers, dropout 0.1), 10,000
 simulations, 200 epochs at batch 256, trained in 16 seconds, $`c`$ correlation 0.887. It
-changed several things at once and has no calibration check; the paired pilot attributes
-the gain to the transform.
+changed several things at once and reported no calibration check; the paired pilot
+attributes the gain in $`c`$ to the transform, and Alex's reproduction of the whole recipe
+(7.5) supplies the calibration check.
 
-### 7.5 Generalization: the whitened network overfits its fixed noise
+### 7.5 Calibration: no whitened network is calibrated yet
 
-The whitened network's 90% intervals are too narrow: final coverage 55–61% for the
-physical parameters and 74% for $`c`$, with all six SBC screens failing. Its validation
-loss is lowest at epoch 83 (−6.38) and rises to −1.41 by epoch 200 while the training loss
-keeps falling. An exact replay that kept earlier checkpoints:
+**The spline network of the paired pilot.** Its 90% intervals are too narrow: final
+coverage 55–61% for the physical parameters and 74% for $`c`$, with all six SBC screens
+failing. Its validation loss is lowest at epoch 83 (−6.38) and rises to −1.41 by epoch 200
+while the training loss keeps falling. An exact replay that kept earlier checkpoints:
 
 | Epoch | $`c`$ RMSE | $`c`$ correlation | Median 90% width of $`c`$ | $`c`$ coverage | Physical coverage | SBC screens within band |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -1296,17 +1299,69 @@ reference widths (mean errors up to 16.7 reference standard deviations), epoch 8
 2.9–6.9 times, while population coverage is too low. No single interval multiplier
 repairs this.
 
-**The likely cause.** Each of the 10,000 training rows kept one noise draw for all 200
-passes. Once whitening exposes the noise directions, the network can memorize those
-draws; without whitening it could not see them, which is why only the whitened network
-overfits. **This plan's training draws fresh errors at every exposure**, which removes the
-mechanism by construction. Alex's next isolated experiment tests exactly this: the same
-10,000 clean surfaces, frozen whitener, initialization, architecture, batch and 8,000-step
-schedule, with $`c`$ and the 54 errors refreshed each pass, compared at matched epochs.
-If needed, the following single changes are more distinct surfaces from the 100,000 bank,
-then one regularization or flow-matching comparison. The fixed-$`c`$ teaching network is
-then fitted with the settled recipe, and the recipe is frozen before a fresh confirmation
-on the reserved 2,000-case pool, which stays unopened during development.
+**Stefan's recipe, reproduced.** On request, Alex reproduced the notebook's statistical
+recipe literally (PR #85, `capacity-study/pr87-reproduction/`): 10,000 freshly
+simulated training datasets and 100 validation datasets; ZCA fitted on the training
+inputs, which brings the condition number from about 1.1 million to 1; BayesFlow flow
+matching with three 128-unit layers and dropout 0.1; the physical targets standardized
+without support constraints; BayesFlow 2.1.0's default optimizer (AdamW with weight decay
+0.005, gradient clipping at norm 1.5, a 400-update warm-up from $`5\times10^{-5}`$ to
+$`5\times10^{-4}`$, then cosine decay to zero); 200 epochs at batch 256, 8,000 updates,
+with the final epoch primary. The notebook set no seed and saved neither data nor
+weights, so this is the same recipe, not the same weights (seed 9011 added, current locked
+environment recorded). On the same 512 development observations:
+
+| Same 512 observations | Spline, ZCA, epoch 83 | Spline, ZCA, epoch 200 | Flow matching, Stefan's recipe, epoch 200 |
+| --- | ---: | ---: | ---: |
+| $`c`$ posterior-median RMSE | 0.168 | 0.170 | 0.178 |
+| $`c`$ truth–median correlation | 0.924 | 0.923 | 0.915 |
+| Nominal-90% coverage of $`c`$ | 78.9% | 74.0% | 83.4% |
+| Nominal-90% coverage, physical parameters | 74.2–78.7% | 54.9–60.9% | 94.5–99.0% |
+| Marginal SBC screens within band | 0 of 6 | 0 of 6 | 3 of 6 |
+
+The physical-parameter error changes sign. The flow-matching network over-covers them in
+the population, and on single observations its intervals are far too wide: 7.6–18.5
+times the reference widths on the broad synthetic case and 3.5–27.5 times on the
+market-like one, although its $`c`$ means lie close to the reference (0.13 and 0.15
+reference standard deviations). Without support constraints, 15.29% of its draw vectors
+have a coordinate outside the prior (6.32% of the $`c`$ values lie outside [0.5, 2]) and
+1.48% are physically invalid; none was clipped or rejected. On the market observation its
+90% interval for $`c`$ is [1.23, 1.82], against [1.997, 2.000] for the joint reference at
+the prior's bound: a disagreement about inference under the assumed model, separate from
+whether the model fits the market. The notebook-style panel of its own 100 validation
+cases gives 89% coverage for $`c`$ and 5 of 6 SBC screens within band, against 83.4% and
+3 of 6 on the 512 (Wilson 95% intervals 81.4–93.8% and 79.9–86.4%): a 100-case panel is
+too small to judge calibration. The reproduction changes the training draws, the
+whitener, the network family, dropout, the target coordinates and the optimizer together,
+so it cannot attribute anything to flow matching. Neither network is accepted.
+
+**Why, and what is next.** The cause is open. Two hypotheses are in play:
+- *one noise draw per row:* each of the 10,000 training rows kept one noise draw for all
+  200 passes, and once whitening exposes the noise directions, a network can memorize
+  those draws. The spline's validation loss rising after epoch 83 fits this;
+- *too few distinct surfaces:* both whitened fits trained on 10,000 distinct surfaces
+  (the pilot's taken from the bank, the reproduction's freshly simulated), while the bank
+  holds 100,000. The earlier 100,000-surface runs were unwhitened, so they say nothing
+  about more data after whitening.
+
+The reproduction does not separate the two: it also kept one noise draw per dataset, and
+its flow-matching validation curve shows no late gap like the spline's. Alex's work order
+changes one factor at a time:
+1. the same 10,000 surfaces, frozen whitener, initial state, network, bounded targets,
+   batch and 8,000-update schedule, with $`c`$ and the 54 errors refreshed at every pass,
+   compared at matched update counts;
+2. if needed, more distinct surfaces from the 100,000 bank, reporting both presentations
+   and updates (20 passes over 100,000 surfaces give 2 million presentations but 7,820
+   updates, against the control's 8,000);
+3. only then one regularization or flow-matching comparison on the settled data and
+   preprocessing, without the notebook's unconstrained targets.
+
+None of these is running: Alex has stopped for reflection, and each needs its own frozen
+specification. This plan's recipe already draws fresh errors at every exposure and trains
+on the whole bank (7.6), so it sits on the remedy side of both hypotheses; whether that
+is enough is what the tests will show. The fixed-$`c`$ teaching network is then fitted with
+the settled recipe, a checkpoint-selection rule is frozen, and the recipe is confirmed
+afresh on the reserved 2,000-case pool, which stays unopened during development.
 
 ### 7.6 The networks of this plan
 
@@ -1325,19 +1380,25 @@ on the reserved 2,000-case pool, which stays unopened during development.
 - **Targets,** through the precision-safe bounded (logit-box) transform computed in
   float64 (Alex's study found and repaired a float32 rounding failure near the bounds):
   Heston $`(v_0, \kappa, \bar{v}, \xi, \rho, \ln\tau)`$; rough Bergomi
-  $`(H, \eta, \rho, \xi_s, \xi_l, \lambda, \ln\tau)`$.
-- **Architecture and training.** Start from the recipe Alex's study settles: a bounded
-  six-block spline coupling flow with [128, 128] conditioners and zero dropout (a dropout
-  of 0.05 cost 1.9 nats of objective; removing it narrowed over-wide intervals from
-  4.8–10 to 1.6–1.8 times the reference), Adam with cosine decay, and a low final learning
-  rate (annealing to $`5\times10^{-7}`$ narrowed the fixed-$`c`$ widths to 1.13–1.41 times
-  the reference). Rough Bergomi uses the same settings.
+  $`(H, \eta, \rho, \xi_s, \xi_l, \lambda, \ln\tau)`$. Alex's work order rules out the
+  notebook's unconstrained targets: in the reproduction of Stefan's recipe, 15.29% of
+  the draw vectors left the prior and 1.48% were physically invalid (7.5).
+- **Architecture and training.** No recipe is settled yet (7.5). The starting point is
+  the one Alex's work order continues from: a bounded six-block spline coupling flow with
+  [128, 128] conditioners and zero dropout (a dropout of 0.05 cost 1.9 nats of objective;
+  removing it narrowed over-wide intervals from 4.8–10 to 1.6–1.8 times the reference),
+  Adam with cosine decay, and a low final learning rate (annealing to $`5\times10^{-7}`$
+  narrowed the fixed-$`c`$ widths to 1.13–1.41 times the reference). Flow matching stays a
+  candidate for a later single-factor comparison. Rough Bergomi uses whatever recipe
+  Heston settles.
 - **Selection** of configuration, seed and checkpoint on simulated data only, never on
   the real days, with the rule frozen before confirmation.
 - **Code.** $`\tau`$ and $`c`$ are kept apart from the pricing parameters, because
   `tasks.model_parameters` passes every inferred name to the pricer.
 - **Cost.** A Heston fit of 30,000 updates takes about 100 s on one L40S GPU; the
-  checkpoint replay ran 4,000 updates in 68 worker-seconds. Plan 10–20 fits per model.
+  checkpoint replay ran 4,000 updates in 68 worker-seconds; the reproduction of Stefan's
+  recipe took 58 s in all, including 10,100 checked pricing calls and 39 s of training on
+  CPU, and its evaluation 130 s. Plan 10–20 fits per model.
 - **Earlier evidence:** the 8 November Heston training matrix on the tutorial's old task
   needed at least 30,000 updates to pass rank and coverage checks and still missed
   conditional checks (`NUMERICAL-EXPERIMENT-PLAN.md`, P4).
@@ -1479,13 +1540,20 @@ training while population coverage worsens. Both are required, and neither repla
 other. Network–reference agreement on the market day tests the inference under the
 assumed model; whether the model fits the market is a separate question for V2, V5 and V6.
 
+The panel must also be large enough. The reproduction of Stefan's recipe gave 89%
+coverage for $`c`$ and 5 of 6 SBC screens within band on the notebook's 100 validation
+cases, but 83.4% and 3 of 6 on the 512 (7.5). A 100-case panel cannot tell 89% from 83%,
+and a small panel also monitored during training is not a test; V3 uses 2,000 untouched
+cases.
+
 ### 8.4 Status of the networks
 
 | Network | Data | Status |
 | --- | --- | --- |
 | Heston, five targets, $`c = 1`$ (the primary teaching target) | The pilot's 54 quotes | Not accepted: conditional widths 1.13–1.41 times the reference, mean errors up to 0.78 SD |
 | Heston, six targets with $`c`$, unwhitened | Same | Ignores $`c`$; not accepted |
-| Heston, six targets with $`c`$, whitened | Same | Learns $`c`$; undercovers; fresh-noise test next |
+| Heston, six targets with $`c`$, whitened, spline flow (Alex's paired pilot) | Same | Learns $`c`$; undercovers at every checkpoint (74–79% at the validation minimum); not accepted |
+| Heston, six targets with $`c`$, whitened, flow matching (Stefan's recipe, reproduced by Alex) | Same | Learns $`c`$ (83% coverage); physical intervals far too wide, 15% of draws outside the prior; not accepted |
 | Heston with independent $`\tau`$ (the pilot) | Same | Fails conditional checks, including on its own simulator |
 | Heston and rough Bergomi with smooth $`\tau`$ (this plan) | Layout E | Not started; needs the settled recipe and the whitener |
 | Rough Bergomi, any | Any new design | Gated on Heston acceptance (#84); read-only readiness only |
@@ -1706,9 +1774,12 @@ simplex $`\Delta`$:
 4. **Input conditioning.** A network that must read an error scale needs whitened inputs;
    the whitener is tied to one ordered design and must be refitted for each new design
    or model.
-5. **Fixed-noise overfitting.** Training rows that keep one noise draw let a whitened
-   network memorize it; this plan's fresh draws avoid it, and Alex's next experiment tests
-   it.
+5. **Calibration of the whitened networks is unsolved.** Alex's spline network
+   under-covers at every checkpoint; Stefan's flow-matching recipe over-covers the
+   physical parameters and puts 15% of its draws outside the prior. Whether one noise
+   draw per training row or too few distinct surfaces is to blame is untested. This plan's
+   recipe refreshes the errors at every exposure and uses the whole bank, which is not yet
+   shown to suffice (7.5).
 6. **Pooled checks pass while single posteriors are wrong;** V4 is binding.
 7. **Rough Bergomi's bank carries Monte Carlo error** inside its simulated observations;
    at the step 4 target this makes posteriors slightly conservative, not biased. Under the
@@ -1738,22 +1809,26 @@ simplex $`\Delta`$:
   from the layout E targets (this layer's check and Alex's audit agree).
 - Whitened network inputs, fitted on training data only, persisted with the model and
   applied once.
+- Bounded (logit-box) targets: Alex's work order excludes the notebook's unconstrained
+  targets, which put 15% of the reproduced draws outside the prior.
 - References with PyMC under the MCMC policy; population and conditional checks both
   binding.
 
 ### Running: Alex's Heston work order (PRs #82 and #85)
 
-| Unit | Work | Status, 10 November evening |
+| Unit | Work | Status at the end of 10 November |
 | --- | --- | --- |
 | H1 | Spread-only likelihood, task identities, known-$`\theta`$ oracle for $`c`$ | Done |
 | H2 | Reuse the 54 clean prices; references | Done: seven of eight joint references ready; fixed-$`c`$ boundary reference inconclusive |
-| H3 | Checkpoint audit; fresh-noise test; fixed $`c = 1`$ teaching fit | Audit done (no checkpoint calibrated); fresh-noise test next; teaching fit not accepted |
+| H3 | Checkpoint audit; generalization tests; fixed $`c = 1`$ teaching fit | Checkpoint audit done: no checkpoint calibrated. Stefan's recipe reproduced: $`c`$ learned, physical intervals far too wide, 15% of draws outside the prior; not accepted. Next, specified but not launched: errors refreshed at every pass, then more distinct surfaces. Teaching fit not accepted |
 | H4 | Revised actual quotes; price only changed contracts | Audit done (62 of 63 targets; no 1-year PM expiry; last call at +1.5); pricing gated |
 | H5 | Repeat the accepted recipe on the revised layout | Not started |
 | H6 | Freeze the recipe; fresh confirmation; promotion | Not started |
 
-The rough Bergomi refresh (#84) is limited to read-only readiness until Heston is
-accepted; the flexible-input track (#83) is a specification.
+After the reproduction Alex stopped for reflection: no fit, pricing job or reference
+sampling is running, and each next step needs its own frozen specification. The rough
+Bergomi refresh (#84) is limited to read-only readiness until Heston is accepted; the
+flexible-input track (#83) is a specification.
 
 ### Open decisions
 
@@ -1774,6 +1849,10 @@ accepted; the flexible-input track (#83) is a specification.
    on the old 63-point grid and old noise rule, without the SPY sections; the SPX version
    of 13.1 depends on an accepted network (H3) or on showing references on the real day.
 7. **The book's volatility-swap notional** (9.10).
+8. **The next Heston network experiment** (step 7.5). Alex's work order proposes, in
+   order, errors refreshed at every pass on the same 10,000 surfaces, then more distinct
+   surfaces from the 100,000 bank, then one regularization or flow-matching comparison.
+   Each needs approval; whether any runs before 14 November is open.
 
 ### If the network is not accepted by 14 November
 
@@ -1781,7 +1860,9 @@ The plan's failure policy applies: real-day results come from the reference post
 (Heston MCMC is available for every day at 15–40 CPU-minutes), and the network is shown on
 simulated data with its V3 and V4 scores. The whitening result is itself teachable: a
 network can miss information that is plainly in the data, pooled SBC will not notice, and
-a change of input coordinates fixes it.
+a change of input coordinates lets it read that information. What followed is teachable
+too: reading the error scale is not yet calibrated uncertainty, and the two recipes tried
+so far miss the physical parameters' calibration in opposite directions.
 
 ### Corrections to the current text
 
@@ -1837,10 +1918,14 @@ about 20 minutes) awaits review.
    combination.
 6. Scope.
 
-Retire the historical SPY studies from the live path. Current state: Alex's branch
-`lesson/rough-options-workflow-20261107` (no PR yet) makes the rough simulator and both
-neural workflows explicit and propagates calibration uncertainty; production on a new
-design is gated (#84).
+Retire the historical SPY studies from the live path. Current state: Alex's
+[PR #74](https://github.com/fmuia/sbi4finance/pull/74) (branch
+`lesson/rough-options-workflow-20261107`, updated 10 November) makes the rough simulator,
+the neural pricer and the flow-matching posterior explicit, adds optional recovery and
+rank checks on 200 bundled validation markets, and propagates posterior uncertainty to a
+fair variance-swap strike. It removes the three-market MCMC report and adds no new exact
+rough reference: it shows the workflow runs, not that its posteriors are accurate.
+Production on a new design is gated (#84).
 
 **Slot 6, priors and misspecification.** D4 is the material for the noise part: half-spreads
 only, independent $`\tau`$, smooth $`\tau`$, and $`c`$ from 0.5 to 2; a slider maps to $`c`$
@@ -1879,13 +1964,16 @@ the noise.
   likelihood and fixed-$`c`$ development (`README.md`), the noise-scale study
   (`noise-scale/`), the larger-bank comparison and conditioning diagnostic
   (`noise-scale/capacity-study/`), the paired whitening pilot
-  (`noise-scale/capacity-study/whitening-pilot/`) and the checkpoint replay
-  (`…/whitening-pilot/checkpoint-replay/`), the grid audit (`grid-coverage/`).
+  (`noise-scale/capacity-study/whitening-pilot/`), the checkpoint replay
+  (`…/whitening-pilot/checkpoint-replay/`), the reproduction of Stefan's notebook recipe
+  (`noise-scale/capacity-study/pr87-reproduction/`, with its offline report), the grid
+  audit (`grid-coverage/`).
 - The handover, PR #87: the investigation brief and portable recovery inputs
   (`noise-scale/README.md`, `recovery-inputs.{json,npz}`), and Stefan's notebook
   `lab/notebooks/heston_6_parameter_bayesflow.ipynb`.
 - Work orders: `lab/plans/HESTON-NOISE-GRID-PLAN.md` (#82),
   `HESTON-FLEXIBLE-INPUTS-PLAN.md` (#83), `BERGOMI-OBSERVATION-REFRESH-PLAN.md` (#84).
+- The rough-options lesson, PR #74, branch `lesson/rough-options-workflow-20261107`.
 - The pilot, branch `study/heston-european-observations-20261109`, evidence through
   `78cf9de`: the design `designs/put_heavy.json` (checked in step 5.2), the $`\tau`$
   networks and their failure records under `heston-observations/training-study/`.
@@ -1902,13 +1990,14 @@ the noise.
 
 **Goals.**
 1. *Marks and ranges.* Steps 3 and 9 define them, D1 and D2 report them, and step 9's
-   numerical requirements make them reproducible. On 10 November the product code (the
-   barrier estimator and its tests) and the rough bank are not yet built, and no network
-   is accepted; the references can carry the real-day results.
+   numerical requirements make them reproducible. At the end of 10 November the product
+   code (the barrier estimator and its tests) and the rough bank are not yet built, and no
+   network is accepted; the references can carry the real-day results.
 2. *Fast and testable.* Steps 7 and 8. The amortization identity makes it possible; the
    whitening result shows what it takes: a network can ignore an identifiable error scale
-   until its inputs are well conditioned, and then overfit fixed noise unless the noise is
-   redrawn. V3, V4 and D3 test the result; none of the Heston networks passes V4 yet.
+   until its inputs are well conditioned, and even then its intervals need not be
+   calibrated, as the two whitened recipes tried so far show. V3, V4 and D3 test the
+   result; none of the Heston networks passes V4 yet.
 3. *The limits.* Step 10 states them, and step 6 states the choice that most affects them:
    whether the market ranges include the model's measured misfit.
 

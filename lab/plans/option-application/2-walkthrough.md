@@ -3,13 +3,14 @@
 *Layer 2 of 3 · about 30 minutes · [Index](README.md) · [Layer 1](1-overview.md) ·
 [Layer 3](3-full-detail.md) · [Glossary](glossary.md)*
 
-*10 November 2026: the plan for the tutorial of 14 November
+*11 November 2026: the plan for the tutorial of 14 November
 ([PR #81](https://github.com/fmuia/sbi4finance/pull/81)). There are no results yet.
 Numbers marked "first checks" come from quick runs of 9 November
 ([evidence](../../evidence/pilot-results/2026-11-09/design-and-error/README.md)); numbers
 marked "noise session" come from exact fits and test networks of the same day, which are
-not committed. [Layer 3](3-full-detail.md) gives every derivation and integrates the
-results pushed on 10 November by Alex and Stefan; the main ones are summarized here.*
+not committed. [Layer 3](3-full-detail.md) gives every derivation and integrates every
+result Alex and Stefan pushed by the end of 10 November; the main ones are summarized
+here.*
 
 This layer takes each step of [Layer 1](1-overview.md) one level deeper: what we do, why,
 the formulas that carry it, and the numbers behind each choice. The steps have the same
@@ -650,10 +651,24 @@ a tiny combination of nearly identical inputs (input condition number about 2 mi
 which training cannot resolve. Stefan's notebook showed the fix and Alex's controlled
 pilot isolated it: a fixed full **whitening** of the inputs (a rotation and rescaling,
 fitted on training simulations, that makes them uncorrelated with unit variance) raised
-the correlation to 0.92. The whitened network then overfits when each training row keeps
-one noise draw, giving intervals that are too narrow; drawing fresh errors at every pass,
-as this plan does, is the remedy being tested. Inferring $`\tau`$ is the same kind of
-problem, so this plan's networks whiten their inputs too.
+the correlation to 0.92. Inferring $`\tau`$ is the same kind of problem, so this plan's
+networks whiten their inputs too.
+
+**Reading the error scale is not yet calibrated uncertainty.** No whitened network gives
+correct intervals so far, and the two recipes tried miss in opposite directions:
+- Alex's spline-flow network gives intervals that are too narrow: 55–61% coverage at a
+  nominal 90% for the physical parameters after full training, and 74–79% at the epoch
+  where validation loss was lowest;
+- Alex's reproduction of Stefan's notebook recipe (flow matching, dropout, targets left
+  unconstrained) covers the physical parameters 94.5–99.0% of the time, with intervals
+  3.5 to 27.5 times the exact ones on single simulated cases, covers $`c`$ 83.4% of the
+  time, and puts 15% of its draws outside the prior.
+
+Both trained on only 10,000 distinct price surfaces, each kept with one noise draw for
+all of training (the bank holds 100,000). Which of the two limits them is open. Alex's
+next tests change one factor at a time (fresh errors at every pass, then more surfaces)
+and are specified, not yet run. This plan's training already draws fresh errors at every
+exposure and uses the whole bank, which is not yet shown to be enough.
 
 **Cost after training.** A Heston training run takes about 100 seconds per 30,000
 updates on one GPU, and 10–20 runs per model are planned. After that, a day's posterior
@@ -712,10 +727,14 @@ day. Failure already on (1) without whitening points to conditioning; agreement 
 with failure on (2) and (3) points to the error law.
 
 **Status.** No Heston network passes V4 yet. The fixed-$`c`$ teaching network has
-intervals 1.13–1.41 times the reference widths on a broad simulated case; the whitened
-network that infers $`c`$ learns it but undercovers (55–61% at a nominal 90% for the
-physical parameters). Pooled checks can pass while single posteriors are wrong, which is
-why V4 is binding.
+intervals 1.13–1.41 times the reference widths on a broad simulated case. The whitened
+networks that infer $`c`$ learn it, but neither is calibrated (step 7): the spline-flow
+network undercovers, and the flow-matching reproduction of Stefan's recipe gives
+intervals far too wide. On the market day the latter's 90% interval for $`c`$ is 1.23 to
+1.82, while the exact posterior sits at the prior's bound of 2. After that reproduction
+Alex stopped for reflection; no fit is running. Pooled checks can pass while single
+posteriors are wrong, and a 100-case panel is too small to judge coverage, which is why
+V3 uses 2,000 cases and V4 is binding.
 
 **If a check fails.** If V3 or V4 fails, the real-day results come from the reference
 posteriors, and the network is shown on simulated data with its scores. If V5 or V6
@@ -830,8 +849,9 @@ Finally, what the outputs will establish, and where they stop.
 7. Four days illustrate day-to-day behaviour; they are not a history.
 8. The raw quotes must be fetched each evening.
 9. A network must read error scales from whitened inputs. The whitener belongs to one
-   ordered design and is refitted for every new design or model, and a whitened network
-   overfits fixed training noise unless the noise is redrawn.
+   ordered design and is refitted for every new design or model. Whitening lets the
+   network read the scale but does not by itself give calibrated intervals; what does is
+   still being worked out (step 7).
 
 ## Back to the goals, the audience and the practitioner
 

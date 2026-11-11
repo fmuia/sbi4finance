@@ -132,9 +132,17 @@ $`B`$ below its starting level during the put's life. Here the barrier is checke
 closes: the payoff is $`(K - S_T)^+`$ if some close was at or below $`B`$, and zero
 otherwise.
 
+**Dropout.** A training device that switches off a random share of a network's units at
+each update (10% in Stefan's notebook), so that the network does not depend on any single
+one. Alex's current spline-flow networks use none.
+
 **Effective sample size (ESS).** The number of independent draws that a set of correlated
 (MCMC) or weighted (importance-sampling) draws is worth. For importance weights $`w_s`$,
 $`(\sum_s w_s)^2/\sum_s w_s^2`$.
+
+**Epoch.** One pass of training over the whole training set. With 10,000 training rows
+and batches of 256, 200 epochs are 8,000 updates; the network saved at a given epoch is a
+checkpoint.
 
 **Error model.** The statement of how observed quotes differ from model prices. Here: a
 quote uncertainty the size of the half-spread, plus a smooth model error of size
@@ -167,8 +175,8 @@ inverse approximates the parameters' covariance; small eigenvalues mark directio
 data barely constrain.
 
 **Flow matching.** A way to train a generative network by regressing a velocity field that
-carries a simple distribution into the target; used by BayesFlow in the tutorial. Its
-optimum is the same posterior as neural posterior estimation's.
+carries a simple distribution into the target; used by BayesFlow in the tutorial and in
+Stefan's notebook. Its optimum is the same posterior as neural posterior estimation's.
 
 **Forward** ($`F(T)`$). The price agreed today for buying the index at $`T`$, paid at
 $`T`$. It equals today's level grown at the interest rate less the dividend yield,
@@ -283,8 +291,9 @@ quotes the design uses.
 contract, rather than on an exchange. There is no public price.
 
 **Overfitting.** Fitting the particular training examples rather than the law they come
-from: training loss keeps falling while validation loss rises. Here, a whitened network
-memorized the fixed noise draws of its training rows.
+from: training loss keeps falling while validation loss rises. Here, Alex's whitened
+spline-flow network did this after epoch 83. Whether it memorized the one noise draw each
+training row kept, or saw too few distinct surfaces, is not yet tested.
 
 **Pareto k-hat** ($`\hat k`$). A diagnostic of importance sampling: it estimates how heavy the
 tail of the weights is. Below 0.7 the estimate is reliable.
@@ -359,6 +368,12 @@ negative: low strikes have higher implied volatilities.
 
 **Smile.** Implied volatility as a function of strike and maturity. The name comes from
 the U shape it takes in some markets; for an index it is mostly a skew.
+
+**Spline flow.** A normalizing flow, the network family in Alex's study: a chain of
+invertible maps built from monotone splines, which turns a standard normal into the
+approximate posterior and can evaluate that approximation's density. Trained by neural
+posterior estimation. Not to be confused with the smoothing spline that reads implied
+volatility across strikes.
 
 **Spot** ($`S_t`$). The index level at time $`t`$.
 
