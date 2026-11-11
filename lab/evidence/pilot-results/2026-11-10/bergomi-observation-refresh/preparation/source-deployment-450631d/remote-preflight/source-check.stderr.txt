@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/repo/lab/scripts/prepare_rough_actual_layout_pilot.py", line 22, in <module>
+    pilot.validate(pilot.read(args.work_order),args.repo_root); print("source/runtime identities verified; no MC executed")
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/repo/lab/src/sbi4finance/calibration/rough_actual_layout_pilot.py", line 164, in validate
+    raise ValueError("declared pilot paths, grids, cases, streams or memory recipe changed")
+ValueError: declared pilot paths, grids, cases, streams or memory recipe changed

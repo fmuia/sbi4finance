@@ -1,0 +1,14 @@
+test_authoritative_panel_is_copied_bitexact_without_new_draws (test_rough_actual_layout_portable.PortableTests.test_authoritative_panel_is_copied_bitexact_without_new_draws) ... ok
+test_authoritative_stored_panel_cannot_change_even_by_one_ulp (test_rough_actual_layout_portable.PortableTests.test_authoritative_stored_panel_cannot_change_even_by_one_ulp) ... ok
+test_exact_recipe_prior_and_source_tampering_fails (test_rough_actual_layout_portable.PortableTests.test_exact_recipe_prior_and_source_tampering_fails) ... ok
+test_failed_Heston_diagnostics_cannot_bind_portable_condition (test_rough_actual_layout_portable.PortableTests.test_failed_Heston_diagnostics_cannot_bind_portable_condition) ... ok
+test_mocked_worker_executes_original_stored_curve_values (test_rough_actual_layout_portable.PortableTests.test_mocked_worker_executes_original_stored_curve_values) ... ok
+test_one_ulp_host_math_variation_passes_without_replacing_stored_values (test_rough_actual_layout_portable.PortableTests.test_one_ulp_host_math_variation_passes_without_replacing_stored_values) ... ok
+test_only_declared_derived_known_fields_allow_roundoff (test_rough_actual_layout_portable.PortableTests.test_only_declared_derived_known_fields_allow_roundoff) ... ok
+test_portable_condition_still_checks_exact_staged_evaluation_hash (test_rough_actual_layout_portable.PortableTests.test_portable_condition_still_checks_exact_staged_evaluation_hash) ... ok
+test_preparer_gate_imports_current_readiness_from_outside_lab_cwd (test_rough_actual_layout_portable.PortableTests.test_preparer_gate_imports_current_readiness_from_outside_lab_cwd) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.727s
+
+OK

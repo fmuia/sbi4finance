@@ -1,0 +1,36 @@
+{
+  "format": "rough_actual_layout_failed_source_deployment_v1",
+  "status": "failed_preflight",
+  "source_revision": "450631d2664599cefbf2ee26c7ec745257556d52",
+  "archive_sha256": "a337a7e1e0d085f2aeecf8a2209e2c466a7106b7775d90ae01b508d2f808f012",
+  "archive_bytes": 204881920,
+  "remote_record": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation/source-deployment-450631d/remote-preflight/deployment.json",
+    "sha256": "9bb8dd9cae16ee2fda26c522b893715936da32a256b376f7acd586786b6b2989"
+  },
+  "preflight_producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation/source-deployment-450631d/preflight-runner.py",
+    "sha256": "be34310fca05e31ad3586851ef8641e7698c3022147e1d50e72ca536784589dd"
+  },
+  "console": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation/source-deployment-450631d/preflight-console.log",
+    "sha256": "5bcea7e08e262e12c7258c1920e25217da47cde9c216c4b7e5e8d620bb2dfa7b"
+  },
+  "all20_source_hashes_match": true,
+  "execution_versions_match": true,
+  "new_root_imports_match": true,
+  "components_and_memory_recipe_exact": true,
+  "mismatch": "ARM/x86 derived known-curve prior math differs by last bits; exact regenerated case equality rejected valid stored authoritative cases",
+  "max_absolute_differences": {
+    "known00_levels": 1.734723475976807e-18,
+    "known01_levels": 6.938893903907228e-18,
+    "known01_draw_context": 2.7755575615628914e-17,
+    "known02_levels": 1.3877787807814457e-17
+  },
+  "stored_cases_parameters_seeds_priors_unchanged": true,
+  "condition_created": false,
+  "worker_invoked": false,
+  "rough_MC_executed": false,
+  "slurm_jobs_submitted": false,
+  "scientific_acceptance": false
+}

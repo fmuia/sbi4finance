@@ -1,0 +1,172 @@
+{
+  "format": "rough_actual_layout_source_deployment_preflight_v1",
+  "status": "failed",
+  "created_utc": "2026-11-11T04:11:01.754764+00:00",
+  "source_revision": "450631d2664599cefbf2ee26c7ec745257556d52",
+  "host": "login010",
+  "new_stage_root": "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110",
+  "source_archive": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/source.tar",
+    "sha256": "a337a7e1e0d085f2aeecf8a2209e2c466a7106b7775d90ae01b508d2f808f012",
+    "bytes": 204881920,
+    "scope": "git archive tracked commit only; ignored banks/environments excluded"
+  },
+  "new_repo_root": "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/repo",
+  "work_order": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/preparation/work-order.json",
+    "sha256": "b9bf6e3fa2453b808589cd6e3ad6549789106fbae3bd57f6a80def5d13ead830"
+  },
+  "submission_declaration": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/preparation/pilot.sbatch",
+    "sha256": "8213f378f98af2db9ca98b6bfaefa656a3ba15d9729c70e472234ed798a46338"
+  },
+  "execution_environment": {
+    "python": "3.12.16 (main, Oct 26 2026, 11:37:43) [GCC 15.3.0]",
+    "executable": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "tutorial_runtime": "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/repo/tutorial/src/sbi4f_tutorial/__init__.py",
+    "pilot_source": "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/repo/lab/src/sbi4finance/calibration/rough_actual_layout_pilot.py"
+  },
+  "source_bindings": {
+    "actual_layout": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/rough_options/actual_layout.py",
+      "sha256": "17205a19c52928c9781592eb596fd5b4d711b08c4a123a78b259454b605d8552",
+      "verified": true
+    },
+    "rough_model": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/rough_options/model.py",
+      "sha256": "546d03f66fd7f1321bcc71a37bdb5cba0b5f6b41e51a1ff4e0ac13a03915bd69",
+      "verified": true
+    },
+    "rough_simulator": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/rough_options/simulator.py",
+      "sha256": "542359c3999c2d6b55860191bf9468aeaf877820128d9e87c94cd7ecb0066bca",
+      "verified": true
+    },
+    "runtime_pricing": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/shared/pricing.py",
+      "sha256": "12fb0a54c1c2e98cfa2feea2e37ccd18b5fe9d0280249ecb11d9abf04387c9d4",
+      "verified": true
+    },
+    "runtime_tasks": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/shared/tasks.py",
+      "sha256": "fa2e3ab505ace28c5442ea9ecc66fe688b180439a33798b4c77d8c528704e8a5",
+      "verified": true
+    },
+    "lab_curve_helpers": {
+      "relative_path": "lab/src/sbi4finance/calibration/pricing.py",
+      "sha256": "e0e1cc1da9b08ab83cd2fb095c8657da05477e788fcdae04435abddaa3fe89ca",
+      "verified": true
+    },
+    "lab_task_helpers": {
+      "relative_path": "lab/src/sbi4finance/calibration/tasks.py",
+      "sha256": "0b7ac3011ca25cea335c81efc6eb12f8f7d622ccb20c83e5a24794cb28219519",
+      "verified": true
+    },
+    "pilot": {
+      "relative_path": "lab/src/sbi4finance/calibration/rough_actual_layout_pilot.py",
+      "sha256": "f2eab502fa933f83f7dc2d58f6d5f0d82c50a5796cf8859c4c5375b2d8a94bc7",
+      "verified": true
+    },
+    "controlled_crn_helper": {
+      "relative_path": "lab/evidence/pilot-results/2026-10-28/known-pricing-validation/known_rough_pricing_check_20261028.py",
+      "sha256": "007edba3796be584a15153c0449b3b527a97cacbe1bb622f4e4ecda77c92a01a",
+      "verified": true
+    },
+    "rough_compatibility": {
+      "relative_path": "lab/src/sbi4finance/rough_bergomi.py",
+      "sha256": "eb3f123f0bc642c224ee17718964ed01b927a482dcc03767e760aea0546ad55d",
+      "verified": true
+    },
+    "bergomi_compatibility": {
+      "relative_path": "lab/src/sbi4finance/bergomi.py",
+      "sha256": "bfdffb8175d26a6dd46620092ffc0c205a114cb2d1e0dc523f1cd8eb96ee215f",
+      "verified": true
+    },
+    "grid_coupling": {
+      "relative_path": "lab/src/sbi4finance/bergomi_refinement.py",
+      "sha256": "c8a6a2b5a82a4446374b7b7dda2b270a648a9742fde019115747f1604f099b04",
+      "verified": true
+    },
+    "budget_helper": {
+      "relative_path": "lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575",
+      "verified": true
+    },
+    "prepare_cli": {
+      "relative_path": "lab/scripts/prepare_rough_actual_layout_pilot.py",
+      "sha256": "a344448784c7740a9229b6a82ba3f359c2d491ea2ed1e5bd8749a0912c48bfb2",
+      "verified": true
+    },
+    "worker_cli": {
+      "relative_path": "lab/scripts/run_rough_actual_layout_pilot.py",
+      "sha256": "5f922b9c5cca7d2ab31ede728ea56c011b0b9109e138f81fe42d161f17a925ef",
+      "verified": true
+    },
+    "legacy_bank_identity": {
+      "relative_path": "lab/src/sbi4finance/calibration/bank.py",
+      "sha256": "e8a40cb9c7fadfb472bc6e48fa5874f62f9fa7afd30156bd70e44feec7596353",
+      "verified": true
+    },
+    "legacy_json_identity": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/shared/bank_helpers.py",
+      "sha256": "39df3eaa28c703840c00123d8e68fb4b22551c01a76a5cf7aeee2f7e049ea452",
+      "verified": true
+    },
+    "heston_readiness": {
+      "relative_path": "lab/scripts/render_heston_pr87_100k.py",
+      "sha256": "27b75ef36d94fb842a8de2905fc6f2ab98382b6420ae500c30683ed00d5fa88e",
+      "verified": true
+    },
+    "heston_grid_report": {
+      "relative_path": "lab/scripts/render_heston_pr87_grid.py",
+      "sha256": "4bfa32452a132c34dc41d8620299063bc0eea14f4d79692f275804504da11fd8",
+      "verified": true
+    },
+    "heston_followup_report": {
+      "relative_path": "lab/scripts/render_heston_pr87_followup.py",
+      "sha256": "480b00d066a2ebc788218e3839b1d08cada9d8744c9a3dafc49fa1bdd92cc672",
+      "verified": true
+    }
+  },
+  "source_check": {
+    "command": [
+      "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+      "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/repo/lab/scripts/prepare_rough_actual_layout_pilot.py",
+      "check-sources",
+      "--work-order",
+      "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/preparation/work-order.json",
+      "--repo-root",
+      "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/repo"
+    ],
+    "exit_code": 1,
+    "stdout": {
+      "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/preflight/source-check.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-20261110/preflight/source-check.stderr.txt",
+      "sha256": "cd883d510ea8375df7247b83d9e2be07d0e0e7c45855b1979669c592e3929ec1"
+    }
+  },
+  "read_only_scheduler_inventory": {
+    "batch_CPU_lines": [
+      "batch*|14391/841/48/15280"
+    ],
+    "user_jobs": [],
+    "scope": "as-of observation, not reserved or guaranteed availability"
+  },
+  "scratch_filesystem": {
+    "total_bytes": 549755813888000,
+    "available_bytes": 402404102111232,
+    "scope": "filesystem capacity, not user quota"
+  },
+  "condition_created": false,
+  "worker_invoked": false,
+  "rough_MC_executed": false,
+  "pricing_executed": false,
+  "slurm_jobs_submitted": false,
+  "existing_remote_repositories_modified": false,
+  "scientific_acceptance": false
+}
