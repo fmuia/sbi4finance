@@ -1,6 +1,6 @@
 # Revised-grid Heston recovery
 
-**Prepared; results pending.** This is a separately declared operational recovery of the [first failed campaign](../campaign.json). It does not resume or overwrite that attempt.
+**Running; results pending.** This is a separately declared operational recovery of the [first failed campaign](../campaign.json). It does not resume or overwrite that attempt.
 
 The scientific task is unchanged: actual63 European SPXW contracts; the same broad six-parameter prior; Y=P(phi)+c*h*Z; the checked Black-control-variate Heston representation; one300k bank supporting fresh200k-prefix and300k-full nativeFlowMatching fits, each300epochs; frozen first10k ZCA; final300 primary and native validation minimum secondary.
 

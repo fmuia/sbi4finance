@@ -1,0 +1,41 @@
+{
+  "format": "heston_pr87_grid_campaign_renderer_fixture_verification_v1",
+  "status": "passed",
+  "verified_utc": "2026-11-11T03:42:12.823681+00:00",
+  "consumer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_grid_campaign.py",
+    "sha256": "bcb9f4a1488016f8f1a559c3cc8743b888dda30f85928c477aa964c63c4b1ea3"
+  },
+  "fixture_script": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/software-validation/aggregate-renderer-fixture.py",
+    "sha256": "679f1a0367b6e4687faeed5786cdb2e3c873e18bfc5d3b3eefdca14e6218c9b1"
+  },
+  "log": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/software-validation/aggregate-renderer-fixture.log",
+    "sha256": "19bb8e9d3704cea3be99d54d76fe62671bd96cd0d3ca0f110318e1aba448d7e1"
+  },
+  "synthetic_saved_fixture_only": true,
+  "observed": {
+    "status": "passed",
+    "fixture_root": "/private/tmp/pr87-grid-campaign-renderer-_f7ejlmj",
+    "report_bytes": 744918,
+    "inline_svg_count": 20,
+    "full_bodies": 2,
+    "endpoints": 4,
+    "identifier_prefix_and_references_valid": true,
+    "incomplete_campaign_rejected": true,
+    "changed_report_rejected": true,
+    "oversize_rejected_without_truncation": true,
+    "recovery_aborted_attempt_and_resource_scope_visible": true,
+    "scientific_queries_or_pricing": 0,
+    "aggregate": {
+      "path": "/private/tmp/pr87-grid-campaign-renderer-_f7ejlmj/aggregate/report.html",
+      "sha256": "256cd2dff8a4514d871607dfa87312933fb7cbff30a4e48ff5ea6bee2a6e3a58"
+    }
+  },
+  "production_campaign_artifacts_rendered": false,
+  "models_raw_draws_or_chains_opened_by_aggregate": false,
+  "new_neural_sampling": false,
+  "new_pricing": false,
+  "scientific_acceptance": false
+}

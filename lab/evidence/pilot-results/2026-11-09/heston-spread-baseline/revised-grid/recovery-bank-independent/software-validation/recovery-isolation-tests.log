@@ -1,0 +1,7 @@
+test_nonzero_reference_exit_during_bank_does_not_kill_or_retry_bank_fits (test_heston_pr87_grid_recovery_campaign.GridRecoveryIsolationTests.test_nonzero_reference_exit_during_bank_does_not_kill_or_retry_bank_fits) ... ok
+test_outer_reference_cap_terminates_only_that_reference_while_bank_finishes (test_heston_pr87_grid_recovery_campaign.GridRecoveryIsolationTests.test_outer_reference_cap_terminates_only_that_reference_while_bank_finishes) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.080s
+
+OK

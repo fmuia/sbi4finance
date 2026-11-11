@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "fixture_root": "/private/tmp/pr87-grid-campaign-renderer-_f7ejlmj",
+  "report_bytes": 744918,
+  "inline_svg_count": 20,
+  "full_bodies": 2,
+  "endpoints": 4,
+  "identifier_prefix_and_references_valid": true,
+  "incomplete_campaign_rejected": true,
+  "changed_report_rejected": true,
+  "oversize_rejected_without_truncation": true,
+  "recovery_aborted_attempt_and_resource_scope_visible": true,
+  "scientific_queries_or_pricing": 0,
+  "aggregate": {
+    "path": "/private/tmp/pr87-grid-campaign-renderer-_f7ejlmj/aggregate/report.html",
+    "sha256": "256cd2dff8a4514d871607dfa87312933fb7cbff30a4e48ff5ea6bee2a6e3a58"
+  }
+}

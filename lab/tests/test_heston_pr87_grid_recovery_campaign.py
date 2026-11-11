@@ -55,5 +55,47 @@ class GridRecoveryIsolationTests(unittest.TestCase):
         self.assertEqual(sum(w.label == 'synthetic-market-like' for w in workers), 1)
         self.assertFalse(result['scientific_acceptance'])
 
+    def test_outer_reference_cap_terminates_only_that_reference_while_bank_finishes(self):
+        worker, calls, events, workers = self.h.fake_workers()
+        now, stopped = [0.], []
+        class TimedReference(worker):
+            def poll(self):
+                if self.code is not None:
+                    return self.code
+                if self.kind == 'reference' and self.label == 'synthetic-market-like':
+                    self.polls += 1
+                    if self.polls >= 3:
+                        now[0] = 2451.  # Reference cap2450; live bank cap3600.
+                    return None
+                if self.kind == 'reference':
+                    self.polls = 11  # Other references complete before the jump.
+                if self.kind == 'generate' and self.polls < 20:
+                    self.polls += 1
+                    return None
+                return super().poll()
+        def stop(process):
+            stopped.append((process.kind, process.label))
+            process.code = -15
+            events.append(('stop', process.label, -15))
+        with patch.object(recovery.subprocess, 'Popen', TimedReference), patch.object(recovery.time, 'sleep'), patch.object(
+                recovery.time, 'monotonic', side_effect=lambda: now[0]), patch.object(recovery.shared, 'stop', side_effect=stop):
+            result = recovery.run(self.h.protocol, self.h.root/'campaign.json')
+        self.assertEqual(result['status'], 'complete')
+        self.assertEqual(stopped, [('reference', 'synthetic-market-like')])
+        self.assertEqual(len(calls), 10)
+        self.assertEqual(list(result['runs']), ['200k-300', '300k-300'])
+        self.assertTrue(all(j['status'] == 'complete' for j in result['jobs'] if j['kind'] != 'reference'))
+        failed = next(j for j in result['jobs'] if j['id'] == 'reference_synthetic-market-like')
+        self.assertEqual(failed['status'], 'failed_inconclusive')
+        self.assertEqual(failed['wall_seconds_limit'], 2450)
+        self.assertIn('outer wall cap', failed['error'])
+        self.assertFalse(result['references']['synthetic-market-like']['reference_ready'])
+        self.assertTrue(result['references']['synthetic-broad']['reference_ready'])
+        self.assertTrue(result['references']['market']['reference_ready'])
+        self.assertEqual(sum(w.label == 'synthetic-market-like' for w in workers), 1)
+        stop_index = next(i for i, event in enumerate(events) if event[:2] == ('stop', 'synthetic-market-like'))
+        bank_index = next(i for i, event in enumerate(events) if event == ('end', 'generate', 0))
+        self.assertLess(stop_index, bank_index)
+
 
 if __name__ == '__main__': unittest.main()

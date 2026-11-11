@@ -1,0 +1,28 @@
+{
+  "format": "heston_pr87_grid_recovery_isolation_verification_v1",
+  "status": "passed",
+  "verified_utc": "2026-11-11T03:42:12.822703+00:00",
+  "tests": 2,
+  "seconds": 0.08,
+  "log": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/software-validation/recovery-isolation-tests.log",
+    "sha256": "6b70b0c2c263d9b3e0313571cf236c079947a692c77649fc5546674dca5cb409"
+  },
+  "test_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/tests/test_heston_pr87_grid_recovery_campaign.py",
+    "sha256": "76b392b1d7512eba89b0ec0d2dc353db7e742bd18ec5e92f87b8fdb8fa7e0ac6"
+  },
+  "controller": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_pr87_grid_recovery.py",
+    "sha256": "715d4f4ea80b55a4234acf34320e45d82e688515307beb585c0412da0be769dc"
+  },
+  "uses_existing_fake_subprocess_fixtures": true,
+  "nonzero_reference_during_bank_does_not_stop_bank_or_fits": true,
+  "outer_reference_cap_terminates_only_reference": true,
+  "both_native_fits_and_four_endpoint_jobs_complete": true,
+  "failed_reference_remains_inconclusive": true,
+  "no_worker_retry_and_second_campaign_launch_refused": true,
+  "original_controller_and_tests_edited": false,
+  "neural_sampling_pricing_or_training_performed": false,
+  "scientific_acceptance": false
+}
