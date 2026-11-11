@@ -1,0 +1,527 @@
+{
+  "format": "heston_pr87_grid_old54_representation_crosscheck_v1",
+  "status": "complete",
+  "producer": {
+    "path": "/private/tmp/heston-grid-old54-cv-crosscheck.py",
+    "sha256": "96804c4ba4f8e055b1f953ff55fc0a28439c428b08d4591cc58e8cd2bc201637"
+  },
+  "declaration": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/preparation-protocol.json",
+    "sha256": "5338fd41ac6b92a0205fb801bb473cea01a46390ac24e97deef5937a15a686b6"
+  },
+  "old_design": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/evidence/pilot-results/2026-11-09/heston-observations/designs/put_heavy.json",
+    "sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547"
+  },
+  "old_model_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/model.py",
+    "sha256": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+  },
+  "new_representation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/control_variate.py",
+    "sha256": "ad2908472eed00688a1ffc8b53eb0187ef9f47a02d3be761589211da90ebf566"
+  },
+  "points": [
+    {
+      "index": 0,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.268746423008448e-07
+    },
+    {
+      "index": 1,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2674798805819554e-07
+    },
+    {
+      "index": 2,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2697076985120893e-07
+    },
+    {
+      "index": 3,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.926926742612521e-06
+    },
+    {
+      "index": 4,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 6.121531015423892e-07
+    },
+    {
+      "index": 5,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9270030549023414e-06
+    },
+    {
+      "index": 6,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9273437246170016e-06
+    },
+    {
+      "index": 7,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2664225929911444e-07
+    },
+    {
+      "index": 8,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.266889419568539e-07
+    },
+    {
+      "index": 9,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.269050535299353e-07
+    },
+    {
+      "index": 10,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.267552355941003e-07
+    },
+    {
+      "index": 11,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 6.120475593007763e-07
+    },
+    {
+      "index": 12,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.927148112201847e-06
+    },
+    {
+      "index": 13,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2674969336076137e-07
+    },
+    {
+      "index": 14,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.270013942431202e-07
+    },
+    {
+      "index": 15,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9274655294054793e-06
+    },
+    {
+      "index": 16,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9271531925824076e-06
+    },
+    {
+      "index": 17,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9272700058081665e-06
+    },
+    {
+      "index": 18,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2702634317492956e-07
+    },
+    {
+      "index": 19,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.267961628556801e-07
+    },
+    {
+      "index": 20,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9268579620756992e-06
+    },
+    {
+      "index": 21,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2673377720348034e-07
+    },
+    {
+      "index": 22,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 6.121103801604017e-07
+    },
+    {
+      "index": 23,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2699438651538875e-07
+    },
+    {
+      "index": 24,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9271692508482357e-06
+    },
+    {
+      "index": 25,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2665909916195196e-07
+    },
+    {
+      "index": 26,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9271739404302917e-06
+    },
+    {
+      "index": 27,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9266126116690413e-06
+    },
+    {
+      "index": 28,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9273107554340624e-06
+    },
+    {
+      "index": 29,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.0871815874224911e-05
+    },
+    {
+      "index": 30,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9273065277047846e-06
+    },
+    {
+      "index": 31,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.266880182512974e-07
+    },
+    {
+      "index": 32,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.268953368580238e-07
+    },
+    {
+      "index": 33,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.268692777031898e-07
+    },
+    {
+      "index": 34,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.26935651276494e-07
+    },
+    {
+      "index": 35,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.266590281076784e-07
+    },
+    {
+      "index": 36,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 6.12104713582084e-07
+    },
+    {
+      "index": 37,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9273209161951837e-06
+    },
+    {
+      "index": 38,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9273471352221333e-06
+    },
+    {
+      "index": 39,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.266610886816121e-07
+    },
+    {
+      "index": 40,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9272664886216245e-06
+    },
+    {
+      "index": 41,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2691739920996915e-07
+    },
+    {
+      "index": 42,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9271823958888473e-06
+    },
+    {
+      "index": 43,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.0870759012959742e-05
+    },
+    {
+      "index": 44,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2680568412833926e-07
+    },
+    {
+      "index": 45,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9275255791484352e-06
+    },
+    {
+      "index": 46,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 6.121265982983454e-07
+    },
+    {
+      "index": 47,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 6.121880957721254e-07
+    },
+    {
+      "index": 48,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2670684763379503e-07
+    },
+    {
+      "index": 49,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.270637343761759e-07
+    },
+    {
+      "index": 50,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2681373102482175e-07
+    },
+    {
+      "index": 51,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.268206765800638e-07
+    },
+    {
+      "index": 52,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.926899528825741e-06
+    },
+    {
+      "index": 53,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.926663628637469e-06
+    },
+    {
+      "index": 54,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.266835418320621e-07
+    },
+    {
+      "index": 55,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9268476592060307e-06
+    },
+    {
+      "index": 56,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2704784819491655e-07
+    },
+    {
+      "index": 57,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2670535549404994e-07
+    },
+    {
+      "index": 58,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.927459019057663e-06
+    },
+    {
+      "index": 59,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2675928568769413e-07
+    },
+    {
+      "index": 60,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2673619304878193e-07
+    },
+    {
+      "index": 61,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.266829023435999e-07
+    },
+    {
+      "index": 62,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2690935231348666e-07
+    },
+    {
+      "index": 63,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.927058121964363e-06
+    },
+    {
+      "index": 64,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.927821137071189e-06
+    },
+    {
+      "index": 65,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.92781443766142e-06
+    },
+    {
+      "index": 66,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 0.00017757586878275317
+    },
+    {
+      "index": 67,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 0.00024678793134391675
+    },
+    {
+      "index": 68,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9278530930690956e-06
+    },
+    {
+      "index": 69,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.927837437472164e-06
+    },
+    {
+      "index": 70,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 0.00017757483094626975
+    },
+    {
+      "index": 71,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.0872270346240488e-05
+    },
+    {
+      "index": 72,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.927888501259012e-06
+    },
+    {
+      "index": 73,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.927837994356283e-06
+    },
+    {
+      "index": 74,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 0.0002467879218048805
+    },
+    {
+      "index": 75,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.08723181124759e-05
+    },
+    {
+      "index": 76,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.269620501595735e-07
+    },
+    {
+      "index": 77,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.269972120329864e-07
+    },
+    {
+      "index": 78,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 6.121927498270447e-07
+    },
+    {
+      "index": 79,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9274410689718008e-06
+    },
+    {
+      "index": 80,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2662087196276806e-07
+    },
+    {
+      "index": 81,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.266174613576364e-07
+    },
+    {
+      "index": 82,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 6.130728991138307e-07
+    },
+    {
+      "index": 83,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.266139796982312e-07
+    },
+    {
+      "index": 84,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2662357202516395e-07
+    },
+    {
+      "index": 85,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2657234189391565e-07
+    },
+    {
+      "index": 86,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 6.131202212600323e-07
+    },
+    {
+      "index": 87,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2658740539991376e-07
+    },
+    {
+      "index": 88,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2672155586842527e-07
+    },
+    {
+      "index": 89,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2672279931821285e-07
+    },
+    {
+      "index": 90,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 6.128446727871046e-07
+    },
+    {
+      "index": 91,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2672539279919837e-07
+    },
+    {
+      "index": 92,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.266073716507886e-07
+    },
+    {
+      "index": 93,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.266033215571948e-07
+    },
+    {
+      "index": 94,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 1.9261554484728532e-06
+    },
+    {
+      "index": 95,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.266384934226149e-07
+    },
+    {
+      "index": 96,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 4.2669881850088095e-07
+    },
+    {
+      "index": 97,
+      "old_status": "accepted",
+      "maximum_difference_over_minimum_sd": 6.121054418883881e-07
+    }
+  ],
+  "accepted_old_points": 98,
+  "maximum_accepted_difference_over_minimum_sd": 0.00024678793134391675,
+  "seconds": 5.003072834108025,
+  "reserved_arrays_opened": false,
+  "new_neural_sampling": false,
+  "scientific_acceptance": false,
+  "scope": "Same-CF numerical representation consistency on all predeclared pilot physical points; failed old numerical cases retained, not independent financial-model validation.",
+  "producer_archive": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/numerical-comparison-consumer.py",
+    "sha256": "96804c4ba4f8e055b1f953ff55fc0a28439c428b08d4591cc58e8cd2bc201637"
+  }
+}

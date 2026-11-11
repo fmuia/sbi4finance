@@ -1,0 +1,7 @@
+ok   backbone_review.py: 11 cells, 0 errors, 2 s
+ok   slot1_intro.py: 39 cells, 0 errors, 3 s
+ok   slot2_amortized_bayes.py: 26 cells, 0 errors, 4 s
+ok   slot3_architectures.py: 11 cells, 0 errors, 2 s
+ok   slot4_heston_bayesflow.py: 51 cells, 0 errors, 5 s
+ok   slot5_calibration.py: 50 cells, 0 errors, 3 s
+ok   trajectory_inference.py: 30 cells, 0 errors, 2 s

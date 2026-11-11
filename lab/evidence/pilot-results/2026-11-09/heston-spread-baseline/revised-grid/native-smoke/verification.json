@@ -1,0 +1,63 @@
+{
+  "format": "heston_pr87_grid_real_native_smoke_v1",
+  "status": "complete",
+  "bank": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/native-smoke/bank/bank.json",
+    "sha256": "e0ab48fff0a588c3c8ef11b6d685c177d5077d04ff2d3dac69984914ad39b0d1"
+  },
+  "real_checked_labels": 1312,
+  "shared_pairing": {
+    "train": {
+      "rows": 512,
+      "clean_bitwise_equal_rows": 0,
+      "max_absolute_clean_shift": 5.949370631697093e-07,
+      "max_old_quote_roundtrip_error": 0.0,
+      "max_standard_normal_reconstruction_error": 8.548717289613705e-15,
+      "max_standard_normal_rounding_bound": 1.7593730848079966e-12
+    },
+    "validation": {
+      "rows": 32,
+      "clean_bitwise_equal_rows": 0,
+      "max_absolute_clean_shift": 1.0250573723169509e-07,
+      "max_old_quote_roundtrip_error": 0.0,
+      "max_standard_normal_reconstruction_error": 0.0,
+      "max_standard_normal_rounding_bound": 1.7529473166893965e-12
+    }
+  },
+  "producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/reproduce_heston_pr87_grid.py",
+    "sha256": "0c2aa3bd168e6659e71c8119c746bd9b3980558acae33d8526031ff07918227f"
+  },
+  "fits": [
+    {
+      "rows": 512,
+      "updates": 4,
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/native-smoke/fit-512/run.json",
+        "sha256": "4cb9596639528076ed2d0131fb8bfc04c496675dc6d1cd08cbd139d40698465a"
+      },
+      "seeded_reload_exact": true,
+      "draw_shape": [
+        2,
+        3,
+        6
+      ]
+    },
+    {
+      "rows": 768,
+      "updates": 6,
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/native-smoke/fit-768/run.json",
+        "sha256": "55620e65f8e4735d18274fd62fb995e006a619b832fd7398c28bcab62ac33dd8"
+      },
+      "seeded_reload_exact": true,
+      "draw_shape": [
+        2,
+        3,
+        6
+      ]
+    }
+  ],
+  "scientific_acceptance": false,
+  "scope": "Actual numerical-pricer/software smoke, not posterior-quality evidence."
+}

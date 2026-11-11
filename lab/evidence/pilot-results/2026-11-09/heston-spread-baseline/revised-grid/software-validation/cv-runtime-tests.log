@@ -1,0 +1,9 @@
+test_deterministic_variance_and_expiry_are_exact_black_limits (test_heston_control_variate.ControlVariatePrices.test_deterministic_variance_and_expiry_are_exact_black_limits) ... ok
+test_invalid_geometry_and_quadrature_are_rejected (test_heston_control_variate.ControlVariatePrices.test_invalid_geometry_and_quadrature_are_rejected) ... ok
+test_regular_domain_matches_original_and_put_call_parity (test_heston_control_variate.ControlVariatePrices.test_regular_domain_matches_original_and_put_call_parity) ... ok
+test_stress_tail_refines_without_clipping (test_heston_control_variate.ControlVariatePrices.test_stress_tail_refines_without_clipping) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 3.297s
+
+OK

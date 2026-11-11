@@ -1,0 +1,21 @@
+test_both_sizes_tail_batches_and_only_declared_endpoints (tests.test_heston_pr87_grid_evaluation.ConsumerTests.test_both_sizes_tail_batches_and_only_declared_endpoints) ... ok
+test_compact_full300k_report_keeps_unready_cases_and_no_old_intervals (tests.test_heston_pr87_grid_evaluation.ConsumerTests.test_compact_full300k_report_keeps_unready_cases_and_no_old_intervals) ... ok
+test_dynamic63_contract_and_frozen_raw_helpers (tests.test_heston_pr87_grid_evaluation.ConsumerTests.test_dynamic63_contract_and_frozen_raw_helpers) ... ok
+test_secondary_required_and_all_three_cases_required (tests.test_heston_pr87_grid_evaluation.ConsumerTests.test_secondary_required_and_all_three_cases_required) ... ok
+test_standalone_figures_show300k_new63_task (tests.test_heston_pr87_grid_evaluation.ConsumerTests.test_standalone_figures_show300k_new63_task) ... ok
+test_truth_pairing_with_new63_quote_vectors (tests.test_heston_pr87_grid_evaluation.ConsumerTests.test_truth_pairing_with_new63_quote_vectors) ... ok
+test_canonical63_gaussian_normalization (tests.test_heston_pr87_grid_evaluation.ReferenceTests.test_canonical63_gaussian_normalization) ... ok
+test_missing_reference_is_inconclusive (tests.test_heston_pr87_grid_evaluation.ReferenceTests.test_missing_reference_is_inconclusive) ... <frozen abc>:106: DeprecationWarning: sbi4finance.calibration.pymc_reference_op.DeterministicLikelihoodOp.infer_shape takes a deprecated `fgraph` parameter; drop it from the signature. The parameter will be passed as None.
+ok
+test_new63_panel_production_limits_and_truth_separation (tests.test_heston_pr87_grid_evaluation.ReferenceTests.test_new63_panel_production_limits_and_truth_separation) ... ok
+test_numerical_failure_preserves_attempt_and_never_escalates (tests.test_heston_pr87_grid_evaluation.ReferenceTests.test_numerical_failure_preserves_attempt_and_never_escalates) ... ok
+test_old54_target_rejected_before_any_chain_read (tests.test_heston_pr87_grid_evaluation.ReferenceTests.test_old54_target_rejected_before_any_chain_read) ... ok
+test_optional_preparation_binding_is_hash_checked_not_truth_loaded (tests.test_heston_pr87_grid_evaluation.ReferenceTests.test_optional_preparation_binding_is_hash_checked_not_truth_loaded) ... ok
+test_smoke_cannot_be_used_as_production_protocol (tests.test_heston_pr87_grid_evaluation.ReferenceTests.test_smoke_cannot_be_used_as_production_protocol) ... ok
+test_smoke_outputs_never_ready_even_when_mock_diagnostics_pass (tests.test_heston_pr87_grid_evaluation.ReferenceTests.test_smoke_outputs_never_ready_even_when_mock_diagnostics_pass) ... ok
+test_truth_leak_and_old54_observations_rejected (tests.test_heston_pr87_grid_evaluation.ReferenceTests.test_truth_leak_and_old54_observations_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 2.801s
+
+OK

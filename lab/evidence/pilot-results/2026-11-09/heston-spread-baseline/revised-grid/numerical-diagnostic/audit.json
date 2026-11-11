@@ -1,0 +1,132 @@
+{
+  "format": "heston_pr87_grid_numerical_audit_v1",
+  "status": "complete",
+  "consumer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/audit_heston_pr87_grid_numerics.py",
+    "sha256": "e03c88581f741092a098c952faab4f45a0b6bddf46a51906acd084766b0fde99"
+  },
+  "archived_consumer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/numerical-diagnostic/consumer.py",
+    "sha256": "e03c88581f741092a098c952faab4f45a0b6bddf46a51906acd084766b0fde99"
+  },
+  "failed_original_pilot": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/preparation/numerical-pilot/run.json",
+    "sha256": "aed26563e62ba27146efa8b5170be15ba2e5f71fceb82aa3bf57d45ff9b8ae4d"
+  },
+  "successful_control_variate_pilot": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/numerical-pilot/run.json",
+    "sha256": "2853f318d41a36980f740539c45bb877d3520472258926f1725ee1c105329e13"
+  },
+  "unchanged_physical_points": 98,
+  "completed_original_points": 74,
+  "original_failed_point_index": 74,
+  "original_failed_physical_parameters": [
+    0.01,
+    10.0,
+    0.01,
+    3.0,
+    -0.95
+  ],
+  "unchanged_financial_target_design_prior_and_noise": true,
+  "representation_only_change": "analytic Black plus integral(phi_Black - phi_Heston); same Heston CF, no clipping",
+  "successful_points": 98,
+  "base_nodes_histogram": {
+    "512": 36,
+    "1024": 33,
+    "2048": 15,
+    "4096": 6,
+    "8192": 5,
+    "16384": 3
+  },
+  "maximum_price_shift_over_minimum_measurement_sd": 6.501053235297151e-05,
+  "maximum_absolute_log_likelihood_shift": 4.706072127032041e-06,
+  "sources": {
+    "preparer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/prepare_heston_pr87_grid_cv.py",
+      "sha256": "59767b0eba6e805469deb9fd18b4e060859d04ae70b63dde74d19dd28f1d9525"
+    },
+    "grid_pilot": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_grid.py",
+      "sha256": "adebd7b9d3532ee8d180c4ae94ea400f2bb798818916123879ed6219fe870927"
+    },
+    "black_control_variate": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/control_variate.py",
+      "sha256": "ad2908472eed00688a1ffc8b53eb0187ef9f47a02d3be761589211da90ebf566"
+    },
+    "runner": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    },
+    "spread_likelihood": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_spread.py",
+      "sha256": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca"
+    },
+    "checked_pricer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_pilot.py",
+      "sha256": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b"
+    },
+    "runtime_model": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/model.py",
+      "sha256": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+    },
+    "reference": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/reference.py",
+      "sha256": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056"
+    },
+    "initialization": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/reference_initialization.py",
+      "sha256": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f"
+    },
+    "likelihood_op": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/pymc_reference_op.py",
+      "sha256": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b"
+    },
+    "partial_writer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/calibration_reference.py",
+      "sha256": "070f3199645faabe8032132d13c6b1859d053d9b8717334d65ce157f707ef6b8"
+    },
+    "pyproject.toml": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/pyproject.toml",
+      "sha256": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f"
+    },
+    "pixi.lock": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/pixi.lock",
+      "sha256": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+    },
+    "black_formula": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/shared/gbm.py",
+      "sha256": "52184ef8c6e472ae8f7a2423d3ff3ec759ddbc919edbcd238dc6eba0ca87fa1a"
+    }
+  },
+  "earlier_independent_exploration": {
+    "provenance": "Read-only calculations reported during diagnosis before formal CV module; recorded here without new pricing. These scalar checks are not recomputed by this saved-evidence consumer.",
+    "original_point74_8192_U4800_all63_bounds_valid": true,
+    "original_point74_16384_U9600_far_calls_53_62_negative_about": -1.05e-05,
+    "explanation": "whole-surface selection needs adjacent valid rungs; original logging omitted the valid singleton8192 rung. Analytic Black quadrature bias explains small cancellation errors.",
+    "independent_cv_98point_pass_count": 98,
+    "independent_cv_98point_failure_count": 0,
+    "adaptive_infinite_integral_point74": {
+      "method": "SciPy quad controlled-CF integral to infinity, currency epsabs1e-9, epsrel1e-11, limit4000; no warnings",
+      "contract_indices": [
+        8,
+        53,
+        62
+      ],
+      "prices": [
+        2.910789165609662e-06,
+        3.0296777753235915e-08,
+        1.385302099699004e-07
+      ],
+      "estimated_absolute_errors": [
+        9.12470988e-10,
+        9.09372424e-10,
+        9.66508188e-10
+      ]
+    }
+  },
+  "new_pricing_calls": 0,
+  "new_model_queries": 0,
+  "reserved_arrays_opened": false,
+  "scope": "Numerical representation/readiness evidence; pointwise refinement does not establish global posterior stability or scientific acceptance.",
+  "scientific_acceptance": false
+}

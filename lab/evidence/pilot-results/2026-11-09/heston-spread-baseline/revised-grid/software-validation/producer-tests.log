@@ -1,0 +1,38 @@
+test_bank_loader_hash_and_rehashed_prefix_guards (test_heston_pr87_grid.NativeGridDataTests.test_bank_loader_hash_and_rehashed_prefix_guards) ... INFO:jax._src.xla_bridge:Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: dlopen(libtpu.so, 0x0001): tried: 'libtpu.so' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibtpu.so' (no such file), '/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/.pixi/envs/core-reference/bin/../lib/libtpu.so' (no such file), '/usr/lib/libtpu.so' (no such file, not in dyld cache), 'libtpu.so' (no such file)
+INFO:bayesflow:Using backend 'jax'
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Building on a test batch.
+Epoch 1/2
+[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 455ms/step - loss: 4.1388/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/.pixi/envs/core-reference/lib/python3.12/site-packages/keras/src/backend/jax/core.py:409: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
+  return np.array(x)
+/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/.pixi/envs/core-reference/lib/python3.12/site-packages/keras/src/backend/common/variables.py:252: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
+  return np.array(self)
+[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m1s[0m 722ms/step - loss: 4.1388 - val_loss: 3.5493
+Epoch 2/2
+[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 3ms/step - loss: 3.6211[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 75ms/step - loss: 3.6211 - val_loss: 3.8430
+INFO:bayesflow:Training completed in 1.64 seconds.
+INFO:bayesflow:Estimator restored from '/private/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpe7e48gkw/fit-128/checkpoints/epoch-000002/model.keras'.
+INFO:bayesflow:Sampling completed in 0.98 seconds.
+INFO:bayesflow:Estimator restored from '/private/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpe7e48gkw/fit-128/checkpoints/epoch-000002/model.keras'.
+INFO:bayesflow:Sampling completed in 0.32 seconds.
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Building on a test batch.
+Epoch 1/2
+[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 502ms/step - loss: 3.9219[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m1s[0m 727ms/step - loss: 3.9219 - val_loss: 4.2063
+Epoch 2/2
+[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 4ms/step - loss: 3.9229[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 75ms/step - loss: 3.9229 - val_loss: 4.3557
+INFO:bayesflow:Training completed in 0.83 seconds.
+INFO:bayesflow:Estimator restored from '/private/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpe7e48gkw/fit-135/checkpoints/epoch-000002/model.keras'.
+INFO:bayesflow:Sampling completed in 0.33 seconds.
+INFO:bayesflow:Estimator restored from '/private/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpe7e48gkw/fit-135/checkpoints/epoch-000002/model.keras'.
+INFO:bayesflow:Sampling completed in 0.32 seconds.
+ok
+test_both_native_horizons_resolve_without_pricing (test_heston_pr87_grid.NativeGridDataTests.test_both_native_horizons_resolve_without_pricing) ... ok
+test_exact_rng_prior_block_full_noise_draws_and_shared_error_pairing (test_heston_pr87_grid.NativeGridDataTests.test_exact_rng_prior_block_full_noise_draws_and_shared_error_pairing) ... ok
+test_native63_equation_and_corruption (test_heston_pr87_grid.WhiteningAndRawBoundaryTests.test_native63_equation_and_corruption) ... ok
+test_raw63_wrapper_keeps_unbounded_draws_and_transforms_once (test_heston_pr87_grid.WhiteningAndRawBoundaryTests.test_raw63_wrapper_keeps_unbounded_draws_and_transforms_once) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 6.471s
+
+OK

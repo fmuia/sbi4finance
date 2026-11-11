@@ -1,0 +1,77 @@
+{
+  "format": "heston_grid_cv_tutorial_verification_v1",
+  "status": "passed",
+  "verified_utc": "2026-11-11T02:55:56.755267+00:00",
+  "environment": {
+    "python": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-pricing-20261108/tutorial/.pixi/envs/default/bin/python",
+    "versions": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "bayesflow": "2.1.0",
+      "jax": "0.11.1",
+      "marimo": "0.25.1"
+    },
+    "runtime": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/__init__.py"
+  },
+  "environment_record": {
+    "path": "/private/tmp/grid-cv-participant-environment.json",
+    "sha256": "d3756f687242d8f12db6a5449d218f7761775bfa12b707ba8b8e8c5762ce5d37"
+  },
+  "source": {
+    "control_variate": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/control_variate.py",
+      "sha256": "ad2908472eed00688a1ffc8b53eb0187ef9f47a02d3be761589211da90ebf566"
+    },
+    "grid_pilot": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_grid.py",
+      "sha256": "adebd7b9d3532ee8d180c4ae94ea400f2bb798818916123879ed6219fe870927"
+    }
+  },
+  "tutorial_tests": {
+    "tests": 47,
+    "seconds": 11.977,
+    "status": "passed",
+    "log": {
+      "path": "/private/tmp/grid-cv-tutorial-tests.log",
+      "sha256": "77186975814e46018c4ca87a979ba5ca84265e9c5536a3f86955b84dfd8500b4"
+    }
+  },
+  "notebook_exports": {
+    "notebooks": 7,
+    "errors": 0,
+    "status": "passed",
+    "results": [
+      "ok   backbone_review.py: 11 cells, 0 errors, 2 s",
+      "ok   slot1_intro.py: 39 cells, 0 errors, 3 s",
+      "ok   slot2_amortized_bayes.py: 26 cells, 0 errors, 4 s",
+      "ok   slot3_architectures.py: 11 cells, 0 errors, 2 s",
+      "ok   slot4_heston_bayesflow.py: 51 cells, 0 errors, 5 s",
+      "ok   slot5_calibration.py: 50 cells, 0 errors, 3 s",
+      "ok   trajectory_inference.py: 30 cells, 0 errors, 2 s"
+    ],
+    "log": {
+      "path": "/private/tmp/grid-cv-tutorial-notebooks.log",
+      "sha256": "8c9259b1fdbe101cd1e86d3a54d2082d02dc4afb3d84d1d1d03b8c615ba96c27"
+    },
+    "initial_sandbox_socket_failure_log": {
+      "path": "/private/tmp/grid-cv-tutorial-notebooks-sandbox-denied.log",
+      "sha256": "f27ca343abed11af03558d3de819acb8fa8d4d28adc11ecba8048e3bc5b9968f"
+    },
+    "rerun_with_local_socket_exemption": true
+  },
+  "marimo_check": {
+    "exit_code": 0,
+    "errors": 0,
+    "warnings": 2,
+    "warning_scope": "existing empty cells in slot2 and slot3",
+    "log": {
+      "path": "/private/tmp/grid-cv-tutorial-check.log",
+      "sha256": "053abc52c2c0ba42c88d8828779b602f6c5e22be8d1274cdd705043d9dbe9f01"
+    }
+  },
+  "installs_performed": false,
+  "production_bank_generated": false,
+  "production_models_trained": false,
+  "scientific_acceptance": false
+}
