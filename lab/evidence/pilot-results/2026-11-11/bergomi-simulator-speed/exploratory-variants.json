@@ -1,0 +1,406 @@
+{
+  "warmup_numba_seconds": 1.2677502499427646,
+  "cases": [
+    {
+      "block": 0,
+      "n_steps": 622,
+      "n_pairs": 4096,
+      "parameters": {
+        "hurst": 0.1,
+        "eta": 1.5,
+        "rho": -0.7
+      },
+      "timings": {
+        "baseline": [
+          0.18101458414457738,
+          0.1757192499935627,
+          0.16435804194770753
+        ],
+        "numpy_sum": [
+          0.10700349998660386,
+          0.1182677501346916,
+          0.11402691691182554
+        ],
+        "numba_terminal": [
+          0.0955807080026716,
+          0.09479133388958871,
+          0.0943934170063585
+        ],
+        "scipy_numba": [
+          0.0848308748099953,
+          0.08313916600309312,
+          0.08224899997003376
+        ]
+      },
+      "comparison": {
+        "numpy_sum": {
+          "speedup": 1.5410330714233242,
+          "price_maxabs": 1.0408340855860843e-17,
+          "se_maxabs": 1.3552527156068805e-20,
+          "covariance_maxabs": 7.399389073228255e-25,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 1.3877787807814457e-17,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 8.271806125530277e-24,
+            "controlled_put_mean": 1.0408340855860843e-17,
+            "fitted_coefficients": 1.7763568394002505e-14,
+            "control_mean": 4.87890977618477e-19,
+            "control_covariance_of_mean": 5.169878828456423e-26,
+            "raw_control_covariance_of_mean": 6.617444900424222e-24,
+            "raw_controlled_covariance_of_mean": 1.427048115367362e-23,
+            "sample_max_abs_control": 4.336808689942018e-19,
+            "paired_controlled_minus_raw_mean": 5.149960319306146e-19,
+            "paired_controlled_minus_raw_covariance_of_mean": 3.3087224502121107e-23
+          }
+        },
+        "numba_terminal": {
+          "speedup": 1.8537480461899334,
+          "price_maxabs": 0.0,
+          "se_maxabs": 0.0,
+          "covariance_maxabs": 0.0,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 0.0,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 0.0,
+            "controlled_put_mean": 0.0,
+            "fitted_coefficients": 0.0,
+            "control_mean": 0.0,
+            "control_covariance_of_mean": 0.0,
+            "raw_control_covariance_of_mean": 0.0,
+            "raw_controlled_covariance_of_mean": 0.0,
+            "sample_max_abs_control": 0.0,
+            "paired_controlled_minus_raw_mean": 0.0,
+            "paired_controlled_minus_raw_covariance_of_mean": 0.0
+          }
+        },
+        "scipy_numba": {
+          "speedup": 2.1135556013037853,
+          "price_maxabs": 7.806255641895632e-18,
+          "se_maxabs": 1.6940658945086007e-20,
+          "covariance_maxabs": 8.271806125530277e-25,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 1.0408340855860843e-17,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 1.1580528575742387e-23,
+            "controlled_put_mean": 7.806255641895632e-18,
+            "fitted_coefficients": 2.1316282072803006e-14,
+            "control_mean": 5.421010862427522e-19,
+            "control_covariance_of_mean": 6.617444900424222e-24,
+            "raw_control_covariance_of_mean": 9.926167350636332e-24,
+            "raw_controlled_covariance_of_mean": 6.107323262897623e-24,
+            "sample_max_abs_control": 2.168404344971009e-18,
+            "paired_controlled_minus_raw_mean": 2.859583229930518e-18,
+            "paired_controlled_minus_raw_covariance_of_mean": 1.1580528575742387e-23
+          }
+        }
+      }
+    },
+    {
+      "block": 0,
+      "n_steps": 622,
+      "n_pairs": 4096,
+      "parameters": {
+        "hurst": 0.025,
+        "eta": 3.0,
+        "rho": -0.95
+      },
+      "timings": {
+        "baseline": [
+          0.16779308393597603,
+          0.1829707499127835,
+          0.17425495805218816
+        ],
+        "numpy_sum": [
+          0.11393145797774196,
+          0.11342229205183685,
+          0.11152537493035197
+        ],
+        "numba_terminal": [
+          0.09264720813371241,
+          0.09260425018146634,
+          0.0920307079795748
+        ],
+        "scipy_numba": [
+          0.07956620887853205,
+          0.08048820798285306,
+          0.0811077079270035
+        ]
+      },
+      "comparison": {
+        "numpy_sum": {
+          "speedup": 1.5363378300673844,
+          "price_maxabs": 2.0816681711721685e-17,
+          "se_maxabs": 4.0657581468206416e-20,
+          "covariance_maxabs": 5.790264287871194e-24,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 2.0816681711721685e-17,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 2.6469779601696886e-23,
+            "controlled_put_mean": 2.0816681711721685e-17,
+            "fitted_coefficients": 8.881784197001252e-16,
+            "control_mean": 2.168404344971009e-19,
+            "control_covariance_of_mean": 2.6469779601696886e-23,
+            "raw_control_covariance_of_mean": 2.6469779601696886e-23,
+            "raw_controlled_covariance_of_mean": 2.6469779601696886e-23,
+            "sample_max_abs_control": 1.1102230246251565e-16,
+            "paired_controlled_minus_raw_mean": 1.4907779871675686e-18,
+            "paired_controlled_minus_raw_covariance_of_mean": 7.940933880509066e-23
+          }
+        },
+        "numba_terminal": {
+          "speedup": 1.8817166351514096,
+          "price_maxabs": 0.0,
+          "se_maxabs": 0.0,
+          "covariance_maxabs": 0.0,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 0.0,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 0.0,
+            "controlled_put_mean": 0.0,
+            "fitted_coefficients": 0.0,
+            "control_mean": 0.0,
+            "control_covariance_of_mean": 0.0,
+            "raw_control_covariance_of_mean": 0.0,
+            "raw_controlled_covariance_of_mean": 0.0,
+            "sample_max_abs_control": 0.0,
+            "paired_controlled_minus_raw_mean": 0.0,
+            "paired_controlled_minus_raw_covariance_of_mean": 0.0
+          }
+        },
+        "scipy_numba": {
+          "speedup": 2.1649749996833183,
+          "price_maxabs": 2.7755575615628914e-17,
+          "se_maxabs": 6.776263578034403e-20,
+          "covariance_maxabs": 1.1580528575742387e-23,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 1.3877787807814457e-17,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 7.940933880509066e-23,
+            "controlled_put_mean": 2.7755575615628914e-17,
+            "fitted_coefficients": 1.7763568394002505e-15,
+            "control_mean": 5.312590645178972e-18,
+            "control_covariance_of_mean": 1.3234889800848443e-22,
+            "raw_control_covariance_of_mean": 1.0587911840678754e-22,
+            "raw_controlled_covariance_of_mean": 7.940933880509066e-23,
+            "sample_max_abs_control": 3.469446951953614e-18,
+            "paired_controlled_minus_raw_mean": 3.279711571768651e-18,
+            "paired_controlled_minus_raw_covariance_of_mean": 1.0587911840678754e-22
+          }
+        }
+      }
+    },
+    {
+      "block": 6,
+      "n_steps": 1796,
+      "n_pairs": 4096,
+      "parameters": {
+        "hurst": 0.1,
+        "eta": 1.5,
+        "rho": -0.7
+      },
+      "timings": {
+        "baseline": [
+          0.5454615829512477,
+          0.5251167498063296,
+          0.5501260000746697
+        ],
+        "numpy_sum": [
+          0.3376351669430733,
+          0.32713324995711446,
+          0.31245266599580646
+        ],
+        "numba_terminal": [
+          0.24442345811985433,
+          0.2505293330177665,
+          0.24461137503385544
+        ],
+        "scipy_numba": [
+          0.23552095890045166,
+          0.23809012491255999,
+          0.23617162508890033
+        ]
+      },
+      "comparison": {
+        "numpy_sum": {
+          "speedup": 1.667398783287101,
+          "price_maxabs": 5.551115123125783e-17,
+          "se_maxabs": 5.421010862427522e-20,
+          "covariance_maxabs": 1.6543612251060553e-23,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 8.326672684688674e-17,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 3.1763735522036263e-22,
+            "controlled_put_mean": 5.551115123125783e-17,
+            "fitted_coefficients": 6.661338147750939e-16,
+            "control_mean": 1.2739375526704677e-18,
+            "control_covariance_of_mean": 1.0587911840678754e-22,
+            "raw_control_covariance_of_mean": 2.117582368135751e-22,
+            "raw_controlled_covariance_of_mean": 3.354217383902527e-22,
+            "sample_max_abs_control": 4.440892098500626e-16,
+            "paired_controlled_minus_raw_mean": 4.089475069343762e-18,
+            "paired_controlled_minus_raw_covariance_of_mean": 5.293955920339377e-22
+          }
+        },
+        "numba_terminal": {
+          "speedup": 2.229910947010347,
+          "price_maxabs": 0.0,
+          "se_maxabs": 0.0,
+          "covariance_maxabs": 0.0,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 0.0,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 0.0,
+            "controlled_put_mean": 0.0,
+            "fitted_coefficients": 0.0,
+            "control_mean": 0.0,
+            "control_covariance_of_mean": 0.0,
+            "raw_control_covariance_of_mean": 0.0,
+            "raw_controlled_covariance_of_mean": 0.0,
+            "sample_max_abs_control": 0.0,
+            "paired_controlled_minus_raw_mean": 0.0,
+            "paired_controlled_minus_raw_covariance_of_mean": 0.0
+          }
+        },
+        "scipy_numba": {
+          "speedup": 2.309598296348783,
+          "price_maxabs": 8.326672684688674e-17,
+          "se_maxabs": 4.0657581468206416e-20,
+          "covariance_maxabs": 1.3234889800848443e-23,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 8.326672684688674e-17,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 3.1763735522036263e-22,
+            "controlled_put_mean": 8.326672684688674e-17,
+            "fitted_coefficients": 1.3322676295501878e-15,
+            "control_mean": 3.4071053270356977e-17,
+            "control_covariance_of_mean": 1.0587911840678754e-22,
+            "raw_control_covariance_of_mean": 3.1763735522036263e-22,
+            "raw_controlled_covariance_of_mean": 3.4576149604716557e-22,
+            "sample_max_abs_control": 1.1102230246251565e-16,
+            "paired_controlled_minus_raw_mean": 3.14554155292357e-17,
+            "paired_controlled_minus_raw_covariance_of_mean": 5.293955920339377e-22
+          }
+        }
+      }
+    },
+    {
+      "block": 6,
+      "n_steps": 1796,
+      "n_pairs": 4096,
+      "parameters": {
+        "hurst": 0.025,
+        "eta": 3.0,
+        "rho": -0.95
+      },
+      "timings": {
+        "baseline": [
+          0.48050599987618625,
+          0.507126625161618,
+          0.502432500012219
+        ],
+        "numpy_sum": [
+          0.3058970409911126,
+          0.30978070804849267,
+          0.3129774169065058
+        ],
+        "numba_terminal": [
+          0.23557458398863673,
+          0.23698620893992484,
+          0.23540508281439543
+        ],
+        "scipy_numba": [
+          0.2256147910375148,
+          0.2241708340588957,
+          0.22286845790222287
+        ]
+      },
+      "comparison": {
+        "numpy_sum": {
+          "speedup": 1.6218973194856563,
+          "price_maxabs": 3.469446951953614e-17,
+          "se_maxabs": 1.6263032587282567e-19,
+          "covariance_maxabs": 1.852884572118782e-22,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 5.551115123125783e-17,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 8.470329472543003e-22,
+            "controlled_put_mean": 3.469446951953614e-17,
+            "fitted_coefficients": 4.440892098500626e-16,
+            "control_mean": 5.637851296924623e-18,
+            "control_covariance_of_mean": 3.1763735522036263e-22,
+            "raw_control_covariance_of_mean": 8.470329472543003e-22,
+            "raw_controlled_covariance_of_mean": 1.879354351720479e-21,
+            "sample_max_abs_control": 2.886579864025407e-15,
+            "paired_controlled_minus_raw_mean": 2.303929616531697e-18,
+            "paired_controlled_minus_raw_covariance_of_mean": 3.3881317890172014e-21
+          }
+        },
+        "numba_terminal": {
+          "speedup": 2.1327958708671835,
+          "price_maxabs": 0.0,
+          "se_maxabs": 0.0,
+          "covariance_maxabs": 0.0,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 0.0,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 0.0,
+            "controlled_put_mean": 0.0,
+            "fitted_coefficients": 0.0,
+            "control_mean": 0.0,
+            "control_covariance_of_mean": 0.0,
+            "raw_control_covariance_of_mean": 0.0,
+            "raw_controlled_covariance_of_mean": 0.0,
+            "sample_max_abs_control": 0.0,
+            "paired_controlled_minus_raw_mean": 0.0,
+            "paired_controlled_minus_raw_covariance_of_mean": 0.0
+          }
+        },
+        "scipy_numba": {
+          "speedup": 2.2412929055713664,
+          "price_maxabs": 1.1102230246251565e-16,
+          "se_maxabs": 1.0842021724855044e-19,
+          "covariance_maxabs": 1.5881867761018131e-22,
+          "raw_control_maxabs": {
+            "antithetic_pairs": 0.0,
+            "control_maturity_indices": 0.0,
+            "raw_put_mean": 2.7755575615628914e-17,
+            "raw_put_upper_bound": 0.0,
+            "raw_put_covariance_of_mean": 1.2705494208814505e-21,
+            "controlled_put_mean": 1.1102230246251565e-16,
+            "fitted_coefficients": 8.881784197001252e-16,
+            "control_mean": 3.165870343657673e-17,
+            "control_covariance_of_mean": 8.470329472543003e-22,
+            "raw_control_covariance_of_mean": 1.2705494208814505e-21,
+            "raw_controlled_covariance_of_mean": 3.864587821847745e-21,
+            "sample_max_abs_control": 4.440892098500626e-16,
+            "paired_controlled_minus_raw_mean": 2.3960868011929648e-17,
+            "paired_controlled_minus_raw_covariance_of_mean": 6.776263578034403e-21
+          }
+        }
+      }
+    }
+  ],
+  "note": "One local serial worker; no fastmath; sample stream/chunk size unmodified; same fitted controls and diagnostics; prototype skips reference full-path overflow-bound fallback for extreme inputs."
+}

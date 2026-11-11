@@ -1,0 +1,41 @@
+{
+  "tutorial_tests": {
+    "command": "python -m unittest discover -s tests -v (from tutorial/)",
+    "tests": 61,
+    "passed": true
+  },
+  "lab_targeted_tests": {
+    "modules": [
+      "tests.test_tutorial_parity",
+      "tests.test_rough_bergomi",
+      "tests.test_bergomi",
+      "tests.test_rough_control_diagnostic",
+      "tests.test_runtime_reuse"
+    ],
+    "tests": 40,
+    "passed": true
+  },
+  "manifest_check": true,
+  "claims_check": true,
+  "runtime_boundary": {
+    "passed": true,
+    "shared_symbols": 183
+  },
+  "initial_campaign_fixture_checks": {
+    "errors": 5,
+    "reason": "Historical source-bound production work-order correctly rejects changed tutorial/shared/pricing.py in this worktree. Historical evidence and producer guards were left unchanged. These tests require a fresh research fixture before a production integration PR."
+  },
+  "full_lab_suite_run": false,
+  "notebook_exports_run": false,
+  "production_deployed": false,
+  "logs": {
+    "tutorial": {
+      "sha256": "9d1986d85ad3828b121d8e5826510e7bef5031765348ca16b06875fd871db4ce",
+      "path": "/private/tmp/bergomi-speed-tutorial-tests-final.log"
+    },
+    "lab_targeted": {
+      "sha256": "8ccd485764f081fd99c78f708769e483396e5de9ab8cf3886d7518010a4ed3e6",
+      "path": "/private/tmp/bergomi-speed-lab-targeted-tests-final.log"
+    }
+  }
+}

@@ -1,0 +1,220 @@
+{
+  "scope": "Canonical rough_block, actual first/last expiry contracts, synthetic constant .04 curve, H=.1 eta2 rho-.7, seed20261111; same4096antitheticpairs. Three alternating-order repetitions. Includes full raw-control diagnostics. One serial CPU. No production edits. Reference first chunk128.",
+  "platform": "macOS-26.4.1-arm64-arm-64bit",
+  "numpy": "2.5.3",
+  "rows": [
+    {
+      "block": 0,
+      "n_steps": 622,
+      "n_pairs": 4096,
+      "contracts": 9,
+      "timings": {
+        "128": {
+          "all_seconds": [
+            0.19490024982951581,
+            0.21164441714063287,
+            0.2651917920447886
+          ],
+          "median_seconds": 0.21164441714063287,
+          "speedup_vs2048": 0.8602715318058735
+        },
+        "256": {
+          "all_seconds": [
+            0.19173133396543562,
+            0.21020912495441735,
+            0.22326945886015892
+          ],
+          "median_seconds": 0.21020912495441735,
+          "speedup_vs2048": 0.8661454014958423
+        },
+        "512": {
+          "all_seconds": [
+            0.19038320798426867,
+            0.20384570816531777,
+            0.20836779195815325
+          ],
+          "median_seconds": 0.20384570816531777,
+          "speedup_vs2048": 0.8931837151267092
+        },
+        "1024": {
+          "all_seconds": [
+            0.1790692089125514,
+            0.19661387498490512,
+            0.22628391603939235
+          ],
+          "median_seconds": 0.19661387498490512,
+          "speedup_vs2048": 0.9260367150879454
+        },
+        "2048": {
+          "all_seconds": [
+            0.16763716679997742,
+            0.1820716669317335,
+            0.20925916684791446
+          ],
+          "median_seconds": 0.1820716669317335,
+          "speedup_vs2048": 1.0
+        },
+        "4096": {
+          "all_seconds": [
+            0.1915463749319315,
+            0.18288454203866422,
+            0.24327554111368954
+          ],
+          "median_seconds": 0.1915463749319315,
+          "speedup_vs2048": 0.9505356966240422
+        }
+      },
+      "checks": {
+        "128": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        },
+        "256": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        },
+        "512": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        },
+        "1024": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        },
+        "2048": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        },
+        "4096": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        }
+      }
+    },
+    {
+      "block": 6,
+      "n_steps": 1796,
+      "n_pairs": 4096,
+      "contracts": 9,
+      "timings": {
+        "128": {
+          "all_seconds": [
+            0.5524192920420319,
+            0.5271201659925282,
+            0.5201149580534548
+          ],
+          "median_seconds": 0.5271201659925282,
+          "speedup_vs2048": 0.8960605446480724
+        },
+        "256": {
+          "all_seconds": [
+            0.4909225828014314,
+            0.48321416694670916,
+            0.4789492499548942
+          ],
+          "median_seconds": 0.48321416694670916,
+          "speedup_vs2048": 0.9774787565082665
+        },
+        "512": {
+          "all_seconds": [
+            0.5688441249076277,
+            0.5411149999126792,
+            0.5496882498264313
+          ],
+          "median_seconds": 0.5496882498264313,
+          "speedup_vs2048": 0.8592717475467047
+        },
+        "1024": {
+          "all_seconds": [
+            0.4584159580990672,
+            0.46130208298563957,
+            0.470898165833205
+          ],
+          "median_seconds": 0.46130208298563957,
+          "speedup_vs2048": 1.023909495437832
+        },
+        "2048": {
+          "all_seconds": [
+            0.50780566688627,
+            0.47037695813924074,
+            0.47233158303424716
+          ],
+          "median_seconds": 0.47233158303424716,
+          "speedup_vs2048": 1.0
+        },
+        "4096": {
+          "all_seconds": [
+            0.522898375056684,
+            0.5251371660269797,
+            0.5527255828492343
+          ],
+          "median_seconds": 0.5251371660269797,
+          "speedup_vs2048": 0.8994442092296709
+        }
+      },
+      "checks": {
+        "128": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        },
+        "256": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        },
+        "512": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        },
+        "1024": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        },
+        "2048": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        },
+        "4096": {
+          "bitwise_equal_all": true,
+          "max_abs_difference": 0.0,
+          "price_max_abs_difference": 0.0,
+          "covariance_max_abs_difference": 0.0,
+          "numeric_arrays_checked": 20
+        }
+      }
+    }
+  ],
+  "restored_chunk": 2048
+}
