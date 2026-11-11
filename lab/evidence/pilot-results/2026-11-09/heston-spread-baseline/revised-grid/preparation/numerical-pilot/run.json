@@ -1,0 +1,1353 @@
+{
+  "format": "heston_pr87_grid_numerical_pilot_v1",
+  "status": "failed",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/preparation/preparation-protocol.json",
+    "sha256": "15da8ea3b5473da0bc8f1209dcfa2a7a314e5f24dffc19f667d24d55c0ba5c7b"
+  },
+  "points": [
+    {
+      "index": 0,
+      "physical_parameters": [
+        0.09376886516974071,
+        7.573907860757838,
+        0.058382013687988954,
+        0.8010910729554055,
+        -0.48508630343942527
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.171023786942897e-06,
+      "log_likelihood_shift": 1.2574634151721605e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 1,
+      "physical_parameters": [
+        0.14338112754114332,
+        5.5859917925595175,
+        0.036773985019002815,
+        1.1416210140909364,
+        -0.6903851607704815
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.170514612018452e-06,
+      "log_likelihood_shift": -4.968098408591447e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 2,
+      "physical_parameters": [
+        0.05135172947444538,
+        9.850457190071847,
+        0.05949738323463588,
+        0.7154160806233688,
+        -0.3018854294783826
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.17451375969813e-06,
+      "log_likelihood_shift": 9.682278935166204e-07,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 3,
+      "physical_parameters": [
+        0.11224849725935163,
+        8.501754514706512,
+        0.02293468684424433,
+        2.089714650194552,
+        -0.9337630748049052
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.253979864974554e-05,
+      "log_likelihood_shift": -3.16910923568119e-05,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 4,
+      "physical_parameters": [
+        0.026493662729895662,
+        3.4123439086285043,
+        0.07921052442490727,
+        2.540954980326324,
+        -0.795485028124135
+      ],
+      "base_nodes": 4096,
+      "base_cutoff": 2400.0,
+      "finer_nodes": 8192,
+      "finer_cutoff": 4800.0,
+      "price_shift_over_minimum_measurement_sd": 0.0005660608279323133,
+      "log_likelihood_shift": -0.0002545196324591982,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 5,
+      "physical_parameters": [
+        0.08506467407536555,
+        5.088718218126245,
+        0.10345792700159803,
+        2.5318156828321086,
+        -0.2551697671158125
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.9031272674728834e-06,
+      "log_likelihood_shift": 1.7031221847078068e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 6,
+      "physical_parameters": [
+        0.043659143882225235,
+        5.08547071200404,
+        0.11986207380800017,
+        2.9849455891712195,
+        -0.2949718555719114
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.254227080555893e-05,
+      "log_likelihood_shift": -3.233575032930052e-05,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 7,
+      "physical_parameters": [
+        0.15160204268684652,
+        1.7932569673318755,
+        0.13206559780285004,
+        1.5101842267317036,
+        -0.6917329077638334
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.168878942640732e-06,
+      "log_likelihood_shift": -8.259206618419304e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 8,
+      "physical_parameters": [
+        0.1399687499729092,
+        3.093638115413415,
+        0.08337214905642995,
+        1.0657029804836822,
+        -0.3650121833956893
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.1705873715945935e-06,
+      "log_likelihood_shift": 8.771821444285613e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 9,
+      "physical_parameters": [
+        0.06738862415327627,
+        3.9966923787609505,
+        0.15407372352021007,
+        1.5416521103119225,
+        -0.7129409888811846
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.901563931345664e-06,
+      "log_likelihood_shift": -4.8819732913937515e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 10,
+      "physical_parameters": [
+        0.14140323720935288,
+        5.176694911695714,
+        0.04707205007932323,
+        0.5047269211061798,
+        -0.5269937578534072
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.170550991806523e-06,
+      "log_likelihood_shift": 6.694219808013385e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 11,
+      "physical_parameters": [
+        0.011634521844974313,
+        5.935343276851176,
+        0.06570841006458286,
+        2.4900334289541,
+        -0.38796186914425745
+      ],
+      "base_nodes": 4096,
+      "base_cutoff": 2400.0,
+      "finer_nodes": 8192,
+      "finer_cutoff": 4800.0,
+      "price_shift_over_minimum_measurement_sd": 0.0005660915478955532,
+      "log_likelihood_shift": 0.0008024124580811304,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 12,
+      "physical_parameters": [
+        0.06809621022259968,
+        2.2860171946325574,
+        0.11825096355819978,
+        1.4093084338893245,
+        -0.7303831504747852
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.9058174533247447e-06,
+      "log_likelihood_shift": -2.04239687394284e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 13,
+      "physical_parameters": [
+        0.11778255965982388,
+        0.3999833122419271,
+        0.07877288423664355,
+        0.7830763670538835,
+        -0.8756685126071944
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.170514754126999e-06,
+      "log_likelihood_shift": -5.23227712090647e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 14,
+      "physical_parameters": [
+        0.050394241023529095,
+        0.3384277185721974,
+        0.038337402654304235,
+        0.2874756093668972,
+        -0.6528633899705664
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.171496333389315e-06,
+      "log_likelihood_shift": -3.3113341367536896e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 15,
+      "physical_parameters": [
+        0.012119007928573159,
+        8.868209168564842,
+        0.14975085138748778,
+        1.4615466687302685,
+        -0.9028761808498779
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.9448990463976193e-05,
+      "log_likelihood_shift": 3.411177919090517e-05,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 16,
+      "physical_parameters": [
+        0.07364173014126231,
+        1.9732859154200908,
+        0.07767095028430276,
+        2.6815030340529558,
+        -0.7506452600526987
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.2541361914818484e-05,
+      "log_likelihood_shift": 2.1852819637290704e-05,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 17,
+      "physical_parameters": [
+        0.0626319238328598,
+        4.980615239203557,
+        0.07341110392574318,
+        1.820662422524293,
+        -0.184477558509222
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.9030181281086706e-06,
+      "log_likelihood_shift": 4.557771890706062e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 18,
+      "physical_parameters": [
+        0.05558502154270181,
+        8.48381108173509,
+        0.012797715017313563,
+        0.5191868256888591,
+        -0.8942617009536327
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.2763077462714145e-06,
+      "log_likelihood_shift": -3.331855656782928e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 19,
+      "physical_parameters": [
+        0.11079119218457548,
+        2.1035572053873586,
+        0.03640512519622587,
+        1.9249168857940515,
+        -0.46116868431079816
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.9013094149377147e-06,
+      "log_likelihood_shift": -4.432783751964439e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 20,
+      "physical_parameters": [
+        0.12104956180898951,
+        7.732191597454793,
+        0.010234249336959397,
+        2.2291451429393336,
+        -0.8045968119392128
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.8722254086233087e-06,
+      "log_likelihood_shift": -5.611094508651011e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 21,
+      "physical_parameters": [
+        0.12145040760927585,
+        6.988745269485777,
+        0.14510085952398055,
+        2.94235657954927,
+        -0.5980561757295212
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.901854685433137e-06,
+      "log_likelihood_shift": 2.751816445240287e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 22,
+      "physical_parameters": [
+        0.02882613312489852,
+        1.7920009690557481,
+        0.02415060694353865,
+        1.6471982837304908,
+        -0.778013963765298
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.3760817097207017e-05,
+      "log_likelihood_shift": 1.8832247136895406e-05,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 23,
+      "physical_parameters": [
+        0.04465040850122143,
+        5.234329598558622,
+        0.11650929993473567,
+        0.6268693513832462,
+        -0.1516016398611605
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.170623822436938e-06,
+      "log_likelihood_shift": -2.591886266751532e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 24,
+      "physical_parameters": [
+        0.07413683272506587,
+        2.6837881403768873,
+        0.02610519486800927,
+        2.642365337460562,
+        -0.4245620129666461
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.2992344383965225e-06,
+      "log_likelihood_shift": -8.953374443427566e-07,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 25,
+      "physical_parameters": [
+        0.15983766633016228,
+        8.477792442335087,
+        0.10476271290223045,
+        0.885855033330923,
+        -0.28058438902007876
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.1703329972951914e-06,
+      "log_likelihood_shift": 7.175877417567613e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 26,
+      "physical_parameters": [
+        0.06426356383669848,
+        6.119129860195786,
+        0.12665658030993143,
+        1.9542622088493253,
+        -0.8346021194101391
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.2541979944890048e-05,
+      "log_likelihood_shift": -8.260320643105985e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 27,
+      "physical_parameters": [
+        0.12712927945710645,
+        6.860019421701015,
+        0.09504633434104455,
+        2.67108984936053,
+        -0.6482850562367508
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.9007641444422924e-06,
+      "log_likelihood_shift": -2.61738194276429e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 28,
+      "physical_parameters": [
+        0.06312113988849291,
+        5.557438014217991,
+        0.03892871905129189,
+        1.4905694341945472,
+        -0.3199057773802492
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.9021092018410863e-06,
+      "log_likelihood_shift": -5.202189811962326e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 29,
+      "physical_parameters": [
+        0.01822626698109638,
+        3.230998363559496,
+        0.022902485750222402,
+        2.5273349405067336,
+        -0.8946999788820493
+      ],
+      "base_nodes": 8192,
+      "base_cutoff": 4800.0,
+      "finer_nodes": 16384,
+      "finer_cutoff": 9600.0,
+      "price_shift_over_minimum_measurement_sd": 0.0009331745735556218,
+      "log_likelihood_shift": -0.00012252632230190996,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 30,
+      "physical_parameters": [
+        0.0664084969699724,
+        6.345856272303261,
+        0.03516663161513871,
+        2.663211804660286,
+        -0.2997066940014078
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 5.163498144611386e-06,
+      "log_likelihood_shift": 6.514221751500679e-08,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 31,
+      "physical_parameters": [
+        0.13305256936431478,
+        3.2301599324343577,
+        0.08784440498070371,
+        1.3491336826248823,
+        -0.44389740188484267
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.170624035599759e-06,
+      "log_likelihood_shift": 4.136145719548111e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 32,
+      "physical_parameters": [
+        0.06239699996070515,
+        7.1354499540870835,
+        0.13204203547456522,
+        1.0309741526775427,
+        -0.34733961151951165
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.19109164542897e-06,
+      "log_likelihood_shift": 1.6722987859674402e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 33,
+      "physical_parameters": [
+        0.09727859374446898,
+        8.550220924215614,
+        0.03156521613248806,
+        1.3043855247893112,
+        -0.594869018081044
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.342328392998753e-06,
+      "log_likelihood_shift": 5.831934018876489e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 34,
+      "physical_parameters": [
+        0.08091566443645896,
+        8.6160015500708,
+        0.022726204392511752,
+        0.30635237639989227,
+        -0.3330950169585139
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.171132784198563e-06,
+      "log_likelihood_shift": -1.355750954000869e-05,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 35,
+      "physical_parameters": [
+        0.14207553209689266,
+        9.783376538424474,
+        0.13788538076077922,
+        0.9894829004895203,
+        -0.48752438879294335
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.1705873715945935e-06,
+      "log_likelihood_shift": -8.57975447371255e-07,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 36,
+      "physical_parameters": [
+        0.01974879223404651,
+        4.045085742821143,
+        0.06125690423276432,
+        2.16847187641066,
+        -0.7673656460258331
+      ],
+      "base_nodes": 4096,
+      "base_cutoff": 2400.0,
+      "finer_nodes": 8192,
+      "finer_cutoff": 4800.0,
+      "price_shift_over_minimum_measurement_sd": 0.0005660901664039654,
+      "log_likelihood_shift": -0.0011301958690977773,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 37,
+      "physical_parameters": [
+        0.053407386288879165,
+        1.384368461006964,
+        0.11175895491021594,
+        2.4228558683246386,
+        -0.32085122257391846
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.254277973179342e-05,
+      "log_likelihood_shift": 2.7841919556393507e-07,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 38,
+      "physical_parameters": [
+        0.05007687268048255,
+        7.402291105876928,
+        0.07612595148218666,
+        2.666144384210296,
+        -0.6259178951550805
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.2543070592462303e-05,
+      "log_likelihood_shift": -5.902991286966641e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 39,
+      "physical_parameters": [
+        0.152854037971456,
+        9.362439275392125,
+        0.10697791073084884,
+        0.6279377235718339,
+        -0.2369828384341191
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.170514612018452e-06,
+      "log_likelihood_shift": 2.8235521252724323e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 40,
+      "physical_parameters": [
+        0.06308781740073793,
+        6.7489036718234106,
+        0.060977154977341255,
+        2.346128928903061,
+        -0.41636332347185157
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.5237613954232053e-06,
+      "log_likelihood_shift": 4.055398457946367e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 41,
+      "physical_parameters": [
+        0.08213762390636377,
+        5.125512901611154,
+        0.010230040185290586,
+        0.6736484895016855,
+        -0.5854210091310835
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.171241923562776e-06,
+      "log_likelihood_shift": -7.688963933380502e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 42,
+      "physical_parameters": [
+        0.06951361970400763,
+        7.50726770683103,
+        0.08489567071339507,
+        2.7500900149909233,
+        -0.33385330658170237
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 3.108714636823607e-06,
+      "log_likelihood_shift": 1.1570303802581652e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 43,
+      "physical_parameters": [
+        0.03476915923815326,
+        3.3317130739363456,
+        0.052455890864938536,
+        2.996901295673491,
+        -0.8919438935211708
+      ],
+      "base_nodes": 4096,
+      "base_cutoff": 2400.0,
+      "finer_nodes": 8192,
+      "finer_cutoff": 4800.0,
+      "price_shift_over_minimum_measurement_sd": 0.000566591065360167,
+      "log_likelihood_shift": 0.0011904110219988601,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 44,
+      "physical_parameters": [
+        0.11401414738693465,
+        1.2861684568009808,
+        0.05113961003262186,
+        1.0456294769398409,
+        -0.677164680260081
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.1705873715945935e-06,
+      "log_likelihood_shift": 1.3744013313737099e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 45,
+      "physical_parameters": [
+        0.030406390253104154,
+        3.3482203856442294,
+        0.14278584240514774,
+        0.7181377365777738,
+        -0.8845721417414035
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.4970056244910754e-06,
+      "log_likelihood_shift": 5.627315922660675e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 46,
+      "physical_parameters": [
+        0.03140252609470317,
+        2.2910619518526563,
+        0.0300479867509128,
+        2.1370840357381593,
+        -0.7880270227596109
+      ],
+      "base_nodes": 4096,
+      "base_cutoff": 2400.0,
+      "finer_nodes": 8192,
+      "finer_cutoff": 4800.0,
+      "price_shift_over_minimum_measurement_sd": 0.0005660630092307884,
+      "log_likelihood_shift": -0.0004089204112985303,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 47,
+      "physical_parameters": [
+        0.011197711837812093,
+        6.341586930109691,
+        0.15318031565078777,
+        1.8672318601163387,
+        -0.9429467755108651
+      ],
+      "base_nodes": 4096,
+      "base_cutoff": 2400.0,
+      "finer_nodes": 8192,
+      "finer_cutoff": 4800.0,
+      "price_shift_over_minimum_measurement_sd": 0.0005655630191498813,
+      "log_likelihood_shift": -0.00046983408898872625,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 48,
+      "physical_parameters": [
+        0.14302279772118837,
+        6.691889883544961,
+        0.09025532327319012,
+        0.8747835757927833,
+        -0.11301871838229158
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.1706237513826645e-06,
+      "log_likelihood_shift": 6.9040474197571e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 49,
+      "physical_parameters": [
+        0.01020073044911229,
+        5.000050985989451,
+        0.15441137383075282,
+        0.6580485502329887,
+        -0.5884639207516438
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 3.3568737128897305e-06,
+      "log_likelihood_shift": 1.0888955301080775e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 50,
+      "physical_parameters": [
+        0.08754544336269918,
+        0.8254059653113375,
+        0.15776604819541726,
+        0.15716226492739874,
+        -0.7752606901819568
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.170878409899161e-06,
+      "log_likelihood_shift": -3.993600076041687e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 51,
+      "physical_parameters": [
+        0.10291600936505607,
+        4.488149948778311,
+        0.04848527637277943,
+        0.2714615426855326,
+        -0.38918559847022033
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.170914647578685e-06,
+      "log_likelihood_shift": -1.4374095862927996e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 52,
+      "physical_parameters": [
+        0.1104638130945262,
+        9.215571443671752,
+        0.050407816400917294,
+        2.4403650676613333,
+        -0.6530163636087996
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.900582387610485e-06,
+      "log_likelihood_shift": 8.860074231335508e-07,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 53,
+      "physical_parameters": [
+        0.12954468373641798,
+        8.57935814717796,
+        0.0656086961289474,
+        2.6129106477662836,
+        -0.7853419586383747
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.8936747753505196e-06,
+      "log_likelihood_shift": -2.632782284966512e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 54,
+      "physical_parameters": [
+        0.13207048374777913,
+        4.102766857535227,
+        0.1328390199373806,
+        0.7321784357077203,
+        -0.22989602278365073
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.170550991806523e-06,
+      "log_likelihood_shift": -1.4580797148983825e-05,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 55,
+      "physical_parameters": [
+        0.10418817414950393,
+        4.476062887698646,
+        0.046346268926830386,
+        2.3656341645393844,
+        -0.6039666307511725
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.9033816417722855e-06,
+      "log_likelihood_shift": 3.744229720403971e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 56,
+      "physical_parameters": [
+        0.022808211148202598,
+        3.7610782128531204,
+        0.13770930009224217,
+        0.24843488092312935,
+        -0.4031782791132936
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.903090816630539e-06,
+      "log_likelihood_shift": 2.931794725392282e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 57,
+      "physical_parameters": [
+        0.14726608119716544,
+        2.2763389813753663,
+        0.07491722690293832,
+        2.2370261585010565,
+        -0.5767726886107744
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.596886012426713e-06,
+      "log_likelihood_shift": 2.949166268237163e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 58,
+      "physical_parameters": [
+        0.010694518088140556,
+        9.25393003614748,
+        0.15656821248977185,
+        1.7200336688273945,
+        -0.34432997236843055
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.2544597495510746e-05,
+      "log_likelihood_shift": -8.179292938398749e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 59,
+      "physical_parameters": [
+        0.12264174861237347,
+        6.427768322525109,
+        0.03895832951216871,
+        2.7371024578981396,
+        -0.21185455818069734
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.901200417682049e-06,
+      "log_likelihood_shift": 4.054291382110035e-07,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 60,
+      "physical_parameters": [
+        0.1409265415145648,
+        9.472533477800718,
+        0.0570210736093344,
+        2.1424303835702134,
+        -0.25023749979618887
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.160880789389922e-06,
+      "log_likelihood_shift": 4.934428449152425e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 61,
+      "physical_parameters": [
+        0.12702304083600827,
+        6.009683868441556,
+        0.15783275489179108,
+        2.533370916706471,
+        -0.45473728493853577
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.9009822810621708e-06,
+      "log_likelihood_shift": 4.4326295497338135e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 62,
+      "physical_parameters": [
+        0.060521261377273844,
+        9.972853608726057,
+        0.13329022662951034,
+        1.0467327777187818,
+        -0.3661331084341556
+      ],
+      "base_nodes": 512,
+      "base_cutoff": 300.0,
+      "finer_nodes": 1024,
+      "finer_cutoff": 600.0,
+      "price_shift_over_minimum_measurement_sd": 5.179967033086542e-06,
+      "log_likelihood_shift": -8.616864300549411e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 63,
+      "physical_parameters": [
+        0.08308317194017797,
+        0.9822966062618073,
+        0.05280707539924617,
+        0.8855207630486523,
+        -0.9185936811642873
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.901491171769522e-06,
+      "log_likelihood_shift": 6.650399565196548e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 64,
+      "physical_parameters": [
+        0.01,
+        0.1,
+        0.01,
+        0.1,
+        -0.95
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.903199879701613e-06,
+      "log_likelihood_shift": 1.1276313599075695e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 65,
+      "physical_parameters": [
+        0.01,
+        0.1,
+        0.01,
+        0.1,
+        -0.1
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.254521553016198e-05,
+      "log_likelihood_shift": -1.827600600032588e-05,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 66,
+      "physical_parameters": [
+        0.01,
+        0.1,
+        0.01,
+        3.0,
+        -0.95
+      ],
+      "base_nodes": 16384,
+      "base_cutoff": 9600.0,
+      "finer_nodes": 32768,
+      "finer_cutoff": 19200.0,
+      "price_shift_over_minimum_measurement_sd": 0.0036077420730864966,
+      "log_likelihood_shift": 0.0009816388416805783,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 67,
+      "physical_parameters": [
+        0.01,
+        0.1,
+        0.01,
+        3.0,
+        -0.1
+      ],
+      "base_nodes": 8192,
+      "base_cutoff": 4800.0,
+      "finer_nodes": 16384,
+      "finer_cutoff": 9600.0,
+      "price_shift_over_minimum_measurement_sd": 0.000933200349235719,
+      "log_likelihood_shift": -0.0018144158236980993,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 68,
+      "physical_parameters": [
+        0.01,
+        0.1,
+        0.16,
+        0.1,
+        -0.95
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.903199879701613e-06,
+      "log_likelihood_shift": 4.489205118435438e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 69,
+      "physical_parameters": [
+        0.01,
+        0.1,
+        0.16,
+        0.1,
+        -0.1
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.2545179175076372e-05,
+      "log_likelihood_shift": 3.539659409475807e-05,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 70,
+      "physical_parameters": [
+        0.01,
+        0.1,
+        0.16,
+        3.0,
+        -0.95
+      ],
+      "base_nodes": 16384,
+      "base_cutoff": 9600.0,
+      "finer_nodes": 32768,
+      "finer_cutoff": 19200.0,
+      "price_shift_over_minimum_measurement_sd": 0.003608633897175161,
+      "log_likelihood_shift": 0.006077371335232959,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 71,
+      "physical_parameters": [
+        0.01,
+        0.1,
+        0.16,
+        3.0,
+        -0.1
+      ],
+      "base_nodes": 8192,
+      "base_cutoff": 4800.0,
+      "finer_nodes": 16384,
+      "finer_cutoff": 9600.0,
+      "price_shift_over_minimum_measurement_sd": 0.0009331987859706461,
+      "log_likelihood_shift": -0.002299686633305154,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 72,
+      "physical_parameters": [
+        0.01,
+        10.0,
+        0.01,
+        0.1,
+        -0.95
+      ],
+      "base_nodes": 1024,
+      "base_cutoff": 600.0,
+      "finer_nodes": 2048,
+      "finer_cutoff": 1200.0,
+      "price_shift_over_minimum_measurement_sd": 2.9033089446461888e-06,
+      "log_likelihood_shift": -2.5654379141306846e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    },
+    {
+      "index": 73,
+      "physical_parameters": [
+        0.01,
+        10.0,
+        0.01,
+        0.1,
+        -0.1
+      ],
+      "base_nodes": 2048,
+      "base_cutoff": 1200.0,
+      "finer_nodes": 4096,
+      "finer_cutoff": 2400.0,
+      "price_shift_over_minimum_measurement_sd": 2.2545288240055642e-05,
+      "log_likelihood_shift": 8.141963697163772e-06,
+      "pointwise_gates_passed": true,
+      "scope": "pointwise price/likelihood precision, not global posterior stability"
+    }
+  ],
+  "shared_contract_indices": [
+    [
+      59,
+      51
+    ]
+  ],
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false,
+  "error_type": "FloatingPointError",
+  "error": "Heston quadrature failed measurement-error refinement gate: [{'nodes': 256, 'cutoff': 150.0, 'error': 'Fourier price violates bounds; refine controls or reject this domain'}, {'nodes': 512, 'cutoff': 300.0, 'error': 'Fourier price violates bounds; refine controls or reject this domain'}, {'nodes': 1024, 'cutoff': 600.0, 'error': 'Fourier price violates bounds; refine controls or reject this domain'}, {'nodes': 2048, 'cutoff': 1200.0, 'error': 'Fourier price violates bounds; refine controls or reject this domain'}, {'nodes': 4096, 'cutoff': 2400.0, 'error': 'Fourier price violates bounds; refine controls or reject this domain'}, {'nodes': 16384, 'cutoff': 9600.0, 'error': 'Fourier price violates bounds; refine controls or reject this domain'}]",
+  "seconds": 18.93226566701196
+}
