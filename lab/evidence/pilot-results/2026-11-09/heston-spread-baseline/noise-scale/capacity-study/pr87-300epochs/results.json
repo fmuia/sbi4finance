@@ -1,0 +1,961 @@
+{
+  "format": "heston_pr87_followup_results_v1",
+  "status": "complete",
+  "campaign": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/campaign.json",
+    "sha256": "a496afc00b46a308fa27a03d5463e53091a7427acba70f1ee6cb28f3732f4f26"
+  },
+  "endpoints": [
+    {
+      "label": "10k / final200",
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/evaluation/evaluation.json",
+        "sha256": "2faee0d467ebaae06940e464d01df7c3c28cdd70f363882946b2afec44e98cd9"
+      },
+      "native_epoch": 200,
+      "coverage90": [
+        0.990234375,
+        0.9453125,
+        0.96875,
+        0.962890625,
+        0.9453125,
+        0.833984375
+      ],
+      "sbc_passed": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "median_rmse": [
+        0.0013956792705157905,
+        0.3545419811354025,
+        0.0049922677927073805,
+        0.0674852006083672,
+        0.06002327893634913,
+        0.17752572855013288
+      ],
+      "raw_support": {
+        "raw_shape": [
+          512,
+          512,
+          6
+        ],
+        "samples": 262144,
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho",
+          "c"
+        ],
+        "outside_prior": {
+          "sample_count": 40075,
+          "sample_fraction": 0.15287399291992188,
+          "value_count": 45961,
+          "per_dimension_count": [
+            3439,
+            4577,
+            6724,
+            7106,
+            7540,
+            16575
+          ],
+          "per_dimension_fraction": [
+            0.013118743896484375,
+            0.017459869384765625,
+            0.0256500244140625,
+            0.02710723876953125,
+            0.0287628173828125,
+            0.06322860717773438
+          ]
+        },
+        "below_prior": {
+          "sample_count": 20146,
+          "sample_fraction": 0.07685089111328125,
+          "value_count": 21462,
+          "per_dimension_count": [
+            1518,
+            1874,
+            4456,
+            5021,
+            3209,
+            5384
+          ],
+          "per_dimension_fraction": [
+            0.00579071044921875,
+            0.00714874267578125,
+            0.016998291015625,
+            0.019153594970703125,
+            0.012241363525390625,
+            0.020538330078125
+          ]
+        },
+        "above_prior": {
+          "sample_count": 22912,
+          "sample_fraction": 0.08740234375,
+          "value_count": 24499,
+          "per_dimension_count": [
+            1921,
+            2703,
+            2268,
+            2085,
+            4331,
+            11191
+          ],
+          "per_dimension_fraction": [
+            0.007328033447265625,
+            0.010311126708984375,
+            0.0086517333984375,
+            0.007953643798828125,
+            0.016521453857421875,
+            0.042690277099609375
+          ]
+        },
+        "nonphysical": {
+          "sample_count": 3876,
+          "sample_fraction": 0.0147857666015625,
+          "value_count": 4122,
+          "per_dimension_count": [
+            53,
+            1445,
+            296,
+            1878,
+            449,
+            1
+          ],
+          "per_dimension_fraction": [
+            0.000202178955078125,
+            0.005512237548828125,
+            0.001129150390625,
+            0.00716400146484375,
+            0.001712799072265625,
+            3.814697265625e-06
+          ]
+        },
+        "nonfinite": {
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0,
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "physical_definition": "v0,kappa,theta,vol_of_vol,c strictly positive; -1<=rho<=1; nonfinite is invalid",
+        "draws_discarded": 0,
+        "draws_clipped": 0,
+        "draws_resampled": 0,
+        "outside_prior_draws_retained_for_calibration": true
+      }
+    },
+    {
+      "label": "100k / final200",
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/evaluation/evaluation.json",
+        "sha256": "8ae608e7068eac95a2ddacdd794cdffa04986d1a14b614263f2156a87b00bc68"
+      },
+      "native_epoch": 200,
+      "coverage90": [
+        0.96484375,
+        0.943359375,
+        0.978515625,
+        0.943359375,
+        0.95703125,
+        0.890625
+      ],
+      "sbc_passed": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "median_rmse": [
+        0.0002608272695554059,
+        0.1041058556448732,
+        0.0024262784401568004,
+        0.02033312978347056,
+        0.03568496520415704,
+        0.14653407512225192
+      ],
+      "raw_support": {
+        "raw_shape": [
+          512,
+          512,
+          6
+        ],
+        "samples": 262144,
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho",
+          "c"
+        ],
+        "outside_prior": {
+          "sample_count": 16277,
+          "sample_fraction": 0.062091827392578125,
+          "value_count": 17554,
+          "per_dimension_count": [
+            654,
+            2247,
+            1420,
+            3318,
+            3440,
+            6475
+          ],
+          "per_dimension_fraction": [
+            0.00249481201171875,
+            0.008571624755859375,
+            0.0054168701171875,
+            0.01265716552734375,
+            0.01312255859375,
+            0.024700164794921875
+          ]
+        },
+        "below_prior": {
+          "sample_count": 8803,
+          "sample_fraction": 0.033580780029296875,
+          "value_count": 9135,
+          "per_dimension_count": [
+            271,
+            974,
+            983,
+            1842,
+            1825,
+            3240
+          ],
+          "per_dimension_fraction": [
+            0.001033782958984375,
+            0.00371551513671875,
+            0.003749847412109375,
+            0.00702667236328125,
+            0.006961822509765625,
+            0.012359619140625
+          ]
+        },
+        "above_prior": {
+          "sample_count": 7834,
+          "sample_fraction": 0.02988433837890625,
+          "value_count": 8419,
+          "per_dimension_count": [
+            383,
+            1273,
+            437,
+            1476,
+            1615,
+            3235
+          ],
+          "per_dimension_fraction": [
+            0.001461029052734375,
+            0.004856109619140625,
+            0.001667022705078125,
+            0.0056304931640625,
+            0.006160736083984375,
+            0.012340545654296875
+          ]
+        },
+        "nonphysical": {
+          "sample_count": 510,
+          "sample_fraction": 0.00194549560546875,
+          "value_count": 515,
+          "per_dimension_count": [
+            0,
+            335,
+            0,
+            45,
+            135,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.001277923583984375,
+            0.0,
+            0.000171661376953125,
+            0.000514984130859375,
+            0.0
+          ]
+        },
+        "nonfinite": {
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0,
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "physical_definition": "v0,kappa,theta,vol_of_vol,c strictly positive; -1<=rho<=1; nonfinite is invalid",
+        "draws_discarded": 0,
+        "draws_clipped": 0,
+        "draws_resampled": 0,
+        "outside_prior_draws_retained_for_calibration": true
+      }
+    },
+    {
+      "label": "100k / final300",
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/evaluation/evaluation.json",
+        "sha256": "42635a72699e8c3a7d344e3b633c7e7741da0f33a784f50d0a5d24e6a98a5aea"
+      },
+      "native_epoch": 300,
+      "coverage90": [
+        0.96484375,
+        0.935546875,
+        0.96484375,
+        0.9296875,
+        0.94140625,
+        0.890625
+      ],
+      "sbc_passed": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        true
+      ],
+      "median_rmse": [
+        0.00022714986143367467,
+        0.09188086183699265,
+        0.0022655106330247764,
+        0.018607050674461847,
+        0.032290989974236725,
+        0.14570196747571565
+      ],
+      "raw_support": {
+        "raw_shape": [
+          512,
+          512,
+          6
+        ],
+        "samples": 262144,
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho",
+          "c"
+        ],
+        "outside_prior": {
+          "sample_count": 14906,
+          "sample_fraction": 0.05686187744140625,
+          "value_count": 15883,
+          "per_dimension_count": [
+            566,
+            1994,
+            978,
+            3078,
+            3334,
+            5933
+          ],
+          "per_dimension_fraction": [
+            0.00215911865234375,
+            0.00760650634765625,
+            0.00373077392578125,
+            0.01174163818359375,
+            0.01271820068359375,
+            0.022632598876953125
+          ]
+        },
+        "below_prior": {
+          "sample_count": 8309,
+          "sample_fraction": 0.031696319580078125,
+          "value_count": 8506,
+          "per_dimension_count": [
+            176,
+            607,
+            711,
+            1772,
+            1986,
+            3254
+          ],
+          "per_dimension_fraction": [
+            0.00067138671875,
+            0.002315521240234375,
+            0.002712249755859375,
+            0.0067596435546875,
+            0.00757598876953125,
+            0.01241302490234375
+          ]
+        },
+        "above_prior": {
+          "sample_count": 6854,
+          "sample_fraction": 0.02614593505859375,
+          "value_count": 7377,
+          "per_dimension_count": [
+            390,
+            1387,
+            267,
+            1306,
+            1348,
+            2679
+          ],
+          "per_dimension_fraction": [
+            0.00148773193359375,
+            0.005290985107421875,
+            0.001018524169921875,
+            0.00498199462890625,
+            0.0051422119140625,
+            0.010219573974609375
+          ]
+        },
+        "nonphysical": {
+          "sample_count": 250,
+          "sample_fraction": 0.00095367431640625,
+          "value_count": 251,
+          "per_dimension_count": [
+            0,
+            161,
+            2,
+            25,
+            63,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.000614166259765625,
+            7.62939453125e-06,
+            9.5367431640625e-05,
+            0.000240325927734375,
+            0.0
+          ]
+        },
+        "nonfinite": {
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0,
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "physical_definition": "v0,kappa,theta,vol_of_vol,c strictly positive; -1<=rho<=1; nonfinite is invalid",
+        "draws_discarded": 0,
+        "draws_clipped": 0,
+        "draws_resampled": 0,
+        "outside_prior_draws_retained_for_calibration": true
+      }
+    },
+    {
+      "label": "100k / minimum281",
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/evaluation-best-validation/evaluation.json",
+        "sha256": "08648aa559bb40e3e77b00ce773c3cdd68eb690bc88688989d9785fc3f4aa52c"
+      },
+      "native_epoch": 281,
+      "coverage90": [
+        0.953125,
+        0.94140625,
+        0.96484375,
+        0.931640625,
+        0.943359375,
+        0.890625
+      ],
+      "sbc_passed": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "median_rmse": [
+        0.00023362524792919017,
+        0.09120091920265394,
+        0.002226198711988901,
+        0.018657124333201113,
+        0.03277246577131439,
+        0.1457566451903893
+      ],
+      "raw_support": {
+        "raw_shape": [
+          512,
+          512,
+          6
+        ],
+        "samples": 262144,
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho",
+          "c"
+        ],
+        "outside_prior": {
+          "sample_count": 14541,
+          "sample_fraction": 0.055469512939453125,
+          "value_count": 15511,
+          "per_dimension_count": [
+            657,
+            1799,
+            960,
+            2985,
+            3315,
+            5795
+          ],
+          "per_dimension_fraction": [
+            0.002506256103515625,
+            0.006862640380859375,
+            0.003662109375,
+            0.011386871337890625,
+            0.012645721435546875,
+            0.022106170654296875
+          ]
+        },
+        "below_prior": {
+          "sample_count": 8080,
+          "sample_fraction": 0.03082275390625,
+          "value_count": 8275,
+          "per_dimension_count": [
+            237,
+            593,
+            688,
+            1695,
+            1956,
+            3106
+          ],
+          "per_dimension_fraction": [
+            0.000904083251953125,
+            0.002262115478515625,
+            0.00262451171875,
+            0.006465911865234375,
+            0.0074615478515625,
+            0.01184844970703125
+          ]
+        },
+        "above_prior": {
+          "sample_count": 6714,
+          "sample_fraction": 0.02561187744140625,
+          "value_count": 7236,
+          "per_dimension_count": [
+            420,
+            1206,
+            272,
+            1290,
+            1359,
+            2689
+          ],
+          "per_dimension_fraction": [
+            0.0016021728515625,
+            0.00460052490234375,
+            0.00103759765625,
+            0.00492095947265625,
+            0.005184173583984375,
+            0.010257720947265625
+          ]
+        },
+        "nonphysical": {
+          "sample_count": 259,
+          "sample_fraction": 0.000988006591796875,
+          "value_count": 260,
+          "per_dimension_count": [
+            0,
+            169,
+            2,
+            23,
+            66,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.000644683837890625,
+            7.62939453125e-06,
+            8.7738037109375e-05,
+            0.00025177001953125,
+            0.0
+          ]
+        },
+        "nonfinite": {
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0,
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "physical_definition": "v0,kappa,theta,vol_of_vol,c strictly positive; -1<=rho<=1; nonfinite is invalid",
+        "draws_discarded": 0,
+        "draws_clipped": 0,
+        "draws_resampled": 0,
+        "outside_prior_draws_retained_for_calibration": true
+      }
+    },
+    {
+      "label": "200k / final300",
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/evaluation/evaluation.json",
+        "sha256": "9775827e47d2e93c6b3735ab0d5a2a042929be9741adf4979bbcc0f3d3037f7c"
+      },
+      "native_epoch": 300,
+      "coverage90": [
+        0.951171875,
+        0.916015625,
+        0.955078125,
+        0.90625,
+        0.9375,
+        0.890625
+      ],
+      "sbc_passed": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "median_rmse": [
+        0.00018835358234077864,
+        0.08360732694825031,
+        0.0021567506525647247,
+        0.015792435642295138,
+        0.02720468078196761,
+        0.1442134999288928
+      ],
+      "raw_support": {
+        "raw_shape": [
+          512,
+          512,
+          6
+        ],
+        "samples": 262144,
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho",
+          "c"
+        ],
+        "outside_prior": {
+          "sample_count": 11961,
+          "sample_fraction": 0.045627593994140625,
+          "value_count": 12793,
+          "per_dimension_count": [
+            431,
+            1671,
+            481,
+            2817,
+            3029,
+            4364
+          ],
+          "per_dimension_fraction": [
+            0.001644134521484375,
+            0.006374359130859375,
+            0.001834869384765625,
+            0.010746002197265625,
+            0.011554718017578125,
+            0.0166473388671875
+          ]
+        },
+        "below_prior": {
+          "sample_count": 6892,
+          "sample_fraction": 0.0262908935546875,
+          "value_count": 7057,
+          "per_dimension_count": [
+            6,
+            485,
+            373,
+            1603,
+            1836,
+            2754
+          ],
+          "per_dimension_fraction": [
+            2.288818359375e-05,
+            0.001850128173828125,
+            0.001422882080078125,
+            0.006114959716796875,
+            0.0070037841796875,
+            0.01050567626953125
+          ]
+        },
+        "above_prior": {
+          "sample_count": 5193,
+          "sample_fraction": 0.019809722900390625,
+          "value_count": 5736,
+          "per_dimension_count": [
+            425,
+            1186,
+            108,
+            1214,
+            1193,
+            1610
+          ],
+          "per_dimension_fraction": [
+            0.001621246337890625,
+            0.00452423095703125,
+            0.0004119873046875,
+            0.00463104248046875,
+            0.004550933837890625,
+            0.00614166259765625
+          ]
+        },
+        "nonphysical": {
+          "sample_count": 113,
+          "sample_fraction": 0.000431060791015625,
+          "value_count": 113,
+          "per_dimension_count": [
+            0,
+            66,
+            0,
+            7,
+            40,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.00025177001953125,
+            0.0,
+            2.6702880859375e-05,
+            0.000152587890625,
+            0.0
+          ]
+        },
+        "nonfinite": {
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0,
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "physical_definition": "v0,kappa,theta,vol_of_vol,c strictly positive; -1<=rho<=1; nonfinite is invalid",
+        "draws_discarded": 0,
+        "draws_clipped": 0,
+        "draws_resampled": 0,
+        "outside_prior_draws_retained_for_calibration": true
+      }
+    },
+    {
+      "label": "200k / minimum272",
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/evaluation-best-validation/evaluation.json",
+        "sha256": "5625e48644e637fb65ed350aacae8ac8ad1a321099b51d3061e09ce1edacc36a"
+      },
+      "native_epoch": 272,
+      "coverage90": [
+        0.94921875,
+        0.91796875,
+        0.958984375,
+        0.900390625,
+        0.921875,
+        0.88671875
+      ],
+      "sbc_passed": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        true
+      ],
+      "median_rmse": [
+        0.0001973241058204996,
+        0.0835145306000741,
+        0.002298053669939343,
+        0.016438354786966154,
+        0.02839894490229593,
+        0.14421408483888593
+      ],
+      "raw_support": {
+        "raw_shape": [
+          512,
+          512,
+          6
+        ],
+        "samples": 262144,
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho",
+          "c"
+        ],
+        "outside_prior": {
+          "sample_count": 12538,
+          "sample_fraction": 0.04782867431640625,
+          "value_count": 13382,
+          "per_dimension_count": [
+            437,
+            1751,
+            441,
+            2701,
+            3380,
+            4672
+          ],
+          "per_dimension_fraction": [
+            0.001667022705078125,
+            0.006679534912109375,
+            0.001682281494140625,
+            0.010303497314453125,
+            0.0128936767578125,
+            0.017822265625
+          ]
+        },
+        "below_prior": {
+          "sample_count": 7094,
+          "sample_fraction": 0.02706146240234375,
+          "value_count": 7261,
+          "per_dimension_count": [
+            8,
+            537,
+            314,
+            1487,
+            2006,
+            2909
+          ],
+          "per_dimension_fraction": [
+            3.0517578125e-05,
+            0.002048492431640625,
+            0.00119781494140625,
+            0.005672454833984375,
+            0.00765228271484375,
+            0.011096954345703125
+          ]
+        },
+        "above_prior": {
+          "sample_count": 5567,
+          "sample_fraction": 0.021236419677734375,
+          "value_count": 6121,
+          "per_dimension_count": [
+            429,
+            1214,
+            127,
+            1214,
+            1374,
+            1763
+          ],
+          "per_dimension_fraction": [
+            0.001636505126953125,
+            0.00463104248046875,
+            0.000484466552734375,
+            0.00463104248046875,
+            0.00524139404296875,
+            0.006725311279296875
+          ]
+        },
+        "nonphysical": {
+          "sample_count": 139,
+          "sample_fraction": 0.000530242919921875,
+          "value_count": 139,
+          "per_dimension_count": [
+            0,
+            84,
+            2,
+            7,
+            46,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0003204345703125,
+            7.62939453125e-06,
+            2.6702880859375e-05,
+            0.00017547607421875,
+            0.0
+          ]
+        },
+        "nonfinite": {
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0,
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "physical_definition": "v0,kappa,theta,vol_of_vol,c strictly positive; -1<=rho<=1; nonfinite is invalid",
+        "draws_discarded": 0,
+        "draws_clipped": 0,
+        "draws_resampled": 0,
+        "outside_prior_draws_retained_for_calibration": true
+      }
+    }
+  ],
+  "scientific_acceptance": false,
+  "official_quality_established": false,
+  "reserved_arrays_opened": false
+}

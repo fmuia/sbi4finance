@@ -1,0 +1,89 @@
+{
+  "format": "heston_pr87_followup_full_lab_verification_v1",
+  "status": "passed",
+  "verified_utc": "2026-11-11T01:08:45.534703+00:00",
+  "tests": 811,
+  "seconds": 386.968,
+  "log": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/lab-tests.log",
+    "sha256": "e25b77a79b8b56ba621050b82c466373e8257b7c84b36512983daba11d3c6f67"
+  },
+  "initial_failure_and_test_only_fix": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/test-import-order-fix.json",
+    "sha256": "244b3afafc971185c9fcf5feafd6f2f6c913defcf3455ebe34b568cc31f849b3"
+  },
+  "initial_errors": 3,
+  "initial_error_type": "KeyError: 'native_validation' in campaign fixture readiness mock",
+  "cause": "Full discovery cached the real renderer on the scripts package; replacing sys.modules alone did not replace that attribute.",
+  "fix": "Only test fixture changes: patch both sys.modules and scripts.render_heston_pr87_followup; no frozen producer/controller/evaluator/report source changes.",
+  "focused_warm_import_reproducer": {
+    "tests": 9,
+    "errors": 0,
+    "seconds": 0.08,
+    "real_renderer_imported_before_discovery": true,
+    "same_checkout_pythonpath": true,
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/controller-import-order-tests.log",
+      "sha256": "eee76174a1811130a109626b7d4b8e60e698b144f8e23a05df6754b3db478940"
+    }
+  },
+  "all_frozen_scientific_source_hashes_unchanged": true,
+  "sources": {
+    "producer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/reproduce_heston_pr87_followup.py",
+      "sha256": "151c03e9e337f1fd4b97ee6d5dd2cffe4ac9f79372fd666275015ddd69fc7561"
+    },
+    "controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_pr87_followup.py",
+      "sha256": "2269d4df29f4027bd4a29515da387bdd5ff131fe7c8c2cfe312b492943e3dedd"
+    },
+    "evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_followup.py",
+      "sha256": "fc352ba2f5083cead5c9130294bd25d177212113a504581e0908f7b9d192be05"
+    },
+    "renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_followup.py",
+      "sha256": "480b00d066a2ebc788218e3839b1d08cada9d8744c9a3dafc49fa1bdd92cc672"
+    },
+    "parent_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_100k.py",
+      "sha256": "76f077bf3cc88e87b7bcdc892e96396b1e3e20fcf61032ea2a285a44d9ccd957"
+    },
+    "parent_renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_100k.py",
+      "sha256": "27b75ef36d94fb842a8de2905fc6f2ab98382b6420ae500c30683ed00d5fa88e"
+    },
+    "parent_original_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_reproduction.py",
+      "sha256": "84b9c8ff2a6f7c1f624f1122e64b15a633c9f71b7b6aefb2cfb9410592cd51ff"
+    },
+    "parent_original_renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_reproduction.py",
+      "sha256": "e53979d3d8358347c2767033f2e758ceb68b46dd929d38915b2c4cc5fa948821"
+    },
+    "exporter": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/export_heston_pr87_followup_figures.py",
+      "sha256": "3ae52a3423dca267d25d46aab4b30f0c7802b309070cdc77afea41c5a552aa11"
+    },
+    "archived_plotting_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/export_heston_pr87_reproduction_figures.py",
+      "sha256": "485e30cbbad0fa2b090010642de1a462c6ef5a151724cc7331425256fd0b7574"
+    }
+  },
+  "financial_and_model_implementation_diff_from_48b0193": [],
+  "scientific_protocols_changed": false,
+  "additional_production_training_or_posterior_queries": 0,
+  "environment": {
+    "python": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+    "KERAS_BACKEND": "jax",
+    "PYTHONPATH": ".:tests:src:../tutorial/src",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "MPLCONFIGDIR": "/private/tmp/sbi4f-matplotlib",
+    "PYTENSOR_FLAGS": "base_compiledir=/private/tmp/heston-followup-lab-pytensor",
+    "NUMBA_CACHE_DIR": "/private/tmp/heston-followup-lab-numba"
+  },
+  "reserved_arrays_opened_by_audit": false,
+  "scientific_acceptance": false
+}

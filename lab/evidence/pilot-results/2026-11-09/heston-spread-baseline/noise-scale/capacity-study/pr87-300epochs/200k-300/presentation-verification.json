@@ -1,0 +1,117 @@
+{
+  "format": "heston_pr87_followup_presentation_verification_v1",
+  "checked_utc": "2026-11-11T01:39:57.987527+00:00",
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/report.html",
+    "sha256": "d897ff17d468ad12c1efac650dbeca07b471fcb84692d7169134d3917c14ee33"
+  },
+  "report_summary": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/report-summary.json",
+    "sha256": "52b65acd75cd1e8eb12c5f163f11f18ea440a59b73cc9bf3feaa52f4158c902f"
+  },
+  "scientific_figure_manifest": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/manifest.json",
+    "sha256": "99b3878d57c75551168ffb1e95c4460a762b6cc809d27a111f418bc64d201676"
+  },
+  "report_bytes": 431018,
+  "report_below_one_mib": true,
+  "inline_svg_count": 11,
+  "standalone_figure_count": 9,
+  "png_files": [
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/native-learning-curves.png",
+      "sha256": "7695e09718863389b8269b50416c17e6b48d4c2aa702982c938dcb4715fa54d8",
+      "bytes": 92414,
+      "dimensions": [
+        1784,
+        679
+      ]
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/primary-historical-recovery.png",
+      "sha256": "131dccc49a5dd69e80d5f54f0ce3b8f8b20f93cf95b3764f25c7a75d84098498",
+      "bytes": 360148,
+      "dimensions": [
+        1933,
+        1187
+      ]
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/primary-historical-sbc.png",
+      "sha256": "d8d418fcb345a8f7286096daa94e53fc5033e2278082202b6ce40f0fd52d56c5",
+      "bytes": 171955,
+      "dimensions": [
+        1933,
+        1088
+      ]
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/primary-native-recovery.png",
+      "sha256": "07a4f69ddb58c3fe71051d8a0c5c7a030d26fa6b9a672f24df24d8cfc5a159f2",
+      "bytes": 283778,
+      "dimensions": [
+        1933,
+        1187
+      ]
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/primary-native-sbc.png",
+      "sha256": "d77a564f8a5ba54853bbcc3a5b425a1881a3b58188c41c7a1131e2e52efb6f92",
+      "bytes": 179653,
+      "dimensions": [
+        1933,
+        1088
+      ]
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/secondary-historical-recovery.png",
+      "sha256": "69f856dacce2fde00d75dbd5f294449679b3976f527e5058fb5d776c981287e2",
+      "bytes": 359075,
+      "dimensions": [
+        1933,
+        1187
+      ]
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/secondary-historical-sbc.png",
+      "sha256": "aa1403b248d8439ec0106385dbad3edb1e99415d2b8e204612dcc76ba2562e1e",
+      "bytes": 170962,
+      "dimensions": [
+        1933,
+        1088
+      ]
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/secondary-native-recovery.png",
+      "sha256": "1e1f94add15c1845798e956cdd265ceb81eb8b90f6c9d1e6ebf9f7dd09852cd8",
+      "bytes": 283869,
+      "dimensions": [
+        1933,
+        1187
+      ]
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/secondary-native-sbc.png",
+      "sha256": "dc401bbb7a91ecb49d4018126331e20e95a7402fa0cddb15bce87c6caea35b8e",
+      "bytes": 180811,
+      "dimensions": [
+        1933,
+        1088
+      ]
+    }
+  ],
+  "png_visual_qa": {
+    "all_nine_figures_inspected_as_contact_sheet": true,
+    "full_resolution_inspected": [
+      "primary-historical-sbc.png"
+    ],
+    "result": "pass: labels, legends and panels readable; no clipping or overlap; complete300-epoch axis and correct200k/primary/secondary272 identities"
+  },
+  "displayed_intervals_and_all_medians_within_axes": true,
+  "script_free": true,
+  "new_neural_sampling": false,
+  "new_pricing": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false,
+  "promotion": false
+}

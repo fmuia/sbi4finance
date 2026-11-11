@@ -1,0 +1,37 @@
+{
+  "format": "heston_pr87_followup_campaign_presentation_verification_v1",
+  "checked_utc": "2026-11-11T01:39:57.998421+00:00",
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/report.html",
+    "sha256": "7c6ba67c0a9a4dedc03fdae3e845b355821b59dc1ac4cc5b40f1a6a6fdf2d19e"
+  },
+  "summary": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/campaign-report-summary.json",
+    "sha256": "fbba0d23b5c6cdeac2f33a723b2d543964bd15d8109b8b520e69671aa81a21c3"
+  },
+  "report_bytes": 863511,
+  "report_below_one_mib": true,
+  "complete_run_bodies_embedded": 2,
+  "inline_svg_count": 22,
+  "duplicate_ids": false,
+  "one_main_element": true,
+  "script_free": true,
+  "both_primaries_and_predeclared_secondaries_visible": true,
+  "exact_market_support_counts_visible": true,
+  "per_run_png_visual_verifications": [
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/presentation-verification.json",
+      "sha256": "2625c4a56a6e2827e74a472c5101058f8cbbe11636b15ee5b6760c8616229bcb"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/presentation-verification.json",
+      "sha256": "1763b6ab803c0da6daa5ae5d2399434d78f7ba987fdc63cd5d97f9b98840596b"
+    }
+  ],
+  "scientific_diagnostics_recomputed": false,
+  "new_neural_sampling": false,
+  "new_pricing": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false,
+  "promotion": false
+}

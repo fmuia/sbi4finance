@@ -1,0 +1,8 @@
+{
+  "format": "heston_pr87_followup_generation_progress_v1",
+  "completed_fresh_pricing_calls": 100000,
+  "total_fresh_pricing_calls": 100000,
+  "generation_elapsed_seconds": 149.58174141705967,
+  "whole_run_elapsed_seconds": 152.04108416684903,
+  "status": "complete"
+}

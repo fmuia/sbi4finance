@@ -1,0 +1,98 @@
+{
+  "format": "heston_pr87_followup_final_verification_v1",
+  "status": "complete",
+  "campaign": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/campaign.json",
+    "sha256": "a496afc00b46a308fa27a03d5463e53091a7427acba70f1ee6cb28f3732f4f26"
+  },
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/campaign-protocol.json",
+    "sha256": "91113a2ee221c8f2c05475fc55419dc9952d7cf17a6f6a61508f2b2c33b11c13"
+  },
+  "all_six_jobs_completed_inside_caps": true,
+  "new_scientific_fits": 2,
+  "posterior_endpoints": 4,
+  "sources_unchanged": {
+    "unique_paths": 22,
+    "all_hashes_exact": true
+  },
+  "preserved_artifacts": {
+    "manifest": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/preserved-artifacts-before.json",
+      "sha256": "716692ee01a64a2143cd74f736407c5142d95fc59a1147592954df9c4f18a9e4"
+    },
+    "files": 565,
+    "all_unchanged": true
+  },
+  "compact_training_copies": {
+    "count": 8,
+    "all_exact": true
+  },
+  "software": {
+    "full_lab": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/full-lab-verification.json",
+      "sha256": "005d0dbd09013e1699065dc7bd7fd807515d717d756b0c0285f10df5bb402245"
+    },
+    "tests": 811,
+    "passed": true,
+    "initial_test_only_errors": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/test-import-order-fix.json",
+      "sha256": "244b3afafc971185c9fcf5feafd6f2f6c913defcf3455ebe34b568cc31f849b3"
+    },
+    "release_checks": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/release-checks.log",
+      "sha256": "cbf0cc61daa0197a3af091de614568a72e7905d0aa40c888d7ced1e5c7faebee"
+    }
+  },
+  "independent_audit": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/independent-audit.json",
+    "sha256": "9e52f3ab75820ecf95d43e431760ad16c21a610781977463cb5597dfa72f3313"
+  },
+  "audit_source_archive": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/independent-audit-consumer.py",
+    "sha256": "4d1c2c2e6a7e8b0c349e0d20439db8c952fda958e6626ce959474a623edbcf15"
+  },
+  "combined_report": {
+    "summary": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/campaign-report-summary.json",
+      "sha256": "fbba0d23b5c6cdeac2f33a723b2d543964bd15d8109b8b520e69671aa81a21c3"
+    },
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/report.html",
+    "sha256": "7c6ba67c0a9a4dedc03fdae3e845b355821b59dc1ac4cc5b40f1a6a6fdf2d19e",
+    "bytes": 863511,
+    "limit": 1048576,
+    "inline_svg": 22,
+    "duplicate_ids": false,
+    "external_resources": false
+  },
+  "per_run_reports": [
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/report-summary.json",
+      "sha256": "133e4b8247adc385a0ec9c7d292013a51639526a2d1e5d2efdf6bdae8965b52b"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/report-summary.json",
+      "sha256": "52b65acd75cd1e8eb12c5f163f11f18ea440a59b73cc9bf3feaa52f4158c902f"
+    }
+  ],
+  "figure_manifests": [
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/scientific-figures/manifest.json",
+      "sha256": "c001af6b3e08f940542197cf61732967261aec9460eab92c4236aeeb49ceb4ab"
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/manifest.json",
+      "sha256": "99b3878d57c75551168ffb1e95c4460a762b6cc809d27a111f418bc64d201676"
+    }
+  ],
+  "root_visual_checks": [
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/primary-historical-recovery.png",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/scientific-figures/primary-historical-sbc.png"
+  ],
+  "visual_scope": "Scientific PNG inspection plus offline HTML structure/hash checks; no claim of a full browser layout render.",
+  "reserved_arrays_opened": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false,
+  "official_quality_established": false,
+  "promotion": false
+}

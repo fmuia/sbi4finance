@@ -1,0 +1,74 @@
+{
+  "format": "heston_pr87_followup_branch_proof_v1",
+  "decision_utc": "2026-11-11T01:08:43.874888+00:00",
+  "primary_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/evaluation/evaluation.json",
+    "sha256": "42635a72699e8c3a7d344e3b633c7e7741da0f33a784f50d0a5d24e6a98a5aea"
+  },
+  "readiness_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_followup.py",
+    "sha256": "480b00d066a2ebc788218e3839b1d08cada9d8744c9a3dafc49fa1bdd92cc672"
+  },
+  "readiness": {
+    "panels": {
+      "native_validation": {
+        "finite": true,
+        "all_six_nominal90_within_wilson95": false,
+        "all_six_sbc_inside_dkw": true,
+        "all_raw_draws_inside_prior": false,
+        "all_raw_draws_physical": false
+      },
+      "population": {
+        "finite": true,
+        "all_six_nominal90_within_wilson95": false,
+        "all_six_sbc_inside_dkw": false,
+        "all_raw_draws_inside_prior": false,
+        "all_raw_draws_physical": false
+      }
+    },
+    "conditional_cases": {
+      "synthetic-broad": {
+        "reference_and_comparison_ready": true,
+        "all_six_means_within_point3_reference_sd": false,
+        "all_six_width_ratios_between_point75_and1point25": false,
+        "all_raw_draws_inside_prior": true,
+        "all_raw_draws_physical": true,
+        "all_raw_draws_finite": true
+      },
+      "synthetic-market-like": {
+        "reference_and_comparison_ready": true,
+        "all_six_means_within_point3_reference_sd": false,
+        "all_six_width_ratios_between_point75_and1point25": false,
+        "all_raw_draws_inside_prior": true,
+        "all_raw_draws_physical": true,
+        "all_raw_draws_finite": true
+      },
+      "market": {
+        "reference_and_comparison_ready": true,
+        "all_six_means_within_point3_reference_sd": false,
+        "all_six_width_ratios_between_point75_and1point25": false,
+        "all_raw_draws_inside_prior": false,
+        "all_raw_draws_physical": true,
+        "all_raw_draws_finite": true
+      }
+    },
+    "necessary_diagnostics_pass": false,
+    "official_quality_established": false,
+    "scientific_acceptance": false,
+    "promotion": false,
+    "scope": "Descriptive necessary checks using existing marginal and conditional conventions; no new acceptance family or independent held-out confirmation."
+  },
+  "necessary_diagnostics_pass": false,
+  "run200k": true,
+  "branch_policy": {
+    "first_run": "100k-300",
+    "conditional_run": "200k-300",
+    "metric": "first primary necessary_diagnostics_pass",
+    "rule": "run200k if and only if completed100k primary necessary diagnostics do not all pass",
+    "secondary_influences_branch": false,
+    "official_acceptance_from_development_checks": false
+  },
+  "secondary_influenced_decision": false,
+  "scientific_acceptance": false,
+  "official_confirmation_still_required": true
+}

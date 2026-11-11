@@ -1,0 +1,53 @@
+{
+  "format": "heston_pr87_followup_test_import_order_fix_v1",
+  "recorded_utc": "2026-11-11T01:01:28.551475+00:00",
+  "original_suite": {
+    "tests": 811,
+    "errors": 3,
+    "seconds": 381.161,
+    "log": {
+      "path": "/private/tmp/heston-followup-lab-tests-initial-import-fixture-errors.log",
+      "sha256": "db527a3aacedb409f305d92bcf503d0367b02e7a7ea59173f20d4ba8375cc602"
+    },
+    "archived_log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/lab-tests-initial-import-fixture-errors.log",
+      "sha256": "db527a3aacedb409f305d92bcf503d0367b02e7a7ea59173f20d4ba8375cc602"
+    }
+  },
+  "cause": "Full discovery cached the real renderer on the scripts package; replacing sys.modules alone did not replace that attribute.",
+  "fix": "Only test fixture changes: patch both sys.modules and scripts.render_heston_pr87_followup; no frozen producer/controller/evaluator/report source changes.",
+  "fixed_test": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/tests/test_heston_pr87_followup_campaign.py",
+    "sha256": "1d95e1d5c81e9c7388cbb47f603e9a5c7d97581a2bf916e502eff758b3a27297"
+  },
+  "focused_verification": {
+    "tests": 9,
+    "errors": 0,
+    "seconds": 0.08,
+    "real_renderer_imported_before_discovery": true,
+    "same_checkout_pythonpath": true,
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/controller-import-order-tests.log",
+      "sha256": "eee76174a1811130a109626b7d4b8e60e698b144f8e23a05df6754b3db478940"
+    }
+  },
+  "full_suite_rerun": {
+    "status": "passed",
+    "tests": 811,
+    "errors": 0,
+    "seconds": 386.968,
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/lab-tests.log",
+      "sha256": "e25b77a79b8b56ba621050b82c466373e8257b7c84b36512983daba11d3c6f67"
+    },
+    "original_log": {
+      "path": "/private/tmp/heston-followup-lab-tests.log",
+      "sha256": "e25b77a79b8b56ba621050b82c466373e8257b7c84b36512983daba11d3c6f67"
+    },
+    "test200k_method_collected": true,
+    "test_fixture_fix_only": true
+  },
+  "scientific_protocols_changed": false,
+  "production_continues": true,
+  "completed_utc": "2026-11-11T01:08:45.534703+00:00"
+}

@@ -1,0 +1,30 @@
+{
+  "format": "heston_pr87_followup_compact_training_copies_v1",
+  "copies": [
+    {
+      "source": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-300epochs/100k-300/training/run.json",
+      "copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/training/run.json",
+      "sha256": "477d0168bbe1a096dc9a4b25cc659ed138d1aa62a7c7fd2c18ff0667826a0c3c",
+      "bytes": 56907
+    },
+    {
+      "source": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-300epochs/100k-300/training/native-history.json",
+      "copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/training/native-history.json",
+      "sha256": "197b5def54cacc849242272a59f1053580b53c99102f1b88f9ebfa4b048eee70",
+      "bytes": 14814
+    },
+    {
+      "source": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-300epochs/100k-300/training/native-epoch-history.json",
+      "copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/training/native-epoch-history.json",
+      "sha256": "0f76c9a9ace90bb50e18af222e29a7740997e229cce688e3fd628bd7a626e81e",
+      "bytes": 28470
+    },
+    {
+      "source": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-300epochs/100k-300/training/generation-progress.json",
+      "copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/training/generation-progress.json",
+      "sha256": "39f77acdfc28f501cbf60143168ae4f853b385fc652e4d6605850fb012826dae",
+      "bytes": 261
+    }
+  ],
+  "all_copies_exact": true
+}

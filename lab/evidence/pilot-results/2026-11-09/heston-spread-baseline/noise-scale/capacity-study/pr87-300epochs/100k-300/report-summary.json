@@ -1,0 +1,137 @@
+{
+  "format": "heston_pr87_followup_report_v1",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/protocol.json",
+    "sha256": "6a41ab29aa4e6c7266610fa2169c83433cfa3db4422b862d2b1ab13d77e30179"
+  },
+  "evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/evaluation/evaluation.json",
+    "sha256": "42635a72699e8c3a7d344e3b633c7e7741da0f33a784f50d0a5d24e6a98a5aea"
+  },
+  "secondary_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/evaluation-best-validation/evaluation.json",
+    "sha256": "08648aa559bb40e3e77b00ce773c3cdd68eb690bc88688989d9785fc3f4aa52c"
+  },
+  "parent_10k_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-reproduction/evaluation/evaluation.json",
+    "sha256": "2faee0d467ebaae06940e464d01df7c3c28cdd70f363882946b2afec44e98cd9"
+  },
+  "prior_100k_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-100k/evaluation/evaluation.json",
+    "sha256": "8ae608e7068eac95a2ddacdd794cdffa04986d1a14b614263f2156a87b00bc68"
+  },
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/100k-300/report.html",
+    "sha256": "bfdb9af2ca8da774dd8e763e3cafc4ebd4ccb4b4cc473edee95182123b5d7fe7"
+  },
+  "report_bytes": 430935,
+  "inline_svg_count": 11,
+  "limit_bytes": 1048576,
+  "protected_inputs_unchanged": true,
+  "producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_followup.py",
+    "sha256": "480b00d066a2ebc788218e3839b1d08cada9d8744c9a3dafc49fa1bdd92cc672"
+  },
+  "readiness": {
+    "primary_final": {
+      "panels": {
+        "native_validation": {
+          "finite": true,
+          "all_six_nominal90_within_wilson95": false,
+          "all_six_sbc_inside_dkw": true,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": false
+        },
+        "population": {
+          "finite": true,
+          "all_six_nominal90_within_wilson95": false,
+          "all_six_sbc_inside_dkw": false,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": false
+        }
+      },
+      "conditional_cases": {
+        "synthetic-broad": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": true,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        },
+        "synthetic-market-like": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": true,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        },
+        "market": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        }
+      },
+      "necessary_diagnostics_pass": false,
+      "official_quality_established": false,
+      "scientific_acceptance": false,
+      "promotion": false,
+      "scope": "Descriptive necessary checks using existing marginal and conditional conventions; no new acceptance family or independent held-out confirmation."
+    },
+    "secondary_best_validation": {
+      "panels": {
+        "native_validation": {
+          "finite": true,
+          "all_six_nominal90_within_wilson95": false,
+          "all_six_sbc_inside_dkw": true,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": false
+        },
+        "population": {
+          "finite": true,
+          "all_six_nominal90_within_wilson95": false,
+          "all_six_sbc_inside_dkw": false,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": false
+        }
+      },
+      "conditional_cases": {
+        "synthetic-broad": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": true,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        },
+        "synthetic-market-like": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": true,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        },
+        "market": {
+          "reference_and_comparison_ready": true,
+          "all_six_means_within_point3_reference_sd": false,
+          "all_six_width_ratios_between_point75_and1point25": false,
+          "all_raw_draws_inside_prior": false,
+          "all_raw_draws_physical": true,
+          "all_raw_draws_finite": true
+        }
+      },
+      "necessary_diagnostics_pass": false,
+      "official_quality_established": false,
+      "scientific_acceptance": false,
+      "promotion": false,
+      "scope": "Descriptive necessary checks using existing marginal and conditional conventions; no new acceptance family or independent held-out confirmation."
+    }
+  },
+  "scientific_acceptance": false,
+  "promotion": false
+}

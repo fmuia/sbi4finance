@@ -1,0 +1,14 @@
+test_branch_refuses_incomplete_or_secondary_evaluation (test_heston_pr87_followup_campaign.FollowupCampaignTests.test_branch_refuses_incomplete_or_secondary_evaluation) ... ok
+test_changed_frozen_or_preserved_source_refuses_before_claim (test_heston_pr87_followup_campaign.FollowupCampaignTests.test_changed_frozen_or_preserved_source_refuses_before_claim) ... ok
+test_changed_scope_and_shared_outputs_refuse (test_heston_pr87_followup_campaign.FollowupCampaignTests.test_changed_scope_and_shared_outputs_refuse) ... ok
+test_existing_conditional_output_refuses_even_if_first_could_pass (test_heston_pr87_followup_campaign.FollowupCampaignTests.test_existing_conditional_output_refuses_even_if_first_could_pass) ... ok
+test_failing_primary_runs_exactly_second_fit_and_keeps_secondary (test_heston_pr87_followup_campaign.FollowupCampaignTests.test_failing_primary_runs_exactly_second_fit_and_keeps_secondary) ... ok
+test_failures_stop_without_fallback_fit_or_retry (test_heston_pr87_followup_campaign.FollowupCampaignTests.test_failures_stop_without_fallback_fit_or_retry) ... ok
+test_pass_stops_after_first_fit_even_with_distinct_secondary (test_heston_pr87_followup_campaign.FollowupCampaignTests.test_pass_stops_after_first_fit_even_with_distinct_secondary) ... ok
+test_same_final_minimum_never_gets_duplicate_secondary_queries (test_heston_pr87_followup_campaign.FollowupCampaignTests.test_same_final_minimum_never_gets_duplicate_secondary_queries) ... ok
+test_training_timeout_stops_worker_and_refuses_fallback (test_heston_pr87_followup_campaign.FollowupCampaignTests.test_training_timeout_stops_worker_and_refuses_fallback) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.080s
+
+OK
