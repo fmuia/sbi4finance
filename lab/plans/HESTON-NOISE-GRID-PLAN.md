@@ -1,6 +1,6 @@
 # Heston observation baseline: single spread scale, then quote coverage
 
-**Revised status, 10 November 2026: revised actual-63 grid development is authorized, retaining the recent broad prior.** The completed old54 200k/300 control improves recovery but remains unaccepted. The next matched study builds one new63 300k bank and fits its 200k prefix and full 300k for 300 epochs each. This is development work before the old fixed-grid estimator is accepted, explicitly chosen by the user. Bergomi preparation and initiation are conditionally authorized once the revised Heston setup works; numerical and inference evidence remain necessary, and asset promotion remains separate.
+**Revised status,11 November2026: the actual63 broad-prior grid comparison is complete; neural approximation errors remain.** One new300k bank supports fresh200k/300k fits of300epochs, with the old54/200k/300 control preserved. The user explicitly retained the recent broad prior. Numerical/bank/reference checks pass; point recovery and c improve, but synthetic conditional intervals remain too wide and initial-variance coverage remains excessive. Bergomi source preparation is tested, staged and preflight-verified, with no pricing/job initiated because the agreed Heston diagnostic condition is not met. Asset promotion remains separate.
 
 The overall sequence remains: **Heston noise/inference baseline → one feasible asymmetric fixed grid → fixed-layout Bergomi refresh**. Variable locations → learned summary → masking remain the separate Heston progression in [PR #83](https://github.com/fmuia/sbi4finance/pull/83). Read-only data, interface and numerical-readiness work can proceed in parallel with Heston calibration; later numerical production does not inherit permission or acceptance from planning.
 
@@ -29,6 +29,24 @@ The new63 likelihood requires three new data-only nativePyMC joint references (b
 Execution correction: the original market-like synthetic reference hit its900-second cap during escalation. Initial pricing checks passed; the broad synthetic reference was ready. The controller also stopped the bank at290000/300612 labels before saving, so no neural fit ran. Preserve that failed campaign and every partial record. The separately declared `revised-grid/recovery-bank-independent` campaign repeats the exact scientific bank/fit contracts under new output identities, retains all three cases and unchanged seeds/initialization/sampler allocations/gates, and declares2400-second inner/2450-second outer reference caps before sampling. Reference failures are isolated from generation/training and remain inconclusive. This is an explicit operational recovery, not a silent extension or successful relabelling of the first attempt. Bank/fit/evaluation limits and scientific selection rules remain unchanged.
 
 Evaluate all six recovery/coverage/SBC results, raw support and conditional means/widths/dependence. Good point recovery or a larger bank alone does not establish that the setup works. Once this development evidence supports the revised Heston recipe, proceed with the conditionally authorized Bergomi work order and initiate bounded runs after its own numerical/compute preparation. Do not ask again for already-given conditional authorization. If Heston errors remain material, report them and keep that condition explicit rather than declaring success to advance the schedule.
+
+## Completed revised-grid comparison
+
+| Primary final300 | c median RMSE | c90% coverage | Physical90% coverage | SBC screens | Raw outside prior |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Old54 control,200k | 0.14421 | 89.06% | 90.62–95.51% | 4/6 | 4.56% |
+| New63,200k | 0.14045 | 88.67% | 91.21–97.85% | 5/6 | 4.30% |
+| New63,300k | 0.13494 | 90.23% | 89.26–97.46% | 5/6 | 3.04% |
+
+All primaries above are final300 on paired historical512 truths with512 raw draws each. New200k/300k use the same new63 observations, first10k-only ZCA and evaluation seeds; the preserved old54 target uses its own observations and whitener. This is a layout/spread/quote-count change and a larger data/optimization comparison, not isolated put placement or equal compute.
+
+The300k fit improves synthetic conditional physical widths from1.07–3.31 to1.05–2.86 times MCMC. Remaining mean differences reach.96 reference SD, initial-variance90% coverage is97.46%, and raw prior violations are3.04%. Both synthetic conditional sets have no support violations, so the approximation errors remain material independently of the zero-outside-support convention. The300k validation minimum259 gives3/6 SBC screens and does not repair the failures;200k minimum272 gives4/6.
+
+All three new references are ready. Market c is concentrated near its upper bound2, which flags sensitivity to the assumed model/noise specification; it does not explain the within-model synthetic approximation errors. The saved-reference comparison verifies unchanged synthetic truths and shows physical MCMC widths40.5–87.3% of old54 widths in those two cases. Different quote geometry, spreads and noise realizations prevent a global optimality claim.
+
+The recovery completed in4511.73seconds. Original failed attempts stay immutable; the independent audit verifies1017 protected files, exact bank/RNG/whitening construction and all declared endpoint diagnostics. Software checks pass867 lab tests,53 tutorial tests and seven current-runtime exports. The reserved2000 pool remains unopened. [Implementation/report evidence](https://github.com/fmuia/sbi4finance/tree/feat/heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent).
+
+The [Bergomi plan#84](https://github.com/fmuia/sbi4finance/pull/84) now has an explicit portable work order,48components within8CPUh/2workers/32GiB each, original financial curve laws and a fresh Oscar source-only preflight. No initiation condition or job exists. Pause further allocations for reflection on the remaining neural approximation errors; do not infer scientific acceptance from completed runs or software readiness. Fixed-c validation and flexible locations/summary/masking remain separate work.
 
 ## What the completed studies establish
 
