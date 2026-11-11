@@ -15,6 +15,75 @@ HTML preview does not contain subsequent notebook edits; use the agreed Git
 revision for collaboration. Model and bank distribution does not change any
 recorded numerical or scientific limitation.
 
+## Current actual63 Heston development package (11 November 2026)
+
+The new spread-noise/grid experiment is a **development route**, separate from the released four-parameter lesson below. Add `lab/notebooks/heston_actual63_development.py` first and retain `tutorial/notebooks/slot4_heston_bayesflow.py` as its control. The package contains one 300k bank, both 200k/300k fits' final 300 and validation-minimum checkpoints, frozen task/geometry, the 63-feature whitening state and the complete report.
+
+The verified package is available through the existing project Google Drive in [heston-actual63-development-2026-11-11](https://drive.google.com/drive/folders/1UYBredhF2hrxoZI-sP7sAawC3V6XQpB8). All copied payloads pass local Drive readback SHA256 checks, and the Drive provider reports upload complete with matching file sizes. An independent cloud redownload has not been performed. Exact identities and provider flags are recorded in `lab/evidence/pilot-results/2026-11-11/heston-collaborator-delivery/drive-delivery.json`. Existing folder permissions are unchanged; collaborators use their existing project Drive access.
+
+The repository is public. An earlier proposed GitHub draft upload was rejected by automatic approval review before execution; no new draft, tag or GitHub upload was created. The user subsequently explicitly selected the existing Google Drive route for this exact Heston payload. The package and reload identities remain in `delivery.json`; no GitHub release publication is involved.
+
+After obtaining the archive by an approved or user-managed transfer, check `SHA256SUMS` before extracting into a caller-owned directory outside Git. The archive is 464,907,858 bytes, SHA256 `a2c23ab962d534e8807de0488c37e93581062bac8d87e81dc32a2f06c3380b3a`:
+
+```sh
+export SBI_CHECKOUT="/absolute/path/to/sbi4finance"
+export HESTON_BUNDLE="/absolute/path/to/heston-actual63-development"
+git -C "$SBI_CHECKOUT" fetch origin feat/heston-spread-baseline-20261109
+git -C "$SBI_CHECKOUT" switch --detach 58e06ae3f29c09cf2873d1f85d3ec130d6b53fa6
+# Keep imports on this exact checkout even when a notebook runner changes cwd.
+export PYTHONPATH="$SBI_CHECKOUT/lab:$SBI_CHECKOUT/lab/src:$SBI_CHECKOUT/tutorial/src"
+# Download/archive extraction does not install files into tutorial/assets.
+cd "$SBI_CHECKOUT/lab"
+pixi run --locked -e core-reference python scripts/heston_grid_collaborator.py verify \
+  --directory "$HESTON_BUNDLE"
+```
+
+The exact design is `lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/design.json`, SHA256 `c6f14b0cd7f6d1ecbcbee01f64cf1715c307547d00a802e2e3f232d52d136236`; its full ordered 63 records also appear in the bundled task. Use the checkout revision pinned in the delivery receipt. The derived loader is relocatable: original bank/checkpoint/protocol JSON bytes are retained, but their old Mac paths are provenance only. It checks all files, the source closure and all native state arrays. It restores the hash-pinned stored whitening matrix without refitting or CPU-dependent matrix reconstruction. Generation continuation is not supported by this export.
+
+```python
+import os
+import keras
+from scripts import heston_grid_collaborator as delivery
+from scripts import reproduce_heston_pr87_grid as recipe
+HESTON_BUNDLE = os.environ["HESTON_BUNDLE"]
+
+# Offline training in a new lab notebook: 200k exact prefix or full 300k.
+task, data = delivery.training_inputs(HESTON_BUNDLE, rows=300000)
+keras.utils.set_random_seed(9011)
+workflow = recipe.build_workflow(task)
+# Explicitly invoked training only; this does not run when reading the package.
+history = workflow.fit_offline(
+    data=data["train"], validation_data=data["validation"],
+    epochs=300, batch_size=256,
+)
+
+# Or load a preserved development model and query the exact frozen quote layout.
+model, checkpoint = delivery.load_checkpoint(HESTON_BUNDLE, "300k-300-final300")
+task, arrays, origin = delivery.load_bank(HESTON_BUNDLE)
+draws = model.sample(arrays["validation_quotes"][:2], count=1000, seed=117)
+```
+
+`training_inputs` performs the correct preprocessing exactly once: stored `*_observations` already equal raw prices divided by half-spread; the function applies the frozen ZCA in host float64. Raw `*_quotes` and `*_clean_prices` are original SPX index-price units (with per-quote F,D,K,T retained), and the checkpoint wrapper divides by half-spreads and whitens them itself. Do not whiten or divide those raw inference quotes manually. `historical 512-row panel` is a repeatedly inspected diagnostic panel, not training/validation or fresh acceptance data.
+
+The six columns are initial_variance, kappa, theta, vol_of_vol, rho, c. Independent Uniform bounds are [.01,.16],[.1,10],[.01,.16],[.1,3],[-.95,-.1],[.5,2]. The observation law is `Y=P(phi)+c*h*Z`, with actual 63-contract half-spreads h and independent standard-Normal Z. Each training row's noise is fixed across epochs. `c` is dimensionless; there is no tau/vega discrepancy component. The geometry is seven actual European SPXW expiries, put-heavy nominal locations, explicit final call+1.5 and longest tenor about 10.7 months. Arbitrary quote locations or masks are unsupported.
+
+Both fits use fresh seed 9011 native BayesFlow 2.1/JAX FlowMatching [128,128,128], dropout 0.1, raw targets and native inference-variable standardization. Locked native AdamW has weight decay 0.005, clipnorm 1.5 and a 5e-5 to 5e-4 warmup followed by cosine decay to zero. The 200k fit uses 234600 updates/60m presentations (warmup 11730/decay 222870); the 300k fit uses 351600/90m (17580/334020). Preserve the complete lockfile/environment. More rows at fixed epochs change compute as well as data. Fresh experiments should write new model/config identities instead of editing any frozen producer or metadata.
+
+For a fresh simulator call, use the current canonical lab adapter rather than an older63-grid simulator:
+
+```python
+from sbi4finance.calibration.heston_grid import HestonGridPilot
+pilot = HestonGridPilot(task["records"], infer_c=True, c_bounds=(.5, 2.))
+pilot.validate_task(task["target"])
+# One finite6-vector inside the declared bounds; returned prices are raw.
+theta = pilot.bounds.mean(axis=1)
+quotes = pilot.simulate(theta, seed=123, size=1)
+```
+
+A second **tutorial** notebook needs an additional publication step: tutorial code cannot import `sbi4finance`, import lab scripts, alter sys.path or read outside `tutorial/assets/`. Port the task/quote/preprocessing/native-model adapter into the authoritative `tutorial/src/sbi4f_tutorial/` runtime, reuse its existing Heston control-variate kernel, and publish a matching declared input/model/cache through the native lab accept/manifest tools. Do not manually copy this development package into published assets or silently replace the original lesson. The present package already supports a lab notebook; that participant-runtime adapter and accepted tutorial assets remain explicit collaborator work.
+
+The model is not officially calibrated: at 300k final 300, c90% coverage is 90.23% and 5/6 SBC screens pass, but initial-variance90% coverage is 97.46%, synthetic physical conditional intervals are 1.05–2.86 times MCMC widths, and 3.04% raw vectors leave prior support. The validation minimum at epoch 259 also fails. Keep these caveats visible in the added notebook; the package report retains all four endpoints.
+
 ## Source and environment for existing banks
 
 Keep the complete current checkout when installing the locked lab environment:
@@ -38,14 +107,7 @@ contain the option archives and `SHA256SUMS`. The [artifact inventory](../eviden
 records their identities. The trajectory archive and banks use the separate
 [path-workshop Drive folder](https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k).
 
-This GitHub repository is private. Use your own account with repository read
-access; releases inherit that access. Run `gh auth login` if needed. An
-unauthenticated 404 does not establish that a release asset is missing. Drive
-uses your own separately granted folder access; GitHub and Drive permissions do
-not confer access to one another. A browser download is sufficient; neither a
-Drive filesystem mount nor an owner's account or SSH key is required. Request
-access to the relevant service if needed. Do not regenerate data to repair a
-missing or corrupt download.
+Repository visibility was verified public on 11 November 2026; the historical published releases are public. New unpublished draft releases require repository push/write access, as stated separately above. Run `gh auth login` with your own account for the draft route. Drive uses your own separately granted folder access; GitHub and Drive permissions do not confer access to one another. A browser download is sufficient for published assets; neither a Drive filesystem mount nor an owner's account or SSH key is required. Do not regenerate data to repair a missing or corrupt download.
 
 For the commands below, set these to your own checkout and
 download directory, using absolute paths:

@@ -1,0 +1,8 @@
+test_corrupt_state_fails_before_native_model_load (tests.test_heston_grid_collaborator.HestonGridCollaboratorTests.test_corrupt_state_fails_before_native_model_load) ... ok
+test_member_escape_fails_before_model_deserialization (tests.test_heston_grid_collaborator.HestonGridCollaboratorTests.test_member_escape_fails_before_model_deserialization) ... ok
+test_training_uses_stored_y_over_halfspread_exactly_once (tests.test_heston_grid_collaborator.HestonGridCollaboratorTests.test_training_uses_stored_y_over_halfspread_exactly_once) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK
