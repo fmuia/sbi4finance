@@ -1,6 +1,77 @@
-# Rough Bergomi observation refresh: actual-layout readiness and bounded initiation
+# Rough Bergomi observation refresh: joint inference and packed data generation
 
-**Status, 11 November 2026 UTC: portable preparation ready; Heston initiation condition unmet.** The revised-grid Heston comparison is complete. Oscar source/environment preflight and the bounded rough work order are ready, but the agreed diagnostic condition did not pass. No rough initiation condition has been bound, and no rough pricing, bank generation, preprocessing fit, reference sampling, neural training or Slurm job has started. Do not initiate the pilot merely because source staging succeeded. A production bank remains a later measured decision.
+**Status, 11 November 2026 UTC: the user-authorized joint Bergomi campaign is running on Oscar.** The first 1,000 rows run under Slurm `8822042`; the remaining 299,000 rows are queued under Slurm `8823501` (24 running and 724 pending allocations at submission). The user explicitly superseded both the Heston-success execution prerequisite and the original strict numerical generation gate for this campaign, choosing the historical numerical cost profile with its shortcomings reported. Heston failures remain documented; generation does not establish neural calibration, continuous-model pricing accuracy or scientific acceptance.
+
+## Current execution authorization and training-data target
+
+The current target is **300,000 distinct TRAIN financial parameter/curve rows** for the joint problem. The seven inference targets are `hurst, eta, rho, short_variance, long_variance, decay, c`, with independent `c ~ Uniform(.5,2)`. The expensive clean pricer takes the first six quantities; `c` is added through independent cheap noise augmentation and is never an inference condition. The selected 63 actual European contracts, original physical/curve priors, carry and raw half-spread observation law remain unchanged. The supplied-curve and fixed-c campaigns are dormant; no second 300,000-row campaign is commissioned. Validation/test target sizes are 5,000/7,000, separate from these TRAIN rows and not queued by this work order. Repeated noise draws do not count as extra financial parameter rows.
+
+The new source-bound authorizations are separate from a passed-Heston record and retain `scientific_acceptance:false`, `SBI_training_readiness:false` and `prior_filtering_permitted:false`. Preserve the original source, guards, work orders, failed preflights and stopped runs under their original identities. The user authorized numerical approximation for feasibility; that does not authorize widening market noise, dropping difficult prior regions, changing the financial kernel or claiming calibration before it is measured.
+
+### Active numerical recipe and its limitation
+
+Each exact expiry uses its base uniform grid from time zero (seven blocks; total 8,391 time steps), the canonical hybrid/control-variate pricer, and the original finite adaptive total-path ladder `32768, 65536, 131072, 262144, 524288, 1048576, 2097152`. The global engineering reference is the historical synthetic-noise median **`0.00044092792100661605` in forward-price units**, with preferred nominal MCSE `.25` times that scalar and a final-rung cap `.5` times it. Its historical vector hash is `5c0030a847a54f4e90b29034590af3337426f98467a22fdad5c63ace6f40467c`. This reference allocates compute; it is **not** the market observation SD and does not enter `Y = P + c*h*Z`. It is a declared global approximation to the old per-contract numerical budget, rather than a claim of identical per-contract precision.
+
+The strict proposal in section 5 remains a recorded scientific diagnostic, not a generation prerequisite for this authorized bank. The price target is the finite hybrid base-grid expectation. No per-row refinement is commissioned, and continuous-model discretization bias is uncertified. Keep nominal MC covariance, MCSE/half-spread and MCSE/`(c*h)` diagnostics; same-sample fitted-control covariance is not an independent uncertainty certificate. Rows reaching a numerical or time limit remain in the requested-prior ledger with their flags and partial blocks. A later noise-aware forward-emulator treatment or selected independent refinements may be needed before an official posterior demonstration; labels are useful development progress, not accepted noiseless truth.
+
+### Queued work, resources and durable progress
+
+The first work order covers TRAIN IDs `[0,1000)`, one row per job, 192 one-CPU workers, 8 GiB each, 900 seconds/job and an 860-second row cap. Slurm `8822042` uses the immutable `joint-legacy-budget-1000/plan.json`, SHA256 `1027e17a4a12270724183ad7a51ce26622764107742a5811bc25a0e47bb90f7e`. The completed work order has **996 complete and four row-budget timeouts**. Failed IDs `440,661,664,769` retain their prior truths and completed expiry blocks. The earlier near-complete 995-row snapshot had a completed-row mean of about 108 seconds and a roughly 56-second median; it omitted the unfinished tail and is not a final runtime estimate. Scaling 108 seconds over 300,000 rows at a fully occupied 192 CPUs gives approximately **47 hours**, before queuing, tail failures, retries, setup and validation. It is not an overnight-completion promise.
+
+The remaining work order covers TRAIN IDs `[1000,300000)`: **5,980 shards of 50 rows**, grouped eight independent worker processes per allocation, giving **748 allocations** under one Slurm array `%24`. Each allocation requests one node, eight CPUs, 64 GiB and 12 hours; each child keeps an 860-second row cap and its own shard journal. The maximum live request is 192 CPUs/1,536 GiB, within the discovered per-user 208 CPU/2,500 G entitlement, subject to group load and scheduling. The declared maximum allocated work is **71,808 CPU-hours**, including the four unused CPU positions in the last group; this is the sum of wall caps, not a cost forecast. The full master was launched as **Slurm `8823501`**, with 24 allocations running/724 pending at submission.
+
+The full plan is `joint-legacy-budget-300k/plan.json`, SHA256 `fc246356d5a12e4a0c77413efa3c5f81254676ff80f778ba5e5d503671a38a1b`. The frozen new module/CLI hashes are respectively `494a4761ee54e84449ea87a4e7d946649ddd46f3e3eecea2cb33718147f0879d` and `55f0eb57d24dbc0b4865207cd6066b58dde76007c4e7b0405656c4d640a0fde7`. Both plans and their compact evidence live in the production checkout under `lab/evidence/pilot-results/2026-11-11/bergomi-observation-refresh/`. The full remote root is `/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111`; its `submission.json` hash is `28165f17ca94c30b588fb4e61a3fb304979451f110d7f80122e2ea726267bcb7`.
+
+Every 50-row shard stores `journal.sqlite`, `data.npz`, `status.json` and a worker lease; there is no file per dataset. All requested physical-prior and independently sampled c values are journalled before pricing. Each completed expiry/rung commits durably. A row-local failure is recorded and the worker proceeds to the next row; one dead worker does not cancel its seven siblings. Restarts validate source, task, environment, plan and admission identities and reuse completed work. Failed rows are skipped by default; an explicit reason and a new output identity are required to retry them from the preserved journal. Retain failure history and accepted blocks rather than redrawing a more convenient prior row.
+
+A read-only snapshot/export can expose completed rows **while other rows in the same shard are still running**. It includes all available complete 63-price vectors without filtering on the precision flag, plus the full requested-prior ledger and missing/failed IDs. Final exports retain all 50 requested rows, with validity masks and NaN price fields for failed rows. Early exports are marked development-only and availability-selected: they can support an initial training experiment, but they are not a prior-representative SBC/coverage sample. Never silently train or validate on a precision-passed subset; computational failures may depend on the parameters. A contiguous complete-ID prefix export is available, but missing hard rows must still be disclosed and resolved for representative acceptance studies.
+
+### Read-only export and explicit resumption
+
+The Slurm queue continues independently of this chat. The first full-run startup check found 192 shard journals, 9,600 pre-recorded prior/c draws, 1,965 committed expiry blocks and 140 completed rows with no row errors. A real read-only export from the still-running shard 0 succeeded: rows `1000,1001,1002` had finite arrays of shape `3×7` targets and `3×63` prices, while all 50 requested prior/c rows and masks remained in the snapshot. The receipt is `/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111/early-export-receipt.json`; its immutable export is `snapshots/early-training-1794378894197093766` under that root. These are startup observations, not a later completion count.
+
+On Oscar, use the preserved producer and environment for inspection or resumption:
+
+```sh
+export ROUGH_RUN=/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111
+export ROUGH_PYTHON=/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python
+export PYTHONPATH="$ROUGH_RUN/repo/lab:$ROUGH_RUN/repo/lab/src:$ROUGH_RUN/repo/tutorial/src"
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
+export ROUGH_SCRIPT="$ROUGH_RUN/repo/lab/scripts/rough_actual_layout_overnight_bank.py"
+export ROUGH_PLAN="$ROUGH_RUN/preparation/plan.json"
+export ROUGH_ADMISSION="$ROUGH_RUN/preparation/admission.json"
+
+# Read-only snapshot while this shard can still be running. Choose a new output path each time.
+"$ROUGH_PYTHON" "$ROUGH_SCRIPT" export --plan "$ROUGH_PLAN" \
+  --journal "$ROUGH_RUN/payload/shard-000000/journal.sqlite" \
+  --out "$ROUGH_RUN/snapshots/early-training-review-001"
+```
+
+Adding `--complete-prefix` exports only the contiguous complete-ID prefix of that shard; all requested/missing IDs are still reported. The export does not price new data. An output based on available completed rows is development data until its selection consequences are resolved for validation.
+
+The following worker commands run **inside a matching eight-CPU Slurm allocation**, with its true `SLURM_CPUS_PER_TASK=8`, after the earlier writer has exited. Shard 0 belongs to allocation group 0; use the frozen plan's map for other indices. Do not run two writers on one shard or modify the Slurm CPU environment.
+
+```sh
+# Resume the same shard: completed blocks/rows are reused; recorded failed rows are skipped.
+"$ROUGH_PYTHON" "$ROUGH_SCRIPT" worker --plan "$ROUGH_PLAN" \
+  --admission "$ROUGH_ADMISSION" --index 0 --allocation-group 0 \
+  --out "$ROUGH_RUN/payload/shard-000000"
+
+# Explicit failed-row repair in a NEW output identity, preserving the original journal/history.
+"$ROUGH_PYTHON" "$ROUGH_SCRIPT" worker --plan "$ROUGH_PLAN" \
+  --admission "$ROUGH_ADMISSION" --index 0 --allocation-group 0 \
+  --resume-from "$ROUGH_RUN/payload/shard-000000/journal.sqlite" \
+  --retry-failed --retry-reason 'Explicit review of retained row-budget failures' \
+  --out "$ROUGH_RUN/manual-retries/shard-000000-repair-001"
+```
+
+A row-budget timeout preserves already committed blocks, but it is a **recorded failed row**, not an automatic recovery promise. The default restart skips it; the explicit copied-journal repair above reuses its accepted work under the same finite limits and can still fail again. An interruption before a committed result also preserves earlier commits; any unfinished rung may need deterministic replay. A dead child leaves its journal recoverable and does not terminate siblings. No automatic retry/redraw hides failed prior regions.
+
+Current output is on Oscar scratch. Durable per-block writes protect against process interruption; they are not a separate backup against scratch loss or retention policy. Hashed collection and an additional external backup remain subsequent work.
+
+The original 48-component pilot ran as `8820876` and was stopped at the user's request, preserving eight complete components and partial progress. Its measured peak RSS was below 2 GiB, supporting the current conservative 8 GiB/worker request instead of the original static 32 GiB allowance. Its strict spread-based MCSE and grid checks did not pass. The later grid-4/262,144-path 128-row run `8821443` was explicitly stopped when the user chose the feasible historical-cost recipe. These numerical limitations remain evidence; neither stopped run is relabelled successful.
+
+The historical preparation and stricter scientific diagnostics below remain useful provenance. Where they describe known c, supplied-curve controls or the automatic Heston gate, those are preserved or deferred routes, not the active campaign. No Heston failure is transferred as acceptance of a rough posterior.
 
 The Heston dependency remains [PR #85](https://github.com/fmuia/sbi4finance/pull/85). Its supported revision freezes 63 actual contracts, a declared final-call target +1.5 in fixed 16% volatility coordinates and a longest actual tenor of about 10.7 months. The source-bound 200k/300k, 300-epoch comparison is complete; see the [combined saved-data report](https://github.com/fmuia/sbi4finance/blob/feat/heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/report.html). A versioned Black-control-variate representation passed the 98-point numerical panel and all three new target-matched references are ready. These are useful Heston numerical results, not rough-pricing certificates or neural-posterior acceptance. The literal +2/one-year audit and the supported revision retain separate identities.
 
@@ -14,24 +85,17 @@ All rows below describe the declared final epoch 300, on the same 512 historical
 
 Point recovery is strong and c improves, but the remaining uncertainty error is material. Both revised primaries fail the v₀ SBC screen and substantially overcover v₀. At 300k, physical conditional 90% widths on the two synthetic cases remain 1.05–2.86 times their target-matched MCMC widths, with remaining mean disagreements. These synthetic comparisons have no raw support violations, so relaxing a strict zero-outside-support rule would not remove the conditional failures. Market conditional discrepancies and c concentration near its prior upper boundary also remain; they do not by themselves identify whether market-model inadequacy, an unusual observation or the noise convention is responsible. The distinct minimum-validation epoch 259 passes only 3/6 historical SBC screens and also fails the necessary diagnostics; it does not rescue the final primary. Training presentations are 60m for 200k and 90m for 300k, so this is not an equal-compute comparison.
 
-Independent raw-draw verification passed for all four declared endpoints, while **every endpoint fails the necessary scientific screens**. Verification establishes faithful saved results, not acceptance or promotion. The portable Oscar preparation is fully ready, but the Heston working-grid initiation condition remains unmet. Keep the rough pilot dormant while the Heston uncertainty discrepancies are assessed; do not transfer Heston parameters, posterior draws or its fitted whitening matrix.
+Independent raw-draw verification passed for all four declared endpoints, while **every endpoint fails the necessary scientific screens**. Verification establishes faithful saved results, not acceptance or promotion. The original automatic Heston initiation condition remains unmet. The separately authorized rough campaign above proceeds without claiming that condition passed; do not transfer Heston parameters, posterior draws or its fitted whitening matrix.
 
 Earlier fixed-c, inferred-c, large-batch and whitening failures remain part of the Heston evidence. The isolated spline whitening pilot and later native FlowMatching experiments are different recipes and budgets. Neither a favorable plot nor a decreasing objective is an acceptance criterion. Flexible locations/masking remain the separate [PR #83](https://github.com/fmuia/sbi4finance/pull/83) track; this work is one fixed actual layout.
 
-The first rough baseline retains **known c=1**, with same-observation known-scale sensitivity. The existing three-target supplied-curve and six-target joint-curve financial families remain distinct and unchanged. Adding inferred c to the joint-curve model would create seven targets and requires a separate later task and validation; it is not automatically inherited from Heston. No GP discrepancy, vega-scaled tau or market-derived latent curve is introduced.
+The active rough baseline is the **seven-target joint-curve plus inferred-c task** specified above. The original three-target supplied-curve and six-target fixed-c financial declarations remain unchanged as provenance and dormant controls; the new outer inference blueprint adds independent c without changing clean pricing. Its posterior, preprocessing and validation still need their own evidence. No GP discrepancy, vega-scaled tau or market-derived latent curve is introduced.
 
 ## 1. Scientific deliverable and dependencies
 
 The deliverable is a reproducible European-option inference task whose data, clean-price simulator, Gaussian likelihood, deterministic calibration, numerical reference and amortized estimator agree on contracts, units, priors and conditions. The lesson must explain what the option information identifies and how remaining uncertainty reaches model fair values. Wide posterior intervals are not an acceptance requirement.
 
-The Heston financial dependency and later neural-transfer requirements are:
-
-1. One ordered set of actual European SPXW contracts, with their realized coverage and unsupported-target decisions; quote provenance, carry anchors, discount/forward estimates and exact valuation/settlement times.
-2. The price half-spread vector and the known-scale Gaussian convention, including the supported scale range and the same-observation sensitivity protocol.
-3. A working fixed-c training/input recipe with evidence of synthetic calibration, interval coverage and conditional agreement with matched Heston references. Input whitening is a candidate preprocessing feature, not an exception to these gates. Joint-c inference remains an optional separately accepted extension; model adequacy remains a separate judgment.
-4. The selected physical grid, successful source-bound execution and an explicit record that the user’s Heston working-grid condition is met. A decreasing loss or a good plot alone does not supply that record.
-
-Items 1, 2 and 4 gate the first rough numerical pilot. Item 3 governs transfer of a neural recipe and subsequent scientific acceptance; a rough feasibility study must not present an unaccepted Heston network as validated.
+The frozen financial dependency is the ordered set of actual European SPXW contracts, carry/provenance and half-spread vector. The current rough execution authorization is independent of a passed-Heston diagnostic record. Rough inference must establish its own seven-target calibration, interval coverage, matched conditional references and numerical sensitivity before an official demonstration or publication. Whitening is a candidate input representation; it does not waive those checks. A decreasing loss, strong recovery plot or completed price bank is insufficient on its own.
 
 Port the **frozen financial contract** and its declared observation convention. Rough priors, curve laws, numerical tolerances, networks and scientific acceptance remain separate. A change in selected contracts or measurement law requires a new task identity before rough labels are commissioned; it does not authorize silently relabelling old assets.
 
@@ -45,16 +109,16 @@ For one frozen design, use
 Y_i=P_i(\psi)+c h_i Z_i,\qquad Z_i\stackrel{\mathrm{iid}}\sim N(0,1),\qquad c>0.
 \]
 
-Here \(\psi\) contains the rough dynamics and, for joint inference, the curve coefficients. \(h_i\) is the observed **price half-spread**, held fixed within the task; \(c\) is a known dimensionless multiplier. No vega-scaled tau component is present. Half-spread equals one Gaussian SD at \(c=1\) by a declared working convention, not by an empirical theorem about quotes.
+Here \(\psi\) contains the rough dynamics and, for joint inference, the curve coefficients. \(h_i\) is the observed **price half-spread**, held fixed within the task; \(c\) is an independently sampled dimensionless multiplier, inferred jointly with the six financial parameters under \(U(.5,2)\). No vega-scaled tau component is present. Half-spread equals one Gaussian SD at \(c=1\) by a declared working convention, not by an empirical theorem about quotes.
 
-- Begin with known \(c=1\), with sensitivity at \(c=.5,1,2\) on the **same observed price vector**. If one estimator supports varying known scale, train over the accepted Heston scale distribution and supply \(c\), or an equivalent lossless representation of the actual SD vector, as an explicit condition. A checkpoint trained at one scale does not automatically support another.
+- Infer c jointly in the active task; hide the generating c and every feature containing it from inference conditions. The frozen profile h remains known. A later fixed-c sensitivity study can use the same observed price vector, but it requires separately declared consumers and is not a second commissioned bank.
 - Keep the frozen spread profile and full ordered design explicit in task/checkpoint metadata. Do not replace a changed spread vector by a median scalar ratio without a separately verified proportionality assumption. A different snapshot is not silently supported by this fixed-design model.
 - Use actual quote locations. No smoothing, strike/maturity interpolation or American/AM-settled substitutions enter this baseline. Preserve source timestamps, roots and settlement conventions, and distinguish last-trade time from an unavailable bid/ask update time.
 - For the existing forward-unit pricing API, set \(p_i=y_i^{price}/(D_iF_i)\), \(h_i=h_i^{price}/(D_iF_i)\) and strike \(K_i/F_i\). Apply the same conversion to predictions and numerical covariance. Preserve raw quotes and carry estimates alongside these derived inputs. Carry remains conditional unless a separate uncertainty study is declared.
-- Synthetic observations receive fresh independent quote errors; clean prices and their numerical uncertainty are stored separately. Reuse a clean physical row across known-scale sensitivity conditions; do not count noise augmentation as additional independent physical parameter locations. Keep all augmentations of one physical row in its original split.
+- Synthetic observations receive fresh independent quote errors; clean prices and their numerical uncertainty are stored separately. Reuse a clean physical row across independently generated c/noise augmentations; do not count noise augmentation as additional independent physical parameter locations. Keep all augmentations of one physical row in its original split.
 - Keep Gaussian observations as generated, including finite negative values. No IV inversion, positivity truncation, rejection or redraw is permitted merely because a simulated quote is negative.
 
-An optional later **inferred-c** illustration uses the same single variance profile \(c h_i\), an explicit independent prior such as the current Heston illustrative \(U(.5,2)\), and a joint posterior over \((\psi,c)\). It hides the generating scale and every feature containing it from inference conditions; the known profile \(h\) remains available. It needs its own target, checkpoint, references, normalization and conditional-scale checks. It is not required for the initial known-c rough baseline, and boundary mass is not evidence of pure measurement noise. Do not substitute an equal average of fixed-c posteriors for marginalizing the joint posterior.
+The inferred-c task needs matching seven-target checkpoints, references, normalization and conditional-scale checks. Boundary mass is not evidence of pure measurement noise; it can also reflect model or numerical misspecification. Do not substitute an equal average of fixed-c posteriors for marginalizing the joint posterior. The historical known-c task metadata inside the frozen financial preparation does not turn c into a condition of the new outer seven-target inference task.
 
 ### Training-input covariance and whitening
 
@@ -68,12 +132,12 @@ A well-conditioned noisy training covariance is not evidence that rough pricing 
 
 ## 3. Curve inference and information experiments
 
-Retain the distinction between the two existing teaching problems:
+Retain the distinction between the existing teaching families, while commissioning only the joint route now:
 
 | Route | Unknowns | Curve information | Interpretation |
 | --- | --- | --- | --- |
-| Supplied-curve synthetic introduction | H, eta, rho | Explicit known positive curve, varied across training cases and fixed within each inference problem | Conditional teaching task; not evidence that market quotes identify that curve |
-| Joint-curve calibration | H, eta, rho and the declared curve coefficients | Generating curve excluded from inference conditions | Main route for studying curve information in market/full-versus-restricted observations |
+| Supplied-curve synthetic introduction (dormant) | H, eta, rho | Explicit known positive curve, varied across training cases and fixed within each inference problem | Preserved conditional teaching task; no new campaign commissioned |
+| Active joint-curve and noise calibration | H, eta, rho, three curve coefficients and c | Generating curve and c excluded from inference conditions | Main seven-target campaign; expensive clean labels have six inputs |
 
 The current joint family is \(\xi_0(t)=v_{long}+(v_{short}-v_{long})e^{-a t}\), with six ordered targets `hurst, eta, rho, short_variance, long_variance, decay`. Its current bounds are H `[.02,.35]`, eta `[.5,3.5]`, rho `[-.99,-.2]`, variance levels `[.01,.16]` and decay `[.25,8]` per year. These are starting controls to review in the numerical panel, not parameters inherited from Heston or a claim of final market adequacy. Retain difficult low-H/high-eta and high-variance cases; numerical difficulty alone does not justify narrowing the prior. The supplied seven-interval curve law and the analytic joint family remain different tasks.
 
@@ -105,11 +169,11 @@ The target hierarchy must be explicit:
 
 Agreement at a lower layer does not certify the earlier layers. Heston's deterministic Fourier audit does not certify any rough layer.
 
-## 5. Measurement-only numerical precision gate
+## 5. Historical strict precision proposal and retained scientific diagnostics
 
-Define the strictest supported measurement SD \(s_{min,i}=.5h_i\), if `.5` is retained as the minimum known multiplier. Before any production bank, predeclare numerical tolerances against this vector, independently of inferred error scales or market residual size.
+The original strict proposal defined \(s_{min,i}=.5h_i\), the smallest observation SD over the supported c prior. It required numerical tolerances against that vector independently of inferred error scales or market residual size. **The user has superseded this as a generation prerequisite**, adopting the historical engineering reference described above. These stricter checks remain useful measurements and later sensitivity targets; their failure must not be hidden by the relaxed generation policy.
 
-The initial feasibility target is reported Monte Carlo SE at most \(.25s_{min,i}\) per contract, with **no inherited final-rung .5 exception** for the new task. This is an empirical MC target, not a guarantee about continuous-price bias. Retain unsuccessful rows, IDs and costs; reaching the declared path cap is a failure/stop, not permission to widen noise, discard a row or increase the cap automatically. A different threshold requires an explicit revised numerical specification and sensitivity evidence.
+The historical feasibility target was reported Monte Carlo SE at most \(.25s_{min,i}\) per contract, with **no inherited final-rung .5 exception** for the new task. This is an empirical MC target, not a guarantee about continuous-price bias. Retain unsuccessful rows, IDs and costs; reaching the declared path cap is a failure/stop, not permission to widen noise, discard a row or increase the cap automatically. The active threshold has its own explicit source-bound policy and user authorization; it does not establish stability of the posterior under more accurate pricing.
 
 | Error source | Required pilot evidence | What does not suffice |
 | --- | --- | --- |
@@ -127,19 +191,17 @@ For deterministic prediction error \(\delta=\widehat P-P\) and residual \(r=y-P\
 
 If an input transform is adopted, also audit its numerical amplification. In column notation let \(D_h=\operatorname{diag}(h)\), let W be the stored full-rank transform of \(Y/h\), and let \(A=W D_h^{-1}\). A price error \(\delta\) enters the network as \(A\delta\), while price-mean covariance becomes \(A C_{MC}A^T\). Record these transformed errors, their covariance/dependent directions and sensitivity to the declared eigenvalue floor, alongside the raw-price likelihood shift above. A small transformed error does not waive a failing raw-likelihood gate, and a small marginal raw SE does not establish harmless transformed error. Audit Monte Carlo, time-grid/curve and surrogate contributions independently; do not fit W to make their failures disappear.
 
-## 6. Bounded implementation sequence
+## 6. Current implementation sequence
 
 | Phase | Work | Exit evidence |
 | --- | --- | --- |
-| R0: readiness and isolated interface preparation, now | Inventory preserved bank/contract/covariance records; prepare exact-time/curve/units validation, immutable task declarations and submission commands | Frozen financial-law semantics and a reviewable work order; no rough MC, transform fit, bank or training |
-| R1: representative numerical panel, after the Heston working-grid condition | Freeze exact rough task; implement isolated fixed-layout/known-c support; audit prices at actual times and numerical errors in raw-likelihood and proposed input coordinates | Reproducible independent-batch/grid/covariance report and measured cost; no unresolved numerical gate hidden by noise or preprocessing |
-| R2: label reuse and cost decision | Compare required contracts, priors and numerical target with preserved clean banks; estimate new/refined rows | Exact reuse ledger, projected CPU/memory/wall time and explicit bounded next allocation before production |
-| R3: separately allocated label generation and bounded inference development | Generate/refine only the agreed compatible labels; fit any task-specific transform on training noisy surfaces; train a fixed-c posterior and, if needed, one task-bound mean-pricer; establish predeclared references | Separate simulator calibration/coverage, conditional posterior agreement, numerical-target sensitivity and market residual checks; joint-c remains optional |
-| R4: notebook integration and reflection | Update the existing rough notebook/helpers, cached/live routes, evidence and provenance | Checked live and pretrained paths; accurate teaching claims; explicit accept/fail and reflection before broader work |
+| R0/R1: preserved preparation and stopped numerical panel | Keep exact-time financial declarations, portable validators, strict-panel failures and measured costs | Immutable source and raw evidence; no false Heston or continuous-price acceptance |
+| R2/R3: authorized data generation, running | Complete the separate first 1,000 and packed remaining 299,000 TRAIN requests using the agreed legacy engineering budget | Durable requested-prior ledger, complete/failed masks, MC covariance, runtime/rung statistics and source-bound partial exports |
+| R3: development inference alongside generation | Use an explicitly identified partial bank to fit task-specific training transforms and a seven-target posterior/mean-pricer experiment | Disclose availability selection and numerical approximation; keep validation and reserved acceptance observations separate |
+| R3: establish numerical and inference limits | Obtain independent refined labels/references at representative points and posterior regions; test c recovery, SBC, coverage and conditional sensitivity | Report both successes and failures under the declared finite-grid/price treatment before scientific acceptance |
+| R4: notebook integration and reflection | Update the existing rough notebook/helpers, live/pretrained routes and evidence only for the supported new task | Checked routes and accurate teaching claims, followed by explicit reflection before broader changes |
 
-For R1, predeclare **12 joint-curve physical rows and four supplied-curve controls** before viewing candidate results: typical, low-H/high-eta, high variance, rising/falling and nearly flat curves, plus boundary-near cases. Declare the exact rows, grid ladder, independent streams and stopping conditions in the run specification. Start with at most four representative rows on up to three grids and four independent batches; extend to the remaining declared rows only within the same cap. Independent batches repeat physical rows and are not new prior draws.
-
-The proposed initial R1 ceiling is **8 allocated CPU-hours, two CPU workers, no GPU**, including setup and failed pricing attempts. It is a future feasibility ceiling, not an allocation launched by this plan; if insufficient, return the incomplete report and a measured cost proposal. Do not automatically escalate path counts beyond the declared ladder, allocate a full bank, fit networks or run a direct-MC MCMC campaign. Production/reference/training budgets and data sizes are decided only after R1, using measured new-task costs and numerical outcomes. Historical rough cost ratios, older CPU ceilings and cached Heston timings do not authorize new work.
+The earlier 8 CPU-hour/48-component R1 ceiling applied only to that preserved pilot. It is not the full-bank budget. The current finite work orders explicitly queue the 300,000 TRAIN target; no supplied-curve bank, GPU training allocation, direct-MC reference campaign or automatic expansion beyond the finite path ladder is attached. The first 1,000 and remaining 299,000 retain distinct producers/plans and may be combined downstream only through their compatible financial/RNG identities and preserved provenance.
 
 Development splits, synthetic reference cases and numerical challenge cases must have separate identities from reserved acceptance observations. Freeze the recipe before final calibration/seed confirmation. Keep failed conditional comparisons and unsupported cases visible rather than replacing them with attractive examples.
 
@@ -159,7 +221,9 @@ Freeze observation-vector hashes, task/prior/design/spread hashes, curve roles, 
 
 SBC cannot validate the market noise convention. Market misfit cannot explain a neural failure on its own simulator. Concentrated physical posteriors at small spread-based noise may make inference harder; simplifying the error model is not a guarantee of easier training. If market residuals exceed plausible quote uncertainty, report that failure instead of silently inflating c or reopening an inferred tau model.
 
-## 8. Read-only readiness audit completed for this plan
+## 8. Preserved pre-authorization readiness audit and original conditional route
+
+**Historical scope:** this section records the earlier preparation state. Statements here that no MC/job has started, that known-c support comes first, or that Heston must pass apply to that original route only. Current execution, inferred-c scope and numerical relaxation are recorded above; the old artifacts/commands remain unchanged.
 
 Initial code audit: main commit `1dbfa8342d17027f8e4cb83339db93a8d6d2a9b9`; refreshed read-only inventory on 10 November 2026 (11 November UTC). The refresh read active training-part metadata, the preserved task/snapshot manifests and the actual63-quote design. A prior inspection opened exactly one 25-row TRAIN payload per bank for covariance checks; no validation/test payload arrays were opened. No new rough prices, covariance estimates, whitening fit or training are claimed.
 
@@ -214,7 +278,7 @@ ssh oscar 'squeue -h -u "$USER" -o "%i|%P|%j|%T|%M|%C"'
 
 Existing pilot CLIs (`pilot_rough_numerics.py`, `pilot_rough_working_grid.py`) bind the old complete63 task and are **not** valid launch commands for the new physical design. The isolated actual-layout interfaces and portable declaration now pass pure unit/identity and execution-host checks. The prepared submission file uses `--array=0-47%2 --cpus-per-task=1 --mem=32G --time=00:10:00` on the verified CPU lane, with immutable source/task/gate bindings and no automatic retries. Current lab **and sibling tutorial runtime** are staged at a new remote identity with verified source hashes/versions; an old bank producer checkout is not silently repurposed. The preparer prints worker/submission commands for review and does not submit them.
 
-### Concrete preparation and conditional commands
+### Preserved preparation and original conditional commands
 
 The new source preparation exists in the active Heston checkout `sbi4finance-heston-spread-baseline-20261109`: `tutorial/src/sbi4f_tutorial/rough_options/actual_layout.py`, the original `lab/src/sbi4finance/calibration/rough_actual_layout_pilot.py`, and the new versioned `rough_actual_layout_pilot_portable.py` plus `lab/scripts/{prepare,run}_rough_actual_layout_pilot_portable.py`. The old task validators, financial kernels, curve priors and source-bound Heston consumers remain unchanged. Pure tests cover both worker dispatch branches with fake arrays; they do not execute a rough Monte Carlo study.
 
@@ -274,8 +338,8 @@ The executing runtime remains under `tutorial/src/sbi4f_tutorial/`; lab code imp
 
 Preserve both **explicit live training** and **pretrained loading** routes for the accepted new task. Cached inspection remains usable without automatically running MC or neural training. Training uses the matching downloaded clean bank and a declared bounded example; loading validates task, design, observation/noise schema and model hashes. Show the simulator-to-price-to-noisy-quote construction and the distinction between forward-pricer learning and posterior learning. Do not expose implementation choices in the participant flow unless they explain an inference decision.
 
-Show supplied versus inferred curve assumptions, known c and its sensitivity, physical/curve priors, realized grid coverage, numerical qualifications and model residuals beside the relevant results. Preserve cached/live and tutorial/backend limitations honestly. Keep illustrations as illustrations, and full posterior product draws paired; state whether bands are pointwise and whether uncertainty is numerical, parameter-induced or predictive.
+Show the active inferred curve/c assumptions, the dormant supplied-curve/known-c distinction, physical/curve priors, realized grid coverage, numerical qualifications and model residuals beside the relevant results. Preserve cached/live and tutorial/backend limitations honestly. Keep illustrations as illustrations, and full posterior product draws paired; state whether bands are pointwise and whether uncertainty is numerical, parameter-induced or predictive.
 
 Promote only through lab acceptance/publication tools, with compact committed evidence and external hashed payloads. Do not hand-edit `tutorial/assets`, `MANIFEST.md` or generated claims tables. Before a later implementation PR, run lab tests, manifest, claims and release-check; run tutorial tests, notebook tests and check when tutorial runtime/notebooks change. Neither passing software checks nor Heston acceptance substitutes for the independent rough scientific gates above.
 
-**Next permitted action:** assess the completed Heston uncertainty failures; interfaces, source/environment preflight and the immutable first-stage declaration are ready, but the initiation condition is unmet. No rough numerical work starts under the current gate. Only after the user’s Heston working-grid condition is satisfied and recorded may the bounded R1 panel above begin. Return its failures, numerical evidence and measured cost for reflection before any production bank, rough whitening fit or neural training allocation. Scientific promotion still requires the independent rough gates in this document.
+**Next action:** monitor Slurm `8823501`, retain the first-1,000 results and four failed-row journals, and begin a clearly labelled development training experiment once a useful partial bank is available. Report complete, failed and missing prior IDs, numerical diagnostics, approximate costs and selection limitations together. The user has authorized the full 300,000-row generation target; Heston diagnostic failure no longer blocks execution. Official posterior calibration, rough numerical sensitivity and asset promotion remain separate unfinished work.
