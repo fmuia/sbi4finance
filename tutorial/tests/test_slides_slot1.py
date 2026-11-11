@@ -51,16 +51,19 @@ class DesignTests(unittest.TestCase):
         _, low, high = notebook.implied()
         self.assertTrue(8.0 < np.median(thin) / np.median(0.5 * (high - low)) < 14.0)
 
-    def test_readings_are_nested_by_expiry(self):
-        readings = il.readings()
-        self.assertEqual([readings[reach].n for reach in il.REACH], [7, 14, 21, 28, 35])
-        full = readings["2 years"]
-        for reading in readings.values():
-            np.testing.assert_array_equal(reading.observed, full.observed[:reading.n])
-            self.assertLessEqual(reading.maturity.max(), full.maturity.max())
+    def test_every_reading_keeps_whole_expiries_and_the_day_the_product_pays(self):
+        readings, chain = il.readings(), il.thin_chain()
+        self.assertEqual([reading.n for reading in readings.values()], [7, 14, 21, 28, 35])
+        for name, reading in readings.items():
+            months = sorted(set(np.round(12 * reading.maturity).astype(int)))
+            self.assertEqual(tuple(months), il.READINGS[name])
+            self.assertIn(round(12 * il.END), months)  # the forward start pays on a quoted date
+            kept = np.isin(chain.observed, reading.observed)
+            np.testing.assert_array_equal(chain.observed[kept], reading.observed)  # the same surface, fewer quotes
+        self.assertEqual(il.READINGS["6 months and 1 year"], (round(12 * il.START), round(12 * il.END)))
 
     def test_the_generating_parameters_are_consistent_with_the_quotes(self):
-        full = il.readings()["2 years"]
+        full = il.readings()["1 month to 2 years"]
         misses = float(full.sum_of_squares(il.TRUTH)) / il.C_TRUE**2
         self.assertLess(abs(misses - full.n) / np.sqrt(2 * full.n), 3.0)
 
@@ -96,7 +99,7 @@ class PricingTests(unittest.TestCase):
         self.assertLess(il.notebook_case().gate(il.TRUTH, il.NOTEBOOK_CHECK_RUNG), il.GATE)
 
     def test_a_failed_pricing_is_a_very_large_miss(self):
-        chain = il.readings()["3 months"]
+        chain = il.readings()["6 months and 1 year"]
         broken = il.TRUTH.copy()
         broken[1] = np.nan
         self.assertTrue(np.isnan(chain.model(broken)).all())
@@ -149,36 +152,36 @@ class RangeTests(unittest.TestCase):
         cls.readings = il.readings()
 
     def test_least_squares_with_every_quote_brackets_the_true_price(self):
-        result = il.fit(self.readings["2 years"], starts=3)
+        result = il.fit(self.readings["1 month to 2 years"], starts=3)
         self.assertEqual(result.on_bound, ())
         self.assertEqual(result.dof, 30)
         self.assertTrue(0.7 < result.scale < 1.4)
-        point, interval = il.delta_range(result, il.put_price)
-        truth = float(il.put_price(il.TRUTH))
+        point, interval = il.delta_range(result, il.forward_start_call)
+        truth = float(il.forward_start_call(il.TRUTH))
         self.assertTrue(interval[0] < truth < interval[1])
-        self.assertLess(interval[1] - interval[0], 0.006)  # under 0.6 per 100 of forward
+        self.assertLess(interval[1] - interval[0], 0.004)  # under 0.4 per 100 of forward
         self.assertTrue(interval[0] < point < interval[1])
 
-    def test_quotes_at_one_month_only_give_no_classical_range(self):
-        result = il.fit(self.readings["1 month"], starts=4)
+    def test_quotes_at_one_expiry_give_no_classical_range(self):
+        result = il.fit(self.readings["1 year"], starts=4)
         self.assertNotEqual(result.on_bound, ())
         self.assertIsNone(result.covariance)
-        self.assertIsNone(il.delta_range(result, il.put_price)[1])
+        self.assertIsNone(il.delta_range(result, il.forward_start_call)[1])
 
-    def test_a_fixed_parameter_keeps_its_value_and_moves_the_range(self):
-        reading = self.readings["3 months"]
-        free = il.fit(reading, starts=3)
-        fixed = il.fit(reading, fixed={1: 2.0}, starts=3)
-        self.assertEqual(fixed.theta[1], 2.0)
-        self.assertEqual(fixed.dof, free.dof + 1)
-        self.assertGreaterEqual(fixed.sum_of_squares, free.sum_of_squares - 1e-6)
-        centre = lambda result: np.mean(il.delta_range(result, il.put_price)[1])  # noqa: E731
-        self.assertGreater(abs(centre(fixed) - centre(free)), 0.002)  # more than 0.2 per 100 of forward
+    def test_one_expiry_cannot_tell_todays_volatility_and_the_forward_start_follows_it(self):
+        reading = self.readings["1 year"]
+        low, high = (il.fit(reading, fixed={0: volatility**2}, starts=3) for volatility in (0.12, 0.30))
+        self.assertEqual(low.theta[0], 0.12**2)
+        self.assertEqual(low.dof, reading.n - 4)
+        self.assertLess(abs(low.sum_of_squares - high.sum_of_squares), 0.1)  # the same fit to the quotes
+        prices = [float(il.forward_start_call(result.theta)) for result in (low, high)]
+        self.assertGreater(prices[0] - prices[1], 0.01)  # more than 1 per 100 of forward apart
 
     def test_the_posterior_sampler_agrees_with_least_squares_when_every_quote_is_read(self):
-        # The sampler's tractable target: with all 35 quotes the posterior of the put is close to normal, and the
-        # delta method gives its range (the regime in which least squares matches the notebook's exact posterior).
-        reading = self.readings["2 years"]
+        # The sampler's tractable target: with all 35 quotes the posterior of the forward start is close to normal,
+        # and the delta method gives its range (the regime in which least squares matches the notebook's exact
+        # posterior).
+        reading = self.readings["1 month to 2 years"]
         posterior = il.posterior(reading, adapt=(600, 600, 600), batch=1000, target=200.0, most=4000, keep=300,
                                  sweeps=3)
         draws = posterior.draws
@@ -188,8 +191,8 @@ class RangeTests(unittest.TestCase):
         self.assertGreater(posterior.effective_sample_size, 20.0)
         self.assertLess(posterior.failed, 0.01)
         self.assertTrue(0.0 < posterior.acceptance < 1.0)
-        point, (low, high) = il.delta_range(il.fit(reading, starts=3), il.put_price)
-        q05, q50, q95 = np.quantile(il.put_price(draws[:, :5]), [0.05, 0.5, 0.95])
+        point, (low, high) = il.delta_range(il.fit(reading, starts=3), il.forward_start_call)
+        q05, q50, q95 = np.quantile(il.forward_start_call(draws[:, :5]), [0.05, 0.5, 0.95])
         self.assertTrue(0.75 < (q95 - q05) / (high - low) < 1.3)  # the two 90% widths agree, at this small budget
         self.assertLess(abs(q50 - point), 0.2 * (high - low))
 

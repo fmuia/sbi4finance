@@ -2,14 +2,14 @@
 
 Run from tutorial/, after `export_figures.py` has computed the example:
 
-    python slides/slot1/check_posterior.py [READING ...]        e.g.  "3 months" "1 month"
+    python slides/slot1/check_posterior.py [READING ...]        e.g.  "6 months and 1 year" "1 year"
 
 `illustration.posterior` draws by importance sampling followed by population moves. This script samples the same
 posterior, p(theta, c | quotes) with c integrated out, by a different algorithm that shares only the likelihood:
 several random-walk Metropolis chains in logit coordinates, started at draws from the prior, whose proposal covariance
 is adapted to the chain's own history during the first half and then frozen. It reports the chains' convergence
-(split R-hat and effective sample size of the 2-year put) and compares, for the put and for each parameter, the 5%,
-50% and 95% points of the two samples in units of the 90% width of the chains' sample.
+(split R-hat and effective sample size of the forward-start call) and compares, for the forward start and for each
+parameter, the 5%, 50% and 95% points of the two samples in units of the 90% width of the chains' sample.
 
 Nothing here feeds the slides. It needs only the tutorial's own dependencies.
 """
@@ -76,14 +76,14 @@ def check(reach, data):
     quotes = il.readings()[reach]
     u, acceptance = chains(quotes)
     theta = il.to_theta(u[:, ::20])  # thinned: every 20th draw
-    put = 100 * il.put_price(theta.reshape(-1, 5)).reshape(theta.shape[:2])
-    reference = np.quantile(put, [0.05, 0.5, 0.95])
+    price = 100 * il.forward_start_call(theta.reshape(-1, 5)).reshape(theta.shape[:2])
+    reference = np.quantile(price, [0.05, 0.5, 0.95])
     width = reference[2] - reference[0]
-    sampled = np.quantile(100 * np.asarray(data[f"{ef.key_of(reach)}/put/draws"]), [0.05, 0.5, 0.95])
-    print(f"\n{reach} ({quotes.n} quotes): {CHAINS} chains of {STEPS // 2} draws after {STEPS // 2}; acceptance "
-          f"{acceptance:.2f}; split R-hat of the put {split_rhat(put):.3f}; effective sample size "
-          f"{effective_sample_size(put):.0f}")
-    print(f"  2-year put, 5% / 50% / 95%: chains {reference[0]:.2f} / {reference[1]:.2f} / {reference[2]:.2f}; "
+    sampled = np.quantile(100 * np.asarray(data[f"{ef.key_of(reach)}/forward_start/draws"]), [0.05, 0.5, 0.95])
+    print(f"\nquotes at {reach} ({quotes.n} quotes): {CHAINS} chains of {STEPS // 2} draws after {STEPS // 2}; "
+          f"acceptance {acceptance:.2f}; split R-hat of the forward start {split_rhat(price):.3f}; effective sample "
+          f"size {effective_sample_size(price):.0f}")
+    print(f"  forward start, 5% / 50% / 95%: chains {reference[0]:.2f} / {reference[1]:.2f} / {reference[2]:.2f}; "
           f"slides {sampled[0]:.2f} / {sampled[1]:.2f} / {sampled[2]:.2f}; largest difference "
           f"{np.max(np.abs(sampled - reference)) / width:.1%} of the 90% width")
     draws = np.asarray(data[f"{ef.key_of(reach)}/draws"])[:, :5]
@@ -97,7 +97,7 @@ def check(reach, data):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("readings", nargs="*", default=["3 months", "1 month"], help="readings to check")
+    parser.add_argument("readings", nargs="*", default=[ef.HOOK, ef.ONE], help="readings to check")
     args = parser.parse_args()
     data = ef.load()
     for reach in args.readings:

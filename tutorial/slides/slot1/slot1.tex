@@ -4,7 +4,8 @@
 %
 % Two kinds of evidence, never mixed on one slide and labelled on each:
 %   - ILLUSTRATION (slides 2, 3, 6 to 9): one running example, a thin option chain simulated from Heston, the model
-%     right by construction. It shows a mechanism. tutorial/slides/slot1/illustration.py computes it.
+%     right by construction, and one exotic, a forward-start call whose two dates are quoted. It shows a mechanism.
+%     tutorial/slides/slot1/illustration.py computes it.
 %   - RESULT (slides 10 to 13): what the tutorial's Heston study on 63 SPX quotes recorded as of 11 November 2026
 %     (the Heston SPX notebook, lab/notebooks/heston_spx_calibration.py, and its run records). The numbers are in
 %     tutorial/slides/slot1/recorded-results.json, each with its source.
@@ -127,7 +128,7 @@
 % sentences on the slide. Style: plain statements, in logical order; each key line follows from the previous one.
 %
 % The argument, in five parts:
-%   1. the problem (slides 1–3): a calibration is one fit among many, so a price computed from it has a range;
+%   1. the problem (slides 1–3): a calibration is one fit among many, so the price of an exotic has a range;
 %   2. the exercise (4–5): volatility models are the example; the steps and the questions are general;
 %   3. why Bayes (6–9): what a posterior is, where the classical route gives the same range, where it does not;
 %   4. why simulation-based inference (10–13): the cost of a posterior, amortized inference, the test it makes
@@ -135,7 +136,7 @@
 %   5. the close (14–16): the takeaways, the team, the rest of the tutorial.
 
 % ════════════════════════════════════════════════════════════════════════════
-% 0:00–2:50 · The problem
+% 0:00–2:55 · The problem
 
 \begin{frame}{The Problem}
 \key{A calibrated model prices what the market does \highlight{not quote}.}
@@ -171,36 +172,37 @@ tutorial: how sure is that number, and how is its uncertainty computed and check
 \end{frame}
 
 \begin{frame}{One Fit Among Many}
-\only<1>{\key{Calibration returns the \highlight{best fit}, and a price for anything else.}}%
-\only<2>{\key{Many fits are \highlight{consistent with the quotes}. They disagree elsewhere.}}
+\only<1>{\key{Calibration returns the \highlight{best fit}, and a price for the exotic.}}%
+\only<2>{\key{Many fits \highlight{match the quotes}. They disagree on the exotic.}}
 \only<1>{\fig{0.97}{many-fits-1.pdf}}\only<2>{\fig{0.97}{many-fits-2.pdf}}
 \pairs[illustration]{\pair{Example}{a thin chain: 14 quotes}}
-      {\uncover<2>{\pair{Misfit, in half-spreads}{best 0.76, others 0.8–1.3}}}
-      {\uncover<2>{\pair{At the money, 2 years}{volatility 17.4–22.9\%}}}
-\note{The problem in one picture. A thin option chain, as for a single stock: fourteen quotes, at one and three
-months, each with its bid–ask half-spread. The quotes are simulated from a Heston model, so the truth is known. Least
-squares returns one parameter set. Its curve passes through the quotes, and it also gives a smile at two years, where
-nothing is quoted. A desk that marks a two-year product uses that curve. Second step: 120 other parameter sets; how
-they are drawn comes in a few minutes. On the quoted expiries they cannot be told apart: each misses the quotes by
-about one half-spread. At two years they fan out: at-the-money volatility runs from 17.4 to 22.9 percent. The dashed
-curve is the smile that generated the quotes, which a simulation knows and a market does not.}
+      {\uncover<2>{\pair{Misfit, in half-spreads}{best 1.11, others 1.2–1.6}}}
+      {\uncover<2>{\pair{The forward start}{4.17 to 5.18 per 100}}}
+\note{The problem in one picture. A thin option chain, as for a single stock: fourteen quotes, at six months and at
+one year, each with its bid–ask half-spread. They are simulated from a Heston model, so the truth is known. Least
+squares returns one parameter set, and its curve passes through the quotes. The desk needs it for something else: a
+forward-start call, whose strike is set at the money in six months and which pays at one year. Both dates are quoted;
+the product is not. The best fit prices it at 4.77. Second step: 120 other parameter sets; how they are drawn comes in
+a few minutes. On the quotes they cannot be told apart. For the forward start they give prices from 4.17 to 5.18. The
+options at each date fix the distribution at that date. The forward start depends on how the two dates are linked, and
+the quotes pin that only loosely.}
 \end{frame}
 
 \begin{frame}{From a Price to a Range}
 \key{Each parameter set gives a price. Together they form a \highlight{range}.}
 \fig{0.90}{price-range.pdf}
-\pairs[illustration]{\pair{Product}{2-year put, 90\% strike}}{\pair{Mark and 90\% point}{6.84 and 7.60 per 100}}
+\pairs[illustration]{\pair{Product}{forward-start call}}{\pair{Mark and 90\% point}{4.70 and 4.92 per 100}}
       {\pair{Prudent value, if sold}{the 90\% point}}
-\note{Take one product: a two-year put struck at 90\% of the forward, priced under each such parameter set, 4,000 of
-them. Least squares gives 6.52 per 100 of forward. The mean, 6.84, is a natural mark. If the bank has sold this put,
-its prudent value is the 90\% point, 7.60; the gap, 0.76, is a reserve of 11\% of the mark. The triangle is the price
-under the parameters that generated the quotes. The European prudent-valuation rules ask for this 90\% point. Banks
-meet them today with consensus data and expert ranges. What this tutorial adds is a range that is derived from the
-data, states its assumptions, and can be tested.}
+\note{Take that forward-start call under each such parameter set, 4,000 of them. Least squares gives 4.77 per 100 of
+forward. The mean, 4.70, is a natural mark. If the bank has sold the call, its prudent value is the 90\% point, 4.92;
+the gap, 0.22, is a reserve of 5\% of the mark. The triangle is the price under the parameters that generated the
+quotes. The European prudent-valuation rules ask for this 90\% point. Banks meet them today with consensus data and
+expert ranges. What this tutorial adds is a range that is derived from the data, states its assumptions, and can be
+tested.}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
-% 2:50–4:25 · The exercise: the steps and the questions are general
+% 2:55–4:30 · The exercise: the steps and the questions are general
 
 \begin{frame}{An Exercise in Inference}
 \key{Volatility models are the exercise. The \highlight{five steps} are general.}
@@ -253,7 +255,7 @@ what transfers to your own model.}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
-% 4:25–8:25 · Why Bayes
+% 4:30–8:35 · Why Bayes
 
 \begin{frame}{From a Fit to a Posterior}
 \key{Least squares keeps one fit. The \highlight{posterior} keeps them all, weighted.}
@@ -264,38 +266,38 @@ what transfers to your own model.}
 \note{What is a posterior? Each quote is the model's price plus noise: its half-spread $h$ times a scale $c$ that is
 inferred too, as in the notebooks. Least squares keeps the one parameter set with the smallest misses, and an error
 region around it. Bayes' rule turns the misses into a likelihood, multiplies it by a prior, and keeps every parameter
-set, weighted: the 120 fits of the opening were draws from it. On the right, the quotes pin today's volatility and the
-correlation: the cloud is small, and the region describes it. On the left they leave a valley open: slow reversion to
-a high long-run volatility fits as well as fast reversion to a low one. The region is an ellipse; the posterior
-follows the valley.}
+set, weighted: the 120 fits of the opening were draws from it. On the right, the quotes pin the long-run volatility
+and the correlation: the cloud is small. On the left they leave a ridge open: a fast mean reversion with a high vol of
+vol fits as well as a slow one with a low vol of vol. The classical region runs out of the prior's box; the posterior
+follows the ridge inside it.}
 \end{frame}
 
 \begin{frame}{Where the Methods Agree}
 \key{Where the quotes determine the price, the two ranges \highlight{agree}.}
-\fig{0.94}{ranges-by-reach.pdf}
+\fig{0.94}{ranges-by-quotes.pdf}
 \pairs[illustration]{\pair{Classical range}{least-squares error bars}}
       {\pair{The notebook's 63 quotes}{both agree within 2\%}}
-      {\pair{Quotes at 1 month only}{no classical range}}
-\note{Now the classical route, fairly. The same surface, read with fewer and fewer quotes; the same two-year put. With
-quotes out to one or two years, least squares with its error bars and the posterior give the same range, as theory
+      {\pair{Quotes at 1 year only}{no classical range}}
+\note{Now the classical route, fairly. The same surface, read with fewer and fewer expiries; the same forward start.
+With three expiries or more, least squares with its error bars and the posterior give the same range, as theory
 predicts when the quotes determine the parameters: the Bernstein–von Mises theorem. There a careful classical analysis
 is all you need. The Heston notebook at 11:40 is in that regime: on its 63 simulated SPX quotes, least-squares error
-bars match the exact posterior within 2 percent. As the quotes thin out, the two part ways. At three months the
-posterior leans towards high prices, which a symmetric range cannot follow. With one month only, the fit runs to the
-edge of the prior box and gives no range; the posterior gives a wide one, set largely by the prior.}
+bars match the exact posterior within 2 percent. With fewer expiries the two part ways. With two, the classical range
+is the wider one: its straight-line approximation runs past the edge of the prior's box. With one, the fit sits on the
+edge of the box and has no range; the posterior has a wide one, set largely by the prior.}
 \end{frame}
 
 \begin{frame}{What the Quotes Leave Open}
 \key{What the quotes leave open is set by an \highlight{assumption}.}
-\fig{0.94}{fixed-parameter.pdf}
-\pairs[illustration]{\pair{Fix it}{ranges that disagree}}{\pair{Fit it freely}{a wide, symmetric range}}
-      {\pair{State a prior}{$\kappa$ between 0.1 and 10}}
-\note{So what decides, where the quotes do not? An assumption. A common one in practice is to fix the speed of mean
-reversion, because option quotes barely determine it. Here it is fixed at 2, at 4 and at 8, on the same fourteen
-quotes. Each choice fits the quotes, and each gives a narrow range. But the three ranges disagree, and the first
-misses the generating price. A fixed parameter is an assumption of zero width, and it leaves no trace in the reported
-range. Fitting it freely gives a wide, symmetric range. A prior states the assumption and its width: here, any speed
-between 0.1 and 10. The posterior range carries that assumption openly.}
+\fig{0.94}{assumption.pdf}
+\pairs[illustration]{\pair{Assume a value}{same fit, another price}}{\pair{Fit it freely}{no range: on a bound}}
+      {\pair{State a prior}{today's volatility 10–40\%}}
+\note{So what decides, where the quotes do not? An assumption. Take the last row: quotes at one year only. They fix
+the total variance over the year, not when it arrives, and the forward start lives in the second half. So something
+has to be assumed. Say today's volatility: fix it, and fit the rest. Every point on this line fits the quotes equally
+well, with a misfit of 0.80 half-spreads. And the forward start goes from 5.14 to 2.86. The assumption sets the price,
+and leaves no trace in the fit. A prior states the assumption and its width: here, today's volatility between 10 and
+40 percent. The posterior, in blue, carries it openly: a wide range, because the quotes do not say.}
 \end{frame}
 
 \begin{frame}{One Set of Draws}
@@ -304,14 +306,14 @@ between 0.1 and 10. The posterior range carries that assumption openly.}
 \pairs[illustration]{\pair{A draw}{one full parameter set}}{\pair{A product}{priced under every draw}}
       {\pair{A book}{its range is not the sum}}
 \note{One more thing a posterior gives. Each draw is a complete parameter set, so it prices every product at once,
-with the desk's own pricer. Here the two-year put and a forward-start call, struck at the money in one year and paid
-at two, are priced under the same draws. Their prices rise and fall together. A book that holds the call against the
-put has a 90\% range of 0.72, against 1.81 and 1.22 for the two products. No linearization is needed; the dependence
-between products comes with the draws.}
+with the desk's own pricer. Here two forward starts, one struck in six months and one in nine, both paid at one year,
+are priced under the same draws. Their prices rise and fall together. A book that is long the first and short the
+second has a 90\% range of 0.16, against 0.61 and 0.53 for the two products. No linearization is needed; the
+dependence between products comes with the draws.}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
-% 8:25–12:15 · Why simulation-based inference
+% 8:35–12:20 · Why simulation-based inference
 
 \begin{frame}{The Cost of a Posterior}
 \key{One exact posterior costs \highlight{minutes to months} of computing.}
@@ -390,7 +392,7 @@ still being generated; the same checks will follow. Every claim has a check, and
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
-% 12:15–14:20 · The close: takeaways, the team, the rest of the tutorial
+% 12:20–14:20 · The close: takeaways, the team, the rest of the tutorial
 
 \begin{frame}{Summary}
 \gap{\large\TitleFont\color{aviation}
@@ -468,7 +470,7 @@ Jerry close with advanced topics and open questions. Next: amortized Bayesian in
 \begin{frame}{Backup: The Running Example}
 \fontsize{7.5}{9.5}\selectfont
 \begin{columns}[T,onlytextwidth]
-\column{0.47\textwidth}
+\column{0.45\textwidth}
 \begin{tabular}{@{}L{0.17\linewidth}L{0.74\linewidth}@{}}
 \toprule
 \multicolumn{2}{@{}l}{\textbf{Model and data}} \\
@@ -480,29 +482,30 @@ each observed once \\
 Spreads & half-spreads of 0.3 volatility points at the money, 1.5 at $\delta = -3.5$ \\
 Errors & normal, $c$ times the half-spread; $c = 1$, inferred on $[0.5, 2]$ \\
 Prior & the notebook's: uniform on the box of slide 6 \\
-Sampler & importance sampling, then Metropolis moves; checked against independent chains \\
+Product & a call struck at the money in 6 months, paid at 1 year \\
 \bottomrule
 \end{tabular}
-\column{0.49\textwidth}
-\begin{tabular}{@{}l@{\hspace{9pt}}c@{\hspace{9pt}}c@{\hspace{9pt}}c@{}}
+\column{0.52\textwidth}
+\begin{tabular}{@{}l@{\hspace{6pt}}c@{\hspace{6pt}}c@{\hspace{6pt}}c@{}}
 \toprule
-\multicolumn{4}{@{}l}{\textbf{The 2-year put}, per 100 of forward: 90\% ranges} \\
+\multicolumn{4}{@{}l}{\textbf{The forward-start call}, per 100 of forward: 90\% ranges} \\
 \midrule
-Quotes to & Fit & Delta method & Posterior \\
+Quoted expiries & Fit & Delta method & Posterior \\
 \midrule
-2 years & 6.94 & 6.79 to 7.09 & 6.77 to 7.08 \\
-1 year & 6.77 & 6.50 to 7.05 & 6.50 to 7.02 \\
-6 months & 6.52 & 6.01 to 7.03 & 6.22 to 7.07 \\
-3 months & 6.52 & 5.57 to 7.47 & 6.15 to 7.96 \\
-1 month & 1.63 & none & 2.44 to 11.27 \\
+5: 1 month to 2 years & 4.71 & 4.61 to 4.81 & 4.61 to 4.80 \\
+4: 1 month to 1 year & 4.69 & 4.56 to 4.82 & 4.56 to 4.81 \\
+3: 3 months to 1 year & 4.72 & 4.51 to 4.94 & 4.51 to 4.90 \\
+2: 6 months and 1 year & 4.77 & 4.31 to 5.23 & 4.39 to 5.00 \\
+1: 1 year & 5.14 & none & 2.9 to 4.9 \\
 \bottomrule
 \end{tabular}\par\vspace{4pt}
-{\color{aviation!60}Under the generating parameters: 6.94. At 1 month the fit sits on two bounds of the box. With
-$\kappa$ fixed at 2, 4 and 8 on the 3-month quotes: 7.36 to 8.86, 6.72 to 7.80 and 6.13 to 6.94.\par}
+{\color{aviation!60}Under the generating parameters: 4.66. Slides 2, 3, 6 and 9 use the two expiries, slide 8
+the one. There the fit sits on a bound of the box; with today's volatility assumed between 10\% and 40\%, the best
+fit's price runs from 5.14 to 2.86.\par}
 \end{columns}
 \gap
 \source{An illustration, not a result of the tutorial: one simulated surface, independent quote errors, a model right
-by construction. \texttt{export\_figures.py} prints every number.}
+by construction. Posterior by importance sampling and Metropolis moves, checked against independent chains.}
 \end{frame}
 
 \begin{frame}{Backup: The Example and the Notebook}
@@ -514,16 +517,17 @@ by construction. \texttt{export\_figures.py} prints every number.}
 Model, prior, error law & Heston; uniform box; $c$ times the half-spread & the same \\
 Data & simulated: Heston is right by construction & the SPX quotes of 9 November 2026, and quotes simulated on
 the same contracts \\
-Quotes & 14 on two expiries; up to 35 & 63: nine strikes on seven expiries, 1 week to 11 months \\
+Quotes & 14, at the product's two dates; up to 35 & 63: nine strikes on seven expiries, 1 week to 11 months \\
 Half-spreads & 0.3 to 1.5 volatility points; median 0.7 & 0.02 to 0.5 volatility points; median 0.06 \\
-What the quotes leave open & a valley in $\kappa$ and $v_\infty$: wide ranges & almost nothing: 90\% intervals of
+Product & a forward-start call, 6 months to 1 year & the application's products, this forward start among them \\
+What the quotes leave open & a ridge in $\kappa$ and $\sigma_v$: a visible range & almost nothing: 90\% intervals of
 at most about 1\% of the prior's range \\
 What then matters & the parameters & the model: Heston misses the SPX quotes by 13 half-spreads \\
 \bottomrule
 \end{tabular}
 \detail{The example keeps the notebook's model, prior, error law and parameters, and thins the chain, so that the
-mechanism is visible. On SPX the quotes are many and tight: the same calculation gives ranges too narrow to see, and
-the open question moves from the parameters to the model.}
+mechanism is visible. On SPX the same calculation gives ranges too narrow to see, and the open question moves from
+the parameters to the model.}
 \gap
 \source{The Heston SPX notebook and its run records, as of 11 November 2026.}
 \end{frame}
@@ -625,14 +629,11 @@ CPU-minutes per pricing; it has not been run.}
 \begin{frame}{Backup: References}
 \scriptsize
 \begin{itemize}
-\item Bergomi, L. (2003). Dynamic aspects of smile models. Société Générale, slides.
 \item Commission Delegated Regulation (EU) 2016/101 (prudent valuation), Articles 3 and 9 to 11.
 \item Cranmer, K., Brehmer, J., Louppe, G. (2020). The frontier of simulation-based inference. \textit{PNAS} 117(48),
 30055–30062.
 \item De Spiegeleer, J., Madan, D. B., Reyners, S., Schoutens, W. (2018). Machine learning for quantitative finance:
 fast derivative pricing, hedging and fitting. SSRN 3191050.
-\item Janek, A., Kluge, T., Weron, R., Wystup, U. (2011). FX smile in the Heston model. In \textit{Statistical Tools for
-Finance and Insurance}, Springer.
 \item Kruse, S., Nögel, U. (2005). On the pricing of forward starting options in Heston's model on stochastic
 volatility. \textit{Finance and Stochastics} 9(2), 233–250.
 \item Radev, S. T., Mertens, U. K., Voss, A., Ardizzone, L., Köthe, U. (2022). BayesFlow: learning complex stochastic

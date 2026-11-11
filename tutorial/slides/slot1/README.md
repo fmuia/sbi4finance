@@ -22,14 +22,14 @@ in [`curriculum/01-slot1-the-problem.md`](../../curriculum/01-slot1-the-problem.
 
 The talk has five parts, and each key line follows from the previous one.
 
-1. **The problem** (slides 1–3). A model calibrated to quoted options prices what the market does not quote. The
-   calibration is one fit among many that are consistent with the quotes, so a price computed from it has a range.
+1. **The problem** (slides 1–3). A model calibrated to quoted options prices exotics, which the market does not
+   quote. The calibration is one fit among many that match the quotes, so the price it gives an exotic has a range.
 2. **The exercise** (slides 4–5). Volatility models are the example. The five steps (model, simulate, train, infer,
    check) and the questions they answer are general; the methods are the message, more than the examples.
 3. **Why Bayes** (slides 6–9). The posterior keeps every fit, weighted. Where the quotes determine the price, the
    classical range and the posterior agree, and the deck says so, also for the Heston notebook's own 63 quotes. What
-   the quotes leave open is set by an assumption: a fixed parameter is an assumption of zero width, a prior states
-   its width. One set of draws then prices every product, and a book.
+   the quotes leave open is set by an assumption: an assumed value fits the quotes as well as any other and leaves
+   no trace in the fit, a prior states its width. One set of draws then prices every product, and a book.
 4. **Why simulation-based inference** (slides 10–13). An exact posterior costs minutes for Heston and months for
    rough Bergomi. A network trained once on simulations returns it in 0.3 seconds, which makes its coverage testable.
    The tests say where the network holds and where it does not.
@@ -42,7 +42,7 @@ says which one a slide shows.
 
 | Tag | Slides | What it is | Where it comes from |
 |---|---|---|---|
-| ILLUSTRATION · SIMULATED QUOTES | 2, 3, 6, 7, 8, 9 | One running example, a thin option chain simulated from Heston, the model right by construction. It shows a mechanism. | `illustration.py` |
+| ILLUSTRATION · SIMULATED QUOTES | 2, 3, 6, 7, 8, 9 | One running example: a thin option chain simulated from Heston, the model right by construction, and one exotic, a forward-start call. It shows a mechanism. | `illustration.py` |
 | RESULT · HESTON ON SPX · AS OF 11 NOV | 10, 11, 12, 13 | What the tutorial's Heston study on 63 SPX quotes had recorded on 11 November 2026 | `recorded-results.json` |
 
 Slide 13 states the status of every result with a mark and a legend: a check that holds, one that holds with a
@@ -145,38 +145,53 @@ chain is thinner and quoted less tightly, as for a single stock, so that what th
   c = 1 in the simulation and each quote observed once (seed 20261114).
 - **Prior.** The notebook's uniform box (v₀ and v∞ from 0.01 to 0.16, κ from 0.1 to 10, σ_v from 0.1 to 3, ρ from
   −0.95 to −0.10), with c inferred under U(0.5, 2).
-- **Readings.** The same surface is read with quotes up to 2 years, 1 year, 6 months, 3 months and 1 month (35, 28,
-  21, 14 and 7 quotes). Slides 2, 3, 6, 8 and 9 use the quotes up to 3 months; slide 7 uses all five readings.
-- **Products.** A 2-year put struck at 90% of the forward, and a forward-start call struck at the money in 1 year and
-  paid at 2 years (slide 9 holds the call against the put).
+- **Product.** An exotic, the option application's forward-start call: its strike is set at the money in 6 months
+  and it pays at 1 year. Slide 9 adds a second forward start, struck in 9 months.
+- **Readings.** The same surface is read with fewer and fewer quoted expiries, always including 1 year, when the
+  product pays: all five expiries (35 quotes), 1 month to 1 year (28), 3 months to 1 year (21), 6 months and 1 year
+  (14), and 1 year only (7). Slides 2, 3, 6 and 9 use the two expiries that are the product's own dates; slide 8
+  uses the one expiry; slide 7 uses all five readings.
+
+**Why the product's dates are quoted.** The talk is about exotics: products whose price the quotes do not fix even
+where the quotes are. With quotes at 6 months and at 1 year, the options fix the distribution at each date, and the
+forward start depends on how the two dates are linked, which the quotes pin only through the model's parameters. A
+product beyond the last quoted expiry would show a larger range, but that is extrapolating the vanilla surface in
+maturity, which is not what an exotic is and not what the talk argues. The honest size of the effect follows from
+this choice: with the two dates quoted the forward start's 90% range is 4.39 to 5.00, 13% of its price, against 5%
+for the quoted 1-year at-the-money call under the same draws; with four expiries it is 4.56 to 4.81.
 
 For each reading the example computes two things.
 
 - **The classical route.** Least squares in half-spreads from several starts; the error scale by its unbiased
   estimate, ĉ² = R/(n − p), with R the sum of squared misses in half-spreads, n quotes and p fitted parameters; the
   Gauss–Newton covariance; Student-t intervals, for a parameter or, by the delta method, for a product. Where the fit
-  sits on a bound of the box, no interval is reported (the 1-month reading: κ and v∞ are on their bounds).
+  sits on a bound of the box, no interval is reported (the reading with one expiry: today's variance is on its
+  lower bound).
 - **The posterior.** The error scale c is integrated out in closed form: with its uniform prior the likelihood's
   integral over c is an incomplete gamma function of R. The five Heston parameters are then sampled by importance
   sampling in logit coordinates, from a mixture of the prior with multivariate t components that is adapted over
   four rounds to a flattened posterior, up to 6,000 effective draws or 200,000 proposals; 4,000 draws are resampled
   and moved by 50 sweeps of differential-evolution Metropolis at the posterior; each draw then receives a c from its
-  exact conditional. The script reports the effective sample size before the moves (2,041 to 7,152) and the share
+  exact conditional. The script reports the effective sample size before the moves (2,903 to 7,152) and the share
   of failed pricings (none).
 
 What was checked:
 
 - **Prices** are Lewis Fourier integrals with an analytic Black control variate, on 1,024 Gauss–Legendre nodes up to
   600, for many parameter sets at once. They match the tutorial runtime's prices (the tests compare the two), and the
-  next rung (2,048 nodes, 1,200) moves no price by more than 3 × 10⁻⁵ of its half-spread at 200 posterior draws of
+  next rung (2,048 nodes, 1,200) moves no price by more than 5 × 10⁻⁶ of its half-spread at 200 posterior draws of
   every reading, against the notebook's gate of 0.01. The forward-start call is one more Fourier integral (Kruse and
   Nögel 2005); the tests check it against the vanilla call as the start date goes to zero and against Black–Scholes
   as the volatility of volatility goes to zero.
 - **The posteriors** were checked against an independent sampler on the same target, eight adaptive Metropolis
   chains of 30,000 draws after 30,000 (`check_posterior.py`), on the two readings where the posterior is furthest
-  from a normal. Quotes up to 3 months: the 5%, 50% and 95% points of the 2-year put agree within 1.3% of the width
-  of its 90% range, and those of every parameter within 2.4%; split R-hat at most 1.04. Quotes up to 1 month: within
-  3.2% for the put and 3.5% for the parameters; split R-hat at most 1.01.
+  from a normal. Quotes at 6 months and 1 year: the 5%, 50% and 95% points of the forward start agree within 2.2% of
+  the width of its 90% range, and those of four parameters within 3.7%; the 95% point of the long-run variance
+  differs by 20% of its range (0.0655 by the chains, 0.0698 here: the sampler's upper tail, at slow mean reversion,
+  is a little longer), which the forward start does not feel; split R-hat at most 1.01. Quotes at 1 year only:
+  within 7.3% for the forward start (3.02 to 4.84 by the chains, 2.89 to 4.90 here) and 8.3% for the parameters;
+  split R-hat at most 1.02. This is the least precise reading. The slides use it only to show a wide range set by
+  the prior, and quote that range to one decimal.
 - **The classical route** was checked on the notebook's own data. On its 63 simulated quotes
   (`market-like-case.json` on the design of `spx-design.json`), the least-squares 90% intervals of this code match
   the notebook's exact posterior (four MCMC chains of 12,000 draws) for all five Heston parameters: widths within 2%
@@ -187,7 +202,7 @@ What was checked:
 use only the tutorial's dependencies, so the example's posterior and its check are computed by this folder's own
 samplers: importance sampling with Metropolis moves in `illustration.py`, and adaptive Metropolis chains in
 `check_posterior.py`. They serve a teaching illustration and are not certified reference posteriors: the diagnostics
-are a split R-hat and a batch-means effective sample size, the chains of the check accept 4 to 9% of their proposals,
+are a split R-hat and a batch-means effective sample size, the chains of the check accept 5 to 8% of their proposals,
 and the agreement between the two samplers is stated to a few percent of a range's width. A test compares the
 sampler with the delta-method range on the reading where every quote is read. The exact posteriors that the deck
 quotes as results are the Heston notebook's PyMC references.

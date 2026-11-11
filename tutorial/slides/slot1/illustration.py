@@ -15,8 +15,9 @@ quoted less tightly, as for a single stock, so that what the quotes leave open i
 
   h_i the quote's half-spread.
 
-A *reading* keeps the quotes up to a last expiry, so the same surface can be read with quotes that reach 2 years or
-stop at 1 month. For a reading this module computes
+The product is an exotic: a forward-start call, whose strike is set at the money in 6 months and which pays at
+1 year. A *reading* keeps the quotes of some expiries, always including 1 year, so the same surface can be read with
+quotes at every expiry, at the product's two dates only, or at 1 year only. For a reading this module computes
 
 - the classical route: least squares in half-spreads from several starts; the error scale by its unbiased estimate,
   c_hat^2 = R / (n - p), with R the sum of squared misses in half-spreads, n quotes and p fitted parameters; the
@@ -26,8 +27,8 @@ stop at 1 month. For a reading this module computes
   integrated out of the likelihood in closed form (an incomplete gamma function), the five Heston parameters are
   sampled by importance sampling followed by Metropolis moves, and each draw then receives a c from its exact
   conditional;
-- two products under any parameter set: a 2-year put struck at 90% of the forward, and a call that is struck at the
-  money in 1 year and pays at 2 years (closed form up to one Fourier integral).
+- products under any parameter set: the forward-start call (closed form up to one Fourier integral), a second
+  forward start struck in 9 months, and the quoted 1-year at-the-money call for comparison.
 
 `notebook_case` returns the notebook's own simulated case on its 63 quotes, for one check that the deck quotes: on
 those quotes the classical intervals reproduce the notebook's exact posterior.
@@ -67,14 +68,20 @@ C_LOWER, C_UPPER = 0.5, 2.0
 REFERENCE_VOLATILITY = 0.16  # delta = ln(K/F) / (0.16 sqrt T), as in the notebook
 DELTAS = (-3.5, -2.25, -1.25, -0.5, 0.0, 0.5, 1.0)
 MONTHS = (1, 3, 6, 12, 24)
-REACH = ("1 month", "3 months", "6 months", "1 year", "2 years")
+READINGS = {  # the expiries, in months, whose quotes a reading keeps; each includes 1 year, when the product pays
+    "1 year": (12,),
+    "6 months and 1 year": (6, 12),
+    "3 months to 1 year": (3, 6, 12),
+    "1 month to 1 year": (1, 3, 6, 12),
+    "1 month to 2 years": (1, 3, 6, 12, 24),
+}
 HALF_SPREAD_AT_THE_MONEY, HALF_SPREAD_SLOPE = 0.003, 0.0035  # in volatility: 0.3 points, plus 0.35 per unit of |delta|
 SEED = 20261114  # the day of the tutorial; chosen before looking at any figure
 RUNG, CHECK_RUNG = (1024, 600.0), (2048, 1200.0)  # Gauss-Legendre nodes and cutoff; the gate compares the two
 NOTEBOOK_RUNG, NOTEBOOK_CHECK_RUNG = (2048, 1200.0), (4096, 2400.0)  # for the notebook's much tighter half-spreads
 GATE = 0.01  # refinement moves no price by more than 0.01 of its half-spread
-PUT_STRIKE, PUT_MATURITY = 0.9, 2.0
-START, END = 1.0, 2.0  # the forward-start call
+START, END = 0.5, 1.0  # the forward-start call: struck at the money in 6 months, paid at 1 year
+LATE_START = 0.75  # a second forward start, struck in 9 months and paid at 1 year
 
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -176,9 +183,9 @@ def smile(theta, maturity, strikes):
 # Products
 
 
-def put_price(theta, strike=PUT_STRIKE, maturity=PUT_MATURITY):
-    """A European put in units of the forward; one value per parameter set."""
-    return prices(theta, [strike], [maturity], [True], CHECK_RUNG)[..., 0]
+def call_price(theta, strike=1.0, maturity=END):
+    """A European call in units of the forward, by default the quoted 1-year at-the-money call; one value per set."""
+    return prices(theta, [strike], [maturity], [False], CHECK_RUNG)[..., 0]
 
 
 def forward_start_call(theta, start=START, end=END):
@@ -207,7 +214,12 @@ def forward_start_call(theta, start=START, end=END):
     return float(out[0]) if single else out
 
 
-PRODUCTS = {"put": put_price, "forward_start": forward_start_call}
+def late_forward_start(theta):
+    """The forward-start call struck at the money in 9 months and paid at 1 year."""
+    return forward_start_call(theta, LATE_START, END)
+
+
+PRODUCTS = {"forward_start": forward_start_call, "late_start": late_forward_start, "call": call_price}
 
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -230,10 +242,11 @@ class Quotes:
     def n(self):
         return len(self.strike)
 
-    def keep(self, n, label):
-        """The first n quotes, as a reading of the same surface."""
-        return Quotes(self.strike[:n], self.maturity[:n], self.put[:n], self.half_spread[:n], self.observed[:n],
-                      label, self.rung)
+    def select(self, months, label):
+        """The quotes of the expiries in `months`, as a reading of the same surface."""
+        keep = np.isin(np.round(12.0 * self.maturity).astype(int), months)
+        return Quotes(self.strike[keep], self.maturity[keep], self.put[keep], self.half_spread[keep],
+                      self.observed[keep], label, self.rung)
 
     def model(self, theta, rung=None):
         return prices(theta, self.strike, self.maturity, self.put, rung or self.rung)
@@ -276,16 +289,16 @@ def thin_chain(seed=SEED):
     implied = surface.implied_vol(clean, np.log(strike), maturity, np.where(put, "put", "call"))
     half_spread = surface.bs_vega(np.log(strike), maturity, implied) * half_spread_volatility(delta)
     noise = np.random.default_rng(seed).standard_normal(len(strike))
-    chain = Quotes(strike, maturity, put, half_spread, clean + C_TRUE * half_spread * noise, REACH[-1])
+    chain = Quotes(strike, maturity, put, half_spread, clean + C_TRUE * half_spread * noise, "the chain")
     if chain.gate(TRUTH, CHECK_RUNG) > GATE:
         raise ValueError("the Fourier integral is not converged to the gate at the generating parameters")
     return chain
 
 
 def readings(seed=SEED):
-    """The five nested readings of the thin chain, keyed by their reach ('1 month' ... '2 years')."""
+    """The five readings of the thin chain, keyed by the expiries they keep ('1 year' ... '1 month to 2 years')."""
     chain = thin_chain(seed)
-    return {reach: chain.keep((j + 1) * len(DELTAS), reach) for j, reach in enumerate(REACH)}
+    return {name: chain.select(months, name) for name, months in READINGS.items()}
 
 
 def notebook_case():

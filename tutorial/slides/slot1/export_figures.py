@@ -54,12 +54,18 @@ HOLDS, CAVEAT = "#1a9c86", "#d9820a"  # a check that holds; one that holds with 
 UNQUOTED = "#f5f5fd"  # behind a panel where nothing is quoted
 
 TEXT_WIDTH = 5.51  # inches: the 140 mm text width of a 16:9 Beamer frame
-HOOK = "3 months"  # the reading of the opening example: 14 quotes, at 1 and 3 months
-FIXED_KAPPA = (2.0, 4.0, 8.0)  # the habit of fixing the mean reversion, at three values
-FAN = 120  # posterior curves drawn in a fan
-SMILE_STRIKES = {"1 month": (0.835, 1.065), "3 months": (0.735, 1.105), "2 years": (0.55, 1.30)}
+HOOK = "6 months and 1 year"  # the reading of the opening example: 14 quotes, at the product's two dates
+ONE = "1 year"  # the reading with one expiry, where an assumption sets the price
+ASSUMED_VOLATILITY = (0.10, 0.125, 0.15, 0.175, 0.20, 0.225, 0.25, 0.275, 0.30, 0.325, 0.35, 0.375, 0.40)
+FAN = 120  # posterior draws shown one by one
+SMILE_STRIKES = {6: (0.65, 1.14), 12: (0.55, 1.20)}  # by expiry in months: the strikes a smile panel shows
 DASHED = (0, (4, 2))
 RANGE_LEGEND = ("least squares, delta method", "posterior, 5% to 95%", "price under the generating parameters")
+READING_LABELS = {  # how a reading is named beside its row
+    "1 month to 2 years": "5 expiries: 1 month to 2 years", "1 month to 1 year": "4 expiries: 1 month to 1 year",
+    "3 months to 1 year": "3 expiries: 3 months to 1 year", "6 months and 1 year": "2 expiries: 6 months and 1 year",
+    "1 year": "1 expiry: 1 year",
+}
 PARAMETERS = ("today's variance $v_0$", "mean reversion $\\kappa$", "long-run variance $v_\\infty$",
               "vol of vol $\\sigma_v$", "correlation $\\rho$", "error scale $c$")
 NOTEBOOK_CASE = "synthetic-market-like"
@@ -80,26 +86,24 @@ def _posterior(reach):
 def compute():
     """Every number the illustrations need, as a dictionary of arrays and scalars."""
     readings = il.readings()
-    with ProcessPoolExecutor(max_workers=min(len(il.REACH), os.cpu_count() or 1)) as pool:
-        posteriors = dict(pool.map(_posterior, il.REACH))
+    with ProcessPoolExecutor(max_workers=min(len(readings), os.cpu_count() or 1)) as pool:
+        posteriors = dict(pool.map(_posterior, readings))
     data = {f"truth/{name}": float(product(il.TRUTH)) for name, product in il.PRODUCTS.items()}
 
-    def classical(prefix, result):
-        data[f"{prefix}/fit"] = result.theta
-        data[f"{prefix}/sum_of_squares"] = result.sum_of_squares
-        data[f"{prefix}/scale"] = result.scale
-        data[f"{prefix}/dof"] = result.dof
-        data[f"{prefix}/on_bound"] = np.array(result.on_bound, dtype=str)
+    for reach, quotes in readings.items():
+        post, key = posteriors[reach], key_of(reach)
+        result = il.fit(quotes)
+        data[f"{key}/fit"] = result.theta
+        data[f"{key}/sum_of_squares"] = result.sum_of_squares
+        data[f"{key}/scale"] = result.scale
+        data[f"{key}/dof"] = result.dof
+        data[f"{key}/on_bound"] = np.array(result.on_bound, dtype=str)
+        if result.covariance is not None:
+            data[f"{key}/covariance"] = result.covariance
         for name, product in il.PRODUCTS.items():
             point, interval = il.delta_range(result, product)
-            data[f"{prefix}/{name}/point"] = point
-            data[f"{prefix}/{name}/delta"] = np.array(interval if interval is not None else (np.nan, np.nan))
-
-    for reach in il.REACH:
-        quotes, post, key = readings[reach], posteriors[reach], key_of(reach)
-        result = il.fit(quotes)
-        classical(key, result)
-        for name, product in il.PRODUCTS.items():
+            data[f"{key}/{name}/point"] = point
+            data[f"{key}/{name}/delta"] = np.array(interval if interval is not None else (np.nan, np.nan))
             data[f"{key}/{name}/draws"] = product(post.draws[:, :5])
         data[f"{key}/draws"] = post.draws
         data[f"{key}/ess"] = post.effective_sample_size
@@ -108,27 +112,26 @@ def compute():
         data[f"{key}/acceptance"] = post.acceptance
         data[f"{key}/quotes"] = quotes.n
         data[f"{key}/gate"] = max(quotes.gate(theta, il.CHECK_RUNG) for theta in post.draws[:200, :5])
-        if result.covariance is not None:
-            data[f"{key}/covariance"] = result.covariance
 
-    # The opening example: smiles of the fit, the truth and a fan of posterior draws, quoted and not quoted.
+    # The opening example: the quoted smiles under the fit and under a fan of posterior draws.
     quotes, draws = readings[HOOK], posteriors[HOOK].draws[:, :5]
     mid, low, high = quotes.implied()
     data["hook/quotes"] = np.column_stack([quotes.strike, quotes.maturity, mid, low, high])
     data["hook/misfit"] = np.sqrt(quotes.sum_of_squares(draws) / quotes.n)
     data["hook/misfit_fit"] = np.sqrt(data[f"{key_of(HOOK)}/sum_of_squares"] / quotes.n)
-    for label, (lowest, highest) in SMILE_STRIKES.items():
-        maturity = il.MONTHS[il.REACH.index(label)] / 12.0
+    for months, (lowest, highest) in SMILE_STRIKES.items():
         strikes = np.linspace(lowest, highest, 51)
-        key = f"hook/{key_of(label)}"
+        key = f"hook/{months}"
         data[f"{key}/strikes"] = strikes
-        data[f"{key}/fit"] = il.smile(data[f"{key_of(HOOK)}/fit"], maturity, strikes)
-        data[f"{key}/truth"] = il.smile(il.TRUTH, maturity, strikes)
-        data[f"{key}/fan"] = np.array([il.smile(theta, maturity, strikes) for theta in draws[:FAN]])
+        data[f"{key}/fit"] = il.smile(data[f"{key_of(HOOK)}/fit"], months / 12.0, strikes)
+        data[f"{key}/fan"] = np.array([il.smile(theta, months / 12.0, strikes) for theta in draws[:FAN]])
 
-    # The habit of fixing the mean reversion, on the opening example's quotes.
-    for kappa in FIXED_KAPPA:
-        classical(f"fixed/{kappa:g}", il.fit(quotes, fixed={1: kappa}))
+    # One expiry: least squares with today's variance fixed at each assumed value.
+    quotes = readings[ONE]
+    assumed = [il.fit(quotes, fixed={0: volatility**2}) for volatility in ASSUMED_VOLATILITY]
+    data["assumed/forward_start"] = np.array([float(il.forward_start_call(result.theta)) for result in assumed])
+    data["assumed/misfit"] = np.array([np.sqrt(result.sum_of_squares / quotes.n) for result in assumed])
+    data["assumed/bounds"] = np.array([len(result.on_bound) for result in assumed])
 
     # The Heston notebook's own simulated case, on its 63 quotes: the classical intervals of the five parameters.
     notebook = il.notebook_case()
@@ -143,7 +146,8 @@ def compute():
 
 def load(recompute=False):
     """The cached numbers, recomputed when `illustration.py`, the settings above or `compute` have changed."""
-    recipe = json.dumps([HOOK, FIXED_KAPPA, FAN, SMILE_STRIKES, sorted(il.PRODUCTS), inspect.getsource(compute)])
+    recipe = json.dumps([HOOK, ONE, ASSUMED_VOLATILITY, FAN, sorted(SMILE_STRIKES.items()), sorted(il.PRODUCTS),
+                         inspect.getsource(compute)])
     sources = b"".join((HERE / name).read_bytes() for name in ("illustration.py", "spx-design.json",
                                                                "market-like-case.json"))
     key = hashlib.sha256(sources + recipe.encode()).hexdigest()[:16]
@@ -304,76 +308,88 @@ def range_handles():
 
 
 def figure_many_fits(data, step):
-    """The opening example: quotes at two expiries and a maturity nobody quotes.
+    """The opening example: quotes at the product's two dates, and the price of the product, which nobody quotes.
 
-    Step 1 shows the quotes and the least-squares fit. Step 2 adds a fan of posterior draws and, where there are no
-    quotes, the smile of the parameters that generated them and the spread of the fan at the money.
+    Step 1 shows the quotes, the least-squares fit and the price it gives the forward-start call. Step 2 adds a fan of
+    posterior draws: on the quotes they cannot be told apart, and each gives the forward start its own price.
     """
-    panels = (("1 month", "quoted: 1 month"), ("3 months", "quoted: 3 months"), ("2 years", "not quoted: 2 years"))
-    fig, axes = canvas(0.97, HEIGHT, ncols=3, sharey=True, gridspec_kw={"width_ratios": [1, 1, 1.3]})
+    key = key_of(HOOK)
+    fig, axes = canvas(0.97, HEIGHT, ncols=3, gridspec_kw={"width_ratios": [1, 1, 1.3]})
     quotes = data["hook/quotes"]
-    for ax, (label, title) in zip(axes, panels, strict=True):
-        key = f"hook/{key_of(label)}"
-        strikes = 100 * data[f"{key}/strikes"]
-        quoted = np.isclose(quotes[:, 1], il.MONTHS[il.REACH.index(label)] / 12.0)
+    for ax, months in zip(axes[:2], SMILE_STRIKES, strict=True):
+        strikes = 100 * data[f"hook/{months}/strikes"]
         if step == 2:
-            ax.plot(strikes, percent(data[f"{key}/fan"]).T, color=POSTERIOR, lw=0.5, alpha=0.22, zorder=2)
-        ax.plot(strikes, percent(data[f"{key}/fit"]), color=CLASSICAL, lw=1.5, zorder=3)
-        if quoted.any():
-            mid, low, high = (percent(quotes[quoted, j]) for j in (2, 3, 4))
-            ax.errorbar(100 * quotes[quoted, 0], mid, yerr=[mid - low, high - mid], fmt="o", color=INK, ms=3.0,
-                        lw=0.9, capsize=1.8, capthick=0.9, zorder=5)
-        else:
-            ax.set_facecolor(UNQUOTED)
-        if step == 2 and not quoted.any():
-            ax.plot(strikes, percent(data[f"{key}/truth"]), color=INK, lw=1.1, ls=DASHED, zorder=4)
-            spread = percent(data[f"{key}/fan"])[:, np.argmin(np.abs(strikes - 100.0))]
-            ax.annotate("", xy=(100, spread.min()), xytext=(100, spread.max()), zorder=6,
-                        arrowprops={"arrowstyle": "|-|,widthA=0.28,widthB=0.28", "color": INK, "lw": 0.9,
-                                    "shrinkA": 0, "shrinkB": 0})
-            ax.text(102.5, spread.max() + 0.5, f"{spread.min():.1f} to {spread.max():.1f}%", fontsize=7.2, color=INK,
-                    va="bottom", ha="left")
-        ax.set_title(title, loc="left")
+            ax.plot(strikes, percent(data[f"hook/{months}/fan"]).T, color=POSTERIOR, lw=0.5, alpha=0.22, zorder=2)
+        ax.plot(strikes, percent(data[f"hook/{months}/fit"]), color=CLASSICAL, lw=1.5, zorder=3)
+        quoted = np.isclose(quotes[:, 1], months / 12.0)
+        mid, low, high = (percent(quotes[quoted, j]) for j in (2, 3, 4))
+        ax.errorbar(100 * quotes[quoted, 0], mid, yerr=[mid - low, high - mid], fmt="o", color=INK, ms=3.0, lw=0.9,
+                    capsize=1.8, capthick=0.9, zorder=5)
+        ax.set_title("quoted: 6 months" if months == 6 else "quoted: 1 year", loc="left")
         ax.set_xlabel("strike (% of forward)")
-        ax.set_xlim(strikes[0], strikes[-1])
+        ax.set(xlim=(strikes[0], strikes[-1]), ylim=(10, 40))
     axes[0].set_ylabel("implied volatility (%)")
-    axes[0].set_ylim(9, 38)
+    axes[1].tick_params(labelleft=False)
+
+    ax = axes[2]  # the product: one price per parameter set, on a line
+    prices = percent(data[f"{key}/forward_start/draws"])[:FAN]
+    least, truth = float(percent(data[f"{key}/forward_start/point"])), float(percent(data["truth/forward_start"]))
+    ax.set_facecolor(UNQUOTED)
+    ax.plot([least, least], [0.25, 0.71], color=CLASSICAL, lw=1.6, zorder=4)
+    if step == 1:
+        ax.text(least, 0.76, f"best fit: {least:.2f}", ha="center", va="bottom", fontsize=7.4, color=INK)
+    else:
+        ax.vlines(prices, 0.34, 0.62, color=POSTERIOR, lw=0.7, alpha=0.6, zorder=3)
+        ax.plot([truth, truth], [0.25, 0.71], color=INK, lw=1.1, ls=DASHED, zorder=5)
+        ax.annotate("", xy=(prices.min(), 0.80), xytext=(prices.max(), 0.80), zorder=6,
+                    arrowprops={"arrowstyle": "|-|,widthA=0.28,widthB=0.28", "color": INK, "lw": 0.9, "shrinkA": 0,
+                                "shrinkB": 0})
+        ax.text(0.5 * (prices.min() + prices.max()), 0.84, f"{prices.min():.2f} to {prices.max():.2f}", ha="center",
+                va="bottom", fontsize=7.4, color=INK)
+    ax.set(xlim=(np.floor(5 * prices.min()) / 5 - 0.2, np.ceil(5 * prices.max()) / 5 + 0.2), ylim=(0, 1), yticks=[])
+    ax.spines["left"].set_visible(False)
+    ax.grid(False)
+    ax.text(0.5, 0.045, "strike set in 6 months, paid at 1 year", transform=ax.transAxes, ha="center", va="bottom",
+            fontsize=6.8, color=MUTED)
+    ax.set_title("not quoted: forward-start call", loc="left")
+    ax.set_xlabel("its price, per 100 of forward")
+
     handles = [key_line(INK, marker="o", ms=2.6, lw=0.8), key_line(CLASSICAL, lw=1.5)]
     labels = ["quotes ± half-spread", "least-squares fit"]
     if step == 2:
         handles += [key_line(POSTERIOR, lw=1.1), key_line(INK, lw=1.1, ls=DASHED)]
-        labels += [f"{FAN} other fits", "generating smile"]
+        labels += [f"{FAN} other fits", "generating parameters"]
     legend_above(fig, handles, labels)
     return fig
 
 
 def figure_price_range(data):
-    """The 2-year put under every posterior draw of the opening example: mark, 90% point and reserve."""
+    """The forward-start call under every posterior draw of the opening example: mark, 90% point and reserve."""
     key = key_of(HOOK)
-    put = percent(data[f"{key}/put/draws"])
-    mark, point90, least = put.mean(), np.quantile(put, 0.90), float(percent(data[f"{key}/put/point"]))
-    truth = float(percent(data["truth/put"]))
+    prices = percent(data[f"{key}/forward_start/draws"])
+    mark, point90 = prices.mean(), np.quantile(prices, 0.90)
+    least, truth = float(percent(data[f"{key}/forward_start/point"])), float(percent(data["truth/forward_start"]))
     fig, ax = canvas(0.90, HEIGHT)
-    low, high = np.floor(np.quantile(put, 0.001) * 2) / 2, np.ceil(np.quantile(put, 0.998) * 2) / 2
-    counts, _, _ = ax.hist(put, bins=np.linspace(low, high, 49), color=POSTERIOR, alpha=0.5, lw=0, rwidth=0.88)
+    low, high = np.floor(np.quantile(prices, 0.001) * 5) / 5, np.ceil(np.quantile(prices, 0.999) * 5) / 5
+    counts, _, _ = ax.hist(prices, bins=np.linspace(low, high, 49), color=POSTERIOR, alpha=0.5, lw=0, rwidth=0.88)
     top = counts.max()
-    marks = ((least, CLASSICAL, "-", "right", -0.045, f"least squares\n{least:.2f}"),
-             (mark, INK, "-", "left", 0.045, f"mark: the mean\n{mark:.2f}"),
-             (point90, INK, DASHED, "left", 0.045, f"90% point\n{point90:.2f}"))
-    for x, colour, dashes, side, shift, text in marks:
-        ax.plot([x, x], [0, 1.12 * top], color=colour, lw=1.1, ls=dashes)
-        ax.text(x + shift, 1.16 * top, text, ha=side, va="bottom", fontsize=7.2, color=INK_2, linespacing=1.15)
-    ax.annotate("", xy=(point90, 0.80 * top), xytext=(mark, 0.80 * top),
+    ax.plot([least, least], [0, 1.02 * top], color=CLASSICAL, lw=1.1)
+    for x, dashes, side, shift, text in ((mark, "-", "right", -0.012, f"mark: the mean, {mark:.2f}"),
+                                         (point90, DASHED, "left", 0.012, f"90% point, {point90:.2f}")):
+        ax.plot([x, x], [0, 1.30 * top], color=INK, lw=1.1, ls=dashes)
+        ax.text(x + shift, 1.20 * top, text, ha=side, va="bottom", fontsize=7.2, color=INK_2)
+    ax.annotate("", xy=(point90, 1.10 * top), xytext=(mark, 1.10 * top),
                 arrowprops={"arrowstyle": "<->", "color": INK, "lw": 0.8, "shrinkA": 0, "shrinkB": 0})
-    ax.text(0.5 * (mark + point90), 0.83 * top, f"reserve {reserve(mark, point90):.2f}", ha="center", va="bottom",
+    ax.text(0.5 * (mark + point90), 1.13 * top, f"reserve {reserve(mark, point90):.2f}", ha="center", va="bottom",
             fontsize=7.2, color=INK)
     ax.plot([truth], [0], marker="^", color=INK, ms=4.5, clip_on=False, zorder=6)
-    ax.legend([key_line(INK, marker="^", ms=4.5, lw=0)], [f"under the generating parameters: {truth:.2f}"],
-              loc="upper right", bbox_to_anchor=(1.0, 0.62), handletextpad=0.2, borderaxespad=0.0)
+    ax.legend([key_line(CLASSICAL, lw=1.1), key_line(INK, marker="^", ms=4.5, lw=0)],
+              [f"least squares: {least:.2f}", f"under the generating parameters: {truth:.2f}"],
+              loc="upper right", bbox_to_anchor=(1.0, 0.66), handletextpad=0.4, borderaxespad=0.0, handlelength=1.2)
     ax.set(xlim=(low, high), ylim=(0, 1.36 * top), yticks=[])
     ax.spines["left"].set_visible(False)
     ax.grid(False)
-    ax.set_xlabel("price of the 2-year put, per 100 of forward: one value per parameter set")
+    ax.set_xlabel("price of the forward-start call, per 100 of forward: one value per parameter set")
     return fig
 
 
@@ -387,10 +403,10 @@ def figure_posterior_cloud(data):
         return 100 * np.sqrt(np.clip(variance, 0, None))
 
     planes = (  # x and y parameters with their scales, title, labels, and the prior box as the axis limits
-        (1, 2, np.asarray, volatility, "left open by the quotes",
-         "speed of mean reversion κ (per year)", "long-run volatility (%)", (0.1, 10.0), (10.0, 40.0)),
-        (0, 4, volatility, np.asarray, "pinned by the quotes",
-         "today's volatility (%)", "correlation ρ", (10.0, 40.0), (-0.95, -0.10)),
+        (1, 3, np.asarray, np.asarray, "left open by the quotes",
+         "speed of mean reversion κ (per year)", "vol of vol σᵥ", (0.1, 10.0), (0.1, 3.0)),
+        (2, 4, volatility, np.asarray, "pinned by the quotes",
+         "long-run volatility (%)", "correlation ρ", (10.0, 40.0), (-0.95, -0.10)),
     )
     for ax, (i, j, x_scale, y_scale, title, xlabel, ylabel, xlim, ylim) in zip(axes, planes, strict=True):
         ax.scatter(x_scale(draws[:, i]), y_scale(draws[:, j]), s=2.0, color=POSTERIOR, alpha=0.16, lw=0, zorder=2)
@@ -407,67 +423,71 @@ def figure_posterior_cloud(data):
     return fig
 
 
-def figure_ranges_by_reach(data):
-    """The 2-year put's 90% range, classical and posterior, as the quotes stop earlier and earlier."""
-    rows = il.REACH[::-1]
+def figure_ranges_by_quotes(data):
+    """The forward start's 90% range, classical and posterior, as fewer and fewer expiries are quoted."""
+    rows = list(il.READINGS)[::-1]
     fig, ax = canvas(0.94, HEIGHT)
     for y, reach in enumerate(rows):
         key = key_of(reach)
-        point = float(percent(data[f"{key}/put/point"]))
-        low, high = percent(data[f"{key}/put/delta"])
+        point = float(percent(data[f"{key}/forward_start/point"]))
+        low, high = percent(data[f"{key}/forward_start/delta"])
         if np.isfinite(low):
             whisker(ax, y - 0.2, low, high, point, CLASSICAL)
         else:
             ax.plot([point], [y - 0.24], "o", mfc="white", mec=CLASSICAL, ms=4.2, mew=1.0, zorder=4)
-            ax.text(point + 0.25, y - 0.25, "no range: the fit is on a bound", va="center", fontsize=7.0,
+            ax.text(point + 0.07, y - 0.25, "no range: the fit is on a bound", va="center", fontsize=7.0,
                     color=INK_2)
-        q = percent(quantiles(data[f"{key}/put/draws"]))
+        q = percent(quantiles(data[f"{key}/forward_start/draws"]))
         whisker(ax, y + 0.2, q[0], q[2], q[1], POSTERIOR)
-    ax.axvline(float(percent(data["truth/put"])), color=INK, lw=0.9, ls=DASHED, zorder=1)
-    labels = [f"quotes up to {reach} ({int(data[f'{key_of(reach)}/quotes'])})" for reach in rows]
-    rows_axis(ax, range(len(rows)), labels, "price of the 2-year put, per 100 of forward")
+    ax.axvline(float(percent(data["truth/forward_start"])), color=INK, lw=0.9, ls=DASHED, zorder=1)
+    labels = [f"{READING_LABELS[reach]} ({int(data[f'{key_of(reach)}/quotes'])})" for reach in rows]
+    rows_axis(ax, range(len(rows)), labels, "price of the forward-start call, per 100 of forward")
+    ax.set_xlim(right=6.95)
     legend_above(fig, range_handles(), RANGE_LEGEND)
     return fig
 
 
-def figure_fixed_parameter(data):
-    """The opening example's 2-year put when the mean reversion is fixed, fitted, or given a prior."""
-    key = key_of(HOOK)
+def figure_assumption(data):
+    """Quotes at one expiry: the forward start under each assumed value of today's volatility, and under a prior."""
+    key = key_of(ONE)
+    draws, prices = data[f"{key}/draws"], percent(data[f"{key}/forward_start/draws"])
     fig, ax = canvas(0.94, HEIGHT)
-    positions, labels = [0, 1, 2, 3.4, 4.4], [f"κ fixed at {kappa:g}" for kappa in FIXED_KAPPA]
-    for y, kappa in enumerate(FIXED_KAPPA):
-        low, high = percent(data[f"fixed/{kappa:g}/put/delta"])
-        whisker(ax, positions[y], low, high, float(percent(data[f"fixed/{kappa:g}/put/point"])), CLASSICAL)
-    low, high = percent(data[f"{key}/put/delta"])
-    whisker(ax, positions[3], low, high, float(percent(data[f"{key}/put/point"])), CLASSICAL)
-    q = percent(quantiles(data[f"{key}/put/draws"]))
-    whisker(ax, positions[4], q[0], q[2], q[1], POSTERIOR)
-    ax.axvline(float(percent(data["truth/put"])), color=INK, lw=0.9, ls=DASHED, zorder=1)
-    ax.axhline(2.7, color=BASELINE, lw=0.6, zorder=1)
-    rows_axis(ax, positions, labels + ["κ fitted: least squares", "κ uncertain: posterior"],
-              "price of the 2-year put, per 100 of forward: 90% ranges")
-    legend_above(fig, range_handles(), RANGE_LEGEND)
+    ax.scatter(100 * np.sqrt(draws[:, 0]), prices, s=2.0, color=POSTERIOR, alpha=0.16, lw=0, zorder=2)
+    ax.plot(100 * np.array(ASSUMED_VOLATILITY), percent(data["assumed/forward_start"]), "-o", color=CLASSICAL, lw=1.3,
+            ms=3.8, mec="white", mew=0.7, zorder=4)
+    ax.axhline(float(percent(data["truth/forward_start"])), color=INK, lw=0.9, ls=DASHED, zorder=1)
+    q = quantiles(prices)
+    ax.plot([42.3, 42.3], [q[0], q[2]], color=POSTERIOR, lw=2.0, solid_capstyle="round", zorder=3, clip_on=False)
+    ax.plot([42.3], [q[1]], "o", color=POSTERIOR, ms=4.6, mec="white", mew=0.8, zorder=4, clip_on=False)
+    ax.text(10.0, 2.05, f"every point on the line fits the quotes equally: a misfit of "
+            f"{float(np.max(data['assumed/misfit'])):.2f} half-spreads", fontsize=7.0, color=INK_2, va="bottom")
+    ax.set(xlim=(9.0, 43.5), xlabel="today's volatility (%)", ylabel="forward start, per 100")
+    ax.set_xticks([10, 15, 20, 25, 30, 35, 40])
+    handles = [key_line(CLASSICAL, marker="o", ms=3.6, lw=1.3), key_line(POSTERIOR, marker="o", ms=3.0, lw=0),
+               key_line(POSTERIOR, marker="o", ms=3.6, lw=2.0), key_line(INK, lw=0.9, ls=DASHED)]
+    legend_above(fig, handles, ["best fit, today's volatility assumed", "posterior draws", "their 90% range",
+                                "generating price"])
     return fig
 
 
 def figure_joint_draws(data):
-    """Two products priced under the same posterior draws, and a book that holds one against the other."""
+    """Two forward starts priced under the same posterior draws, and a book that holds one against the other."""
     key = key_of(HOOK)
-    put, start = percent(data[f"{key}/put/draws"]), percent(data[f"{key}/forward_start/draws"])
+    first, second = percent(data[f"{key}/forward_start/draws"]), percent(data[f"{key}/late_start/draws"])
     fig, axes = canvas(0.94, HEIGHT, ncols=2, gridspec_kw={"width_ratios": [1.0, 1.3]})
-    axes[0].scatter(put, start, s=2.0, color=POSTERIOR, alpha=0.16, lw=0)
-    axes[0].set(xlabel="2-year put", ylabel="forward-start call")
+    axes[0].scatter(first, second, s=2.0, color=POSTERIOR, alpha=0.16, lw=0)
+    axes[0].set(xlabel="forward start struck in 6 months", ylabel="struck in 9 months")
     axes[0].set_title("one dot: one posterior draw, two prices", loc="left")
-    rows = {"2-year put": put, "forward-start call": start, "book: long call, short put": start - put}
+    rows = {"struck in 6 months": first, "struck in 9 months": second, "book: long one, short the other": first - second}
     widest = 0.0
     for y, values in enumerate(rows.values()):
         q = quantiles(values)
         whisker(axes[1], y, q[0] - q[1], q[2] - q[1], 0.0, POSTERIOR)
-        axes[1].text(q[2] - q[1] + 0.07, y, f"{q[2] - q[0]:.2f} wide", va="center", fontsize=7.2, color=INK_2)
+        axes[1].text(q[2] - q[1] + 0.025, y, f"{q[2] - q[0]:.2f} wide", va="center", fontsize=7.2, color=INK_2)
         widest = max(widest, q[2] - q[1])
     axes[1].axhline(1.5, color=BASELINE, lw=0.6, zorder=1)
     rows_axis(axes[1], range(len(rows)), list(rows), "90% range around the median, per 100")
-    axes[1].set_xlim(right=widest + 0.75)
+    axes[1].set_xlim(right=widest + 0.22)
     axes[1].set_title("the book's range is not the sum", loc="left")
     return fig
 
@@ -560,34 +580,36 @@ def reserve(mark, point90):
 def quoted_numbers(data):
     """Every number the slides quote, as {description: text}: the report prints them and the deck is checked for them."""
     key = key_of(HOOK)
-    put, start = percent(data[f"{key}/put/draws"]), percent(data[f"{key}/forward_start/draws"])
-    at = np.argmin(np.abs(data["hook/2_years/strikes"] - 1.0))
-    fan = percent(data["hook/2_years/fan"])[:, at]
-    mark, point90 = put.mean(), np.quantile(put, 0.9)
+    first, second = percent(data[f"{key}/forward_start/draws"]), percent(data[f"{key}/late_start/draws"])
+    mark, point90 = first.mean(), np.quantile(first, 0.9)
     low, high = np.quantile(data["hook/misfit"], [0.05, 0.95])
+    assumed = percent(data["assumed/forward_start"])
     quoted = {
         "the best fit's misfit in half-spreads": f"{float(data['hook/misfit_fit']):.2f}",
         "the posterior draws' misfit in half-spreads": f"{low:.1f}–{high:.1f}",
-        "the fan's at-the-money volatility at 2 years": f"{fan.min():.1f}–{fan.max():.1f}",
-        "the least-squares price": f"{percent(data[f'{key}/put/point']):.2f}",
+        f"the forward start under the {FAN} fits": f"{first[:FAN].min():.2f} to {first[:FAN].max():.2f}",
+        "the least-squares price": f"{percent(data[f'{key}/forward_start/point']):.2f}",
         "the mark": f"{mark:.2f}", "the 90% point": f"{point90:.2f}", "the reserve": f"{reserve(mark, point90):.2f}",
         "the reserve as a share of the mark": f"{100 * reserve(mark, point90) / mark:.0f}",
-        "the generating price": f"{percent(data['truth/put']):.2f}",
+        "the generating price": f"{percent(data['truth/forward_start']):.2f}",
+        "one expiry: the best fit's price with today's volatility assumed at its lowest": f"{assumed[0]:.2f}",
+        "one expiry: the best fit's price with today's volatility assumed at its highest": f"{assumed[-1]:.2f}",
+        "one expiry: the misfit under every assumed value": f"{float(np.max(data['assumed/misfit'])):.2f}",
     }
-    for name, values in (("the put", put), ("the forward-start call", start), ("the book", start - put)):
+    for name, values in (("the forward start", first), ("the later forward start", second),
+                         ("the book", first - second)):
         q = quantiles(values)
         quoted[f"the 90% width of {name}"] = f"{q[2] - q[0]:.2f}"
-    for reach in il.REACH:
+    for reach in il.READINGS:
         k = key_of(reach)
-        low, high = percent(data[f"{k}/put/delta"])
-        q = percent(quantiles(data[f"{k}/put/draws"]))
-        quoted[f"the posterior range, quotes up to {reach}"] = f"{q[0]:.2f} to {q[2]:.2f}"
-        quoted[f"the least-squares price, quotes up to {reach}"] = f"{percent(data[f'{k}/put/point']):.2f}"
+        low, high = percent(data[f"{k}/forward_start/delta"])
+        q = percent(quantiles(data[f"{k}/forward_start/draws"]))
+        quoted[f"the least-squares price, quotes at {reach}"] = f"{percent(data[f'{k}/forward_start/point']):.2f}"
         if np.isfinite(low):
-            quoted[f"the delta-method range, quotes up to {reach}"] = f"{low:.2f} to {high:.2f}"
-    for kappa in FIXED_KAPPA:
-        low, high = percent(data[f"fixed/{kappa:g}/put/delta"])
-        quoted[f"the range with kappa fixed at {kappa:g}"] = f"{low:.2f} to {high:.2f}"
+            quoted[f"the posterior range, quotes at {reach}"] = f"{q[0]:.2f} to {q[2]:.2f}"
+            quoted[f"the delta-method range, quotes at {reach}"] = f"{low:.2f} to {high:.2f}"
+        else:  # a wide, prior-driven range, known less precisely: one decimal
+            quoted[f"the posterior range, quotes at {reach}"] = f"{q[0]:.1f} to {q[2]:.1f}"
     _, _, ratio, _ = notebook_agreement(data)
     quoted["the notebook's 63 quotes: largest gap between the two widths, in percent"] = \
         f"{100 * np.max(np.abs(ratio - 1)):.0f}"
@@ -605,51 +627,49 @@ def quoted_numbers(data):
 def report(data):
     """Everything behind the slides, printed so that slot1.tex and the README can be checked against it."""
     key = key_of(HOOK)
-    put, start = percent(data[f"{key}/put/draws"]), percent(data[f"{key}/forward_start/draws"])
+    first, second = percent(data[f"{key}/forward_start/draws"]), percent(data[f"{key}/late_start/draws"])
     print(f"\nrunning example, seed {il.SEED}: (v0, kappa, long-run variance, vol of vol, rho) = {il.TRUTH.tolist()}")
-    print(f"under the generating parameters: 2-year put {percent(data['truth/put']):.2f}, forward-start call "
-          f"{percent(data['truth/forward_start']):.2f}, per 100 of forward")
-    for reach in il.REACH:
+    print(f"under the generating parameters, per 100 of forward: forward-start call "
+          f"{percent(data['truth/forward_start']):.2f} (6 months to 1 year), {percent(data['truth/late_start']):.2f} "
+          f"(9 months to 1 year); the quoted 1-year at-the-money call {percent(data['truth/call']):.2f}")
+    for reach in il.READINGS:
         k = key_of(reach)
-        low, high = percent(data[f"{k}/put/delta"])
-        q = percent(quantiles(data[f"{k}/put/draws"]))
+        low, high = percent(data[f"{k}/forward_start/delta"])
+        q = percent(quantiles(data[f"{k}/forward_start/draws"]))
         bounds = ", ".join(data[f"{k}/on_bound"])
         classical = f"{low:.2f} to {high:.2f}" if np.isfinite(low) else f"none (the fit is on a bound: {bounds})"
-        print(f"  quotes up to {reach:8s} ({int(data[f'{k}/quotes']):2d} quotes): least squares "
-              f"{percent(data[f'{k}/put/point']):.2f}, error scale {float(data[f'{k}/scale']):.2f} on "
+        print(f"  quotes at {reach:19s} ({int(data[f'{k}/quotes']):2d} quotes): forward start by least squares "
+              f"{percent(data[f'{k}/forward_start/point']):.2f}, error scale {float(data[f'{k}/scale']):.2f} on "
               f"{int(data[f'{k}/dof'])} degrees of freedom, delta method {classical}; "
               f"posterior {q[0]:.2f} / {q[1]:.2f} / {q[2]:.2f}; effective sample size {float(data[f'{k}/ess']):.0f} "
               f"of {int(data[f'{k}/proposals'])}, failed pricings {float(data[f'{k}/failed']):.2%}, acceptance of "
               f"the moves {float(data[f'{k}/acceptance']):.2f}, pricing gate {float(data[f'{k}/gate']):.1e}")
-        c = data[f"{k}/draws"][:, 5]
-        print(f"      error scale c: posterior {np.quantile(c, 0.05):.2f} / {np.median(c):.2f} / "
-              f"{np.quantile(c, 0.95):.2f}")
-    for label in SMILE_STRIKES:
-        k = f"hook/{key_of(label)}"
-        at = np.argmin(np.abs(data[f"{k}/strikes"] - 1.0))
-        fan = percent(data[f"{k}/fan"])[:, at]
-        print(f"  opening example, {label}: at-the-money volatility of the {FAN} draws {fan.min():.1f} to "
-              f"{fan.max():.1f}%, fit {percent(data[f'{k}/fit'][at]):.1f}%, "
-              f"generating {percent(data[f'{k}/truth'][at]):.1f}%")
+        draws = data[f"{k}/draws"]
+        call = percent(quantiles(data[f"{k}/call/draws"]))
+        print(f"      the quoted 1-year at-the-money call: posterior {call[0]:.2f} / {call[1]:.2f} / {call[2]:.2f}; "
+              f"error scale c {np.quantile(draws[:, 5], 0.05):.2f} / {np.median(draws[:, 5]):.2f} / "
+              f"{np.quantile(draws[:, 5], 0.95):.2f}; kappa {np.quantile(draws[:, 1], 0.05):.1f} to "
+              f"{np.quantile(draws[:, 1], 0.95):.1f}; vol of vol {np.quantile(draws[:, 3], 0.05):.2f} to "
+              f"{np.quantile(draws[:, 3], 0.95):.2f}; today's volatility "
+              f"{100 * np.sqrt(np.quantile(draws[:, 0], 0.05)):.1f} to "
+              f"{100 * np.sqrt(np.quantile(draws[:, 0], 0.95)):.1f}%")
     low, high = np.quantile(data["hook/misfit"], [0.05, 0.95])
     print(f"  opening example: root-mean-square misfit in half-spreads, fit {float(data['hook/misfit_fit']):.2f}, "
           f"posterior draws {low:.2f} to {high:.2f} (5% to 95%)")
     design = percent(il.half_spread_volatility(np.array(il.DELTAS)))
     print(f"  the chain's half-spreads, as designed: {design.min():.2f} to {design.max():.2f} volatility points")
-    mark, point90 = put.mean(), np.quantile(put, 0.9)
-    print(f"  opening example, 2-year put: least squares {percent(data[f'{key}/put/point']):.2f}, mark {mark:.2f}, "
-          f"90% point {point90:.2f}, reserve {reserve(mark, point90):.2f} "
-          f"({100 * reserve(mark, point90) / mark:.0f}% of the mark)")
-    for kappa in FIXED_KAPPA:
-        k = f"fixed/{kappa:g}"
-        low, high = percent(data[f"{k}/put/delta"])
-        print(f"  kappa fixed at {kappa:g}: put {percent(data[f'{k}/put/point']):.2f}, range {low:.2f} to {high:.2f}, "
-              f"sum of squared misses {float(data[f'{k}/sum_of_squares']):.1f} "
-              f"(fitted: {float(data[f'{key}/sum_of_squares']):.1f})")
-    q_put, q_start, q_book = quantiles(put), quantiles(start), quantiles(start - put)
-    print(f"  opening example, 90% widths: put {q_put[2] - q_put[0]:.2f}, forward-start call "
-          f"{q_start[2] - q_start[0]:.2f}, call minus put {q_book[2] - q_book[0]:.2f}; correlation of the two prices "
-          f"{np.corrcoef(put, start)[0, 1]:.3f}")
+    mark, point90 = first.mean(), np.quantile(first, 0.9)
+    print(f"  opening example, forward-start call: least squares {percent(data[f'{key}/forward_start/point']):.2f}, "
+          f"the {FAN} fits drawn {first[:FAN].min():.2f} to {first[:FAN].max():.2f}, mark {mark:.2f}, 90% point "
+          f"{point90:.2f}, reserve {reserve(mark, point90):.2f} ({100 * reserve(mark, point90) / mark:.0f}% of the mark)")
+    q_first, q_second, q_book = quantiles(first), quantiles(second), quantiles(first - second)
+    print(f"  opening example, 90% widths: forward start {q_first[2] - q_first[0]:.2f}, later forward start "
+          f"{q_second[2] - q_second[0]:.2f}, the first minus the second {q_book[2] - q_book[0]:.2f}; correlation of "
+          f"the two prices {np.corrcoef(first, second)[0, 1]:.3f}")
+    print("  one expiry, today's volatility assumed at " + ", ".join(f"{100 * v:g}%" for v in ASSUMED_VOLATILITY))
+    print("      forward start of the best fit: " + ", ".join(f"{x:.2f}" for x in percent(data["assumed/forward_start"])))
+    print("      misfit in half-spreads: " + ", ".join(f"{x:.2f}" for x in data["assumed/misfit"])
+          + f"; fits on a bound: {int(np.sum(data['assumed/bounds'] > 0))}")
     classical, exact, ratio, shift = notebook_agreement(data)
     print(f"\nthe notebook's simulated case, {int(data['notebook/quotes'])} quotes: least squares against its exact "
           f"posterior (error scale {float(data['notebook/scale']):.3f})")
@@ -690,8 +710,8 @@ def main():
         save(figure_many_fits(data, 2), "many-fits-2")
         save(figure_price_range(data), "price-range")
         save(figure_posterior_cloud(data), "posterior-cloud")
-        save(figure_ranges_by_reach(data), "ranges-by-reach")
-        save(figure_fixed_parameter(data), "fixed-parameter")
+        save(figure_ranges_by_quotes(data), "ranges-by-quotes")
+        save(figure_assumption(data), "assumption")
         save(figure_joint_draws(data), "joint-draws")
         save(figure_posterior_cost(), "posterior-cost")
         save(figure_coverage(), "coverage")
