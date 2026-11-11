@@ -9,6 +9,7 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
+import scripts
 from scripts import run_heston_pr87_followup as controller
 
 
@@ -115,6 +116,7 @@ class FollowupCampaignTests(unittest.TestCase):
             readiness=lambda record: {"necessary_diagnostics_pass": record["fixture_readiness"],
                                       "scientific_acceptance": False})
         with patch.dict(sys.modules, {"scripts.render_heston_pr87_followup": renderer}), patch.object(
+                scripts, "render_heston_pr87_followup", renderer, create=True), patch.object(
                 controller.subprocess, "Popen", worker), patch.object(controller.shared, "stop"):
             result = controller.run(self.protocol, self.root / "campaign.json")
         return result, calls
@@ -194,7 +196,8 @@ class FollowupCampaignTests(unittest.TestCase):
         path.write_text(json.dumps({"format": "heston_pr87_followup_evaluation_v1", "status": "complete",
             "endpoint": "secondary_best_validation", "native_epoch": 250, "training_rows": 100000}))
         fake = SimpleNamespace(readiness=lambda _: {"necessary_diagnostics_pass": False})
-        with patch.dict(sys.modules, {"scripts.render_heston_pr87_followup": fake}):
+        with patch.dict(sys.modules, {"scripts.render_heston_pr87_followup": fake}), patch.object(
+                scripts, "render_heston_pr87_followup", fake, create=True):
             with self.assertRaisesRegex(ValueError, "primary evaluation"):
                 controller.branch_decision(path)
 
