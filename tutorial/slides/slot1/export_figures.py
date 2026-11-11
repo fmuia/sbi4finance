@@ -527,7 +527,7 @@ def figure_posterior_cost():
     ax.set_ylim(3.85, -0.6)
     ax.grid(axis="y", visible=False)
     ax.axhline(2.62, color=BASELINE, lw=0.6)
-    ax.set_xlabel("CPU time for one posterior on the 63 SPX quotes (logarithmic scale)")
+    ax.set_xlabel("CPU time for one posterior on the 63 SPX quotes: our own runs, orders of magnitude (log scale)")
     return fig
 
 

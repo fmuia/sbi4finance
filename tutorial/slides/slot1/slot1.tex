@@ -354,7 +354,6 @@ set largely by the prior, and it says so.}
 \fig{0.97}{posterior-cost.pdf}
 \pairs[result]{\pair{A sampler needs}{about 100,000 pricings}}{\pair{Heston pricing}{Fourier: milliseconds each}}
       {\pair{Rough Bergomi pricing}{Monte Carlo: minutes each}}
-\source{Orders of magnitude from our own runs on the tutorial's 63 SPX quotes. Rough Bergomi: estimated, not run.}
 \note{The catch is the cost. A posterior is computed as draws, and a sampler such as Markov chain Monte Carlo needs on
 the order of a hundred thousand pricings of the quotes: 146,000 in our Heston runs. Heston prices by Fourier integral,
 in milliseconds, so its exact posterior takes 14 to 27 CPU-minutes. Rough Bergomi prices by Monte Carlo, one to two
