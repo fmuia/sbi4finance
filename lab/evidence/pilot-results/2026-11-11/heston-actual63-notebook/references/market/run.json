@@ -1,0 +1,335 @@
+{
+  "format": "heston_pr87_grid_reference_run_v1",
+  "status": "completed",
+  "case_id": "market",
+  "panel_path": "/home/user/sbi4finance/lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/reference-panel.json",
+  "panel_sha256": "6dda924c62cfe8cb70af37a40ecdaedb929711fa1a40c31241c665af1b284ea6",
+  "design_sha256": "c6f14b0cd7f6d1ecbcbee01f64cf1715c307547d00a802e2e3f232d52d136236",
+  "observation_sha256": "0d27cd709bd319608c6af4e6c1dd4a9be43e40ac3134638806e695b1dd7f6861",
+  "observations": [
+    1.5,
+    2.5250000000000004,
+    5.800000000000001,
+    15.399999999999999,
+    35.8,
+    59.5,
+    25.299999999999997,
+    5.95,
+    0.25,
+    3.1,
+    5.550000000000001,
+    11.15,
+    26.05,
+    53.95,
+    90.1,
+    35.25,
+    8.15,
+    0.7,
+    5.6,
+    10.0,
+    19.95,
+    41.8,
+    78.5,
+    128.85000000000002,
+    49.3,
+    14.0,
+    1.175,
+    10.15,
+    17.05,
+    32.0,
+    61.75,
+    115.5,
+    185.2,
+    66.0,
+    17.35,
+    1.85,
+    11.15,
+    20.5,
+    37.75,
+    74.05000000000001,
+    136.35,
+    217.0,
+    82.2,
+    21.05,
+    1.75,
+    16.7,
+    30.6,
+    60.5,
+    118.0,
+    212.55,
+    329.9,
+    128.5,
+    35.95,
+    2.35,
+    19.9,
+    41.75,
+    85.55,
+    167.1,
+    307.45000000000005,
+    482.6,
+    199.75,
+    58.650000000000006,
+    14.2
+  ],
+  "products": {
+    "control": [
+      0.0,
+      0.05762249492643328
+    ],
+    "affected": [
+      0.2220060565702689,
+      0.8903850520040588
+    ]
+  },
+  "task": {
+    "format": "heston_spread_task_v1",
+    "model": "heston",
+    "measure": "Q",
+    "parameter_names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho",
+      "c"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        10.0
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        3.0
+      ],
+      [
+        -0.95,
+        -0.1
+      ],
+      [
+        0.5,
+        2.0
+      ]
+    ],
+    "prior": "independent Uniform in physical coordinates",
+    "infer_c": true,
+    "fixed_c": null,
+    "c_bounds": [
+      0.5,
+      2.0
+    ],
+    "quote_count": 63,
+    "geometry_and_spreads_sha256": "7714e2b364d897cb35b36d51ad898df10d78a91e41ff733e7c0085a2e49a980d",
+    "observation_model": "independent Gaussian with price SD c * half_spread",
+    "pricing_controls": {
+      "c_min": 0.5,
+      "numerical_fraction": 0.02,
+      "quadrature_ladder": [
+        [
+          256,
+          150.0
+        ],
+        [
+          512,
+          300.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1200.0
+        ],
+        [
+          4096,
+          2400.0
+        ],
+        [
+          8192,
+          4800.0
+        ],
+        [
+          16384,
+          9600.0
+        ]
+      ],
+      "fourier_representation": "black_control_variate_v1"
+    }
+  },
+  "names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho",
+    "c"
+  ],
+  "bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      10.0
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      3.0
+    ],
+    [
+      -0.95,
+      -0.1
+    ],
+    [
+      0.5,
+      2.0
+    ]
+  ],
+  "protocol": {
+    "path": "/home/user/sbi4finance/lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/reference-protocol.json",
+    "sha256": "840c3a1264e0014730ba3d52a6187aba8ce75c43ea17e68ac0827cf59b433d4f"
+  },
+  "source_sha256": {
+    "runner": {
+      "path": "/home/user/sbi4finance/lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    },
+    "spread_likelihood": {
+      "path": "/home/user/sbi4finance/lab/src/sbi4finance/calibration/heston_spread.py",
+      "sha256": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca"
+    },
+    "checked_pricer": {
+      "path": "/home/user/sbi4finance/lab/src/sbi4finance/calibration/heston_pilot.py",
+      "sha256": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b"
+    },
+    "runtime_model": {
+      "path": "/home/user/sbi4finance/tutorial/src/sbi4f_tutorial/heston_options/model.py",
+      "sha256": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+    },
+    "reference": {
+      "path": "/home/user/sbi4finance/lab/src/sbi4finance/calibration/reference.py",
+      "sha256": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056"
+    },
+    "initialization": {
+      "path": "/home/user/sbi4finance/lab/src/sbi4finance/calibration/reference_initialization.py",
+      "sha256": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f"
+    },
+    "likelihood_op": {
+      "path": "/home/user/sbi4finance/lab/src/sbi4finance/calibration/pymc_reference_op.py",
+      "sha256": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b"
+    },
+    "partial_writer": {
+      "path": "/home/user/sbi4finance/lab/scripts/calibration_reference.py",
+      "sha256": "070f3199645faabe8032132d13c6b1859d053d9b8717334d65ce157f707ef6b8"
+    },
+    "pyproject.toml": {
+      "path": "/home/user/sbi4finance/lab/pyproject.toml",
+      "sha256": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f"
+    },
+    "pixi.lock": {
+      "path": "/home/user/sbi4finance/lab/pixi.lock",
+      "sha256": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+    },
+    "grid_reference": {
+      "path": "/home/user/sbi4finance/lab/scripts/run_heston_pr87_grid_reference_recovery.py",
+      "sha256": "0d9f14e8df977d4a5baef2308fe93da5c4ae1fbbf2053713344bfbf7ff3ad76e"
+    },
+    "binding_validator": {
+      "path": "/home/user/sbi4finance/lab/scripts/evaluate_heston_spread_baseline.py",
+      "sha256": "f899e126b4f9098b06d022b39dadd0f382d200d29ae4b8e2e52550dba808f7e0"
+    },
+    "grid_numerical_pilot": {
+      "path": "/home/user/sbi4finance/lab/src/sbi4finance/calibration/heston_grid.py",
+      "sha256": "adebd7b9d3532ee8d180c4ae94ea400f2bb798818916123879ed6219fe870927"
+    },
+    "black_control_variate": {
+      "path": "/home/user/sbi4finance/tutorial/src/sbi4f_tutorial/heston_options/control_variate.py",
+      "sha256": "ad2908472eed00688a1ffc8b53eb0187ef9f47a02d3be761589211da90ebf566"
+    },
+    "black_formula": {
+      "path": "/home/user/sbi4finance/tutorial/src/sbi4f_tutorial/shared/gbm.py",
+      "sha256": "52184ef8c6e472ae8f7a2423d3ff3ec759ddbc919edbcd238dc6eba0ca87fa1a"
+    }
+  },
+  "settings": {
+    "seed": 261112,
+    "chains": 4,
+    "cores": 1,
+    "fit_budget": 2000,
+    "attempts": [
+      [
+        2000,
+        2000
+      ],
+      [
+        6000,
+        12000
+      ]
+    ],
+    "cpu_and_wall_seconds": 2400,
+    "blas_threads": 1
+  },
+  "versions": {
+    "python": "3.12.16",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.4",
+    "arviz-stats": "1.3.3",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "xarray": "2026.9.0"
+  },
+  "smoke": false,
+  "sampler": "canonical native PyMC DEMetropolisZ; bounded physical Uniform priors",
+  "truth_available_to_sampler": false,
+  "reserved_test_arrays_opened": false,
+  "scientific_acceptance": false,
+  "attempts": [
+    {
+      "attempt": 0,
+      "tune": 2000,
+      "draws": 2000,
+      "likelihood_evaluations": 34113,
+      "mcmc_diagnostics_passed": false,
+      "pointwise_precision_passed": true,
+      "diagnostics_sha256": "8ecf28b5f2c3d9da3e2a31f99bdb1fcc8439e520d84825dff690632a9ba0947b",
+      "wall_seconds": 316.42219006000005,
+      "cpu_seconds": 314.38436527299996,
+      "limit_seconds": 2400.0
+    },
+    {
+      "attempt": 1,
+      "tune": 6000,
+      "draws": 12000,
+      "likelihood_evaluations": 146113,
+      "mcmc_diagnostics_passed": true,
+      "pointwise_precision_passed": true,
+      "diagnostics_sha256": "210fc41b774fc8f202b5cd53a5c07e049ffab75c41a79e8cf04467a72b84f950",
+      "wall_seconds": 1608.0810344690003,
+      "cpu_seconds": 1596.607561262,
+      "limit_seconds": 2400.0
+    }
+  ],
+  "reference_ready": true,
+  "selected_attempt": 1,
+  "chain_payload_path": "/home/user/sbi-artifacts/heston-actual63-notebook/references/market/attempt-1/chains.npz",
+  "chain_payload_sha256": "739145f34ec98cb2658b1d30f075bc2be473febc03d50816b13c13a6b15b577b",
+  "usage": {
+    "wall_seconds": 1608.085623304,
+    "cpu_seconds": 1596.611571426,
+    "limit_seconds": 2400.0
+  }
+}

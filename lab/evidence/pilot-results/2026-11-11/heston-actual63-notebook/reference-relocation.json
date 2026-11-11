@@ -1,0 +1,60 @@
+{
+  "format": "heston_actual63_reference_relocation_v1",
+  "original_panel": {
+    "path": "lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/conditional-panel.json",
+    "sha256": "824b765095b7549a65c2f120701c6eaa2a78a88bd34a40965f1972584651258b"
+  },
+  "relocated_panel": {
+    "path": "lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/reference-panel.json",
+    "sha256": "6dda924c62cfe8cb70af37a40ecdaedb929711fa1a40c31241c665af1b284ea6"
+  },
+  "changed_fields": {
+    "design": {
+      "original": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/design.json",
+      "relocated": "/home/user/sbi4finance/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/design.json",
+      "sha256": "c6f14b0cd7f6d1ecbcbee01f64cf1715c307547d00a802e2e3f232d52d136236"
+    },
+    "source": {
+      "original": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/prepare_heston_pr87_grid_cv.py",
+      "relocated": "/home/user/sbi4finance/lab/scripts/prepare_heston_pr87_grid_cv.py",
+      "sha256": "59767b0eba6e805469deb9fd18b4e060859d04ae70b63dde74d19dd28f1d9525"
+    },
+    "preparation_protocol": {
+      "original": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/preparation-protocol.json",
+      "relocated": "/home/user/sbi4finance/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/preparation-protocol.json",
+      "sha256": "5338fd41ac6b92a0205fb801bb473cea01a46390ac24e97deef5937a15a686b6"
+    }
+  },
+  "all_other_panel_values_identical": true,
+  "protocol_sha256": "840c3a1264e0014730ba3d52a6187aba8ce75c43ea17e68ac0827cf59b433d4f",
+  "settings": {
+    "chains": 4,
+    "cores": 1,
+    "seed": 261112,
+    "fit_budget": 2000,
+    "attempts": [
+      [
+        2000,
+        2000
+      ],
+      [
+        6000,
+        12000
+      ]
+    ],
+    "inner_cpu_and_wall_seconds": 2400,
+    "outer_total_wall_seconds": 2450,
+    "r_hat_max": 1.01,
+    "ess_bulk_min": 400,
+    "ess_tail_min": 400,
+    "escalation": "canonical6k/12k second attempt only after first2k/2k diagnostic failure; never after numerical failure",
+    "initialization": "canonical four data-only Powell fits and dispersed starts; no truths or neural estimates",
+    "likelihood": "canonical normalized Gaussian with sigma_i=c*half_spread_i and -quote_count*log(c)",
+    "smoke_test_only": false,
+    "automatic_retry_or_budget_extension": false,
+    "truth_available_to_sampler": false,
+    "reserved_arrays_opened": false
+  },
+  "smoke_test_only": false,
+  "scope": "Re-execution of the unchanged canonical worker with new output identities; original chains/evidence untouched; no acceptance."
+}
