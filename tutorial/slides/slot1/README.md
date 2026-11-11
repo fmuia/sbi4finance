@@ -13,6 +13,7 @@ in [`curriculum/01-slot1-the-problem.md`](../../curriculum/01-slot1-the-problem.
 | `figures/slot1/*.jpg` | The four presenters' photos, cropped square as on the tutorial's webpage |
 | `export_figures.py` | Regenerates the figures and prints every number the slides quote |
 | `illustration.py` | The running example behind seven of the figures: Heston on simulated quotes |
+| `spx-design.json` | The tutorial's 63-quote SPX design of 9 November 2026 (strikes, maturities, forwards, discounts, half-spreads), with its source |
 
 ## The argument
 
@@ -26,7 +27,8 @@ The talk has five parts, and each key line follows from the previous one.
    classical range and the posterior agree, and the deck says so. What the quotes leave open is set by an assumption:
    fixing a parameter is a prior of zero width. One set of draws then prices every product, and a book.
 4. **Why simulation-based inference** (slides 10–12). A posterior costs thousands of model evaluations. A network
-   trained once on simulations returns it in seconds, which also makes its coverage testable.
+   trained once on simulations returns it in under a second, which also makes its coverage testable; it is valid for
+   data like its training data, which the SPX quotes are not for Heston.
 5. **The close** (slides 13–15). Three takeaways, the team, and the rest of the tutorial.
 
 ## How a slide is written
@@ -61,10 +63,10 @@ already defines one of these names, LaTeX stops at that line: rename the helper.
 The deck loads `unicode-math` with Latin Modern Math and the `array`, `booktabs` and `tikz` packages. Dashes are typed
 as Unicode (–), because the theme's title fonts do not turn `--` into a dash.
 
-**The deck has not been compiled with the real theme.** It was compiled with LuaLaTeX (TeX Live 2023) against a
-stand-in that has the theme's two colours, Rubik titles and a frame body 14 mm shorter than that of Beamer's default
-layout, once with Inter and once with Rubik as the text font; no frame overflows in either. After the upload, check
-that no frame overflows in the real theme. If one does, lower that figure's height in `export_figures.py` (the second
+**The deck has not been compiled with the real theme.** After the update of 11 November it was compiled with
+LuaLaTeX (TeX Live 2023) against a stand-in that has the theme's two colours and a frame body 14 mm shorter than that
+of Beamer's default layout, with Latin Modern Sans as the text font (Inter and Rubik were not available); no frame
+overflows. After the upload, check that no frame overflows in the real theme. If one does, lower that figure's height in `export_figures.py` (the second
 argument of `canvas`) and export again.
 
 Speaker notes are in `\note{}`; Beamer prints them only with `\setbeameroption{show notes on second screen}`.
@@ -81,42 +83,79 @@ pixi run --locked python slides/slot1/export_figures.py --rubik PATH/TO/fonts/Ru
 that the figures use the slides' typeface; without it they use matplotlib's default sans-serif. The script needs only
 the tutorial's own dependencies, and `fontTools` for `--rubik`.
 
-The running example takes about four minutes to compute on four cores, mostly five posteriors by importance
+The running example takes about half an hour to compute on four cores, mostly five posteriors by importance
 sampling. Its numbers are cached under `tutorial/.cache/slides-slot1/`, which Git ignores, and reused until
-`illustration.py` or the settings at the top of `export_figures.py` change; `--recompute` ignores the cache. The
+`illustration.py`, `spx-design.json` or the settings at the top of `export_figures.py` change; `--recompute` ignores
+the cache. The
 script ends by printing every number the slides quote, and lists those that `slot1.tex` does not contain. After a
-change to the example, update the slides it names (2, 3, 7, 8, 9 and the first backup frame) and the curriculum page.
+change to the example, update the slides it names (2, 3, 6, 7, 8, 9 and the first backup frame) and the curriculum
+page.
 
 ## The running example
 
-Seven figures come from one example, so that the argument stays on one case: Heston with known parameters generates
-35 option prices (7 strikes at 1, 3 and 6 months, 1 and 2 years), each observed once with the tutorial's error band of
-0.3 volatility points at the money and 1 point at |δ| = 2. The same surface is then read with quotes that reach
-2 years or stop at 1 month. For each reading the example computes the least-squares fit with its Gauss–Newton
-covariance and the delta-method range of a product, and the posterior under a uniform prior on the application's
-parameter box. The products are a 2-year put struck at 90% of the forward and a call that starts at the money in
-1 year and pays at 2 years.
+Seven figures come from one example, so that the argument stays on one case. It uses the tutorial's own setting
+(the option application, `lab/plans/option-application/`, results as of 11 November 2026):
+
+- **Design.** The strikes, maturities, forwards, discounts and half-spreads of the 63 actual SPX quotes of
+  9 November 2026: 9 strikes at standardized moneyness z = ln(K/F)/(0.16√T) from −5 to +2 on each of 7 expiries,
+  from 7 to 325 days ([`spx-design.json`](spx-design.json), copied with its source from the application's record).
+  The market's mids are not used: the example's quotes are simulated.
+- **Model and truth.** Heston with the application's parameters (v₀, κ, v̄, ξ, ρ) and their uniform prior box, at the
+  application's reference case "market-like, simulated" (v₀ 0.0271, κ 4.34, v̄ 0.0565, ξ 1.80, ρ −0.667).
+- **Error law.** The application's: each quote is the model price plus c × its half-spread × a standard normal, with
+  c = 1 in the simulation. In the posterior c is inferred under its prior U(0.5, 2), with the likelihood's −n ln c
+  term; the classical route estimates it by maximum likelihood, √(R/n), R the sum of squared misses in half-spreads.
+- **Readings.** The same surface is read with quotes up to 325, 81, 30, 14 and 7 days (63, 45, 27, 18 and 9 quotes).
+  Slides 2, 3, 6, 8 and 9 use the quotes up to 14 days; slide 7 uses all five readings.
+- **Products.** The application's forward-start call, struck at the money in 6 months and paid at 1 year; the
+  forward-starting variance over its later window, 81 to 325 days; and the listed 325-day at-the-money call, which a
+  desk could hold against the forward start (slide 9).
+
+For each reading the example computes the least-squares fit with its Gauss–Newton covariance and the delta-method
+range of a product, and the posterior.
 
 - **It is an illustration, not a result of the tutorial.** The model is right by construction, the quote errors are
   independent, and one simulated surface is shown. The seed is the date of the tutorial, fixed before any figure was
-  drawn. On this surface the 6-month delta-method range ends 0.01 below the price under the generating parameters,
-  and the range with κ fixed at 1 misses it; both are shown as they came out.
-- **Prices** are the tutorial runtime's Fourier prices, at the quadrature rung the Heston lesson uses. The
+  drawn. On the real SPX quotes Heston misses by about 13 half-spreads and c goes to its upper bound of 2 (the
+  application's Section 6.5); the example, generated with c = 1, does not show that misfit.
+- **Prices** are Lewis Fourier integrals with the analytic Black control variate of the application (its Section 4.1),
+  on the tutorial runtime's Heston characteristic function: the 7-day put at z = −5 is worth about 10⁻⁴ of the
+  forward and a half-spread about 10⁻⁵, which the plain formula cannot resolve. The quotes are priced with 2,048
+  Gauss–Legendre nodes up to 1,200; the next rung (4,096 nodes, 2,400) moves no price by more than
+  6 × 10⁻⁷ of its half-spread at 200 posterior draws of every reading, against the application's gate of 0.01. The
   forward-start call is one more Fourier integral (Lucic 2003; Kruse and Nögel 2005), checked against the vanilla call
-  as the start date goes to zero, against Black–Scholes as the volatility of volatility goes to zero, and against a
-  Monte Carlo simulation.
+  as the start date goes to zero and against Black–Scholes as the volatility of volatility goes to zero (and, at the
+  money, against a Monte Carlo simulation when the deck was first built); the forward-starting variance is the closed
+  form of the application's Section 4.1.
+- **The error scale c is integrated out in closed form.** With the uniform prior on [0.5, 2], the likelihood's
+  integral over c is an incomplete gamma function of R, so the sampler works on the five Heston parameters, and each
+  draw then receives a c from its exact conditional (a truncated gamma variable in R/(2c²)).
 - **The posterior is computed by importance sampling**, not by Markov chain Monte Carlo, so that the script needs only
-  the tutorial's dependencies. The proposal mixes the prior with four multivariate t components in logit coordinates,
-  placed along the posterior's longest direction and fitted over three rounds to a flattened posterior (the likelihood
-  to the power one half), so that a curved valley and its tails are covered. It is then sampled until 6,000 effective
-  draws or 120,000 proposals. The script reports the effective sample size (3,200 to 6,900) and the share of failed
-  pricings (0.01%, counted as zero likelihood).
-- **Each of the five posteriors was compared once with four long PyMC DEMetropolisZ chains** (R-hat at most 1.004, at
-  least 1,800 effective draws). Posterior means agree within 0.05 posterior standard deviations, standard deviations
-  within 17%, and the 5%, 50% and 95% points of the 2-year put within 4% of the width of its 90% range. A first
-  version of the sampler, with one t component fitted to the posterior itself, had put the put's 95% point on the
-  3-month reading at 6.65 where the chains give 6.81; the comparison caught it. The chains are not part of this
-  folder, because PyMC is not a dependency of the tutorial.
+  the tutorial's dependencies. The proposal mixes the prior with multivariate t components in logit coordinates,
+  placed along the posterior's longest direction and fitted over several rounds to a flattened posterior, so that a
+  curved valley and its tails are covered; it is then sampled until 5,000 effective draws or 72,000 proposals. On the
+  7-day reading the posterior is a thin curved ridge whose ends are set by the box: there the proposal is adapted over
+  six rounds to the likelihood to the power 0.3, with eight slices and 30% of the proposals from the prior, up to
+  150,000 proposals, and the 4,000 resampled draws are then moved by 100 sweeps of differential-evolution Metropolis
+  at the posterior. The script reports the effective sample size (3,884 to 5,558 on four readings; 274 on the
+  7-day reading, before its moves) and the share of failed pricings (0.02% to 0.04%, counted as zero likelihood).
+- **Three of the five posteriors were compared once with four PyMC DEMetropolisZ chains** on the same target (the
+  five Heston parameters and c, uniform priors, the same likelihood), started from dispersed least-squares fits:
+  - *325 days* (4 × 20,000 draws after 10,000 tuning steps; R-hat at most 1.002, at least 3,335 effective draws):
+    posterior means agree within 0.05 posterior standard deviations, standard deviations within 4%, and the 5%, 50%
+    and 95% points of the forward start within 2% of the width of its 90% range.
+  - *14 days*, the opening example (4 × 40,000 after 20,000; R-hat at most 1.008, at least 534): means within 0.04
+    standard deviations, standard deviations within 13% (the sampler's tail of the long-run variance is a little
+    longer), the forward start's points within 1% of its range.
+  - *7 days* (4 × 80,000 after 40,000; R-hat at most 1.011, at least 508): the chains themselves mix slowly along the
+    ridge. Means agree within 0.2 standard deviations and standard deviations within 14%; the forward start's points
+    agree within 6% of its range (2.40 to 8.56 here, 2.49 to 8.21 by the chains). Importance sampling alone, before the
+    moves, had left the slow-reversion end of the ridge under-weighted; the comparison caught it. This is the least
+    precise of the five readings, and slide 7 uses it only to show a range set by the box.
 
-The eighth figure, `coverage.pdf`, is not from the example: it plots the stored validation of the Heston network of
-study S2 (`assets/results/calibration/heston/s2/validation.json`, claim C7).
+  The chains are not part of this folder, because PyMC is not a dependency of the tutorial.
+
+The eighth figure, `coverage.pdf`, is not from the example: it plots the checks of the option application's Heston
+network on 512 surfaces simulated from the prior, six targets (its Section 8.2: 300,000 training rows, flow matching,
+whitened inputs). Its numbers are copied into `export_figures.py` with their source, because the slides' code reads
+nothing outside `tutorial/`.
