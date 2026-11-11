@@ -1,0 +1,182 @@
+{
+  "format": "heston_pr87_grid_recovery_campaign_protocol_v1",
+  "declared_utc": "2026-11-11T03:34:18.187877+00:00",
+  "predeclared_before_bank": true,
+  "limits": {
+    "maximum_bank_workers": 1,
+    "bank_seconds": 3600,
+    "maximum_fits": 2,
+    "fit_seconds": 3600,
+    "maximum_concurrent_fits": 1,
+    "maximum_concurrent_references": 2,
+    "reference_inner_seconds": 2400,
+    "reference_outer_seconds": 2450,
+    "maximum_reference_jobs": 3,
+    "evaluation_seconds": 900,
+    "maximum_endpoints_per_fit": 2,
+    "maximum_concurrent_phase_workers": 1,
+    "maximum_concurrent_workers": 3,
+    "new_grid_pricing_calls": 300612,
+    "automatic_retry": false,
+    "unplanned_extension": false
+  },
+  "sources": {
+    "controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_pr87_grid_recovery.py",
+      "sha256": "715d4f4ea80b55a4234acf34320e45d82e688515307beb585c0412da0be769dc"
+    },
+    "producer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/reproduce_heston_pr87_grid.py",
+      "sha256": "0c2aa3bd168e6659e71c8119c746bd9b3980558acae33d8526031ff07918227f"
+    },
+    "evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_grid_recovery.py",
+      "sha256": "325bd224a2d55248ac462656783cd5eebb7d8c09e47f79101052ef9c4461a67c"
+    },
+    "renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_grid.py",
+      "sha256": "4bfa32452a132c34dc41d8620299063bc0eea14f4d79692f275804504da11fd8"
+    },
+    "exporter": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/export_heston_pr87_grid_figures.py",
+      "sha256": "94f53e3ba395b8b98f852c2ba7a62a56cf0ca47a0a26f8ce290cd13014ac0834"
+    },
+    "grid_reference": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_pr87_grid_reference_recovery.py",
+      "sha256": "0d9f14e8df977d4a5baef2308fe93da5c4ae1fbbf2053713344bfbf7ff3ad76e"
+    },
+    "parent_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_followup.py",
+      "sha256": "fc352ba2f5083cead5c9130294bd25d177212113a504581e0908f7b9d192be05"
+    },
+    "parent_renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_followup.py",
+      "sha256": "480b00d066a2ebc788218e3839b1d08cada9d8744c9a3dafc49fa1bdd92cc672"
+    },
+    "parent_100k_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_100k.py",
+      "sha256": "76f077bf3cc88e87b7bcdc892e96396b1e3e20fcf61032ea2a285a44d9ccd957"
+    },
+    "parent_100k_renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_100k.py",
+      "sha256": "27b75ef36d94fb842a8de2905fc6f2ab98382b6420ae500c30683ed00d5fa88e"
+    },
+    "parent_original_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_reproduction.py",
+      "sha256": "84b9c8ff2a6f7c1f624f1122e64b15a633c9f71b7b6aefb2cfb9410592cd51ff"
+    },
+    "parent_original_renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_reproduction.py",
+      "sha256": "e53979d3d8358347c2767033f2e758ceb68b46dd929d38915b2c4cc5fa948821"
+    },
+    "archived_plotting_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/export_heston_pr87_reproduction_figures.py",
+      "sha256": "485e30cbbad0fa2b090010642de1a462c6ef5a151724cc7331425256fd0b7574"
+    },
+    "grid_pilot": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_grid.py",
+      "sha256": "adebd7b9d3532ee8d180c4ae94ea400f2bb798818916123879ed6219fe870927"
+    },
+    "black_control_variate": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/control_variate.py",
+      "sha256": "ad2908472eed00688a1ffc8b53eb0187ef9f47a02d3be761589211da90ebf566"
+    },
+    "black_formula": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/shared/gbm.py",
+      "sha256": "52184ef8c6e472ae8f7a2423d3ff3ec759ddbc919edbcd238dc6eba0ca87fa1a"
+    }
+  },
+  "readiness": {
+    "pilot": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/numerical-pilot/run.json",
+      "sha256": "2853f318d41a36980f740539c45bb877d3520472258926f1725ee1c105329e13"
+    },
+    "preparation_protocol": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/preparation-protocol.json",
+      "sha256": "5338fd41ac6b92a0205fb801bb473cea01a46390ac24e97deef5937a15a686b6"
+    },
+    "task": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/task.json",
+      "sha256": "1cdb77923ce920df5ce358288776c35d60209a1bc2ceb6a942574bed55af5a9c"
+    },
+    "design": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/design.json",
+      "sha256": "c6f14b0cd7f6d1ecbcbee01f64cf1715c307547d00a802e2e3f232d52d136236"
+    },
+    "conditional_panel": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/conditional-panel.json",
+      "sha256": "824b765095b7549a65c2f120701c6eaa2a78a88bd34a40965f1972584651258b"
+    },
+    "reference_smoke": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/reference-smoke/synthetic-broad/run.json",
+      "sha256": "d5e77462c428f19fcc2be7d9e43a7d5b96711f77cdeb577398b868847f76b835"
+    },
+    "scope": "Numerical/software readiness only; no posterior-quality acceptance."
+  },
+  "preserved_artifacts": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/preserved-artifacts-before.json",
+    "sha256": "3bf4626a321a75a0f79cd66ca4b3db219caaf4139249288c4a9f8601dab83d89"
+  },
+  "parent_training": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-300epochs/200k-300/training",
+  "historical_inputs": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-inputs.npz",
+    "sha256": "f0b503a12e9fd16bf069a86b96cf8de90d35652a33a6e31d8bb8458ead53be97"
+  },
+  "old54_control": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/pr87-300epochs/200k-300/evaluation/evaluation.json",
+    "sha256": "9775827e47d2e93c6b3735ab0d5a2a042929be9741adf4979bbcc0f3d3037f7c"
+  },
+  "bank_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/bank-protocol.json",
+    "sha256": "289ba79cf6bd32e5a393f540e8654757ecd4f10925c4243201184cbad36362c1"
+  },
+  "bank_log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/bank.log",
+  "reference_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/reference-protocol.json",
+    "sha256": "826c28f1983beed61954a8516d034a4abf1a8f714205f7ff1b5d1ee0b520992e"
+  },
+  "reference_logs": {
+    "synthetic-broad": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/reference-synthetic-broad.log",
+    "synthetic-market-like": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/reference-synthetic-market-like.log",
+    "market": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/reference-market.log"
+  },
+  "reference_cache_root": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/pytensor-cache",
+  "runs": {
+    "200k-300": {
+      "train_rows": 200000,
+      "protocol": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/protocol.json",
+        "sha256": "c8d1a7b0fffb0c04bc7e6ad1d0b50c458a125114ffc579d43c57a069994060ec"
+      }
+    },
+    "300k-300": {
+      "train_rows": 300000,
+      "protocol": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/300k-300/protocol.json",
+        "sha256": "80d4944fbb0c893fd6750f277ce2ceb9db4ef9ba5fd407a20f653239976eb39c"
+      }
+    }
+  },
+  "native_smoke": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/native-smoke/verification.json",
+    "sha256": "0cd88e3017bc70206e00c524ac0812d22e783d256d039f17de3a033ce0e5bad5"
+  },
+  "rough_initiation": "No rough jobs in this controller. A separate bounded rough numerical initiation needs satisfactory predeclared Heston diagnostics; development success grants no official acceptance.",
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false,
+  "recovery_of": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/campaign.json",
+    "sha256": "f283467e3fbd67f1ea0006920763e5c1e091110918735741d99c465339a005d1"
+  },
+  "operational_recovery": {
+    "original_failed_campaign": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/campaign.json",
+      "sha256": "f283467e3fbd67f1ea0006920763e5c1e091110918735741d99c465339a005d1"
+    },
+    "reason": "A900s reference cap killed its independent bank at290k labels before final payload save. No numerical failure occurred.",
+    "scientific_changes": "None: exact bank contract, all prior/noise/architecture/optimizer/epochs/endpoint and numerical gates retained.",
+    "new_reference_budget": "Fresh3-case protocol,2400s inner/2450s outer each; same seeds/initialization/attempt schedule. Ready broad case repeated only for one coherent source-bound protocol, never selective omission.",
+    "failure_isolation": "A reference timeout/failure is retained as inconclusive and cannot stop bank/fits; missing references never become acceptance evidence.",
+    "resume_or_silent_extension": false
+  }
+}

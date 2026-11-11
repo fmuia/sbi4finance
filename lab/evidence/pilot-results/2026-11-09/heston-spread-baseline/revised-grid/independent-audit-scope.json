@@ -1,0 +1,54 @@
+{
+  "format": "heston_pr87_grid_independent_audit_v1",
+  "status": "scope_verified",
+  "audited_utc": "2026-11-11T03:16:35.941254+00:00",
+  "audit_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/audit_heston_pr87_grid.py",
+    "sha256": "3a1efdbb05b896e029146c0dccc1c13470a93def4b4db8ac8fb8ea239f7dae27"
+  },
+  "source_commit": "a2c0c2a",
+  "campaign_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/campaign-protocol.json",
+    "sha256": "505c35c003f5f9a7144d635e8792dbeb36bebeaa7af0c90b6b8d4ecc08f65dd2"
+  },
+  "protected_artifacts": {
+    "manifest": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/preserved-artifacts-before.json",
+      "sha256": "4cfacaa05f2426857531ab549a2f5149b338aedd38980e458bb0b7ef5c6a50f9"
+    },
+    "files": 749,
+    "bytes": 962063404,
+    "all_unchanged": true
+  },
+  "references": {
+    "synthetic-broad": {
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/synthetic-broad/run.json",
+        "sha256": "c037e4bb8c881b63f320cd74b9acf01b5f1d3e20a57ab7863a1c5b33f7bcecde"
+      },
+      "status": "started",
+      "reference_ready": false,
+      "observation_sha256": "ff18699bae051e16340596a4dfdd557d28db2ef491eead3a9cbd98d2fc174d67",
+      "attempts": 1
+    },
+    "synthetic-market-like": {
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/synthetic-market-like/run.json",
+        "sha256": "87b31378373a760f6e6273ce0735f9304caf6f16300d14005b0fd8a38299dba9"
+      },
+      "status": "started",
+      "reference_ready": false,
+      "observation_sha256": "070cd0e93495edd09c9147cf7105571e1c300910113615e55630a5f5e287e6ea",
+      "attempts": 1
+    }
+  },
+  "runs": {},
+  "no_pricing_fit_model_load_or_posterior_query_performed": true,
+  "reserved_arrays_opened": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false,
+  "scope": "Independent saved-data/state/result audit; reused development screens are necessary checks and do not establish official quality.",
+  "python": "3.12.16",
+  "numpy": "2.5.3",
+  "seconds": 0.5394058749079704
+}

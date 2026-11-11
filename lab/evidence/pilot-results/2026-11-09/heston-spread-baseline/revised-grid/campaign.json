@@ -1,0 +1,129 @@
+{
+  "format": "heston_pr87_grid_campaign_v1",
+  "status": "failed",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/campaign-protocol.json",
+    "sha256": "505c35c003f5f9a7144d635e8792dbeb36bebeaa7af0c90b6b8d4ecc08f65dd2"
+  },
+  "started_utc": "2026-11-11T03:11:38.371173+00:00",
+  "git_revision": "a2c0c2a6de6c3fb6fd6bb53e4c7e0f97a78150ff",
+  "jobs": [
+    {
+      "id": "bank",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/reproduce_heston_pr87_grid.py",
+        "generate",
+        "--task",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/task.json",
+        "--parent",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/pr87-300epochs/200k-300/training",
+        "--historical-inputs",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-inputs.npz",
+        "--protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/bank-protocol.json",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/bank",
+        "--worker"
+      ],
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/bank.log",
+      "wall_seconds_limit": 3600,
+      "kind": "bank",
+      "status": "stopped_after_peer_failure",
+      "pid": 88422
+    },
+    {
+      "id": "reference_synthetic-broad",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_pr87_grid_reference.py",
+        "--panel",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/conditional-panel.json",
+        "--protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/reference-protocol.json",
+        "--case-id",
+        "synthetic-broad",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/synthetic-broad",
+        "--payload-out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/references/synthetic-broad",
+        "--worker"
+      ],
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/reference-synthetic-broad.log",
+      "wall_seconds_limit": 950,
+      "kind": "reference",
+      "status": "complete",
+      "pid": 88423,
+      "returncode": 0,
+      "seconds": 418.8711771669332,
+      "record": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/synthetic-broad/run.json",
+        "sha256": "ab4809bb796dcbedb7f500e2147b6ae13fbe99993c794e13e93a790c3b452fc1"
+      }
+    },
+    {
+      "id": "reference_synthetic-market-like",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_pr87_grid_reference.py",
+        "--panel",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/conditional-panel.json",
+        "--protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/reference-protocol.json",
+        "--case-id",
+        "synthetic-market-like",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/synthetic-market-like",
+        "--payload-out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/references/synthetic-market-like",
+        "--worker"
+      ],
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/reference-synthetic-market-like.log",
+      "wall_seconds_limit": 950,
+      "kind": "reference",
+      "status": "failed",
+      "pid": 88425,
+      "returncode": 1,
+      "seconds": 900.9120009590406
+    },
+    {
+      "id": "reference_market",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_pr87_grid_reference.py",
+        "--panel",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/conditional-panel.json",
+        "--protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/reference-protocol.json",
+        "--case-id",
+        "market",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/market",
+        "--payload-out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/references/market",
+        "--worker"
+      ],
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/reference-market.log",
+      "wall_seconds_limit": 950,
+      "kind": "reference",
+      "status": "stopped_after_peer_failure",
+      "pid": 89862
+    }
+  ],
+  "runs": {},
+  "references": {
+    "synthetic-broad": {
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/synthetic-broad/run.json",
+        "sha256": "ab4809bb796dcbedb7f500e2147b6ae13fbe99993c794e13e93a790c3b452fc1"
+      },
+      "reference_ready": true,
+      "scope": "ready"
+    }
+  },
+  "automatic_retry": false,
+  "scientific_acceptance": false,
+  "error_type": "RuntimeError",
+  "error": "grid worker process/output failed: reference_synthetic-market-like",
+  "seconds": 902.594798249891
+}

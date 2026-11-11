@@ -1,6 +1,6 @@
 # Revised actual-63 Heston grid study
 
-**Running: shared bank generation and target-matched MCMC references; posterior results pending.** The user authorized the revised-grid comparison and explicitly retained the recent broad prior. One new300k bank supports fresh200k-prefix and300k-full fits, each300epochs. The existing old54/200k/300 fit remains the control. Bergomi run preparation and initiation are conditionally authorized once the revised Heston setup works; no model or tutorial asset is accepted by preparation alone.
+**First campaign stopped at a declared MCMC time cap; posterior results pending.** A separately recorded [recovery](recovery-bank-independent/README.md) repeats the unchanged bank/fit experiment and isolates reference failures. Original results remain preserved. The user authorized the revised-grid comparison and explicitly retained the recent broad prior. One new300k bank supports fresh200k-prefix and300k-full fits, each300epochs. The existing old54/200k/300 fit remains the control. Bergomi run preparation and initiation are conditionally authorized once the revised Heston setup works; no model or tutorial asset is accepted by preparation alone.
 
 ## Financial task and actual quotes
 
@@ -43,6 +43,8 @@ The new target needs [new observation-only reference cases](cv-preparation/condi
 
 Each endpoint receives native100x300 and historical512x512 recovery/coverage/SBC/support, plus4096draws against each target-matched conditional MCMC reference. Missing/unready references remain inconclusive. Reused development panels do not replace fresh confirmation after recipe selection. The reserved2000 pool remains unopened.
 
-One bank and two fits have separate3600-second caps; at most two900-second posterior evaluations per fit. Three references have900-second inner/950-second outer caps with at most two workers concurrently. References may run beside generation/one fit. Failures retain their first records; no retry or extension silently changes the experiment.
+The original campaign bank and two fits have separate3600-second caps; at most two900-second posterior evaluations per fit. Three references have900-second inner/950-second outer caps with at most two workers concurrently. References may run beside generation/one fit. Failures retain their first records; no retry or extension silently changes the experiment.
 
 The later Bergomi work must independently address irregular actual maturities, price/spread normalization by D*F, its variance-curve assumptions, new labels and rough-specific numerical error. Heston recovery alone cannot certify those components.
+
+The first campaign stopped at902.6seconds: the market-like synthetic reference hit its900-second budget during the predeclared second sampling attempt. Its initial2k/2k attempt completed with numerical checks passed but convergence unresolved. The broad synthetic reference was ready. The controller stopped the other reference and bank at290000/300612 labels, before the bank payload was saved; no neural fit ran. This is an operational failure, not evidence of bad or good neural calibration. The new recovery has fresh output identities and reference caps2400/2450seconds; a failed reference cannot kill generation/training and remains explicitly inconclusive. No original source, declaration or result is resumed/overwritten.

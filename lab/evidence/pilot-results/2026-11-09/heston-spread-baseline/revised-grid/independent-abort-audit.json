@@ -1,0 +1,119 @@
+{
+  "format": "heston_pr87_grid_independent_audit_v1",
+  "status": "abort_verified",
+  "audited_utc": "2026-11-11T03:31:28.908087+00:00",
+  "audit_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/audit_heston_pr87_grid.py",
+    "sha256": "03743bbfa335e03cf677a12a266c6bfcb41f7312d2af5079ee8d24eae6406f60"
+  },
+  "source_commit": "a2c0c2a",
+  "campaign_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/campaign-protocol.json",
+    "sha256": "505c35c003f5f9a7144d635e8792dbeb36bebeaa7af0c90b6b8d4ecc08f65dd2"
+  },
+  "protected_artifacts": {
+    "manifest": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/preserved-artifacts-before.json",
+      "sha256": "4cfacaa05f2426857531ab549a2f5149b338aedd38980e458bb0b7ef5c6a50f9"
+    },
+    "files": 749,
+    "bytes": 962063404,
+    "all_unchanged": true
+  },
+  "saved_numerical_crosscheck": {
+    "record": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/old54-numerical-crosscheck.json",
+      "sha256": "30d41a20763f206190eff41c06346e00b142fe97afbbee6d2716c40fa4b1f85a"
+    },
+    "accepted_old_points": 98,
+    "maximum_accepted_difference_over_minimum_sd": 0.00024678793134391675,
+    "aggregates_and_bound_sources_verified_without_pricing": true
+  },
+  "references": {
+    "synthetic-broad": {
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/synthetic-broad/run.json",
+        "sha256": "ab4809bb796dcbedb7f500e2147b6ae13fbe99993c794e13e93a790c3b452fc1"
+      },
+      "status": "completed",
+      "reference_ready": true,
+      "observation_sha256": "ff18699bae051e16340596a4dfdd557d28db2ef491eead3a9cbd98d2fc174d67",
+      "attempts": 2,
+      "diagnostics": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/synthetic-broad/diagnostics.json",
+        "sha256": "2978cd46140bda3369c13131ed742f78d14dfddd94c5f4c4f3634e1134fb4c7b"
+      },
+      "chain_payload": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/references/synthetic-broad/attempt-1/chains.npz",
+        "sha256": "29d3c866e59ea251cf49e97c79fc8e1409d4d0e05eb8782753ab12116a7d60e6"
+      },
+      "mcmc_diagnostics_passed": true,
+      "pointwise_precision_passed": true
+    },
+    "synthetic-market-like": {
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/synthetic-market-like/run.json",
+        "sha256": "1f14b60156316a7cad2bc6563b1149606b012b5e6cb3a3a5660d3953b0e3c6d7"
+      },
+      "status": "failed",
+      "reference_ready": false,
+      "observation_sha256": "070cd0e93495edd09c9147cf7105571e1c300910113615e55630a5f5e287e6ea",
+      "attempts": 1
+    },
+    "market": {
+      "run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/market/run.json",
+        "sha256": "51ea7c48646293cee9660e3cd61cb236c541df41b5bdf137cd6bfd85c8fd6099"
+      },
+      "status": "failed",
+      "reference_ready": false,
+      "observation_sha256": "0d27cd709bd319608c6af4e6c1dd4a9be43e40ac3134638806e695b1dd7f6861",
+      "attempts": 1
+    }
+  },
+  "runs": {},
+  "no_pricing_fit_model_load_or_posterior_query_performed": true,
+  "reserved_arrays_opened": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false,
+  "scope": "Independent saved-data/state/result audit; reused development screens are necessary checks and do not establish official quality.",
+  "python": "3.12.16",
+  "numpy": "2.5.3",
+  "campaign_execution": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/campaign.json",
+    "sha256": "f283467e3fbd67f1ea0006920763e5c1e091110918735741d99c465339a005d1"
+  },
+  "termination": {
+    "cause": "declared900s reference cap caused coupled campaign stop",
+    "reference_failure": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/references/synthetic-market-like/run.json",
+      "sha256": "1f14b60156316a7cad2bc6563b1149606b012b5e6cb3a3a5660d3953b0e3c6d7"
+    },
+    "usage": {
+      "wall_seconds": 900.0028444579802,
+      "cpu_seconds": 890.8688470000001,
+      "limit_seconds": 900.0
+    },
+    "bank_record": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/bank/bank.json",
+      "sha256": "13f0d565103b66ff0aa0f52de6a7ddf361f56a15ac0beb274bc4966b59c2cd8c"
+    },
+    "last_bank_progress": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/bank/generation-progress.json",
+      "sha256": "6fc1db799603bccbf4ffb2b090c54d22adaf15e9d8d8ce11fce8bf7fe5d90126"
+    },
+    "last_completed_pricing_progress": 290000,
+    "planned_pricing_calls": 300612,
+    "bank_payload_completed": false,
+    "new_fits": 0,
+    "posterior_evaluations": 0,
+    "scientific_quality_verdict": "not assessed; no completed bank/fit/evaluation",
+    "automatic_retry_performed": false,
+    "original_failed_records_unchanged": true
+  },
+  "seconds": 0.5059767090715468,
+  "archived_audit_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/independent-abort-audit-consumer.py",
+    "sha256": "03743bbfa335e03cf677a12a266c6bfcb41f7312d2af5079ee8d24eae6406f60"
+  }
+}

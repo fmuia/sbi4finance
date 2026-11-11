@@ -1,0 +1,133 @@
+{
+  "format": "heston_pr87_grid_recovery_prelaunch_audit_v1",
+  "status": "prelaunch_verified",
+  "audit_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/audit_heston_pr87_grid_prelaunch.py",
+    "sha256": "d27eff997c8168b9e223be06adf0484f3deb036d45678c11ea9420017b37b91d"
+  },
+  "audited_utc": "2026-11-11T03:37:29.610467+00:00",
+  "campaign_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/campaign-protocol.json",
+    "sha256": "3f5954baf7a27505ddb777e20e55fb60907532b1147cfb441c1827d61ef38c1d"
+  },
+  "original_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/campaign-protocol.json",
+    "sha256": "505c35c003f5f9a7144d635e8792dbeb36bebeaa7af0c90b6b8d4ecc08f65dd2"
+  },
+  "original_failed_campaign": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/campaign.json",
+    "sha256": "f283467e3fbd67f1ea0006920763e5c1e091110918735741d99c465339a005d1"
+  },
+  "bank_contract_exactly_equal_original": true,
+  "bank_producer_unchanged": true,
+  "reference_source_diff_only_documentation_and_resource_caps": true,
+  "evaluator_diff_only_reference_import": true,
+  "reference_sampler_cases_seeds_attempts_target_numerical_gates_identical": true,
+  "source_binding_changes": [
+    "controller",
+    "evaluator",
+    "grid_reference"
+  ],
+  "source_bindings": {
+    "controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_pr87_grid_recovery.py",
+      "sha256": "715d4f4ea80b55a4234acf34320e45d82e688515307beb585c0412da0be769dc"
+    },
+    "producer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/reproduce_heston_pr87_grid.py",
+      "sha256": "0c2aa3bd168e6659e71c8119c746bd9b3980558acae33d8526031ff07918227f"
+    },
+    "evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_grid_recovery.py",
+      "sha256": "325bd224a2d55248ac462656783cd5eebb7d8c09e47f79101052ef9c4461a67c"
+    },
+    "renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_grid.py",
+      "sha256": "4bfa32452a132c34dc41d8620299063bc0eea14f4d79692f275804504da11fd8"
+    },
+    "exporter": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/export_heston_pr87_grid_figures.py",
+      "sha256": "94f53e3ba395b8b98f852c2ba7a62a56cf0ca47a0a26f8ce290cd13014ac0834"
+    },
+    "grid_reference": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_pr87_grid_reference_recovery.py",
+      "sha256": "0d9f14e8df977d4a5baef2308fe93da5c4ae1fbbf2053713344bfbf7ff3ad76e"
+    },
+    "parent_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_followup.py",
+      "sha256": "fc352ba2f5083cead5c9130294bd25d177212113a504581e0908f7b9d192be05"
+    },
+    "parent_renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_followup.py",
+      "sha256": "480b00d066a2ebc788218e3839b1d08cada9d8744c9a3dafc49fa1bdd92cc672"
+    },
+    "parent_100k_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_100k.py",
+      "sha256": "76f077bf3cc88e87b7bcdc892e96396b1e3e20fcf61032ea2a285a44d9ccd957"
+    },
+    "parent_100k_renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_100k.py",
+      "sha256": "27b75ef36d94fb842a8de2905fc6f2ab98382b6420ae500c30683ed00d5fa88e"
+    },
+    "parent_original_evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_pr87_reproduction.py",
+      "sha256": "84b9c8ff2a6f7c1f624f1122e64b15a633c9f71b7b6aefb2cfb9410592cd51ff"
+    },
+    "parent_original_renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_reproduction.py",
+      "sha256": "e53979d3d8358347c2767033f2e758ceb68b46dd929d38915b2c4cc5fa948821"
+    },
+    "archived_plotting_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/export_heston_pr87_reproduction_figures.py",
+      "sha256": "485e30cbbad0fa2b090010642de1a462c6ef5a151724cc7331425256fd0b7574"
+    },
+    "grid_pilot": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_grid.py",
+      "sha256": "adebd7b9d3532ee8d180c4ae94ea400f2bb798818916123879ed6219fe870927"
+    },
+    "black_control_variate": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/control_variate.py",
+      "sha256": "ad2908472eed00688a1ffc8b53eb0187ef9f47a02d3be761589211da90ebf566"
+    },
+    "black_formula": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/shared/gbm.py",
+      "sha256": "52184ef8c6e472ae8f7a2423d3ff3ec759ddbc919edbcd238dc6eba0ca87fa1a"
+    }
+  },
+  "protected_artifacts": {
+    "manifest": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/preserved-artifacts-before.json",
+      "sha256": "3bf4626a321a75a0f79cd66ca4b3db219caaf4139249288c4a9f8601dab83d89"
+    },
+    "files": 1017,
+    "bytes": 1005968791,
+    "includes_original749": true,
+    "all_unchanged": true
+  },
+  "runs": {
+    "200k-300": {
+      "protocol": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/protocol.json",
+        "sha256": "c8d1a7b0fffb0c04bc7e6ad1d0b50c458a125114ffc579d43c57a069994060ec"
+      },
+      "contract_exactly_equal_original": true,
+      "evaluation_and_endpoint_contract_exactly_equal_original": true
+    },
+    "300k-300": {
+      "protocol": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/300k-300/protocol.json",
+        "sha256": "80d4944fbb0c893fd6750f277ce2ceb9db4ef9ba5fd407a20f653239976eb39c"
+      },
+      "contract_exactly_equal_original": true,
+      "evaluation_and_endpoint_contract_exactly_equal_original": true
+    }
+  },
+  "no_pricing_fit_model_load_or_posterior_query_performed": true,
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false,
+  "scope": "Independent source/contract/preservation readiness audit; no posterior quality verdict.",
+  "archived_audit_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/independent-prelaunch-audit-consumer.py",
+    "sha256": "d27eff997c8168b9e223be06adf0484f3deb036d45678c11ea9420017b37b91d"
+  }
+}
