@@ -129,11 +129,31 @@ does not validate that historical pilot as a current production admission, and
 never opens production journals or submits jobs. It binds the new research
 source and the historical task separately.
 
-**Passed:** 61 tutorial tests (including eight new acceleration checks), 40 lab
+**Passed:** 65 tutorial tests (including eight acceleration checks and four
+independent mathematical checks), 45 lab
 tests covering rough kernels, control diagnostics, tutorial parity and runtime
 reuse; manifest, claims and the 183-symbol runtime boundary checks. Tests cover
 multiple maturities, chunk tails, eta/rho boundaries, missing compiler, forced
 fallback and terminal variance overflow. [Validation record](validation.json).
+
+The added independent checks in
+`tutorial/tests/test_rough_pricing_oracles.py` compare FFT drivers with explicit
+causal sums whose coefficients are computed directly from the analytic cell
+integrals, without calling the runtime weight helper. They verify antithetic
+sign symmetry at all seven production grid lengths and four H values, compare
+accelerated IV/IW with direct scalar model calculations, and check both pricing
+backends against an independent scalar Black formula in the deterministic
+volatility limit, across strikes and maturities. Expected Black prices use the
+discrete left-point variance integral, preserving the chosen grid law.
+
+Additional existing lab checks cover Gaussian covariance and Brownian
+cross-covariance, variance normalization, the near-Brownian limit and bounded
+small-grid comparisons with a separate Gaussian-covariance driver. These are
+independent checks of selected mathematical properties. The optimized backend
+also agrees with the full reference outputs. Monte Carlo covariance uses
+antithetic pair averages as its independent samples, never the two signs as
+independent paths. These checks do not certify prior-wide discretization bias
+or pointwise coverage of MC uncertainty from same-batch fitted controls.
 
 Five attempted frozen production-fixture tests reject the changed pricing
 source, as the producer guard requires. The historical work order was not

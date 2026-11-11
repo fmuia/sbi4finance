@@ -1,7 +1,7 @@
 {
   "tutorial_tests": {
     "command": "python -m unittest discover -s tests -v (from tutorial/)",
-    "tests": 61,
+    "tests": 65,
     "passed": true
   },
   "lab_targeted_tests": {
@@ -10,9 +10,10 @@
       "tests.test_rough_bergomi",
       "tests.test_bergomi",
       "tests.test_rough_control_diagnostic",
-      "tests.test_runtime_reuse"
+      "tests.test_runtime_reuse",
+      "tests.test_rough_conditional_outputs"
     ],
-    "tests": 40,
+    "tests": 45,
     "passed": true
   },
   "manifest_check": true,
@@ -30,12 +31,28 @@
   "production_deployed": false,
   "logs": {
     "tutorial": {
-      "sha256": "9d1986d85ad3828b121d8e5826510e7bef5031765348ca16b06875fd871db4ce",
-      "path": "/private/tmp/bergomi-speed-tutorial-tests-final.log"
+      "path": "/private/tmp/bergomi-correctness-tutorial-tests.log",
+      "sha256": "b46db1b30277ea11addd2d5267d58e661afe1edabdb187aad0d0b41890895b3d"
     },
     "lab_targeted": {
-      "sha256": "8ccd485764f081fd99c78f708769e483396e5de9ab8cf3886d7518010a4ed3e6",
-      "path": "/private/tmp/bergomi-speed-lab-targeted-tests-final.log"
+      "path": "/private/tmp/bergomi-correctness-lab-tests.log",
+      "sha256": "80238c7f7e1f242a83549503b5e061a9ab7a5334897fd4fd2324e27597550348"
     }
+  },
+  "independent_mathematical_checks": {
+    "file": "tutorial/tests/test_rough_pricing_oracles.py",
+    "tests": 4,
+    "passed": true,
+    "checks": [
+      "FFT versus explicit causal sum with independently evaluated analytic cell coefficients",
+      "driver(-z)=-driver(z) at all seven actual grid lengths and four H values",
+      "compiled IV/IW versus direct scalar model evolution",
+      "both pricing routes versus independent Black formula at eta=0/rho=0 using discrete variance integral"
+    ],
+    "scope_limits": [
+      "Does not certify continuous-model time-discretization bias",
+      "Does not certify prior-wide or pointwise MC interval coverage",
+      "Oscar/compiler parity and adaptive longer-rung rollout remain untested"
+    ]
   }
 }
