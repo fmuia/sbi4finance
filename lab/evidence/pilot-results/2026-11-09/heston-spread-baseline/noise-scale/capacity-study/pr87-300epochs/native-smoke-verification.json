@@ -1,0 +1,51 @@
+{
+  "format": "heston_pr87_followup_native_smoke_v1",
+  "producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/reproduce_heston_pr87_followup.py",
+    "sha256": "151c03e9e337f1fd4b97ee6d5dd2cffe4ac9f79372fd666275015ddd69fc7561"
+  },
+  "results": [
+    {
+      "rows": 256,
+      "protocol": {
+        "path": "/private/tmp/pr87-followup-native-smoke-256.json",
+        "sha256": "71398c16c5afbdcef2fc5b9ce8b0b4538b7c16bdac12a73fe459126a19996ff4"
+      },
+      "run": {
+        "path": "/private/tmp/pr87-followup-native-smoke-256/run.json",
+        "sha256": "0975622a4ea165fc525857519f88f02eefed181133ae55c35f3fe05852607077"
+      },
+      "prefix_exact": true,
+      "seeded_reload_draws_equal": true,
+      "sample_shape": [
+        2,
+        3,
+        6
+      ],
+      "data_reused_byte_exact": true,
+      "pricing_calls": 0,
+      "updates": 2
+    },
+    {
+      "rows": 512,
+      "protocol": {
+        "path": "/private/tmp/pr87-followup-native-smoke-512.json",
+        "sha256": "fafc8978581d45e29cd9a0a9da6b1a9118dfd2c8b16b01160644b64fc157666c"
+      },
+      "run": {
+        "path": "/private/tmp/pr87-followup-native-smoke-512/run.json",
+        "sha256": "93f1797f3b8e24164d3121088eeabacf058a35737e02fc2aff5acbb7ea4847ea"
+      },
+      "prefix_exact": true,
+      "seeded_reload_draws_equal": true,
+      "sample_shape": [
+        2,
+        3,
+        6
+      ],
+      "data_reused_byte_exact": false,
+      "pricing_calls": 256,
+      "updates": 4
+    }
+  ]
+}

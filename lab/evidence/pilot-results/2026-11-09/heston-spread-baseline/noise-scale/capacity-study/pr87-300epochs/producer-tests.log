@@ -1,0 +1,19 @@
+test_full_native_optimizer_budget_is_resolved_without_pricing (test_heston_pr87_followup.NativeContinuationTests.test_full_native_optimizer_budget_is_resolved_without_pricing) ... WARNING:matplotlib:/Users/afengler/.matplotlib is not a writable directory
+WARNING:matplotlib:Matplotlib created a temporary cache directory at /var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/matplotlib-dp877gwj because there was an issue with the default path (/Users/afengler/.matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+WARNING:matplotlib.font_manager:Matplotlib is building the font cache; this may take a moment.
+INFO:matplotlib.font_manager:Failed to extract font properties from /System/Library/Fonts/Supplemental/NISC18030.ttf: Non-scalable fonts are not supported
+INFO:matplotlib.font_manager:Failed to extract font properties from /System/Library/Fonts/Apple Color Emoji.ttc: Non-scalable fonts are not supported
+INFO:matplotlib.font_manager:Failed to extract font properties from /System/Library/Fonts/LastResort.otf: tuple indices must be integers or slices, not str
+INFO:matplotlib.font_manager:Failed to extract font properties from /System/Library/PrivateFrameworks/FontServices.framework/Resources/Reserved/PingFangUI.ttc: FT_Open_Face (ft2font.cpp line 200) failed with error 0x02: unknown file format
+INFO:matplotlib.font_manager:generated new fontManager
+INFO:jax._src.xla_bridge:Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: dlopen(libtpu.so, 0x0001): tried: 'libtpu.so' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibtpu.so' (no such file), '/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/.pixi/envs/core-reference/bin/../lib/libtpu.so' (no such file), '/usr/lib/libtpu.so' (no such file, not in dyld cache), 'libtpu.so' (no such file)
+INFO:bayesflow:Using backend 'jax'
+ok
+test_restored_parent_rng_all_appended_priors_then_noises_and_exact_prefix (test_heston_pr87_followup.NativeContinuationTests.test_restored_parent_rng_all_appended_priors_then_noises_and_exact_prefix) ... ok
+test_loader_checks_identity_and_every_prefix_before_model_deserialization (test_heston_pr87_followup.ParentDataGuards.test_loader_checks_identity_and_every_prefix_before_model_deserialization) ... ok
+test_original_prefix_and_all_validation_arrays_are_checked (test_heston_pr87_followup.ParentDataGuards.test_original_prefix_and_all_validation_arrays_are_checked) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 9.505s
+
+OK
