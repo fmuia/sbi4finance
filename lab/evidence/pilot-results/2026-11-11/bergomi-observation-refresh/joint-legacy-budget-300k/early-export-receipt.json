@@ -1,0 +1,102 @@
+{
+  "format": "rough_actual_layout_early_export_receipt_v1",
+  "asof_utc": "2026-11-11T06:34:54.419190+00:00",
+  "source_journal": "/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111/payload/shard-000000/journal.sqlite",
+  "snapshot_root": "/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111/snapshots/early-training-1794378894197093766",
+  "exported_complete_rows": 3,
+  "all_requested_rows_retained": 50,
+  "shapes": {
+    "parameters": [
+      3,
+      7
+    ],
+    "observations_forward": [
+      3,
+      63
+    ],
+    "requested_row_ids": [
+      50
+    ],
+    "requested_physical_parameters": [
+      50,
+      6
+    ],
+    "requested_noise_scale": [
+      50
+    ],
+    "requested_valid_mask": [
+      50
+    ]
+  },
+  "exported_row_ids": [
+    1000,
+    1001,
+    1002
+  ],
+  "requested_valid_mask": [
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "all_exported_targets_quotes_finite": true,
+  "all_requested_truths_finite": true,
+  "status_sha256": "3c0995b229fd70dac302a18dec82122f8a62b8a51d0970e8d637e33ed3065f1f",
+  "payload_sha256": "0c2177602f3159a59c440e6b05cd83f8dd6f70214694671d64999fee3d8e4e41",
+  "source_journal_open_mode": "read-only SQLite backup; no producer mutation and no simulation calls",
+  "precision_filter_applied": false,
+  "development_only": true,
+  "availability_selection": true,
+  "SBI_training_readiness": false,
+  "scientific_acceptance": false,
+  "first1000_slurm_states": {
+    "COMPLETED": 996,
+    "FAILED": 4
+  }
+}

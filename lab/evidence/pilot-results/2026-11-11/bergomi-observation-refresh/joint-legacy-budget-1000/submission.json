@@ -1,0 +1,57 @@
+{
+  "format": "rough_actual_layout_joint_legacy1000_submission_v1",
+  "created_utc": "2026-11-11T06:07:55.680755+00:00",
+  "host": "login009",
+  "stage_root": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111",
+  "source_overlay": {
+    "path": "/oscar/scratch/afengler/rough-legacy1000-e61391132180.tar",
+    "sha256": "e6139113218087da75a4a887f3a28feaa17caf0902e03905d0491eccd5a3ed81"
+  },
+  "plan": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preparation/plan.json",
+    "sha256": "1027e17a4a12270724183ad7a51ce26622764107742a5811bc25a0e47bb90f7e"
+  },
+  "admission": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preparation/admission-v2.json",
+    "sha256": "9664653211743c73ad5f488769d1c231c001ed23ae999a90269fb93abb52ac66"
+  },
+  "script": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preparation/bank.sbatch",
+    "sha256": "76206bbbba44d4dae0007437b76e95c71e61df68b56a56a27ebad32131dc0d83"
+  },
+  "source_bindings_verified": 25,
+  "preflight_exit_code": 0,
+  "resource_evidence": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preflight/resources.json",
+    "sha256": "4a782e6a64af5135ab8ac3d29e12d09715035b9537967b3803240bf8982cbe94"
+  },
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--export=ALL,ROUGH_REPO_ROOT=/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/repo,ROUGH_PYTHON=/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python,ROUGH_BANK_PLAN=/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preparation/plan.json,ROUGH_BANK_ADMISSION=/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preparation/admission-v2.json,ROUGH_PAYLOAD_ROOT=/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/payload",
+    "--output=/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/logs/%A_%a.out",
+    "--error=/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/logs/%A_%a.err",
+    "--chdir=/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111",
+    "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preparation/bank.sbatch"
+  ],
+  "training_target_planned": 300000,
+  "active_training_rows": 1000,
+  "inference_parameter_names": [
+    "hurst",
+    "eta",
+    "rho",
+    "short_variance",
+    "long_variance",
+    "decay",
+    "c"
+  ],
+  "SBI_training_readiness": false,
+  "scientific_acceptance": false,
+  "automatic_retry": false,
+  "sbatch_stdout": "8822042\n",
+  "sbatch_stderr": "sbatch: No max_nodes specified, defaulting to -N 1\n",
+  "sbatch_returncode": 0,
+  "status": "submitted",
+  "job_id": "8822042",
+  "payload_root": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/payload"
+}

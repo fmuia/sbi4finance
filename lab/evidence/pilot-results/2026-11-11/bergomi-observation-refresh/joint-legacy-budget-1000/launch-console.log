@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "<stdin>", line 33, in <module>
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python', '-c', 'import sys;sys.path.insert(0,\'/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/repo/lab\');from sbi4finance.calibration import rough_actual_layout_old_budget_bank as b;b.validate_admission(\'/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preparation/plan.json\',b.pilot.read(\'/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preparation/plan.json\'),\'/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preparation/admission.json\');print("admission validated")']' returned non-zero exit status 1.

@@ -1,0 +1,41 @@
+{
+  "asof_utc": "2026-11-11T06:11:48.636587+00:00",
+  "job_id": "8822042",
+  "complete_manifests": 322,
+  "completed_time_seconds_min_median_max": [
+    30.53914190456271,
+    46.88508671429008,
+    223.185622099787
+  ],
+  "numerical_qualified_rows": 322,
+  "selected_matched_rows": [
+    {
+      "shard": "shard-000001",
+      "status": "complete",
+      "seconds": 44.827472526580095,
+      "numerical_qualified_rows": 1
+    },
+    {
+      "shard": "shard-000127",
+      "status": "complete",
+      "seconds": 171.50332933850586,
+      "numerical_qualified_rows": 1
+    },
+    {
+      "shard": "shard-000000",
+      "rows": [],
+      "blocks": 13
+    },
+    {
+      "shard": "shard-000063",
+      "rows": [],
+      "blocks": 4
+    }
+  ],
+  "accounting_states": {
+    "RUNNING": 162,
+    "COMPLETED": 322,
+    "PENDING": 1
+  },
+  "scope": "fast-completed subset timing is provisional until tranche completes"
+}

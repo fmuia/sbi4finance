@@ -1,0 +1,77 @@
+{
+  "format": "rough_actual_layout_legacy1000_terminal_readout_v1",
+  "asof_utc": "2026-11-11T06:36:28.938752+00:00",
+  "job_id": "8822042",
+  "slurm_terminal_states": {
+    "COMPLETED": 996,
+    "FAILED": 4
+  },
+  "complete63quote_rows": 996,
+  "engineering_qualified_rows": 996,
+  "completed_seconds_min_median_mean_max": [
+    30.42070821300149,
+    56.19184024259448,
+    108.69544131632676,
+    789.7497402392328
+  ],
+  "completed_total_worker_seconds": 108260.65955106146,
+  "failed_rows_preserved": [
+    {
+      "row": 440,
+      "prior_draws_retained": 1,
+      "committed_pricing_attempts": 14,
+      "row_statuses": [
+        [
+          440,
+          "failed"
+        ]
+      ],
+      "failure": "TimeoutError: reference budget/interruption signal14 (authorized860s row budget)",
+      "journal": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/payload/shard-000440/journal.sqlite"
+    },
+    {
+      "row": 661,
+      "prior_draws_retained": 1,
+      "committed_pricing_attempts": 15,
+      "row_statuses": [
+        [
+          661,
+          "failed"
+        ]
+      ],
+      "failure": "TimeoutError: reference budget/interruption signal14 (authorized860s row budget)",
+      "journal": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/payload/shard-000661/journal.sqlite"
+    },
+    {
+      "row": 664,
+      "prior_draws_retained": 1,
+      "committed_pricing_attempts": 14,
+      "row_statuses": [
+        [
+          664,
+          "failed"
+        ]
+      ],
+      "failure": "TimeoutError: reference budget/interruption signal14 (authorized860s row budget)",
+      "journal": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/payload/shard-000664/journal.sqlite"
+    },
+    {
+      "row": 769,
+      "prior_draws_retained": 1,
+      "committed_pricing_attempts": 12,
+      "row_statuses": [
+        [
+          769,
+          "failed"
+        ]
+      ],
+      "failure": "TimeoutError: reference budget/interruption signal14 (authorized860s row budget)",
+      "journal": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/payload/shard-000769/journal.sqlite"
+    }
+  ],
+  "automatic_retry": false,
+  "prior_filtering_permitted": false,
+  "SBI_training_readiness": false,
+  "scientific_acceptance": false,
+  "scope": "complete finite first1000 tranche;996rows available,4rowbudget failures retained for inspection; legacy engineering precision only"
+}

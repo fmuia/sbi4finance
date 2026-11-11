@@ -1,0 +1,1 @@
+bank source/configuration identities verified; no MC executed

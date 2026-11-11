@@ -1,0 +1,14 @@
+{
+  "asof_utc": "2026-11-11T06:31:47.658166+00:00",
+  "job_ids": [
+    "8823501"
+  ],
+  "counts": {
+    "PENDING": 724,
+    "RUNNING": 24
+  },
+  "queue_evidence": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111/queue-after-submission.txt",
+    "sha256": "8459c7cc40eaad48d133920da2fbb8166aa6e4d7c2e655dd53e6c75d049b0c47"
+  }
+}

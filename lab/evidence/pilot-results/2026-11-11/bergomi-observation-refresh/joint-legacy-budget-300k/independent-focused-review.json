@@ -1,0 +1,38 @@
+{
+  "format": "rough_overnight_independent_focused_review_v1",
+  "verified_utc": "2026-11-11T06:38:00.977236+00:00",
+  "plan_sha256": "fc246356d5a12e4a0c77413efa3c5f81254676ff80f778ba5e5d503671a38a1b",
+  "producer_sha256": "494a4761ee54e84449ea87a4e7d946649ddd46f3e3eecea2cb33718147f0879d",
+  "cli_sha256": "55f0eb57d24dbc0b4865207cd6066b58dde76007c4e7b0405656c4d640a0fde7",
+  "test_sha256": "866b090bff76ba7c56db53153832b5855855bb0646b317e49bc3f63fb64fb0d0",
+  "focused_tests_passed": 2,
+  "focused_seconds": 0.138,
+  "py_compile_passed": true,
+  "local_MC_executed": false,
+  "review": {
+    "row_failure_continues": true,
+    "prior_and_c_identity_vs_first_tranche": true,
+    "all_requested_prior_rows_retained": true,
+    "failed_rows_masked_without_resampling": true,
+    "default_restart_does_not_reprice": true,
+    "explicit_retry_needs_copied_journal_new_output_reason": true,
+    "prior_retry_summary_retained": true,
+    "read_only_sqlite_snapshot_export": true,
+    "availability_selected_export_explicitly_flagged": true,
+    "exact_eight_CPU_environment_preserved": true,
+    "maximum_eight_child_processes": true,
+    "dead_child_does_not_cancel_siblings": true,
+    "separate_lease_file_avoids_database_lock_conflict": true
+  },
+  "counts": {
+    "remaining_rows": 299000,
+    "shards": 5980,
+    "allocation_groups": 748,
+    "concurrent_allocations": 24,
+    "CPU_limit": 192,
+    "memory_limit_GiB": 1536,
+    "permanent_files_per_shard": 4
+  },
+  "scientific_acceptance": false,
+  "scope": "Mock-kernel orchestration and saved-config review only; does not certify pricing or posterior accuracy."
+}

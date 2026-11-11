@@ -1,0 +1,37 @@
+{
+  "root_seed": 20261111,
+  "target_splits": {
+    "train": 300000,
+    "validation": 5000,
+    "test": 7000
+  },
+  "active_ranges": {
+    "supplied_known": {},
+    "joint_unknown": {
+      "train": [
+        0,
+        128
+      ]
+    }
+  },
+  "rows_per_shard": 1,
+  "numerical_policy": {
+    "format": "rough_actual_layout_halfspread_reference_mc_policy_v1",
+    "grid_multiplier": 4,
+    "paths_ladder": [
+      262144
+    ],
+    "preferred_mcse_over_h": 0.25,
+    "hardcap_mcse_over_h": 0.5,
+    "refinement_requirement": "record_only_not_certified",
+    "price_target": "finite_hybrid_grid4_expectation"
+  },
+  "row_wall_seconds": 1740,
+  "shard_wall_seconds": 1800,
+  "concurrent_workers": 128,
+  "total_cpu_seconds": 230400,
+  "candidate_only": true,
+  "memory_gib_per_worker": 8,
+  "clean_only": true,
+  "inferred_c_blueprint": true
+}

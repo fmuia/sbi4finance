@@ -1,0 +1,14 @@
+test_candidate_labels_have_false_training_flag_and_resume_without_repricing (tests.test_rough_actual_layout_bank.ActualBankTests.test_candidate_labels_have_false_training_flag_and_resume_without_repricing) ... ok
+test_changed_source_or_tranche_refuses (tests.test_rough_actual_layout_bank.ActualBankTests.test_changed_source_or_tranche_refuses) ... ok
+test_failed_row_keeps_committed_blocks_and_never_silently_retries (tests.test_rough_actual_layout_bank.ActualBankTests.test_failed_row_keeps_committed_blocks_and_never_silently_retries) ... ok
+test_negative_variance_and_nonpsd_covariance_reject (tests.test_rough_actual_layout_bank.ActualBankTests.test_negative_variance_and_nonpsd_covariance_reject) ... ok
+test_no_refinement_default_can_claim_qualified_data (tests.test_rough_actual_layout_bank.ActualBankTests.test_no_refinement_default_can_claim_qualified_data) ... ok
+test_prepare_is_metadata_only_and_budget_is_explicit (tests.test_rough_actual_layout_bank.ActualBankTests.test_prepare_is_metadata_only_and_budget_is_explicit) ... ok
+test_qualified_mode_requires_pilot_review_and_explicit_gate (tests.test_rough_actual_layout_bank.ActualBankTests.test_qualified_mode_requires_pilot_review_and_explicit_gate) ... ok
+test_relaxed_joint_clean_target_uses_base_h_and_independent_c_target (tests.test_rough_actual_layout_bank.ActualBankTests.test_relaxed_joint_clean_target_uses_base_h_and_independent_c_target) ... ok
+test_row_ids_are_count_and_scheduling_independent_and_dynamics_pair (tests.test_rough_actual_layout_bank.ActualBankTests.test_row_ids_are_count_and_scheduling_independent_and_dynamics_pair) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.304s
+
+OK

@@ -1,0 +1,59 @@
+{
+  "format": "rough_actual_layout_joint_300k_submission_v1",
+  "created_utc": "2026-11-11T06:31:44.566584+00:00",
+  "host": "login010",
+  "stage_root": "/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111",
+  "source_overlay": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111/preparation/rough-main-full-20261111.tar",
+    "sha256": "a3992477dd131f3bc499ede1a1e9a7e04016c957a1839620b62bf4e6665ed7be"
+  },
+  "plan": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111/preparation/plan.json",
+    "sha256": "fc246356d5a12e4a0c77413efa3c5f81254676ff80f778ba5e5d503671a38a1b"
+  },
+  "admission": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111/preparation/admission.json",
+    "sha256": "f0470823afe54a2952cc605a1d2f17b3d9efdbb282184650d7bd532d0663331d"
+  },
+  "script": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111/preparation/bank.sbatch",
+    "sha256": "a70a7b996692ec9c3388e6989dba80264f59423d81e3cd03892e736118296108"
+  },
+  "source_bindings_verified": 25,
+  "preflight_exit_code": 0,
+  "resource_evidence": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111/preflight/resources.json",
+    "sha256": "a6f84fac40910118d91d7411a8ed0d0844b4bd0fb082b6369a7d3b3446e67b92"
+  },
+  "training_target_rows": 300000,
+  "previously_queued_rows": 1000,
+  "new_training_rows": 299000,
+  "packed_rows_per_shard": 50,
+  "new_shard_count": 5980,
+  "new_task_count": 748,
+  "new_concurrency_cap": 192,
+  "allocation_concurrency": 24,
+  "CPUs_per_allocation": 8,
+  "memory_GiB_per_allocation": 64,
+  "inference_parameter_names": [
+    "hurst",
+    "eta",
+    "rho",
+    "short_variance",
+    "long_variance",
+    "decay",
+    "c"
+  ],
+  "SBI_training_readiness": false,
+  "scientific_acceptance": false,
+  "automatic_retry": false,
+  "arrays": [
+    {
+      "offset": 0,
+      "count": 748,
+      "throttle": 24,
+      "packed_shards_per_allocation": 8,
+      "last_allocation_shards": 4
+    }
+  ]
+}

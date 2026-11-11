@@ -1,0 +1,139 @@
+{
+  "format": "rough_actual_layout_direct_authorization_v1",
+  "created_utc": "2026-11-11T05:15:06.272175+00:00",
+  "user_instruction": "Ok let us start the Bergomi simulation runs here. Let's parallelize this properly on oscar so we can make progress on this. I think the Bergomi simulations are the most expensive piece, so we should not delay starting those.",
+  "instruction_sha256": "3cd636b78a7eda5803d0556545735639bce9d83f77c26b44dcbd2a18972d97be",
+  "explicit_user_authorization": true,
+  "work_order_sha256": "38455e9565681ea502cac33116f92c27f2d3396eb3ff06c0248b251e9f9edb45",
+  "work_order": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation-portable/work-order.json",
+    "sha256": "38455e9565681ea502cac33116f92c27f2d3396eb3ff06c0248b251e9f9edb45"
+  },
+  "authoritative_panel_sha256": "cbb2c2c31890c6a6ffb45eedf255cb0d7e1ff223c6801c918d11eff7d8fe19c6",
+  "execution_policy": {
+    "components": 48,
+    "maximum_concurrent_workers": 16,
+    "cpus_per_component": 1,
+    "memory_gib_per_component": 32,
+    "component_total_wall_seconds": 600,
+    "maximum_allocated_cpu_seconds": 28800,
+    "maximum_peak_allocated_memory_gib": 512,
+    "automatic_retry": false,
+    "financial_or_numerical_recipe_changes": false
+  },
+  "source_bindings": {
+    "actual_layout": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/rough_options/actual_layout.py",
+      "sha256": "17205a19c52928c9781592eb596fd5b4d711b08c4a123a78b259454b605d8552"
+    },
+    "rough_model": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/rough_options/model.py",
+      "sha256": "546d03f66fd7f1321bcc71a37bdb5cba0b5f6b41e51a1ff4e0ac13a03915bd69"
+    },
+    "rough_simulator": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/rough_options/simulator.py",
+      "sha256": "542359c3999c2d6b55860191bf9468aeaf877820128d9e87c94cd7ecb0066bca"
+    },
+    "runtime_pricing": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/shared/pricing.py",
+      "sha256": "12fb0a54c1c2e98cfa2feea2e37ccd18b5fe9d0280249ecb11d9abf04387c9d4"
+    },
+    "runtime_tasks": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/shared/tasks.py",
+      "sha256": "fa2e3ab505ace28c5442ea9ecc66fe688b180439a33798b4c77d8c528704e8a5"
+    },
+    "lab_curve_helpers": {
+      "relative_path": "lab/src/sbi4finance/calibration/pricing.py",
+      "sha256": "e0e1cc1da9b08ab83cd2fb095c8657da05477e788fcdae04435abddaa3fe89ca"
+    },
+    "lab_task_helpers": {
+      "relative_path": "lab/src/sbi4finance/calibration/tasks.py",
+      "sha256": "0b7ac3011ca25cea335c81efc6eb12f8f7d622ccb20c83e5a24794cb28219519"
+    },
+    "pilot": {
+      "relative_path": "lab/src/sbi4finance/calibration/rough_actual_layout_pilot.py",
+      "sha256": "f2eab502fa933f83f7dc2d58f6d5f0d82c50a5796cf8859c4c5375b2d8a94bc7"
+    },
+    "controlled_crn_helper": {
+      "relative_path": "lab/evidence/pilot-results/2026-10-28/known-pricing-validation/known_rough_pricing_check_20261028.py",
+      "sha256": "007edba3796be584a15153c0449b3b527a97cacbe1bb622f4e4ecda77c92a01a"
+    },
+    "rough_compatibility": {
+      "relative_path": "lab/src/sbi4finance/rough_bergomi.py",
+      "sha256": "eb3f123f0bc642c224ee17718964ed01b927a482dcc03767e760aea0546ad55d"
+    },
+    "bergomi_compatibility": {
+      "relative_path": "lab/src/sbi4finance/bergomi.py",
+      "sha256": "bfdffb8175d26a6dd46620092ffc0c205a114cb2d1e0dc523f1cd8eb96ee215f"
+    },
+    "grid_coupling": {
+      "relative_path": "lab/src/sbi4finance/bergomi_refinement.py",
+      "sha256": "c8a6a2b5a82a4446374b7b7dda2b270a648a9742fde019115747f1604f099b04"
+    },
+    "budget_helper": {
+      "relative_path": "lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    },
+    "prepare_cli": {
+      "relative_path": "lab/scripts/prepare_rough_actual_layout_pilot.py",
+      "sha256": "a344448784c7740a9229b6a82ba3f359c2d491ea2ed1e5bd8749a0912c48bfb2"
+    },
+    "worker_cli": {
+      "relative_path": "lab/scripts/run_rough_actual_layout_pilot.py",
+      "sha256": "5f922b9c5cca7d2ab31ede728ea56c011b0b9109e138f81fe42d161f17a925ef"
+    },
+    "legacy_bank_identity": {
+      "relative_path": "lab/src/sbi4finance/calibration/bank.py",
+      "sha256": "e8a40cb9c7fadfb472bc6e48fa5874f62f9fa7afd30156bd70e44feec7596353"
+    },
+    "legacy_json_identity": {
+      "relative_path": "tutorial/src/sbi4f_tutorial/shared/bank_helpers.py",
+      "sha256": "39df3eaa28c703840c00123d8e68fb4b22551c01a76a5cf7aeee2f7e049ea452"
+    },
+    "heston_readiness": {
+      "relative_path": "lab/scripts/render_heston_pr87_100k.py",
+      "sha256": "27b75ef36d94fb842a8de2905fc6f2ab98382b6420ae500c30683ed00d5fa88e"
+    },
+    "heston_grid_report": {
+      "relative_path": "lab/scripts/render_heston_pr87_grid.py",
+      "sha256": "4bfa32452a132c34dc41d8620299063bc0eea14f4d79692f275804504da11fd8"
+    },
+    "heston_followup_report": {
+      "relative_path": "lab/scripts/render_heston_pr87_followup.py",
+      "sha256": "480b00d066a2ebc788218e3839b1d08cada9d8744c9a3dafc49fa1bdd92cc672"
+    },
+    "portable_pilot": {
+      "relative_path": "lab/src/sbi4finance/calibration/rough_actual_layout_pilot_portable.py",
+      "sha256": "a775ccd7e270270473803c6226eaadd5a314cc09f37a94256968b6e5f4f5d76a"
+    },
+    "portable_prepare_cli": {
+      "relative_path": "lab/scripts/prepare_rough_actual_layout_pilot_portable.py",
+      "sha256": "4c14b2ba79bcfea8b945ea692de6a3769d367ed941d325431732067a15c88c42"
+    },
+    "portable_worker_cli": {
+      "relative_path": "lab/scripts/run_rough_actual_layout_pilot_portable.py",
+      "sha256": "9d3201659c7833c2bbf8feda717d8700fa7ad7ffe6ba0ac9fa8a5f226f08aa6c"
+    },
+    "authorized_pilot": {
+      "relative_path": "lab/src/sbi4finance/calibration/rough_actual_layout_authorized.py",
+      "sha256": "bf261568ae8be5dd860cabe9ea7374ffa7f9349bbe1f947016b3781d28f4f5f9"
+    },
+    "authorized_cli": {
+      "relative_path": "lab/scripts/run_rough_actual_layout_authorized.py",
+      "sha256": "82ce988e81ad5acdcfda2e8bd32e96648eb9dc52c05534ad2282263d75ef2162"
+    }
+  },
+  "supersedes_heston_success_condition": true,
+  "heston_diagnostics_passed": false,
+  "heston_status": "completed Heston runs retain calibration errors; permission to compute is separate from accuracy",
+  "scheduling_change": {
+    "original_maximum_concurrent_workers": 2,
+    "authorized_maximum_concurrent_workers": 16,
+    "total_allocated_CPU_ceiling_unchanged": true,
+    "financial_cases_grids_paths_streams_unchanged": true
+  },
+  "sbatch_sha256": "fe3d83d6261f0c1a48465b2fcd41bfdc7bfaeb6d0b9a30c01fa5f449203c755f",
+  "numerical_target_established": false,
+  "scientific_acceptance": false,
+  "pricing_executed_during_preparation": false
+}

@@ -1,0 +1,51 @@
+{
+  "format": "rough_actual_layout_joint_main128_submission_v1",
+  "created_utc": "2026-11-11T05:41:46.253159+00:00",
+  "host": "login009",
+  "stage_root": "/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111",
+  "source_overlay": {
+    "path": "/oscar/scratch/afengler/rough-main128-e246fb3c0234.tar",
+    "sha256": "e246fb3c0234b8fa6973bb50a99a99cbb3cfcc9d144f17b820eef876c104a178"
+  },
+  "plan": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/preparation/plan.json",
+    "sha256": "08ed9816e3ecf42dbaa4af03a3e9dfec6a7e523fd9103fae61c036a3203e662e"
+  },
+  "admission": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/preparation/admission.json",
+    "sha256": "7817d6b6f0c8f248312dfb7eef31f4d3b7f2063fad45a5853a6899dcf072b702"
+  },
+  "script": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/preparation/bank.sbatch",
+    "sha256": "0741b5b9f52d55964113615df14c0826c3ea385d96c1aced416fe50fedab4074"
+  },
+  "source_bindings_verified": 25,
+  "preflight_exit_code": 0,
+  "resource_evidence": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/preflight/resources.json",
+    "sha256": "d1df5db012c206d5a2161d02faa5047cf726bf78c3d52f85635ab0894cf35526"
+  },
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--export=ALL,ROUGH_REPO_ROOT=/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/repo,ROUGH_PYTHON=/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python,ROUGH_BANK_PLAN=/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/preparation/plan.json,ROUGH_BANK_ADMISSION=/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/preparation/admission.json,ROUGH_PAYLOAD_ROOT=/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/payload",
+    "--output=/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/logs/%A_%a.out",
+    "--error=/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/logs/%A_%a.err",
+    "--chdir=/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111",
+    "/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/preparation/bank.sbatch"
+  ],
+  "training_target_planned": 300000,
+  "active_training_rows": 128,
+  "inference_parameter_names": [
+    "hurst",
+    "eta",
+    "rho",
+    "short_variance",
+    "long_variance",
+    "decay",
+    "c"
+  ],
+  "SBI_training_readiness": false,
+  "scientific_acceptance": false,
+  "automatic_retry": false
+}

@@ -1,0 +1,8 @@
+test_base_grid_adaptive_preferred_stop_and_joint_c_law (tests.test_rough_actual_layout_old_budget_bank.OldBudgetBankTests.test_base_grid_adaptive_preferred_stop_and_joint_c_law) ... ok
+test_old_budget_is_separate_from_actual_observation_halfspreads (tests.test_rough_actual_layout_old_budget_bank.OldBudgetBankTests.test_old_budget_is_separate_from_actual_observation_halfspreads) ... ok
+test_unqualified_final_estimates_are_retained_without_prior_filtering (tests.test_rough_actual_layout_old_budget_bank.OldBudgetBankTests.test_unqualified_final_estimates_are_retained_without_prior_filtering) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.151s
+
+OK

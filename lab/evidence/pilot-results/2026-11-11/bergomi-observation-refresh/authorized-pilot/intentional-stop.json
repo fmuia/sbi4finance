@@ -1,0 +1,2221 @@
+{
+  "format": "rough_actual_layout_intentional_pilot_stop_v1",
+  "asof_utc": "2026-11-11T05:25:06.227935+00:00",
+  "job_id": "8820876",
+  "reason": "User explicitly requested a result within a few minutes and scale-down of a longer pilot; remaining array tasks cancelled once representative outputs were available.",
+  "parent_confirmed_user_instruction": true,
+  "cancellation_command": [
+    "scancel",
+    "8820876"
+  ],
+  "automatic_retry": false,
+  "new_tasks_submitted_after_stop": false,
+  "components_created": 23,
+  "components_complete": 8,
+  "components_with_partial_blocks": 14,
+  "components_not_started": 25,
+  "records": [
+    {
+      "index": 0,
+      "case_index": 0,
+      "role": "coupled_1_2",
+      "metadata_status": "complete",
+      "blocks_completed": 7,
+      "total_wall_seconds": 117.12778687663376,
+      "pricing_cpu_seconds": 111.580879017,
+      "max_mcse_over_strict_sd": [
+        2.2772501440040616,
+        2.3541489346161075
+      ],
+      "strict_mc_target_met": false,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-000/block-00.npz",
+          "sha256": "d9fb12463970b37ee8c5d0f804031697bde9167ca60209633e25b9d6f8ec267b"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-000/block-01.npz",
+          "sha256": "d4db0da0c5fc650a065861800c03e5808a65e2dd03ec33cb8289891fbbeece7a"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-000/block-02.npz",
+          "sha256": "a7daf766bbd68a7860b79ee9750907ed3b3b56868ced74551abe0a24f76430b1"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-000/block-03.npz",
+          "sha256": "f50d475b2505aaad38bfe249cd8488ffbc923c29b7f75efb6cdf125335b6e3f9"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-000/block-04.npz",
+          "sha256": "cb2d0b5f5cd023a33dc01a8c63884b33900a8253a4b5e01b1df5a1c4b2bc3e68"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-000/block-05.npz",
+          "sha256": "a63658655e97f32fddf0c865230d67844fa2fe0b01b3b35ebf07a02040b45ed5"
+        },
+        {
+          "block": 6,
+          "contracts": [
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-000/block-06.npz",
+          "sha256": "672cc2d28191659e375ff827b9dc27b1aa46cacf33527ce8043efe81999da3ec"
+        }
+      ],
+      "payload": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-000/results.npz",
+        "sha256": "e72efddcf72ce3f0c7b7bc571afc617238d29d295f83345730ffa7cc721f3298"
+      },
+      "record_sha256": "d4f0bd0ea12745544bc5eca02d979fc643273384ff3aac9f50fdbe35b22494ca"
+    },
+    {
+      "index": 1,
+      "case_index": 0,
+      "role": "coupled_2_4",
+      "metadata_status": "complete",
+      "blocks_completed": 7,
+      "total_wall_seconds": 257.13277292996645,
+      "pricing_cpu_seconds": 250.708128769,
+      "max_mcse_over_strict_sd": [
+        2.331701967829313,
+        2.3581847624796515
+      ],
+      "strict_mc_target_met": false,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-001/block-00.npz",
+          "sha256": "ed5ca8ad945583e5ad7e5ceca77927fc3344f0b68271300397b69221d58febae"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-001/block-01.npz",
+          "sha256": "d68b75974bd82e653003918672180a67805d7cd615a2aeea83ebf6ab5a4fb861"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-001/block-02.npz",
+          "sha256": "fe1e45c48d90e8f8a125b44f6d781b816957833c90c1df907f3b41f85b30e70d"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-001/block-03.npz",
+          "sha256": "f639dc1afc91ca0439e0523541129a3b375adb28758bb502e188ae08ce1a712e"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-001/block-04.npz",
+          "sha256": "8369785cb7a5d9c7d22918b37a6de28ecb505eb0c7e0ef3c27568b2e59119d0a"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-001/block-05.npz",
+          "sha256": "ec02bbf7af512e5c9383ce1572852199c3b243cf60a4475fd4f2cf5ad9871320"
+        },
+        {
+          "block": 6,
+          "contracts": [
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-001/block-06.npz",
+          "sha256": "f48bf3ef2061e3296fea24105a3785367b64cbc33f0f81c7fb103b517f4765b5"
+        }
+      ],
+      "payload": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-001/results.npz",
+        "sha256": "a34e5b1da6761d60cb332aa7187612902ebc1a55f3dc2f7a2ea9c2cbccb5db1c"
+      },
+      "record_sha256": "8379fd53169f9108f0630f6e86285c1d5d33fec4d0dd9d8b43db6769c78b85e0"
+    },
+    {
+      "index": 2,
+      "case_index": 0,
+      "role": "finest_replay",
+      "metadata_status": "complete",
+      "blocks_completed": 7,
+      "total_wall_seconds": 152.1672424674034,
+      "pricing_cpu_seconds": 146.106703534,
+      "max_mcse_over_strict_sd": [
+        2.3581847624796515
+      ],
+      "strict_mc_target_met": false,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-002/block-00.npz",
+          "sha256": "c213004cec9c6200392bf4261d48d635fed7584322b2b6097ecf7886bd797f2c"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-002/block-01.npz",
+          "sha256": "500fe9ec23a6de457d41d6d8736ee81b1a98fc9416d7a705c06bb10c27f67204"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-002/block-02.npz",
+          "sha256": "5a57e1be6eb68c53d70aebabdae5c4ffc06b44783e03b9eb12b2aa1c00b71b41"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-002/block-03.npz",
+          "sha256": "e53f458ef577fb52bbed3ce6a0e03df81bcdbd36b012d8559a75133e5fdbb946"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-002/block-04.npz",
+          "sha256": "d1067bac06abb9b35f73d619af23dee486b7d9c6cbd4d234d3668363874deb7c"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-002/block-05.npz",
+          "sha256": "6d9ba05c691dde3c939656a7595ebcb9b7e330274f87cffbe02a7c402dc8706e"
+        },
+        {
+          "block": 6,
+          "contracts": [
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-002/block-06.npz",
+          "sha256": "f0fdf432d7fd4b5e2750c98de741917801cd5e2274e11b281d2b917258969bdb"
+        }
+      ],
+      "payload": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-002/results.npz",
+        "sha256": "f228099b252d8ff5c79870814d6570f444e802b322251c553ee047c7da908eff"
+      },
+      "record_sha256": "4f1b78334c453995ed218369845331c93a7b998f27b2934a5691eb2545622d41"
+    },
+    {
+      "index": 3,
+      "case_index": 0,
+      "role": "coupled_1_2",
+      "metadata_status": "complete",
+      "blocks_completed": 7,
+      "total_wall_seconds": 124.41474562883377,
+      "pricing_cpu_seconds": 118.471236663,
+      "max_mcse_over_strict_sd": [
+        2.379388882635679,
+        2.3867813176803048
+      ],
+      "strict_mc_target_met": false,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-003/block-00.npz",
+          "sha256": "7d41aaa0f283f67ccfc41f44b40f6d2ee0c50ceb4b90afb6a6d9d6879bd9a9d7"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-003/block-01.npz",
+          "sha256": "a5cd48f34db8b84ef9da8fa1eb7a17b9ebfb78434e53b70c935f6a94b80ff479"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-003/block-02.npz",
+          "sha256": "9483509843a2c35aeaa109387b9010a3ce678492e83ebaedb08fd33a2905b36a"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-003/block-03.npz",
+          "sha256": "b36ace053cadab11010209725b7c274dacd49f803b227fc6e4269b56523d1536"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-003/block-04.npz",
+          "sha256": "a76b9889c7e483d88b8c067da1a78a9bc140ea3d872543685686d5698dbd59bf"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-003/block-05.npz",
+          "sha256": "6bf09785b013b661f2190494b30c0ada5cd5c67a09283ae1ceb318df5a404411"
+        },
+        {
+          "block": 6,
+          "contracts": [
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-003/block-06.npz",
+          "sha256": "de056650254bc8cbc82adae686a14f4e8d6edee2ac4cb9954575041a3f0e9123"
+        }
+      ],
+      "payload": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-003/results.npz",
+        "sha256": "e0371dd9b41bab65714ac4f3bf55a6e1467ebd8307043515efca1f8839ab3172"
+      },
+      "record_sha256": "a2323032d1b9e74110eda9590382cc188e4fa591c5afea820ccc007c3622cc3b"
+    },
+    {
+      "index": 4,
+      "case_index": 0,
+      "role": "coupled_2_4",
+      "metadata_status": "failed",
+      "blocks_completed": 1,
+      "total_wall_seconds": 302.4002003259957,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-004/block-00.npz",
+          "sha256": "1a15eabbbb2a548389bb315a42de3fb32b1096043e4c5074a5c8cd26b4cf1f66"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "f7fd8ee5dea79adf160303aa16027a974c2978bb40bbe3f011e11530a89a9198"
+    },
+    {
+      "index": 5,
+      "case_index": 0,
+      "role": "finest_replay",
+      "metadata_status": "failed",
+      "blocks_completed": 4,
+      "total_wall_seconds": 300.61420851945877,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-005/block-00.npz",
+          "sha256": "66c1653a429a9c7f4ab5984c9d3afaba38d9e89eccbe8fa98c068b94334f0f16"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-005/block-01.npz",
+          "sha256": "01945245d3e1de0f6d5eca9cb9bef22de063c9a4222d08448bb4fed66b33b45a"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-005/block-02.npz",
+          "sha256": "a6a589ab246de3de15a14a84e9a636e9e0c98fc9373e93c3ff08b2bbb8808306"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-005/block-03.npz",
+          "sha256": "3875519765de06bb823f6ff6d06758d31d0505766527f41b5a690cc5b5223732"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "62fd7c32b409bff316be969ae538a83f46b29f85c3d39b32ed13a85913c9fd26"
+    },
+    {
+      "index": 6,
+      "case_index": 0,
+      "role": "coupled_1_2",
+      "metadata_status": "failed",
+      "blocks_completed": 6,
+      "total_wall_seconds": 299.5187459178269,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-006/block-00.npz",
+          "sha256": "edfbda7e3dfcfe373b6609d5958e7a1c43ce0d431a4498b2daa4033d92aa1826"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-006/block-01.npz",
+          "sha256": "f72de646033807ece798a9a042a59e78a5a0916b9143a1c313681237179c4e94"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-006/block-02.npz",
+          "sha256": "b35694ccebc52af71763738257182ade87c2793e7193c27955f1257405b375e7"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-006/block-03.npz",
+          "sha256": "5e6cc252f081b9caa1e71a05e34eee6340139ed51ba90dfc61152c4d25de4e93"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-006/block-04.npz",
+          "sha256": "3f9b47772e67884d9efda713fefb8079be17bd5a9962d20355b75822272161cf"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-006/block-05.npz",
+          "sha256": "44d6240a3658be5c4bf0426664e24839d9e16b4eee232c121abe4b74be8aed00"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "d683ef53dbbe7867771eb85096146fd86af142f80047ae325c34104bbd71d18e"
+    },
+    {
+      "index": 7,
+      "case_index": 0,
+      "role": "coupled_2_4",
+      "metadata_status": "failed",
+      "blocks_completed": 3,
+      "total_wall_seconds": 299.6632784605026,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-007/block-00.npz",
+          "sha256": "f786197ee1c798edc4a939b3173faf206810a113fb3cdbfade94ce3a1ba992c3"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-007/block-01.npz",
+          "sha256": "df0f9a8e6352907d3c22eceffec41b32519cebf50402547ac34eb6678bca98c6"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-007/block-02.npz",
+          "sha256": "0c2451d404efe2f86df10080ffcc78e74c032db562164fe1266ae62a98c87f1e"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "6a4368b40002aa7a164fdad26ebdf5685f5b766845fedf1a9a5c859e770e5b18"
+    },
+    {
+      "index": 8,
+      "case_index": 0,
+      "role": "finest_replay",
+      "metadata_status": "failed",
+      "blocks_completed": 4,
+      "total_wall_seconds": 300.50219256803393,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-008/block-00.npz",
+          "sha256": "9e0d382f2cf2ee67b6b53d806c4fa186187e57ecba5c6c2f872378a0b00521f6"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-008/block-01.npz",
+          "sha256": "c5e4434adda31d4a4f66ec9fbd65c579bfd39ced0a582e0192b7915fa6fc860c"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-008/block-02.npz",
+          "sha256": "b5c39a90c2680e6c8506534aff3409bf6e14ddb8e2079fb4043c46ca4063c8fa"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-008/block-03.npz",
+          "sha256": "8f8367ed0cf01f19e0169ec227503db2595fbdf848a003f43b5ee48712e7f834"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "3912f1c0e655dbf08f95c1d936bcb87abbb8f2ba4df08dbb17fe675a6ab17285"
+    },
+    {
+      "index": 9,
+      "case_index": 0,
+      "role": "coupled_1_2",
+      "metadata_status": "failed",
+      "blocks_completed": 6,
+      "total_wall_seconds": 300.6503907069564,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-009/block-00.npz",
+          "sha256": "bb9070014f44bc5e196a9c0a1ddf7aad786e04e4efb187d9de96eb1b1dcccdfc"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-009/block-01.npz",
+          "sha256": "6bdd1981224333a9e86070087faddfeb3534c99dd48028d32af6cbf166f4a1bb"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-009/block-02.npz",
+          "sha256": "42f455cee77ecdac3e0d9f56e336cb757c6a943ba9756f8986808eb1e7918f33"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-009/block-03.npz",
+          "sha256": "b76715fb02073d6b92f11145bafa01f880200684a9d3b4c62cb51db56f467349"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-009/block-04.npz",
+          "sha256": "8b2c611300a95b9b99740ec624de72cb33bf98d2c468a74a21021ebc5ec0f35d"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-009/block-05.npz",
+          "sha256": "3df066574d52b4edb59633ef62bd5866d861b306abb09fbaf2ad5d5622abd00a"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "d6ddaf9851f4941e046f1268634af261b0da718ae1c8f7832825783e9f0bded7"
+    },
+    {
+      "index": 10,
+      "case_index": 0,
+      "role": "coupled_2_4",
+      "metadata_status": "failed",
+      "blocks_completed": 3,
+      "total_wall_seconds": 299.58062018081546,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-010/block-00.npz",
+          "sha256": "dcaa9bac46442e75f9d40ba7979d081505aa292080766a36f97d8be6c4400f3f"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-010/block-01.npz",
+          "sha256": "1fbecd35e32365df75a82f7769f52cc017f39230d2062651c3f908650d9d4605"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-010/block-02.npz",
+          "sha256": "82b0652cc221926b5d4a23208c3d6849356b83f2f560580537e5d23127c2f675"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "3edd095a71df3d109b54ae9d6cbc1a1c318a81a778e4828e609ff5f7a0cc89b0"
+    },
+    {
+      "index": 11,
+      "case_index": 0,
+      "role": "finest_replay",
+      "metadata_status": "failed",
+      "blocks_completed": 4,
+      "total_wall_seconds": 300.49106968194246,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-011/block-00.npz",
+          "sha256": "8e5684efbeb7f35d8973a83fa694c9cc49c76fb79d77eab3db8839cef5837343"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-011/block-01.npz",
+          "sha256": "17d8bc311f011ab01fbd77c5497abe3ed2b6d646f6d3002291fb499916fbb97b"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-011/block-02.npz",
+          "sha256": "0fce28e60fb3f8c93308fd27f83cbf35162fb2a2e0473a3d93ee88bcac348754"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-011/block-03.npz",
+          "sha256": "0b11f0caa8c41a3306c6bae3664a3f17cfc90cd0c69dd0839b990ad972545d14"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "810344166c67f6dda5323c3bd418d9c088713b7c77badd72398134e049504dfe"
+    },
+    {
+      "index": 12,
+      "case_index": 1,
+      "role": "coupled_1_2",
+      "metadata_status": "failed",
+      "blocks_completed": 6,
+      "total_wall_seconds": 300.6036275923252,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-012/block-00.npz",
+          "sha256": "fb28adfb00ec7267f4f1da15c05f16d61c65e535a5bd521d83bb3cf5d2968ae9"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-012/block-01.npz",
+          "sha256": "7dfc392afa02d2cb5a12517757ddffeb8d5c8abb6ef706621c7ae1e41d93b358"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-012/block-02.npz",
+          "sha256": "542d44341d1aa55c4e7039941951276ab9da5bd20d4e4e8cf452f950e0700499"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-012/block-03.npz",
+          "sha256": "3d8184791b82d0dae8c35c0990e780acfa67d2e72ba90f11759f04033a4c0a94"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-012/block-04.npz",
+          "sha256": "d2aacdea0aee934867044ee125bef40edd05b972bc9669655315abd2fbe284fb"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-012/block-05.npz",
+          "sha256": "694a7b9fb06cf57b1300b7d617b682420783a35473233fbe064dfad149f6680c"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "f4e80b697670971c62e7d0cb00730a0af1e60658022366a53b50167116ab9c84"
+    },
+    {
+      "index": 13,
+      "case_index": 1,
+      "role": "coupled_2_4",
+      "metadata_status": "complete",
+      "blocks_completed": 7,
+      "total_wall_seconds": 272.40015068650246,
+      "pricing_cpu_seconds": 265.37693536,
+      "max_mcse_over_strict_sd": [
+        19.457027619098515,
+        16.97127112878352
+      ],
+      "strict_mc_target_met": false,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-013/block-00.npz",
+          "sha256": "beee805073afabed680cf5244293e17d97342499f98058428c0dac8ea600e807"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-013/block-01.npz",
+          "sha256": "773a5bf3d8fe750742513be4706aab9a83cc0eb1b708518adf71995d99c3fca8"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-013/block-02.npz",
+          "sha256": "14a09a1237b89d47eddc7591c58babb7d9df913535d053a15d996d46562b5e26"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-013/block-03.npz",
+          "sha256": "a2bc7c4dc36ad13fc98c84b308c8ff657178dcd30a2466a8f408c54b8cec9513"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-013/block-04.npz",
+          "sha256": "37b202178adac6dd61f546b1363a8ae6debc8f3a6d7c90e07bddb801fe72d08e"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-013/block-05.npz",
+          "sha256": "fd67ddd5bad950ccdb15fc2fe0f608c06160fbd1dcfa1af01020aa7962adf9cf"
+        },
+        {
+          "block": 6,
+          "contracts": [
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-013/block-06.npz",
+          "sha256": "01db2be7ca7e804dcc895c06bb3159ae886d7fb7bcaeb42cfda6dbc1a6ef539f"
+        }
+      ],
+      "payload": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-013/results.npz",
+        "sha256": "c26c72ad3f9d12fe20d1be7e78f1c358ad9eaca691cd1f989b48c9e5f40ef31e"
+      },
+      "record_sha256": "79a03b99da08281db298c0477b9485b686594865bcf2a4d00662eafa0aad32ce"
+    },
+    {
+      "index": 14,
+      "case_index": 1,
+      "role": "finest_replay",
+      "metadata_status": "complete",
+      "blocks_completed": 7,
+      "total_wall_seconds": 159.59449020493776,
+      "pricing_cpu_seconds": 154.835996948,
+      "max_mcse_over_strict_sd": [
+        16.97127112878352
+      ],
+      "strict_mc_target_met": false,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-014/block-00.npz",
+          "sha256": "5a4ed2d9dc79d86b372c65ba22aea38a7c8d6cf442d751b9abd7f506f5a12e74"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-014/block-01.npz",
+          "sha256": "59ade11f06e860ee1892738543aad2278d16d01589043a7a534fd8260e9381a4"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-014/block-02.npz",
+          "sha256": "54eba8a3d3c35ca1b490e88b247969e5a5e23345ca4d25939aae6a96f28e47de"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-014/block-03.npz",
+          "sha256": "e5eac1a9c384e5989b273cdc06653bde961c82304b471cd89f6e100cabd4b865"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-014/block-04.npz",
+          "sha256": "9954bea4d3dbcf1c4e2d2ec3a097a5257bc50c75621e6d4b9e8d20320c600ffe"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-014/block-05.npz",
+          "sha256": "b7bc0ecef926d5241b34861d27418f937e75168b8a35199d6a4e23bacf81ece7"
+        },
+        {
+          "block": 6,
+          "contracts": [
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-014/block-06.npz",
+          "sha256": "8a3c0fe0616e1cc1574aca59e0242b3bc74af05f043709b101c8a31452cd798c"
+        }
+      ],
+      "payload": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-014/results.npz",
+        "sha256": "c9ac358b1c1baaf02398e8fa07b64064778eca10b82019b618faf6693d34a60a"
+      },
+      "record_sha256": "d22e47cd0c45284d7101a25288464663154ee631b69d83e5b69d49c161f51256"
+    },
+    {
+      "index": 15,
+      "case_index": 1,
+      "role": "coupled_1_2",
+      "metadata_status": "complete",
+      "blocks_completed": 7,
+      "total_wall_seconds": 136.76359517709352,
+      "pricing_cpu_seconds": 131.304370629,
+      "max_mcse_over_strict_sd": [
+        19.876864295832657,
+        16.350200768258464
+      ],
+      "strict_mc_target_met": false,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-015/block-00.npz",
+          "sha256": "3ad64ed90f256f938083142cc4e3c9b4ac3d05b24c782835fa3672bb75d8326b"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-015/block-01.npz",
+          "sha256": "01023651d17945e13c10859861c773744f5202034ec42ba06b5208d2addf0e0b"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-015/block-02.npz",
+          "sha256": "2fce997d6ea870966f2fb1b15e097e67e007e462d925c60cac33c74d75a6548b"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-015/block-03.npz",
+          "sha256": "ed84091b02e0967ecc24e8bcbb42fc01f038e795055492fcab8a204e1a9d6773"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-015/block-04.npz",
+          "sha256": "257631c75c0e5859d8e8f6b3fdc55b5ea4acf6bff182b15b25f313b2d9269de2"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-015/block-05.npz",
+          "sha256": "cb6c7da9e0e348fe4e1bdfe496308f01d4cd952b9aedf05c174d0fc5c24ce738"
+        },
+        {
+          "block": 6,
+          "contracts": [
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-015/block-06.npz",
+          "sha256": "c7f82a046d57020da8acb26008c5b7966847201da3a7cc1694a94322b29df008"
+        }
+      ],
+      "payload": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-015/results.npz",
+        "sha256": "2a1cd55dd4b070eda68942a8b941a14bf0cc084df9f758dabae65887875adb91"
+      },
+      "record_sha256": "17aa9d88a5a405dc846ac3d2c5046b8f3c24168c3ca46ebbcefa280050c659fc"
+    },
+    {
+      "index": 16,
+      "case_index": 1,
+      "role": "coupled_2_4",
+      "metadata_status": "failed",
+      "blocks_completed": 4,
+      "total_wall_seconds": 176.28713419660926,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-016/block-00.npz",
+          "sha256": "a2f2b4e0704b6fccbb3670bf3f453a3dddd1ba4a341a302d96b472972a06ca91"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-016/block-01.npz",
+          "sha256": "336f42a77c5df9c8b1eb04ebc03ff81adb696235387c2d353de88ffe435a0ce7"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-016/block-02.npz",
+          "sha256": "60f0f41c6c29e0976175bc1cd7c78a71b49710a0a0b00fa5b0938de510c1fecb"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-016/block-03.npz",
+          "sha256": "2c8fdf36a3fb43255bb4947ddc3e38773b19a272f1e42fc2e59ef63caf7a9ca1"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "9dd271bacf9743fab5e61bc5e580bf6c56d6daf035bd7accb46dba92bb60d0f6"
+    },
+    {
+      "index": 17,
+      "case_index": 1,
+      "role": "finest_replay",
+      "metadata_status": "complete",
+      "blocks_completed": 7,
+      "total_wall_seconds": 162.53187829256058,
+      "pricing_cpu_seconds": 156.892752434,
+      "max_mcse_over_strict_sd": [
+        16.412968830101008
+      ],
+      "strict_mc_target_met": false,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-017/block-00.npz",
+          "sha256": "e152c3613a36ce688b2a55867010db73862ca79cdbd067ae02b2303ff15808b9"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-017/block-01.npz",
+          "sha256": "53632285b4bf4e6ea30e35de56ef83b3c7ca5a6b9fbd217d7ed22e71b52d704c"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-017/block-02.npz",
+          "sha256": "416bd320bc997f105c313ff44d3fd7460e2ae56deb5c408bf516d656459a945a"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-017/block-03.npz",
+          "sha256": "a1482751f78cda9a4bce1bb02c1412206f10055074ff0b496948d06a55fb5c12"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-017/block-04.npz",
+          "sha256": "720088cb294da3d6861800520664fa899057ee114e3221d725a2cf638684d666"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-017/block-05.npz",
+          "sha256": "72b8b4fb6c5888a7cb7f60289908580a613b26a8ff07d59f9e4ab8aa59731c37"
+        },
+        {
+          "block": 6,
+          "contracts": [
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-017/block-06.npz",
+          "sha256": "6e5dc7683dea17e2864f38a9ada399ad16a3304c5319e2bd2b8a76c1313f27a4"
+        }
+      ],
+      "payload": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-017/results.npz",
+        "sha256": "2cd4631eadf7093ce68cee8d578040ee2f0e9b283a67edacea990e9fb7affb6b"
+      },
+      "record_sha256": "b6d2835445d8dbca44c503476906fa99d73a715cb95f2d0d7a51c1749968bd0d"
+    },
+    {
+      "index": 18,
+      "case_index": 1,
+      "role": "coupled_1_2",
+      "metadata_status": "failed",
+      "blocks_completed": 6,
+      "total_wall_seconds": 156.41999501176178,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-018/block-00.npz",
+          "sha256": "c81bb91566cac7f55efea43cebb7be3b2532ba861cd162ba571187fd21b10b5c"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-018/block-01.npz",
+          "sha256": "fe19940d91bfc33eb09e8dc1ed88ff77aacf7592d9bc3857782572a14e1902cb"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-018/block-02.npz",
+          "sha256": "4d28cfee58e301bed72adbb852fb0b03d8cc319d996d5e5e10c6bfaffa2eec4f"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-018/block-03.npz",
+          "sha256": "4c77a0a984c1f494033af919e4980192e8718629a711b64d60102b86d0bc3606"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-018/block-04.npz",
+          "sha256": "63078353451dfcc418a46c7544f0a898f1e7baf6269df3395e0cea76a19f03c9"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-018/block-05.npz",
+          "sha256": "21aac88674a6b8a032a7f04ac1974028bd516c9fc98f311f78419c5b6881b55f"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "278e11a5ae1338ce5fd37fb1be5406ab6d13fe1a220da09c2a5bfd5d8211c541"
+    },
+    {
+      "index": 19,
+      "case_index": 1,
+      "role": "coupled_2_4",
+      "metadata_status": "failed",
+      "blocks_completed": 2,
+      "total_wall_seconds": 143.9475907413289,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-019/block-00.npz",
+          "sha256": "47c2a13c92283c5dd7bb06cb03b2ab9a549b51e3412895b7b4a557f597618f75"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-019/block-01.npz",
+          "sha256": "337a88622ac2963d31bd7edcc5c9f62863cb02c3b22d9cb0402a563c32eae10b"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "8f72f487e39e17f24082d41bcc645b7691bcf0ad00f37fad16b94c105786ccb1"
+    },
+    {
+      "index": 20,
+      "case_index": 1,
+      "role": "finest_replay",
+      "metadata_status": "failed",
+      "blocks_completed": 6,
+      "total_wall_seconds": 131.3030749000609,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-020/block-00.npz",
+          "sha256": "22780523f223506eee97d7cc4deb9ff2a4098272bba740b98eb4640b9c520b50"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-020/block-01.npz",
+          "sha256": "7c99e74bdd99927573add9644b6e37be969ae6b7e35b22fe70ab366bab4425ad"
+        },
+        {
+          "block": 2,
+          "contracts": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-020/block-02.npz",
+          "sha256": "3de775669a513d48600d898d37dc9987925499f554c4217a7da0602908ebb218"
+        },
+        {
+          "block": 3,
+          "contracts": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-020/block-03.npz",
+          "sha256": "47daa238e2dcadc2cc530aa498ce8d9e29981d153abccd5df4622408fe43897f"
+        },
+        {
+          "block": 4,
+          "contracts": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-020/block-04.npz",
+          "sha256": "a87174504efa9ce8fa1d7bde3d83d38612f5af1456981d009cd23644dc85eac9"
+        },
+        {
+          "block": 5,
+          "contracts": [
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-020/block-05.npz",
+          "sha256": "01d011cdc3eb38852ed4bcb10fe209712eed213aae73212869f15b48fa157dfb"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "1658f256fc748d351eb4e23fc0a3bc735ba1f08dea13e2eaac275d5b389614ce"
+    },
+    {
+      "index": 21,
+      "case_index": 1,
+      "role": "coupled_1_2",
+      "metadata_status": "failed",
+      "blocks_completed": 2,
+      "total_wall_seconds": 35.46064383909106,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [
+        {
+          "block": 0,
+          "contracts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-021/block-00.npz",
+          "sha256": "4e0ba5bb839c58cf0f5b319256b4e89ff54cc26319df2fb209a417d309e31c78"
+        },
+        {
+          "block": 1,
+          "contracts": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/payload/component-021/block-01.npz",
+          "sha256": "e54bad6feb860ce4fd32b874a083cf5598244c5ee50826dd5875332cef465ba1"
+        }
+      ],
+      "payload": null,
+      "record_sha256": "4ab3feb0913f04468f68b3f3536cfcfd6d8fb38d49c1028318a8f19117d32ee8"
+    },
+    {
+      "index": 22,
+      "case_index": 1,
+      "role": "coupled_2_4",
+      "metadata_status": "failed",
+      "blocks_completed": 0,
+      "total_wall_seconds": 16.35754444822669,
+      "pricing_cpu_seconds": null,
+      "max_mcse_over_strict_sd": null,
+      "strict_mc_target_met": null,
+      "block_payloads": [],
+      "payload": null,
+      "record_sha256": "78fbc554521db4fefa9763cf614844c8a569dc114ccf1f91693c9def83cb9bad"
+    }
+  ],
+  "queue_after_cancel": "",
+  "sacct": "8820876_0|8820877|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:20:53|122|01:52.663||32G|1|0:0\n8820876_0.batch|8820877.batch|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:20:53|122|01:52.663|1131808K||1|0:0\n8820876_0.extern|8820877.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:20:53|122|00:00:00|||1|0:0\n8820876_1|8820878|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:13|262|04:11.961||32G|1|0:0\n8820876_1.batch|8820878.batch|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:13|262|04:11.961|1964788K||1|0:0\n8820876_1.extern|8820878.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:13|262|00:00:00|||1|0:0\n8820876_2|8820879|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:28|157|02:27.347||32G|1|0:0\n8820876_2.batch|8820879.batch|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:28|157|02:27.347|1624672K||1|0:0\n8820876_2.extern|8820879.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:28|157|00:00:00|||1|0:0\n8820876_3|8820880|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:01|130|01:59.755||32G|1|0:0\n8820876_3.batch|8820880.batch|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:01|130|01:59.755|1104064K||1|0:0\n8820876_3.extern|8820880.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:01|130|00:00:00|||1|0:0\n8820876_4|8820881|CANCELLED by 140010387|2026-11-11T00:18:51|2026-11-11T00:23:56|305|04:57.797||32G|1|0:0\n8820876_4.batch|8820881.batch|FAILED|2026-11-11T00:18:51|2026-11-11T00:23:58|307|04:57.797|1575968K||1|1:0\n8820876_4.extern|8820881.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:58|307|00:00:00|||1|0:0\n8820876_5|8820882|CANCELLED by 140010387|2026-11-11T00:18:51|2026-11-11T00:23:56|305|04:55.051||32G|1|0:0\n8820876_5.batch|8820882.batch|FAILED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|04:55.051|1606840K||1|1:0\n8820876_5.extern|8820882.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|00:00:00|||1|0:0\n8820876_6|8820883|CANCELLED by 140010387|2026-11-11T00:18:51|2026-11-11T00:23:56|305|04:54.079||32G|1|0:0\n8820876_6.batch|8820883.batch|FAILED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|04:54.079|1056784K||1|1:0\n8820876_6.extern|8820883.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|00:00:00|||1|0:0\n8820876_7|8820884|CANCELLED by 140010387|2026-11-11T00:18:51|2026-11-11T00:23:56|305|04:55.346||32G|1|0:0\n8820876_7.batch|8820884.batch|FAILED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|04:55.346|1567560K||1|1:0\n8820876_7.extern|8820884.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|00:00:00|||1|0:0\n8820876_8|8820885|CANCELLED by 140010387|2026-11-11T00:18:51|2026-11-11T00:23:56|305|04:55.244||32G|1|0:0\n8820876_8.batch|8820885.batch|FAILED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|04:55.244|1614268K||1|1:0\n8820876_8.extern|8820885.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|00:00:00|||1|0:0\n8820876_9|8820886|CANCELLED by 140010387|2026-11-11T00:18:51|2026-11-11T00:23:56|305|04:55.260||32G|1|0:0\n8820876_9.batch|8820886.batch|FAILED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|04:55.260|1067904K||1|1:0\n8820876_9.extern|8820886.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|00:00:00|||1|0:0\n8820876_10|8820887|CANCELLED by 140010387|2026-11-11T00:18:51|2026-11-11T00:23:56|305|04:55.291||32G|1|0:0\n8820876_10.batch|8820887.batch|FAILED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|04:55.291|1570704K||1|1:0\n8820876_10.extern|8820887.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|00:00:00|||1|0:0\n8820876_11|8820888|CANCELLED by 140010387|2026-11-11T00:18:51|2026-11-11T00:23:56|305|04:55.148||32G|1|0:0\n8820876_11.batch|8820888.batch|FAILED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|04:55.148|1601812K||1|1:0\n8820876_11.extern|8820888.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|00:00:00|||1|0:0\n8820876_12|8820889|CANCELLED by 140010387|2026-11-11T00:18:51|2026-11-11T00:23:56|305|04:55.163||32G|1|0:0\n8820876_12.batch|8820889.batch|FAILED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|04:55.163|1252796K||1|1:0\n8820876_12.extern|8820889.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:57|306|00:00:00|||1|0:0\n8820876_13|8820890|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:30|279|04:26.788||32G|1|0:0\n8820876_13.batch|8820890.batch|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:30|279|04:26.788|2017884K||1|0:0\n8820876_13.extern|8820890.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:23:30|279|00:00:00|||1|0:0\n8820876_14|8820891|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:36|165|02:36.024||32G|1|0:0\n8820876_14.batch|8820891.batch|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:36|165|02:36.024|1632272K||1|0:0\n8820876_14.extern|8820891.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:36|165|00:00:00|||1|0:0\n8820876_15|8820892|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:13|142|02:12.745||32G|1|0:0\n8820876_15.batch|8820892.batch|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:13|142|02:12.745|1185660K||1|0:0\n8820876_15.extern|8820892.extern|COMPLETED|2026-11-11T00:18:51|2026-11-11T00:21:13|142|00:00:00|||1|0:0\n8820876_16|8820951|CANCELLED by 140010387|2026-11-11T00:20:56|2026-11-11T00:23:56|180|02:52.214||32G|1|0:0\n8820876_16.batch|8820951.batch|FAILED|2026-11-11T00:20:56|2026-11-11T00:23:57|181|02:52.214|2049372K||1|1:0\n8820876_16.extern|8820951.extern|COMPLETED|2026-11-11T00:20:56|2026-11-11T00:23:57|181|00:00:00|||1|0:0\n8820876_17|8820964|COMPLETED|2026-11-11T00:21:04|2026-11-11T00:23:51|167|02:38.215||32G|1|0:0\n8820876_17.batch|8820964.batch|COMPLETED|2026-11-11T00:21:04|2026-11-11T00:23:51|167|02:38.215|1678884K||1|0:0\n8820876_17.extern|8820964.extern|COMPLETED|2026-11-11T00:21:04|2026-11-11T00:23:51|167|00:00:00|||1|0:0\n8820876_18|8820968|CANCELLED by 140010387|2026-11-11T00:21:17|2026-11-11T00:23:56|159|02:34.122||32G|1|0:0\n8820876_18.batch|8820968.batch|FAILED|2026-11-11T00:21:17|2026-11-11T00:23:57|160|02:34.122|1139716K||1|1:0\n8820876_18.extern|8820968.extern|COMPLETED|2026-11-11T00:21:17|2026-11-11T00:23:57|160|00:00:00|||1|0:0\n8820876_19|8820992|CANCELLED by 140010387|2026-11-11T00:21:29|2026-11-11T00:23:56|147|02:22.286||32G|1|0:0\n8820876_19.batch|8820992.batch|FAILED|2026-11-11T00:21:29|2026-11-11T00:23:57|148|02:22.286|1503092K||1|1:0\n8820876_19.extern|8820992.extern|COMPLETED|2026-11-11T00:21:29|2026-11-11T00:23:57|148|00:00:00|||1|0:0\n8820876_20|8820994|CANCELLED by 140010387|2026-11-11T00:21:38|2026-11-11T00:23:56|138|02:06.144||32G|1|0:0\n8820876_20.batch|8820994.batch|FAILED|2026-11-11T00:21:38|2026-11-11T00:23:57|139|02:06.144|1663844K||1|1:0\n8820876_20.extern|8820994.extern|COMPLETED|2026-11-11T00:21:38|2026-11-11T00:23:57|139|00:00:00|||1|0:0\n8820876_21|8821038|CANCELLED by 140010387|2026-11-11T00:23:17|2026-11-11T00:23:56|39|00:33.574||32G|1|0:0\n8820876_21.batch|8821038.batch|FAILED|2026-11-11T00:23:17|2026-11-11T00:23:57|40|00:33.574|896980K||1|1:0\n8820876_21.extern|8821038.extern|COMPLETED|2026-11-11T00:23:17|2026-11-11T00:23:57|40|00:00:00|||1|0:0\n8820876_22|8821047|CANCELLED by 140010387|2026-11-11T00:23:37|2026-11-11T00:23:56|19|00:15.510||32G|1|0:0\n8820876_22.batch|8821047.batch|FAILED|2026-11-11T00:23:37|2026-11-11T00:23:57|20|00:15.510|830828K||1|1:0\n8820876_22.extern|8821047.extern|COMPLETED|2026-11-11T00:23:37|2026-11-11T00:23:57|20|00:00:00|||1|0:0\n8820876_23|8821053|CANCELLED by 140010387|2026-11-11T00:23:53|2026-11-11T00:23:56|3|00:00:00||32G|1|0:0\n8820876_23.batch|8821053.batch|CANCELLED|2026-11-11T00:23:53|2026-11-11T00:24:02|9|00:00:00|||1|\n8820876_23.extern|8821053.extern|COMPLETED|2026-11-11T00:23:53|2026-11-11T00:23:56|3|00:00:00|||1|0:0\n8820876_[24-47%16]|8820876|CANCELLED by 140010387|None|2026-11-11T00:23:56|0|00:00:00||32G|0|0:0\n",
+  "scope": "Intentional administrative stop, not a numerical acceptance or execution-failure claim. Running metadata remains preserved as written; Slurm cancellation is authoritative.",
+  "numerical_target_established": false,
+  "scientific_acceptance": false
+}

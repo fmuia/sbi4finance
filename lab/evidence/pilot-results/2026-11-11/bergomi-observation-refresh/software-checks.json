@@ -1,0 +1,27 @@
+{
+  "test": {
+    "status": "passed",
+    "log_sha256": "5b5d8ee3c3da5e75b0f9997bc28b76b57e026b866fbde2d90c3028c1720e19c7",
+    "local_log": "/private/tmp/bergomi-final-tests.log",
+    "summary": "891 tests passed in 326.004 seconds"
+  },
+  "manifest": {
+    "status": "passed",
+    "log_sha256": "48aa6cae8c70abdb28631d22b316e6d9f9d0768ec2911de7090e248b2afe6ca1",
+    "local_log": "/private/tmp/bergomi-release-manifest.log",
+    "summary": "current"
+  },
+  "claims": {
+    "status": "passed",
+    "log_sha256": "48aa6cae8c70abdb28631d22b316e6d9f9d0768ec2911de7090e248b2afe6ca1",
+    "local_log": "/private/tmp/bergomi-release-claims.log",
+    "summary": "current"
+  },
+  "runtime_boundary": {
+    "status": "passed",
+    "log_sha256": "aa9a51a9d8a5024364d6fb3d93492f1837fc35770fb11ea939ba9f8310a57122",
+    "local_log": "/private/tmp/bergomi-final-runtime-boundary.log",
+    "summary": "tutorial-owned runtime: 183 shared symbols, no duplicated lab implementations"
+  },
+  "tutorial_runtime_changed": false
+}

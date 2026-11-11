@@ -1,0 +1,40 @@
+{
+  "format": "rough_actual_layout_overnight_master_authorization_v1",
+  "created_utc": "2026-11-11T06:31:43.027253+00:00",
+  "bank_plan_sha256": "fc246356d5a12e4a0c77413efa3c5f81254676ff80f778ba5e5d503671a38a1b",
+  "generation_authorized": true,
+  "mode": "candidate_only",
+  "label_policy_authorized": true,
+  "pilot_execution_reviewed": true,
+  "pilot_numerical_review_passed": false,
+  "scientific_acceptance": false,
+  "numerical_policy": {
+    "format": "rough_actual_layout_historical_sigma_numerical_budget_v1",
+    "grid_multiplier": 1,
+    "paths_ladder": [
+      32768,
+      65536,
+      131072,
+      262144,
+      524288,
+      1048576,
+      2097152
+    ],
+    "numerical_reference_forward": 0.00044092792100661605,
+    "numerical_reference_scope": "historical_median_not_observation_noise",
+    "historical_sigma_vector_sha256": "5c0030a847a54f4e90b29034590af3337426f98467a22fdad5c63ace6f40467c",
+    "preferred_mcse_over_reference_sigma": 0.25,
+    "hardcap_mcse_over_reference_sigma": 0.5,
+    "refinement_requirement": "record_only_not_certified",
+    "price_target": "finite_hybrid_base_grid_expectation"
+  },
+  "numerical_review": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-full-20261111/preparation/pilot-readout.json",
+    "sha256": "6715b95ae8c928f768a77330368764a12403e5d7d7e2e5ecab2d24f329236cb1"
+  },
+  "direct_user_request": "Queue the full300k joint-c training target overnight using the restored original computational settings; preserve partial results and allow later inspection/training.",
+  "heston_diagnostics_passed": false,
+  "supersedes_previous_Heston_success_execution_gate": true,
+  "root_reviewed_exact_plan_sha256": "fc246356d5a12e4a0c77413efa3c5f81254676ff80f778ba5e5d503671a38a1b",
+  "scope": "Remaining299000 joint training rows1000..299999, all5980 packed shards queued now; first1000 remain in8822042. Original engineering noise reference controls pricing budget only; observation law remains P+c*h*Z. No scientific acceptance or continuous-grid precision certification."
+}

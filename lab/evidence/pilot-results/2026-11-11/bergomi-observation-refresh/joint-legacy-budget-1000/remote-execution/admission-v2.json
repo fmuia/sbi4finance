@@ -1,0 +1,45 @@
+{
+  "format": "rough_actual_layout_legacy_budget_execution_authorization_v1",
+  "created_utc": "2026-11-11T06:03:36.685287+00:00",
+  "bank_plan_sha256": "1027e17a4a12270724183ad7a51ce26622764107742a5811bc25a0e47bb90f7e",
+  "generation_authorized": true,
+  "mode": "candidate_only",
+  "label_policy_authorized": true,
+  "pilot_execution_reviewed": true,
+  "pilot_numerical_review_passed": false,
+  "scientific_acceptance": false,
+  "numerical_policy": {
+    "format": "rough_actual_layout_historical_sigma_numerical_budget_v1",
+    "grid_multiplier": 1,
+    "paths_ladder": [
+      32768,
+      65536,
+      131072,
+      262144,
+      524288,
+      1048576,
+      2097152
+    ],
+    "numerical_reference_forward": 0.00044092792100661605,
+    "numerical_reference_scope": "historical_median_not_observation_noise",
+    "historical_sigma_vector_sha256": "5c0030a847a54f4e90b29034590af3337426f98467a22fdad5c63ace6f40467c",
+    "preferred_mcse_over_reference_sigma": 0.25,
+    "hardcap_mcse_over_reference_sigma": 0.5,
+    "refinement_requirement": "record_only_not_certified",
+    "price_target": "finite_hybrid_base_grid_expectation"
+  },
+  "numerical_review": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preparation/pilot-readout.json",
+    "sha256": "6715b95ae8c928f768a77330368764a12403e5d7d7e2e5ecab2d24f329236cb1"
+  },
+  "direct_user_request": "Start Bergomi simulations, parallelize on Oscar, prioritize jointly inferred c; root approved this finite first1000-row tranche before larger300k target.",
+  "heston_diagnostics_passed": false,
+  "supersedes_previous_Heston_success_execution_gate": true,
+  "root_reviewed_exact_plan_sha256": "1027e17a4a12270724183ad7a51ce26622764107742a5811bc25a0e47bb90f7e",
+  "scope": "only1000joint training clean-price rows; future300k planned, not allocated; retained failures and MC diagnostics; no scientific precision pass inferred",
+  "replaces_preflight_only_admission": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/preparation/admission.json",
+    "sha256": "74b0e516ea0e51260326ea8dda904046942a6605aed56b4bd00cfe4a8971b727"
+  },
+  "validation_method": "explicit complete checkout source import paths; direct validator"
+}
