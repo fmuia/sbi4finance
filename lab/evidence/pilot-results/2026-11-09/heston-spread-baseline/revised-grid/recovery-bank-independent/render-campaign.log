@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_grid_campaign.py", line 297, in <module>
+    args = parser.parse_args(); result = build(args.campaign, args.out)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_pr87_grid_campaign.py", line 235, in build
+    raise ValueError("saved revised-grid endpoint identity differs")
+ValueError: saved revised-grid endpoint identity differs

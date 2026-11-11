@@ -1,0 +1,131 @@
+{
+  "format": "heston_pr87_grid_reference_link_audit_v1",
+  "status": "complete",
+  "audited_utc": "2026-11-11T04:53:55.592654+00:00",
+  "consumer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/audit_heston_pr87_grid_reference_links.py",
+    "sha256": "d0d7ee8439d3e0da364343fd492d269599dfb207af00cc13bbf955fadce043e8"
+  },
+  "campaign_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/campaign-protocol.json",
+    "sha256": "3f5954baf7a27505ddb777e20e55fb60907532b1147cfb441c1827d61ef38c1d"
+  },
+  "reference_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/reference-protocol.json",
+    "sha256": "826c28f1983beed61954a8516d034a4abf1a8f714205f7ff1b5d1ee0b520992e"
+  },
+  "endpoints": [
+    {
+      "fit": "200k-300",
+      "endpoint": "primary",
+      "epoch": 300,
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation/evaluation.json",
+        "sha256": "0e5e01ebf8c2d1d4b77b4a0cd872d0249fb14995d9d27487368debead9b3f29e"
+      },
+      "declared_case_links_matched": [
+        "synthetic-broad",
+        "synthetic-market-like",
+        "market"
+      ]
+    },
+    {
+      "fit": "200k-300",
+      "endpoint": "secondary",
+      "epoch": 272,
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/200k-300/evaluation-best-validation/evaluation.json",
+        "sha256": "4d78068aa33e15f26d80f7e72b92f3995bf880dca11e6ffadd5184fae51513f0"
+      },
+      "declared_case_links_matched": [
+        "synthetic-broad",
+        "synthetic-market-like",
+        "market"
+      ]
+    },
+    {
+      "fit": "300k-300",
+      "endpoint": "primary",
+      "epoch": 300,
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/300k-300/evaluation/evaluation.json",
+        "sha256": "50312e178e17c800a9ac8c29f57261efb64b2f187d1d7ef37a09b3df47930f90"
+      },
+      "declared_case_links_matched": [
+        "synthetic-broad",
+        "synthetic-market-like",
+        "market"
+      ]
+    },
+    {
+      "fit": "300k-300",
+      "endpoint": "secondary",
+      "epoch": 259,
+      "evaluation": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/300k-300/evaluation-best-validation/evaluation.json",
+        "sha256": "bd1420e60e29f804df9a311951a5e01d5e9aa7bd9af4a4ca2445aa21c1c2508d"
+      },
+      "declared_case_links_matched": [
+        "synthetic-broad",
+        "synthetic-market-like",
+        "market"
+      ]
+    }
+  ],
+  "expected_endpoint_case_pairs": 12,
+  "endpoint_case_pairs_verified": 12,
+  "declared_reference_links": {
+    "synthetic-broad": {
+      "reference_run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/synthetic-broad/run.json",
+        "sha256": "a13f11e5870152a57907881dd23b79802a61cb2cb5ae85c93fe33253dd9ccc01"
+      },
+      "reference_diagnostics": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/synthetic-broad/diagnostics.json",
+        "sha256": "84777463992fb8d0774c69df24888dc595336cef79b563f991a41c50344f9c43"
+      },
+      "reference_chain_payload": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/references/synthetic-broad/attempt-1/chains.npz",
+        "sha256": "357bd522d3092dc03c2fbd01787f2bdc3d24463e512022fad193bf195c989f5e"
+      }
+    },
+    "synthetic-market-like": {
+      "reference_run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/synthetic-market-like/run.json",
+        "sha256": "bcbdabd6122ebe9358f2dbddce2583516b623229963456d36144365c275e8079"
+      },
+      "reference_diagnostics": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/synthetic-market-like/diagnostics.json",
+        "sha256": "d8758b1ee0d06816500a45d39aaf78da92a560ec6bd5430c2e991e55eea1be38"
+      },
+      "reference_chain_payload": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/references/synthetic-market-like/attempt-1/chains.npz",
+        "sha256": "6f64d045e4bf8907f78d598d00a529db73b5b8ad2464425c807970d9dd005bd9"
+      }
+    },
+    "market": {
+      "reference_run": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/market/run.json",
+        "sha256": "ce5664eb0d8832214d80cf96f2376681416a21a31580d1cedb6eb83622ba0f92"
+      },
+      "reference_diagnostics": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/references/market/diagnostics.json",
+        "sha256": "efa37466a4bc242598d5d97e04222d06d2adc19147855aa367e22737640b5395"
+      },
+      "reference_chain_payload": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/revised-grid/recovery-bank-independent/references/market/attempt-1/chains.npz",
+        "sha256": "7af686d421d128c79728c2ecf42db4026c675043467a20ec7c24b8e19c572a4d"
+      }
+    }
+  },
+  "chain_arrays_opened": false,
+  "raw_draw_arrays_opened": false,
+  "model_loads": 0,
+  "new_pricing_or_posterior_queries": 0,
+  "scientific_acceptance": false,
+  "scope": "Metadata supplement to the independent raw-draw audit; all reference payload hashes are crossmatched from JSON, with no chain arrays opened.",
+  "archived_consumer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/independent-reference-link-consumer.py",
+    "sha256": "d0d7ee8439d3e0da364343fd492d269599dfb207af00cc13bbf955fadce043e8"
+  }
+}

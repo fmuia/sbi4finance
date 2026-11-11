@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "fixture_root": "/private/tmp/pr87-grid-campaign-renderer-7bkfai19",
+  "report_bytes": 744918,
+  "inline_svg_count": 20,
+  "full_bodies": 2,
+  "endpoints": 4,
+  "canonical_training_aliases_pass": true,
+  "unrelated_same_content_alias_rejected": true,
+  "changed_alias_even_with_updated_binding_rejected": true,
+  "identifier_prefix_and_references_valid": true,
+  "incomplete_campaign_rejected": true,
+  "changed_report_rejected": true,
+  "oversize_rejected_without_truncation": true,
+  "recovery_aborted_attempt_and_resource_scope_visible": true,
+  "scientific_queries_or_pricing": 0,
+  "aggregate": {
+    "path": "/private/tmp/pr87-grid-campaign-renderer-7bkfai19/aggregate/report.html",
+    "sha256": "efdf85130f36658d83c101e93747278b2f9761415b290c165b1c45b710b85725"
+  }
+}

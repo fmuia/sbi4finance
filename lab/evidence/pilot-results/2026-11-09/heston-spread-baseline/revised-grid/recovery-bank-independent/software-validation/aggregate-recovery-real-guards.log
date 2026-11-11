@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "run": "200k-300",
+      "actual_declared_pair": true,
+      "unrelated_same_content_file_rejected": true,
+      "tampered_alias_with_updated_hash_rejected": true,
+      "production_inputs_modified": false
+    },
+    {
+      "run": "300k-300",
+      "actual_declared_pair": true,
+      "unrelated_same_content_file_rejected": true,
+      "tampered_alias_with_updated_hash_rejected": true,
+      "production_inputs_modified": false
+    }
+  ],
+  "raw_arrays_models_or_chains_opened": false,
+  "new_pricing_or_neural_queries": false
+}
