@@ -106,6 +106,40 @@ class TrajectoryForwardTests(unittest.TestCase):
         self.assertGreater(figure.axes[0].lines[0].get_ydata().max(), figure.axes[0].get_ylim()[1])
         np.testing.assert_array_equal(returns, original)
 
+    def test_comparison_reuses_each_realizations_noise_at_every_setting_and_refreshes_together(self):
+        for model, parameter in (("heston", "vol_of_vol"), ("rough-known", "hurst"), ("rough-joint", "eta")):
+            with self.subTest(model=model):
+                task, _, _ = lesson.load_example(model)
+                chosen = dict(zip(task["parameter_names"], np.mean(task["prior_bounds"], axis=1), strict=True))
+                before = chosen.copy()
+                comparison = lesson.simulator_comparison(task, chosen, parameter, days=29, seed=37)
+                refreshed = lesson.simulator_comparison(task, chosen, parameter, days=29, seed=38)
+                self.assertEqual(chosen, before)
+                self.assertNotIn(parameter, comparison["fixed_parameters"])
+                for value, preview, other in zip(comparison["settings"], comparison["previews"], refreshed["previews"], strict=True):
+                    direct = lesson.simulator_preview(task, {**chosen, parameter: value}, paths=4, days=29, seed=37)
+                    np.testing.assert_array_equal(preview["observations"], direct["observations"])
+                    self.assertFalse(np.array_equal(preview["observations"], other["observations"]))
+                    self.assertFalse(np.array_equal(preview["observations"][0], preview["observations"][1]))
+                figure = lesson.simulator_comparison_figure(comparison, scale="Wide")
+                for index, axis in enumerate(figure.axes):
+                    self.assertEqual(axis.get_ylim(), lesson.SIMULATOR_SCALES["Wide"]["returns" if index < 3 else "realized"])
+                    self.assertEqual(len(axis.lines), 4)
+                with self.assertRaisesRegex(ValueError, "comparison parameter"):
+                    lesson.simulator_comparison(task, chosen, "drift")
+
+    def test_empirical_motivation_is_an_accepted_fixed_window_with_exact_return_conversion(self):
+        example = lesson.load_market_example()
+        self.assertEqual(example["metadata"]["ticker"], "VOO")
+        self.assertEqual(example["dates"][0], "2020-01-03")
+        self.assertEqual(example["dates"][-1], "2021-01-07")
+        self.assertEqual(len(example["log_returns"]), 256)
+        np.testing.assert_array_equal(example["log_returns"], np.log1p(example["simple_returns"]))
+        figure = lesson.market_motivation_figure(example)
+        self.assertEqual(len(figure.axes), 2)
+        np.testing.assert_array_equal(figure.axes[0].lines[0].get_ydata(), 100 * example["log_returns"])
+        self.assertEqual(figure.axes[1].get_yscale(), "log")
+
 
 if __name__ == "__main__":
     unittest.main()

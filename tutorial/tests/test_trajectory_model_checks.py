@@ -148,6 +148,95 @@ class TrajectoryModelCheckTests(unittest.TestCase):
             self.assertGreater(high, max(result["summaries"][:, index].max(), result["observed_summary"][index]))
             self.assertEqual(ax.lines[0].get_xdata()[0], result["observed_summary"][index])
 
+    def test_ordering_reuses_only_revealed_returns_and_retains_constant_rows(self):
+        changed = copy.deepcopy(self.panel)
+        changed["data"]["observations"][0] = 0
+        observed = self.observed.copy()
+        observed[21:] = np.nan
+        result = model_checks.compare_prior(self.task, changed, observed, 21)
+        ordering = result["ordering"]
+        np.testing.assert_array_equal(np.sort(ordering["shuffled_returns"][:, 0]),
+                                      np.sort(observed[:21, 0]))
+        self.assertEqual(ordering["signed"]["count"], 4)
+        self.assertEqual(ordering["signed"]["available_count"], 3)
+        self.assertTrue(np.isnan(ordering["signed"]["replicated"][0]).all())
+        figure = model_checks.plot_ordering(result, show_shuffle=True)
+        self.assertEqual(len(figure.axes), 2)
+        for ax in figure.axes:
+            self.assertEqual(ax.get_ylim(), (-1., 1.))
+
+    def test_precision_replicas_use_full_tasks_distinct_chunk_seeds_and_complete_rows(self):
+        values = self.panel["data"]["parameters"]
+        with mock.patch.object(simulation, "simulate_parameters", wraps=simulation.simulate_parameters) as simulate:
+            result = model_checks.replicate_check(self.task, self.observed, values, 21, count=256, seed=91)
+        self.assertEqual(simulate.call_count, 8)
+        seeds = [call.kwargs["seed"] for call in simulate.call_args_list]
+        self.assertEqual(seeds, result["metadata"]["chunk_seeds"])
+        self.assertEqual(len(set(seeds)), 8)
+        self.assertTrue(all(call.args[0] == self.task and len(call.args[1]) == 32
+                            for call in simulate.call_args_list))
+        self.assertEqual(result["replicated_returns"].shape, (256, 29, 1))
+        self.assertEqual(result["replicated_prefix"].shape, (256, 21, 1))
+        indices = result["metadata"]["posterior_indices"]
+        np.testing.assert_array_equal(result["selected_parameters"], values[indices])
+        self.assertEqual(result["metadata"]["selection"], "uniform complete rows with replacement")
+
+    def test_drawdown_groups_match_process_inputs_and_keep_parameter_coordinates_paired(self):
+        task = simulation.teaching_task("rough-known", observations=1260)
+        parameters = simulation.generate(task, "validation", 0, 4, seed=73, backend="numpy")["parameters"]
+        before = parameters.copy()
+
+        def fake_simulate(task, rows, *, seed, backend):
+            self.assertEqual(task["n_observations"], 1260)
+            self.assertEqual(backend, "numpy")
+            return (np.random.default_rng(seed).normal(0, .01, (len(rows), 1260, 1))
+                    + rows[:, 0, None, None] * .0001)
+
+        with mock.patch.object(simulation, "simulate_parameters", side_effect=fake_simulate) as simulate:
+            result = model_checks.generate_drawdown(task, parameters, 126, count=128, seed=91)
+        self.assertEqual(simulate.call_count, 8)
+        first = simulate.call_args_list[:4]
+        second = simulate.call_args_list[4:]
+        seeds = [call.kwargs["seed"] for call in first]
+        self.assertEqual(seeds, [call.kwargs["seed"] for call in second])
+        self.assertEqual(len(set(seeds)), 4)
+        np.testing.assert_array_equal(result["groups"]["posterior"]["parameters"],
+                                      parameters[result["posterior_indices"]])
+        np.testing.assert_allclose(result["point_parameters"], parameters.mean(axis=0))
+        self.assertEqual(result["groups"]["point"]["returns"].shape, (128, 126, 1))
+        point = result["groups"]["point"]
+        mixture = result["groups"]["posterior"]
+        a = point["returns"] - point["parameters"][:, 0, None, None] * .0001
+        b = mixture["returns"] - mixture["parameters"][:, 0, None, None] * .0001
+        np.testing.assert_allclose(a, b, atol=1e-17)
+        self.assertGreater(np.std(point["maximum_drawdown"]), 0)
+        np.testing.assert_array_equal(parameters, before)
+        with mock.patch.object(simulation, "simulate_parameters") as simulate:
+            lower = model_checks.drawdown_readout(result, .05)
+            upper = model_checks.drawdown_readout(result, .5)
+            simulate.assert_not_called()
+        self.assertTrue(all(a["exceedances"] >= b["exceedances"] for a, b in zip(lower, upper)))
+        figure = model_checks.plot_drawdown(result)
+        self.assertEqual(figure.axes[0].get_ylim(), (0., 3.))
+        self.assertEqual(figure.axes[1].get_xlim(), (0., 100.))
+
+    def test_drawdown_precision_and_simulation_failure_are_explicit_and_bounded(self):
+        parameters = self.panel["data"]["parameters"]
+        with mock.patch.object(simulation, "simulate_parameters",
+                               side_effect=lambda task, rows, **kw: np.zeros((len(rows), 29, 1))) as simulate:
+            result = model_checks.generate_drawdown(self.task, parameters, 7, count=512)
+        self.assertEqual(simulate.call_count, 32)
+        self.assertTrue(all(len(call.args[1]) <= 32 for call in simulate.call_args_list))
+        self.assertEqual(result["metadata"]["count"], 512)
+        self.assertEqual(model_checks.drawdown_readout(result, 0.)[0]["exceedances"], 0)
+        with mock.patch.object(simulation, "simulate_parameters", side_effect=FloatingPointError("failed row")) as simulate:
+            with self.assertRaisesRegex(FloatingPointError, "failed row"):
+                model_checks.generate_drawdown(self.task, parameters, 7)
+            self.assertEqual(simulate.call_count, 1)
+        for count in (32, 129, True):
+            with self.subTest(count=count), self.assertRaises(ValueError):
+                model_checks.generate_drawdown(self.task, parameters, 7, count=count)
+
 
 if __name__ == "__main__":
     unittest.main()

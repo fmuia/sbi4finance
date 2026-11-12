@@ -80,6 +80,37 @@ def _(lesson_workflow, mo):
     return
 
 
+@app.cell(hide_code=True)
+def _(mo, trajectory):
+    try:
+        _market = trajectory.load_market_example()
+        _metadata = _market["metadata"]
+        _content = [mo.md("### What behavior are we trying to explain?\n\n"
+            "Inspect one fixed market window before we construct synthetic histories. "
+            "Where do large daily moves cluster? How often do large moves occur compared "
+            "with a constant-volatility Gaussian fitted to the same observations?"),
+            trajectory.market_motivation_figure(_market),
+            mo.md("**An empirical motivation, not an inference result.** A selected crisis window "
+                  "does not establish that Bergomi fits better than Heston. Stochastic variance can "
+                  "produce non-Gaussian unconditional returns even with Gaussian instantaneous innovations. "
+                  "This panel does not send real returns to the supplied estimators."),
+            mo.accordion({"Market window and return convention": mo.md(
+                f"**VOO · {_market['dates'][0]} to {_market['dates'][-1]} · 256 daily returns.** "
+                "Cached adjusted-price simple returns are converted with `log1p`; all observations "
+                "are retained. The Gaussian uses the mean and maximum-likelihood standard deviation "
+                "of these same signed log returns. Tail probabilities are descriptive finite-sample "
+                "frequencies, not a predictive validation test.\n\n"
+                f"Source record: `{_metadata.get('source', _metadata.get('source_url', 'see market.json'))}`")}),
+            mo.md("**Next: controlled synthetic histories.** Their generating parameters are known; "
+                  "the following inference and validation exercises concern the declared synthetic model.")]
+        _panel = mo.vstack(_content)
+    except (OSError, ValueError, KeyError) as _error:
+        _panel = mo.callout(mo.md(f"**Empirical motivation unavailable:** {_error}. "
+                                "The synthetic lesson remains available below."), kind="warn")
+    _panel
+    return
+
+
 @app.cell
 def _(mo, trajectory):
     model_choice = mo.ui.dropdown(
@@ -414,27 +445,53 @@ def _(cache_task, mo, parameter_labels):
 def _(mo, trajectory):
     simulator_scale = mo.ui.dropdown(options=list(trajectory.SIMULATOR_SCALES), value="Standard",
                                      label="Fixed simulator axes")
-    mo.vstack([simulator_scale, mo.md(
+    simulator_view = mo.ui.radio(options=["Explore one setting", "Compare three settings"],
+                                 value="Explore one setting", inline=True, label="Simulator view")
+    simulator_refresh = mo.ui.button(value=0, on_click=lambda value: value + 1, label="New realizations")
+    mo.vstack([simulator_view, mo.hstack([simulator_scale, simulator_refresh], justify="start"), mo.md(
         "The axis limits stay fixed when model parameters change. Choose a wider preset yourself. "
-        "All simulated points remain in the data; counts on each panel report points outside the view.")])
-    return (simulator_scale,)
+        "All simulated points remain in the data; counts on each panel report points outside the view. "
+        "New realizations refreshes the random inputs for every setting together.")])
+    return simulator_refresh, simulator_scale, simulator_view
 
 
 @app.cell
-def _(cache_task, mo, simulator_controls, simulator_scale, trajectory):
+def _(cache_task, mo, parameter_labels, simulator_view):
+    _choices = ["vol_of_vol", "kappa"] if cache_task["model"] == "heston" else ["hurst", "eta"]
+    simulator_compare = mo.ui.dropdown(options={parameter_labels[name]: name for name in _choices},
+        value=parameter_labels[_choices[0]], label="Parameter to compare")
+    simulator_compare if simulator_view.value == "Compare three settings" else mo.md("")
+    return (simulator_compare,)
+
+
+@app.cell
+def _(cache_task, mo, simulator_compare, simulator_controls, simulator_refresh, simulator_scale, simulator_view, trajectory):
     try:
-        simulation_preview = trajectory.simulator_preview(
-            cache_task, simulator_controls.value, paths=8, days=252, seed=20261108)
+        _seed = 20261108 + simulator_refresh.value
+        simulation_preview = None
         _limits = trajectory.SIMULATOR_SCALES[simulator_scale.value]
+        if simulator_view.value == "Compare three settings":
+            _comparison = trajectory.simulator_comparison(cache_task, simulator_controls.value,
+                simulator_compare.value, paths=4, days=252, seed=_seed)
+            _display = trajectory.simulator_comparison_figure(_comparison, scale=simulator_scale.value)
+            _detail = mo.md("**Held fixed:** " + ", ".join(
+                f"{name} = {value:g}" for name, value in _comparison["fixed_parameters"].items())
+                + f". Seed {_seed}; four matched realizations per setting. "
+                "The selected parameter slider is replaced by the three displayed values. "
+                "One realization need not change monotonically. Change the random inputs and inspect again.")
+        else:
+            simulation_preview = trajectory.simulator_preview(
+                cache_task, simulator_controls.value, paths=8, days=252, seed=_seed)
+            _display = trajectory.forward_simulator_figure(simulation_preview, scale=simulator_scale.value)
+            _detail = mo.accordion({"Exact axis limits, outside counts and data ranges": mo.ui.table(
+                trajectory.simulator_axis_summary(simulation_preview, simulator_scale.value),
+                selection=None, pagination=False)})
         _panel = mo.vstack([
             mo.md(f"**Fixed axes ({simulator_scale.value}):** asset price "
                   f"**{_limits['prices'][0]:g}–{_limits['prices'][1]:g}**; daily return "
                   f"**{_limits['returns'][0]:g}–{_limits['returns'][1]:g}%**; realized volatility "
                   f"**{_limits['realized'][0]:g}–{_limits['realized'][1]:g}%**."),
-            trajectory.forward_simulator_figure(simulation_preview, scale=simulator_scale.value),
-            mo.accordion({"Exact axis limits, outside counts and data ranges": mo.ui.table(
-                trajectory.simulator_axis_summary(simulation_preview, simulator_scale.value),
-                selection=None, pagination=False)}),
+            _display, _detail,
         ])
     except (ValueError, FloatingPointError) as _error:
         simulation_preview = None
@@ -502,13 +559,28 @@ def _(mo):
     mo.md(r"""
     ### Prior predictive: could this model generate a history like this?
 
-    The sliders above hold parameters fixed. A **prior-predictive check** instead
-    draws parameters from their prior, then simulates one history for each draw.
-    Compare the selected history with 200 such histories at the **same observed
-    length**, before using its posterior. These supplied observations are synthetic;
-    this is a workflow sanity check, not evidence of real-market fit.
+    The sliders hold parameters fixed. A **prior-predictive check** instead draws
+    parameters from their prior, then simulates one history for each draw. Compare
+    200 histories at the same observed length before using the selected posterior.
+    These supplied observations are synthetic: this is a workflow sanity check,
+    not evidence of real-market fit.
+
+    **Does return order matter?** Six daily log returns, three +2% and three −3%,
+    have cumulative log return −3%, annualized RMS 40.47%, and maximum daily size 3%
+    in either order. Yet `+ + + − − −` has **8.61% maximum drawdown**, while
+    `+ − + − + −` has **4.88%**. Magnitude summaries miss this difference.
+
+    Use **Ordering** to compare dependence in signed returns and in their absolute
+    size. Bergomi H controls volatility-driver roughness, not signed-return memory.
     """)
     return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    ordering_shuffle = mo.ui.checkbox(value=False, label="Overlay a fixed shuffle of the observed prefix in ordering checks")
+    ordering_shuffle
+    return (ordering_shuffle,)
 
 
 @app.cell(hide_code=True)
@@ -522,27 +594,31 @@ def _(mo, selection):
 @app.cell(hide_code=True)
 def _(cache_arrays, cache_task, case_choice, diagnostic_panels, mo, model_checks,
       path_checks, path_simulation, prior_check_button, requested_days):
-    mo.stop(not prior_check_button.value, mo.md("*Optional: simulate from the prior and compare return summaries.*"))
+    mo.stop(not prior_check_button.value, mo.md("*Optional: simulate from the prior and compare magnitude and ordering.*"))
     _key = path_simulation.task_fingerprint(cache_task)
     _reused = _key in diagnostic_panels
     try:
         if not _reused:
             diagnostic_panels[_key] = path_checks.generate_panel(cache_task, count=200, seed=20261111)
-        _result = model_checks.compare_prior(cache_task, diagnostic_panels[_key],
+        prior_predictive_result = model_checks.compare_prior(cache_task, diagnostic_panels[_key],
                     cache_arrays["observations"][case_choice.value], requested_days)
-        _output = mo.vstack([
-            model_checks.plot_check(_result),
-            mo.md(f"**Prior simulations · {requested_days} days each.** "
-                  f"{'Reused the existing panel' if _reused else 'Generated 200 independent histories'}. "
-                  "The black line is the selected observed prefix. Panels compare cumulative log return, "
-                  "annualized realized RMS volatility and the largest absolute daily log return. "
-                  "Realized volatility is a return statistic, not observed latent variance. "
-                  "These summaries ignore much of the time ordering; a central position is neither a joint-support "
-                  "certificate nor a posterior-calibration test."),
-        ])
     except (ValueError, RuntimeError, FloatingPointError) as _error:
-        _output = mo.callout(mo.md(f"**Prior check stopped:** {_error}. No histories are replaced or filtered."), kind="warn")
-    _output
+        mo.stop(True, mo.callout(mo.md(f"**Prior check stopped:** {_error}. No histories are replaced or filtered."), kind="warn"))
+    return (prior_predictive_result,)
+
+
+@app.cell(hide_code=True)
+def _(mo, model_checks, ordering_shuffle, prior_predictive_result):
+    mo.vstack([
+        mo.ui.tabs({"Magnitude": model_checks.plot_check(prior_predictive_result),
+                    "Ordering": model_checks.plot_ordering(prior_predictive_result, show_shuffle=ordering_shuffle.value)}),
+        mo.md(f"**Prior simulations · {prior_predictive_result['length']} days each · 200 histories.** "
+              "Magnitude compares cumulative log return, annualized return RMS and the largest daily size. "
+              "Ordering compares autocorrelation of signed returns and absolute returns. These reuse "
+              "the same simulations; shuffling changes only the observed comparison. Pointwise bands "
+              "are descriptive, not a joint-support certificate or posterior-calibration test. "
+              "Constant-series dependence is undefined and reported explicitly."),
+    ])
     return
 
 
@@ -1124,34 +1200,51 @@ def _(lesson_workflow, mo):
 
 
 @app.cell(hide_code=True)
-def _(mo, posterior, selection):
-    _source = (selection, posterior["source"], posterior["length"])
-    replicate_button = mo.ui.run_button(label=f"Replicate histories from the {posterior['length']}-day posterior")
+def _(mo):
+    predictive_count = mo.ui.radio(options={"32 histories: inspect individual curves": 32,
+        "256 histories: optional finer simulation envelope": 256},
+        value="32 histories: inspect individual curves", label="Posterior replication budget")
+    predictive_count
+    return (predictive_count,)
+
+
+@app.cell(hide_code=True)
+def _(mo, posterior, predictive_count, selection):
+    _source = (selection, posterior["source"], posterior["length"], predictive_count.value)
+    replicate_button = mo.ui.run_button(label=f"Replicate {predictive_count.value} histories from the {posterior['length']}-day posterior")
     mo.vstack([replicate_button, mo.md(
         f"**Posterior source: {posterior['source']} · {posterior['length']} days.** "
-        "The button uses at most 32 complete paired draws and keeps all replicas." )])
+        "The default shows every replica's autocorrelation plus their median. "
+        "The optional larger panel supports a pointwise simulation envelope; it is still not a calibrated test.")])
     return (replicate_button,)
 
 
 @app.cell(hide_code=True)
-def _(cache_arrays, cache_task, case_choice, mo, model_checks, posterior, replicate_button, requested_days):
+def _(cache_arrays, cache_task, case_choice, mo, model_checks, posterior, predictive_count, replicate_button):
     mo.stop(not replicate_button.value, mo.md("*Optional: generate independent posterior-predictive histories.*"))
     try:
-        _result = model_checks.replicate_check(cache_task,
-            cache_arrays["observations"][case_choice.value], posterior["draws"], posterior["length"], count=32)
-        _output = mo.vstack([
-            model_checks.plot_check(_result),
-            mo.md(f"**{_result['metadata']['count']} independent replicas · {posterior['length']} days each.** "
-                  f"The return plot currently reveals {requested_days} days; this check follows the "
-                  "posterior's stated conditioning length. Each blue value comes from a new path at one "
-                  "paired parameter draw; the black line is the observed summary. This spread includes "
-                  "parameter uncertainty and process randomness. A discrepancy motivates further model "
-                  "or inference checks; agreement on three summaries does not establish full model adequacy. "
-                  "No latent state is filtered and no continuation forecast is generated."),
-        ])
+        posterior_predictive_result = model_checks.replicate_check(cache_task,
+            cache_arrays["observations"][case_choice.value], posterior["draws"], posterior["length"], count=predictive_count.value)
     except (ValueError, RuntimeError, FloatingPointError) as _error:
-        _output = mo.callout(mo.md(f"**Replication stopped:** {_error}. No replicas are discarded or replaced."), kind="warn")
-    _output
+        mo.stop(True, mo.callout(mo.md(f"**Replication stopped:** {_error}. No replicas are discarded or replaced."), kind="warn"))
+    return (posterior_predictive_result,)
+
+
+@app.cell(hide_code=True)
+def _(mo, model_checks, ordering_shuffle, posterior, posterior_predictive_result, requested_days):
+    _result = posterior_predictive_result
+    mo.vstack([
+        mo.ui.tabs({"Magnitude": model_checks.plot_check(_result),
+                    "Ordering": model_checks.plot_ordering(_result, show_shuffle=ordering_shuffle.value)}),
+        mo.md(f"**{_result['metadata']['count']} independent replicas · {posterior['length']} days each.** "
+              f"The return plot reveals {requested_days} days; this check follows the actual "
+              "posterior conditioning length. The spread retains parameter uncertainty and process "
+              "randomness. The ordering view uses the same prefix, with at most 20 lags and at least "
+              "five observed days per lag; below 21 days it reports insufficient history. "
+              "A shuffled prefix is a teaching intervention, not another model simulation. "
+              "Agreement on these checks does not establish model adequacy or calibrated inference. "
+              "No latent state is filtered and no continuation forecast is generated."),
+    ])
     return
 
 
@@ -1489,45 +1582,81 @@ def _(aggregate_images, aggregate_problem, aggregate_report, cache_task, mo, par
 
 
 @app.cell(hide_code=True)
-def _(cache_task, lesson_workflow, mo, parameter_labels):
-    _amplitude = "vol_of_vol" if cache_task["model"] == "heston" else "eta"
-    _rho_bounds = cache_task["prior_bounds"][cache_task["parameter_names"].index("rho")]
-    _amplitude_bounds = cache_task["prior_bounds"][cache_task["parameter_names"].index(_amplitude)]
-    scenario_rho = mo.ui.slider(*_rho_bounds, step=.01, value=-.7,
-                                 label="Correlation below", show_value=True)
-    scenario_amplitude = mo.ui.slider(*_amplitude_bounds, step=.01,
-        value=.3 if _amplitude == "vol_of_vol" else 1.5,
-        label=f"{parameter_labels[_amplitude]} above", show_value=True)
+def _(lesson_workflow, mo):
+    scenario_count = mo.ui.radio(options={"128 histories per group": 128,
+        "512 histories per group: optional refinement": 512}, value="128 histories per group",
+        label="Replicated drawdown budget")
     mo.vstack([lesson_workflow("Use"), mo.md(r"""
-    ## 6. Use: a point or a probability?
+    ## 6. Use: what does uncertainty change about drawdown?
 
-    **Does one parameter vector express what we learned?** Ask whether correlation
-    is below one threshold **and** variance amplitude is above another. Applying
-    this rule to the posterior-mean parameters gives a yes/no answer. Applying it
-    to complete paired posterior draws gives a posterior probability.
-    """), scenario_rho, scenario_amplitude])
-    return scenario_amplitude, scenario_rho
+    **How much drawdown can this fitted model generate?** Compare two collections
+    of independent histories: one at the posterior-mean parameter vector, and one
+    mixing complete paired parameter draws from the approximate posterior. Both
+    collections retain process randomness: one parameter vector still generates
+    a distribution of outcomes.
+
+    Wealth starts at one and equals $W_t=\exp(\sum_{s\leq t}r_s)$. Maximum drawdown
+    is the largest proportional decline from a previous peak, including initial
+    wealth. These are replicated histories from the model's origin over the same
+    number of days as the posterior, **not the next days after our observation**.
+    """), scenario_count])
+    return (scenario_count,)
 
 
 @app.cell(hide_code=True)
-def _(cache_task, mo, np, parameter_labels, posterior, scenario_amplitude, scenario_rho):
-    _names = cache_task["parameter_names"]
-    _amplitude = "vol_of_vol" if cache_task["model"] == "heston" else "eta"
-    _draws = posterior["draws"]
-    _rho, _a = _names.index("rho"), _names.index(_amplitude)
-    _event = (_draws[:, _rho] < scenario_rho.value) & (_draws[:, _a] > scenario_amplitude.value)
-    _point = _draws.mean(axis=0)
-    _plugin = _point[_rho] < scenario_rho.value and _point[_a] > scenario_amplitude.value
+def _(cache_task, mo, posterior, scenario_count, selection):
+    _identity = (cache_task, selection, posterior, scenario_count.value)
+    drawdown_button = mo.ui.run_button(label=f"Generate replicated drawdown over {posterior['length']} days")
+    mo.vstack([drawdown_button, mo.md(f"**{posterior['source']} posterior · {posterior['length']} days.** "
+        "Changing the model, history, posterior or simulation budget clears the previous scenarios. "
+        "The matched random inputs are shared between groups, and refreshed across simulation chunks.")])
+    return (drawdown_button,)
+
+
+@app.cell(hide_code=True)
+def _(cache_task, drawdown_button, mo, model_checks, posterior, scenario_count):
+    mo.stop(not drawdown_button.value, mo.md("*Optional: propagate the displayed posterior into replicated-history drawdown.*"))
+    try:
+        drawdown_result = model_checks.generate_drawdown(cache_task, posterior["draws"], posterior["length"],
+            count=scenario_count.value, seed=20261115)
+    except (ValueError, RuntimeError, FloatingPointError) as _error:
+        mo.stop(True, mo.callout(mo.md(f"**Drawdown scenario stopped:** {_error}. No histories are replaced or filtered."), kind="warn"))
+    return (drawdown_result,)
+
+
+@app.cell(hide_code=True)
+def _(drawdown_result, mo, model_checks, posterior):
+    mo.vstack([model_checks.plot_drawdown(drawdown_result),
+        mo.md(f"**Independent replicated-history drawdown · {drawdown_result['length']} days · "
+              f"{posterior['source']} approximate posterior.** The highlighted wealth curves are a few "
+              "realizations, while the ECDF uses every simulated outcome. The point group fixes all "
+              "parameters at their posterior means; the mixture samples complete posterior rows with "
+              "replacement. Neither is a state-conditioned forecast. Posterior mixing can increase "
+              "or decrease a drawdown probability; there is no predetermined direction.")])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    drawdown_threshold = mo.ui.slider(1, 80, step=1, value=20, show_value=True,
+        label="Drawdown exceeds (%)")
+    drawdown_threshold
+    return (drawdown_threshold,)
+
+
+@app.cell(hide_code=True)
+def _(drawdown_result, drawdown_threshold, mo, model_checks):
+    _rows = model_checks.drawdown_readout(drawdown_result, drawdown_threshold.value / 100)
     mo.vstack([
-        mo.md(f"**Source: {posterior['source']} posterior · {posterior['length']} days.** "
-              f"Question: ρ < {scenario_rho.value:g} and {parameter_labels[_amplitude]} > {scenario_amplitude.value:g}."),
-        mo.ui.table([{"answer from": "One posterior-mean parameter vector", "result": "yes" if _plugin else "no"},
-                     {"answer from": "Complete paired posterior draws", "result": f'{100*np.mean(_event):.1f}% ({int(np.sum(_event))}/{len(_event)} draws)'}],
+        mo.ui.table([{"parameter treatment": row["group"],
+                      f"drawdown > {drawdown_threshold.value}%": f'{row["exceedances"]}/{row["count"]}',
+                      "simulated proportion": f'{100*row["proportion"]:.1f}%'} for row in _rows],
                     selection=None, pagination=False),
-        mo.md("Both coordinates come from each same draw; multiplying marginal probabilities "
-              "would impose independence. This is uncertainty about model parameters within the "
-              "declared P task, not a probability of a future market event. Changing thresholds "
-              "reuses the displayed posterior and runs no training or inference."),
+        mo.md("The threshold reuses these same scenarios; moving it runs no simulation or inference. "
+              "These are finite Monte Carlo proportions under an approximate posterior, not precise "
+              "market-risk probabilities. A small difference can be simulation variation. This "
+              "illustration combines process and parameter uncertainty without separately estimating "
+              "their contributions. The calibration failures above still qualify the result."),
     ])
     return
 

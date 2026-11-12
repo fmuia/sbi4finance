@@ -292,14 +292,14 @@ replicated histories, not filtered paths or continuations. They do not provide
 conditional return, VaR or expected-shortfall forecasts, and neither a plausible
 replicate nor a passed rank check establishes posterior accuracy. Preserve all
 existing native-model failures and the Heston drift point-mass limitation.
-No new weights, real-market observations or matched references are introduced.
+The synthetic inference examples retain the existing weights and reference
+scope. A separate empirical motivation panel is described below.
 
-The final interpretation exercise evaluates a joint parameter event,
-$\Pr(\rho<r_*,a>a_*\mid r_{1:T})$, from the same paired posterior rows.
-Here amplitude $a$ is eta for rough Bergomi or volatility of variance for Heston.
-Compare this fraction with the deterministic yes/no rule at the posterior-mean
-vector. This describes uncertainty about model parameters, not a future return
-or financial event.
+The final interpretation exercise now propagates complete paired parameter
+draws into independently replicated drawdown. Compare it with process
+simulations at the posterior-mean parameter vector. Both groups retain process
+randomness and use the actual displayed posterior's conditioning length.
+These are fresh-origin scenarios, not conditional forecasts.
 
 ### Clarify physical features, learned summaries and finite checks
 
@@ -393,6 +393,49 @@ review also covers history-change invalidation, missing-model fallback, the
 small training action and all 16 simulator-slider range endpoints. Existing
 empty-cell warnings in slots 2 and 3 are unchanged. Handover guidance is updated;
 scientific limitations and the deferred collaborator rehearsal retain their status.
+
+### Connect temporal behavior and financial scenarios
+
+Borrow the useful teaching patterns from amortized-fractals without replacing
+the trajectory model or its inference architecture. A fixed, hash-bound VOO
+window (256 daily simple returns from 3 January 2020 to 7 January 2021) enters
+through the lab acceptance workflow. The opening uses its recorded log-return
+conversion to compare observed tails with a Gaussian reference. This empirical
+motivation is separate from the synthetic histories used for inference.
+
+The simulator gains an alternate matched three-setting view with fixed axes
+and a shared realization-refresh action. Preserve the selected curve in the
+joint model. Explain parameter effects across several paths; do not equate
+Bergomi H with the signed-memory exponent in the separate MMAR extension.
+
+Magnitude and Ordering tabs reuse the same prior or posterior replicas. The
+ordering view compares signed- and absolute-return autocorrelation, and an
+explicit shuffled-prefix intervention demonstrates which information the
+magnitude summaries ignore. Below 21 days or with constant values, dependence
+is unavailable rather than zero. The default 32 posterior replicas appear as
+individual curves; a larger 256-history action supports pointwise descriptive
+bands. These are not simultaneous model-adequacy or calibration guarantees.
+
+Replace the abstract parameter-threshold exercise with point-parameter versus
+posterior-mixture drawdown ECDFs and a reused threshold readout. Simulate the
+unchanged full task before taking the actual posterior prefix. Pair process
+inputs between groups, use independent seeds between chunks, and select whole
+posterior rows with replacement. Include initial wealth in a stable log-space
+drawdown calculation. A threshold or display change reuses outcomes; a changed
+task, posterior, prefix or budget invalidates them. All numerical failures stay
+explicit, without dropping difficult histories.
+
+The new empirical asset and simulator/checking illustrations do not change
+weights, training banks, numerical laws or final calibration decisions.
+Documented failures remain applicable to derived scenario probabilities.
+
+**Verification · 13 November:** 97 tutorial tests, 529 core lab tests (three
+optional PyMC skips), all seven exports (76 trajectory cells, zero errors),
+marimo and release/ownership checks pass. Browser review covers the empirical
+opening, all three matched model views, ordering/shuffle controls, 32/256
+posterior replicas, 128/512 drawdown scenarios and threshold reuse. Saved-126
+fallback and fresh-137 predictive checks retain their actual conditioning
+lengths. The new displays fit a 760-pixel layout without runtime or math errors.
 
 ## E. Resolve trajectory numerical and inference limitations
 

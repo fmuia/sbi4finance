@@ -437,6 +437,118 @@ def forward_simulator_figure(result, *, scale="Standard"):
     return figure
 
 
+def load_market_example():
+    """Read the fixed motivation window offline; never send it to an estimator."""
+    folder = _asset_path(ASSETS / "market-examples" / "voo-covid-256")
+    accepted = json.loads(_asset_path(folder / "ACCEPTED.json").read_text())
+    for filename in ("market.json", "returns.npz"):
+        _require(sha256(_asset_path(folder / filename)) == accepted["source_sha256"][filename],
+                 "market motivation checksum differs: " + filename)
+    metadata = json.loads((folder / "market.json").read_text())
+    with np.load(folder / "returns.npz", allow_pickle=False) as saved:
+        values = {name: saved[name].copy() for name in ("dates", "simple_returns", "log_returns")}
+    _require(metadata.get("ticker") == "VOO" and metadata.get("n") == 256,
+             "expected the fixed 256-day VOO motivation window")
+    _require(all(values[name].shape == (256,) for name in values), "market window axes differ")
+    _require(values["dates"].dtype.kind in "US" and np.all(values["dates"][1:] > values["dates"][:-1]),
+             "market dates must be ordered ISO strings")
+    for name in ("simple_returns", "log_returns"):
+        _require(values[name].dtype.kind in "fiu" and np.isfinite(values[name]).all(),
+                 "market returns must be finite real values")
+    _require(np.all(values["simple_returns"] > -1), "simple returns must exceed -100%")
+    _require(np.allclose(np.log1p(values["simple_returns"]), values["log_returns"], rtol=1e-12, atol=1e-15),
+             "market log returns differ from the documented log1p conversion")
+    return {"metadata": metadata, **values}
+
+
+def market_motivation_figure(example):
+    """Observed ordering and a Gaussian tail benchmark, with no neural inference."""
+    import matplotlib.pyplot as plt
+    from scipy.special import ndtr
+
+    returns = example["log_returns"]
+    dates = example["dates"].astype("datetime64[D]")
+    mean, scale = float(returns.mean()), float(returns.std())
+    _require(scale > 0, "Gaussian motivation benchmark needs nonconstant returns")
+    magnitudes = np.sort(np.abs(returns))
+    thresholds, first_indices = np.unique(magnitudes, return_index=True)
+    grid = np.linspace(0, float(magnitudes[-1]) * 1.05, 300)
+    gaussian_tail = ndtr((-grid - mean) / scale) + ndtr((mean - grid) / scale)
+    figure, axes = plt.subplots(1, 2, figsize=(10, 3.1), layout="constrained")
+    axes[0].plot(dates, 100 * returns, color="#334155", linewidth=.8)
+    axes[0].axhline(0, color="#94a3b8", linewidth=.7)
+    axes[0].set(title="Quiet periods and clusters of large moves", ylabel="Daily log return (%)", xlabel="Trading date")
+    # Plot strictly positive empirical probabilities; no zero gets a log transform.
+    survival = (len(returns) - first_indices) / len(returns)
+    axes[1].step(100 * thresholds, survival, where="post", color="#7c3aed", label="Observed, 256 days")
+    axes[1].plot(100 * grid, gaussian_tail, color="#0f766e", label="Fitted Gaussian benchmark")
+    axes[1].set(yscale="log", ylim=(.5 / len(returns), 1.1), xlim=(0, 100 * grid[-1]),
+                xlabel="Absolute daily log return (%)", ylabel="Probability of at least this size",
+                title="Compare large-return frequencies")
+    axes[1].legend(fontsize=8)
+    for ax in axes:
+        ax.tick_params(labelsize=8)
+        ax.title.set_fontsize(10)
+    figure.suptitle(f"VOO · {example['dates'][0]} to {example['dates'][-1]} · 256 observations", fontsize=11)
+    return figure
+
+
+SIMULATOR_COMPARISONS = {
+    "hurst": (.05, .15, .35), "eta": (.5, 1.5, 2.5),
+    "vol_of_vol": (.10, .30, .50), "kappa": (.5, 2., 5.),
+}
+
+
+def simulator_comparison(task, parameters, parameter, *, paths=4, days=252, seed=20261108):
+    """Compare three settings with the same per-row innovations in every column."""
+    _teaching_task(task)
+    choices = ("vol_of_vol", "kappa") if task["model"] == "heston" else ("hurst", "eta")
+    _require(parameter in choices, "choose a comparison parameter for this model")
+    bounds = np.asarray(task["prior_bounds"])[task["parameter_names"].index(parameter)]
+    settings = np.asarray(SIMULATOR_COMPARISONS[parameter])
+    if np.any(settings < bounds[0]) or np.any(settings > bounds[1]):
+        settings = np.linspace(*bounds, 5)[1:-1]
+    previews = []
+    for value in settings:
+        chosen = {**parameters, parameter: float(value)}
+        # Separate calls deliberately reuse row IDs and task-bound random inputs.
+        previews.append(simulator_preview(task, chosen, paths=paths, days=days, seed=seed))
+    return {"parameter": parameter, "settings": settings, "previews": previews,
+            "fixed_parameters": {key: value for key, value in parameters.items() if key != parameter}, "seed": seed}
+
+
+def simulator_comparison_figure(comparison, *, scale="Standard"):
+    """Aligned return/realized-volatility views, retaining every out-of-view value."""
+    import matplotlib.pyplot as plt
+
+    _require(scale in SIMULATOR_SCALES, "choose a declared fixed simulator scale")
+    figure, axes = plt.subplots(2, 3, figsize=(10, 4.4), sharex=True, sharey="row", layout="constrained")
+    label = {"hurst": "H", "eta": "η", "vol_of_vol": "σ", "kappa": "κ"}[comparison["parameter"]]
+    for column, (value, preview) in enumerate(zip(comparison["settings"], comparison["previews"], strict=True)):
+        returns = 100 * preview["observations"][:, :, 0]
+        dt = preview["task"]["dt_years"]
+        days = np.arange(1, returns.shape[1] + 1)
+        window = min(21, returns.shape[1])
+        realized = np.std(np.lib.stride_tricks.sliding_window_view(returns, window, axis=1), axis=-1) / np.sqrt(dt)
+        for row in range(len(returns)):
+            color, alpha = ("#7c3aed", 1.) if row == 0 else ("#94a3b8", .5)
+            axes[0, column].plot(days, returns[row], color=color, alpha=alpha, linewidth=1. if row == 0 else .55)
+            axes[1, column].plot(days[window - 1:], realized[row], color=color, alpha=alpha, linewidth=1. if row == 0 else .55)
+        axes[0, column].set_title(f"{label} = {value:g}", fontsize=10)
+        for row, (name, data) in enumerate((("returns", returns), ("realized", realized))):
+            low, high = SIMULATOR_SCALES[scale][name]
+            outside = np.count_nonzero((data < low) | (data > high))
+            axes[row, column].set(ylim=(low, high), xlim=(1, len(days)))
+            axes[row, column].text(.02, .02, f"{outside}/{data.size} outside view", transform=axes[row, column].transAxes,
+                                   fontsize=6.5, bbox={"facecolor": "white", "alpha": .8, "edgecolor": "none"})
+            axes[row, column].tick_params(labelsize=8)
+        axes[1, column].set_xlabel("Trading day", fontsize=8)
+    axes[0, 0].set_ylabel("Daily log return (%)", fontsize=9)
+    axes[1, 0].set_ylabel("21-day realized vol. (%)", fontsize=9)
+    figure.suptitle("Same random inputs across settings · purple = the same realization · fixed axes", fontsize=10)
+    return figure
+
+
 def architecture_figure(task, *, network=None):
     """Decompose the actual recurrent encoder and spline density estimator."""
     import matplotlib.pyplot as plt

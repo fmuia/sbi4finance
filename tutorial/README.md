@@ -111,6 +111,11 @@ length from **1 to 1,260 trading days** (five years).
 A stage bar follows the workflow, and a short API map shows where BayesFlow
 enters. A design table explains the masked GRU, spline flow and preprocessing.
 The training code shown is the function called by the button.
+An opening VOO window (256 returns, 3 January 2020 to 7 January 2021) motivates
+the problem with return clustering and an empirical tail comparison against a
+Gaussian reference. This fixed real-data illustration is separate from the
+synthetic histories used for inference; it does not establish real-market
+accuracy of the supplied models.
 Four model cards connect physical drift versus log growth, volatility bursts,
 leverage and variance level/memory to the parameters. Predict a change, move
 one simulator control, then compare what happened with your prediction.
@@ -119,6 +124,9 @@ Start with the rough model and its supplied variance curve. Inspect returns,
 then use the early simulator to change parameters while keeping innovations
 fixed. It shows eight one-year price paths, daily returns and realized volatility.
 That forward example stays separate from the selected fitted history.
+An alternate three-setting view compares H or η for rough Bergomi and σ or κ
+for Heston with matched random inputs. **New realizations** refreshes every
+column together; switching display scales does not change the draws.
 Its y axes stay fixed as parameters change. Choose **Standard**, **Wide** or
 **Very wide** yourself; each panel reports points outside the view. The full
 series and its minimum/maximum stay available in the axis-details table.
@@ -165,14 +173,22 @@ instructions and detailed input/diagnostic tables are optional.
 draws 200 independent histories from the declared prior. The posterior-predictive
 check draws 32 complete parameter rows from the displayed supplied-model
 posterior, saved or fresh, and simulates independent histories from the model's
-origin. Both compare return summaries
-with the observed history. The posterior check uses the actual prefix length
+origin. Magnitude and Ordering views compare return summaries and signed/absolute
+return autocorrelation with the observed history. A shuffle illustration shows
+why matching return sizes does not establish temporal fit. Short or constant
+histories have explicitly unavailable dependence estimates. The default 32
+posterior replicas appear as individual ACF curves; an optional larger batch
+supports pointwise descriptive bands. The posterior check uses the actual prefix length
 shown beside the posterior, including any labelled saved fallback.
 These are independent replications, not continuations of the observed path.
 Parameter inference alone does not provide the hidden-state or rough-memory
 conditioning needed for a continuation forecast.
-A final threshold exercise compares a joint parameter probability from paired
-draws with the yes/no answer at the posterior-mean parameter vector.
+The final exercise compares replicated-history drawdown at the posterior-mean
+parameter vector with drawdown from complete posterior draws. Both retain
+process randomness; threshold changes reuse the simulated outcomes. These
+scenarios start at the model's origin and do not condition on today's latent
+variance or rough-shock memory. The supplied posterior's calibration failures
+also apply to calculations derived from it.
 
 **Check the network you used.** Choose **Network to check**, set **Days per
 diagnostic history**, then press **Check this network on 200 independent histories**.
