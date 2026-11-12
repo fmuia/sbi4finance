@@ -1064,6 +1064,7 @@ def _(
     EXPIRY_DATES,
     EXPIRY_DAYS,
     LABELS,
+    MARKET_IV,
     NAMES,
     PRODUCTS,
     PRODUCT_TITLES,
@@ -1163,13 +1164,24 @@ def _(
             _first, _last = (EXPIRY == 0), (EXPIRY == len(EXPIRY_DATES) - 1)
             _atm = [100 * _iv[_at][np.argmin(np.abs(DELTA[_at]))] for _at in (_first, _last)]
             _deep = [100 * _iv[EXPIRY == _e][np.argmin(DELTA[EXPIRY == _e])] for _e in range(len(EXPIRY_DATES))]
+            # Rise of the smile from the money to the deepest put, at the first and last expiry.
+            _rise = lambda _vols: [100 * (_vols[_at][np.argmin(DELTA[_at])] - _vols[_at][np.argmin(np.abs(DELTA[_at]))])
+                                   for _at in (_first, _last)]
+            _case_rise, _spx_rise = _rise(_iv), _rise(MARKET_IV)
+            _v0, _v_inf, _xi, _rho = _truth[[0, 2, 3, 4]]
             _note = (f"- **A stressed market:** at the money, {_atm[0]:.0f}% at {EXPIRY_DAYS[0]} days against {_atm[1]:.0f}% "
-                     f"at {EXPIRY_DAYS[-1]} days, an inverted term structure; deep puts at {min(_deep):.0f}–{max(_deep):.0f}%. "
-                     "Index options look like this after a sell-off.\n"
-                     "- **A Heston signature:** in δ units its short-dated smiles are flatter than the long-dated ones, so the "
-                     "curves cross. Real markets keep a steep short-dated skew (first figure of the notebook); Section 5.4 "
-                     "shows the consequence on the SPX quotes. As a test of the inference the case is fully valid: it is a "
-                     "draw from the model and the prior.\n" + _note)
+                     f"at {EXPIRY_DAYS[-1]} days, an inverted term structure as after a sell-off. The true spot volatility "
+                     f"$\\sqrt{{v_0}}={100 * np.sqrt(_v0):.0f}\\%$ is above the long-run $\\sqrt{{v_\\infty}}="
+                     f"{100 * np.sqrt(_v_inf):.0f}\\%$, and the large $\\sigma_v={_xi:.2f}$ pulls long-dated at-the-money "
+                     f"volatility further down. Deep puts are at {min(_deep):.0f}–{max(_deep):.0f}%.\n"
+                     "- **Why the curves cross:** Heston's short-dated skew per unit of log-moneyness tends to a constant, "
+                     f"$\\rho\\sigma_v/(4\\sqrt{{v_0}})={_rho * _xi / (4 * np.sqrt(_v0)):.2f}$, and $\\delta$ rescales "
+                     "log-moneyness by $\\sqrt T$, so short-dated smiles are flat in $\\delta$. From the money to the deepest "
+                     f"put they rise {_case_rise[0]:.1f} points at {EXPIRY_DAYS[0]} days and {_case_rise[1]:.1f} at "
+                     f"{EXPIRY_DAYS[-1]} days: high and flat meets low and steep.\n"
+                     f"- **Unlike the SPX quotes**, where the same rise is {_spx_rise[0]:.1f} and {_spx_rise[1]:.1f} points, much "
+                     "closer to parallel: the limitation shown in Section 5.4. As a test of the inference the case is still "
+                     "valid: it is a draw from the model and the prior.\n" + _note)
     mo.vstack([
         _fig,
         mo.md(_note),
