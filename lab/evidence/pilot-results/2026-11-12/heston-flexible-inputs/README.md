@@ -73,7 +73,7 @@ retained: no clipping, rejection or resampling at prior boundaries. The existing
 100-row validation and historical 512-case population are development panels;
 neither a smoke fit nor repeated use of these panels establishes fresh acceptance.
 
-## Completed fixed-grid dimension comparison
+## Completed initial screen and dimension-two extension
 
 The 32-dimensional MLP completed all 300 epochs on the 300k stored noisy
 observations in 37.8 minutes. Its declared final checkpoint and validation
@@ -82,7 +82,7 @@ from the saved raw draws reproduces the metrics. The bank, frozen ZCA, priors,
 noise, seed, posterior head, optimizer schedule, 351,600 updates and 90 million
 presentations match the direct baseline.
 
-All five fits and all ten checkpoint evaluations completed successfully. The
+The initial five fits and all ten checkpoint evaluations completed successfully. The
 following table uses final epoch 300 only, on the same reused 512-case population.
 
 | Representation | SBC screens | `c` RMSE | Initial-variance RMSE | Median `c` 90% width | `c` 90% coverage |
@@ -126,3 +126,14 @@ outcomes remain available separately in the report and notebook.
 
 **SetTransformer and masking training remain held while this comparison is assessed.**
 The existing design previews remain available. No Bergomi allocation is changed.
+
+## Requested dimension-two extension
+
+A fresh two-dimensional summary fit is running with the identical 300k stored
+observations, 300 epochs, seed 9011, two 128-wide SiLU summary layers, posterior
+head and optimization schedule. Final and validation-minimum checkpoints are
+evaluated separately; the local report is updated after both finish. This tests
+a more severe bottleneck without changing the task or selecting a desired
+outcome. The observed 8-to-4 deterioration is an empirical result for this
+recipe, not proof of a universal phase transition: dimension 6 is untested and
+independent-seed confirmation remains pending. Masking stays on hold.

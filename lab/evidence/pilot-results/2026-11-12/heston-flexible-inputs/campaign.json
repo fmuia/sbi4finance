@@ -5,7 +5,8 @@
     16,
     8,
     4,
-    64
+    64,
+    2
   ],
   "primary": "final_epoch300",
   "secondary": "first minimum native val_loss; separately evaluated",
@@ -55,8 +56,8 @@
     "4": "queued_after8",
     "64": "queued_after_all_smaller_fits"
   },
-  "updated_utc": "2026-11-12T19:35:06.036134+00:00",
-  "status": "complete",
+  "updated_utc": "2026-11-12T19:41:40.935008+00:00",
+  "status": "dimension2_extension_running",
   "completed_fits": {
     "32": {
       "status": "complete",
@@ -114,5 +115,20 @@
       "secondary_evaluation_complete": true
     }
   },
-  "conclusion": "8\u201364 preserve similar pooled recovery; 4 loses substantial information. Every conditional panel remains outside the declared fidelity criteria. One seed per dimension; no sufficient-statistic claim."
+  "conclusion": "8\u201364 preserve similar pooled recovery; 4 loses substantial information. Every conditional panel remains outside the declared fidelity criteria. One seed per dimension; no sufficient-statistic claim.",
+  "initial_screen_status": "complete",
+  "dimension2_extension": {
+    "status": "running",
+    "requested_by_user": true,
+    "same_recipe_as_initial_screen": true,
+    "train_rows": 300000,
+    "epochs": 300,
+    "seed": 9011,
+    "summary_dim": 2,
+    "training_seconds_cap": 3600,
+    "primary": "final300",
+    "secondary": "native validation minimum",
+    "automatic_local_report_export": true,
+    "interpretation": "Empirical severe-compression test, with no universal phase-transition or below-eight cutoff claim; dimension6 and replication remain untested."
+  }
 }
