@@ -29,3 +29,29 @@
 .markdown.prose > :last-child {
   margin-bottom: 0;
 }
+
+/* Foldable sections (mo.accordion). marimo renders their content in a shadow root, where markdown keeps the
+   typography default of at most 65 characters per line: a narrow column on the left of a wide box. Use the
+   full width, and set markdown of more than one block, or a list of more than one item, in two columns.
+   Equations, code and tables span both columns; list items stay whole, and a lead-in stays with its list. */
+[role="region"] .markdown.prose {
+  max-width: none;
+}
+
+[role="region"] .markdown.prose:has(> :nth-child(2), > :is(ul, ol) > li:nth-child(2)) {
+  column-count: 2;
+  column-gap: 2.5rem;
+}
+
+[role="region"] .markdown.prose :is(li, pre, table, blockquote, .codehilite-wrapper) {
+  break-inside: avoid;
+}
+
+[role="region"] .markdown.prose > :is(p, .paragraph, h3, h4):has(+ :is(ul, ol)) {
+  break-after: avoid;
+}
+
+[role="region"] .markdown.prose > :is(pre, table, marimo-tex, .codehilite-wrapper) {
+  display: block;
+  column-span: all;
+}
