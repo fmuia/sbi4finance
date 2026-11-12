@@ -886,9 +886,9 @@ def _(
     EVALUATION,
     LABELS,
     NAMES,
-    TEXT_LABELS,
     bf,
     build_workflow,
+    ecdf_guide,
     fit_whitening,
     json,
     keras,
@@ -928,22 +928,39 @@ def _(
             if _val <= 1.1 * _loss else "the validation loss ends clearly above the training loss, so the network has "
             "started to overfit")
     _corr = [float(np.corrcoef(np.median(_draws[_n][..., 0], axis=1), _held[_n][:, 0])[0, 1]) for _n in NAMES]
-    _pretrained = json.loads((EVALUATION / "evaluation.json").read_text())["population"]["mean_posterior_sd"]
+    _evaluation = json.loads((EVALUATION / "evaluation.json").read_text())  # the pretrained estimator's record
+    _pretrained = _evaluation["population"]["mean_posterior_sd"]
     _width = [float(np.mean(np.std(_draws[_n][..., 0], axis=1))) / _pretrained[_j] for _j, _n in enumerate(NAMES)]
-    _list = lambda _values, _fmt: ", ".join(f"{_l} {_fmt.format(_v)}" for _l, _v in zip(TEXT_LABELS, _values))
+    _n_train, _n_val, _n_test = (len(_d["observations"]) for _d in (_train, _validation, _held))
+    _epochs = len(live_history.history["loss"])
+    _ratio = lambda _w: f"{_w:.0f}×" if _w >= 10 else f"{_w:.1f}×"
+    _table = "\n".join([
+        "| | " + " | ".join(LABELS) + " |",
+        "|:---|" + "---:|" * len(LABELS),
+        "| recovery: correlation of median and truth | " + " | ".join(f"{_r:.2f}" for _r in _corr) + " |",
+        "| posterior SD, relative to the pretrained estimator | " + " | ".join(_ratio(_w) for _w in _width) + " |",
+    ])
     mo.vstack([
-        mo.md(f"Simulated 3,300 data sets in {_simulated:.0f} s and trained for 40 epochs in {_trained:.0f} s. Final "
-              f"training loss {_loss:.3f}, validation loss {_val:.3f}: {_fit}."),
+        mo.md(f"- **Simulated** {_n_train:,} training and {_n_val} validation data sets in {_simulated:.0f} s, then "
+              f"**trained** for {_epochs} epochs in {_trained:.0f} s.\n"
+              f"- **Loss** (below): final training loss {_loss:.3f}, validation loss {_val:.3f}: {_fit}. The loss is the "
+              "flow-matching error, not a likelihood, so only its trend and the gap between the two curves matter."),
         bf.diagnostics.loss(live_history),
-        mo.md(f"**Check the network just trained.** 100 new simulated data sets, 200 posterior draws each, in {_sampled:.1f} s. "
-              "In the recovery plot each dot compares a posterior median with the true value; the correlation between the "
-              f"two is {_list(_corr, '{:.2f}')}. In the calibration plot each curve should stay inside its grey band "
-              "(Section 5.2 explains how to read it). This network saw 1% of the training data of the pretrained estimator; "
-              f"its average posterior standard deviation, relative to the pretrained one, is {_list(_width, '{:.1f}×')}."),
+        mo.md(f"**Check the network just trained** on {_n_test} new simulated data sets, not used in training, with "
+              f"{_draws[NAMES[0]].shape[1]} posterior draws each ({_sampled:.0f} s).\n\n"
+              "- **Recovery** (first plot): one dot per data set, the true value against the posterior median, with a bar "
+              "for the central 68% interval. Dots near the diagonal mean the parameter is recovered.\n"
+              "- **Calibration** (second plot): if the network's uncertainty is right, each curve stays inside its grey "
+              "band. The foldable section below the plots explains how they are built and read.\n"
+              f"- **Fewer simulations, wider posteriors:** this network saw {100 * _n_train / _evaluation['training_rows']:.0f}% "
+              f"of the pretrained estimator's training data and trained for {_epochs} epochs instead of "
+              f"{_evaluation['native_epoch']}. Its posteriors are {min(_width):.1f} to {max(_width):.0f} times wider.\n\n"
+              + _table),
         bf.diagnostics.recovery(estimates=_draws, targets=_held, variable_keys=NAMES, variable_names=LABELS,
                                 uncertainty_agg_kwargs={"prob": 0.68}, color=plots.SERIES[0]),
         bf.diagnostics.calibration_ecdf(estimates=_draws, targets=_held, variable_keys=NAMES, variable_names=LABELS,
                                         difference=True, rank_ecdf_color=plots.SERIES[0], fill_color=plots.BASELINE),
+        ecdf_guide,
     ])
     return
 
@@ -1318,6 +1335,39 @@ def _(mo):
     - **Simulation-based calibration (SBC):** if the posterior is correct, the truth is just one more posterior draw, so its **rank** among the draws (the fraction of draws below it) is uniform between 0 and 1. We plot the empirical CDF of the ranks minus the uniform CDF; the four synthetic examples below show how to read it.
     """)
     return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    ecdf_guide = mo.accordion({"How the calibration (ECDF) plots are built and read": mo.md(r"""
+    **How they are built**, for one parameter:
+
+    1. Simulate $N$ test data sets the network has never seen: $\boldsymbol\theta_k$ from the prior, then its 63 quotes $\mathbf x_k$.
+    2. Draw $S$ posterior samples of $\boldsymbol\theta$ for each $\mathbf x_k$.
+    3. The **rank** of the truth is the share of the $S$ draws below the true value.
+    4. Plot the empirical CDF of the $N$ ranks **minus** the uniform CDF, against the rank.
+
+    **Why the ranks should be uniform:** $\boldsymbol\theta_k$ generated $\mathbf x_k$, so it is an exact draw from the true posterior. If the network's posterior is right, the truth is just one more draw: its rank is uniform between 0 and 1, and the curve stays near zero.
+
+    **The grey band** is where the curve of a correct posterior stays with 95% probability.
+
+    - BayesFlow's plots (the live check in Section 3, the resampling button in 5.2) have one band per panel. With six panels, even a perfect network leaves one of them in about one run in four, if the panels were independent.
+    - The saved results in 5.2 use one band for all six panels together, so a curve that leaves it is a real signal.
+
+    **Reading the curve:**
+
+    - **Inside the band:** no sign of miscalibration.
+    - **An arch above zero:** the posterior is too high, the truth sits below most draws. An arch below zero: too low.
+    - **Above zero on the left, below on the right:** too narrow, overconfident.
+    - **Below zero on the left, above on the right:** too wide, underconfident.
+
+    **What it does not check:**
+
+    - **Sharpness:** a network that ignored the data and returned the prior would pass. The recovery plots and the exact reference (5.3) check that.
+    - **The model:** the test data come from the same simulator. Section 5.4 tests the model on the SPX quotes.
+    """)})
+    ecdf_guide
+    return (ecdf_guide,)
 
 
 @app.cell(hide_code=True)
