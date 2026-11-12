@@ -1131,7 +1131,7 @@ def _(
               "- **Recovery** (first plot): one dot per data set, the true value against the posterior median, with a bar "
               "for the central 68% interval. Dots near the diagonal mean the parameter is recovered.\n"
               "- **Calibration** (second plot): if the network's uncertainty is right, each curve stays inside its grey "
-              "band. The foldable section below the plots explains how they are built and read.\n"
+              "band. The foldable section below the plots explains how to read them.\n"
               f"- **Fewer simulations, wider posteriors:** this network saw {100 * _n_train / _evaluation['training_rows']:.0f}% "
               f"of the pretrained estimator's training data and trained for {_epochs} epochs instead of "
               f"{_evaluation['native_epoch']}. Its posteriors are {min(_width):.1f} to {max(_width):.0f} times wider.\n\n"
@@ -1570,32 +1570,39 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    ecdf_guide = mo.accordion({"How the calibration (ECDF) plots are built and read": mo.md(r"""
-    **How they are built**, for one parameter:
+    ecdf_guide = mo.accordion({"How to read the calibration (ECDF) plots": mo.md(r"""
+    **The question.** When the network gives a 90% interval, does it contain the truth 90% of the time? In other words, is the width of its posterior right? We can only check this where the truth is known, on simulated data.
 
-    1. Simulate $N$ test data sets the network has never seen: $\boldsymbol\theta_k$ from the prior, then its 63 quotes $\mathbf x_k$.
-    2. Draw $S$ posterior samples of $\boldsymbol\theta$ for each $\mathbf x_k$.
-    3. The **rank** of the truth is the share of the $S$ draws below the true value.
-    4. Plot the empirical CDF of the $N$ ranks **minus** the uniform CDF, against the rank.
+    **One check, step by step**, for one parameter, say $v_0$:
 
-    **Why the ranks should be uniform:** $\boldsymbol\theta_k$ generated $\mathbf x_k$, so it is an exact draw from the true posterior. If the network's posterior is right, the truth is just one more draw: its rank is uniform between 0 and 1, and the curve stays near zero.
+    1. Draw true parameters from the prior and simulate 63 quotes from them.
+    2. Ask the network for 200 posterior draws of $v_0$ given those quotes.
+    3. Count the draws below the true $v_0$, say 140 of 200. The **rank** of the truth is $140/200 = 0.70$.
 
-    **The grey band** is where the curve of a correct posterior stays with 95% probability.
+    **Why the rank should be uniform.** If the network's posterior is right, the true value is just one more draw from it: nothing sets it apart from the 200 draws. So it is equally likely to land anywhere among them. Its rank is below 0.1 one time in ten, below 0.5 half the time, and so on.
 
-    - BayesFlow's plots (the live check in Section 3, the resampling button in 5.2) have one band per panel. With six panels, even a perfect network leaves one of them in about one run in four, if the panels were independent.
-    - The saved results in 5.2 use one band for all six panels together, so a curve that leaves it is a real signal.
+    **The plot.** Repeat the check on many data sets (100 in the live check, 512 in Section 5.2) and collect the ranks. At each point $z$ between 0 and 1, the curve shows
 
-    **Reading the curve:**
+    $$(\text{share of ranks below } z) - z .$$
 
-    - **Inside the band:** no sign of miscalibration.
-    - **An arch above zero:** the posterior is too high, the truth sits below most draws. An arch below zero: too low.
-    - **Above zero on the left, below on the right:** too narrow, overconfident.
-    - **Below zero on the left, above on the right:** too wide, underconfident.
+    If the ranks are uniform, the share below $z$ is close to $z$, and the curve stays near zero.
 
-    **What it does not check:**
+    **The grey band** shows how far chance alone moves the curve of a correct network with this many data sets: a correct network stays inside it 95% of the time.
 
-    - **Sharpness:** a network that ignored the data and returned the prior would pass. The recovery plots and the exact reference (5.3) check that.
-    - **The model:** the test data come from the same simulator. Section 5.4 tests the model on the SPX quotes.
+    - **Live check and resampling button:** each of the six panels has its own band, so one curve may touch its band by chance.
+    - **Saved results in 5.2:** one band covers all six panels together.
+
+    **Reading the shapes**
+
+    - **Inside the band:** the uncertainty is right.
+    - **Up on the left, down on the right:** ranks pile up near 0 and 1, so the truth often falls outside the bulk of the draws. The posterior is **too narrow** (overconfident).
+    - **Down on the left, up on the right:** ranks pile up around 0.5, so the truth sits in the middle too often. The posterior is **too wide** (cautious).
+    - **An arch above zero:** ranks pile up near 0, so most draws lie above the truth. The posterior is **biased upwards**. An arch below zero means biased downwards.
+
+    **What it cannot tell you**
+
+    - **Whether the posterior is sharp.** A network that ignored the quotes and returned the prior would pass. The recovery plot and the exact reference (5.3) check sharpness.
+    - **Whether the model is right.** The test data come from the same simulator. Section 5.4 and the end of Section 6 test the model on the SPX quotes.
     """)})
     ecdf_guide
     return (ecdf_guide,)
