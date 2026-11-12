@@ -498,9 +498,13 @@ def _(
     sim_seed,
     vol_point_noise,
 ):
+    from scipy.stats import gamma as _gamma
+
     _theta = np.asarray(sim_params.value, dtype=float)
     _seed = int(sim_seed.value or 0)
     _v0, _kappa, _v_inf, _xi, _rho, _c = _theta
+    _shape = 2 * _kappa * _v_inf / _xi ** 2  # the long-run law of V_t is a Gamma with this shape and mean v∞
+    _median_vol = 100 * np.sqrt(_gamma.median(_shape, scale=_v_inf / _shape))
 
     # Illustrative paths: full-truncation Euler steps for the variance and the log forward. Pricing never uses paths.
     _days, _count, _sub = 252, 3, 16
@@ -533,7 +537,8 @@ def _(
     _axes[0, 0].plot(_years, np.exp(_log_forward).T, lw=1)
     _axes[0, 0].set(xlabel="years", ylabel="forward / initial forward", title="Forward-price paths")
     _axes[0, 1].plot(_years, 100 * _vol.T, lw=1)
-    _axes[0, 1].axhline(100 * np.sqrt(_v_inf), color="#888888", ls="--", lw=1, label="long-run level")
+    _axes[0, 1].axhline(100 * np.sqrt(_v_inf), color="#888888", ls="--", lw=1, label=r"$\sqrt{v_\infty}$")
+    _axes[0, 1].axhline(_median_vol, color="#888888", ls=":", lw=1, label="long-run median")
     _axes[0, 1].set(xlabel="years", ylabel="volatility (%)", title="Their hidden volatility")
     _axes[0, 1].legend(fontsize=7)
     if _clean is not None:
@@ -559,13 +564,19 @@ def _(
         _atm = 100 * _clean_iv[_at][np.argmin(np.abs(DELTA[_at]))]
         _deep = 100 * _clean_iv[_at][np.argmin(DELTA[_at])]
         _errors = np.abs(100 * (_quote_iv - _clean_iv))[_at]
+        _feller = (
+            f" A single path does not settle there: $\\sigma_v^2={_xi ** 2:.1f}$ exceeds $2\\kappa v_\\infty={2 * _kappa * _v_inf:.2f}$ "
+            f"(Feller condition, Section 1), so in the long run volatility is below {_median_vol:.2g}% half the time "
+            "(dotted line): short spikes carry the average, and in between the price barely moves." if _shape < 1 else "")
         _text = (
-            f"- **Paths:** volatility starts at {100 * np.sqrt(_v0):.0f}% and is pulled towards the long-run level "
-            f"$\\sqrt{{v_\\infty}}={100 * np.sqrt(_v_inf):.0f}\\%$ with a half-life of {12 * np.log(2) / _kappa:.1f} months. "
-            "With $\\rho<0$, falls in the price come with volatility spikes. The paths only illustrate the dynamics: "
+            f"- **Volatility:** starts at {100 * np.sqrt(_v0):.0f}%. The expected variance reverts to $v_\\infty$ with a "
+            f"half-life of {12 * np.log(2) / _kappa:.1f} months (dashed line: $\\sqrt{{v_\\infty}}={100 * np.sqrt(_v_inf):.0f}\\%$)."
+            f"{_feller}\n"
+            "- **Price:** with $\\rho<0$, falls come with volatility spikes. The paths only illustrate the dynamics: "
             "the simulator prices options exactly and never draws paths.\n"
             f"- **Quotes:** at this expiry the Heston smile runs from {_atm:.1f}% at the money to {_deep:.1f}% at the "
-            f"deepest put. The quote errors are at most {np.nanmax(_errors):.2f} volatility points: invisible on the smile.\n"
+            f"deepest put. The quote errors are at most {np.nanmax(_errors):.2f} volatility points"
+            f"{': invisible on the smile' if np.nanmax(_errors) < 0.01 * np.ptp(_axes[1, 0].get_ylim()) else ''}.\n"
             "- **Try:** raise $\\sigma_v$ or make $\\rho$ more negative for a steeper skew; set $v_0$ above $v_\\infty$ for "
             "short expiries above long ones; lower $\\kappa$ to slow the return to $v_\\infty$; raise $c$ for larger "
             "quote errors. How close can you get to the SPX market (grey)?")
