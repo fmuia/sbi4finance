@@ -2,13 +2,17 @@
 % Uses the tutorial's bayesops theme unchanged; compile with LuaLaTeX (the theme needs it).
 % In the Overleaf project: upload this file and figures/slot1/, then Menu > Main document > slot1.tex.
 %
-% Two kinds of evidence, labelled on each slide that shows one:
-%   - ILLUSTRATION (slides 7 to 9 and 11): one running example, a thin option chain simulated from Heston, the model
-%     right by construction, and one exotic, a forward-start call. It shows a mechanism.
+% Three kinds of evidence, labelled on each slide that shows one:
+%   - ILLUSTRATION · US RETURNS (slides 1 to 4): the opening example, two decisions computed from 20 years of monthly
+%     US returns: a portfolio of ten industries, and a share in stocks. It shows why estimates need their
+%     uncertainty, and what a prior does. tutorial/slides/slot1/intro_example.py computes it, from
+%     intro-inputs.json; intro_figures.py draws its four figures and prints every number these slides quote.
+%   - ILLUSTRATION · SIMULATED QUOTES (slides 10 to 12 and 14): one running example, a thin option chain simulated
+%     from Heston, the model right by construction, and one exotic, a forward-start call. It shows a mechanism.
 %     tutorial/slides/slot1/illustration.py computes it.
-%   - RESULT (slide 12, and two backup frames): what the tutorial's Heston study on 63 SPX quotes recorded as of
+%   - RESULT (slide 15, and two backup frames): what the tutorial's Heston study on 63 SPX quotes recorded as of
 %     11 November 2026. The numbers are in tutorial/slides/slot1/recorded-results.json, each with its source.
-% tutorial/slides/slot1/export_figures.py draws every figure and prints every number the slides quote.
+% tutorial/slides/slot1/export_figures.py draws the other figures and prints every number their slides quote.
 % Dashes are typed as Unicode (–): the theme's title fonts do not turn -- into a dash.
 % Speaker notes are in \note{}; Beamer prints them only with \setbeameroption{show notes on second screen}.
 \documentclass[aspectratio=169]{beamer}
@@ -60,6 +64,7 @@
   \coordinate (end) at ([xshift=-1.5mm]tag.west);}
 \newcommand\evidenceillustration{\evidencetag{aviation!60}{white}{ILLUSTRATION · SIMULATED QUOTES}}
 \newcommand\evidenceresult{\evidencetag{neonlake}{neonlake!8}{RESULT · HESTON ON SPX · AS OF 11 NOV}}
+\newcommand\evidencereturns{\evidencetag{aviation!60}{white}{ILLUSTRATION · US RETURNS 2006–2026}}
 \newcommand\divider[1]{\noindent\begin{tikzpicture}[baseline=0pt]
   \useasboundingbox (0, -1.5mm) rectangle (\linewidth, 1.5mm);
   \coordinate (end) at (\linewidth, 0);
@@ -69,9 +74,9 @@
 \newcommand\pairs[4][]{\par\vspace{0.35em}\divider{#1}\par\vspace{0.15em}%
   \begin{columns}[T,onlytextwidth]\column{0.32\textwidth}#2\column{0.32\textwidth}#3\column{0.32\textwidth}#4%
   \end{columns}\par\vspace{\footgap}}
-% A light rule between the rows of a list set as a table (slides 5, 13 and 16), placed after \\
+% A light rule between the rows of a list set as a table, placed after \\
 \newcommand\rowrule{\noalign{\vskip 3.5pt{\color{aviation!15}\hrule height 0.4pt}\vskip 3.5pt}}
-% The state of a check (slide 13): it holds, it holds with a caveat, it raised a flag, it is still to come.
+% The state of a check (slide 16): it holds, it holds with a caveat, it raised a flag, it is still to come.
 \newcommand\statusdisc[2]{\tikz[baseline=-0.9mm, x=1mm, y=1mm]{\fill[#1] (0, 0) circle[radius=1.85];#2}}
 \newcommand\holds{\statusdisc{lagoon}{\draw[white, line width=0.9pt, line cap=round, line join=round]
   (-0.9, -0.05) -- (-0.3, -0.7) -- (0.95, 0.7);}}
@@ -126,49 +131,104 @@
 % sentences on the slide. Style: plain statements, in logical order; each key line follows from the previous one.
 %
 % The argument, in five parts:
-%   1. why uncertainty, and what Bayes offers (slides 1–2);
-%   2. the example and the exercise (3–5): volatility models are the example; the steps and the questions are general;
-%   3. Bayes for calibration (6–11): prior and likelihood, the posterior as draws, from posterior to prices, why
+%   1. why uncertainty, and what Bayes adds (slides 1–5), on one example from US returns: an optimizer amplifies the
+%      errors of its inputs; the uncertainty of an estimate changes a decision; Bayes gives the parameters a
+%      distribution; the prior states a belief and its strength; what Bayes handles, and what it costs;
+%   2. the example and the exercise (6–8): volatility models are the example; the steps and the questions are general;
+%   3. Bayes for calibration (9–14): prior and likelihood, the posterior as draws, from posterior to prices, why
 %      Bayes, and what happens when the quotes run thin;
-%   4. the cost of a posterior, and the handover to amortized inference (12–13);
-%   5. the close (14–16): the summary, the team, the rest of the tutorial.
+%   4. the cost of a posterior, and the handover to amortized inference (15–16);
+%   5. the close (17–19): the summary, the team, the rest of the tutorial.
 
 % ════════════════════════════════════════════════════════════════════════════
-% Uncertainty, Bayes, and the example
+% Why uncertainty, and what Bayes adds: one example on US returns
 
-\begin{frame}{Uncertainty in Finance}
-\key{A number without a range is not enough to \highlight{decide}.}
-\gap{\small
-\begin{tabular}{@{}L{0.22\linewidth}L{0.75\linewidth}@{}}
-{\TitleFont Valuation} & a mark, and a reserve for what the market does not quote \\ \rowrule
-{\TitleFont Regulation} & a value at 90\% confidence; the sensitivity of fair values \\ \rowrule
-{\TitleFont Risk} & limits and capital rest on estimated parameters \\ \rowrule
-{\TitleFont Trading} & hedges and position sizes inherit the estimation error \\
-\end{tabular}\par}\gap
-\source{Commission Delegated Regulation (EU) 2016/101 (prudent valuation), Article 9; IFRS 13, paragraph 93(h).}
-\note{Finance runs on estimates: a volatility, a correlation, the parameters of a model. Decisions are taken on them,
-so their uncertainty matters. A valuation needs a mark, and a reserve where the market gives no price. Regulation
-asks for it explicitly: European prudent valuation asks for a value at 90 percent confidence, and accounting
-standards for the sensitivity of fair values to inputs that cannot be observed. Risk limits and capital rest on
-estimated parameters. Hedges and position sizes inherit the estimation error. In each case one number is not enough:
-what is needed is a distribution.}
+\begin{frame}{Uncertainty in Finance: Portfolio Weights}
+\key{Inputs are estimates. An optimizer \highlight{amplifies} their errors.}
+\fig{0.97}{intro-weights.pdf}
+\pairs[returns]{\pair{Technology's return}{15.7\% to 17.3\% a year}}
+      {\pair{Its standard error}{4.3: three times the change}}
+      {\pair{Its weight in the portfolio}{74\% to 95\%: 21 points}}
+\note{Every number a model produces is computed from estimated inputs. A textbook case: ten US industries, twenty
+years of monthly returns, and the portfolio with the highest Sharpe ratio, short positions allowed. Its inputs are
+the industries' average returns and their covariances. The rings are the weights. Now raise one input: technology's
+average return, from 15.7 to 17.3 percent a year. That is about a third of the standard error of that average, so
+the data cannot tell the two values apart. The dots are the new weights: technology goes from 74\% to 95\%, retail
+from 31\% to 18\%. The optimizer takes its inputs as exact, and amplifies their errors. The returns are the industry
+portfolios of Kenneth French's data library.}
 \end{frame}
 
-\begin{frame}{What Bayes Offers}
-\key{Bayes treats what is unknown as a \highlight{distribution}.}
-\gap{\small
-\begin{tabular}{@{}L{0.33\linewidth}L{0.64\linewidth}@{}}
-{\TitleFont One language} & parameters, predictions, prices: all distributions \\ \rowrule
-{\TitleFont Prior knowledge counts} & what is known before the data is stated, not hidden \\ \rowrule
-{\TitleFont Uncertainty propagates} & anything computed from the parameters gets a range \\ \rowrule
-{\TitleFont It can be checked} & simulate from the model, and compare with the data \\
-\end{tabular}\par}\gap
-\note{Bayesian inference is a general way to get that distribution. Everything unknown is described by a
-distribution: the parameters, and anything computed from them. What is known before the data comes in is stated, as a
-prior, not hidden in a choice of bounds or starting points. Uncertainty propagates: a price, a hedge, a forecast each
-get a range. And the result can be checked, by simulating from the model and comparing with the data. The rest of
-this talk makes these four points concrete on one example.}
+\begin{frame}{Uncertainty in Finance: The Horizon}
+\key{Uncertain estimates lower the share in stocks at \highlight{long horizons}.}
+\fig{0.80}{intro-horizon.pdf}
+\pairs[returns]{\pair{The market's mean return}{9.1\% a year $\pm$ 3.5}}
+      {\pair{Taken as exact}{83–84\% at any horizon}}
+      {\pair{With its uncertainty}{58\% at 10 years, 45\% at 20}}
+\note{A second decision: how much to hold in stocks, for an investor who buys and holds. Over the same twenty years
+the US market earned 9.1 percent a year over bills, give or take 3.5, with a volatility of 15.9 percent. Take these
+numbers as exact, and the investor holds about 83 percent in stocks whatever the horizon: the magenta line. But the
+mean is an estimate, and an error in it repeats every year, so the uncertainty about the return over the horizon
+grows faster than the horizon. With it, the share falls to 58 percent at 10 years and 45 at 20: the blue line.
+Barberis showed this in 2000. In both examples the uncertainty of an estimate changes the decision, so we need a way
+to state it.}
 \end{frame}
+
+\begin{frame}{Bayesian Inference}
+\key{Bayes gives the parameters a \highlight{probability distribution}.}
+\fig{0.97}{intro-posterior.pdf}
+\pairs[returns]{\pair{It combines information}{a prior and the data}}
+      {\pair{It keeps the uncertainty}{distributions, not numbers}}
+      {\pair{It fits realistic models}{bounds, hidden variables}}
+\note{Bayesian inference is that way: it describes what we know about a parameter with a probability distribution.
+Take technology's expected return. First a prior, before looking at its own returns: technology is an industry like
+the others, so its expected return is near the value the ten have in common, 8.9\% $\pm$ 3.8 a year. That is the grey
+curve. Then the data: twenty years of returns say 15.7\% $\pm$ 4.3, in magenta. Bayes' rule multiplies the two and
+gives the posterior, in blue: 11.9\% $\pm$ 2.8. It answers questions directly: with 90 percent probability the
+expected return lies between 7.2 and 16.5 percent. Rachev and coauthors give three reasons finance uses this: it
+combines information, it keeps the uncertainty in anything computed from the parameters, and it fits realistic
+models.}
+\end{frame}
+
+\begin{frame}{The Prior}
+\key{The prior states what you believe, and \highlight{how strongly}.}
+\fig{0.97}{intro-prior.pdf}
+\pairs[returns]{\pair{No prior}{technology: 74\% to 95\%}}
+      {\pair{Prior worth 26 years of data}{39\% to 48\%}}
+      {\pair{Prior taken as certain}{12\%, whatever the data say}}
+\note{The prior is the part people distrust, so look at what it does. Here the belief is that the ten industries
+have the same expected return, held with more or less weight. On the left it has no weight: these are the weights of
+the first slide, 74 percent for technology and 95 after the change. On the right it is taken as certain: the averages
+are ignored, technology gets 12 percent, and nothing moves. Fixing an input is a prior of this kind, with no width.
+Bayes lets us state a width in between, and the decision follows it. In the middle is the weight the data themselves
+suggest, 56 percent, a prior worth 26 years of data, after Jorion: the same change moves technology by 9 points, not
+21. Black–Litterman is the best-known use of this in practice.}
+\end{frame}
+
+\begin{frame}{What Bayes Handles, and What It Costs}
+\key{Bayes matters most when data are \highlight{few} or an input is left open.}
+\gap{\small
+\begin{tabular}{@{}L{0.54\linewidth}L{0.43\linewidth}@{}}
+\leavevmode{\scriptsize\color{aviation!55}\MakeUppercase{Bayes handles}} &
+  \leavevmode{\scriptsize\color{aviation!55}\MakeUppercase{Bayes costs}} \\ \rowrule
+{\TitleFont Bounds on parameters} & {\TitleFont A prior to choose and defend} \\ \rowrule
+{\TitleFont Several fits that are equally good} & {\TitleFont A model of the data and its noise} \\ \rowrule
+{\TitleFont Hidden variables, such as volatility} & {\TitleFont More computation} \\ \rowrule
+{\TitleFont Returns that are not normal} & \\ \rowrule
+{\TitleFont Any function of the parameters} & \\
+\end{tabular}\par}\gap
+\source{Rachev, Hsu, Bagasheva and Fabozzi (2008), \textit{Bayesian Methods in Finance}, Chapters 3 and 10 to 14.}
+\note{What does Bayes handle that classical methods find hard? Bounds on parameters, such as a correlation between
+minus one and one. Several fits that are equally good: the posterior keeps them all. Hidden variables, such as
+volatility, which is never observed. Returns that are not normal: the model changes, the method does not. And any
+function of the parameters gets its distribution from the same draws. The costs: a prior to choose and defend, a
+full model of the data, and more computation, the main reason Bayes took decades to reach finance. With a lot of data
+it agrees with classical methods; it matters when data are few or an input is left open. Now our example: the
+calibration of volatility models to option quotes. We chose it because every building block can be shown and checked
+on it, not because Bayes changes the answer most there.}
+\end{frame}
+
+% ════════════════════════════════════════════════════════════════════════════
+% The example and the exercise
 
 \begin{frame}{The Example: Volatility Models}
 \key{A calibrated model prices what the market does \highlight{not quote}.}
@@ -522,7 +582,7 @@ Quotes & 7 strikes, $\delta = \ln(K/F)/(0.16\sqrt{T})$ from $-3.5$ to $1$, at 1,
 each observed once \\
 Spreads & half-spreads of 0.3 volatility points at the money, 1.5 at $\delta = -3.5$ \\
 Errors & normal, $c$ times the half-spread; $c = 1$, inferred on $[0.5, 2]$ \\
-Prior & the notebook's: uniform on the box of slide 6 \\
+Prior & the notebook's: uniform on the box of slide 9 \\
 Product & a call struck at the money in 6 months, paid at 1 year \\
 \bottomrule
 \end{tabular}
@@ -540,8 +600,8 @@ Quoted expiries & Fit & Delta method & Posterior \\
 1: 1 year & 5.14 & none & 2.9 to 4.9 \\
 \bottomrule
 \end{tabular}\par\vspace{4pt}
-{\color{aviation!60}Under the generating parameters: 4.66. Slides 2, 3, 6 and 9 use the two expiries, slide 8
-the one. There the fit sits on a bound of the box; with today's volatility assumed between 10\% and 40\%, the best
+{\color{aviation!60}Under the generating parameters: 4.66. Slides 10 to 12 use the two expiries, and
+\textit{What an Assumption Does} the one. There the fit sits on a bound of the box; with today's volatility assumed between 10\% and 40\%, the best
 fit's price runs from 5.14 to 2.86.\par}
 \end{columns}
 \gap
@@ -553,7 +613,7 @@ by construction. Posterior by importance sampling and Metropolis moves, checked 
 \fontsize{7.5}{9.5}\selectfont
 \begin{tabular}{@{}L{0.2\linewidth}L{0.35\linewidth}L{0.39\linewidth}@{}}
 \toprule
- & \textbf{The example of slides 2 to 9} & \textbf{The Heston notebook, 11:40} \\
+ & \textbf{The example of slides 10 to 14} & \textbf{The Heston notebook, 11:40} \\
 \midrule
 Model, prior, error law & Heston; uniform box; $c$ times the half-spread & the same \\
 Data & simulated: Heston is right by construction & the SPX quotes of 9 November 2026, and quotes simulated on
@@ -620,6 +680,40 @@ Simulated quotes, stressed market & 0.75 & 0.30 & 0.06 & 0.01 & 0.58 & 0.40 \\
 2026, not accepted studies.}
 \end{frame}
 
+\begin{frame}{Backup: Uncertainty in Finance}
+\key{A number without a range is not enough to \highlight{decide}.}
+\gap{\small
+\begin{tabular}{@{}L{0.22\linewidth}L{0.75\linewidth}@{}}
+{\TitleFont Valuation} & a mark, and a reserve for what the market does not quote \\ \rowrule
+{\TitleFont Regulation} & a value at 90\% confidence; the sensitivity of fair values \\ \rowrule
+{\TitleFont Risk} & limits and capital rest on estimated parameters \\ \rowrule
+{\TitleFont Trading} & hedges and position sizes inherit the estimation error \\
+\end{tabular}\par}\gap
+\source{Commission Delegated Regulation (EU) 2016/101 (prudent valuation), Article 9; IFRS 13, paragraph 93(h).}
+\note{Finance runs on estimates: a volatility, a correlation, the parameters of a model. Decisions are taken on them,
+so their uncertainty matters. A valuation needs a mark, and a reserve where the market gives no price. Regulation
+asks for it explicitly: European prudent valuation asks for a value at 90 percent confidence, and accounting
+standards for the sensitivity of fair values to inputs that cannot be observed. Risk limits and capital rest on
+estimated parameters. Hedges and position sizes inherit the estimation error. In each case one number is not enough:
+what is needed is a distribution.}
+\end{frame}
+
+\begin{frame}{Backup: What Bayes Offers}
+\key{Bayes treats what is unknown as a \highlight{distribution}.}
+\gap{\small
+\begin{tabular}{@{}L{0.33\linewidth}L{0.64\linewidth}@{}}
+{\TitleFont One language} & parameters, predictions, prices: all distributions \\ \rowrule
+{\TitleFont Prior knowledge counts} & what is known before the data is stated, not hidden \\ \rowrule
+{\TitleFont Uncertainty propagates} & anything computed from the parameters gets a range \\ \rowrule
+{\TitleFont It can be checked} & simulate from the model, and compare with the data \\
+\end{tabular}\par}\gap
+\note{Bayesian inference is a general way to get that distribution. Everything unknown is described by a
+distribution: the parameters, and anything computed from them. What is known before the data comes in is stated, as a
+prior, not hidden in a choice of bounds or starting points. Uncertainty propagates: a price, a hedge, a forecast each
+get a range. And the result can be checked, by simulating from the model and comparing with the data. The rest of
+this talk makes these four points concrete on one example.}
+\end{frame}
+
 \begin{frame}{Backup: The Prudent-Valuation Rules}
 \footnotesize
 \begin{tabular}{@{}L{0.25\linewidth}L{0.7\linewidth}@{}}
@@ -662,16 +756,25 @@ CPU-minutes per pricing; it has not been run.}
 \gap
 \end{frame}
 
-\begin{frame}{Backup: References}
+\begin{frame}[allowframebreaks]{Backup: References}
 \scriptsize
 \begin{itemize}
+\item Barberis, N. (2000). Investing for the long run when returns are predictable. \textit{Journal of Finance}
+55(1), 225–264.
+\item Black, F., Litterman, R. (1992). Global portfolio optimization. \textit{Financial Analysts Journal} 48(5), 28–43.
 \item Commission Delegated Regulation (EU) 2016/101 (prudent valuation), Articles 3 and 9 to 11.
 \item Cranmer, K., Brehmer, J., Louppe, G. (2020). The frontier of simulation-based inference. \textit{PNAS} 117(48),
 30055–30062.
 \item De Spiegeleer, J., Madan, D. B., Reyners, S., Schoutens, W. (2018). Machine learning for quantitative finance:
 fast derivative pricing, hedging and fitting. SSRN 3191050.
+\item French, K. R. \textit{Data Library}: 10 industry portfolios and the Fama/French factors, monthly, CRSP data
+to September 2026. mba.tuck.dartmouth.edu/pages/faculty/ken.french/data\_library.html
+\item Jorion, P. (1986). Bayes–Stein estimation for portfolio analysis. \textit{Journal of Financial and Quantitative
+Analysis} 21(3), 279–292.
 \item Kruse, S., Nögel, U. (2005). On the pricing of forward starting options in Heston's model on stochastic
 volatility. \textit{Finance and Stochastics} 9(2), 233–250.
+\item Rachev, S. T., Hsu, J. S. J., Bagasheva, B. S., Fabozzi, F. J. (2008). \textit{Bayesian Methods in
+Finance}. Wiley.
 \item Radev, S. T., Mertens, U. K., Voss, A., Ardizzone, L., Köthe, U. (2022). BayesFlow: learning complex stochastic
 models with invertible neural networks. \textit{IEEE TNNLS} 33(4), 1452–1466.
 \item S\&P Global Market Intelligence (2023). \textit{Totem Service}.
