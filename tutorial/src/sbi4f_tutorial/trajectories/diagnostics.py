@@ -13,6 +13,9 @@ import numpy as np
 from . import inference, simulation
 
 
+RANK_BAND_CONFIDENCE = .95
+
+
 _FIELDS = {"observations", "parameters", "trajectory_id"}
 _LABELS = {
     "kappa": "Mean reversion κ", "long_variance": "Long-run variance",
@@ -191,6 +194,82 @@ def coverage_table(task, panel, draws):
     return rows
 
 
+def rank_readout(task, panel, draws, z=.5):
+    """Read one point of each actual rank ECDF, retaining all panel rows.
+
+    BayesFlow counts posterior draws strictly below the generating truth. The
+    ECDF then counts ranks at or below z; ``cases_below_z`` uses that inclusive
+    convention. With S draws, fractional ranks have S+1 possible values.
+    """
+    data, values = _validated_draws(task, panel, draws)
+    _require(not isinstance(z, (bool, np.bool_))
+             and isinstance(z, (int, float, np.integer, np.floating))
+             and np.isfinite(z) and 0 <= z <= 1, "rank threshold z must lie in [0,1]")
+    z = float(z)
+    ranks = np.mean(values < data["parameters"][:, None, :], axis=1)
+    rows = []
+    for index, name in enumerate(task["parameter_names"]):
+        count = int(np.count_nonzero(ranks[:, index] <= z))
+        cdf = count / len(values)
+        rows.append({"parameter": name, "label": _LABELS.get(name, name),
+                     "n": len(values), "z": z, "cases_below_z": count,
+                     "empirical_cdf": cdf, "departure": cdf - z,
+                     "draw_count": values.shape[1], "possible_rank_count": values.shape[1] + 1,
+                     "strict_draw_comparison": "<", "ecdf_comparison": "<="})
+    return rows
+
+
+def rank_shape_data(cases=200, draws=200, seed=20261112):
+    """Four rank-shape examples from one Normal toy, not a trajectory fit.
+
+    Truths follow N(0,1), observations equal truth plus N(0,.5^2) noise, and
+    the exact posterior is N(.8*y,.2). Each approximation reuses the same
+    observations and standard-Normal posterior noise, changing only its center
+    or width. No neural backend or global random state is used.
+    """
+    cases = simulation._integer(cases, "toy case count", minimum=2)
+    draws = simulation._integer(draws, "toy posterior draw count", minimum=2)
+    seed = simulation._integer(seed, "toy seed")
+    _require(cases <= 2000 and draws <= 2000 and cases * draws <= 1_000_000,
+             "rank toy is capped at 2000 cases, 2000 draws and one million paired values")
+    rng = np.random.default_rng(seed)
+    truth = rng.standard_normal(cases)
+    observed = truth + .5 * rng.standard_normal(cases)
+    mean, sd = .8 * observed, np.sqrt(.2)
+    noise = rng.standard_normal((cases, draws))
+    scenarios = {}
+    for label, shift, scale in (("Calibrated toy", 0., 1.), ("Center too high", .6, 1.),
+                                ("Too narrow", 0., .6), ("Too wide", 0., 1.7)):
+        posterior = mean[:, None] + sd * (shift + scale * noise)
+        scenarios[label] = {"mean_shift_sd": shift, "sd_multiplier": scale,
+                            "ranks": np.mean(posterior < truth[:, None], axis=1)}
+    return {"cases": cases, "draws": draws, "seed": seed,
+            "scope": "Normal toy only; not trajectory data or fitted network output",
+            "truth": truth, "observations": observed, "posterior_mean": mean,
+            "posterior_sd": float(sd), "posterior_noise": noise, "scenarios": scenarios}
+
+
+def rank_shape_guide(cases=200, draws=200, seed=20261112):
+    """Fixed-axis ECDF shapes without bands, fitting or neural imports."""
+    data = rank_shape_data(cases, draws, seed)
+    import matplotlib.pyplot as plt
+
+    from ..shared import plots
+
+    figure, axes = plt.subplots(2, 2, figsize=(9.2, 5.2), sharex=True, sharey=True,
+                                layout="constrained")
+    for index, (axis, (label, scenario)) in enumerate(zip(axes.flat, data["scenarios"].items())):
+        # Both sides of every ECDF jump are drawn, including repeated ranks.
+        x = np.pad(np.repeat(np.sort(scenario["ranks"]), 2), (1, 1), constant_values=(0., 1.))
+        cdf = np.repeat(np.linspace(0., 1., data["cases"] + 1), 2)
+        axis.plot(x, cdf - x, color=plots.SERIES[0] if index == 0 else plots.CRITICAL, linewidth=1.6)
+        axis.axhline(0., color=plots.MUTED, linewidth=.8)
+        axis.set(title=label, xlim=(0., 1.), ylim=(-.5, .5), xlabel="Rank threshold z",
+                 ylabel="ECDF − uniform")
+    figure.suptitle(f"Normal toy · {cases} data sets × {draws} draws · same data and random noise", fontsize=11)
+    return figure
+
+
 def native_pairs(task, selected_draws, truth):
     """Plot one selected physical posterior, importing BayesFlow only here."""
     simulation.validate_task(task)
@@ -243,5 +322,6 @@ def plot_diagnostics(task, panel, draws):
     calibration = bf.diagnostics.calibration_ecdf(
         **data, variable_keys=names, variable_names=labels, difference=True,
         num_col=columns, legend_location="upper right",
-        rank_ecdf_color=plots.SERIES[0], fill_color=plots.BASELINE)
+        rank_ecdf_color=plots.SERIES[0], fill_color=plots.BASELINE,
+        ecdf_bands_kwargs={"confidence": RANK_BAND_CONFIDENCE})
     return recovery, calibration

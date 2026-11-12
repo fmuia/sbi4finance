@@ -188,6 +188,76 @@ def posterior_rows(task, draws):
             for index, name in enumerate(task["parameter_names"])]
 
 
+def posterior_readout(task, draws, truth=None):
+    """Describe paired physical draws; interval contraction is not accuracy.
+
+    Widths are compared with the central 90% of each declared prior, including
+    log-uniform priors. Pearson correlation describes linear dependence only.
+    Optional generating truth adds a per-example check, never a calibration
+    conclusion or a change to the posterior statistics.
+    """
+    validate_task(task)
+    _require(not np.iscomplexobj(draws) and not np.ma.isMaskedArray(draws),
+             "posterior readout requires real unmasked parameter rows")
+    values = np.asarray(draws)
+    names = task["parameter_names"]
+    dimensions = len(names)
+    _require(values.ndim == 2 and len(values) >= 2 and values.shape[1] == dimensions
+             and values.dtype.kind in "fiu" and np.isfinite(values).all(),
+             "posterior readout requires finite complete rows [draws>=2, parameters]")
+    values = np.asarray(values, dtype=np.float64)
+    bounds = np.asarray(task["prior_bounds"], dtype=np.float64)
+    _require(np.all(values >= bounds[:, 0]) and np.all(values <= bounds[:, 1]),
+             "posterior readout rows are outside physical prior bounds")
+    if truth is not None:
+        _require(not np.iscomplexobj(truth) and not np.ma.isMaskedArray(truth),
+                 "generating truth must be real unmasked physical values")
+        truth = np.asarray(truth)
+        _require(truth.shape == (dimensions,) and truth.dtype.kind in "fiu"
+                 and np.isfinite(truth).all() and np.all(truth > bounds[:, 0])
+                 and np.all(truth < bounds[:, 1]),
+                 "generating truth must be one finite row strictly inside prior bounds")
+    probabilities = np.array([.05, .5, .95])
+    posterior = np.quantile(values, probabilities, axis=0)
+    prior = bounds[:, 0] + probabilities[:, None] * (bounds[:, 1] - bounds[:, 0])
+    logged = np.asarray([kind == "log_uniform" for kind in task["prior_types"]])
+    prior[:, logged] = np.exp(np.log(bounds[logged, 0]) + probabilities[:, None]
+                              * (np.log(bounds[logged, 1]) - np.log(bounds[logged, 0])))
+    prior_widths = prior[2] - prior[0]
+    _require(np.all(prior_widths > 0), "prior central 90% widths must be numerically positive")
+    ratios = (posterior[2] - posterior[0]) / prior_widths
+    parameters = {}
+    excluded = None if truth is None else []
+    for index, name in enumerate(names):
+        inside = None if truth is None else bool(posterior[0, index] <= truth[index] <= posterior[2, index])
+        parameters[name] = {
+            "q05": float(posterior[0, index]), "q50": float(posterior[1, index]),
+            "q95": float(posterior[2, index]), "prior_q05": float(prior[0, index]),
+            "prior_q50": float(prior[1, index]), "prior_q95": float(prior[2, index]),
+            "width_ratio90": float(ratios[index]), "truth_inside90": inside,
+        }
+        if inside is False:
+            excluded.append(name)
+    varying = np.flatnonzero(np.any(values != values[0], axis=0))
+    strongest = None
+    if len(varying) >= 2:
+        centered = values[:, varying] - values[:, varying].mean(axis=0)
+        # Correlation is scale invariant. Scaling deviations avoids underflow
+        # for a very concentrated drift posterior whose mean may be near zero.
+        centered /= np.max(np.abs(centered), axis=0)
+        correlations = np.corrcoef(centered, rowvar=False)
+        first, second = np.triu_indices(len(varying), k=1)
+        selected = int(np.argmax(np.abs(correlations[first, second])))
+        strongest = {"names": [names[varying[first[selected]]], names[varying[second[selected]]]],
+                     "correlation": float(correlations[first[selected], second[selected]])}
+    return {
+        "draw_count": len(values), "parameters": parameters,
+        "narrowest_relative_to_prior": names[int(np.argmin(ratios))],
+        "widest_relative_to_prior": names[int(np.argmax(ratios))],
+        "strongest_pair": strongest, "truth_excluded_parameters": excluded,
+    }
+
+
 def plot_returns(task, arrays, case, length):
     import matplotlib.pyplot as plt
     values = arrays["observations"][case, :length, 0]

@@ -301,7 +301,64 @@ Compare this fraction with the deterministic yes/no rule at the posterior-mean
 vector. This describes uncertainty about model parameters, not a future return
 or financial event.
 
-**Verification · 12 November:** 72 tutorial tests, 527 core lab tests (three
+### Clarify physical features, learned summaries and finite checks
+
+Carry over the helpful teaching patterns from
+[Heston/SPX PR #89](https://github.com/fmuia/sbi4finance/pull/89) at `224b057`
+and the published learned-summary experiment in
+[PR #91](https://github.com/fmuia/sbi4finance/pull/91) at `1dcd9e3`.
+Keep the trajectory P law, existing weights and numerical task unchanged.
+
+Four responsive cards explain physical price drift versus expected log growth,
+volatility bursts, leverage, and variance level/memory for the selected model.
+The forward controls use predict → move one setting → observe prompts, with
+fixed innovations and the existing explicit axis presets.
+
+Explain the bottleneck beside the architecture: the GRU emits 16 learned
+summary values in the tutorial fit or 32 in the supplied fit. Two known timing
+features condition the flow separately. This is a compression choice, not a
+parameter count or a sufficient-statistic claim. Training loss uses random
+prefixes; validation loss uses full-year histories. Their gap therefore also
+changes the conditioning-length distribution and cannot by itself diagnose
+overfitting or information loss.
+
+A readout of the actual displayed posterior compares central-90% widths with
+the prior's central-90% widths, reports Pearson dependence from paired draws,
+and shows synthetic-truth positions. It follows the saved/fresh source and
+actual prefix. These are descriptions of concentration and geometry, not an
+accuracy score or a new numerical reference.
+
+Expand the rank guide with one worked calculation of the ECDF difference and
+four toy shapes: calibrated, biased, too narrow and too wide. Explain three
+different uncertainty statements:
+
+- A central 90% posterior interval concerns one parameter for one history.
+- A 95% binomial interval describes uncertainty in empirical coverage across
+  independent histories; it does not include posterior Monte Carlo error.
+- The native 95% ECDF band describes reference variation for each parameter's
+  rank curve. It is not a simultaneous guarantee over all parameters.
+
+Keep the native band calculation unchanged. With 200 posterior draws, strict
+fractional ranks occupy 201 possible positions. Ties and Heston's drift atom
+retain their separate limitations. Marginal rank agreement cannot establish
+conditional or joint posterior fidelity. The supplied final calibration
+failures remain authoritative.
+
+No Q-option-bank timing or terminal-pricer speedup from PR #88/#90 is inherited
+by this P-history lesson. No new simulation, training or inference performance
+claim follows from these presentation changes.
+
+**Latest inheritance verification · 12 November:** 84 tutorial tests, 527 core
+lab tests (three optional PyMC skips), all seven exports (66 trajectory cells,
+zero errors) and release/ownership checks pass. Actual posterior readouts
+match all three models at 1, 252 and 1260 days; the helper also covers the
+137-day request with its saved 126-day posterior. Browser checks cover the
+cards, summary explanations, worked/toy rank views and actual 200-case ECDF
+table. Explanations reuse existing results. No runtime or math errors, and
+the cards and rank views fit at 760 pixels. The native band method, numerical
+law, model weights and frozen calibration decisions remain unchanged.
+
+**Initial SPX-alignment verification · 12 November:** 72 tutorial tests, 527 core lab tests (three
 optional PyMC skips), all seven exports (63 trajectory cells, zero errors),
 marimo and release/ownership checks pass. Prior/PPC smoke checks cover all three
 models, two supplied cases and requested lengths 1, 137 and 1260, retaining

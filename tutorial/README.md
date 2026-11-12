@@ -111,6 +111,9 @@ length from **1 to 1,260 trading days** (five years).
 A stage bar follows the workflow, and a short API map shows where BayesFlow
 enters. A design table explains the masked GRU, spline flow and preprocessing.
 The training code shown is the function called by the button.
+Four model cards connect physical drift versus log growth, volatility bursts,
+leverage and variance level/memory to the parameters. Predict a change, move
+one simulator control, then compare what happened with your prediction.
 
 Start with the rough model and its supplied variance curve. Inspect returns,
 then use the early simulator to change parameters while keeping innovations
@@ -138,6 +141,11 @@ scaled time/mask tokens, the GRU and flow conditions, with generating labels
 kept on a separate training route. The architecture diagram and visible code
 show each route's actual settings. Switching the supplied model
 also changes its synthetic history.
+The GRU compresses the returns into 16 tutorial or 32 pretrained summary values;
+two known timing features condition the flow separately. Summary size is a
+design choice, not a guarantee that all information survives. Training uses
+random prefixes while validation loss uses full-year histories, so their loss
+gap also reflects different conditioning lengths.
 
 **Saved mode** offers only lengths with saved posterior snapshots, so the
 returns and posterior use the same history. **Live mode** accepts any integer
@@ -145,6 +153,9 @@ length. With the matching model downloaded, the CPU action updates the same
 posterior plots using exactly that prefix. Without it, the labelled saved
 fallback remains available. Changing the model, history or length clears a
 previous live result.
+Beside the posterior, a short readout compares its central-90% widths with the
+prior's, reports paired-draw Pearson correlations and locates the synthetic
+truth. These describe concentration and dependence; they do not measure accuracy.
 
 The two model sources are labelled beside their outputs. The tutorial fit does
 not reproduce or validate the supplied five-year fits. Production-bank
@@ -170,6 +181,10 @@ generates 200 validation histories for that task and keeps them in session
 memory. Later checks reuse them and draw 200 fresh samples per history for
 recovery, rank-ECDF and coverage plots. Select a diagnostic history to inspect
 its paired posterior draws and generating values.
+The rank guide includes a worked ECDF difference and four illustrative shapes.
+It distinguishes posterior intervals, uncertainty in empirical coverage, and
+the native 95% rank-ECDF band for each parameter. With 200 draws, ranks have
+201 possible positions; Heston's drift atom needs separate interpretation.
 Generation took under 0.1 seconds per 200 histories in our local CPU check, so
 there is no separate diagnostic dataset to download.
 Every history uses the same chosen prefix; later returns and time tokens are

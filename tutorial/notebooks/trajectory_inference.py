@@ -230,6 +230,40 @@ def _(cache_task, lesson_workflow, mo):
 
 @app.cell(hide_code=True)
 def _(cache_task, mo):
+    _memory = ("κ controls mean reversion; σ controls random variance fluctuations. "
+               "Inspect persistence across several paths as you change them. The notebook fits the stated finite-step law."
+               if cache_task["model"] == "heston" else
+               "H controls the roughness of the latent Gaussian driver; η controls its amplitude. "
+               "A jagged price trace alone does not identify either. Inspect return-derived volatility across several paths.")
+    _level = ("Initial variance is supplied; the long variance level is inferred. Variance still moves through time, "
+              "while the generating parameters stay fixed within a history."
+              if cache_task["model"] == "heston" else
+              "The known-curve task fixes the mean variance scale at 0.04. Realized variance remains random."
+              if cache_task["model"] == "rough-known" else
+              "Short level S, long level L and decay k describe the deterministic mean-variance scale. "
+              "They are inferred jointly; they are not observations of hidden variance.")
+    _texts = [
+        r"**1. Drift and log growth differ.** μ is proportional price drift. Daily log returns also contain "
+        r"the variance correction $-V_t/2$. With variance and innovations fixed, raising μ by δ adds "
+        r"$\delta/252$ to each daily log return.",
+        "**2. Volatility dynamics leave patterns.** " + _memory,
+        "**3. Leverage couples innovations.** A negative ρ links negative price innovations with positive "
+        "variance-driver innovations. The co-movement is stochastic; the correlation between returns and a "
+        "rolling volatility estimate is a different quantity.",
+        "**4. Variance scale and evidence have different roles.** " + _level +
+        " Revealing more days changes the evidence, rather than the generating parameter values.",
+    ]
+    _style = {"border": "1px solid #d1d5db", "border-radius": "8px", "padding": "10px 12px",
+              "min-width": "240px", "min-height": "100%"}
+    _cards = [mo.md(text).style(_style) for text in _texts]
+    mo.vstack([mo.md("### Four features to carry into the simulator"),
+               mo.hstack(_cards[:2], widths="equal", wrap=True, gap=1, align="stretch"),
+               mo.hstack(_cards[2:], widths="equal", wrap=True, gap=1, align="stretch")], gap=1)
+    return
+
+
+@app.cell(hide_code=True)
+def _(cache_task, mo):
     _warning = (mo.callout(mo.md(
         "**Heston numerical limitation.** The finite-step simulator can keep effective variance "
         "at zero for an entire day, making that return exactly drift × time. Its drift posterior "
@@ -410,6 +444,27 @@ def _(cache_task, mo, simulator_controls, simulator_scale, trajectory):
 
 
 @app.cell(hide_code=True)
+def _(cache_task, mo):
+    _amplitude = "σ (volatility of variance)" if cache_task["model"] == "heston" else "η (variance amplitude)"
+    _memory = "κ" if cache_task["model"] == "heston" else "H"
+    mo.md(f"""
+    **Predict → move one slider → inspect several paths.** Keep the innovations fixed.
+
+    | Change | Predict and inspect |
+    |:---|:---|
+    | Raise μ only | The cumulative log-return paths shift upward; variance dynamics keep the same innovations. |
+    | Change {_amplitude} | Which paths develop larger bursts? One fixed realization need not change monotonically. |
+    | Move ρ toward zero | Compare price/volatility co-movement; rolling realized volatility is a return summary. |
+    | Change {_memory} | Compare how volatility patterns persist or roughen, rather than reading the parameter from one price path. |
+
+    Revealing more observed days later uses a longer prefix of one history. Rough
+    histories retain their original starting point and memory; they are not restarted
+    at the first day visible on a plot.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
     ```python
@@ -563,6 +618,12 @@ def _(mo):
 
     The **encoder** extracts temporal features. The **density estimator** turns
     the summary and known time design into uncertainty about the parameters.
+    The tutorial GRU emits **16 learned summary values**; the supplied models emit
+    **32**. The flow also receives **two separate known time features**: observed
+    length / maximum length and the observation step in reference daily units.
+    Summary dimensions are compression choices, not parameter counts or guarantees
+    of sufficient statistics. A feature discarded by the summary is unavailable
+    to the flow; validation must check the resulting posteriors.
     A spline coupling block transforms part of a parameter vector conditional
     on the rest; several blocks can represent curved, dependent distributions.
 
@@ -745,8 +806,9 @@ def _(mo, path_simulation, train_demo_button, train_tutorial_model, trajectory):
                       f"128 posterior draws: **{_timing['sampling']:.2f} s**. Imports precede these timers."),
                 _loss,
                 mo.md("Training loss scores the fitting histories; validation loss scores independent histories. "
-                      "Validation uses their full one-year length while training sees random prefixes. "
-                      "Two loss values cannot diagnose convergence, overfitting or calibrated posteriors. "
+                      "Validation uses their full one-year length while training sees random prefixes, "
+                      "so a loss difference also changes the distribution of conditioning lengths. "
+                      "Two loss values cannot diagnose convergence, overfitting, information preservation or calibrated posteriors. "
                       "Use the independent recovery and rank checks below."),
                 mo.ui.table(trajectory.posterior_rows(tutorial_task, _draws), selection=None, pagination=False),
             ])
@@ -919,6 +981,38 @@ def _(mo):
     return
 
 
+@app.cell(hide_code=True)
+def _(cache_arrays, cache_task, case_choice, mo, parameter_labels, posterior, trajectory):
+    _reading = trajectory.posterior_readout(cache_task, posterior["draws"],
+                                          truth=cache_arrays["truth"][case_choice.value])
+    _small = _reading["narrowest_relative_to_prior"]
+    _large = _reading["widest_relative_to_prior"]
+    _parameters = _reading["parameters"]
+    _precision = (f"**Relative width.** {parameter_labels[_small]} has the narrowest central 90% interval "
+                  f"relative to its own prior: **{100*_parameters[_small]['width_ratio90']:.1f}%** of the prior's "
+                  f"central 90% width. {parameter_labels[_large]} retains **{100*_parameters[_large]['width_ratio90']:.1f}%**. "
+                  "These compare equal-probability widths, including the log-uniform priors.")
+    _pair = _reading["strongest_pair"]
+    _dependence = (f"**Dependence.** The largest absolute Pearson correlation is between "
+                   f"{parameter_labels[_pair['names'][0]]} and {parameter_labels[_pair['names'][1]]}: "
+                   f"**{_pair['correlation']:+.2f}**. Keep their coordinates paired when using these draws."
+                   if _pair else "**Dependence.** Fewer than two coordinates vary in these draws; a Pearson pair correlation is undefined.")
+    _misses = _reading["truth_excluded_parameters"]
+    _truth = ("**Synthetic truths.** Outside the central 90% marginal intervals: "
+              + ", ".join(parameter_labels[name] for name in _misses) + "."
+              if _misses else "**Synthetic truths.** All generating values lie within their central 90% marginal intervals for this history.")
+    mo.vstack([mo.md("### Read this posterior in three steps\n\n" + _precision),
+               mo.md(_dependence), mo.md(_truth),
+               mo.md("These summaries describe the displayed **approximation** for this history and prefix. "
+                     "Width reduction and truth inclusion in one case do not establish accuracy. "
+                     "The final calibration failures and model-specific numerical limits still apply."),
+               mo.accordion({"Definitions behind this reading": mo.md(
+                   "Relative width is (posterior q95 − q05) / (prior q95 − q05), in physical units. "
+                   "It is not an information-distance or accuracy score. Pearson correlation measures linear dependence; "
+                   "a small value does not rule out nonlinear dependence. Truth markers are evaluation labels and never network inputs.")})])
+    return
+
+
 @app.cell
 def _(cache_task, mo, parameter_labels):
     _options = {parameter_labels[_name]: _name for _name in cache_task["parameter_names"]}
@@ -1062,24 +1156,57 @@ def _(cache_arrays, cache_task, case_choice, mo, model_checks, posterior, replic
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.accordion({"How to read recovery, ranks and coverage": mo.md(r"""
-    - **Recovery:** on the diagonal, the posterior median matches the generating value.
-      Error bars show central 90% intervals; a narrow but displaced interval is a problem.
-    - **Ranks:** the fraction of posterior draws below each generating truth should
-      be roughly uniform across independent prior-generated histories. A U-shaped
-      rank histogram suggests intervals that are too narrow; a central hump can
-      suggest intervals that are too wide. A one-sided pattern can indicate bias.
-      These are clues, not unique diagnoses.
-    - **The plotted rank ECDF:** subtracts the uniform reference. A calibrated
-      estimator fluctuates around zero. The grey band describes sampling variation.
-    - **Coverage:** count truths inside each central 90% interval. The binomial
-      interval describes uncertainty from using 200 independent histories. It is
-      not the posterior interval for a parameter and not a new pass/fail rule.
+def _(mo, path_checks):
+    _worked = mo.md(r"""
+    **One history gives one rank.** Draw its parameters from the prior, simulate
+    the observed prefix, then draw 200 parameter samples from its approximate
+    posterior. If 140 draws are below the generating value, its rank is
+    **140 / 200 = 0.70**. Generating truths remain evaluation labels.
 
-    A network that returns the prior can have uniform ranks and nominal coverage
-    without learning anything. Read recovery and information gain alongside them.
-    """)})
+    **Many histories give a curve.** Repeat over 200 independent histories. At
+    a horizontal position z, count the share of ranks at or below z. This is
+    the empirical CDF, $F_N(z)$. The plotted height is **$F_N(z)-z$**.
+    Near zero means consistency with uniform ranks at this resolution.
+    """).style({"min-width": "260px"})
+    _shapes = mo.md(r"""
+    **Read the direction, not just the grey band.**
+
+    - **Above zero:** more ranks are below z than the uniform reference predicts.
+    - **Below zero:** fewer ranks are below z.
+    - **Above on the left, below on the right:** ranks tend toward the extremes;
+      posterior intervals may be too narrow.
+    - **The reverse:** ranks tend toward the centre; intervals may be too wide.
+    - **An upper arch:** truths tend to fall below posterior draws; the fitted
+      centres may be too high. A lower arch suggests the reverse.
+
+    These are clues, rather than unique diagnoses.
+    """).style({"min-width": "260px"})
+    mo.accordion({"Read rank curves step by step": mo.vstack([
+        mo.hstack([_worked, _shapes], widths="equal", wrap=True, align="start", gap=1),
+        path_checks.rank_shape_guide(),
+        mo.md("**Illustrations, not trajectory results.** These Normal examples share the same simulated "
+              "data and random noise; only the approximate posterior's centre or spread changes. "
+              "The correct posterior is known analytically."),
+        mo.md(f"""
+        **Three different intervals appear in this lesson:**
+
+        | Display | What is uncertain? |
+        |:---|:---|
+        | Central 90% posterior interval | A parameter for one observed history, under this approximation |
+        | Grey {100*path_checks.RANK_BAND_CONFIDENCE:.0f}% ECDF reference band | Sampling variation of one rank curve over independent histories |
+        | 95% binomial interval in the coverage table | A coverage rate estimated using 200 histories |
+
+        BayesFlow's grey band is simultaneous across its plotted rank grid **for
+        one parameter curve**. It is not a 95% joint statement across all 4, 5
+        or 7 parameter panels. Its continuous-uniform reference is approximate:
+        200 draws give 201 possible rank positions, and ties need additional care,
+        especially for the Heston drift atom. The band itself is simulation-based.
+
+        Staying inside it is not a certificate of correct posteriors. A network
+        that always returns the prior can have uniform ranks without learning.
+        Read recovery, dependence, conditional checks and the saved final screens too.
+        """),
+    ])})
     return
 
 
@@ -1180,6 +1307,7 @@ def _(check_independent_histories, diagnostic_days, diagnostic_panels, diagnosti
     diagnostic_result = {"task": diagnostic_task, "panel": _panel, "draws": _diagnostic_draws,
                          "length": diagnostic_days.value, "source": diagnostic_source.value}
     _coverage = path_checks.coverage_table(diagnostic_task, _panel, _diagnostic_draws)
+    _rank_rows = path_checks.rank_readout(diagnostic_task, _panel, _diagnostic_draws, z=.5)
     mo.vstack([
         mo.md(f"**Source: {diagnostic_source.value} network · 200 independent histories · "
               f"{diagnostic_days.value} observed days each · 200 posterior draws per history.** "
@@ -1190,6 +1318,14 @@ def _(check_independent_histories, diagnostic_days, diagnostic_panels, diagnosti
                       "empirical coverage": f'{100*row["coverage"]:.1f}%',
                       "95% binomial interval": f'{100*row["wilson95_low"]:.1f}–{100*row["wilson95_high"]:.1f}%'}
                      for row in _coverage], selection=None, pagination=False),
+        mo.accordion({"Read one point from the actual rank curves": mo.vstack([
+            mo.md("At **z = 0.5**, divide the number of ranks at or below 0.5 by the number of histories, "
+                  "then subtract 0.5. This is the plotted ECDF difference at that position, using all retained cases."),
+            mo.ui.table([{"parameter": row["label"], "ranks ≤ 0.5": f'{row["cases_below_z"]}/{row["n"]}',
+                          "empirical CDF": f'{row["empirical_cdf"]:.3f}',
+                          "CDF − 0.5": f'{row["departure"]:+.3f}'} for row in _rank_rows],
+                        selection=None, pagination=False),
+        ])}),
         mo.md("Recovery compares generating truths with posterior medians and central 90% intervals. "
               "The rank ECDF checks calibration averaged over the declared prior: near-zero differences "
               "mean roughly uniform ranks. Inspect both; returning the prior can pass a rank check without learning. "

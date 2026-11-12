@@ -1,6 +1,7 @@
 """Diagnostic histories keep their exact P law, prefix mask and generating labels separate."""
 
 import copy
+import builtins
 import types
 import unittest
 from unittest import mock
@@ -200,6 +201,99 @@ class TrajectoryDiagnosticTests(unittest.TestCase):
         self.assertEqual(recovery.call_args.kwargs["num_col"], 3)
         self.assertTrue(ranks.call_args.kwargs["difference"])
         self.assertEqual(set(ranks.call_args.kwargs["targets"]), set(task["parameter_names"]))
+        self.assertEqual(diagnostics.RANK_BAND_CONFIDENCE, .95)
+        self.assertEqual(ranks.call_args.kwargs["ecdf_bands_kwargs"], {"confidence": .95})
+
+    def test_rank_readout_uses_strict_draw_ranks_but_inclusive_ecdf_with_all_rows(self):
+        task, panel = self.panel()
+        truth = panel["data"]["parameters"]
+        width = np.diff(np.asarray(task["prior_bounds"]), axis=1).ravel()
+        values = np.repeat(truth[:, None], 2, axis=1)
+        values[0] += .1 * width                 # Fractional rank 0.
+        values[1, 0] -= .1 * width             # Rank .5: equality in draw 2 is not below truth.
+        values[2] -= .1 * width                # Fractional rank 1.
+        before = values.copy()
+        with mock.patch.object(inference, "sample") as sample, mock.patch.object(simulation, "generate") as generate:
+            rows = diagnostics.rank_readout(task, panel, values, z=.5)
+        sample.assert_not_called()
+        generate.assert_not_called()
+        self.assertEqual([row["parameter"] for row in rows], task["parameter_names"])
+        for row in rows:
+            self.assertEqual((row["n"], row["cases_below_z"]), (3, 2))
+            self.assertEqual((row["draw_count"], row["possible_rank_count"]), (2, 3))
+            self.assertAlmostEqual(row["empirical_cdf"], 2 / 3)
+            self.assertAlmostEqual(row["departure"], 1 / 6)
+            self.assertEqual(row["strict_draw_comparison"], "<")
+            self.assertEqual(row["ecdf_comparison"], "<=")
+        self.assertEqual(diagnostics.rank_readout(task, panel, values, z=0)[0]["cases_below_z"], 1)
+        self.assertEqual(diagnostics.rank_readout(task, panel, values, z=1)[0]["cases_below_z"], 3)
+        np.testing.assert_array_equal(values, before)
+        for z in (-.1, 1.1, np.nan, np.inf, True, "0.5", [.5]):
+            with self.subTest(z=z), self.assertRaisesRegex(ValueError, "rank threshold"):
+                diagnostics.rank_readout(task, panel, values, z=z)
+
+    def test_rank_toy_reuses_truth_data_and_posterior_noise_without_global_rng_changes(self):
+        before = np.random.get_state()
+        first = diagnostics.rank_shape_data(cases=17, draws=37, seed=73)
+        second = diagnostics.rank_shape_data(cases=17, draws=37, seed=73)
+        after = np.random.get_state()
+        self.assertEqual(before[0], after[0])
+        np.testing.assert_array_equal(before[1], after[1])
+        self.assertEqual(before[2:], after[2:])
+        for key in ("truth", "observations", "posterior_mean", "posterior_noise"):
+            np.testing.assert_array_equal(first[key], second[key])
+        self.assertEqual(first["posterior_noise"].shape, (17, 37))
+        self.assertIn("not trajectory", first["scope"])
+        self.assertEqual(len(first["scenarios"]), 4)
+        for label, scenario in first["scenarios"].items():
+            posterior = first["posterior_mean"][:, None] + first["posterior_sd"] * (
+                scenario["mean_shift_sd"] + scenario["sd_multiplier"] * first["posterior_noise"])
+            expected = np.count_nonzero(posterior < first["truth"][:, None], axis=1) / 37
+            np.testing.assert_array_equal(scenario["ranks"], expected)
+            np.testing.assert_array_equal(scenario["ranks"], second["scenarios"][label]["ranks"])
+            self.assertEqual(scenario["ranks"].shape, (17,))
+            np.testing.assert_allclose(scenario["ranks"] * 37, np.round(scenario["ranks"] * 37))
+
+    def test_rank_toy_shows_the_signed_ecdf_shapes_described_in_the_guide(self):
+        scenarios = diagnostics.rank_shape_data()["scenarios"]
+
+        def departure(label, z):
+            return np.mean(scenarios[label]["ranks"] <= z) - z
+
+        self.assertGreater(departure("Center too high", .5), 0)
+        self.assertGreater(departure("Too narrow", .25), 0)
+        self.assertLess(departure("Too narrow", .75), 0)
+        self.assertLess(departure("Too wide", .25), 0)
+        self.assertGreater(departure("Too wide", .75), 0)
+        self.assertLess(abs(departure("Calibrated toy", .5)), .1)
+
+    def test_rank_toy_plot_is_fixed_axis_without_bands_or_neural_imports(self):
+        original_import = builtins.__import__
+
+        def import_without_backend(name, *args, **kwargs):
+            if name.split(".")[0] in {"bayesflow", "jax", "keras", "torch", "tensorflow"}:
+                raise AssertionError("The toy guide must not import a neural backend")
+            return original_import(name, *args, **kwargs)
+
+        with mock.patch("builtins.__import__", side_effect=import_without_backend):
+            figure = diagnostics.rank_shape_guide(cases=200, draws=200, seed=20261112)
+        self.addCleanup(figure.clear)
+        self.assertEqual(len(figure.axes), 4)
+        self.assertIn("Normal toy", figure._suptitle.get_text())
+        for axis in figure.axes:
+            self.assertEqual(axis.get_xlim(), (0., 1.))
+            self.assertEqual(axis.get_ylim(), (-.5, .5))
+            self.assertEqual(len(axis.collections), 0)  # No confidence band is drawn.
+            x, y = axis.lines[0].get_data()
+            self.assertEqual((len(x), len(y)), (402, 402))
+            self.assertEqual((x[0], x[-1]), (0., 1.))
+
+    def test_rank_toy_rejects_invalid_or_excessive_work_before_allocating_data(self):
+        for kwargs in ({"cases": 1}, {"draws": 1}, {"cases": True}, {"draws": 2.},
+                       {"cases": 2001}, {"draws": 2001}, {"cases": 2000, "draws": 2000},
+                       {"seed": -1}):
+            with self.subTest(kwargs=kwargs), self.assertRaises(ValueError):
+                diagnostics.rank_shape_data(**kwargs)
 
     def test_recovery_coordinates_preserve_unsorted_histories_and_posterior_quantiles(self):
         task, panel = self.panel()

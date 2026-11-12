@@ -5,14 +5,14 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 72,
+    "tutorial_tests": 84,
     "notebook_exports": 7,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 183,
     "local_document_links": 53,
     "marimo_warnings": "existing empty cells in slots 2 and 3",
     "lab_runtime_parity_tests": 12,
-    "trajectory_notebook_cells": 63,
+    "trajectory_notebook_cells": 66,
     "lab_core_tests": 527,
     "lab_optional_skips": 3
   },
@@ -98,19 +98,20 @@
   },
   "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "ab3311a51fea9a5cf0e5e0de784bb3b69ab7ddd8b2f77db518b93e305a959719",
-    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "ffeb613f3ec53ce6930a7f9ddb2d6b0675ea84493754375cc04a8801e2f031b2",
+    "tutorial/notebooks/trajectory_inference.py": "b7579799f6e1dc2a42c250760e37fa3c13fb68cb323a11cf38d0b09bdcf4b683",
+    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "9b5ed8cea97ff621fe40f0793e0b3232376d39c6a5571873feeda61a112bea46",
     "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "5ed98e3d2fce3df3319e3478e08fbdd7f63f00e0f632461bbd783cebf9acac06",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "a24559e42a6656e4a53f05602650e882769708686042131606a7bd93bc82e0fb",
-    "tutorial/README.md": "982b1bf7d824e22295fb6a81ddd7b0a4996248940460114f4d24a226fc0c8f36",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "74d2f97efd0cb91b5b4817a6866d212ae4fd9ea12b1ee37b64ce5f6a44042793",
-    "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "9e2004c217428e3829396e513c31c76d700f7c8a5d2cee5239cae61e576447fe",
-    "tutorial/tests/test_trajectory_diagnostics.py": "1fdd275c57a8125611ca5dc033a85050c766c717f05535b6ff95fb5d46c29a3f",
+    "tutorial/README.md": "82c2a951f652a10d6e22c5f08b4548233c3ddc4cb175ed5941b256b909818331",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "db623f675a1fb06112c6402db8e16bab3f5a1b073bf0284e22ccb9680c49234a",
+    "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "91092853be3846c730e83f3f45eb3789c2adc96a12b34cb571ba2f3074a32354",
+    "tutorial/tests/test_trajectory_diagnostics.py": "02bf496481c2ad1c0fda1d949a042e1f36d36747b8e9a7b2cfea68d4b99e04ee",
     "tutorial/src/sbi4f_tutorial/trajectories/model_checks.py": "2c72c14c2bd8ddd9dd27168fe24bf20fddbd880f799c8009fe3107655806b140",
-    "tutorial/tests/test_trajectory_model_checks.py": "f71ed87750ca7094c0bd503011b5997c0f9e259194cbff16a47c0ae2d821628a"
+    "tutorial/tests/test_trajectory_model_checks.py": "f71ed87750ca7094c0bd503011b5997c0f9e259194cbff16a47c0ae2d821628a",
+    "tutorial/tests/test_trajectory_posterior_readout.py": "e2b64c53a7220e0dea19d9b44dc5a272e6ccef718b8d8fe0d49a095c1af66008"
   },
-  "updated_at_utc": "2026-11-12T05:50:05+00:00",
+  "updated_at_utc": "2026-11-12T17:58:18+00:00",
   "forward_simulator": {
     "paths": 8,
     "days": 252,
@@ -1048,5 +1049,209 @@
       }
     },
     "scope": "Software/teaching alignment; no new calibrated estimator, conditional reference, forecast or scientific acceptance."
+  },
+  "inherited_learning_20261112": {
+    "format": "trajectory_inherited_learning_review_v1",
+    "baseline_commit": "ce0eaf388fb871c619a067eac1b51047c858aaa8",
+    "main_commit": "6903d8fa7b1ee8c367daaf9ba6997baa0883b8e0",
+    "comparison_sources": [
+      {
+        "pr": "https://github.com/fmuia/sbi4finance/pull/89",
+        "commit": "224b0577fda1b71e249f5d42a73ef4bd3ce7e370",
+        "file": "lab/notebooks/heston_spx_calibration.py",
+        "sha256": "6ba3670a98cdad2e98616ed8b956eefe43841bd72c79b6f4c6e5160ed5ef2034"
+      },
+      {
+        "pr": "https://github.com/fmuia/sbi4finance/pull/91",
+        "commit": "1dcd9e3",
+        "scope": "Compression and validation lessons only; Q-task measured performance not transferred."
+      }
+    ],
+    "scientific_acceptance": false,
+    "existing_weights_or_assets_changed": false,
+    "teaching_changes": {
+      "model_features": "Four responsive P-model cards and predict/move/observe prompts for existing forward controls.",
+      "summary_bottleneck": "16/32 learned values plus two separate known time features; no sufficient-statistic guarantee.",
+      "validation": "Full-length validation versus random-prefix training changes the conditioning distribution.",
+      "posterior_readout": "Physical posterior central90 width / exact prior central90 width; paired Pearson dependence and truth inclusion, never an accuracy score.",
+      "rank_definition": "Strict draw<truth fractions, then count ranks<=z; plotted departure is empirical CDF minus z.",
+      "rank_shape_guide": "Fixed-seed exact Normal-model toy, with biased/narrow/wide alternatives; no trajectory or fitted-network result.",
+      "uncertainty_types": "Posterior90 intervals versus native95 per-curve ECDF reference bands versus Wilson95 coverage intervals.",
+      "finite_resolution": "200 posterior draws yield201 rank positions for continuous targets; ties/atoms need care."
+    },
+    "native_ecdf_band": {
+      "method_changed": false,
+      "explicit_confidence": 0.95,
+      "scope": "Native BayesFlow simulated continuous-uniform band, simultaneous across its rank grid for one parameter curve; not adjusted across parameters. Finite-rank and atom caveats retained."
+    },
+    "actual_saved_posterior_helper_checks": {
+      "models": [
+        "heston",
+        "rough-known",
+        "rough-joint"
+      ],
+      "cases": [
+        0,
+        3
+      ],
+      "requested_lengths": [
+        1,
+        137,
+        1260
+      ],
+      "checks": 18,
+      "passed": true,
+      "scope": "Descriptive readout on unchanged cached posteriors; request137 uses saved126 where appropriate."
+    },
+    "browser": {
+      "page_errors": [],
+      "new_teaching_views_do_not_generate_or_sample": true,
+      "computed_readouts": [
+        {
+          "model": "rough-known",
+          "days": 252,
+          "actual_length": 252,
+          "narrow": "20.0%",
+          "wide": "79.9%",
+          "correlation": "+0.31"
+        },
+        {
+          "model": "rough-known",
+          "days": 1,
+          "actual_length": 1,
+          "narrow": "100.2%",
+          "wide": "102.6%",
+          "correlation": "+0.11"
+        },
+        {
+          "model": "rough-known",
+          "days": 1260,
+          "actual_length": 1260,
+          "narrow": "9.8%",
+          "wide": "53.5%",
+          "correlation": "+0.44"
+        },
+        {
+          "model": "heston",
+          "days": 252,
+          "actual_length": 252,
+          "narrow": "62.3%",
+          "wide": "108.7%",
+          "correlation": "+0.28"
+        },
+        {
+          "model": "heston",
+          "days": 1,
+          "actual_length": 1,
+          "narrow": "99.5%",
+          "wide": "102.7%",
+          "correlation": "-0.08"
+        },
+        {
+          "model": "heston",
+          "days": 1260,
+          "actual_length": 1260,
+          "narrow": "34.8%",
+          "wide": "104.6%",
+          "correlation": "+0.41"
+        },
+        {
+          "model": "rough-joint",
+          "days": 252,
+          "actual_length": 252,
+          "narrow": "62.2%",
+          "wide": "100.1%",
+          "correlation": "+0.47"
+        },
+        {
+          "model": "rough-joint",
+          "days": 1,
+          "actual_length": 1,
+          "narrow": "95.8%",
+          "wide": "103.1%",
+          "correlation": "-0.12"
+        },
+        {
+          "model": "rough-joint",
+          "days": 1260,
+          "actual_length": 1260,
+          "narrow": "22.8%",
+          "wide": "106.3%",
+          "correlation": "+0.72"
+        }
+      ],
+      "summary_bottleneck_and_separate_time_context_visible": true,
+      "worked_rank_definition_four_shapes_and_interval_types_visible": true,
+      "validation_loss_conditioning_difference_visible_after_fit": true,
+      "actual_rank_readout": [
+        {
+          "parameter": "Roughness H",
+          "count": 103,
+          "histories": 200,
+          "cdf": 0.515,
+          "cdf_minus_half": 0.015
+        },
+        {
+          "parameter": "Variance amplitude \u03b7",
+          "count": 96,
+          "histories": 200,
+          "cdf": 0.48,
+          "cdf_minus_half": -0.02
+        },
+        {
+          "parameter": "Correlation \u03c1",
+          "count": 100,
+          "histories": 200,
+          "cdf": 0.5,
+          "cdf_minus_half": 0.0
+        },
+        {
+          "parameter": "Physical drift \u03bc",
+          "count": 97,
+          "histories": 200,
+          "cdf": 0.485,
+          "cdf_minus_half": -0.015
+        }
+      ],
+      "opening_readouts_reuses_existing_draws": true,
+      "status": "passed",
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "math_render_errors": 0,
+      "marimo_errors": 0,
+      "existing_final_failures_retained": true,
+      "model_cards_and_guided_prompt_models": [
+        "rough-known",
+        "heston",
+        "rough-joint"
+      ],
+      "screenshots_visually_reviewed": [
+        "cards-rough-known.png",
+        "narrow-cards.png",
+        "narrow-rank-guide.png",
+        "actual-rank-point.png",
+        "narrow-actual-rank-point.png"
+      ]
+    },
+    "post_browser_change": "Added an explicit Normal-toy caption only; final66-cell export passes.",
+    "verification": {
+      "tutorial_tests": 84,
+      "lab_core_tests": 527,
+      "lab_optional_skips": 3,
+      "notebook_exports": 7,
+      "trajectory_cells": 66,
+      "cell_errors": 0,
+      "runtime_boundary_symbols": 183,
+      "local_document_targets": 53,
+      "log_sha256": {
+        "tests": "59d28c80cc5a21bb8d1c9503a6a51c9d6b4a875b11d385be5ed1626d31310541",
+        "lab-tests": "dfe4630cc5053b686f28f447904a27fcdcf59228dc42e4ecb6b0fd55118cf6b4",
+        "exports": "c6ed02306a271d075d19b35ac016997cb8671539595b3945177618fa1d499559",
+        "final-export": "78cf66a94f6c5ba227a3357dacd812ec52a3f3797ce658c663c0c555713ad244",
+        "marimo": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
+        "release": "fb1ed2558d04d8ed407ef96cbd3c210b2d24fdc08acc337a85fdb739db44af8a"
+      }
+    },
+    "scope": "Explanatory and descriptive refinements; no new trained model, conditional reference, numerical law, forecast, accuracy acceptance or inherited Q-pricer speed claim."
   }
 }
