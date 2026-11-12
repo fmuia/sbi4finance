@@ -122,7 +122,7 @@ def _():
     )
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(mo, workflow):
     mo.vstack([
         mo.md(r"""
@@ -130,20 +130,12 @@ def _(mo, workflow):
 
         We calibrate the **Heston stochastic-volatility model** to **63 SPX option quotes**. Instead of one best-fitting parameter vector, we compute a **posterior distribution** over the six unknowns $\boldsymbol\theta=(v_0,\kappa,v_\infty,\sigma_v,\rho,c)$.
 
-        The posterior is learned with **amortized simulation-based inference** in **BayesFlow**: a neural network is trained once on simulated quotes, then returns the posterior for any new set of 63 quotes in seconds.
+        The posterior is learned with **amortized simulation-based inference** in **BayesFlow**: a neural network is trained once on simulated quotes, then returns the posterior for any new set of 63 quotes in seconds. The workflow that we will explore is described as follows:
         """),
         workflow(),
-        mo.md(r"""
-        **Where BayesFlow is used**
-
-        | BayesFlow | Role in this notebook | Section |
-        |:---|:---|:---|
-        | `bf.make_simulator` | prior, Fourier pricer and quote noise as one simulator | 2 |
-        | `bf.Adapter`, `bf.networks.FlowMatching`, `bf.BasicWorkflow` | network inputs, posterior network, training loop | 3 |
-        | `workflow.fit_offline` | training on a fixed bank of simulations | 3 |
-        | `workflow.sample` | posterior draws for observed quotes | 4 |
-        | `bf.diagnostics` | loss, recovery, calibration, coverage, posterior pair plots | 3, 5 |
-        """),
+        mo.md(
+        r"""In this notebook, we explicitly show where and how **BayesFlow** is used, including code snippets where useful."""
+        )
     ])
     return
 
@@ -234,10 +226,10 @@ def _(GRID, json, np):
     PRODUCTS = _panel["products"]
     PRODUCT_TITLES = {"control": f"average variance, now to {365 * PRODUCTS['control'][1]:.0f} days",
                       "affected": f"forward variance, {365 * PRODUCTS['affected'][0]:.0f} to {365 * PRODUCTS['affected'][1]:.0f} days"}
-    return CASES, CASE_TITLES, CLEAN, ERRORS, PRODUCTS, PRODUCT_TITLES, TRUTHS
+    return CASES, CASE_TITLES, CLEAN, PRODUCTS, PRODUCT_TITLES, TRUTHS
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(DELTA, KIND, REF_VOL, design, mo):
     _puts = sorted({_q["target_z"] for _q in design["selected_quotes"] if _q["option_type"] == "put"})
     _calls = [_t for _t in design["targets_z"] if _t not in _puts]
@@ -253,12 +245,14 @@ def _(DELTA, KIND, REF_VOL, design, mo):
 
     $$\delta=\frac{{\ln(K/F)}}{{\sigma_{{\text{{ref}}}}\sqrt{{T}}}},\qquad \sigma_{{\text{{ref}}}}={100 * REF_VOL:.0f}\%,$$
 
-    the distance from the forward in units of a typical move over the option's life ($T$ in years, actual/365). The contracts were selected on this scale: at every expiry, the puts nearest to $\delta={_fmt(_puts)}$ and the calls nearest to $\delta={_fmt(_calls)}$. They run from $\delta={DELTA.min():.1f}$ to ${DELTA.max():.1f}$ ({int((KIND == 'put').sum())} puts, {int((KIND == 'call').sum())} calls).
+    the distance from the forward in units of a typical move over the option's life ($T$ in years, actual/365).[^sigma] The contracts were selected on this scale: at every expiry, the puts nearest to $\delta={_fmt(_puts)}$ and the calls nearest to $\delta={_fmt(_calls)}$. They run from $\delta={DELTA.min():.1f}$ to ${DELTA.max():.1f}$ ({int((KIND == 'put').sum())} puts, {int((KIND == 'call').sum())} calls).
+
+    [^sigma]: 16% is close to the at-the-money implied volatility of SPX on this snapshot (15–17% across the seven expiries), so one unit of δ is roughly one standard deviation of the log price at expiry.
     """)
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(
     DELTA,
     DISCOUNT,
@@ -320,7 +314,7 @@ def _(
         - **Middle:** the half-spread as a share of the price: {_relative.min():.2f}% at best near the money, up to {_relative.max():.0f}% for the cheapest puts ({MID.min():.2f} index points).
         - **Right:** the **volatility smile**, from {min(_atm):.0f}–{max(_atm):.0f}% at the money to {min(_wing):.0f}–{max(_wing):.0f}% for the deepest puts. The seven smiles are nearly parallel in $\\delta$: the skew per unit of $\\delta$ is about the same at one week as at eleven months. This is the feature the model must reproduce.
 
-        Implied volatilities are for display only; all computations use prices.
+        **Note**: Implied volatilities are for display only and all computations use prices.
         """),
         mo.accordion({
             "How the 63 contracts were chosen": mo.md(rf"""
@@ -336,7 +330,7 @@ def _(
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(mo, workflow):
     mo.vstack([workflow("Model"), mo.md(r"""
     ## 1. Model
@@ -350,6 +344,8 @@ def _(mo, workflow):
     dV_t = \kappa(v_\infty-V_t)\,dt+\sigma_v\sqrt{V_t}\,dW_t^V,
     \qquad d\langle W^F,W^V\rangle_t=\rho\,dt .
     $$
+    where $W^F$ and $W^V$ are two Brownian motions with correlation $\rho$, and:
+
 
     | Symbol | Meaning |
     |:---|:---|
@@ -386,7 +382,7 @@ def _(NAMES, TRUTHS, mo, reference_summary):
 
         - **Why the control variate:** for very cheap options the plain formula is a small difference of two large numbers; this form avoids the cancellation.
         - **Accuracy:** Gauss–Legendre quadrature, with nodes and interval doubled until two successive steps agree to within 2% of the smallest noise standard deviation the prior allows for that contract ($c=0.5$, that is 1% of its half-spread).
-        - **Speed:** milliseconds for all 63 options; the prior predictive check in Section 2 times 1,000 simulated data sets.
+        - **Speed:** milliseconds for all 63 options. The prior predictive check in Section 2 times 1,000 simulated data sets.
         """),
         "The Feller condition": mo.md(rf"""
         - If $2\kappa v_\infty\ge\sigma_v^2$, the variance never reaches zero. Otherwise it can touch zero and is pushed straight back up by the drift. The model and the pricer are valid either way, and the prior does not impose the condition.
@@ -396,7 +392,7 @@ def _(NAMES, TRUTHS, mo, reference_summary):
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(mo):
     mo.md(r"""
     ### Observation model: noise set by the bid–ask spread
@@ -406,18 +402,29 @@ def _(mo):
     \epsilon_i \overset{\mathrm{iid}}{\sim}\mathcal N(0,1),\qquad i=1,\dots,63
     $$
 
-    - $y_i$: the quote (mid price) of contract $i$; $P_i$: its Heston price.
+    - $y_i$: the quote (mid price) of contract $i$. $P_i$: its Heston price.
     - $h_i$: **data**, the observed half-spread. Fixed, and identical in every simulation.
     - $\epsilon_i$: a fresh standard-normal draw for every contract and every simulated data set.
     - $c$: a **parameter**, inferred with the others. It scales all 63 noise levels together: "one half-spread is one standard deviation" is a convention that $c$ can correct.
 
-    **Left out:** a model-error term. Heston is assumed to price every contract exactly, so a systematic gap between Heston and the market can only be absorbed by a larger $c$ (Section 5.4).
+    **Note:** a **model-error term** is left out. Heston is assumed to price every contract exactly, so a systematic gap between Heston and the market can only be absorbed by a larger $c$ (Section 5.4).
     """)
     return
 
 
 @app.cell(hide_code=True)
-def _(DELTA, EXPIRY, EXPIRY_COLORS, EXPIRY_DATES, H, MARKET_IV, mo, np, plt, vol_point_noise):
+def _(
+    DELTA,
+    EXPIRY,
+    EXPIRY_COLORS,
+    EXPIRY_DATES,
+    H,
+    MARKET_IV,
+    mo,
+    np,
+    plt,
+    vol_point_noise,
+):
     _points = vol_point_noise(H, MARKET_IV)
     _fig, _ax = plt.subplots(figsize=(6.4, 2.9), constrained_layout=True)
     for _e, _date in enumerate(EXPIRY_DATES):
@@ -439,18 +446,18 @@ def _(DELTA, EXPIRY, EXPIRY_COLORS, EXPIRY_DATES, H, MARKET_IV, mo, np, plt, vol
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(mo, workflow):
     mo.vstack([workflow("Simulate"), mo.md(r"""
     ## 2. Simulate
 
-    One simulation produces one hypothetical market:
+    One simulation corresponds to a **forward pass** through the pricer plus the addition of noise, and produces one hypothetical market:
 
-    1. draw $\boldsymbol\theta=(v_0,\kappa,v_\infty,\sigma_v,\rho,c)$ from the prior;
-    2. price the 63 contracts with the Fourier pricer;
+    1. draw $\boldsymbol\theta=(v_0,\kappa,v_\infty,\sigma_v,\rho,c)$ from the prior,
+    2. price the 63 contracts with the Fourier pricer,
     3. add the quote noise $c\,h_i\,\epsilon_i$.
 
-    The output is **63 numbers**, one noisy mid price per contract; bids and asks are not simulated. Move the sliders to see what the model produces.
+    The output is a vector of **63 numbers**: in this toy-model only the noisy mid prices are simulated per each contract, while bids and asks are not simulated. The half-spreads $h_i$ keep their observed values and set the size of the noise. Move the sliders to see what the model produces.
     """)])
     return
 
@@ -641,7 +648,21 @@ def _(BOUNDS, mo, np):
 
 
 @app.cell(hide_code=True)
-def _(DELTA, EXPIRY, EXPIRY_DATES, H, MARKET_IV, MID, implied_vols, make_simulator, mo, np, plots, plt, time):
+def _(
+    DELTA,
+    EXPIRY,
+    EXPIRY_DATES,
+    H,
+    MARKET_IV,
+    MID,
+    implied_vols,
+    make_simulator,
+    mo,
+    np,
+    plots,
+    plt,
+    time,
+):
     _started = time.perf_counter()
     prior_batch = make_simulator(20261111).sample(1000)
     _seconds = time.perf_counter() - _started
@@ -924,7 +945,7 @@ def _(
         bf.diagnostics.calibration_ecdf(estimates=_draws, targets=_held, variable_keys=NAMES, variable_names=LABELS,
                                         difference=True, rank_ecdf_color=plots.SERIES[0], fill_color=plots.BASELINE),
     ])
-    return live_simulator, live_whitening, live_workflow
+    return
 
 
 @app.cell(hide_code=True)
@@ -1195,7 +1216,24 @@ def _(EXPIRY_DATES, EXPIRY_DAYS, mo):
 
 
 @app.cell(hide_code=True)
-def _(BOUNDS, CASES, CASE_TITLES, CLEAN, DELTA, EXPIRY, H, case_choice, expiry_choice, implied_vols, mo, neural_draws, np, pilot, plt, reference_draws):
+def _(
+    BOUNDS,
+    CASES,
+    CASE_TITLES,
+    CLEAN,
+    DELTA,
+    EXPIRY,
+    H,
+    case_choice,
+    expiry_choice,
+    implied_vols,
+    mo,
+    neural_draws,
+    np,
+    pilot,
+    plt,
+    reference_draws,
+):
     _case = case_choice.value
     _rng = np.random.default_rng(20261112)
     _sets = {}
@@ -1304,7 +1342,18 @@ def _(mo, norm, np, plots, plt):
 
 
 @app.cell(hide_code=True)
-def _(BOUNDS, EVALUATION, LABELS, NAMES, TEXT_LABELS, json, mo, np, plots, plt):
+def _(
+    BOUNDS,
+    EVALUATION,
+    LABELS,
+    NAMES,
+    TEXT_LABELS,
+    json,
+    mo,
+    np,
+    plots,
+    plt,
+):
     _population = json.loads((EVALUATION / "evaluation.json").read_text())["population"]
     _ranks = np.asarray(_population["fractional_ranks"])
     _band = _population["rank_dkw"]["dkw_bound"]
@@ -1394,7 +1443,16 @@ def _(TEXT_LABELS, mo):
 
 
 @app.cell(hide_code=True)
-def _(BOUNDS, LABELS, mo, plots, plt, recovery_parameter, recovery_q, recovery_truth):
+def _(
+    BOUNDS,
+    LABELS,
+    mo,
+    plots,
+    plt,
+    recovery_parameter,
+    recovery_q,
+    recovery_truth,
+):
     _j = recovery_parameter.value
     _fig, _ax = plt.subplots(figsize=(6.2, 4.4), constrained_layout=True)
     _lo, _hi = BOUNDS[_j]
@@ -1475,7 +1533,23 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(BUNDLE, BUNDLE_HELP, EVAL_SEED, LABELS, NAMES, PANEL_BATCH, PANEL_DRAWS, bf, delivery, estimator, mo, np, panel_button, plots, time):
+def _(
+    BUNDLE,
+    BUNDLE_HELP,
+    EVAL_SEED,
+    LABELS,
+    NAMES,
+    PANEL_BATCH,
+    PANEL_DRAWS,
+    bf,
+    delivery,
+    estimator,
+    mo,
+    np,
+    panel_button,
+    plots,
+    time,
+):
     mo.stop(not panel_button.value, mo.md("*The figures above can be reproduced here: press the button to draw "
                                          "512 × 512 fresh posterior samples and recompute the diagnostics with BayesFlow.*"))
     mo.stop(BUNDLE is None or estimator is None, BUNDLE_HELP)
@@ -1501,7 +1575,16 @@ def _(BUNDLE, BUNDLE_HELP, EVAL_SEED, LABELS, NAMES, PANEL_BATCH, PANEL_DRAWS, b
 
 
 @app.cell(hide_code=True)
-def _(BOUNDS, CASES, NAMES, TEXT_LABELS, mo, neural_draws, np, reference_summary):
+def _(
+    BOUNDS,
+    CASES,
+    NAMES,
+    TEXT_LABELS,
+    mo,
+    neural_draws,
+    np,
+    reference_summary,
+):
     mo.stop(not neural_draws, mo.vstack([
         mo.md("### 5.3 One data set at a time: comparison with the exact reference"),
         mo.md("*This comparison needs the pretrained estimator.*")]))
@@ -1560,7 +1643,24 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(BOUNDS, CASES, DELTA, EXPIRY, EXPIRY_DATES, EXPIRY_DAYS, H, MARKET_IV, implied_vols, mo, neural_draws, np, pilot, plots, plt, reference_draws):
+def _(
+    BOUNDS,
+    CASES,
+    DELTA,
+    EXPIRY,
+    EXPIRY_DATES,
+    EXPIRY_DAYS,
+    H,
+    MARKET_IV,
+    implied_vols,
+    mo,
+    neural_draws,
+    np,
+    pilot,
+    plots,
+    plt,
+    reference_draws,
+):
     _y = CASES["market"]
     _rng = np.random.default_rng(20261113)
     _reference = reference_draws["market"]
