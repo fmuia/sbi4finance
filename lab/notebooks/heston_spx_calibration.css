@@ -1,0 +1,31 @@
+/* One vertical rhythm for every markdown cell of heston_spx_calibration.py.
+   marimo renders markdown with `display: contents`. Inside mo.vstack (a flex column with an 8px gap) each
+   heading, paragraph and list then becomes its own flex item, and their margins add up instead of
+   collapsing. Laying markdown out as one block restores normal margin collapsing. */
+.markdown.prose.contents {
+  display: block;
+}
+
+.markdown.prose h1,
+.markdown.prose h2,
+.markdown.prose h3 {
+  margin-top: 1.1em;
+  margin-bottom: 0.45em;
+}
+
+.markdown.prose .paragraph,
+.markdown.prose p,
+.markdown.prose ul,
+.markdown.prose ol,
+.markdown.prose table {
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
+}
+
+.markdown.prose > :first-child {
+  margin-top: 0;
+}
+
+.markdown.prose > :last-child {
+  margin-bottom: 0;
+}

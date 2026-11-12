@@ -4,6 +4,7 @@ __generated_with = "0.25.1"
 app = marimo.App(
     width="medium",
     app_title="Bayesian calibration of the Heston model on SPX options",
+    css_file="heston_spx_calibration.css",
 )
 
 
