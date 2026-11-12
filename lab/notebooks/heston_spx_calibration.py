@@ -1691,14 +1691,10 @@ def _(
         _ax.set_ylabel("implied volatility (%)")
     for _ax in list(_axes[1, :3]) + [_axes[0, 3]]:
         _ax.set_xlabel("standardized moneyness δ")
-    _residual = (_y - _prices["PyMC reference"].mean(axis=0)) / H
-    _rms = float(np.sqrt(np.mean(_residual ** 2)))
-    _rows = [{"expiry": f"{_date} ({EXPIRY_DAYS[_e]} d)",
-              "RMS residual (half-spreads)": round(float(np.sqrt(np.mean(_residual[EXPIRY == _e] ** 2))), 1),
-              "largest |residual| (half-spreads)": round(float(np.max(np.abs(_residual[EXPIRY == _e]))), 1),
-              "at moneyness δ": round(float(DELTA[EXPIRY == _e][np.argmax(np.abs(_residual[EXPIRY == _e]))]), 2)}
-             for _e, _date in enumerate(EXPIRY_DATES)]
-    _wing = sum(DELTA[EXPIRY == _e][np.argmax(np.abs(_residual[EXPIRY == _e]))] < -4 for _e in range(len(EXPIRY_DATES)))
+    # The best Heston fit: prices at the posterior-mean parameters, and its misses in half-spreads.
+    market_fit = pilot.prices(_reference.mean(axis=0))
+    market_residual = (_y - market_fit) / H
+    _rms = float(np.sqrt(np.mean(market_residual ** 2)))
     _network_text = ("" if _neural is None else
                      f" Its posterior is shifted and much wider than the reference, and {100 * np.mean(_neural[:, -1] > 2):.0f}% "
                      "of its draws have $c>2$, outside the prior range.")
@@ -1706,21 +1702,118 @@ def _(
         _fig,
         mo.md("*Bands:* implied volatilities of the model prices from 40 posterior draws; *points:* SPX mid quotes; *last "
               "panel:* the posterior of the noise multiplier $c$."),
-        mo.ui.table(_rows, selection=None, pagination=False),
         mo.md(f"""
         **What the PyMC posterior says**, the exact answer for our model and prior:
 
-        - **No Heston smile fits the SPX quotes within the assumed noise.** The posterior-mean prices miss them by **{_rms:.1f} half-spreads** (root mean square), while the prior caps the noise SD at two half-spreads ($c\\le2$).
-        - The likelihood would favour an even larger $c$, so the posterior piles up at the bound $c=2$, and the Heston parameters settle on the best compromise.
-        - At {_wing} of {len(EXPIRY_DATES)} expiries the largest miss is at the deepest put ($\\delta\\approx-5$), where the SPX smile lies up to several points above every posterior Heston smile, most at short expiries: Heston cannot produce a short-dated skew this steep together with the rest of the surface.
+        - **No Heston smile fits the SPX quotes within the assumed noise.** The best fit, at the posterior-mean parameters, misses them by **{_rms:.1f} half-spreads** (root mean square), while the prior caps the noise SD at two half-spreads ($c\\le2$).
+        - **So $c$ piles up at its bound** (last panel), and the Heston parameters settle on the best compromise. Where it fails, and why, is shown below.
 
         **Why the network disagrees with PyMC:**
 
         - It was trained on quotes that scatter around a Heston smile with a noise SD of at most two half-spreads. These quotes are {_rms:.0f} half-spreads away on average, outside anything it saw, so it extrapolates.{_network_text}
         - This is **model misspecification**, not a training failure, and a useful alarm: an amortized estimator should only be trusted on data its simulator could have produced.
-
-        **What to do about it** is a modelling decision: widen or reshape the noise model, add an explicit model-error term, or use a richer model, for example with jumps or rough volatility.
         """),
+    ])
+    return market_fit, market_residual
+
+
+@app.cell(hide_code=True)
+def _(
+    BOUNDS,
+    DELTA,
+    EXPIRY,
+    EXPIRY_DATES,
+    EXPIRY_DAYS,
+    H,
+    MARKET_IV,
+    NAMES,
+    QUOTES,
+    implied_vols,
+    market_fit,
+    market_residual,
+    mo,
+    np,
+    plots,
+    plt,
+    reference_draws,
+    vol_point_noise,
+):
+    _fit_iv = 100 * implied_vols(market_fit)[0]
+    _misfit = 100 * MARKET_IV - _fit_iv  # SPX minus the best Heston fit, in volatility points
+    _rows = [np.flatnonzero(EXPIRY == _e)[np.argsort(DELTA[EXPIRY == _e])] for _e in range(len(EXPIRY_DATES))]
+    _grid = np.array([_misfit[_r] for _r in _rows])  # one row per expiry, deepest put first
+    _days = np.asarray(EXPIRY_DAYS)
+    _deep = np.array([_r[0] for _r in _rows])
+    _atm = np.array([_r[np.argmin(np.abs(DELTA[_r]))] for _r in _rows])
+    _skew_market = 100 * (MARKET_IV[_deep] - MARKET_IV[_atm])
+    _skew_heston = _fit_iv[_deep] - _fit_iv[_atm]
+    # Likelihood of c at the best fit: c scales every noise SD, so it peaks where c equals the RMS misfit.
+    _n, _squares = market_residual.size, float(np.sum(market_residual ** 2))
+    _c_hat = np.sqrt(_squares / _n)
+    _c = np.linspace(0.05, max(20.0, 1.5 * _c_hat), 800)
+    _likelihood = np.exp(-_n * np.log(_c / _c_hat) - 0.5 * _squares * (1 / _c ** 2 - 1 / _c_hat ** 2))
+
+    _fig, _axes = plt.subplots(1, 3, figsize=(11.6, 3.6), constrained_layout=True, gridspec_kw={"width_ratios": [1.5, 1, 1]})
+    from matplotlib.colors import LinearSegmentedColormap as _Colormap
+
+    _lim = float(np.max(np.abs(_grid)))
+    _cmap = _Colormap.from_list("misfit", [plots.SERIES[0], "#f0efec", "#e34948"])  # blue below, red above the fit
+    _image = _axes[0].imshow(_grid, cmap=_cmap, vmin=-_lim, vmax=_lim, aspect="auto")
+    for (_i, _j), _value in np.ndenumerate(_grid):
+        _axes[0].text(_j, _i, "0.0" if abs(_value) < 0.05 else f"{_value:+.1f}".replace("-", "−"),
+                      ha="center", va="center", fontsize=6.5, color=plots.INK)
+    _targets = [sorted({QUOTES[_r[_j]]["target_z"] for _r in _rows}, reverse=True) for _j in range(_grid.shape[1])]
+    _axes[0].set_xticks(range(_grid.shape[1]), ["/".join(f"{_t:g}" for _t in _ts) for _ts in _targets])
+    _axes[0].set_yticks(range(len(_days)), [f"{_d} d" for _d in _days])
+    _axes[0].grid(False)
+    _axes[0].set(xlabel="standardized moneyness δ (target)", ylabel="expiry",
+                 title="SPX minus best Heston fit, volatility points")
+    _fig.colorbar(_image, ax=_axes[0], shrink=0.9)
+
+    _axes[1].plot(_days, _skew_market, "o-", color="#222222", lw=1.3, ms=4, label="SPX market")
+    _axes[1].plot(_days, _skew_heston, "o-", color=plots.SERIES[1], lw=1.3, ms=4, label="best Heston fit")
+    _axes[1].set_xscale("log")
+    _axes[1].set_xticks(_days, [str(_d) for _d in _days], fontsize=7)
+    _axes[1].minorticks_off()
+    _axes[1].set(xlabel="days to expiry", ylabel="implied-volatility points", title="Skew: deepest put minus at the money")
+    _axes[1].legend(fontsize=7)
+
+    _low, _high = BOUNDS[-1]
+    _axes[2].axvspan(_low, _high, color=plots.GRID, lw=0)
+    _axes[2].text(_high + 0.4, 0.97, "prior range", fontsize=7, color=plots.MUTED, va="top")
+    _axes[2].plot(_c, _likelihood, color=plots.INK, lw=1.3)
+    _axes[2].axvline(_c_hat, color=plots.MUTED, ls="--", lw=1)
+    _axes[2].text(_c_hat + 0.4, 1.02, f"c = {_c_hat:.1f}", fontsize=7, color=plots.MUTED)
+    _axes[2].set(xlim=(0, _c[-1]), ylim=(0, 1.12), xlabel="noise multiplier c", ylabel="likelihood, scaled to its maximum",
+                 title="Likelihood of c at the best fit")
+
+    _vol_of_vol = float(reference_draws["market"].mean(axis=0)[NAMES.index("vol_of_vol")])
+    _points = vol_point_noise(H, MARKET_IV)
+    _wing = DELTA < -3
+    _share = float(np.sum(market_residual[_wing] ** 2) / _squares)
+    _rest = _misfit[~_wing]
+    _gap = _skew_market - _skew_heston
+    _under = int(np.sum(_grid[:, 0] > 0))
+    _where = "every expiry" if _under == len(_days) else f"{_under} of {len(_days)} expiries"
+    _table = [{"expiry": f"{_date} ({_days[_e]} d)",
+               "RMS misfit (half-spreads)": round(float(np.sqrt(np.mean(market_residual[_r] ** 2))), 1),
+               "largest misfit (half-spreads)": round(float(market_residual[_r][np.argmax(np.abs(market_residual[_r]))]), 1),
+               "at moneyness δ": round(float(DELTA[_r][np.argmax(np.abs(market_residual[_r]))]), 2)}
+              for _e, (_date, _r) in enumerate(zip(EXPIRY_DATES, _rows))]
+    mo.vstack([
+        mo.md("**Where and why Heston misses.** Each panel compares the SPX quotes with the best Heston fit, the prices at "
+              "the posterior-mean parameters."),
+        _fig,
+        mo.md(f"""
+        - **The deep put wing** (left): the SPX quotes lie above the best Heston smile at the deepest put of {_where}, by {_grid[0, 0]:.1f}, {_grid[1, 0]:.1f} and {_grid[2, 0]:.1f} volatility points at {_days[0]}, {_days[1]} and {_days[2]} days, and by {_grid[3:, 0].min():.1f}–{_grid[3:, 0].max():.1f} beyond. The {int(_wing.sum())} puts with $\\delta<-3$ give {100 * _share:.0f}% of the squared misfit.
+        - **A skew too flat at short expiries** (middle): from the money to the deepest put, SPX implied volatility rises {_skew_market[0]:.1f} points at {_days[0]} days, the best Heston smile only {_skew_heston[0]:.1f}. The shortfall is {_gap[0]:.1f}, {_gap[1]:.1f} and {_gap[2]:.1f} points at {_days[0]}, {_days[1]} and {_days[2]} days, and {_gap[3:].min():.1f}–{_gap[3:].max():.1f} beyond.
+        - **A compromise elsewhere:** even with a large $\\sigma_v={_vol_of_vol:.2f}$, above the Feller limit (Section 1), the fit misses the rest of the smile by up to {np.max(np.abs(_rest)):.1f} points{', in both directions' if _rest.min() < 0 < _rest.max() else ''}.
+        - **Why $c$ sits at 2** (right): a half-spread is only {np.nanmin(_points):.3f}–{np.nanmax(_points):.2f} volatility points, so these misses amount to **{_c_hat:.1f} half-spreads** (root mean square). $c$ scales the noise of every quote by the same factor, so it cannot improve the fit, only measure it: the likelihood peaks at $c={_c_hat:.1f}$, far outside the prior range.
+        - **The usual explanation:** one diffusive variance factor cannot build enough crash risk over a few days for a short-dated put wing this steep. Jumps (the Bates model) or rough volatility are the standard remedies; the pattern above fits this explanation, but neither model is tested here.
+        """),
+        mo.accordion({"Misfit by expiry, in half-spreads": mo.ui.table(_table, selection=None, pagination=False)}),
+        mo.md("**What to do about it** is a modelling decision: widen or reshape the noise model, add an explicit model-error "
+              "term, or use a richer model, for example with jumps or rough volatility."),
     ])
     return
 
@@ -1829,7 +1922,7 @@ def _(mo):
     3. **Prepare the inputs.** Quotes in noise units and whitening put all 63 inputs on one uncorrelated scale.
     4. **Check calibration over many simulations.** Here five of six parameters are well calibrated; the initial-variance intervals are too wide rather than too narrow.
     5. **Check single data sets against an exact reference.** Good calibration does not mean sharp posteriors: the network's intervals can be several times wider than the exact ones.
-    6. **Check the model, not only the network.** On the SPX quotes the noise multiplier hits its bound and Heston misses by many half-spreads, mostly in the deep put wing. An amortized estimator is only reliable on data its simulator could have produced.
+    6. **Check the model, not only the network.** On the SPX quotes the noise multiplier hits its bound and Heston misses by many half-spreads: its smile is too flat in the deep put wing, most of all at short expiries. An amortized estimator is only reliable on data its simulator could have produced.
     7. **Downstream, a posterior gives a range instead of a number.** Here parameter uncertainty barely moves the prices of unquoted contracts, while model error moves them by volatility points.
     """)
     return
