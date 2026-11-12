@@ -327,7 +327,7 @@ def _(TRAINING, mo):
 
 
 @app.cell(hide_code=True)
-def _(bayesflow, controls, grid, key, md, mo, note, workflow_map):
+def _(bayesflow, md, mo, workflow_map):
     mo.vstack([
         md(r"""
         # Bayesian calibration of the Heston model on SPX options
@@ -341,14 +341,6 @@ def _(bayesflow, controls, grid, key, md, mo, note, workflow_map):
         workflow_map(),
         bayesflow("In this notebook, we explicitly show where and how **BayesFlow** is used, including code snippets "
                   "where useful. Those places carry this mark."),
-        md("#### How to read this notebook"),
-        grid([
-            key("**Key messages** are set off like this. Read them first."),
-            note("Notes and captions are set small. They document a figure or add a caveat."),
-            mo.accordion({"Foldable sections hold method details": md(
-                "Nothing in a foldable section is needed to follow the rest of the notebook.")}),
-            controls(hint="These blocks are interactive in the live notebook. A static copy shows their initial state."),
-        ], columns=2),
     ])
     return
 
@@ -1187,7 +1179,7 @@ def _(BOUNDS, H, NAMES, bf, np, pilot):
 
 
 @app.cell(hide_code=True)
-def _(BOUNDS, grid, md, mo, np):
+def _(BOUNDS, bayesflow, grid, md, mo, np):
     _lo, _hi = BOUNDS[:, 0], BOUNDS[:, 1]
     _n = lambda _x: f"{_x:g}".replace("-", "−")
     _days = lambda _kappa: np.log(2) / _kappa * 365
@@ -1217,8 +1209,18 @@ def _(BOUNDS, grid, md, mo, np):
         | $\rho$ | {_n(_lo[4])} to {_n(_hi[4])} | negative only, so volatility rises when prices fall |
         | $c$ | {_n(_lo[5])} to {_n(_hi[5])} | noise SD between {_n(_lo[5])} and {_n(_hi[5])} half-spreads |
         """),
+        bayesflow("The simulator's `sample` method draws a batch of simulated data sets. Each one is a parameter "
+                  "draw from the prior with its 63 noisy quotes."),
     ])
     return
+
+
+@app.cell
+def _(make_simulator, time):
+    _started = time.perf_counter()
+    prior_batch = make_simulator(20261111).sample(1000)   # a dict of arrays: the six parameters and "observations"
+    prior_seconds = time.perf_counter() - _started
+    return prior_batch, prior_seconds
 
 
 @app.cell(hide_code=True)
@@ -1234,18 +1236,15 @@ def _(
     grid,
     implied_vols,
     key,
-    make_simulator,
     mo,
     note,
     np,
     plots,
     plt,
-    time,
+    prior_batch,
+    prior_seconds,
 ):
-    _count, _shown = 1000, 150  # simulated data sets, and how many of their smiles are drawn
-    _started = time.perf_counter()
-    prior_batch = make_simulator(20261111).sample(_count)
-    prior_seconds = time.perf_counter() - _started
+    _count, _shown = len(prior_batch["observations"]), 150  # simulated data sets, and how many smiles are drawn
     _iv = implied_vols(prior_batch["observations"] * H)
     _fig, _axes = plt.subplots(1, 3, figsize=(11.0, 3.2), sharey=True, constrained_layout=True)
     for _ax, _e in zip(_axes, (0, 4, 6)):
@@ -1276,7 +1275,7 @@ def _(
         note(f"Of the simulated quotes, {100 * np.isnan(_iv).mean():.1f}% have no implied volatility, because noise "
              "pushed a very cheap option below its intrinsic value. They remain valid data."),
     ])
-    return prior_batch, prior_seconds
+    return
 
 
 @app.cell(hide_code=True)
@@ -1684,7 +1683,6 @@ def _(
 def _(
     CASE_TITLES,
     CONDITIONAL_DRAWS,
-    EVAL_SEED,
     NAMES,
     SNAPSHOT_DAY,
     TRUTHS,
@@ -1720,60 +1718,64 @@ def _(
         bayesflow("Inference is one call, `workflow.sample`. The loader wraps it so that it takes raw quotes."),
         md(rf"""
         ```python
-        estimator, record = delivery.load_checkpoint(BUNDLE, ESTIMATOR)
-        draws = estimator.sample(quotes[None, :], {CONDITIONAL_DRAWS}, seed={EVAL_SEED})[0]   # ({CONDITIONAL_DRAWS}, 6) posterior draws
-        # inside: x_tilde = whitening.transform(quotes / half_spread)
-        #         workflow.sample(conditions={{"observations": x_tilde}}, num_samples={CONDITIONAL_DRAWS})
+        # what estimator.sample(quotes, {CONDITIONAL_DRAWS}) does with raw quotes
+        x_tilde = whitening.transform(quotes / half_spread)
+        draws = workflow.sample(conditions={{"observations": x_tilde}}, num_samples={CONDITIONAL_DRAWS})   # ({CONDITIONAL_DRAWS}, 6) per data set
         ```
 
-        Nothing is fitted at this stage. Each draw integrates the learned flow from one noise vector.
+        Nothing is fitted at this stage. Each draw integrates the learned flow from one noise vector. The cell below loads the pretrained estimator and draws the posterior of each data set.
         """),
     ])
     return
 
 
-@app.cell(hide_code=True)
-def _(BUNDLE, BUNDLE_HELP, ESTIMATOR, delivery, recipe, task, time):
-    estimator, estimator_record, load_seconds = None, None, None
-    _view = None
-    if BUNDLE is None:
-        _view = BUNDLE_HELP
-    else:
-        _started = time.perf_counter()
+@app.cell
+def _(
+    BUNDLE,
+    CASES,
+    CONDITIONAL_DRAWS,
+    ESTIMATOR,
+    EVAL_SEED,
+    delivery,
+    np,
+    recipe,
+    task,
+    time,
+):
+    estimator, estimator_record, neural_draws, run_seconds = None, None, {}, None
+    if BUNDLE is not None:  # without the bundle the notebook shows the PyMC reference alone
+        _clock = [time.perf_counter()]
         estimator, estimator_record = delivery.load_checkpoint(BUNDLE, ESTIMATOR)
-        load_seconds = time.perf_counter() - _started
         if recipe.fingerprint(estimator.task) != recipe.fingerprint(task):
             raise ValueError("the pretrained estimator was trained for a different contract list")
-    _view
-    return estimator, estimator_record, load_seconds
+        _clock.append(time.perf_counter())
+        for _index, _case_id in enumerate(CASES):  # the three data sets of this section
+            neural_draws[_case_id] = np.asarray(
+                estimator.sample(CASES[_case_id][None], CONDITIONAL_DRAWS, seed=EVAL_SEED + _index)[0])
+        _clock.append(time.perf_counter())
+        run_seconds = np.diff(_clock)  # loading, sampling
+    return estimator, estimator_record, neural_draws, run_seconds
 
 
 @app.cell(hide_code=True)
 def _(
+    BUNDLE_HELP,
     CASES,
     CONDITIONAL_DRAWS,
-    EVAL_SEED,
     TRAINING,
     estimator,
     estimator_record,
-    load_seconds,
     mo,
     note,
-    np,
     number_word,
-    time,
+    run_seconds,
 ):
-    neural_draws = {}
-    _view = None  # nothing to show without the pretrained estimator
+    _view = BUNDLE_HELP
     if estimator is not None:
         _seconds = lambda _t: f"{_t:.1f} s" if _t < 10 else f"{_t:.0f} s"
-        _started = time.perf_counter()
-        for _index, _case_id in enumerate(CASES):
-            neural_draws[_case_id] = np.asarray(estimator.sample(CASES[_case_id][None], CONDITIONAL_DRAWS,
-                                                                 seed=EVAL_SEED + _index)[0])
-        _view = [note(f"The pretrained estimator loaded in {_seconds(load_seconds)}. It returned "
+        _view = [note(f"The pretrained estimator loaded in {_seconds(run_seconds[0])}. It returned "
                       f"{CONDITIONAL_DRAWS:,} posterior draws for each of the {number_word(len(CASES))} data sets in "
-                      f"{_seconds(time.perf_counter() - _started)}.", label="This run")]
+                      f"{_seconds(run_seconds[1])}.", label="This run")]
         _trained = (estimator_record["train_rows"], estimator_record["native_epoch"])
         if _trained != (TRAINING["rows"], TRAINING["epochs"]):
             _view.append(note(f"The loaded estimator was trained on {_trained[0]:,} simulated pairs for {_trained[1]} "
@@ -1781,7 +1783,7 @@ def _(
                               f"{TRAINING['epochs']} epochs.", label="Check"))
         _view = mo.vstack(_view)
     _view
-    return (neural_draws,)
+    return
 
 
 @app.cell(hide_code=True)
@@ -2736,20 +2738,13 @@ def _(BUNDLE, NAMES, delivery, estimator, np, recovery_truth):
 
 @app.cell(hide_code=True)
 def _(
-    EVAL_SEED,
-    LABELS,
     MATH_LABELS,
     NAMES,
     bayesflow,
-    bf,
-    caption,
     decimals,
-    estimator,
     fixed,
-    held_out_quotes,
     md,
     mo,
-    note,
     np,
     recovery_parameter,
     recovery_picker,
@@ -2758,12 +2753,12 @@ def _(
     table,
 ):
     _j = recovery_parameter.value
-    _fresh = 2000  # posterior draws for the pair plot of the selected data set
     _x, _y = recovery_truth[:, _j], recovery_q[1, :, _j]
     _surprise = np.abs(_y - _x) / (recovery_q[2, :, _j] - recovery_q[0, :, _j])   # error in units of the 90% width
     _selected = np.flatnonzero(recovery_picker.value.get_mask(_x, _y)) if recovery_picker.value else np.array([], int)
     _pool = _selected if len(_selected) else np.arange(len(_x))
-    _case = int(_pool[np.argmax(_surprise[_pool])])
+    recovery_case = int(_pool[np.argmax(_surprise[_pool])])
+    _case = recovery_case
     _how = (f"The box selects {len(_selected)} data sets. The table shows the one whose median is farthest from "
             "the truth, relative to its interval." if len(_selected) else
             "Nothing is selected yet. The table shows the data set whose median is farthest from the truth, "
@@ -2777,21 +2772,40 @@ def _(
                                                f"[{fixed(recovery_q[0, _case, _k], _digits)}, "
                                                f"{fixed(recovery_q[2, _case, _k], _digits)}]",
             "Truth inside": "yes" if recovery_q[0, _case, _k] <= recovery_truth[_case, _k] <= recovery_q[2, _case, _k] else "no"})
-    _parts = [md(f"#### One data set\n\nThis is data set {_case} of the recorded evaluation. {_how}"),
-              table(_rows, align="lrrl")]
-    if estimator is not None and held_out_quotes is not None:
-        _draws = np.asarray(estimator.sample(held_out_quotes[_case][None], _fresh, seed=EVAL_SEED + 5000 + _case))[0]
-        _grid = bf.diagnostics.pairs_posterior(_draws, targets=recovery_truth[_case], variable_names=LABELS, height=1.45,
-                                               label_fontsize=10, tick_fontsize=7, legend_fontsize=9)
-        _parts += [bayesflow(f"The pair plot below is `bf.diagnostics.pairs_posterior`, on {_fresh:,} fresh posterior "
-                             "draws for this data set."),
-                   getattr(_grid, "figure", None) or _grid.fig,
-                   caption("The true values are marked in red and labelled Targets. Posterior shapes differ from "
-                           "one data set to the next: compare data sets near the edges of the prior with data sets "
-                           "in its middle.")]
-    else:
-        _parts.append(note("The pair plot of the selected data set needs the pretrained estimator."))
-    mo.vstack(_parts)
+    mo.vstack([
+        md(f"#### One data set\n\nThis is data set {_case} of the recorded evaluation. {_how}"),
+        table(_rows, align="lrrl"),
+        bayesflow("The cell below draws fresh posterior draws for this data set and plots them with "
+                  "`bf.diagnostics.pairs_posterior`."),
+    ])
+    return (recovery_case,)
+
+
+@app.cell
+def _(
+    EVAL_SEED,
+    LABELS,
+    bf,
+    caption,
+    estimator,
+    held_out_quotes,
+    mo,
+    note,
+    np,
+    recovery_case,
+    recovery_truth,
+):
+    mo.stop(estimator is None or held_out_quotes is None,
+            note("The pair plot of the selected data set needs the pretrained estimator."))
+    _draws = np.asarray(estimator.sample(held_out_quotes[recovery_case][None], 2000,
+                                         seed=EVAL_SEED + 5000 + recovery_case))[0]
+    _grid = bf.diagnostics.pairs_posterior(_draws, targets=recovery_truth[recovery_case], variable_names=LABELS,
+                                           height=1.45, label_fontsize=10, tick_fontsize=7, legend_fontsize=9)
+    mo.vstack([
+        getattr(_grid, "figure", None) or _grid.fig,
+        caption("The true values are marked in red and labelled Targets. Posterior shapes differ from one data set "
+                "to the next: compare data sets near the edges of the prior with data sets in its middle."),
+    ])
     return
 
 
@@ -2808,7 +2822,7 @@ def _(PANEL_DRAWS, controls, md, mo, recovery_truth):
     return (panel_button,)
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(
     BUNDLE,
     BUNDLE_HELP,
