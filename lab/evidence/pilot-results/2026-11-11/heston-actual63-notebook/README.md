@@ -40,7 +40,7 @@ All three regenerated references are ready. Each followed the recorded escalatio
 | `synthetic-market-like` | 1579 s | 2k/2k failed (34,087); 6k/12k passed (146,087) | 0.020 | 0.982–1.017 |
 | `market` | 1608 s | 2k/2k failed (34,113); 6k/12k passed (146,113) | 0.018 | 1.001–1.010 |
 
-The full per-parameter comparison is in `reference-comparison.json`. The market reference again places c against its prior bound: median 1.9995. In the notebook, the market quotes sit 13.4 half-spreads (RMS) from the PyMC posterior-mean prices, with the largest misfits in the deep put wing.
+The full per-parameter comparison is in `reference-comparison.json`. The market reference again places c against its prior bound: median 1.9995. In the notebook, the market quotes sit 13.4 half-spreads (RMS) from the Heston prices at the PyMC posterior-mean parameters. The largest misfit is at the deepest put at six of the seven expiries.
 
 ## Validation of the notebook
 
