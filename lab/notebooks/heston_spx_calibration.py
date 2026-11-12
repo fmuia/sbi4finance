@@ -1609,7 +1609,37 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo, norm, np, plots, plt):
+def _(np):
+    import functools as _functools
+
+    from scipy.stats import binom as _binom
+
+    @_functools.lru_cache(maxsize=4)
+    def _extremes(n, simulations, seed):
+        """For simulated samples of n uniform ranks: each curve's most extreme point, as a two-sided binomial
+        tail probability. It does not depend on the band's level, so every level reuses it."""
+        z = np.linspace(0, 1, min(n, 1000) + 2)[1:-1]
+        u = np.random.default_rng(seed).uniform(size=(simulations, n))
+        first = np.searchsorted(z, u)  # a rank is at or below z[k] exactly when first <= k
+        rows = np.arange(simulations)[:, None] * (z.size + 1)
+        counts = np.bincount((rows + first).ravel(), minlength=simulations * (z.size + 1))
+        counts = counts.reshape(simulations, z.size + 1).cumsum(axis=1)[:, :z.size]
+        tail = np.minimum(_binom.cdf(counts, n, z), _binom.sf(counts - 1, n, z))
+        return z, 2 * tail.min(axis=1)
+
+    def ecdf_band(n, level=0.95, simulations=10_000, seed=20261112):
+        """Simultaneous band for "ECDF minus uniform" of n ranks (Säilynoja, Bürkner and Vehtari 2022, Section 2.2),
+        the band BayesFlow draws: the whole curve of n uniform ranks stays inside it with probability `level`.
+        It is narrow at 0 and 1, where a correct curve varies least, and widest at 0.5."""
+        z, extremes = _extremes(n, simulations, seed)
+        gamma = np.quantile(extremes, 1 - level)
+        return z, _binom.ppf(gamma / 2, n, z) / n - z, _binom.ppf(1 - gamma / 2, n, z) / n - z
+
+    return (ecdf_band,)
+
+
+@app.cell(hide_code=True)
+def _(ecdf_band, mo, norm, np, plots, plt):
     _rng = np.random.default_rng(7)
     _n = 512
     _truth = _rng.standard_normal(_n)
@@ -1617,15 +1647,14 @@ def _(mo, norm, np, plots, plt):
     _mean, _sd = 0.8 * _data, np.sqrt(0.2)  # exact posterior for a N(0, 1) prior and N(truth, 0.5^2) data
     _cases = {"calibrated": (0.0, 1.0), "biased upwards": (0.6, 1.0), "too narrow (overconfident)": (0.0, 0.6),
               "too wide (underconfident)": (0.0, 1.7)}
-    _grid = np.linspace(0, 1, 201)
-    _band = np.sqrt(np.log(2 / 0.05) / (2 * _n))
+    _z, _low, _high = ecdf_band(_n)  # one curve per panel: a 95% band for each
     _fig, _axes = plt.subplots(1, 4, figsize=(12.4, 2.6), sharey=True, constrained_layout=True)
     for _ax, (_title, (_shift, _scale)) in zip(_axes, _cases.items()):
         _ranks = norm.cdf((_truth - _mean - _shift * _sd) / (_scale * _sd))
-        _ecdf = (np.sort(_ranks)[None, :] <= _grid[:, None]).mean(axis=1)
-        _ax.fill_between(_grid, -_band, _band, color=plots.BASELINE, alpha=.45, lw=0)
+        _curve = np.searchsorted(np.sort(_ranks), _z, side="right") / _n - _z
+        _ax.fill_between(_z, _low, _high, color=plots.BASELINE, alpha=.45, lw=0)
         _ax.axhline(0, color=plots.INK, lw=.6)
-        _ax.plot(_grid, _ecdf - _grid, color=plots.SERIES[0] if _title == "calibrated" else plots.CRITICAL, lw=1.5)
+        _ax.plot(_z, _curve, color=plots.SERIES[0] if _title == "calibrated" else plots.CRITICAL, lw=1.5)
         _ax.set(title=_title, xlabel="rank of the truth")
     _axes[0].set_ylabel("ECDF − uniform")
     mo.vstack([
@@ -1648,6 +1677,7 @@ def _(
     LABELS,
     NAMES,
     TEXT_LABELS,
+    ecdf_band,
     json,
     mo,
     np,
@@ -1656,15 +1686,15 @@ def _(
 ):
     _population = json.loads((EVALUATION / "evaluation.json").read_text())["population"]
     _ranks = np.asarray(_population["fractional_ranks"])
-    _band = _population["rank_dkw"]["dkw_bound"]
-    _passed = _population["rank_dkw"]["passed"]
-    _grid = np.linspace(0, 1, 201)
+    # One band for all six curves together: each panel gets level 1 - 0.05/6, so all six stay inside with 95%.
+    _z, _low, _high = ecdf_band(len(_ranks), level=1 - 0.05 / len(NAMES))
+    _curves = [np.searchsorted(np.sort(_ranks[:, _j]), _z, side="right") / len(_ranks) - _z for _j in range(len(NAMES))]
+    _passed = [bool(np.all((_c >= _low) & (_c <= _high))) for _c in _curves]
     _fig, _axes = plt.subplots(2, 3, figsize=(10.4, 4.9), sharex=True, sharey=True, constrained_layout=True)
     for _j, _ax in enumerate(_axes.flat):
-        _ecdf = (np.sort(_ranks[:, _j])[None, :] <= _grid[:, None]).mean(axis=1)
-        _ax.fill_between(_grid, -_band, _band, color=plots.BASELINE, alpha=.45, lw=0)
+        _ax.fill_between(_z, _low, _high, color=plots.BASELINE, alpha=.45, lw=0)
         _ax.axhline(0, color=plots.INK, lw=.6)
-        _ax.plot(_grid, _ecdf - _grid, color=plots.SERIES[0] if _passed[_j] else plots.CRITICAL, lw=1.5)
+        _ax.plot(_z, _curves[_j], color=plots.SERIES[0] if _passed[_j] else plots.CRITICAL, lw=1.5)
         _ax.set_title(LABELS[_j] + ("" if _passed[_j] else "  (leaves the band)"), fontsize=10)
         if _j >= 3:
             _ax.set_xlabel("rank of the truth")
@@ -1714,8 +1744,9 @@ def _(
               "its recorded evaluation:"),
         mo.ui.table(_rows, selection=None, pagination=False),
         _fig,
-        mo.md("**Rank plots** for the six parameters, read as above. The grey band is the simultaneous 95% band for six "
-              "parameters."),
+        mo.md("**Rank plots** for the six parameters, read as above. The grey band holds for all six together: a correct "
+              "network keeps all six curves inside it 95% of the time. It narrows at 0 and 1, where a correct curve "
+              "varies least."),
         mo.callout(mo.md("**What we learn**\n\n" + _lesson), kind="info"),
     ])
     return
