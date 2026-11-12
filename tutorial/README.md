@@ -9,6 +9,10 @@ Bayes and network architectures. These notebooks cover the applications:
 | Rough Bergomi options | [slot5_calibration.py](notebooks/slot5_calibration.py) | [rough_options/](src/sbi4f_tutorial/rough_options/) |
 | Parameter estimation from returns | [trajectory_inference.py](notebooks/trajectory_inference.py) | [trajectories/](src/sbi4f_tutorial/trajectories/) |
 
+An optional [MMAR take-home](notebooks/mmar_takehome.py) carries the same workflow
+into a different return model and a sensitivity experiment; see its
+[curriculum](curriculum/07-takehome-mmar.md).
+
 Each follows the same workflow: **model → simulate → train → infer → check**.
 The slot 1–3 notebooks remain available as supporting demos; they are not the
 planned format for the opening lessons.
@@ -223,6 +227,60 @@ represent. These are development examples. Keep those limitations alongside
 the results. See the [report](assets/results/trajectories/closeout-20261031/closeout-summary.json),
 [drift figure](assets/results/trajectories/closeout-20261031/drift-learning.png)
 and [coverage figure](assets/results/trajectories/closeout-20261031/marginal-coverage.png).
+
+## MMAR take-home
+
+From `tutorial/`, run:
+
+```bash
+pixi run --locked mmar-takehome
+```
+
+**From turbulent returns to uncertain drawdown scenarios** is a complete
+one-hour take-home inspired by
+[amortized-fractals](https://github.com/stefanradev93/amortized-fractals).
+It explains a volatility cascade and Student-t innovations, shows the BayesFlow
+construction and checks, infers four parameters for one fixed VOO window, then
+propagates paired draws into replicated wealth and drawdown. The final experiment
+keeps those observations fixed while changing the supplied volatility resolution.
+
+The saved-results route is complete and works offline. It starts at eight
+32-day volatility blocks, then compares 4, 8 and 128 blocks. The unknowns remain
+daily location, baseline scale, cascade contrast and innovation-tail thickness;
+the number of blocks is a known input to the estimator. These are fixed
+256-day **simple-return** observations, not the trajectory lesson's variable
+prefixes of log returns. The FusionTransformer and spline flow have their own
+fitted preprocessing and do not reuse the trajectory model's weights.
+
+**Fresh inference is optional.** Download the
+[pinned source sensitivity checkpoint](https://github.com/stefanradev93/amortized-fractals/raw/069d5dc5943dbe85505849f2fa8bfb563617ff97/checkpoints/sensitivity/model.keras)
+to `assets/local-checkpoints/mmar-sensitivity/model.keras`, then select the
+supplied-model route and load it explicitly. The loader restricts the path to
+the asset cache and checks its SHA-256 against the saved lesson report before
+restoring the serialized preprocessing. The original model bytes stay outside
+Git. Missing or mismatched files leave the saved route usable.
+
+**Live training is optional.** Its button trains a separate, smaller session
+model across the supported resolutions, with independent validation and its
+own recovery/calibration checks. The small fit does not inherit the supplied
+estimator's evidence.
+
+The supplied model was checked on 200 independent histories with 512 posterior
+draws at each displayed resolution. None of the twelve rank tests was rejected
+by the predeclared Holm-adjusted screen; empirical central-90% coverage ranged
+from 88.5% to 93.0%. These finite checks support the scoped example, not exact
+posterior accuracy or arbitrary real-market use. The preserved historical
+training bank/seed was not independently reconstructed. See the
+[bound report](assets/takehomes/mmar-v2/report.json) for the checkpoint,
+simulation-parity, data and evaluation identities.
+
+Scenario paths start with fresh cascade phases. They are model-generated
+replications rather than continuations conditioned on today's hidden volatility.
+Threshold controls reuse outcomes. No live vendor data, training or checkpoint
+sampling starts on opening. The final submission asks for a mechanism
+explanation, a diagnostic interpretation, a drawdown answer and an assessment
+of sensitivity to the model assumption. The notebook links upstream for the
+expanded rolling-risk, joint-market and signed-memory story.
 
 ## Give feedback on an application
 
