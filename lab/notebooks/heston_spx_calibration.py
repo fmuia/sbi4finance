@@ -47,6 +47,9 @@ def _():
         else:
             os.environ[_key] = _value
     logging.disable(logging.NOTSET)
+    # BayesFlow logs a line for every fit and every sampling call, some with local paths. The notebook reports
+    # these timings itself, so only warnings and errors reach the page.
+    logging.getLogger("bayesflow").setLevel(logging.WARNING)
 
     EVIDENCE = LAB / "evidence" / "pilot-results"
     GRID = EVIDENCE / "2026-11-09" / "heston-spread-baseline" / "revised-grid"
@@ -59,34 +62,9 @@ def _():
 
     BUNDLE_HELP = mo.callout(mo.md(
         "**The pretrained estimator is not loaded.** Set `HESTON_BUNDLE` to the folder that contains `bundle.json` "
-        "and restart marimo; `lab/plans/training-data-guide.md` explains how to obtain and check it. Until then, "
-        "results that need the trained network are left out and the PyMC reference is shown on its own."), kind="warn")
-
-    STAGES = (
-        ("Model", "Heston dynamics, a prior over six parameters and quote noise set by the bid–ask spread"),
-        ("Simulate", "draw parameters, price the 63 options and add quote noise, 300,000 times"),
-        ("Train", "a flow-matching network learns the posterior of the parameters given the quotes"),
-        ("Infer", "condition on observed quotes and draw from the posterior in seconds"),
-        ("Check", "exact reference, posterior predictive, calibration across simulations, real data"),
-        ("Use", "price contracts the market does not quote, with a range instead of a number"),
-    )
-
-    def workflow(active=None):
-        """The five workflow stages as boxes; `active` highlights one stage, `None` shows all with descriptions."""
-        boxes = []
-        for _number, (_name, _text) in enumerate(STAGES, start=1):
-            _current = _name == active
-            _border = "2px solid #2a78d6" if _current else ("1px solid #2a78d6" if active is None else "1px solid #d9d8d0")
-            _fill = "rgba(42,120,214,0.12)" if _current else ("rgba(42,120,214,0.05)" if active is None else "transparent")
-            _color = "inherit" if active is None or _current else "#9a9890"
-            _detail = (f'<div style="font-size:0.8em;line-height:1.35;margin-top:5px">{_text}</div>'
-                       if active is None else "")
-            boxes.append(f'<div style="flex:1;min-width:96px;border:{_border};border-radius:10px;padding:9px 10px;'
-                         f'background:{_fill};color:{_color};text-align:center">'
-                         f'<div style="font-weight:600;letter-spacing:0.02em">{_number}. {_name}</div>{_detail}</div>')
-        _arrow = '<div style="align-self:center;color:#9a9890;font-size:1.3em;padding:0 1px">&#8594;</div>'
-        return mo.Html('<div style="display:flex;gap:5px;align-items:stretch;margin:4px 0 6px 0">'
-                       + _arrow.join(boxes) + "</div>")
+        "and restart marimo. `lab/plans/training-data-guide.md` explains how to obtain and check the bundle. Until "
+        "then, results that need the trained network are left out and the PyMC reference is shown on its own."),
+        kind="warn")
 
     plots.style()
     return (
@@ -118,24 +96,144 @@ def _():
         recipe,
         surface,
         time,
-        workflow,
     )
 
 
-@app.cell
-def _(mo, workflow):
+@app.cell(hide_code=True)
+def _(mo):
+    # The notebook's page elements. Each returns HTML with a class that heston_spx_calibration.css styles, so
+    # the text below states content and the stylesheet decides how it looks.
+    from inspect import cleandoc as _cleandoc
+
+    STAGES = (
+        ("Model", "Heston dynamics, a prior over six parameters and quote noise set by the bid–ask spread"),
+        ("Simulate", "draw parameters, price the 63 options and add quote noise, 300,000 times"),
+        ("Train", "a flow-matching network learns the posterior of the parameters given the quotes"),
+        ("Infer", "condition on observed quotes and draw from the posterior in seconds"),
+        ("Check", "posterior predictive, calibration across simulations, exact reference, real data"),
+        ("Use", "price contracts the market does not quote, with a range instead of a number"),
+    )
+
+    def _html(content):
+        """Markdown text, or a marimo object, as an HTML string."""
+        return content.text if hasattr(content, "text") else mo.md(content).text
+
+    def _blocks(items):
+        """`items` maps a label to its content, or lists contents without labels."""
+        pairs = items.items() if isinstance(items, dict) else [(None, content) for content in items]
+        return "".join("<div>" + (f'<div class="nb-label">{_html(label)}</div>' if label else "") + _html(content)
+                       + "</div>" for label, content in pairs)
+
+    def workflow_map():
+        """The six stages and what each one does, shown once under the title."""
+        steps = "".join(
+            f'<div class="nb-map-step"><div class="nb-map-name"><span>{number}</span>{name}</div>'
+            f'<div class="nb-map-text">{text}</div></div>'
+            for number, (name, text) in enumerate(STAGES, start=1))
+        return mo.Html(f'<div class="nb-map">{steps}</div>')
+
+    def section(title, lead, stage=None, kicker=None):
+        """The banner that opens a section: its place in the workflow, its title and its one-sentence summary."""
+        if stage is None:
+            top, number = f'<div class="nb-kicker">{kicker}</div>', ""
+        else:
+            rail = []
+            for index, (name, _) in enumerate(STAGES, start=1):
+                state = "is-done" if index < stage else "is-current" if index == stage else ""
+                if index > 1:
+                    rail.append(f'<span class="nb-rail-arrow {"is-done" if index <= stage else ""}">&#8594;</span>')
+                rail.append(f'<span class="nb-rail-step {state}"><span class="nb-rail-number">{index}</span>{name}</span>')
+            top, number = f'<div class="nb-rail">{"".join(rail)}</div>', f'<span class="nb-section-number">{stage}</span>'
+        return mo.Html(
+            f'<div class="nb-section">{top}<div class="nb-section-head">{number}<div>'
+            f'<h2 id="{title.lower().replace(" ", "-")}">{title}</h2>'
+            f'<div class="nb-standfirst">{_html(lead)}</div></div></div></div>')
+
+    def key(text):
+        """The message to take away from what was just shown."""
+        return mo.md("\n".join("> " + line for line in _cleandoc(text).splitlines()))
+
+    def note(text, label="Note"):
+        """A caveat or a technical remark: a detail, set smaller."""
+        return mo.Html(f'<div class="nb-note"><span class="nb-note-label">{label}</span><div>{_html(text)}</div></div>')
+
+    def caption(text):
+        """What a figure or a table shows: a detail, set smaller."""
+        return mo.Html(f'<div class="nb-caption">{_html(text)}</div>')
+
+    def grid(items, columns=None, kind="plain", widths=None):
+        """Blocks side by side. With kind="reading" they sit under a figure, one column per panel; `widths` then
+        gives the columns the relative widths of the panels."""
+        layout = (f'--nb-columns:{columns or len(items)}' if widths is None else
+                  "grid-template-columns:" + " ".join(f"minmax(0,{width}fr)" for width in widths))
+        return mo.Html(f'<div class="nb-grid is-{kind}" style="{layout}">{_blocks(items)}</div>')
+
+    def stack(items):
+        """Labelled blocks under one another, to fill one column of a grid."""
+        return mo.Html(f'<div class="nb-stack">{_blocks(items)}</div>')
+
+    def cards(items, columns=2, numbered=False):
+        """Framed blocks side by side: `items` are (label, title, content) triples."""
+        blocks = "".join(f'<div><div class="nb-label">{label}</div><div class="nb-card-title">{_html(title)}</div>'
+                         f'{_html(content)}</div>' for label, title, content in items)
+        return mo.Html(f'<div class="nb-grid is-cards{" is-numbered" if numbered else ""}" '
+                       f'style="--nb-columns:{columns}">{blocks}</div>')
+
+    def controls(*elements, hint=""):
+        """A frame around interactive elements, with a line on what to do with them."""
+        body = mo.vstack(elements).text if len(elements) > 1 else mo.as_html(elements[0]).text
+        return mo.Html(f'<div class="nb-controls"><div class="nb-controls-head"><span class="nb-label">Try it</span>'
+                       f'<span class="nb-hint">{_html(hint) if hint else ""}</span></div>{body}</div>')
+
+    def bayesflow(text):
+        """Text that introduces BayesFlow code."""
+        return mo.md('<span class="nb-chip">BayesFlow</span> ' + _cleandoc(text))
+
+    def table(rows, align=None):
+        """A static table from a list of dicts. The keys are the column headings; `align` holds l, c or r per column."""
+        columns = list(rows[0])
+        rule = {"l": ":---", "c": ":---:", "r": "---:"}
+        lines = ["| " + " | ".join(columns) + " |", "|" + "|".join(rule[a] for a in align or "l" * len(columns)) + "|"]
+        lines += ["| " + " | ".join(str(row[column]) for column in columns) + " |" for row in rows]
+        return mo.md("\n".join(lines))
+
+    return (
+        bayesflow,
+        caption,
+        cards,
+        controls,
+        grid,
+        key,
+        note,
+        section,
+        stack,
+        table,
+        workflow_map,
+    )
+
+
+@app.cell(hide_code=True)
+def _(bayesflow, grid, key, mo, note, workflow_map):
     mo.vstack([
         mo.md(r"""
-        # Bayesian Calibration of the Heston Model on SPX Options
+        # Bayesian calibration of the Heston model on SPX options
 
         We calibrate the **Heston stochastic-volatility model** to **63 SPX option quotes**. Instead of one best-fitting parameter vector, we compute a **posterior distribution** over the six unknowns $\boldsymbol\theta=(v_0,\kappa,v_\infty,\sigma_v,\rho,c)$.
 
-        The posterior is learned with **amortized simulation-based inference** in **BayesFlow**: a neural network is trained once on simulated quotes, then returns the posterior for any new set of 63 quotes in seconds. The workflow that we will explore is described as follows:
+        The posterior is learned with **amortized simulation-based inference** in **BayesFlow**. A neural network is trained once on simulated quotes. It then returns the posterior for any new set of 63 quotes in seconds.
+
+        The workflow that we will explore is described as follows:
         """),
-        workflow(),
-        mo.md(
-        r"""In this notebook, we explicitly show where and how **BayesFlow** is used, including code snippets where useful."""
-        )
+        workflow_map(),
+        bayesflow("In this notebook, we explicitly show where and how **BayesFlow** is used, including code snippets "
+                  "where useful. Those places carry this mark."),
+        mo.md("#### How to read this notebook"),
+        grid([
+            key("**Key messages** are set off like this. Read them first."),
+            note("Notes and captions are set small. They document a figure or add a caveat."),
+            mo.accordion({"Foldable sections hold method details": mo.md(
+                "Nothing in a foldable section is needed to follow the rest of the notebook.")}),
+        ]),
     ])
     return
 
@@ -149,8 +247,11 @@ def _(GRID, HestonGridPilot, json, np, plt, recipe, surface):
     BOUNDS = np.asarray(pilot.bounds)
     H = np.asarray(pilot.records["half_spread"])
     LABELS = [r"$v_0$", r"$\kappa$", r"$v_\infty$", r"$\sigma_v$", r"$\rho$", r"$c$"]
+    # The parameters by name: in plain text for menus, with typeset symbols for the page.
     TEXT_LABELS = ["initial variance v₀", "mean reversion κ", "long-run variance v∞",
                    "volatility of variance σᵥ", "correlation ρ", "noise multiplier c"]
+    MATH_LABELS = [r"initial variance $v_0$", r"mean reversion $\kappa$", r"long-run variance $v_\infty$",
+                   r"volatility of variance $\sigma_v$", r"correlation $\rho$", r"noise multiplier $c$"]
 
     design = json.loads((GRID / "cv-preparation" / "design.json").read_text())
     QUOTES = design["selected_quotes"]
@@ -208,6 +309,7 @@ def _(GRID, HestonGridPilot, json, np, plt, recipe, surface):
         KIND,
         LABELS,
         MARKET_IV,
+        MATH_LABELS,
         MATURITY,
         MID,
         NAMES,
@@ -245,30 +347,54 @@ def _(GRID, json, np):
     return CASES, CASE_TITLES, CLEAN, PRODUCTS, PRODUCT_TITLES, TRUTHS
 
 
-@app.cell
-def _(DELTA, KIND, REF_VOL, design, mo):
+@app.cell(hide_code=True)
+def _(
+    DELTA,
+    EXPIRY,
+    EXPIRY_DATES,
+    KIND,
+    MARKET_IV,
+    REF_VOL,
+    design,
+    grid,
+    mo,
+    note,
+    np,
+    section,
+):
     _puts = sorted({_q["target_z"] for _q in design["selected_quotes"] if _q["option_type"] == "put"})
     _calls = [_t for _t in design["targets_z"] if _t not in _puts]
-    _fmt = lambda _values: ", ".join(f"{_v:g}" for _v in _values)
-    mo.md(rf"""
-    ## The data: 63 SPX option quotes
+    _fmt = lambda _values: ", ".join(f"{_v:g}".replace("-", "−") for _v in _values)
+    _atm = [100 * MARKET_IV[EXPIRY == _e][np.argmin(np.abs(DELTA[EXPIRY == _e]))] for _e in range(len(EXPIRY_DATES))]
+    mo.vstack([
+        section("The data", "63 SPX option quotes from one snapshot: seven expiries from one week to about eleven "
+                "months, nine strikes each.", kicker="Before the workflow"),
+        grid({
+            "Snapshot": "SPX index options at 20:13 UTC on 9 November 2026. All 63 contracts are European, "
+                        "PM-settled SPXW options.",
+            "Per contract": r"The bid and the ask give the **mid price** $y_i$ and the **half-spread** "
+                            r"$h_i=(\text{ask}_i-\text{bid}_i)/2$, in index points.",
+            "Per expiry": "The forward price $F$ and the discount factor $D$, estimated from put–call parity on "
+                          "the same snapshot.",
+        }, kind="reading"),
+        mo.md(rf"""
+        ### A common scale for strikes
 
-    - **Snapshot:** SPX index options at 20:13 UTC on 9 November 2026: **63 European, PM-settled SPXW contracts**, seven expiries from one week to about eleven months, nine strikes each.
-    - **Per contract:** the bid and the ask give the **mid price** $y_i$ and the **half-spread** $h_i=(\text{{ask}}_i-\text{{bid}}_i)/2$, in index points.
-    - **Per expiry:** the forward price $F$ and the discount factor $D$, estimated from put–call parity on the same snapshot.
+        Strikes of different expiries are compared through the **standardized moneyness** $\delta$, the distance from the forward in units of a typical move over the option's life ($T$ in years, actual/365).
 
-    Strikes of different expiries are compared through the **standardized moneyness**
-
-    $$\delta=\frac{{\ln(K/F)}}{{\sigma_{{\text{{ref}}}}\sqrt{{T}}}},\qquad \sigma_{{\text{{ref}}}}={100 * REF_VOL:.0f}\%,$$
-
-    the distance from the forward in units of a typical move over the option's life ($T$ in years, actual/365).[^sigma] The contracts were selected on this scale: at every expiry, the puts nearest to $\delta={_fmt(_puts)}$ and the calls nearest to $\delta={_fmt(_calls)}$. They run from $\delta={DELTA.min():.1f}$ to ${DELTA.max():.1f}$ ({int((KIND == 'put').sum())} puts, {int((KIND == 'call').sum())} calls).
-
-    [^sigma]: 16% is close to the at-the-money implied volatility of SPX on this snapshot (15–17% across the seven expiries), so one unit of δ is roughly one standard deviation of the log price at expiry.
-    """)
+        $$\delta=\frac{{\ln(K/F)}}{{\sigma_{{\text{{ref}}}}\sqrt{{T}}}},\qquad \sigma_{{\text{{ref}}}}={100 * REF_VOL:.0f}\%$$
+        """),
+        note(f"{100 * REF_VOL:.0f}% is close to the at-the-money implied volatility of SPX on this snapshot "
+             f"({min(_atm):.0f}–{max(_atm):.0f}% across the seven expiries), so one unit of $\\delta$ is roughly one "
+             "standard deviation of the log price at expiry."),
+        mo.md(rf"""
+        The contracts were selected on this scale. At every expiry we took the puts nearest to $\delta$ = {_fmt(_puts)} and the calls nearest to $\delta$ = {_fmt(_calls)}. They run from $\delta={DELTA.min():.1f}$ to ${DELTA.max():.1f}$ ({int((KIND == 'put').sum())} puts, {int((KIND == 'call').sum())} calls).
+        """),
+    ])
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     DELTA,
     DISCOUNT,
@@ -284,9 +410,13 @@ def _(
     MID,
     QUOTES,
     REF_VOL,
+    caption,
     design,
+    grid,
     grid_rules,
+    key,
     mo,
+    note,
     np,
     plots,
     plt,
@@ -324,98 +454,124 @@ def _(
     _distance = max(abs(_q["target_distance"]) for _q in QUOTES)
     _days = ", ".join(str(_d) for _d in grid_rules.TARGET_DAYS[:-1]) + f" and {grid_rules.TARGET_DAYS[-1]}"
     mo.vstack([
+        mo.md("### The 63 quotes"),
         _fig,
-        mo.md(f"""
-        - **Left:** every expiry has nine contracts at similar values of $\\delta$, two thirds of them puts.
-        - **Middle:** the half-spread as a share of the price: {_relative.min():.2f}% at best near the money, up to {_relative.max():.0f}% for the cheapest puts ({MID.min():.2f} index points).
-        - **Right:** the **volatility smile**, from {min(_atm):.0f}–{max(_atm):.0f}% at the money to {min(_wing):.0f}–{max(_wing):.0f}% for the deepest puts. The seven smiles are nearly parallel in $\\delta$: the skew per unit of $\\delta$ is about the same at one week as at eleven months. This is the feature the model must reproduce.
-
-        **Note**: Implied volatilities are for display only and all computations use prices.
+        caption("Left: the selected contracts, by days to expiry and standardized moneyness. Middle: the half-spread "
+                "as a share of the mid price. Right: implied volatility at the mid prices. Each colour is one expiry."),
+        key(r"""
+        **The seven smiles are nearly parallel in $\delta$.** The skew per unit of $\delta$ is about the same at one week as at eleven months. This is the feature the model must reproduce.
         """),
+        grid({
+            "The contracts": "Every expiry has nine contracts at similar values of $\\delta$. Two thirds of them are puts.",
+            "The spreads": f"The half-spread is {_relative.min():.2f}% of the price at best, near the money. It reaches "
+                           f"{_relative.max():.0f}% for the cheapest puts ({MID.min():.2f} index points).",
+            "The smile": f"Implied volatility runs from {min(_atm):.0f}–{max(_atm):.0f}% at the money to "
+                         f"{min(_wing):.0f}–{max(_wing):.0f}% for the deepest puts.",
+        }, kind="reading"),
+        note("Implied volatilities are for display only and all computations use prices."),
         mo.accordion({
-            "How the 63 contracts were chosen": mo.md(rf"""
-            **Expiries.** For each target maturity of {_days} business days (divided by 252 to give years) we took the nearest eligible SPXW expiry. For the one-year target this is {EXPIRY_DATES[-1]}, {EXPIRY_DAYS[-1]} days away.
-
-            **Strikes.** At each expiry we took the out-of-the-money contract nearest to each of the nine targets in $\delta$. A contract was eligible only if its half-spread was at most {100 * grid_rules.MAX_RELATIVE_HALFSPREAD:.0f}% of its mid price and it was not among the quotes used to estimate the forwards and discount factors or held out for scoring. A target counts as supported when the nearest eligible contract lies within {grid_rules.MAX_Z_DISTANCE:g} of it. At the {_override['expiration']} expiry no eligible call lies near $\delta={_override['original_target_z']:g}$, so that target was declared at $\delta={_override['revised_target_z']:g}$ instead. Every selected contract lies within {_distance:.2f} of its target.
-
-            The reference volatility only sets the units of the axis: the pricer uses each contract's actual strike, forward, discount factor and expiry, and the network sees prices.
-            """),
+            "How the 63 contracts were chosen": mo.vstack([
+                grid({
+                    "Expiries": f"For each target of {_days} business days (divided by 252 to give years) we took the "
+                                f"nearest eligible SPXW expiry. For the one-year target this is {EXPIRY_DATES[-1]}, "
+                                f"{EXPIRY_DAYS[-1]} days away.",
+                    "Strikes": "At each expiry we took the out-of-the-money contract nearest to each of the nine "
+                               f"targets in $\\delta$. Every selected contract lies within {_distance:.2f} of its target.",
+                    "Eligibility": "A contract was eligible only if its half-spread was at most "
+                                   f"{100 * grid_rules.MAX_RELATIVE_HALFSPREAD:.0f}% of its mid price, and if it was "
+                                   "not among the quotes used to estimate the forwards and discount factors or held "
+                                   "out for scoring. A target counts as supported when the nearest eligible contract "
+                                   f"lies within {grid_rules.MAX_Z_DISTANCE:g} of it.",
+                    "One exception": f"At the {_override['expiration']} expiry no eligible call lies near "
+                                     f"$\\delta={_override['original_target_z']:g}$, so that target was declared at "
+                                     f"$\\delta={_override['revised_target_z']:g}$ instead.",
+                }, columns=2),
+                note("The reference volatility only sets the units of the axis. The pricer uses each contract's "
+                     "actual strike, forward, discount factor and expiry, and the network sees prices."),
+            ]),
             "All 63 quotes": mo.ui.table(_rows, selection=None, pagination=True, page_size=9),
         }),
     ])
     return
 
 
-@app.cell
-def _(mo, workflow):
-    mo.vstack([workflow("Model"), mo.md(r"""
-    ## 1. Model
+@app.cell(hide_code=True)
+def _(grid, mo, note, section):
+    mo.vstack([
+        section("Model", "Heston dynamics for the price, a prior over six parameters, and quote noise set by the "
+                "bid–ask spread.", stage=1),
+        mo.md(r"""
+        ### 1.1 Heston dynamics
 
-    ### Heston dynamics
+        The variance $V_t$ follows its own random process, correlated with the price.
 
-    The variance $V_t$ follows its own random process, correlated with the price:
+        $$
+        \frac{dF_t}{F_t} = \sqrt{V_t}\,dW_t^F,\qquad
+        dV_t = \kappa(v_\infty-V_t)\,dt+\sigma_v\sqrt{V_t}\,dW_t^V,
+        \qquad d\langle W^F,W^V\rangle_t=\rho\,dt
+        $$
 
-    $$
-    \frac{dF_t}{F_t} = \sqrt{V_t}\,dW_t^F,\qquad
-    dV_t = \kappa(v_\infty-V_t)\,dt+\sigma_v\sqrt{V_t}\,dW_t^V,
-    \qquad d\langle W^F,W^V\rangle_t=\rho\,dt .
-    $$
-    where $W^F$ and $W^V$ are two Brownian motions with correlation $\rho$, and:
+        Here $W^F$ and $W^V$ are two Brownian motions with correlation $\rho$, and $F_t$ is the forward price for the option's expiry. The six unknowns are:
 
-
-    | Symbol | Meaning |
-    |:---|:---|
-    | $v_0$ | initial variance $V_0$ |
-    | $\kappa$ | speed of mean reversion, per year |
-    | $v_\infty$ | long-run variance, the level $V_t$ reverts to |
-    | $\sigma_v$ | volatility of variance |
-    | $\rho$ | correlation of price and variance shocks |
-    | $c$ | quote-noise multiplier (observation model below) |
-
-    $F_t$ is the forward price for the option's expiry. The priors are discussed with the prior predictive check in Section 2.
-    """)])
+        | Symbol | Meaning |
+        |:---|:---|
+        | $v_0$ | initial variance $V_0$ |
+        | $\kappa$ | speed of mean reversion, per year |
+        | $v_\infty$ | long-run variance, the level $V_t$ reverts to |
+        | $\sigma_v$ | volatility of variance |
+        | $\rho$ | correlation of price and variance shocks |
+        | $c$ | quote-noise multiplier (Section 1.3) |
+        """),
+        note("The priors are given with the prior predictive check in Section 2.2."),
+        mo.accordion({"Why there is no drift: the pricing measure and forward prices": grid({
+            "The pricing measure": r"Prices are computed under the pricing measure $\mathbb Q$, under which "
+                                   "discounted traded prices are martingales.",
+            "The forward price": r"$F_t=S_t\,e^{(r-q)(T-t)}$, with interest rate $r$ and dividend yield $q$, is then "
+                                 r"a martingale, so it has no drift. At expiry $F_T=S_T$, so a call is worth "
+                                 r"$C=D\,\mathbb E^{\mathbb Q}\big[(F_T-K)^+\big]$ with $D=e^{-rT}$.",
+            "Forward units": r"Rates and dividends enter only through $D$ and $F$, read from the market by put–call "
+                             r"parity. Divided by $D\,F$, prices depend only on $\ln(K/F)$, $T$ and the Heston "
+                             "parameters, so one parameter set prices every expiry.",
+            "The real-world return": "The index's real-world expected return plays no role. Estimating it would "
+                                     "need a time series of prices and a physical-measure model.",
+        }, columns=2)}),
+    ])
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    _card = {"border": "1px solid #d9d8d0", "border-radius": "10px", "padding": "10px 14px", "height": "100%"}
-    _features = [mo.md(_text).style(_card) for _text in (
-        r"""
-        **1. Mean reversion sets the term structure**
-
-        $$\mathbb E[V_t]=v_\infty+(v_0-v_\infty)\,e^{-\kappa t}$$
-
-        - $v_0$ sets short expiries, $v_\infty$ long ones.
-        - $\kappa$ sets the speed: a shock halves in $\ln 2/\kappa$ years.
-        """,
-        r"""
-        **2. $\rho$ tilts the smile, $\sigma_v$ curves it**
-
-        - $\rho<0$: volatility rises when prices fall, so puts cost more: the **skew**.
-        - $\sigma_v$: a more random variance fattens both tails: the **curvature**, and a larger skew.
-        """,
-        r"""
-        **3. The short-expiry skew has a ceiling**
-
-        $$\psi(T)=\frac{\partial\,\sigma_{\mathrm{imp}}(k,T)}{\partial k}\bigg|_{k=0},\qquad k=\ln(K/F)$$
-
-        - $\psi(T)$, the **at-the-money skew**, is how fast implied volatility changes with log-moneyness at the money, for expiry $T$.
-        - As $T$ shrinks, $|\psi(T)|$ grows, but only up to a ceiling: $|\psi(T)|\to|\rho|\,\sigma_v/(4\sqrt{v_0})$ as $T\to0$.
-        - **Why:** over a few days the variance barely moves from $v_0$, so the skew depends on $\rho$, $\sigma_v$ and $v_0$ alone. For expiries well below the reversion time $1/\kappa$ it is at the ceiling and grows no further.
-        """,
-        r"""
-        **4. Prices in closed form**
-
-        - $(F_t,V_t)$ is a Markov state and the model is affine: its characteristic function is known exactly.
-        - All 63 prices take milliseconds, so the **exact posterior** is affordable.
-        """)]
-    _row = lambda _pair: mo.hstack(_pair, widths="equal", gap=1, align="stretch")
+def _(cards, mo):
     mo.vstack([
-        mo.md("### Four features to keep in mind\n\nFour properties of Heston return later in the notebook:"),
-        _row(_features[:2]),
-        _row(_features[2:]),
-    ], gap=1)
+        mo.md(r"""
+        ### 1.2 Four features to keep in mind
+
+        Four properties of Heston come back later in the notebook.
+        """),
+        cards([
+            ("Feature 1", "Mean reversion sets the term structure", r"""
+            $$\mathbb E[V_t]=v_\infty+(v_0-v_\infty)\,e^{-\kappa t}$$
+
+            - $v_0$ sets short expiries, $v_\infty$ long ones.
+            - $\kappa$ sets the speed. A shock halves in $\ln 2/\kappa$ years.
+            """),
+            ("Feature 2", r"$\rho$ tilts the smile, $\sigma_v$ curves it", r"""
+            - With $\rho<0$, volatility rises when prices fall, so puts cost more. This is the **skew**.
+            - A larger $\sigma_v$ makes the variance more random, which fattens both tails. This is the **curvature**, and it also steepens the skew.
+            """),
+            ("Feature 3", "The short-expiry skew has a ceiling", r"""
+            $$\psi(T)=\frac{\partial\,\sigma_{\mathrm{imp}}(k,T)}{\partial k}\bigg|_{k=0},\qquad k=\ln(K/F)$$
+
+            - $\psi(T)$ is the **at-the-money skew**: how fast implied volatility changes with log-moneyness at the money, for expiry $T$.
+            - As $T$ shrinks, $|\psi(T)|$ grows, but only up to a ceiling: $|\psi(T)|\to|\rho|\,\sigma_v/(4\sqrt{v_0})$ as $T\to0$.
+                - Over a few days the variance barely moves from $v_0$, so the skew depends only on $\rho$, $\sigma_v$ and $v_0$.
+                - For expiries well below the reversion time $1/\kappa$ the skew is at the ceiling and grows no further.
+            """),
+            ("Feature 4", "Prices in closed form", r"""
+            - The model is affine and $(F_t,V_t)$ is a Markov state, so the characteristic function is known exactly.
+            - All 63 prices take milliseconds, so the **exact posterior** is affordable.
+            """),
+        ]),
+    ])
     return
 
 
@@ -427,7 +583,9 @@ def _(
     REF_VOL,
     TRUTHS,
     atm_shape,
+    caption,
     forward_unit_pricer,
+    grid,
     mo,
     np,
     plots,
@@ -510,70 +668,99 @@ def _(
     _at = lambda _day: float(np.interp(np.log(_day), np.log(365 * _grid_t), _skew))
     _near = 365 * _grid_t[_skew >= 0.9 * _ceiling].max()
     _minus = lambda _x: f"{_x:.2f}".replace("-", "−")
-    _wings = f"the put at δ = {_d[0]:.1f}".replace("-", "−"), f"the call at δ = {_d[-1]:.1f}"
+    _wings = f"the put at $\\delta={_d[0]:.1f}$", f"the call at $\\delta={_d[-1]:.1f}$"
     mo.vstack([
-        mo.md("**Features 1–3 in pictures.** The market-like parameters of Section 4 (black), one parameter changed "
-              "at a time:"),
         _fig,
-        mo.md(f"""
-        - **(a) Mean reversion:** the expected variance moves from $v_0$ to $v_\\infty$ and covers half the distance in {_half_life:.0f} days ($\\ln 2/\\kappa$). Implied volatilities sit below these curves: a random variance lowers at-the-money volatility (Lecture 10, Figure 10.6).
-        - **(b) Correlation:** from $\\rho={_minus(_rhos[0])}$ to ${_minus(_rhos[-1])}$, {_wings[0]} rises from {_deep(_rho_smiles)[0]:.1f}% to {_deep(_rho_smiles)[1]:.1f}% and {_wings[1]} falls from {_call(_rho_smiles)[0]:.1f}% to {_call(_rho_smiles)[1]:.1f}%.
-        - **(c) Volatility of variance:** from $\\sigma_v={_xis[0]:.2f}$ to ${_xis[-1]:.2f}$, {_wings[0]} rises from {_deep(_xi_smiles)[0]:.1f}% to {_deep(_xi_smiles)[1]:.1f}% and the at-the-money level falls from {_atm(_xi_smiles)[0]:.1f}% to {_atm(_xi_smiles)[1]:.1f}%.
-        - **(d) Short-expiry skew:** {_at(365):.2f} at one year, {_at(30):.2f} at 30 days, {_at(7):.2f} at 7 days. Below {_near:.0f} days it stays within 10% of the ceiling, {_ceiling:.2f}.
-        """),
+        caption("Features 1 to 3. Black curves use the market-like parameters of Section 4.1. In each panel one "
+                "parameter changes."),
+        grid({
+            "(a) Mean reversion":
+                f"The expected variance moves from $v_0$ to $v_\\infty$ and covers half the distance in "
+                f"{_half_life:.0f} days ($\\ln 2/\\kappa$). Implied volatilities sit below these curves, because a "
+                "random variance lowers at-the-money volatility (Lecture 10, Figure 10.6).",
+            "(b) Correlation":
+                f"From $\\rho={_minus(_rhos[0])}$ to ${_minus(_rhos[-1])}$, {_wings[0]} rises from "
+                f"{_deep(_rho_smiles)[0]:.1f}% to {_deep(_rho_smiles)[1]:.1f}% and {_wings[1]} falls from "
+                f"{_call(_rho_smiles)[0]:.1f}% to {_call(_rho_smiles)[1]:.1f}%.",
+            "(c) Volatility of variance":
+                f"From $\\sigma_v={_xis[0]:.2f}$ to ${_xis[-1]:.2f}$, {_wings[0]} rises from "
+                f"{_deep(_xi_smiles)[0]:.1f}% to {_deep(_xi_smiles)[1]:.1f}% and the at-the-money level falls from "
+                f"{_atm(_xi_smiles)[0]:.1f}% to {_atm(_xi_smiles)[1]:.1f}%.",
+            "(d) Short-expiry skew":
+                f"The skew is {_at(365):.2f} at one year, {_at(30):.2f} at 30 days and {_at(7):.2f} at 7 days. Below "
+                f"{_near:.0f} days it stays within 10% of the ceiling, {_ceiling:.2f}.",
+        }, columns=2, kind="reading"),
     ])
     return
 
 
 @app.cell(hide_code=True)
-def _(NAMES, TRUTHS, mo, reference_summary):
+def _(NAMES, TRUTHS, grid, mo, reference_summary, stack):
     _truth = TRUTHS["synthetic-market-like"]
     _market = {_n: reference_summary["cases"]["market"]["parameters"][_n]["regenerated_q05_q50_q95"][1] for _n in NAMES}
     _like = (2 * _truth[1] * _truth[2], _truth[3] ** 2)
     _fit = (2 * _market["kappa"] * _market["theta"], _market["vol_of_vol"] ** 2)
     mo.accordion({
-        "Why there is no drift: the pricing measure and forward prices": mo.md(r"""
-        - Prices are computed under the **pricing measure** $\mathbb Q$, under which discounted traded prices are martingales.
-        - The **forward price** $F_t=S_t\,e^{(r-q)(T-t)}$ (interest rate $r$, dividend yield $q$) is then a martingale: no drift. At expiry $F_T=S_T$, so a call is worth $C=D\,\mathbb E^{\mathbb Q}\big[(F_T-K)^+\big]$ with $D=e^{-rT}$.
-        - Rates and dividends enter only through $D$ and $F$, read from the market by put–call parity. Divided by $D\,F$, prices are in **forward units**: they depend only on $\ln(K/F)$, $T$ and the Heston parameters, so one parameter set prices every expiry.
-        - The index's real-world expected return plays no role. Estimating it would need a time series of prices and a physical-measure model.
-        """),
-        "Feature 2 in depth: a large σᵥ and the Feller condition": mo.md(rf"""
-        - A steep equity skew needs a large $\sigma_v$ (feature 2), and a large $\sigma_v$ breaks the **Feller condition** $2\kappa v_\infty\ge\sigma_v^2$.
-        - If the condition holds, the variance never reaches zero. Otherwise it can touch zero and is pushed straight back up by the drift. The model and the pricer are valid either way, and the prior does not impose the condition.
-        - The market-like parameters of Section 4 violate it ($\sigma_v^2={_like[1]:.1f}$ against $2\kappa v_\infty={_like[0]:.2f}$), and so do the SPX market posterior medians ($\sigma_v^2={_fit[1]:.1f}$ against $2\kappa v_\infty={_fit[0]:.2f}$): the posterior fits the SPX skew with a volatility of variance far above the Feller limit.
-        """),
-        "Feature 4 in depth: the Fourier pricer": mo.md(r"""
-        - Heston is **affine**: the characteristic function $\varphi(u)=\mathbb E^{\mathbb Q}\big[e^{iu\ln(F_T/F_0)}\big]$ is known in closed form, so a European option needs one one-dimensional integral (Lewis, 2001).
-        - The pricer uses a **control-variate** form: the Black–Scholes price $C_{\mathrm{BS}}$ with the same expected average variance, plus the integral of the difference of the two characteristic functions (puts get the same correction):
+        "Feature 2 in depth: a large σᵥ and the Feller condition": grid({
+            "The condition": r"A steep equity skew needs a large $\sigma_v$ (feature 2), and a large $\sigma_v$ "
+                             r"breaks the **Feller condition** $2\kappa v_\infty\ge\sigma_v^2$.",
+            "What it means": "If the condition holds, the variance never reaches zero. Otherwise the variance can "
+                             "touch zero, and the drift then moves it back up. The model and the pricer are valid "
+                             "either way, and the prior does not impose the condition.",
+            "In this notebook": rf"The market-like parameters of Section 4.1 violate it ($\sigma_v^2={_like[1]:.1f}$ "
+                                rf"against $2\kappa v_\infty={_like[0]:.2f}$). So do the SPX market posterior "
+                                rf"medians ($\sigma_v^2={_fit[1]:.1f}$ against $2\kappa v_\infty={_fit[0]:.2f}$). "
+                                "The posterior fits the SPX skew with a volatility of variance far above the "
+                                "Feller limit.",
+        }),
+        "Feature 4 in depth: the Fourier pricer": grid([
+            r"""
+            Heston is **affine**. Its characteristic function $\varphi(u)=\mathbb E^{\mathbb Q}\big[e^{iu\ln(F_T/F_0)}\big]$ is known in closed form, so a European option needs one one-dimensional integral (Lewis, 2001).
 
-        $$C=C_{\mathrm{BS}}+D\,\frac{\sqrt{FK}}{\pi}\int_0^\infty\operatorname{Re}\!\left[e^{iu\ln(F/K)}\Big(\varphi_{\mathrm{BS}}\big(u-\tfrac i2\big)-\varphi\big(u-\tfrac i2\big)\Big)\right]\frac{du}{u^2+\tfrac14}.$$
+            The pricer uses a **control-variate** form: the Black–Scholes price $C_{\mathrm{BS}}$ with the same expected average variance, plus the integral of the difference of the two characteristic functions. Puts get the same correction.
 
-        - **Why the control variate:** for very cheap options the plain formula is a small difference of two large numbers; this form avoids the cancellation.
-        - **Accuracy:** Gauss–Legendre quadrature, with nodes and interval doubled until two successive steps agree to within 2% of the smallest noise standard deviation the prior allows for that contract ($c=0.5$, that is 1% of its half-spread).
-        - **Speed:** milliseconds for all 63 options. The prior predictive check in Section 2 times 1,000 simulated data sets.
-        """),
+            $$C=C_{\mathrm{BS}}+D\,\frac{\sqrt{FK}}{\pi}\int_0^\infty\operatorname{Re}\!\left[e^{iu\ln(F/K)}\Big(\varphi_{\mathrm{BS}}\big(u-\tfrac i2\big)-\varphi\big(u-\tfrac i2\big)\Big)\right]\frac{du}{u^2+\tfrac14}$$
+            """,
+            stack({
+                "Why the control variate": "For very cheap options the plain formula is a small difference of two "
+                                           "large numbers. This form avoids the cancellation.",
+                "Accuracy": "Gauss–Legendre quadrature. Nodes and interval are doubled until two successive steps "
+                            "agree to within 2% of the smallest noise standard deviation the prior allows for that "
+                            "contract ($c=0.5$, that is 1% of its half-spread).",
+                "Speed": "Milliseconds for all 63 options. The prior predictive check in Section 2.2 times 1,000 "
+                         "simulated data sets.",
+            }),
+        ]),
     })
     return
 
 
-@app.cell
-def _(mo):
-    mo.md(r"""
-    ### Observation model: noise set by the bid–ask spread
+@app.cell(hide_code=True)
+def _(mo, note):
+    mo.vstack([
+        mo.md(r"""
+        ### 1.3 Observation model: noise set by the bid–ask spread
 
-    $$
-    y_i = P_i(v_0,\kappa,v_\infty,\sigma_v,\rho) + c\,h_i\,\epsilon_i,\qquad
-    \epsilon_i \overset{\mathrm{iid}}{\sim}\mathcal N(0,1),\qquad i=1,\dots,63
-    $$
+        Each quote is its Heston price plus Gaussian noise. The standard deviation of the noise is $c$ times the quote's half-spread.
 
-    - $y_i$: the quote (mid price) of contract $i$. $P_i$: its Heston price.
-    - $h_i$: **data**, the observed half-spread. Fixed, and identical in every simulation.
-    - $\epsilon_i$: a fresh standard-normal draw for every contract and every simulated data set.
-    - $c$: a **parameter**, inferred with the others. It scales all 63 noise levels together: "one half-spread is one standard deviation" is a convention that $c$ can correct.
+        $$
+        y_i = P_i(v_0,\kappa,v_\infty,\sigma_v,\rho) + c\,h_i\,\epsilon_i,\qquad
+        \epsilon_i \overset{\mathrm{iid}}{\sim}\mathcal N(0,1),\qquad i=1,\dots,63
+        $$
 
-    **Note:** a **model-error term** is left out. Heston is assumed to price every contract exactly, so a systematic gap between Heston and the market can only be absorbed by a larger $c$ (Section 5.4).
-    """)
+        | Symbol | Role | Meaning |
+        |:---|:---|:---|
+        | $y_i$ | data | the quote (mid price) of contract $i$ |
+        | $P_i$ | model | its Heston price |
+        | $h_i$ | data | the observed half-spread, fixed and identical in every simulation |
+        | $\epsilon_i$ | noise | a fresh standard-normal draw for every contract and every simulated data set |
+        | $c$ | parameter | scales all 63 noise levels together, inferred with the other five |
+
+        "One half-spread is one standard deviation" is a convention. Inferring $c$ lets the data correct it.
+        """),
+        note("A **model-error term** is left out. Heston is assumed to price every contract exactly, so a systematic "
+             "gap between Heston and the market can only be absorbed by a larger $c$ (Section 5.4)."),
+    ])
     return
 
 
@@ -585,6 +772,7 @@ def _(
     EXPIRY_DATES,
     H,
     MARKET_IV,
+    key,
     mo,
     np,
     plt,
@@ -602,33 +790,43 @@ def _(
     _ax.minorticks_off()
     _ax.legend(fontsize=6, ncol=2)
     _range = 100 * (np.nanmax(MARKET_IV) - np.nanmin(MARKET_IV))
-    mo.vstack([_fig, mo.md(
-        f"- One half-spread is **{np.nanmin(_points):.2f}–{np.nanmax(_points):.2f} volatility points**, against a smile "
-        f"that spans about {_range:.0f} points.\n"
-        "- The quotes are therefore very informative, and the posteriors in Section 4 are narrow.\n"
-        "- The flip side: a systematic model error of even a fraction of a volatility point is large compared with "
-        "the assumed noise.")])
-    return
-
-
-@app.cell
-def _(mo, workflow):
-    mo.vstack([workflow("Simulate"), mo.md(r"""
-    ## 2. Simulate
-
-    One simulation corresponds to a **forward pass** through the pricer plus the addition of noise, and produces one hypothetical market:
-
-    1. draw $\boldsymbol\theta=(v_0,\kappa,v_\infty,\sigma_v,\rho,c)$ from the prior,
-    2. price the 63 contracts with the Fourier pricer,
-    3. add the quote noise $c\,h_i\,\epsilon_i$.
-
-    The output is a vector of **63 numbers**: in this toy-model only the noisy mid prices are simulated per each contract, while bids and asks are not simulated. The half-spreads $h_i$ keep their observed values and set the size of the noise. Move the sliders to see what the model produces.
-    """)])
+    mo.hstack([
+        _fig,
+        mo.vstack([
+            key(f"**One half-spread is {np.nanmin(_points):.2f}–{np.nanmax(_points):.2f} volatility points**, "
+                f"against a smile that spans about {_range:.0f} points."),
+            mo.md("- The quotes are therefore very informative, and the posteriors in Section 4.2 are narrow.\n"
+                  "- For the same reason, a systematic model error of even a fraction of a volatility point is "
+                  "large compared with the assumed noise."),
+        ]),
+    ], widths=[3, 2], gap=2, align="center")
     return
 
 
 @app.cell(hide_code=True)
-def _(BOUNDS, EXPIRY_DATES, EXPIRY_DAYS, TRUTHS, mo, np):
+def _(mo, note, section):
+    mo.vstack([
+        section("Simulate", "One simulation corresponds to a **forward pass** through the pricer plus the addition "
+                "of noise. It produces one hypothetical market.", stage=2),
+        mo.md(r"""
+        ### 2.1 The simulator
+
+        A simulation takes three steps.
+
+        1. Draw $\boldsymbol\theta=(v_0,\kappa,v_\infty,\sigma_v,\rho,c)$ from the prior.
+        2. Price the 63 contracts with the Fourier pricer.
+        3. Add the quote noise $c\,h_i\,\epsilon_i$.
+
+        The output is a vector of **63 numbers**, one noisy mid price per contract.
+        """),
+        note("In this toy model only the mid prices are simulated. Bids and asks are not. The half-spreads $h_i$ "
+             "keep their observed values and set the size of the noise."),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(BOUNDS, EXPIRY_DATES, EXPIRY_DAYS, TRUTHS, controls, mo, np):
     _start = TRUTHS["synthetic-market-like"]
     _steps = (0.001, 0.1, 0.001, 0.05, 0.01, 0.05)
     _digits = (3, 1, 3, 2, 2, 2)
@@ -643,12 +841,12 @@ def _(BOUNDS, EXPIRY_DATES, EXPIRY_DAYS, TRUTHS, mo, np):
         options={f"{_date} ({_days} days)": _e for _e, (_date, _days) in enumerate(zip(EXPIRY_DATES, EXPIRY_DAYS))},
         value=f"{EXPIRY_DATES[4]} ({EXPIRY_DAYS[4]} days)", label="Quotes at expiry")
     sim_seed = mo.ui.number(start=0, stop=9999, step=1, value=1, label="Random seed")
-    mo.vstack([
-        mo.md("**Heston simulator.** The sliders start at the market-like parameters of Section 4."),
+    controls(
         mo.hstack([mo.vstack([sim_params[_j] for _j in range(3)]), mo.vstack([sim_params[_j] for _j in range(3, 6)])],
                   justify="start", gap=2),
         mo.hstack([sim_expiry, sim_seed], justify="start", gap=2),
-    ])
+        hint="Move the sliders. They start at the market-like parameters of Section 4.1.",
+    )
     return sim_expiry, sim_params, sim_seed
 
 
@@ -659,8 +857,11 @@ def _(
     EXPIRY_DATES,
     H,
     MARKET_IV,
+    caption,
+    grid,
     implied_vols,
     mo,
+    note,
     np,
     pilot,
     plots,
@@ -730,42 +931,53 @@ def _(
                     title=f"Quotes at {EXPIRY_DATES[sim_expiry.value]}")
     _axes[1, 1].set(xlabel="standardized moneyness δ", ylabel="implied-volatility points", title="The quote errors, magnified")
 
+    _view = [_fig, caption("Top: three forward-price paths over one year, and the volatility behind them. Bottom: the "
+                           "quotes at the selected expiry, and their errors against the Heston price. The paths only "
+                           "illustrate the dynamics. The simulator prices options exactly and never draws paths.")]
     if _clean is None:
-        _text = f"The pricer did not reach its accuracy target for these parameters ({_failure}); move a slider."
+        _view.append(note(f"The pricer did not reach its accuracy target for these parameters ({_failure}). "
+                          "Move a slider."))
     else:
         _atm = 100 * _clean_iv[_at][np.argmin(np.abs(DELTA[_at]))]
         _deep = 100 * _clean_iv[_at][np.argmin(DELTA[_at])]
         _errors = np.abs(100 * (_quote_iv - _clean_iv))[_at]
         _feller = (
-            f" A single path does not settle there: $\\sigma_v^2={_xi ** 2:.1f}$ exceeds $2\\kappa v_\\infty={2 * _kappa * _v_inf:.2f}$ "
-            f"(Feller condition, Section 1), so in the long run volatility is below {_median_vol:.2g}% half the time "
-            "(dotted line): short spikes carry the average, and in between the price barely moves." if _shape < 1 else "")
-        _text = (
-            f"- **Volatility:** starts at {100 * np.sqrt(_v0):.0f}%. The expected variance reverts to $v_\\infty$ with a "
-            f"half-life of {12 * np.log(2) / _kappa:.1f} months (dashed line: $\\sqrt{{v_\\infty}}={100 * np.sqrt(_v_inf):.0f}\\%$)."
-            f"{_feller}\n"
-            "- **Price:** with $\\rho<0$, falls come with volatility spikes. The paths only illustrate the dynamics: "
-            "the simulator prices options exactly and never draws paths.\n"
-            f"- **Quotes:** at this expiry the Heston smile runs from {_atm:.1f}% at the money to {_deep:.1f}% at the "
-            f"deepest put. The quote errors are at most {np.nanmax(_errors):.2f} volatility points"
-            f"{': invisible on the smile' if np.nanmax(_errors) < 0.01 * np.ptp(_axes[1, 0].get_ylim()) else ''}.\n\n"
-            "**Try**, feature by feature (Section 1), then see how close you can get to the SPX market (grey):\n\n"
-            "| Move | What you see | Feature |\n"
-            "|:---|:---|:---:|\n"
-            "| set $v_0$ above $v_\\infty$, then switch expiry | short expiries above long ones | 1 |\n"
-            "| lower $\\kappa$ | a slower return to $v_\\infty$ | 1 |\n"
-            "| make $\\rho$ more negative | a steeper skew | 2 |\n"
-            "| raise $\\sigma_v$ | more curvature | 2 |\n"
-            "| raise $v_0$ at the 7-day expiry | a flatter skew: its ceiling falls like $1/\\sqrt{v_0}$ | 3 |\n"
-            "| raise $c$ | larger quote errors | noise |")
-    mo.vstack([_fig, mo.md(_text)])
+            f"\n\n<small>A single path does not settle there. $\\sigma_v^2={_xi ** 2:.1f}$ exceeds "
+            f"$2\\kappa v_\\infty={2 * _kappa * _v_inf:.2f}$ (Feller condition, Section 1.2), so in the long run "
+            f"volatility is below {_median_vol:.2g}% half the time (dotted line). Short spikes carry the average, and "
+            "in between the price barely moves.</small>" if _shape < 1 else "")
+        _invisible = np.nanmax(_errors) < 0.01 * np.ptp(_axes[1, 0].get_ylim())
+        _view.append(grid({
+            "Volatility": f"Volatility starts at {100 * np.sqrt(_v0):.0f}%. The expected variance reverts to "
+                          f"$v_\\infty$ with a half-life of {12 * np.log(2) / _kappa:.1f} months. The dashed line "
+                          f"marks $\\sqrt{{v_\\infty}}={100 * np.sqrt(_v_inf):.0f}\\%$.{_feller}",
+            "Price": "With $\\rho<0$, falls in the price come with spikes in volatility.",
+            "Quotes": f"At this expiry the Heston smile runs from {_atm:.1f}% at the money to {_deep:.1f}% at the "
+                      f"deepest put. The quote errors are at most {np.nanmax(_errors):.2f} volatility points"
+                      f"{', invisible on the smile' if _invisible else ''}.",
+        }, kind="reading"))
+    _view.append(mo.md(r"""
+    #### What to try
+
+    Go through the features of Section 1.2, then see how close you can get to the SPX market (grey).
+
+    | Move | What you see | Feature |
+    |:---|:---|:---:|
+    | set $v_0$ above $v_\infty$, then switch expiry | short expiries above long ones | 1 |
+    | lower $\kappa$ | a slower return to $v_\infty$ | 1 |
+    | make $\rho$ more negative | a steeper skew | 2 |
+    | raise $\sigma_v$ | more curvature | 2 |
+    | raise $v_0$ at the 7-day expiry | a flatter skew, because its ceiling falls like $1/\sqrt{v_0}$ | 3 |
+    | raise $c$ | larger quote errors | noise |
+    """))
+    mo.vstack(_view)
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    **The simulator in BayesFlow.** `bf.make_simulator` chains two functions by argument name: the prior returns named parameters, and the observation model receives them, prices the 63 contracts and adds the noise. It returns every quote **divided by its half-spread**, so that the network sees the data in noise units.
+def _(bayesflow):
+    bayesflow("""
+    `bf.make_simulator` chains two functions by argument name. The prior returns named parameters. The observation model receives them, prices the 63 contracts and adds the noise. It returns every quote **divided by its half-spread**, so that the network sees the data in noise units.
     """)
     return
 
@@ -790,31 +1002,37 @@ def _(BOUNDS, H, NAMES, bf, np, pilot):
 
 
 @app.cell(hide_code=True)
-def _(BOUNDS, mo, np):
+def _(BOUNDS, grid, mo, np):
     _lo, _hi = BOUNDS[:, 0], BOUNDS[:, 1]
     _n = lambda _x: f"{_x:g}".replace("-", "−")
     _days = lambda _kappa: np.log(2) / _kappa * 365
-    mo.md(rf"""
-    ### Prior predictive check
+    mo.vstack([
+        mo.md(r"""
+        ### 2.2 Prior predictive check
 
-    The **prior predictive distribution** is the distribution of quotes the model produces *before* seeing data: draw $\boldsymbol\theta$ from the prior, then simulate. Checking it answers two questions:
+        The **prior predictive distribution** is the distribution of quotes the model produces before seeing data: draw $\boldsymbol\theta$ from the prior, then simulate.
 
-    - **Does it cover the observed quotes?** If not, the network would have to extrapolate, and the prior or the model would need rethinking.
-    - **Is it not needlessly wide?** Simulations of implausible markets cost training effort and tell the network little.
+        Checking it answers two questions.
+        """),
+        grid({
+            "Does it cover the observed quotes?": "If not, the network would have to extrapolate, and the prior or "
+                                                  "the model would need rethinking.",
+            "Is it needlessly wide?": "Simulations of implausible markets cost training effort and tell the network "
+                                      "little.",
+        }),
+        mo.md(rf"""
+        The prior is **independent and uniform** in each parameter's natural units.
 
-    The prior is **independent and uniform** in each parameter's natural units:
-
-    | Symbol | Prior | What the range means |
-    |:---|:---|:---|
-    | $v_0$ | uniform on {_n(_lo[0])} to {_n(_hi[0])} | initial volatility $\sqrt{{v_0}}$ between {100 * np.sqrt(_lo[0]):.0f}% and {100 * np.sqrt(_hi[0]):.0f}% |
-    | $\kappa$ | uniform on {_n(_lo[1])} to {_n(_hi[1])} | half-life of a variance shock, $\ln 2/\kappa$, between {_days(_hi[1]):.0f} days and {_days(_lo[1]) / 365:.0f} years |
-    | $v_\infty$ | uniform on {_n(_lo[2])} to {_n(_hi[2])} | long-run volatility between {100 * np.sqrt(_lo[2]):.0f}% and {100 * np.sqrt(_hi[2]):.0f}% |
-    | $\sigma_v$ | uniform on {_n(_lo[3])} to {_n(_hi[3])} | large values allowed: the Feller condition is not imposed |
-    | $\rho$ | uniform on {_n(_lo[4])} to {_n(_hi[4])} | negative only: volatility rises when prices fall |
-    | $c$ | uniform on {_n(_lo[5])} to {_n(_hi[5])} | quote-noise SD between {_n(_lo[5])} and {_n(_hi[5])} half-spreads |
-
-    The figure compares 1,000 simulated data sets with the SPX quotes.
-    """)
+        | Symbol | Uniform on | What the range means |
+        |:---|:---|:---|
+        | $v_0$ | {_n(_lo[0])} to {_n(_hi[0])} | initial volatility $\sqrt{{v_0}}$ between {100 * np.sqrt(_lo[0]):.0f}% and {100 * np.sqrt(_hi[0]):.0f}% |
+        | $\kappa$ | {_n(_lo[1])} to {_n(_hi[1])} | half-life of a variance shock, $\ln 2/\kappa$, between {_days(_hi[1]):.0f} days and {_days(_lo[1]) / 365:.0f} years |
+        | $v_\infty$ | {_n(_lo[2])} to {_n(_hi[2])} | long-run volatility between {100 * np.sqrt(_lo[2]):.0f}% and {100 * np.sqrt(_hi[2]):.0f}% |
+        | $\sigma_v$ | {_n(_lo[3])} to {_n(_hi[3])} | large values are allowed, and the Feller condition is not imposed |
+        | $\rho$ | {_n(_lo[4])} to {_n(_hi[4])} | negative only, so volatility rises when prices fall |
+        | $c$ | {_n(_lo[5])} to {_n(_hi[5])} | quote-noise SD between {_n(_lo[5])} and {_n(_hi[5])} half-spreads |
+        """),
+    ])
     return
 
 
@@ -826,9 +1044,12 @@ def _(
     H,
     MARKET_IV,
     MID,
+    caption,
     implied_vols,
+    key,
     make_simulator,
     mo,
+    note,
     np,
     plots,
     plt,
@@ -850,40 +1071,48 @@ def _(
     _pct = 100 * np.mean(prior_batch["observations"] * H < MID, axis=0)   # the market quote's percentile, per contract
     _edge = int(np.sum((_pct == 0) | (_pct == 100)))
     _low = int(np.argmin(_pct))
-    _cover = (f"**The market lies inside the simulated range at every contract:** its percentile among the simulated "
+    _cover = (f"**The market lies inside the simulated range at every contract.** Its percentile among the simulated "
               f"prices runs from {_pct.min():.0f}% to {_pct.max():.0f}% (lowest at {EXPIRY_DATES[EXPIRY[_low]]}, "
-              f"δ = {DELTA[_low]:.1f})." if _edge == 0 else
+              f"$\\delta={DELTA[_low]:.1f}$)." if _edge == 0 else
               f"**The market falls outside the simulated range at {_edge} of 63 contracts.**")
     mo.vstack([
         _fig,
-        mo.md(f"- 150 of 1,000 prior-predictive smiles (blue) at three expiries, with the SPX market (orange). "
-              f"Simulating all 1,000 data sets took {prior_seconds:.0f} s.\n"
-              f"- The prior produces calm and stressed markets, flat and steep skews. {_cover}\n"
-              "- The check only shows that the prior does not rule the data out; whether the model fits them is "
-              "Section 5.4.\n"
-              f"- {100 * np.isnan(_iv).mean():.1f}% of simulated quotes have no implied volatility, because noise pushed "
-              "a very cheap option below its intrinsic value; they remain valid data."),
+        caption("150 of 1,000 prior-predictive smiles (blue) at three expiries, with the SPX market (orange). "
+                f"Simulating all 1,000 data sets took {prior_seconds:.0f} s."),
+        key(_cover),
+        mo.md("- The prior produces calm and stressed markets, flat and steep skews.\n"
+              "- The check only shows that the prior does not rule the data out. Whether the model fits them is "
+              "the question of Section 5.4."),
+        note(f"{100 * np.isnan(_iv).mean():.1f}% of simulated quotes have no implied volatility, because noise "
+             "pushed a very cheap option below its intrinsic value. They remain valid data."),
     ])
     return prior_batch, prior_seconds
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Preparing the network input: whitening
+def _(grid, mo, note):
+    mo.vstack([
+        mo.md(r"""
+        ### 2.3 Preparing the network input: whitening
 
-    The network receives the 63 numbers $y_i/h_i$, the quotes in noise units. In this raw form they are hard to learn from:
-
-    - **strongly correlated:** a change in any parameter moves all 63 together;
-    - **badly scaled:** a few directions (overall level, skew) vary enormously across simulations, while the directions that reveal the noise level $c$ vary about a million times less.
-
-    **Whitening** is a fixed linear change of coordinates that makes the inputs uncorrelated with unit variance, without losing information. It is fitted once on simulations (the first 10,000 training rows for the pretrained estimator), frozen, and applied unchanged to every later input, the SPX quotes included.
-    """)
+        The network receives the 63 numbers $y_i/h_i$, the quotes in noise units. In this raw form they are hard to learn from, for two reasons.
+        """),
+        grid({
+            "Strongly correlated": "A change in any parameter moves all 63 inputs together.",
+            "Badly scaled": "A few directions, such as the overall level and the skew, vary enormously across "
+                            "simulations. The directions that reveal the noise level $c$ vary about a million "
+                            "times less.",
+        }),
+        mo.md(r"""
+        **Whitening** is a fixed linear change of coordinates. It makes the inputs uncorrelated with unit variance, without losing information. It is fitted once on simulations, frozen, and applied unchanged to every later input, the SPX quotes included.
+        """),
+        note("The pretrained estimator's whitening was fitted on its first 10,000 training rows."),
+    ])
     return
 
 
 @app.cell(hide_code=True)
-def _(fit_whitening, mo, np, plots, plt, prior_batch):
+def _(caption, fit_whitening, grid, mo, np, plots, plt, prior_batch, stack):
     _x = prior_batch["observations"]
     _c = prior_batch["c"][:, 0]
     _fit = fit_whitening(_x[:700])
@@ -907,66 +1136,95 @@ def _(fit_whitening, mo, np, plots, plt, prior_batch):
     _axes[3].set(xlabel="direction, by variance", ylabel="|correlation with c|", title="Where the information about c is")
     mo.vstack([
         _fig,
-        mo.md(f"""
-        - **Variance per direction:** the first principal direction of the inputs varies about ${_mantissa}\\times10^{{{int(_exponent)}}}$ times more than the last.
-        - **Correlations** between the 63 inputs on new simulations: almost every pair is strongly correlated before whitening; afterwards the matrix is nearly diagonal.
-        - **Where the information about $c$ is:** in the low-variance directions (average {np.mean(_link[-30:]):.2f} over the last 30, against {np.mean(_link[:10]):.2f} over the first 10). Whitening gives these directions the same weight as the dominant ones.
-        """),
-        mo.accordion({"Whitening, formally": mo.md(r"""
-        Let $x\in\mathbb R^{63}$ be the vector of inputs $y_i/h_i$, and let $\mu$ and $\Sigma$ be its mean and covariance, estimated from $N$ simulated training data sets. Write $\Sigma=U\Lambda U^\top$, with orthonormal eigenvectors $U$ and eigenvalues $\Lambda=\mathrm{diag}(\lambda_1,\dots,\lambda_{63})$. The whitened input is
+        caption("Computed on the 1,000 simulations of Section 2.2. The whitening is fitted on 700 of them and shown "
+                "on the other 300."),
+        grid({
+            "Variance per direction": f"The first principal direction of the inputs varies about "
+                                      f"${_mantissa}\\times10^{{{int(_exponent)}}}$ times more than the last.",
+            "Correlations": "On new simulations almost every pair of inputs is strongly correlated before "
+                            "whitening. Afterwards the matrix is nearly diagonal.",
+            "Information about $c$": "The information about $c$ sits in the low-variance directions "
+                                                  f"(average {np.mean(_link[-30:]):.2f} over the last 30, against "
+                                                  f"{np.mean(_link[:10]):.2f} over the first 10). Whitening gives "
+                                                  "these directions the same weight as the dominant ones.",
+        }, kind="reading", widths=(1, 2, 1)),
+        mo.accordion({"Whitening, formally": grid([
+            r"""
+            Let $x\in\mathbb R^{63}$ be the vector of inputs $y_i/h_i$, with mean $\mu$ and covariance $\Sigma$ estimated from $N$ simulated training data sets. Write $\Sigma=U\Lambda U^\top$, with orthonormal eigenvectors $U$ and eigenvalues $\Lambda=\mathrm{diag}(\lambda_1,\dots,\lambda_{63})$. The whitened input is
 
-        $$\tilde x = W(x-\mu),\qquad W=U\Lambda^{-1/2}U^\top=\Sigma^{-1/2},$$
+            $$\tilde x = W(x-\mu),\qquad W=U\Lambda^{-1/2}U^\top=\Sigma^{-1/2}$$
 
-        so that $\operatorname{Cov}(\tilde x)=W\Sigma W^\top=I$. This choice of $W$ is **ZCA whitening**. Among all transformations with identity covariance, it keeps $\tilde x$ closest to $x$, so each whitened input still corresponds roughly to one quote. The alternative $\Lambda^{-1/2}U^\top$ (PCA whitening) would mix them. Eigenvalues below $10^{-8}\lambda_{\max}$ are floored for numerical stability.
-
-        The ratio $\lambda_{\max}/\lambda_{\min}$, the **condition number** of $\Sigma$, measures how badly scaled the raw inputs are. Training a network by gradient descent on badly scaled inputs is slow and unreliable, because a step size that suits the dominant directions is far too small for the others. Whitening sets the condition number to one. $\mu$ and $W$ come from training simulations only and are stored with the estimator, so the same transformation is applied at training and at inference.
-        """)}),
+            so that $\operatorname{Cov}(\tilde x)=W\Sigma W^\top=I$.
+            """,
+            stack({
+                "Why this W": r"This choice of $W$ is **ZCA whitening**. Among all transformations with identity "
+                              r"covariance, it keeps $\tilde x$ closest to $x$, so each whitened input still "
+                              r"corresponds roughly to one quote. The alternative $\Lambda^{-1/2}U^\top$ (PCA "
+                              r"whitening) would mix them. Eigenvalues below $10^{-8}\lambda_{\max}$ are floored "
+                              "for numerical stability.",
+                "Why it helps training": r"The ratio $\lambda_{\max}/\lambda_{\min}$, the **condition number** of "
+                                         r"$\Sigma$, measures how badly scaled the raw inputs are. Gradient descent "
+                                         "on badly scaled inputs is slow and unreliable, because a step size that "
+                                         "suits the dominant directions is far too small for the others. Whitening "
+                                         "sets the condition number to one.",
+                "Fitted once": r"$\mu$ and $W$ come from training simulations only and are stored with the "
+                               "estimator, so the same transformation is applied at training and at inference.",
+            }),
+        ])}),
     ])
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, workflow):
-    mo.vstack([workflow("Train"), mo.md(r"""
-    ## 3. Train
-
-    The network learns the posterior $q_\phi(\boldsymbol\theta\mid\mathbf y)$ from the simulated pairs $(\boldsymbol\theta,\mathbf y)$. Each pair is a draw from the joint distribution of parameters and quotes, so among the simulations that produced quotes like $\mathbf y$, the parameters are distributed according to the posterior. The network learns that conditional distribution for every $\mathbf y$ at once. No likelihood is ever evaluated.
-    """)])
+def _(mo, section):
+    mo.vstack([
+        section("Train", r"The network learns the posterior $q_\phi(\boldsymbol\theta\mid\mathbf y)$ from simulated "
+                r"pairs $(\boldsymbol\theta,\mathbf y)$. No likelihood is ever evaluated.", stage=3),
+        mo.md(r"""
+        Each pair is a draw from the joint distribution of parameters and quotes. So among the simulations that produced quotes like $\mathbf y$, the parameters are distributed according to the posterior. The network learns that conditional distribution for every $\mathbf y$ at once.
+        """),
+    ])
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    def _box(title, body, fill="rgba(42,120,214,0.06)", border="#2a78d6"):
-        return (f'<div style="border:1px solid {border};border-radius:10px;padding:8px 10px;background:{fill};'
-                f'text-align:center;flex:1;min-width:130px"><div style="font-weight:600">{title}</div>'
-                f'<div style="font-size:0.8em;line-height:1.35;margin-top:3px">{body}</div></div>')
-
-    _arrow = '<div style="align-self:center;color:#9a9890;font-size:1.4em;padding:0 2px">&#8594;</div>'
-    _chain = [
-        _box("Quotes y", "63 mid prices: simulated during training, observed at inference"),
-        _box("Preprocessing", "y/h and the frozen whitening give x̃, 63 numbers; the BayesFlow adapter stacks θ, 6 numbers, "
-                              "which the workflow standardizes"),
-        _box("Summary network", "none: the 63 numbers enter directly", fill="transparent", border="#bbb9b0"),
-        _box("Inference network", "FlowMatching: an MLP of 3 × 128 units, dropout 0.1",
-             fill="rgba(235,104,52,0.08)", border="#eb6834"),
-        _box("Posterior draws", "θ = (v₀, κ, v∞, σᵥ, ρ, c), as many as needed"),
-    ]
+def _(bayesflow, grid, mo):
+    _steps = (
+        ("Quotes y", "63 mid prices, simulated during training and observed at inference", ""),
+        ("Preprocessing", "y/h and the frozen whitening give x̃, 63 numbers. The BayesFlow adapter stacks θ, 6 "
+                          "numbers, which the workflow standardizes.", ""),
+        ("Summary network", "none, the 63 numbers enter directly", "is-absent"),
+        ("Inference network", "FlowMatching, an MLP of 3 × 128 units with dropout 0.1", "is-network"),
+        ("Posterior draws", "θ = (v₀, κ, v∞, σᵥ, ρ, c), as many as needed", ""),
+    )
+    _chain = '<div class="nb-flow-arrow">&#8594;</div>'.join(
+        f'<div class="nb-flow-step {_kind}"><div class="nb-flow-name">{_name}</div>'
+        f'<div class="nb-flow-text">{_text}</div></div>' for _name, _text, _kind in _steps)
     mo.vstack([
-        mo.md("**The SBI network: what goes in, what comes out**"),
-        mo.Html('<div style="display:flex;gap:4px;align-items:stretch;flex-wrap:wrap">' + _arrow.join(_chain) + "</div>"),
         mo.md(r"""
-        - **Training** shows the network simulated pairs $(\boldsymbol\theta,\tilde{\mathbf x})$: 300,000 for the pretrained estimator.
-        - **Inference** gives it one observed $\tilde{\mathbf x}$ and returns as many posterior draws as wanted.
+        ### 3.1 The network
 
+        The quotes go in on the left. Draws from the posterior come out on the right.
+        """),
+        mo.Html(f'<div class="nb-flow">{_chain}</div>'),
+        grid({
+            "In training": r"The network sees simulated pairs $(\boldsymbol\theta,\tilde{\mathbf x})$: 300,000 for "
+                           "the pretrained estimator.",
+            "At inference": r"The network receives one observed $\tilde{\mathbf x}$ and returns as many posterior "
+                            "draws as wanted.",
+        }),
+        mo.accordion({"Design choices and their alternatives in BayesFlow": mo.md(r"""
         | Design choice | Here | Alternatives in BayesFlow |
         |:---|:---|:---|
         | What is learned | the posterior $q(\boldsymbol\theta\mid\mathbf y)$ | a neural pricer, a likelihood (NLE) or a likelihood ratio (NRE), each used inside a new MCMC run per data set |
-        | Summary network | none: a fixed vector of 63 whitened quotes | `DeepSet` or `SetTransformer` for quote sets of varying size and layout; `TimeSeriesNetwork` for price histories |
+        | Summary network | none, the input is a fixed vector of 63 whitened quotes | `DeepSet` or `SetTransformer` for quote sets of varying size and layout, `TimeSeriesNetwork` for price histories |
         | Inference network | `FlowMatching` | `CouplingFlow` (exact density, one-pass sampling), `DiffusionModel`, `ConsistencyModel` (few sampling steps) |
-        | Parameter space | standardized, unbounded: a few draws can leave the prior | bounded transforms in the adapter (`.constrain`), so that every draw respects the prior bounds |
+        | Parameter space | standardized and unbounded, so a few draws can leave the prior | bounded transforms in the adapter (`.constrain`), so that every draw respects the prior bounds |
         | Training data | a fixed bank (`fit_offline`), one noise draw per row | fresh simulations in every batch (`fit_online`) |
         | Amortized over | quotes for these 63 contracts and these spreads | contract terms and spreads as extra inputs, to reuse one network across days |
+        """)}),
+        bayesflow("""
+        The workflow of the pretrained estimator has three parts. The adapter names the network's inputs. `FlowMatching` is the inference network. `BasicWorkflow` ties them together, standardizes the parameters and runs the training.
         """),
     ])
     return
@@ -987,32 +1245,38 @@ def _(NAMES, bf):
     return (build_workflow,)
 
 
-@app.cell
-def _(mo):
-    mo.md(r"""
-    **Training the pretrained estimator**, as recorded in its training protocol:
+@app.cell(hide_code=True)
+def _(bayesflow, mo, note):
+    mo.vstack([
+        mo.md(r"""
+        ### 3.2 Training the pretrained estimator
 
-    - **Data:** 300,000 simulated pairs; each keeps its noise draw throughout training.
-    - **Schedule:** 300 epochs with batch size 256, 351,600 updates; seed 9011.
-    - **Optimizer:** BayesFlow's default for offline training: AdamW with weight decay 0.005 and gradient clipping at 1.5; the learning rate warms up from $5\cdot10^{-5}$ to $5\cdot10^{-4}$, then decays to zero on a cosine schedule.
-    - **Hardware:** the CPU of an Apple-silicon Mac, within the run's one-hour limit.
+        The pretrained estimator was trained once. Its training protocol records the settings.
 
-    ```python
-    task, data = delivery.training_inputs(HESTON_BUNDLE, rows=300_000)   # (θ, x̃) pairs, x̃ already whitened
-    keras.utils.set_random_seed(9011)
-    workflow = build_workflow()
-    history = workflow.fit_offline(data=data["train"], validation_data=data["validation"], epochs=300, batch_size=256)
-    ```
-
-    **Note**: the parameters are standardized but not mapped onto their bounded prior ranges, so a small fraction of posterior draws falls just outside the prior. Such draws are kept, not clipped.
-
-    The button below runs the same loop at a small scale: 3,000 simulations, 40 epochs, then BayesFlow's own diagnostics.
-    """)
+        | Setting | Value |
+        |:---|:---|
+        | Data | 300,000 simulated pairs. Each keeps its noise draw throughout training. |
+        | Schedule | 300 epochs with batch size 256, 351,600 updates, seed 9011 |
+        | Optimizer | BayesFlow's default for offline training: AdamW with weight decay 0.005 and gradient clipping at 1.5. The learning rate warms up from $5\cdot10^{-5}$ to $5\cdot10^{-4}$, then decays to zero on a cosine schedule. |
+        | Hardware | the CPU of an Apple-silicon Mac, within the run's one-hour limit |
+        """),
+        bayesflow("Training is one call, `workflow.fit_offline`, on the simulated pairs."),
+        mo.md(r"""
+        ```python
+        task, data = delivery.training_inputs(HESTON_BUNDLE, rows=300_000)   # (θ, x̃) pairs, x̃ already whitened
+        keras.utils.set_random_seed(9011)
+        workflow = build_workflow()
+        history = workflow.fit_offline(data=data["train"], validation_data=data["validation"], epochs=300, batch_size=256)
+        ```
+        """),
+        note("The parameters are standardized but not mapped onto their bounded prior ranges, so a small fraction "
+             "of posterior draws falls just outside the prior. Such draws are kept, not clipped."),
+    ])
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, np, plots, plt):
+def _(caption, grid, mo, np, plots, plt):
     _rng = np.random.default_rng(3)
     _noise = _rng.standard_normal((400, 2))
     _a = 0.55 * _rng.standard_normal(400) + 1.6
@@ -1026,45 +1290,112 @@ def _(mo, np, plots, plt):
         _axes[3].plot([_theta[_k, 0], _noise[_k, 0]], [_theta[_k, 1], _noise[_k, 1]], color=plots.MUTED, lw=.7)
     _axes[3].scatter(*_noise[:25].T, s=8, color=plots.SERIES[0], zorder=3)
     _axes[3].scatter(*_theta[:25].T, s=8, color=plots.SERIES[1], zorder=3)
-    _axes[3].set_title("training: straight paths")
+    _axes[3].set_title("Training: straight paths")
     for _ax in _axes:
         _ax.set(xlabel="parameter 1 (standardized)")
     _axes[0].set_ylabel("parameter 2 (standardized)")
     mo.accordion({"How flow matching works": mo.vstack([
         mo.md(r"""
         The inference network is a **velocity field** $v_\phi(\mathbf z,t,\tilde{\mathbf x})$ on the six-dimensional parameter space, for times $t\in[0,1]$.
-
-        - **Training.** For a simulated pair $(\boldsymbol\theta,\tilde{\mathbf x})$, with $\boldsymbol\theta$ standardized, draw noise $\mathbf z_1\sim\mathcal N(0,I)$ independently of $\boldsymbol\theta$ and a time $t$, more often near $t=0$. Form the point $\mathbf z_t=(1-t)\,\boldsymbol\theta+t\,\mathbf z_1$ on the straight line from $\boldsymbol\theta$ to $\mathbf z_1$, and fit $v_\phi(\mathbf z_t,t,\tilde{\mathbf x})$ to the velocity $\mathbf z_1-\boldsymbol\theta$ with a squared-error loss.
-        - **Why it works.** Many pairs pass through the same point, so the network learns the *average* velocity there. Following this averaged field moves probability mass so that its distribution at each time $t$ is that of $\mathbf z_t$: noise at $t=1$, the posterior at $t=0$.
-        - **Sampling.** Draw $\mathbf z_1\sim\mathcal N(0,I)$ and integrate $d\mathbf z/dt=v_\phi(\mathbf z,t,\tilde{\mathbf x})$ from $t=1$ back to $t=0$ with an adaptive Runge–Kutta solver (Tsit5). The end point is one posterior draw; undoing the standardization gives $\boldsymbol\theta$.
-        - **Network inputs.** $\mathbf z_t$ and $\tilde{\mathbf x}$ enter an MLP of three layers of 128 units; $t$ enters through a Fourier embedding that modulates every layer.
         """),
+        grid({
+            "Training": r"Take a simulated pair $(\boldsymbol\theta,\tilde{\mathbf x})$, with $\boldsymbol\theta$ "
+                        r"standardized. Draw noise $\mathbf z_1\sim\mathcal N(0,I)$ independently of "
+                        r"$\boldsymbol\theta$, and a time $t$, more often near $t=0$. Form the point "
+                        r"$\mathbf z_t=(1-t)\,\boldsymbol\theta+t\,\mathbf z_1$ on the straight line from "
+                        r"$\boldsymbol\theta$ to $\mathbf z_1$. Fit $v_\phi(\mathbf z_t,t,\tilde{\mathbf x})$ to the "
+                        r"velocity $\mathbf z_1-\boldsymbol\theta$ with a squared-error loss.",
+            "Why it works": "Many pairs pass through the same point, so the network learns the average velocity "
+                            "there. Following this averaged field moves probability mass so that its distribution "
+                            r"at each time $t$ is that of $\mathbf z_t$: noise at $t=1$, the posterior at $t=0$.",
+            "Sampling": r"Draw $\mathbf z_1\sim\mathcal N(0,I)$ and integrate "
+                        r"$d\mathbf z/dt=v_\phi(\mathbf z,t,\tilde{\mathbf x})$ from $t=1$ back to $t=0$ with an "
+                        "adaptive Runge–Kutta solver (Tsit5). The end point is one posterior draw. Undoing the "
+                        r"standardization gives $\boldsymbol\theta$.",
+            "Network inputs": r"$\mathbf z_t$ and $\tilde{\mathbf x}$ enter an MLP of three layers of 128 units. "
+                              "$t$ enters through a Fourier embedding that modulates every layer.",
+        }, columns=2),
         _fig,
-        mo.md("A toy posterior in two dimensions: the cloud at $t=1$ (noise), halfway, and at $t=0$ (posterior). The last "
-              "panel shows straight training paths between simulated parameters (orange) and independent noise draws "
-              "(blue)."),
+        caption("A toy posterior in two dimensions: the cloud at $t=1$ (noise), halfway, and at $t=0$ (posterior). "
+                "The last panel shows straight training paths between simulated parameters (orange) and independent "
+                "noise draws (blue)."),
     ])})
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(bayesflow, controls, mo):
     live_train_button = mo.ui.run_button(label="Simulate 3,000 data sets and train a small network (about a minute on a CPU)")
-    live_train_button
+    mo.vstack([
+        mo.md(r"""
+        ### 3.3 Train a small network yourself
+
+        The button runs the same loop at a small scale: 3,000 simulations, 40 epochs, then BayesFlow's own diagnostics.
+        """),
+        controls(live_train_button, hint="The result appears in the next cell."),
+        bayesflow("""
+        The cell below is the whole loop: simulate, whiten, train with `fit_offline`, sample for 100 new data sets, and plot `bf.diagnostics`.
+        """),
+    ])
     return (live_train_button,)
+
+
+@app.cell(hide_code=True)
+def _(EVALUATION, LABELS, NAMES, caption, json, key, mo, note, np, table):
+    def live_summary(train, validation, held_out, draws, history, seconds):
+        """The text about one small training run. Every number in it is computed from that run."""
+        loss, val = history.history["loss"][-1], history.history.get("val_loss", [np.nan])[-1]
+        fit = ("The validation loss ends close to the training loss, so the network is not overfitting."
+               if val <= 1.1 * loss else
+               "The validation loss ends clearly above the training loss, so the network has started to overfit.")
+        corr = [float(np.corrcoef(np.median(draws[name][..., 0], axis=1), held_out[name][:, 0])[0, 1]) for name in NAMES]
+        evaluation = json.loads((EVALUATION / "evaluation.json").read_text())  # the pretrained estimator's record
+        pretrained = evaluation["population"]["mean_posterior_sd"]
+        width = [float(np.mean(np.std(draws[name][..., 0], axis=1))) / pretrained[j] for j, name in enumerate(NAMES)]
+        n_train, n_val, n_test = (len(data["observations"]) for data in (train, validation, held_out))
+        epochs = len(history.history["loss"])
+        ratio = lambda w: f"{w:.0f}×" if w >= 10 else f"{w:.1f}×"
+        rows = [{"": "Recovery: correlation of median and truth", **{label: f"{r:.2f}" for label, r in zip(LABELS, corr)}},
+                {"": "Posterior SD, relative to the pretrained estimator",
+                 **{label: ratio(w) for label, w in zip(LABELS, width)}}]
+        return {
+            "training": mo.vstack([
+                mo.md(f"#### Training\n\nSimulated {n_train:,} training and {n_val} validation data sets in "
+                      f"{seconds['simulate']:.0f} s, then trained for {epochs} epochs in {seconds['train']:.0f} s. "
+                      f"The final training loss is {loss:.3f} and the validation loss {val:.3f}. {fit}"),
+                note("The loss is the flow-matching error, not a likelihood. Only its trend and the gap between the "
+                     "two curves matter."),
+            ]),
+            "check": mo.md(f"#### Check on {n_test} new data sets\n\nThe network just trained draws "
+                           f"{draws[NAMES[0]].shape[1]} posterior samples for each of {n_test} new simulated data "
+                           f"sets, not used in training ({seconds['sample']:.0f} s)."),
+            "recovery": caption("Recovery. One dot per data set: the true value against the posterior median, with "
+                                "a bar for the central 68% interval. Dots near the diagonal mean the parameter is "
+                                "recovered."),
+            "calibration": caption("Calibration. If the network's uncertainty is right, each curve stays inside its "
+                                   "grey band. The foldable section below explains how to read the plot."),
+            "comparison": mo.vstack([
+                key(f"**Fewer simulations, wider posteriors.** This network saw "
+                    f"{100 * n_train / evaluation['training_rows']:.0f}% of the pretrained estimator's training data "
+                    f"and trained for {epochs} epochs instead of {evaluation['native_epoch']}. Its posteriors are "
+                    f"{min(width):.1f} to {max(width):.0f} times wider."),
+                table(rows, align="l" + "r" * len(LABELS)),
+            ]),
+        }
+
+    return (live_summary,)
 
 
 @app.cell
 def _(
-    EVALUATION,
     LABELS,
     NAMES,
     bf,
     build_workflow,
     ecdf_guide,
     fit_whitening,
-    json,
     keras,
+    live_summary,
     live_train_button,
     make_simulator,
     mo,
@@ -1073,120 +1404,114 @@ def _(
     time,
 ):
     mo.stop(not live_train_button.value, mo.md("*Press the button above to simulate and train.*"))
-    _started = time.perf_counter()
+    _clock = [time.perf_counter()]
     live_simulator = make_simulator(4)  # its own seeded generator
     _train = live_simulator.sample(3000)
     _validation = live_simulator.sample(300)
-    _simulated = time.perf_counter() - _started
+    _clock.append(time.perf_counter())
 
     live_whitening = fit_whitening(_train["observations"])  # fitted on training rows only, then frozen
     _train["observations"] = live_whitening.transform(_train["observations"])
     _validation["observations"] = live_whitening.transform(_validation["observations"])
 
     keras.utils.set_random_seed(4)
-    live_workflow = build_workflow()   # the BayesFlow workflow defined above
+    live_workflow = build_workflow()   # the BayesFlow workflow of Section 3.1
     live_history = live_workflow.fit_offline(data=_train, validation_data=_validation, epochs=40, batch_size=64, verbose=0)
-    _trained = time.perf_counter() - _started - _simulated
+    _clock.append(time.perf_counter())
 
     # Check the network just trained on 100 new simulations.
     _held = live_simulator.sample(100)
-    _sampling_started = time.perf_counter()
+    _clock.append(time.perf_counter())
     _draws = live_workflow.sample(conditions={"observations": live_whitening.transform(_held["observations"])},
                                   num_samples=200)
-    _sampled = time.perf_counter() - _sampling_started
+    _clock.append(time.perf_counter())
 
-    # Everything said about this run is computed from it.
-    _loss, _val = live_history.history["loss"][-1], live_history.history.get("val_loss", [np.nan])[-1]
-    _fit = ("the validation loss ends close to the training loss, so the network is not overfitting"
-            if _val <= 1.1 * _loss else "the validation loss ends clearly above the training loss, so the network has "
-            "started to overfit")
-    _corr = [float(np.corrcoef(np.median(_draws[_n][..., 0], axis=1), _held[_n][:, 0])[0, 1]) for _n in NAMES]
-    _evaluation = json.loads((EVALUATION / "evaluation.json").read_text())  # the pretrained estimator's record
-    _pretrained = _evaluation["population"]["mean_posterior_sd"]
-    _width = [float(np.mean(np.std(_draws[_n][..., 0], axis=1))) / _pretrained[_j] for _j, _n in enumerate(NAMES)]
-    _n_train, _n_val, _n_test = (len(_d["observations"]) for _d in (_train, _validation, _held))
-    _epochs = len(live_history.history["loss"])
-    _ratio = lambda _w: f"{_w:.0f}×" if _w >= 10 else f"{_w:.1f}×"
-    _table = "\n".join([
-        "| | " + " | ".join(LABELS) + " |",
-        "|:---|" + "---:|" * len(LABELS),
-        "| recovery: correlation of median and truth | " + " | ".join(f"{_r:.2f}" for _r in _corr) + " |",
-        "| posterior SD, relative to the pretrained estimator | " + " | ".join(_ratio(_w) for _w in _width) + " |",
-    ])
+    # The sentences about this run come from a hidden cell above. BayesFlow draws the three diagnostic plots.
+    _text = live_summary(_train, _validation, _held, _draws, live_history,
+                         dict(zip(("simulate", "train", "hold out", "sample"), np.diff(_clock))))
     mo.vstack([
-        mo.md(f"- **Simulated** {_n_train:,} training and {_n_val} validation data sets in {_simulated:.0f} s, then "
-              f"**trained** for {_epochs} epochs in {_trained:.0f} s.\n"
-              f"- **Loss** (below): final training loss {_loss:.3f}, validation loss {_val:.3f}: {_fit}. The loss is the "
-              "flow-matching error, not a likelihood, so only its trend and the gap between the two curves matter."),
+        _text["training"],
         bf.diagnostics.loss(live_history),
-        mo.md(f"**Check the network just trained** on {_n_test} new simulated data sets, not used in training, with "
-              f"{_draws[NAMES[0]].shape[1]} posterior draws each ({_sampled:.0f} s).\n\n"
-              "- **Recovery** (first plot): one dot per data set, the true value against the posterior median, with a bar "
-              "for the central 68% interval. Dots near the diagonal mean the parameter is recovered.\n"
-              "- **Calibration** (second plot): if the network's uncertainty is right, each curve stays inside its grey "
-              "band. The foldable section below the plots explains how to read them.\n"
-              f"- **Fewer simulations, wider posteriors:** this network saw {100 * _n_train / _evaluation['training_rows']:.0f}% "
-              f"of the pretrained estimator's training data and trained for {_epochs} epochs instead of "
-              f"{_evaluation['native_epoch']}. Its posteriors are {min(_width):.1f} to {max(_width):.0f} times wider.\n\n"
-              + _table),
+        _text["check"],
         bf.diagnostics.recovery(estimates=_draws, targets=_held, variable_keys=NAMES, variable_names=LABELS,
                                 uncertainty_agg_kwargs={"prob": 0.68}, color=plots.SERIES[0]),
+        _text["recovery"],
         bf.diagnostics.calibration_ecdf(estimates=_draws, targets=_held, variable_keys=NAMES, variable_names=LABELS,
                                         difference=True, rank_ecdf_color=plots.SERIES[0], fill_color=plots.BASELINE),
+        _text["calibration"],
+        _text["comparison"],
         ecdf_guide,
     ])
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, workflow):
-    mo.vstack([workflow("Infer"), mo.md(r"""
-    ## 4. Infer
+def _(TRUTHS, bayesflow, cards, mo, np, section):
+    _stressed = TRUTHS["synthetic-broad"]
+    mo.vstack([
+        section("Infer", "The pretrained estimator returns posterior draws for observed quotes in seconds. A PyMC "
+                "run with the exact likelihood is the benchmark.", stage=4),
+        mo.md(r"""
+        ### 4.1 Three data sets and two samplers
 
-    We apply the pretrained estimator to three sets of 63 quotes:
+        We apply the pretrained estimator to three sets of 63 quotes.
+        """),
+        cards([
+            ("Simulated", "Market-like parameters",
+             "Generated with $c=1$ at parameters within 15% of the SPX market posterior medians."),
+            ("Simulated", "Stressed market",
+             "Generated with $c=1$ at a high-volatility draw from the prior. Volatility starts at "
+             f"{100 * np.sqrt(_stressed[0]):.0f}% and reverts to {100 * np.sqrt(_stressed[2]):.0f}%."),
+            ("Real", "SPX market quotes", "The quotes of 9 November 2026. The true parameters are unknown."),
+        ], columns=3),
+        bayesflow("Inference is one call, `workflow.sample`. The loader wraps it so that it takes raw quotes."),
+        mo.md(r"""
+        ```python
+        model, checkpoint = delivery.load_checkpoint(HESTON_BUNDLE, "300k-300-final300")
+        draws = model.sample(quotes[None, :], 4096, seed=261113)[0]      # (4096, 6) posterior draws
+        # inside: x_tilde = whitening.transform(quotes / half_spread)
+        #         workflow.sample(conditions={"observations": x_tilde}, num_samples=4096)
+        ```
 
-    - **Simulated, market-like:** generated with $c=1$ at parameters within 15% of the SPX market posterior medians.
-    - **Simulated, stressed market:** generated with $c=1$ at a high-volatility draw from the prior; volatility starts at 37% and reverts to 29%.
-    - **SPX market quotes** of 9 November 2026, for which the true parameters are unknown.
+        Nothing is fitted at this stage. Each draw integrates the learned flow from one noise vector.
 
-    Inference is one BayesFlow call, `workflow.sample`. The loader wraps it so that it takes raw quotes:
-
-    ```python
-    model, checkpoint = delivery.load_checkpoint(HESTON_BUNDLE, "300k-300-final300")
-    draws = model.sample(quotes[None, :], 4096, seed=261113)[0]      # (4096, 6) posterior draws
-    # inside: x_tilde = whitening.transform(quotes / half_spread)
-    #         workflow.sample(conditions={"observations": x_tilde}, num_samples=4096)
-    ```
-
-    Nothing is fitted at this stage: each draw integrates the learned flow from one noise vector. As a benchmark, a **PyMC reference** samples the same posterior by MCMC with the exact likelihood (box below).
-    """)])
+        As a benchmark, a **PyMC reference** samples the same posterior by MCMC with the exact likelihood.
+        """),
+    ])
     return
 
 
 @app.cell(hide_code=True)
-def _(CASES, CASE_TITLES, REFERENCES, json, mo):
+def _(CASE_TITLES, REFERENCES, grid, json, mo, note, table):
     _rows = []
-    for _case_id in CASES:
+    for _case_id in CASE_TITLES:  # the order of the data-set menu
         _run = json.loads((REFERENCES / "references" / _case_id / "run.json").read_text())
         _stats = json.loads((REFERENCES / "references" / _case_id / "diagnostics.json").read_text())["parameters"]
         _attempt = _run["attempts"][_run["selected_attempt"]]
         _rows.append({
-            "data set": CASE_TITLES[_case_id],
-            "chains × draws": f"{_run['settings']['chains']} × {_attempt['draws']:,} after {_attempt['tune']:,} tuning steps",
-            "largest R-hat": f"{max(_s['r_hat'] for _s in _stats.values()):.4f}",
-            "smallest bulk ESS": f"{min(_s['ess_bulk'] for _s in _stats.values()):,.0f}",
-            "likelihood evaluations": f"{_attempt['likelihood_evaluations']:,}",
-            "run time, one core": f"{_attempt['wall_seconds'] / 60:.0f} min",
+            "Data set": CASE_TITLES[_case_id],
+            "Chains × draws": f"{_run['settings']['chains']} × {_attempt['draws']:,} after {_attempt['tune']:,} tuning steps",
+            "Largest R-hat": f"{max(_s['r_hat'] for _s in _stats.values()):.4f}",
+            "Smallest bulk ESS": f"{min(_s['ess_bulk'] for _s in _stats.values()):,.0f}",
+            "Likelihood evaluations": f"{_attempt['likelihood_evaluations']:,}",
+            "Run time, one core": f"{_attempt['wall_seconds'] / 60:.0f} min",
         })
     mo.accordion({"How the PyMC reference is computed": mo.vstack([
-        mo.md(r"""
-        - **Same posterior as the network:** the same uniform prior and the exact likelihood $y_i\sim\mathcal N\big(P_i(\boldsymbol\theta),(c\,h_i)^2\big)$, with prices from the Fourier pricer of Section 1 (feature 4).
-        - **Sampler:** PyMC's `DEMetropolisZ`, a gradient-free Metropolis sampler whose proposals are differences of past draws. The likelihood calls the pricer as a black box without gradients, which rules out NUTS.
-        - **Runs:** four chains, started from maximum-likelihood (Powell) fits and dispersed points, never from the true parameters or the network. A short run of 2,000 tuning steps and 2,000 draws comes first; when it fails the checks, a long run of 6,000 and 12,000 follows.
-        - **Checks:** R-hat at most 1.01 and bulk and tail effective sample sizes of at least 400 for every parameter; prices accurate to 2% of the smallest noise standard deviation.
-        """),
-        mo.ui.table(_rows, selection=None, pagination=False),
-        mo.md("The plots use a thinned subset of 500 draws per chain."),
+        grid({
+            "Same posterior as the network": r"The same uniform prior and the exact likelihood "
+                                             r"$y_i\sim\mathcal N\big(P_i(\boldsymbol\theta),(c\,h_i)^2\big)$, with "
+                                             "prices from the Fourier pricer of Section 1.2 (feature 4).",
+            "Sampler": "PyMC's `DEMetropolisZ`, a gradient-free Metropolis sampler whose proposals are differences "
+                       "of past draws. The likelihood calls the pricer as a black box without gradients, which "
+                       "rules out NUTS.",
+            "Runs": "Four chains, started from maximum-likelihood (Powell) fits and dispersed points, never from "
+                    "the true parameters or the network. A short run of 2,000 tuning steps and 2,000 draws comes "
+                    "first. When it fails the checks, a long run of 6,000 and 12,000 follows.",
+            "Checks": "R-hat at most 1.01, and bulk and tail effective sample sizes of at least 400, for every "
+                      "parameter. Prices are accurate to 2% of the smallest noise standard deviation.",
+        }, columns=2),
+        table(_rows, align="llrrrr"),
+        note("The plots use a thinned subset of 500 draws per chain."),
     ])})
     return
 
@@ -1210,9 +1535,8 @@ def _(BUNDLE, BUNDLE_HELP, ESTIMATOR, delivery, mo, recipe, task, time):
 @app.cell(hide_code=True)
 def _(CASES, CONDITIONAL_DRAWS, EVAL_SEED, estimator, mo, np, time):
     neural_draws = {}
-    if estimator is None:
-        _view = mo.md("")
-    else:
+    _view = None  # nothing to show without the pretrained estimator
+    if estimator is not None:
         _started = time.perf_counter()
         for _index, _case_id in enumerate(CASES):
             neural_draws[_case_id] = np.asarray(estimator.sample(CASES[_case_id][None], CONDITIONAL_DRAWS,
@@ -1236,10 +1560,17 @@ def _(CASES, REFERENCES, hashlib, json, np):
 
 
 @app.cell(hide_code=True)
-def _(CASE_TITLES, mo):
+def _(CASE_TITLES, controls, mo):
     case_choice = mo.ui.dropdown(options={_title: _case_id for _case_id, _title in CASE_TITLES.items()},
                                  value=CASE_TITLES["synthetic-market-like"], label="Data set")
-    case_choice
+    mo.vstack([
+        mo.md(r"""
+        ### 4.2 The posterior, one data set at a time
+
+        For the data set chosen here, this section shows the quotes, the posterior of the six parameters and two derived quantities. Section 5.1 uses the same choice.
+        """),
+        controls(case_choice, hint="Choose a data set."),
+    ])
     return (case_choice,)
 
 
@@ -1255,14 +1586,17 @@ def _(
     EXPIRY_DAYS,
     LABELS,
     MARKET_IV,
+    MATH_LABELS,
     NAMES,
     PRODUCTS,
     PRODUCT_TITLES,
-    TEXT_LABELS,
     TRUTHS,
+    caption,
     case_choice,
     expected_variance,
+    grid,
     implied_vols,
+    key,
     mo,
     neural_draws,
     np,
@@ -1271,6 +1605,7 @@ def _(
     reference_draws,
     reference_products,
     reference_summary,
+    table,
 ):
     _case = case_choice.value
     _neural = neural_draws.get(_case)
@@ -1283,15 +1618,18 @@ def _(
     _ax.set(xlabel="standardized moneyness δ", ylabel="implied volatility (%)", title=f"{CASE_TITLES[_case]}")
     _ax.legend(fontsize=7, ncol=2)
 
+    _g = lambda _x: f"{_x:.5g}".replace("-", "−")
     _rows = []
     _ref = reference_summary["cases"][_case]["parameters"]
     for _j, _name in enumerate(NAMES):
         _rq = _ref[_name]["regenerated_q05_q50_q95"]
-        _row = {"parameter": TEXT_LABELS[_j], "truth": "unknown" if _truth is None else f"{_truth[_j]:.5g}"}
+        _row = {"Parameter": MATH_LABELS[_j]}
+        if _truth is not None:  # the SPX quotes have no known truth
+            _row["Truth"] = _g(_truth[_j])
         if _neural is not None:
             _q = np.quantile(_neural[:, _j], [.05, .5, .95])
-            _row["network: median [90% interval]"] = f"{_q[1]:.5g} [{_q[0]:.5g}, {_q[2]:.5g}]"
-        _row["PyMC reference: median [90% interval]"] = f"{_rq[1]:.5g} [{_rq[0]:.5g}, {_rq[2]:.5g}]"
+            _row["Network: median [90% interval]"] = f"{_g(_q[1])} [{_g(_q[0])}, {_g(_q[2])}]"
+        _row["PyMC reference: median [90% interval]"] = f"{_g(_rq[1])} [{_g(_rq[0])}, {_g(_rq[2])}]"
         _rows.append(_row)
 
     _product_rows = []
@@ -1299,10 +1637,10 @@ def _(
         _values = {"PyMC reference": reference_products[_case][:, _k]}
         if _neural is not None:
             _values = {"network": expected_variance(_neural[_neural[:, 1] > 0], _interval), **_values}
-        for _label, _value in _values.items():
+        for _source, _value in _values.items():
             _pq = np.quantile(_value, [.05, .5, .95])
-            _product_rows.append({"quantity": PRODUCT_TITLES[_key], "source": _label,
-                                  "median, volatility (%)": round(100 * np.sqrt(_pq[1]), 3),
+            _product_rows.append({"Quantity": PRODUCT_TITLES[_key], "Source": _source,
+                                  "Median, volatility (%)": f"{100 * np.sqrt(_pq[1]):.3f}",
                                   "90% interval, volatility (%)": f"{100 * np.sqrt(_pq[0]):.3f} to {100 * np.sqrt(_pq[2]):.3f}"})
     _sets = {"PyMC reference": reference_draws[_case]}
     if _neural is not None:
@@ -1325,58 +1663,71 @@ def _(
     _relative = {_name: (_ref[_name]["regenerated_q05_q50_q95"][2] - _ref[_name]["regenerated_q05_q50_q95"][0])
                  / (2 * abs(_ref[_name]["regenerated_q05_q50_q95"][1])) for _name in NAMES[:5]}
     _sharpest, _loosest = min(_relative, key=_relative.get), max(_relative, key=_relative.get)
-    _label = lambda _name: TEXT_LABELS[NAMES.index(_name)]
+    _named = lambda _name: MATH_LABELS[NAMES.index(_name)]
+    _capital = lambda _text: _text[0].upper() + _text[1:]
+    _signed = lambda _x: f"${_x:+.2f}$"
 
-    # The scenario, read with the smile figure.
+    # The data set, described next to its smile.
+    _detail = None
     if _truth is None:
-        _scenario = ("- **Real SPX quotes**, the data of the first figure: there is no known truth, and the model itself "
-                     "may be wrong (Section 5.4).")
+        _scenario = ("These are the **real SPX quotes** shown at the start of the notebook. There is no known truth, and "
+                     "the model itself may be wrong (Section 5.4).")
+    elif _case == "synthetic-broad":
+        _first, _last = (EXPIRY == 0), (EXPIRY == len(EXPIRY_DATES) - 1)
+        _atm = [100 * _iv[_at][np.argmin(np.abs(DELTA[_at]))] for _at in (_first, _last)]
+        _deep = [100 * _iv[EXPIRY == _e][np.argmin(DELTA[EXPIRY == _e])] for _e in range(len(EXPIRY_DATES))]
+        # Rise of the smile from the money to the deepest put, at the first and last expiry.
+        _rise = lambda _vols: [100 * (_vols[_at][np.argmin(DELTA[_at])] - _vols[_at][np.argmin(np.abs(DELTA[_at]))])
+                               for _at in (_first, _last)]
+        _case_rise, _spx_rise = _rise(_iv), _rise(MARKET_IV)
+        _v0, _v_inf, _xi, _rho = _truth[[0, 2, 3, 4]]
+        _scenario = ("These quotes are **simulated from Heston** with $c=1$, in a stressed market. At the money, "
+                     f"implied volatility is {_atm[0]:.0f}% at {EXPIRY_DAYS[0]} days against {_atm[1]:.0f}% at "
+                     f"{EXPIRY_DAYS[-1]} days. The term structure is inverted, as after a sell-off. Deep puts are at "
+                     f"{min(_deep):.0f}–{max(_deep):.0f}%.")
+        _detail = grid({
+            "Why the term structure is inverted":
+                f"The true spot volatility $\\sqrt{{v_0}}={100 * np.sqrt(_v0):.0f}\\%$ is above the long-run "
+                f"$\\sqrt{{v_\\infty}}={100 * np.sqrt(_v_inf):.0f}\\%$. The large $\\sigma_v={_xi:.2f}$ pulls "
+                "long-dated at-the-money volatility further down.",
+            "Why the curves cross":
+                "Heston's short-dated skew per unit of log-moneyness tends to a constant, "
+                f"$\\rho\\sigma_v/(4\\sqrt{{v_0}})={_rho * _xi / (4 * np.sqrt(_v0)):.2f}$ (feature 3, Section 1.2). "
+                "$\\delta$ rescales log-moneyness by $\\sqrt T$, so short-dated smiles are flat in $\\delta$. From the "
+                f"money to the deepest put they rise {_case_rise[0]:.1f} points at {EXPIRY_DAYS[0]} days and "
+                f"{_case_rise[1]:.1f} at {EXPIRY_DAYS[-1]} days. The short smiles are high and flat, the long ones "
+                "low and steep.",
+            "Unlike the SPX quotes":
+                f"On SPX the same rise is {_spx_rise[0]:.1f} and {_spx_rise[1]:.1f} points, much closer to parallel. "
+                "Section 6.4 analyses this limitation. As a test of the inference the case is still valid, because "
+                "it is a draw from the model and the prior.",
+        }, kind="reading")
     else:
-        _scenario = ("- **Simulated from Heston** with $c=1$: the model is right by construction, so this data set tests "
-                     "the inference alone.")
-        if _case == "synthetic-broad":
-            _first, _last = (EXPIRY == 0), (EXPIRY == len(EXPIRY_DATES) - 1)
-            _atm = [100 * _iv[_at][np.argmin(np.abs(DELTA[_at]))] for _at in (_first, _last)]
-            _deep = [100 * _iv[EXPIRY == _e][np.argmin(DELTA[EXPIRY == _e])] for _e in range(len(EXPIRY_DATES))]
-            # Rise of the smile from the money to the deepest put, at the first and last expiry.
-            _rise = lambda _vols: [100 * (_vols[_at][np.argmin(DELTA[_at])] - _vols[_at][np.argmin(np.abs(DELTA[_at]))])
-                                   for _at in (_first, _last)]
-            _case_rise, _spx_rise = _rise(_iv), _rise(MARKET_IV)
-            _v0, _v_inf, _xi, _rho = _truth[[0, 2, 3, 4]]
-            _scenario = (f"- **A stressed market:** at the money, {_atm[0]:.0f}% at {EXPIRY_DAYS[0]} days against {_atm[1]:.0f}% "
-                     f"at {EXPIRY_DAYS[-1]} days, an inverted term structure as after a sell-off. The true spot volatility "
-                     f"$\\sqrt{{v_0}}={100 * np.sqrt(_v0):.0f}\\%$ is above the long-run $\\sqrt{{v_\\infty}}="
-                     f"{100 * np.sqrt(_v_inf):.0f}\\%$, and the large $\\sigma_v={_xi:.2f}$ pulls long-dated at-the-money "
-                     f"volatility further down. Deep puts are at {min(_deep):.0f}–{max(_deep):.0f}%.\n"
-                     "- **Why the curves cross:** Heston's short-dated skew per unit of log-moneyness tends to a "
-                     "constant (feature 3, Section 1), "
-                     f"$\\rho\\sigma_v/(4\\sqrt{{v_0}})={_rho * _xi / (4 * np.sqrt(_v0)):.2f}$, and $\\delta$ rescales "
-                     "log-moneyness by $\\sqrt T$, so short-dated smiles are flat in $\\delta$. From the money to the deepest "
-                     f"put they rise {_case_rise[0]:.1f} points at {EXPIRY_DAYS[0]} days and {_case_rise[1]:.1f} at "
-                     f"{EXPIRY_DAYS[-1]} days: high and flat meets low and steep.\n"
-                     f"- **Unlike the SPX quotes**, where the same rise is {_spx_rise[0]:.1f} and {_spx_rise[1]:.1f} points, much "
-                     "closer to parallel: the limitation analysed at the end of Section 6. As a test of the inference the case is still "
-                     "valid: it is a draw from the model and the prior.")
+        _scenario = ("These quotes are **simulated from Heston** with $c=1$. The model is right by construction, so "
+                     "this data set tests the inference alone.")
 
-    # The corner plot, read in three steps: the exact posterior, where the truth sits, the network against PyMC.
-    _lines = [
-        "**Reading the corner plot.** The diagonal shows each parameter's posterior"
-        + (", the network in blue and PyMC in orange" if _neural is not None else " from PyMC")
-        + "; the panels below show pairs of parameters"
-        + ("; black lines and stars mark the true values." if _truth is not None else "."),
-        "",
-        "**The exact posterior (PyMC)**",
-        "",
-        f"- **Precision:** {_label(_sharpest)} is pinned to ±{100 * _relative[_sharpest]:.2g}% of its value, and the least "
-        f"precise Heston parameter, {_label(_loosest)}, to ±{100 * _relative[_loosest]:.2g}%.",
-        f"- **Dependence:** the strongest pair is {TEXT_LABELS[_j]} with {TEXT_LABELS[_i]} (correlation "
-        f"{_corr[_i, _j]:+.2f}). The quotes pin down combinations of parameters better than each one alone, so a "
-        "quantity that depends on several parameters must come from the joint draws, not the marginals.",
+    # The corner plot, read in up to three columns: the exact posterior, where the truth sits, the network against PyMC.
+    _reading = ("The diagonal shows each parameter's posterior"
+                + (", the network in blue and PyMC in orange" if _neural is not None else " from PyMC")
+                + ". The panels below show pairs of parameters."
+                + (" Black lines and stars mark the true values." if _truth is not None else ""))
+    _exact = [
+        f"- {_capital(_named(_sharpest))} is determined to within ±{100 * _relative[_sharpest]:.2g}% of its value, "
+        f"and the least precise Heston parameter, {_named(_loosest)}, to within ±{100 * _relative[_loosest]:.2g}%.",
+        f"- The strongest dependence is between {MATH_LABELS[_j]} and {MATH_LABELS[_i]} (correlation "
+        f"{_signed(_corr[_i, _j])}).",
+        "    - The quotes determine combinations of parameters better than each one alone.",
+        "    - A quantity that depends on several parameters must be computed from the joint draws, not from the "
+        "marginals.",
     ]
+    _columns = {"The exact posterior (PyMC)": _exact}
     if _truth is None:
-        _lines.append(f"- **Noise:** $c$ sits at the top of its prior range (median "
-                      f"{_ref['c']['regenerated_q05_q50_q95'][1]:.4f}, bound {BOUNDS[-1, 1]:g}): the quotes ask for more "
-                      "noise than the model allows, because no Heston smile comes close enough (Section 5.4).")
+        _exact += [
+            f"- $c$ sits at the top of its prior range (median {_ref['c']['regenerated_q05_q50_q95'][1]:.4f}, bound "
+            f"{BOUNDS[-1, 1]:g}).",
+            "    - The quotes ask for more noise than the model allows, because no Heston smile comes close enough "
+            "(Section 5.4).",
+        ]
     else:
         # Where does the truth sit in the reference posterior? Marginally (in posterior SDs) and jointly (Mahalanobis).
         _centre, _spread = _reference.mean(axis=0), _reference.std(axis=0, ddof=1)
@@ -1384,22 +1735,28 @@ def _(
         _precision = np.linalg.inv(np.cov(_reference, rowvar=False))
         _distance = lambda _x: np.einsum("...i,ij,...j->...", _x - _centre, _precision, _x - _centre)
         _joint = 100 * np.mean(_distance(_reference) < _distance(_truth))
-        _outside = [TEXT_LABELS[_k] for _k in range(6) if abs(_z[_k]) > 1.645]
-        _lines += ["", "**Where the truth sits**", ""]
+        _outside = [MATH_LABELS[_k] for _k in range(6) if abs(_z[_k]) > 1.645]
         if _outside:
             _listed = _outside[0] if len(_outside) == 1 else ", ".join(_outside[:-1]) + " and " + _outside[-1]
-            _lines.append(f"- **Parameter by parameter:** {_listed} {'lies' if len(_outside) == 1 else 'lie'} up to "
-                          f"{np.max(np.abs(_z)):.1f} posterior SDs from the posterior mean, outside the 90% intervals. One "
-                          "noisy data set can do this: the noise shifts the posterior, and strongly correlated parameters "
-                          "shift together.")
+            _where = [
+                f"- {_capital(_listed)} {'lies' if len(_outside) == 1 else 'lie'} up to {np.max(np.abs(_z)):.1f} "
+                "posterior SDs from the posterior mean, outside the 90% intervals.",
+                "    - One noisy data set can do this. The noise shifts the posterior, and strongly correlated "
+                "parameters shift together.",
+            ]
         else:
-            _lines.append("- **Parameter by parameter:** every true value lies inside its 90% interval.")
-        _lines.append(f"- **Jointly:** the truth is farther from the posterior centre than {_joint:.0f}% of the draws. For "
-                      f"a correct posterior this share is uniform between 0 and 100%, so a single value of {_joint:.0f}% is "
-                      "no warning sign; coverage is judged over many data sets in Section 5.2.")
-    _lines += ["", "**The network against PyMC**", ""]
+            _where = ["- Every true value lies inside its 90% interval."]
+        _where += [
+            f"- Jointly, the truth is farther from the posterior centre than {_joint:.0f}% of the draws.",
+            f"    - For a correct posterior this share is uniform between 0 and 100%, so a single value of "
+            f"{_joint:.0f}% is no warning sign.",
+            "    - Coverage is judged over many data sets in Section 5.2.",
+        ]
+        _columns["Where the truth sits"] = _where
+    _verdict = None
     if _neural is None:
-        _lines.append("- The pretrained network is not loaded. With the bundle, its posterior appears in blue.")
+        _columns["The network against PyMC"] = ["The pretrained network is not loaded. With the bundle, its posterior "
+                                                "appears in blue."]
     else:
         # The same measures as the table of Section 5.3: centre gap in PyMC SDs, and the ratio of 90% widths.
         _gaps = np.array([(_neural[:, _k].mean() - _ref[_n]["regenerated_mean"]) / _ref[_n]["regenerated_sd"]
@@ -1408,40 +1765,67 @@ def _(
                             / (_ref[_n]["regenerated_q05_q50_q95"][2] - _ref[_n]["regenerated_q05_q50_q95"][0])
                             for _k, _n in enumerate(NAMES)])
         _far, _wide = int(np.argmax(np.abs(_gaps))), int(np.argmax(_widths))
-        _lines += [
-            f"- **Location:** the network's centres differ from PyMC's by up to {np.max(np.abs(_gaps)):.2g} PyMC "
-            f"standard deviations, most for {TEXT_LABELS[_far]}.",
-            f"- **Width:** its 90% intervals are {_widths.min():.2g} to {_widths.max():.2g} times as wide as PyMC's, "
-            f"widest for {TEXT_LABELS[_wide]}.",
-            f"- **Dependence:** for {TEXT_LABELS[_j]} with {TEXT_LABELS[_i]}, the network's correlation is "
-            f"{np.corrcoef(_neural, rowvar=False)[_i, _j]:+.2f}, against PyMC's {_corr[_i, _j]:+.2f}.",
+        _columns["The network against PyMC"] = [
+            f"- The network's centres differ from PyMC's by up to {np.max(np.abs(_gaps)):.2g} PyMC standard "
+            f"deviations, most for {MATH_LABELS[_far]}.",
+            f"- Its 90% intervals are {_widths.min():.2g} to {_widths.max():.2g} times as wide as PyMC's, widest for "
+            f"{MATH_LABELS[_wide]}.",
+            f"- For {MATH_LABELS[_j]} with {MATH_LABELS[_i]}, its correlation is "
+            f"{_signed(np.corrcoef(_neural, rowvar=False)[_i, _j])}, against PyMC's {_signed(_corr[_i, _j])}.",
+            "- Section 5.3 compares the three data sets.",
         ]
         if _truth is None:
-            _lines.append("- **Verdict: no agreement.** The SPX quotes lie outside anything the network saw in training "
-                          "(Section 5.4), so it extrapolates. The disagreement is a warning about the model, not a "
-                          "training failure.")
+            _verdict = ("**The network and PyMC do not agree.** The SPX quotes lie outside anything the network saw "
+                        "in training, so it extrapolates (Section 5.4). The disagreement is a warning about the "
+                        "model, not a training failure.")
         elif np.max(np.abs(_gaps)) < 1:
-            _lines.append("- **Verdict: close, but wider.** The network is cautious rather than wrong, consistent with the "
-                          "calibration checks of Section 5.2: one network that serves every data set is less sharp than "
-                          "MCMC run on this one. Section 5.3 compares the three data sets.")
+            _verdict = ("**The network is close to PyMC, but wider.** One network that serves every data set is less "
+                        "sharp than MCMC run on this one. It is cautious rather than wrong, consistent with the "
+                        "calibration checks of Section 5.2.")
         else:
-            _lines.append(f"- **Verdict: shifted.** The network's centre misses PyMC's by more than one standard deviation "
-                          f"for {TEXT_LABELS[_far]}. Section 5.3 compares the three data sets.")
-    mo.vstack([
-        _fig,
-        mo.md(_scenario),
-        mo.ui.table(_rows, selection=None, pagination=False),
+            _verdict = ("**The network is shifted against PyMC.** Its centre misses PyMC's by more than one standard "
+                        f"deviation for {MATH_LABELS[_far]}.")
+
+    _view = [mo.hstack([_fig, mo.md(_scenario)], widths=[3, 2], gap=2, align="center")]
+    if _detail is not None:
+        _view.append(_detail)
+    _view += [
+        mo.md("#### The six parameters"),
+        table(_rows, align="l" + "r" * (len(_rows[0]) - 1)),
+        mo.md("#### The joint posterior"),
         _corner,
-        mo.md("\n".join(_lines)),
-        mo.md("**Derived quantities.** Each posterior draw gives an expected average variance over a horizon, the fair "
-              "value of a variance swap, shown here as a volatility. It is feature 1 of Section 1, averaged over the horizon:"),
-        mo.ui.table(_product_rows, selection=None, pagination=False),
-    ])
+        caption(_reading),
+    ]
+    if _verdict is not None:
+        _view.append(key(_verdict))
+    _view += [
+        grid({_title: "\n".join(_lines) for _title, _lines in _columns.items()}, kind="reading"),
+        mo.md("#### Derived quantities\n\nEach posterior draw gives an expected average variance over a horizon, the "
+              "fair value of a variance swap, shown here as a volatility. This is feature 1 of Section 1.2, averaged "
+              "over the horizon."),
+        table(_product_rows, align="llrr"),
+    ]
+    mo.vstack(_view)
     return
 
 
 @app.cell(hide_code=True)
-def _(CASES, EVALUATION, GRID, REFERENCES, json, mo, np, plots, plt, prior_batch, prior_seconds):
+def _(
+    CASES,
+    EVALUATION,
+    GRID,
+    REFERENCES,
+    caption,
+    json,
+    key,
+    mo,
+    note,
+    np,
+    plots,
+    plt,
+    prior_batch,
+    prior_seconds,
+):
     # Every number below is read from a run record or timed in this notebook.
     _recovery = GRID / "recovery-bank-independent"
     _rows = json.loads((_recovery / "bank-protocol.json").read_text())["contract"]["train_rows"]
@@ -1510,51 +1894,65 @@ def _(CASES, EVALUATION, GRID, REFERENCES, json, mo, np, plots, plt, prior_batch
     _ax.legend(fontsize=7, loc="upper left")
 
     mo.vstack([
-        mo.md("### What it costs\n\nThe network is paid for once; PyMC is paid again for every data set:"),
-        _fig,
-        mo.md(f"""
-        - **Paid once:** simulating and training take about {_duration(_once)}, as long as {_once / _pymc.mean():.0f} PyMC runs. After that, a posterior takes under {_duration(_net)} instead of {_duration(_pymc.min())} to {_duration(_pymc.max())}.
-        - **For Section 5.2's {_check} data sets:** the network's recorded evaluation took {_evaluation['seconds']:.0f} s, including {sum(_posteriors.values()) - _check} further posteriors. PyMC would need about {_duration(_check * _pymc.mean())}.
-        """),
-        mo.accordion({"Where the numbers come from": mo.md(f"""
-        | Step | Source |
-        |:---|:---|
-        | Simulation | Section 2 timed {len(prior_batch['observations']):,} simulations on one core of this machine; scaled to {_rows:,}. The cost per simulation varies with the parameters drawn, so this is approximate. |
-        | Training | the training job's record: {_duration(_train)} of wall time on an Apple-silicon CPU, loading the data and saving the network included |
-        | Network posterior | this network's recorded evaluation: {sum(_posteriors.values())} posteriors ({_posteriors['Section 5.2']} for Section 5.2, {_posteriors['validation']} for validation, {_posteriors['Section 4']} for Section 4) in {_evaluation['seconds']:.0f} s, diagnostics included; so at most {_net:.2f} s each |
-        | PyMC posterior | the three reference runs (box above): {", ".join(_duration(_s) for _s in _pymc)}, one core, the short and the long run together |
+        mo.md(r"""
+        ### 4.3 What it costs
 
-        The steps ran on different machines, so compare orders of magnitude, not exact ratios.
-        """)}),
+        The network is paid for once. PyMC is paid again for every data set.
+        """),
+        _fig,
+        caption("Left: the time of each step, on a logarithmic scale. Hatched bars are paid once. Right: the total "
+                "time for many data sets."),
+        key(f"**Simulating and training take about {_duration(_once)}, as long as {_once / _pymc.mean():.0f} PyMC "
+            f"runs.** After that, a posterior takes under {_duration(_net)} instead of {_duration(_pymc.min())} to "
+            f"{_duration(_pymc.max())}."),
+        mo.md(f"For the {_check} data sets of Section 5.2, the network's recorded evaluation took "
+              f"{_evaluation['seconds']:.0f} s, including {sum(_posteriors.values()) - _check} further posteriors. "
+              f"PyMC would need about {_duration(_check * _pymc.mean())}."),
+        mo.accordion({"Where the numbers come from": mo.vstack([
+            mo.md(f"""
+            | Step | Source |
+            |:---|:---|
+            | Simulation | Section 2.2 timed {len(prior_batch['observations']):,} simulations on one core of this machine. The figure scales that time to {_rows:,}. The cost per simulation varies with the parameters drawn, so this is approximate. |
+            | Training | The training job's record: {_duration(_train)} of wall time on an Apple-silicon CPU, loading the data and saving the network included. |
+            | Network posterior | This network's recorded evaluation: {sum(_posteriors.values())} posteriors ({_posteriors['Section 5.2']} for Section 5.2, {_posteriors['validation']} for validation, {_posteriors['Section 4']} for Section 4.2) in {_evaluation['seconds']:.0f} s, diagnostics included. So each takes at most {_net:.2f} s. |
+            | PyMC posterior | The three reference runs of Section 4.1: {", ".join(_duration(_s) for _s in _pymc)} on one core, the short and the long run together. |
+            """),
+            note("The steps ran on different machines. Compare orders of magnitude, not exact ratios."),
+        ])}),
     ])
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, workflow):
-    mo.vstack([workflow("Check"), mo.md(r"""
-    ## 5. Check
+def _(mo, section):
+    mo.vstack([
+        section("Check", "Four checks. The first three test the network's posterior. The last one tests the model "
+                "itself.", stage=5),
+        mo.md(r"""
+        | Check | Question | What to look for |
+        |:---|:---|:---|
+        | 5.1 Posterior predictive | Can the inferred parameters regenerate the quotes? | quotes inside the replicated range |
+        | 5.2 Calibration across simulations | Does a 90% interval contain the truth 90% of the time? | coverage near nominal, uniform ranks |
+        | 5.3 Exact reference | Does the network reproduce the posterior of one data set? | agreement with PyMC |
+        | 5.4 Real SPX quotes | Can Heston describe the market at all? | residuals within the assumed noise |
 
-    | Check | Question | What to look for |
-    |:---|:---|:---|
-    | 5.1 Posterior predictive | Can the inferred parameters regenerate the quotes? | quotes inside the replicated range |
-    | 5.2 Calibration over simulations | Does a 90% interval contain the truth 90% of the time? | coverage near nominal, uniform ranks |
-    | 5.3 Exact reference | Does the network reproduce the posterior of one data set? | agreement with PyMC |
-    | 5.4 Real SPX quotes | Can Heston describe the market at all? | residuals within the assumed noise |
+        ### 5.1 Posterior predictive
 
-    ### 5.1 Posterior predictive
+        Draw parameters from the posterior, price the 63 contracts, and add fresh noise with each draw's own $c$.
 
-    Draw parameters from the posterior, price the 63 contracts and add fresh noise with each draw's own $c$:
-    $\boldsymbol\theta^{(m)}\sim q(\boldsymbol\theta\mid\mathbf y)$ and $\widetilde y^{(m)}_i=P_i(\boldsymbol\theta^{(m)})+c^{(m)}h_i\,\epsilon^{(m)}_i$. If the model and the posterior are right, the observed quotes look like one more replicated data set.
-    """)])
+        $$\boldsymbol\theta^{(m)}\sim q(\boldsymbol\theta\mid\mathbf y),\qquad \widetilde y^{(m)}_i=P_i(\boldsymbol\theta^{(m)})+c^{(m)}h_i\,\epsilon^{(m)}_i$$
+
+        If the model and the posterior are right, the observed quotes look like one more replicated data set.
+        """),
+    ])
     return
 
 
 @app.cell(hide_code=True)
-def _(EXPIRY_DATES, EXPIRY_DAYS, mo):
+def _(EXPIRY_DATES, EXPIRY_DAYS, controls, mo):
     expiry_choice = mo.ui.dropdown(options={f"{_date} ({_days} days)": _e for _e, (_date, _days) in enumerate(zip(EXPIRY_DATES, EXPIRY_DAYS))},
                                    value=f"{EXPIRY_DATES[4]} ({EXPIRY_DAYS[4]} days)", label="Expiry")
-    mo.hstack([expiry_choice, mo.md("*Data set: as selected in Section 4.*")], justify="start", gap=1.5)
+    controls(expiry_choice, hint="Choose an expiry. The data set is the one chosen in Section 4.2.")
     return (expiry_choice,)
 
 
@@ -1567,11 +1965,15 @@ def _(
     DELTA,
     EXPIRY,
     H,
+    caption,
     case_choice,
     expiry_choice,
+    grid,
     implied_vols,
+    key,
     mo,
     neural_draws,
+    note,
     np,
     pilot,
     plt,
@@ -1586,8 +1988,9 @@ def _(
         _inside = _all[np.all((_all >= BOUNDS[:, 0]) & (_all <= BOUNDS[:, 1]), axis=1)]
         if len(_inside) >= 2:
             _sets["network posterior"] = _inside[_rng.choice(len(_inside), min(40, len(_inside)), replace=False)]
-        _note = (f"Network draws outside the prior range ({len(_all) - len(_inside)} of {len(_all):,}) are left out here, "
-                 "because the pricer is checked on the prior's range.")
+        if len(_inside) < len(_all):
+            _note = (f"Network draws outside the prior range ({len(_all) - len(_inside)} of {len(_all):,}) are left "
+                     "out here, because the pricer is checked on the prior's range.")
     _sets["PyMC reference"] = reference_draws[_case][_rng.choice(len(reference_draws[_case]), 40, replace=False)]
     _y = CASES[_case]
     _at = EXPIRY == expiry_choice.value
@@ -1618,77 +2021,53 @@ def _(
             _misfit = float(np.sqrt(np.mean((((_prices.mean(axis=0) - _y) / H)[_at]) ** 2)))
             _typical_c = float(np.median(_draws[:, -1]))
     _axes[0, 0].legend(fontsize=6.5, loc="upper right")
-    _verdict = (f"Here the posterior-mean prices miss the quotes by {_misfit:.1f} half-spreads (root mean square), in line with "
-                f"the inferred noise scale $c\\approx{_typical_c:.2f}$: the quotes look like one more replicated data set, as they "
-                "should when the model is right."
+    _verdict = ("**The quotes look like one more replicated data set, as they should when the model is right.** The "
+                f"posterior-mean prices miss them by {_misfit:.1f} half-spreads (root mean square), in line with the "
+                f"inferred noise scale $c\\approx{_typical_c:.2f}$."
                 if _misfit < 2.5 * _typical_c else
-                f"Here the posterior-mean prices miss the quotes by {_misfit:.1f} half-spreads (root mean square), far more than "
-                f"the inferred noise scale $c\\approx{_typical_c:.2f}$ allows, and the miss has a systematic pattern across "
-                "strikes: the model cannot reproduce these quotes (Section 5.4).")
-    _denoise = ("" if _case not in CLEAN else
-                "\n- **Dashed line:** the true, noise-free prices. The purple band follows it closely: the posterior "
-                "recovers the true prices more precisely than any single quote measures them.")
-    mo.vstack([_fig, mo.md(
-        f"{CASE_TITLES[_case]}, one expiry; bands are pointwise 90% ranges over 40 posterior draws.\n\n"
-        "- **Top:** implied volatilities; the bands are so narrow that they hide behind the points.\n"
-        "- **Bottom:** the same minus the observed quotes, in half-spreads. Each quote carries its own noise, so the "
-        "model prices (purple) differ from it by about $c$ half-spreads; the replicated quotes (green) add fresh noise "
-        "and should cover the zero line." + _denoise + "\n"
-        f"- **Verdict:** {_verdict}" + (f"\n- {_note}" if _note else ""))])
+                "**The model cannot reproduce these quotes.** The posterior-mean prices miss them by "
+                f"{_misfit:.1f} half-spreads (root mean square), far more than the inferred noise scale "
+                f"$c\\approx{_typical_c:.2f}$ allows, and the miss has a systematic pattern across strikes "
+                "(Section 5.4).")
+    _columns = {
+        "Top row": "Implied volatilities. The bands are so narrow that they hide behind the points.",
+        "Bottom row": "The same, minus the observed quotes, in half-spreads. Each quote carries its own noise, so "
+                      "the model prices (purple) differ from it by about $c$ half-spreads. The replicated quotes "
+                      "(green) add fresh noise and should cover the zero line.",
+    }
+    if _case in CLEAN:
+        _columns["Dashed line"] = ("The true, noise-free prices. The purple band follows them closely. The posterior "
+                                   "recovers the true prices more precisely than any single quote measures them.")
+    _view = [
+        _fig,
+        caption(f"{CASE_TITLES[_case]}, one expiry. Bands are pointwise 90% ranges over 40 posterior draws."),
+        key(_verdict),
+        grid(_columns, kind="reading"),
+    ]
+    if _note:
+        _view.append(note(_note))
+    mo.vstack(_view)
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### 5.2 Calibration across 512 simulated data sets
+def _(grid, mo):
+    mo.vstack([
+        mo.md(r"""
+        ### 5.2 Calibration across 512 simulated data sets
 
-    One posterior can look plausible and still be miscalibrated. Data sets with a known truth test the uncertainty statements themselves:
-
-    - **Coverage:** a 90% interval should contain the truth in about 90% of the data sets. Much more means too wide, much less too narrow.
-    - **Simulation-based calibration (SBC):** if the posterior is correct, the truth is just one more posterior draw, so its **rank** among the draws (the fraction of draws below it) is uniform between 0 and 1. We plot the empirical CDF of the ranks minus the uniform CDF; the four synthetic examples below show how to read it.
-    """)
+        One posterior can look plausible and still be miscalibrated. Data sets with a known truth test the uncertainty statements themselves, in two ways.
+        """),
+        grid({
+            "Coverage": "A 90% interval should contain the truth in about 90% of the data sets. Much more means the "
+                        "intervals are too wide, much less that they are too narrow.",
+            "Simulation-based calibration (SBC)": "If the posterior is correct, the truth is one more posterior "
+                                                  "draw. Its **rank** among the draws, the fraction of draws below "
+                                                  "it, is then uniform between 0 and 1. We plot the empirical CDF "
+                                                  "of the ranks minus the uniform CDF.",
+        }),
+    ])
     return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    ecdf_guide = mo.accordion({"How to read the calibration (ECDF) plots": mo.md(r"""
-    **The question.** When the network gives a 90% interval, does it contain the truth 90% of the time? In other words, is the width of its posterior right? We can only check this where the truth is known, on simulated data.
-
-    **One check, step by step**, for one parameter, say $v_0$:
-
-    1. Draw true parameters from the prior and simulate 63 quotes from them.
-    2. Ask the network for 200 posterior draws of $v_0$ given those quotes.
-    3. Count the draws below the true $v_0$, say 140 of 200. The **rank** of the truth is $140/200 = 0.70$.
-
-    **Why the rank should be uniform.** If the network's posterior is right, the true value is just one more draw from it: nothing sets it apart from the 200 draws. So it is equally likely to land anywhere among them. Its rank is below 0.1 one time in ten, below 0.5 half the time, and so on.
-
-    **The plot.** Repeat the check on many data sets (100 in the live check, 512 in Section 5.2) and collect the ranks. At each point $z$ between 0 and 1, the curve shows
-
-    $$(\text{share of ranks below } z) - z .$$
-
-    If the ranks are uniform, the share below $z$ is close to $z$, and the curve stays near zero.
-
-    **The grey band** shows how far chance alone moves the curve of a correct network with this many data sets: a correct network stays inside it 95% of the time.
-
-    - **Live check and resampling button:** each of the six panels has its own band, so one curve may touch its band by chance.
-    - **Saved results in 5.2:** one band covers all six panels together.
-
-    **Reading the shapes**
-
-    - **Inside the band:** the uncertainty is right.
-    - **Up on the left, down on the right:** ranks pile up near 0 and 1, so the truth often falls outside the bulk of the draws. The posterior is **too narrow** (overconfident).
-    - **Down on the left, up on the right:** ranks pile up around 0.5, so the truth sits in the middle too often. The posterior is **too wide** (cautious).
-    - **An arch above zero:** ranks pile up near 0, so most draws lie above the truth. The posterior is **biased upwards**. An arch below zero means biased downwards.
-
-    **What it cannot tell you**
-
-    - **Whether the posterior is sharp.** A network that ignored the quotes and returned the prior would pass. The recovery plot and the exact reference (5.3) check sharpness.
-    - **Whether the model is right.** The test data come from the same simulator. Section 5.4 and the end of Section 6 test the model on the SPX quotes.
-    """)})
-    ecdf_guide
-    return (ecdf_guide,)
 
 
 @app.cell(hide_code=True)
@@ -1722,14 +2101,14 @@ def _(np):
 
 
 @app.cell(hide_code=True)
-def _(ecdf_band, mo, norm, np, plots, plt):
+def _(caption, ecdf_band, grid, mo, norm, np, plots, plt):
     _rng = np.random.default_rng(7)
     _n = 512
     _truth = _rng.standard_normal(_n)
     _data = _truth + 0.5 * _rng.standard_normal(_n)
     _mean, _sd = 0.8 * _data, np.sqrt(0.2)  # exact posterior for a N(0, 1) prior and N(truth, 0.5^2) data
     _cases = {"calibrated": (0.0, 1.0), "biased upwards": (0.6, 1.0), "too narrow (overconfident)": (0.0, 0.6),
-              "too wide (underconfident)": (0.0, 1.7)}
+              "too wide (cautious)": (0.0, 1.7)}
     _z, _low, _high = ecdf_band(_n)  # one curve per panel: a 95% band for each
     _fig, _axes = plt.subplots(1, 4, figsize=(12.4, 2.6), sharey=True, constrained_layout=True)
     for _ax, (_title, (_shift, _scale)) in zip(_axes, _cases.items()):
@@ -1738,19 +2117,69 @@ def _(ecdf_band, mo, norm, np, plots, plt):
         _ax.fill_between(_z, _low, _high, color=plots.BASELINE, alpha=.45, lw=0)
         _ax.axhline(0, color=plots.INK, lw=.6)
         _ax.plot(_z, _curve, color=plots.SERIES[0] if _title == "calibrated" else plots.CRITICAL, lw=1.5)
-        _ax.set(title=_title, xlabel="rank of the truth")
+        _ax.set(title=_title.capitalize(), xlabel="rank of the truth")
     _axes[0].set_ylabel("ECDF − uniform")
     mo.vstack([
         _fig,
-        mo.md("- **Calibrated:** the curve stays inside the grey band.\n"
-              "- **Biased upwards:** posterior draws lie above the truth, ranks pile up near 0, and the curve bulges "
-              "**above** zero; a downward bias gives the mirror image.\n"
-              "- **Too narrow:** the truth often falls in the posterior's tails, so ranks pile up near 0 and 1: above zero "
-              "on the left, below on the right.\n"
-              "- **Too wide:** the truth sits near the middle of the posterior, so ranks pile up around 0.5: **below** zero "
-              "on the left, above on the right."),
+        caption("Four synthetic examples of the rank plot, each from 512 data sets. A calibrated curve stays inside "
+                "the grey band 95% of the time."),
+        grid({
+            "Calibrated": "The curve stays inside the grey band.",
+            "Biased upwards": "Posterior draws lie above the truth, so ranks pile up near 0 and the curve bulges "
+                              "above zero. A downward bias gives the mirror image.",
+            "Too narrow": "The truth often falls in the posterior's tails, so ranks pile up near 0 and 1. The curve "
+                          "is above zero on the left and below on the right.",
+            "Too wide": "The truth sits near the middle of the posterior, so ranks pile up around 0.5. The curve is "
+                        "below zero on the left and above on the right.",
+        }, kind="reading"),
     ])
     return
+
+
+@app.cell(hide_code=True)
+def _(grid, mo):
+    ecdf_guide = mo.accordion({"How to read the calibration (ECDF) plots": grid({
+        "The question": """
+        When the network gives a 90% interval, does it contain the truth 90% of the time? In other words, is the width of its posterior right? We can only check this where the truth is known, on simulated data.
+        """,
+        "One check, step by step": r"""
+        For one parameter, say $v_0$:
+
+        1. Draw true parameters from the prior and simulate 63 quotes from them.
+        2. Ask the network for 200 posterior draws of $v_0$ given those quotes.
+        3. Count the draws below the true $v_0$, say 140 of 200. The **rank** of the truth is $140/200 = 0.70$.
+        """,
+        "Why the rank should be uniform": """
+        If the network's posterior is right, the true value is just one more draw from it. Nothing sets it apart from the 200 draws, so it is equally likely to land anywhere among them. Its rank is below 0.1 one time in ten, below 0.5 half the time, and so on.
+        """,
+        "The plot": r"""
+        Repeat the check on many data sets (100 in the live check, 512 in Section 5.2) and collect the ranks. At each point $z$ between 0 and 1, the curve shows
+
+        $$(\text{share of ranks below } z) - z$$
+
+        If the ranks are uniform, the share below $z$ is close to $z$, and the curve stays near zero.
+        """,
+        "The grey band": """
+        The band shows how far chance alone moves the curve of a correct network with this many data sets. A correct network stays inside it 95% of the time.
+
+        - In the live check and after the resampling button, each of the six panels has its own band, so one curve may touch its band by chance.
+        - In the saved results of Section 5.2, one band covers all six panels together.
+        """,
+        "Reading the shapes": """
+        | Shape of the curve | What it means |
+        |:---|:---|
+        | inside the band | The uncertainty is right. |
+        | up on the left, down on the right | Ranks pile up near 0 and 1, so the truth often falls outside the bulk of the draws. The posterior is **too narrow** (overconfident). |
+        | down on the left, up on the right | Ranks pile up around 0.5, so the truth sits in the middle too often. The posterior is **too wide** (cautious). |
+        | an arch above zero | Ranks pile up near 0, so most draws lie above the truth. The posterior is **biased upwards**. An arch below zero means biased downwards. |
+        """,
+        "What it cannot tell you": """
+        - **Whether the posterior is sharp.** A network that ignored the quotes and returned the prior would pass. The recovery plot and the exact reference (Section 5.3) check sharpness.
+        - **Whether the model is right.** The test data come from the same simulator. Sections 5.4 and 6 test the model on the SPX quotes.
+        """,
+    }, columns=2)})
+    ecdf_guide
+    return (ecdf_guide,)
 
 
 @app.cell(hide_code=True)
@@ -1758,14 +2187,18 @@ def _(
     BOUNDS,
     EVALUATION,
     LABELS,
+    MATH_LABELS,
     NAMES,
-    TEXT_LABELS,
+    caption,
     ecdf_band,
+    grid,
     json,
+    key,
     mo,
     np,
     plots,
     plt,
+    table,
 ):
     _population = json.loads((EVALUATION / "evaluation.json").read_text())["population"]
     _ranks = np.asarray(_population["fractional_ranks"])
@@ -1787,50 +2220,53 @@ def _(
     _coverage = _population["coverage"]
     _support = _population["support"]
     _rows = []
-    for _j, _label in enumerate(TEXT_LABELS):
+    for _j, _label in enumerate(MATH_LABELS):
         _ci = _coverage["0.9"]["wilson"][_j]
         _rows.append({
-            "parameter": _label,
+            "Parameter": _label,
             "90% coverage [95% CI]": f"{100 * _coverage['0.9']['coverage'][_j]:.1f}% [{100 * _ci[0]:.1f}, {100 * _ci[1]:.1f}]",
             "50 / 80 / 95% coverage": " / ".join(f"{100 * _coverage[_level]['coverage'][_j]:.0f}%" for _level in ("0.5", "0.8", "0.95")),
-            "rank plot": "within band" if _passed[_j] else "leaves band",
-            "draws outside prior": f"{100 * _support['outside_prior']['per_dimension_count'][_j] / _support['samples']:.2f}%",
+            "Rank plot": "within band" if _passed[_j] else "leaves band",
+            "Draws outside prior": f"{100 * _support['outside_prior']['per_dimension_count'][_j] / _support['samples']:.2f}%",
         })
     # Everything below is read off the saved evaluation.
     _cis = _coverage["0.9"]["wilson"]
     _good = [_j for _j in range(len(NAMES)) if _passed[_j] and _cis[_j][0] <= 0.9 <= _cis[_j][1]]
     _bad = [_j for _j in range(len(NAMES)) if _j not in _good]
-    _lesson = (f"- **{len(_good)} of the {len(NAMES)} parameters are well calibrated:** the 95% confidence interval of "
-               "their 90% coverage includes 90%, and their rank curves stay inside the band.\n")
+    _lesson = {}
     for _j in _bad:
         _diff = lambda _x: np.mean(_ranks[:, _j] <= _x) - _x
         _low, _high = _diff(0.25), _diff(0.75)
-        _shape = ("the *too wide* shape: below zero on the left, above zero on the right" if _low < 0 < _high else
-                  "the *too narrow* shape: above zero on the left, below zero on the right" if _high < 0 < _low else
-                  "the shape of a *bias*: the curve stays on one side of zero")
+        _shape = ("the too-wide shape, below zero on the left and above zero on the right" if _low < 0 < _high else
+                  "the too-narrow shape, above zero on the left and below zero on the right" if _high < 0 < _low else
+                  "the shape of a bias, on one side of zero throughout")
         _cov = _coverage["0.9"]["coverage"][_j]
-        _lesson += (f"- **The exception is {TEXT_LABELS[_j]}:** its 90% intervals contain the truth {100 * _cov:.1f}% of "
-                    f"the time, and its rank curve has {_shape}.")
+        _text = (f"Its 90% intervals contain the truth {100 * _cov:.1f}% of the time, and its rank curve has "
+                 f"{_shape}.")
         if _cov > 0.9 and _low < 0 < _high:
-            _lesson += " The network is **conservative** about it rather than overconfident."
+            _text += " The network is cautious about this parameter rather than overconfident."
         if NAMES[_j] == "initial_variance":
-            _lesson += (" A plausible explanation is precision: the shortest-dated quotes pin the initial variance down to "
-                        f"an average posterior SD of {_population['mean_posterior_sd'][_j]:.5f} on a prior range of "
-                        f"{BOUNDS[_j, 1] - BOUNDS[_j, 0]:.2f}, which may be finer than the network resolves.")
-        _lesson += "\n"
+            _text += ("\n\n<small>A plausible explanation is precision. The shortest-dated quotes determine the initial "
+                      f"variance to an average posterior SD of {_population['mean_posterior_sd'][_j]:.5f} on a prior "
+                      f"range of {BOUNDS[_j, 1] - BOUNDS[_j, 0]:.2f}, which may be finer than the network "
+                      "resolves.</small>")
+        _lesson[f"The exception: {MATH_LABELS[_j]}"] = _text
     _counts = np.asarray(_support["outside_prior"]["per_dimension_count"])
     _top = [LABELS[_k] for _k in np.argsort(_counts)[::-1][:2]]
-    _lesson += (f"- **{100 * _support['outside_prior']['sample_fraction']:.1f}% of raw draws** fall slightly outside the "
-                f"prior range, most often in {_top[0]} and {_top[1]}; they are kept in every check.")
+    _lesson["Draws outside the prior"] = (
+        f"{100 * _support['outside_prior']['sample_fraction']:.1f}% of raw draws fall slightly outside the prior "
+        f"range, most often in {_top[0]} and {_top[1]}. They are kept in every check.")
     mo.vstack([
-        mo.md("**Results for the pretrained estimator** on 512 simulated data sets with 512 posterior draws each, from "
-              "its recorded evaluation:"),
-        mo.ui.table(_rows, selection=None, pagination=False),
+        mo.md("#### Results for the pretrained estimator\n\n512 simulated data sets with 512 posterior draws each, "
+              "from the estimator's recorded evaluation."),
+        table(_rows, align="lrrlr"),
         _fig,
-        mo.md("**Rank plots** for the six parameters, read as above. The grey band holds for all six together: a correct "
-              "network keeps all six curves inside it 95% of the time. It narrows at 0 and 1, where a correct curve "
-              "varies least."),
-        mo.callout(mo.md("**What we learn**\n\n" + _lesson), kind="info"),
+        caption("Rank plots for the six parameters. The grey band holds for all six together: a correct network "
+                "keeps all six curves inside it 95% of the time. The band narrows at 0 and 1, where a correct curve "
+                "varies least."),
+        key(f"**{len(_good)} of the {len(NAMES)} parameters are well calibrated.** The 95% confidence interval of "
+            "their 90% coverage includes 90%, and their rank curves stay inside the band."),
+        grid(_lesson, columns=max(2, len(_lesson))),
     ])
     return
 
@@ -1844,14 +2280,15 @@ def _(EVALUATION, np):
 
 
 @app.cell(hide_code=True)
-def _(TEXT_LABELS, mo):
+def _(TEXT_LABELS, controls, mo):
     recovery_parameter = mo.ui.dropdown(options={_label: _j for _j, _label in enumerate(TEXT_LABELS)},
                                         value=TEXT_LABELS[-1], label="Parameter")
     mo.vstack([
-        mo.md("### Recovery: pick data sets and look at their posteriors\n\n"
-              "Each point is one of the 512 simulated data sets: its true value against the posterior median, with the "
-              "90% interval. **Drag a box around points** to see the posterior of one of them."),
-        recovery_parameter,
+        mo.md("#### Recovery, one data set at a time\n\n"
+              "Each point is one of the 512 simulated data sets: its true value against the posterior median, with "
+              "the 90% interval."),
+        controls(recovery_parameter, hint="Choose a parameter. Then drag a box around points in the plot to see the "
+                                          "posterior of one of them."),
     ])
     return (recovery_parameter,)
 
@@ -1896,17 +2333,20 @@ def _(BUNDLE, NAMES, delivery, estimator, np, recovery_truth):
 def _(
     EVAL_SEED,
     LABELS,
+    MATH_LABELS,
     NAMES,
-    TEXT_LABELS,
     bf,
+    caption,
     estimator,
     held_out_quotes,
     mo,
+    note,
     np,
     recovery_parameter,
     recovery_picker,
     recovery_q,
     recovery_truth,
+    table,
 ):
     _j = recovery_parameter.value
     _x, _y = recovery_truth[:, _j], recovery_q[1, :, _j]
@@ -1914,35 +2354,43 @@ def _(
     _selected = np.flatnonzero(recovery_picker.value.get_mask(_x, _y)) if recovery_picker.value else np.array([], int)
     _pool = _selected if len(_selected) else np.arange(len(_x))
     _case = int(_pool[np.argmax(_surprise[_pool])])
-    _how = (f"{len(_selected)} data sets selected; showing the one whose median is farthest from the truth, relative to "
-            "its interval." if len(_selected) else
-            "No selection yet: showing the data set whose median is farthest from the truth, relative to its interval.")
-    _rows = [{"parameter": TEXT_LABELS[_k], "truth": f"{recovery_truth[_case, _k]:.5g}",
-              "posterior median [90% interval]": f"{recovery_q[1, _case, _k]:.5g} [{recovery_q[0, _case, _k]:.5g}, "
-                                                 f"{recovery_q[2, _case, _k]:.5g}]",
-              "truth inside": "yes" if recovery_q[0, _case, _k] <= recovery_truth[_case, _k] <= recovery_q[2, _case, _k] else "no"}
+    _how = (f"{len(_selected)} data sets are selected. Shown is the one whose median is farthest from the truth, "
+            "relative to its interval." if len(_selected) else
+            "Nothing is selected yet. Shown is the data set whose median is farthest from the truth, relative to "
+            "its interval.")
+    _g = lambda _x: f"{_x:.5g}".replace("-", "−")
+    _rows = [{"Parameter": MATH_LABELS[_k], "Truth": _g(recovery_truth[_case, _k]),
+              "Posterior median [90% interval]": f"{_g(recovery_q[1, _case, _k])} [{_g(recovery_q[0, _case, _k])}, "
+                                                 f"{_g(recovery_q[2, _case, _k])}]",
+              "Truth inside": "yes" if recovery_q[0, _case, _k] <= recovery_truth[_case, _k] <= recovery_q[2, _case, _k] else "no"}
              for _k in range(len(NAMES))]
-    _parts = [mo.md(f"{_how} **Data set {_case}**, from the recorded evaluation:"),
-              mo.ui.table(_rows, selection=None, pagination=False)]
+    _parts = [mo.md(f"**Data set {_case}**, from the recorded evaluation. {_how}"),
+              table(_rows, align="lrrl")]
     if estimator is not None and held_out_quotes is not None:
         _draws = np.asarray(estimator.sample(held_out_quotes[_case][None], 2000, seed=EVAL_SEED + 5000 + _case))[0]
         _grid = bf.diagnostics.pairs_posterior(_draws, targets=recovery_truth[_case], variable_names=LABELS, height=1.45,
                                                label_fontsize=10, tick_fontsize=7, legend_fontsize=9)
-        _parts += [mo.md("Its posterior, 2,000 fresh draws, drawn with `bf.diagnostics.pairs_posterior`; the true values "
-                         "are marked in red. Shapes differ from one data set to the next: compare cases near the edges of "
-                         "the prior with cases in its middle."),
-                   getattr(_grid, "figure", None) or _grid.fig]
+        _parts += [getattr(_grid, "figure", None) or _grid.fig,
+                   caption("The posterior of this data set, from 2,000 fresh draws, plotted with "
+                           "`bf.diagnostics.pairs_posterior`. The true values are marked in red. Shapes differ from "
+                           "one data set to the next: compare cases near the edges of the prior with cases in its "
+                           "middle.")]
     else:
-        _parts.append(mo.md("*The posterior pair plot of the selected data set needs the pretrained estimator "
-                            "(`HESTON_BUNDLE`).*"))
+        _parts.append(note("The posterior pair plot of the selected data set needs the pretrained estimator "
+                           "(`HESTON_BUNDLE`)."))
     mo.vstack(_parts)
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(controls, mo):
     panel_button = mo.ui.run_button(label="Resample the 512 data sets with the pretrained estimator (a few minutes)")
-    panel_button
+    mo.vstack([
+        mo.md("#### Reproduce the results\n\n"
+              "The tables and plots of this section come from the estimator's recorded evaluation. The button draws "
+              "512 × 512 fresh posterior samples and recomputes the diagnostics with `bf.diagnostics`."),
+        controls(panel_button, hint="The pretrained estimator must be loaded."),
+    ])
     return (panel_button,)
 
 
@@ -1956,6 +2404,7 @@ def _(
     PANEL_BATCH,
     PANEL_DRAWS,
     bf,
+    caption,
     delivery,
     estimator,
     mo,
@@ -1964,8 +2413,7 @@ def _(
     plots,
     time,
 ):
-    mo.stop(not panel_button.value, mo.md("*The figures above can be reproduced here: press the button to draw "
-                                         "512 × 512 fresh posterior samples and recompute the diagnostics with BayesFlow.*"))
+    mo.stop(not panel_button.value)
     mo.stop(BUNDLE is None or estimator is None, BUNDLE_HELP)
     _started = time.perf_counter()
     _, _arrays, _ = delivery.load_bank(BUNDLE)
@@ -1977,7 +2425,8 @@ def _(
     _estimates = {_name: _draws[..., _j:_j + 1] for _j, _name in enumerate(NAMES)}
     _targets = {_name: _truth[:, _j:_j + 1] for _j, _name in enumerate(NAMES)}
     mo.vstack([
-        mo.md(f"{len(_quotes)} data sets × {PANEL_DRAWS} posterior draws in {time.perf_counter() - _started:.0f} s."),
+        caption(f"{len(_quotes)} data sets × {PANEL_DRAWS} posterior draws in {time.perf_counter() - _started:.0f} s. "
+                "From top to bottom: rank plots, recovery with 90% intervals, and coverage at every level."),
         bf.diagnostics.calibration_ecdf(estimates=_estimates, targets=_targets, variable_keys=NAMES, variable_names=LABELS,
                                         difference=True, rank_ecdf_color=plots.SERIES[0], fill_color=plots.BASELINE),
         bf.diagnostics.recovery(estimates=_estimates, targets=_targets, variable_keys=NAMES, variable_names=LABELS,
@@ -1992,21 +2441,29 @@ def _(
 def _(
     BOUNDS,
     CASES,
+    MATH_LABELS,
     NAMES,
-    TEXT_LABELS,
+    caption,
+    grid,
+    key,
     mo,
     neural_draws,
+    note,
     np,
     reference_summary,
+    table,
 ):
-    mo.stop(not neural_draws, mo.vstack([
-        mo.md("### 5.3 One data set at a time: comparison with the exact reference"),
-        mo.md("*This comparison needs the pretrained estimator.*")]))
-    _columns = {"synthetic-market-like": "market-like simulation", "synthetic-broad": "stressed simulation", "market": "SPX quotes"}
+    _heading = mo.md(r"""
+    ### 5.3 Comparison with the exact reference
+
+    Calibration across many data sets does not show how sharp a single posterior is. The PyMC reference does, for the three data sets of Section 4.1.
+    """)
+    mo.stop(not neural_draws, mo.vstack([_heading, note("This comparison needs the pretrained estimator.")]))
+    _columns = {"synthetic-market-like": "Market-like", "synthetic-broad": "Stressed", "market": "SPX"}
     _rows, _gaps, _ratios, _outside = [], {}, {}, {}
     for _j, _name in enumerate(NAMES):
-        _row = {"parameter": TEXT_LABELS[_j]}
-        for _case_id in CASES:
+        _row = {"Parameter": MATH_LABELS[_j]}
+        for _case_id in _columns:
             _draws = neural_draws[_case_id][:, _j]
             _ref = reference_summary["cases"][_case_id]["parameters"][_name]
             _rq = _ref["regenerated_q05_q50_q95"]
@@ -2015,7 +2472,8 @@ def _(
             _ratio = (_q[1] - _q[0]) / (_rq[2] - _rq[0])
             _gaps.setdefault(_case_id, []).append(abs(_gap))
             _ratios.setdefault(_case_id, []).append(_ratio)
-            _row[_columns[_case_id]] = f"{_gap:+.2f} / {_ratio:.2f}"
+            _row[f"{_columns[_case_id]}: centre gap"] = f"{_gap:+.2f}".replace("-", "−")
+            _row[f"{_columns[_case_id]}: width ratio"] = f"{_ratio:.2f}"
         _rows.append(_row)
     for _case_id in CASES:
         _all = neural_draws[_case_id]
@@ -2025,23 +2483,29 @@ def _(
     _all_ratios = np.concatenate([_ratios[_c] for _c in _synthetic])
     _agree = int(np.sum((_all_gaps < 0.3) & (np.abs(_all_ratios - 1) < 0.25)))
     _wider, _narrower = int(np.sum(_all_ratios > 1.25)), int(np.sum(_all_ratios < 1))
-    _conservative = ("The network is **conservative** here: it does not claim more precision than the data support, "
-                     "but it does not extract all the information in the quotes either. " if _narrower <= 2 else "")
+    _cautious = (" The network is cautious here. It does not claim more precision than the data support, but "
+                     "it does not extract all the information in the quotes either." if _narrower <= 2 else "")
     mo.vstack([
-        mo.md("### 5.3 One data set at a time: comparison with the exact reference\n\n"
-              "Each entry is *(network mean − reference mean) / reference SD* followed by *network 90% width / reference "
-              "90% width*. Perfect agreement would be 0 and 1; we read differences below 0.3 SD and width ratios between "
-              "0.75 and 1.25 as agreement."),
-        mo.ui.table(_rows, selection=None, pagination=False),
-        mo.md(f"- **Simulated data sets:** {_agree} of 12 parameter posteriors agree on both counts. The centres are "
-              f"mostly close (median difference {np.median(_all_gaps):.2f} SD, largest {_all_gaps.max():.2f} SD); the "
-              f"intervals are wider: {_wider} of 12 more than 25% wider, up to {_all_ratios.max():.1f} times, and "
-              f"{_narrower} narrower.\n"
-              f"- {_conservative}This fits the good calibration of 5.2: calibration is necessary, not sufficient (a "
-              "posterior equal to the prior is perfectly calibrated and useless). Only an exact reference shows how much "
-              "sharpness is lost.\n"
-              f"- **SPX quotes:** the network departs far from the reference, and {100 * _outside['market']:.0f}% of its "
-              "draws leave the prior range (Section 5.4)."),
+        _heading,
+        table(_rows, align="l" + "r" * (len(_rows[0]) - 1)),
+        caption("Centre gap: the network's mean minus the reference mean, in reference standard deviations. Width "
+                "ratio: the network's 90% interval divided by the reference's. Perfect agreement is a gap of 0 and a "
+                "ratio of 1. We count gaps below 0.3 and ratios between 0.75 and 1.25 as agreement."),
+        key(f"**On the simulated data sets, {_agree} of 12 parameter posteriors agree with the reference on both "
+            f"counts.** The median centre gap is {np.median(_all_gaps):.2f} SD, and the network's intervals are up to "
+            f"{_all_ratios.max():.1f} times as wide as the reference's."),
+        grid({
+            "Simulated data sets":
+                f"The largest centre gap is {_all_gaps.max():.2f} SD. {_wider} of 12 intervals are more than 25% "
+                f"wider than the reference's, and {_narrower} are narrower.{_cautious}",
+            "Calibrated is not the same as sharp":
+                "This fits the good calibration of Section 5.2. Calibration is necessary, not sufficient: a posterior "
+                "equal to the prior is perfectly calibrated and useless. Only an exact reference shows how much "
+                "sharpness is lost.",
+            "SPX quotes":
+                f"The network departs far from the reference, and {100 * _outside['market']:.0f}% of its draws leave "
+                "the prior range (Section 5.4).",
+        }),
     ])
     return
 
@@ -2051,7 +2515,7 @@ def _(mo):
     mo.md(r"""
     ### 5.4 Real SPX quotes: does Heston fit the market?
 
-    All checks so far used data simulated from the model itself. On the **SPX quotes of 9 November 2026** the first question is whether **any** Heston parameters reproduce the market within the assumed noise.
+    All checks so far used data simulated from the model itself. On the **SPX quotes of 9 November 2026** the first question is whether any Heston parameters reproduce the market within the assumed noise.
     """)
     return
 
@@ -2066,7 +2530,10 @@ def _(
     EXPIRY_DAYS,
     H,
     MARKET_IV,
+    caption,
+    grid,
     implied_vols,
+    key,
     mo,
     neural_draws,
     np,
@@ -2114,33 +2581,49 @@ def _(
                      "of its draws have $c>2$, outside the prior range.")
     mo.vstack([
         _fig,
-        mo.md("*Bands:* implied volatilities of the model prices from 40 posterior draws; *points:* SPX mid quotes; *last "
-              "panel:* the posterior of the noise multiplier $c$."),
-        mo.md(f"""
-        **What the PyMC posterior says**, the exact answer for our model and prior:
-
-        - **No Heston smile fits the SPX quotes within the assumed noise.** The best fit, at the posterior-mean parameters, misses them by **{_rms:.1f} half-spreads** (root mean square), while the prior caps the noise SD at two half-spreads ($c\\le2$).
-        - **So $c$ piles up at its bound** (last panel), and the Heston parameters settle on the best compromise. Where Heston fails, why, and what could fix it is at the end of Section 6.
-
-        **Why the network disagrees with PyMC:**
-
-        - It was trained on quotes that scatter around a Heston smile with a noise SD of at most two half-spreads. These quotes are {_rms:.0f} half-spreads away on average, outside anything it saw, so it extrapolates.{_network_text}
-        - This is **model misspecification**, not a training failure, and a useful alarm: an amortized estimator should only be trusted on data its simulator could have produced.
+        caption("Bands: implied volatilities of the model prices from 40 posterior draws. Points: SPX mid quotes. "
+                "Last panel: the posterior of the noise multiplier $c$."),
+        key(f"""
+        **No Heston smile fits the SPX quotes within the assumed noise.** The best fit, at the posterior-mean parameters, misses them by **{_rms:.1f} half-spreads** (root mean square). The prior caps the noise SD at two half-spreads ($c\\le2$).
+        """),
+        grid({
+            "What the PyMC posterior says":
+                "PyMC gives the exact answer for our model and prior. $c$ piles up at its bound (last panel), and "
+                "the Heston parameters settle on the best compromise. Sections 6.2 to 6.5 show where Heston fails, "
+                "why, and what can be done about it.",
+            "Why the network disagrees with PyMC":
+                "The network was trained on quotes that scatter around a Heston smile with a noise SD of at most two "
+                f"half-spreads. These quotes are {_rms:.0f} half-spreads away on average, outside anything it saw, so "
+                f"it extrapolates.{_network_text}",
+        }),
+        key("""
+        **This is model misspecification, not a training failure.** An amortized estimator should only be trusted on data its simulator could have produced.
         """),
     ])
     return market_fit, market_residual
 
 
 @app.cell(hide_code=True)
-def _(mo, workflow):
-    mo.vstack([workflow("Use"), mo.md(r"""
-    ## 6. Use: pricing a product the market does not quote
+def _(grid, mo, section):
+    mo.vstack([
+        section("Use", "A desk holds products that nobody quotes, and must still value them every day. A posterior "
+                "gives each value a range.", stage=6),
+        mo.md(r"""
+        ### 6.1 Pricing a product the market does not quote
 
-    - **The job:** a desk holds products that nobody quotes, and must still value them every day. Example: a **forward-start call**. Bought today, it fixes its strike in 3 months at the index level on that day; at 6 months it pays the percentage rise above that level, if positive: $\max(S_{6\mathrm{m}}/S_{3\mathrm{m}}-1,\,0)$ per unit of notional.
-    - **Why a model:** its value depends on how volatile the index will be between month 3 and month 6, which today's quotes do not state directly.
-    - **The recipe:** fit a model to the quoted options, then price the product with it. One fit gives one price; a posterior gives a range, by pricing the product under each posterior draw.
-    - **What the range is for:** judging how reliable the value is, holding a reserve against being wrong, and setting the bid–ask.
-    """)])
+        The example is a **forward-start call**. Bought today, it fixes its strike in 3 months at the index level on that day. At 6 months it pays the percentage rise above that level, if positive.
+
+        $$\max\!\left(\frac{S_{6\mathrm{m}}}{S_{3\mathrm{m}}}-1,\;0\right)\quad\text{per unit of notional}$$
+        """),
+        grid({
+            "Why a model": "The value depends on how volatile the index will be between month 3 and month 6, which "
+                           "today's quotes do not state directly.",
+            "The recipe": "Fit a model to the quoted options, then price the product with it. One fit gives one "
+                          "price. A posterior gives a range, by pricing the product under each posterior draw.",
+            "What the range is for": "Judging how reliable the value is, holding a reserve against being wrong, and "
+                                     "setting the bid–ask.",
+        }),
+    ])
     return
 
 
@@ -2153,6 +2636,9 @@ def _(
     EXPIRY_DAYS,
     H,
     TRUTHS,
+    caption,
+    grid,
+    key,
     mo,
     neural_draws,
     np,
@@ -2238,39 +2724,48 @@ def _(
     _kappas, _xis = [_x[1] for _x, _ in _refits.values()], [_x[3] for _x, _ in _refits.values()]
     _covered = [_like[0, _j] <= _truth[_j] <= _like[1, _j] for _j in range(2)]
     _network = {_c: np.quantile(_sets[_c]["network"][:, 0], [.05, .95]) for _c in _sets if "network" in _sets[_c]}
-    _text = (
-        f"- **Where Heston is right** (left, the market-like simulation): the PyMC 90% range is {_like[0, 0]:.3f}–"
-        f"{_like[1, 0]:.3f}% of notional, ±{50 * (_like[1, 0] - _like[0, 0]) / np.mean(_like[:, 0]):.1f}% of the price, "
-        f"and the true price, {_truth[0]:.3f}%, lies {'inside' if _covered[0] else 'outside'} it."
-        + (f" The network's range is {_network['synthetic-market-like'][0]:.3f}–{_network['synthetic-market-like'][1]:.3f}%."
-           if "synthetic-market-like" in _network else "")
-        + (" The use works: an unquoted product gets an honest range.\n" if _covered[0] else
-           " One noisy data set can shift a posterior (Section 4).\n")
-        + f"- **On the SPX quotes** (right): the posterior range is just as narrow, {_spx[0, 0]:.3f}–{_spx[1, 0]:.3f}%. "
-        "But Heston does not fit these quotes, so its parameters depend on which quotes it is fitted to. Four reasonable "
-        f"choices give {_low[0]:.3f}% to {_high[0]:.3f}%, about {_ratio[0]:.0f} times the posterior range: $\\kappa$ runs "
-        f"from {min(_kappas):.1f} to {max(_kappas):.1f}"
-        + (" (its upper bound)" if np.isclose(max(_kappas), BOUNDS[1, 1]) else "")
-        + f" and $\\sigma_v$ from {min(_xis):.2f} to {max(_xis):.2f}."
-        + (f" The network's range, {_network['market'][0]:.3f}–{_network['market'][1]:.3f}%, differs from PyMC's because "
-           "these quotes lie outside its training data (Section 5.4)." if "market" in _network else "")
-        + "\n"
-        f"- **The same for a 3-month volatility swap:** posterior {_spx[0, 1]:.2f}–{_spx[1, 1]:.2f}%, refits "
-        f"{_low[1]:.2f}–{_high[1]:.2f}%, about {_ratio[1]:.0f} times wider. On the simulation its true strike, "
-        f"{_truth[1]:.2f}%, lies {'inside' if _covered[1] else 'outside'} the range {_like[0, 1]:.2f}–{_like[1, 1]:.2f}%.\n"
-        "- **What this means:** a posterior measures uncertainty within the model. On SPX the model is wrong, and that "
-        "error is many times larger and invisible to the posterior. A desk would hold a reserve sized to the refit "
-        "spread, add a model-error term, or use a better model; the rest of this section shows where Heston misses and "
-        "what could fix it.\n"
-        "- **When the posterior range does matter:** when the quotes leave the price open: few or wide quotes, or a model "
-        "flexible enough that the quotes do not pin down what the product depends on.")
+    _panels = {
+        "Where Heston is right":
+            f"On the market-like simulation the PyMC 90% range is {_like[0, 0]:.3f}–{_like[1, 0]:.3f}% of notional, "
+            f"±{50 * (_like[1, 0] - _like[0, 0]) / np.mean(_like[:, 0]):.1f}% of the price. The true price, "
+            f"{_truth[0]:.3f}%, lies {'inside' if _covered[0] else 'outside'} it."
+            + (f" The network's range is {_network['synthetic-market-like'][0]:.3f}–"
+               f"{_network['synthetic-market-like'][1]:.3f}%." if "synthetic-market-like" in _network else "")
+            + (" So the use works where the model is right: the unquoted product gets a range that contains its "
+               "true price." if _covered[0] else " One noisy data set can shift a posterior (Section 4.2)."),
+        "On the SPX quotes":
+            f"The posterior range is just as narrow, {_spx[0, 0]:.3f}–{_spx[1, 0]:.3f}%. But Heston does not fit these "
+            "quotes, so its parameters depend on which quotes it is fitted to. Four reasonable choices give "
+            f"{_low[0]:.3f}% to {_high[0]:.3f}%, about {_ratio[0]:.0f} times the posterior range. Across them "
+            f"$\\kappa$ runs from {min(_kappas):.1f} to {max(_kappas):.1f}"
+            + (" (its upper bound)" if np.isclose(max(_kappas), BOUNDS[1, 1]) else "")
+            + f" and $\\sigma_v$ from {min(_xis):.2f} to {max(_xis):.2f}."
+            + (f" The network's range, {_network['market'][0]:.3f}–{_network['market'][1]:.3f}%, differs from PyMC's "
+               "because these quotes lie outside its training data (Section 5.4)." if "market" in _network else ""),
+    }
     mo.vstack([
         _fig,
-        mo.md("*Bars:* 90% ranges over 40 posterior draws, each draw a dot; *diamonds:* Heston refitted to part of the "
-              "SPX quotes. Monte Carlo with 4,096 paths and the same random numbers for every draw. *Note the scales:* "
-              f"the left panel is zoomed in about {np.ptp(_axes[1].get_xlim()) / np.ptp(_axes[0].get_xlim()):.0f} times "
-              "more than the right one."),
-        mo.md(_text),
+        caption("Bars: 90% ranges over 40 posterior draws, each draw a dot. Diamonds: Heston refitted to part of the "
+                "SPX quotes. Prices are Monte Carlo with 4,096 paths and the same random numbers for every draw. The "
+                f"left panel is zoomed in about {np.ptp(_axes[1].get_xlim()) / np.ptp(_axes[0].get_xlim()):.0f} "
+                "times more than the right one."),
+        grid(_panels, kind="reading", widths=(1, 1.35)),
+        key("""
+        **A posterior measures uncertainty within the model.** On SPX the model is wrong. That error is many times larger, and the posterior cannot see it.
+        """),
+        grid({
+            "The same for a volatility swap":
+                f"For a 3-month volatility swap the posterior range is {_spx[0, 1]:.2f}–{_spx[1, 1]:.2f}% and the "
+                f"refits give {_low[1]:.2f}–{_high[1]:.2f}%, about {_ratio[1]:.0f} times wider. On the simulation its "
+                f"true strike, {_truth[1]:.2f}%, lies {'inside' if _covered[1] else 'outside'} the range "
+                f"{_like[0, 1]:.2f}–{_like[1, 1]:.2f}%.",
+            "What a desk would do":
+                "Hold a reserve sized to the refit spread, add a model-error term, or use a better model. Sections "
+                "6.2 to 6.5 show where Heston misses and what can be done.",
+            "When the posterior range matters":
+                "When the quotes leave the price open: few or wide quotes, or a model flexible enough that the "
+                "quotes do not determine what the product depends on.",
+        }),
     ])
     return
 
@@ -2286,7 +2781,10 @@ def _(
     MARKET_IV,
     NAMES,
     QUOTES,
+    cards,
+    grid,
     implied_vols,
+    key,
     market_fit,
     market_residual,
     mo,
@@ -2294,6 +2792,7 @@ def _(
     plots,
     plt,
     reference_draws,
+    table,
     vol_point_noise,
 ):
     _fit_iv = 100 * implied_vols(market_fit)[0]
@@ -2354,37 +2853,62 @@ def _(
     _under = int(np.sum(_grid[:, 0] > 0))
     _where = "every expiry" if _under == len(_days) else f"{_under} of {len(_days)} expiries"
     _rms = [float(np.sqrt(np.mean(market_residual[_r] ** 2))) for _r in _rows]
-    _table = [{"expiry": f"{_date} ({_days[_e]} d)",
-               "RMS misfit (half-spreads)": round(_rms[_e], 1),
-               "largest misfit (half-spreads)": round(float(market_residual[_r][np.argmax(np.abs(market_residual[_r]))]), 1),
-               "at moneyness δ": round(float(DELTA[_r][np.argmax(np.abs(market_residual[_r]))]), 2)}
+    _number = lambda _x, _digits: f"{_x:.{_digits}f}".replace("-", "−")
+    _table = [{"Expiry": f"{_date} ({_days[_e]} d)",
+               "RMS misfit (half-spreads)": _number(_rms[_e], 1),
+               "Largest misfit (half-spreads)": _number(market_residual[_r][np.argmax(np.abs(market_residual[_r]))], 1),
+               "At moneyness $\\delta$": _number(DELTA[_r][np.argmax(np.abs(market_residual[_r]))], 2)}
               for _e, (_date, _r) in enumerate(zip(EXPIRY_DATES, _rows))]
     _theta = reference_draws["market"].mean(axis=0)  # the best Heston fit: the posterior-mean parameters
-    _signs = (
-        "### Where the model error comes from\n\n"
-        "**Is this model misspecification?** The exact posterior shows four signs, so they are not the network's doing:\n\n"
-        f"1. The noise multiplier sits at its bound: median {np.median(reference_draws['market'][:, -1]):.4f}, bound "
-        f"{BOUNDS[-1, 1]:g}.\n"
-        f"2. Every expiry misses, by {min(_rms):.1f} to {max(_rms):.1f} half-spreads (RMS).\n"
-        f"3. The misses are systematic: the deepest put is underpriced at {_where}, by {_grid[:, 0].min():.1f} to "
-        f"{_grid[:, 0].max():.1f} volatility points.\n"
-        f"4. The fit needs extreme parameters: $\\sigma_v={_vol_of_vol:.2f}$, so $\\sigma_v^2={_vol_of_vol ** 2:.1f}$ "
-        f"against $2\\kappa v_\\infty={2 * _theta[NAMES.index('kappa')] * _theta[NAMES.index('theta')]:.2f}$ (Feller "
-        "condition, feature 2 in Section 1).\n\n"
-        "No Heston parameters and no better inference remove them: the model lacks a feature of the data. The two "
-        "figures below show where the misses are, and which feature is missing.")
     mo.vstack([
-        mo.md(_signs),
-        mo.md("**Where the misses are.** Each panel compares the SPX quotes with the best Heston fit, the prices at the "
-              "posterior-mean parameters."),
-        _fig,
-        mo.md(f"""
-        - **Largest in the deep put wing** (left): the SPX quotes lie above the best Heston smile at the deepest put of {_where}: {_grid[0, 0]:.1f}, {_grid[1, 0]:.1f} and {_grid[2, 0]:.1f} volatility points at {_days[0]}, {_days[1]} and {_days[2]} days, {_grid[3:, 0].min():.1f}–{_grid[3:, 0].max():.1f} beyond. The {int(_wing.sum())} puts with $\\delta<-3$ give {100 * _share:.0f}% of the squared misfit.
-        - **A put wing too flat at short expiries** (middle): from the money to the deepest put, SPX implied volatility rises {_skew_market[0]:.1f} points at {_days[0]} days, the best Heston smile only {_skew_heston[0]:.1f}. The shortfall is {_gap[0]:.1f}, {_gap[1]:.1f} and {_gap[2]:.1f} points at {_days[0]}, {_days[1]} and {_days[2]} days, and {_gap[3:].min():.1f}–{_gap[3:].max():.1f} beyond.
-        - **A compromise elsewhere:** across the rest of the smile the fit misses by up to {np.max(np.abs(_rest)):.1f} points{', in both directions' if _rest.min() < 0 < _rest.max() else ''}: the best that five parameters can do.
-        - **Why $c$ sits at 2** (right): a half-spread is only {np.nanmin(_points):.3f}–{np.nanmax(_points):.2f} volatility points, so these misses amount to **{_c_hat:.1f} half-spreads** (root mean square). $c$ scales the noise of every quote by the same factor, so it cannot improve the fit, only measure it: the likelihood peaks at $c={_c_hat:.1f}$, far outside the prior range.
+        mo.md(r"""
+        ### 6.2 Four signs of model misspecification
+
+        The exact posterior shows all four signs, so they are not the network's doing.
         """),
-        mo.accordion({"Misfit by expiry, in half-spreads": mo.ui.table(_table, selection=None, pagination=False)}),
+        cards([
+            ("Sign 1", "The noise multiplier sits at its bound",
+             f"Its posterior median is {np.median(reference_draws['market'][:, -1]):.4f}. The bound is "
+             f"{BOUNDS[-1, 1]:g}."),
+            ("Sign 2", "Every expiry misses",
+             f"The misfit per expiry is {min(_rms):.1f} to {max(_rms):.1f} half-spreads (root mean square)."),
+            ("Sign 3", "The misses are systematic",
+             f"The deepest put is underpriced at {_where}, by {_grid[:, 0].min():.1f} to {_grid[:, 0].max():.1f} "
+             "volatility points."),
+            ("Sign 4", "The fit needs extreme parameters",
+             f"$\\sigma_v={_vol_of_vol:.2f}$, so $\\sigma_v^2={_vol_of_vol ** 2:.1f}$ against $2\\kappa v_\\infty="
+             f"{2 * _theta[NAMES.index('kappa')] * _theta[NAMES.index('theta')]:.2f}$ (Feller condition, "
+             "Section 1.2)."),
+        ], columns=4),
+        key("""
+        **No Heston parameters and no better inference remove these signs.** The model lacks a feature of the data.
+        """),
+        mo.md(r"""
+        ### 6.3 Where Heston misses
+
+        Each panel compares the SPX quotes with the best Heston fit, the prices at the posterior-mean parameters.
+        """),
+        _fig,
+        grid({
+            "Largest in the deep put wing":
+                f"The SPX quotes lie above the best Heston smile at the deepest put of {_where}: {_grid[0, 0]:.1f}, "
+                f"{_grid[1, 0]:.1f} and {_grid[2, 0]:.1f} volatility points at {_days[0]}, {_days[1]} and {_days[2]} "
+                f"days, {_grid[3:, 0].min():.1f}–{_grid[3:, 0].max():.1f} beyond. The {int(_wing.sum())} puts with "
+                f"$\\delta<-3$ give {100 * _share:.0f}% of the squared misfit.",
+            "A put wing too flat at short expiries":
+                f"From the money to the deepest put, SPX implied volatility rises {_skew_market[0]:.1f} points at "
+                f"{_days[0]} days, the best Heston smile only {_skew_heston[0]:.1f}. The shortfall is {_gap[0]:.1f}, "
+                f"{_gap[1]:.1f} and {_gap[2]:.1f} points at {_days[0]}, {_days[1]} and {_days[2]} days, and "
+                f"{_gap[3:].min():.1f}–{_gap[3:].max():.1f} beyond.",
+            "Why $c$ sits at 2":
+                f"A half-spread is only {np.nanmin(_points):.3f}–{np.nanmax(_points):.2f} volatility points, so these "
+                f"misses amount to **{_c_hat:.1f} half-spreads** (root mean square). $c$ scales the noise of every "
+                "quote by the same factor, so it cannot improve the fit, only measure it. The likelihood peaks at "
+                f"$c={_c_hat:.1f}$, far outside the prior range.",
+        }, kind="reading", widths=(1.5, 1, 1)),
+        mo.md(f"Elsewhere the fit is a compromise. Across the rest of the smile it misses by up to "
+              f"{np.max(np.abs(_rest)):.1f} points{', in both directions' if _rest.min() < 0 < _rest.max() else ''}."),
+        mo.accordion({"Misfit by expiry, in half-spreads": table(_table, align="lrrr")}),
     ])
     return
 
@@ -2398,8 +2922,11 @@ def _(
     MATURITY,
     REF_VOL,
     atm_shape,
+    caption,
     forward_unit_pricer,
+    grid,
     implied_vols,
+    key,
     market_fit,
     mo,
     np,
@@ -2416,7 +2943,7 @@ def _(
     _spx = np.array([atm_shape(_k[EXPIRY == _e], MARKET_IV[EXPIRY == _e]) for _e in range(len(_days))])
     _fit = np.array([atm_shape(_k[EXPIRY == _e], _fit_iv[EXPIRY == _e]) for _e in range(len(_days))])
 
-    # The same fit at maturities the market does not quote: one day to one year, five strikes around the money.
+    # The same fit at expiries the market does not quote: one day to one year, five strikes around the money.
     _grid_t = np.geomspace(1 / 365, 1.0, 36)
     _grid_d = np.array([-1.25, -0.5, 0.0, 0.5, 1.0])
     _tt, _dd = np.meshgrid(_grid_t, _grid_d, indexing="ij")
@@ -2425,14 +2952,14 @@ def _(
     _grid_iv = surface.implied_vol(forward_unit_pricer(_gk, _gt, _gkind).prices(_theta)[None], _gk, _gt,
                                    _gkind)[0].reshape(_tt.shape)
     _curve = np.array([atm_shape(_grid_d * REF_VOL * np.sqrt(_t), _grid_iv[_i]) for _i, _t in enumerate(_grid_t)])
-    _ceiling = abs(_rho * _xi / (4 * np.sqrt(_v0)))  # Heston's short-maturity skew (Lecture 10, Section 10.8)
+    _ceiling = abs(_rho * _xi / (4 * np.sqrt(_v0)))  # Heston's short-expiry skew limit (Lecture 10, Section 10.8)
     _power = lambda _x: np.polyfit(np.log(_days / 365), np.log(np.abs(_x)), 1)
 
     _fig, _axes = plt.subplots(1, 3, figsize=(11.8, 3.7), constrained_layout=True)
     _spx_style = dict(color="#222222", s=24, zorder=3, label="SPX quotes")
     _fit_style = dict(color=plots.SERIES[1], s=22, marker="s", zorder=3, label="best Heston fit")
     _b, _a = _power(_spx[:, 0])
-    _axes[0].plot(365 * _grid_t, np.abs(_curve[:, 0]), color=plots.SERIES[1], lw=1.2, label="Heston, any maturity")
+    _axes[0].plot(365 * _grid_t, np.abs(_curve[:, 0]), color=plots.SERIES[1], lw=1.2, label="Heston, any expiry")
     _axes[0].axhline(_ceiling, color=plots.MUTED, ls=":", lw=1, label="Heston's ceiling")
     _axes[0].plot(_days, np.exp(_a) * (_days / 365) ** _b, color="#222222", ls="--", lw=1,
                   label=f"SPX power law, $T^{{{_b:.2f}}}$")
@@ -2444,7 +2971,7 @@ def _(
 
     _axes[0].yaxis.set_major_formatter(_Formatter(lambda _v, _p: f"{_v:g}"))
     _axes[0].yaxis.set_minor_formatter(_Formatter(lambda _v, _p: f"{_v:g}"))
-    _axes[1].plot(365 * _grid_t, _curve[:, 1], color=plots.SERIES[1], lw=1.2, label="Heston, any maturity")
+    _axes[1].plot(365 * _grid_t, _curve[:, 1], color=plots.SERIES[1], lw=1.2, label="Heston, any expiry")
     _axes[1].axhline(0, color=plots.MUTED, lw=0.6)
     _axes[1].scatter(_days, _spx[:, 1], **_spx_style)
     _axes[1].scatter(_days, _fit[:, 1], **_fit_style)
@@ -2468,52 +2995,84 @@ def _(
     _peak = int(np.argmax(_fit[:, 1]))
     _minus = lambda _x: f"{_x:.2f}".replace("-", "−")
     _negative = 365 * _grid_t[_curve[:, 1] < 0]
-    _lead = ("**Which feature is missing.** The at-the-money skew and curvature of each smile, measured as in Lecture 5 "
-             "by a quadratic in log-moneyness through the five quotes nearest the money, and the shortest smile:")
-    _reading = (
-        f"- **Skew** (left): at the money, the fit follows the SPX skew at every expiry, within "
-        f"{100 * np.max(np.abs(_fit[:, 0] / _spx[:, 0] - 1)):.0f}%, with nearly the same power law "
-        f"({_minus(_power(_fit[:, 0])[0])} against {_minus(_b)}). But its {_days[0]}-day skew is already "
-        f"{100 * abs(_fit[0, 0]) / _ceiling:.0f}% of Heston's ceiling $|\\rho\\sigma_v|/(4\\sqrt{{v_0}})={_ceiling:.2f}$, "
-        f"so shorter expiries can add at most {100 - 100 * abs(_fit[0, 0]) / _ceiling:.0f}% (feature 3, Section 1), "
-        "while a power law keeps growing.\n"
-        f"- **Curvature** (middle): the SPX smile gets more curved as maturity shortens: {_spx[2, 1]:.1f}, "
-        f"{_spx[1, 1]:.1f} and {_spx[0, 1]:.1f} at {_days[2]}, {_days[1]} and {_days[0]} days. The fit's curvature "
-        f"peaks at {_days[_peak]} days ({_fit[_peak, 1]:.1f}) and falls to {_fit[0, 1]:.1f} at {_days[0]} days"
-        + (f"; at shorter maturities it falls below zero (under {_negative.max():.0f} days)" if _negative.size else "")
-        + ".\n"
-        f"- **The shortest smile** (right): near the money the fit is within "
-        f"{np.max(np.abs(100 * (MARKET_IV - _fit_iv)[_near])):.1f} volatility points, but at the deepest put it is "
-        f"{_deep[0]:.1f} points too low. With a single diffusive variance factor, the fit cannot price that much crash "
-        f"risk into {_days[0]} days without breaking the rest of the smile.\n\n"
-        "**What can be done within Heston:** change the noise model, by widening or reshaping it or by adding an "
-        "explicit model-error term. The posterior then admits the misfit instead of pushing $c$ against its bound, "
-        "but the misfit stays: removing it needs a different model.")
-    mo.vstack([mo.md(_lead), _fig, mo.md(_reading)])
+    mo.vstack([
+        mo.md(r"""
+        ### 6.4 Which feature is missing
+
+        The at-the-money skew and curvature of each smile show what Heston lacks at short expiries.
+        """),
+        _fig,
+        caption("Skew and curvature are measured as in Lecture 5, by a quadratic in log-moneyness through the five "
+                "quotes nearest the money. Right: the shortest smile."),
+        grid({
+            "Skew":
+                "At the money, the fit follows the SPX skew at every expiry, within "
+                f"{100 * np.max(np.abs(_fit[:, 0] / _spx[:, 0] - 1)):.0f}%, with nearly the same power law "
+                f"({_minus(_power(_fit[:, 0])[0])} against {_minus(_b)}). But its {_days[0]}-day skew is already "
+                f"{100 * abs(_fit[0, 0]) / _ceiling:.0f}% of Heston's ceiling "
+                f"$|\\rho\\sigma_v|/(4\\sqrt{{v_0}})={_ceiling:.2f}$. Shorter expiries can add at most "
+                f"{100 - 100 * abs(_fit[0, 0]) / _ceiling:.0f}% (feature 3, Section 1.2), while a power law keeps "
+                "growing.",
+            "Curvature":
+                f"The SPX smile gets more curved as the expiry shortens: {_spx[2, 1]:.1f}, {_spx[1, 1]:.1f} and "
+                f"{_spx[0, 1]:.1f} at {_days[2]}, {_days[1]} and {_days[0]} days. The fit's curvature peaks at "
+                f"{_days[_peak]} days ({_fit[_peak, 1]:.1f}) and falls to {_fit[0, 1]:.1f} at {_days[0]} days."
+                + (f" At shorter expiries it falls below zero (under {_negative.max():.0f} days)."
+                   if _negative.size else ""),
+            "The shortest smile":
+                "Near the money the fit is within "
+                f"{np.max(np.abs(100 * (MARKET_IV - _fit_iv)[_near])):.1f} volatility points. At the deepest put it "
+                f"is {_deep[0]:.1f} points too low. With a single diffusive variance factor, the fit cannot price "
+                f"that much crash risk into {_days[0]} days without breaking the rest of the smile.",
+        }, kind="reading"),
+        mo.md(r"""
+        ### 6.5 What can be done within Heston
+
+        Change the noise model: widen it, reshape it, or add an explicit model-error term. The posterior then admits the misfit instead of pushing $c$ against its bound.
+        """),
+        key("**The misfit itself stays.** Removing it needs a different model."),
+    ])
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## Takeaways
-
-    1. **SBI turns a pricer into a posterior.** Prior, pricer and noise model form a simulator; one training run gives an estimator that returns the posterior for any 63 quotes in seconds.
-    2. **Liquid quotes are very informative.** Spreads of a few hundredths to a few tenths of a volatility point pin the Heston parameters down tightly and make model error stand out.
-    3. **Prepare the inputs.** Quotes in noise units and whitening put all 63 inputs on one uncorrelated scale.
-    4. **Check calibration over many simulations.** Here five of six parameters are well calibrated; the initial-variance intervals are too wide rather than too narrow.
-    5. **Check single data sets against an exact reference.** Good calibration does not mean sharp posteriors: the network's intervals can be several times wider than the exact ones.
-    6. **Check the model, not only the network.** On the SPX quotes the noise multiplier hits its bound and Heston misses by many half-spreads: its smile is too flat in the deep put wing, most of all at short expiries. An amortized estimator is only reliable on data its simulator could have produced.
-    7. **Use: a posterior prices an unquoted product with a range.** Where the model is right, the range covers the true price. On SPX the range is tiny, but refitting Heston to different quotes moves the price many times more: the model, not its parameters, dominates the uncertainty.
-    8. **Misspecification shows what the next model needs.** Heston follows the SPX skew at the money but not the short-dated curvature and put wing.
-    """)
+def _(cards, mo, section):
+    mo.vstack([
+        section("Takeaways", "Eight points, in the order of the notebook.", kicker="Summary"),
+        cards([
+            ("1", "SBI turns a pricer into a posterior",
+             "Prior, pricer and noise model form a simulator. One training run gives an estimator that returns the "
+             "posterior for any 63 quotes in seconds."),
+            ("2", "Liquid quotes are very informative",
+             "Spreads of a few hundredths to a few tenths of a volatility point determine the Heston parameters "
+             "tightly and make model error stand out."),
+            ("3", "Prepare the inputs",
+             "Quotes in noise units and whitening put all 63 inputs on one uncorrelated scale."),
+            ("4", "Check calibration over many simulations",
+             "Here five of six parameters are well calibrated. The initial-variance intervals are too wide rather "
+             "than too narrow."),
+            ("5", "Check single data sets against an exact reference",
+             "Good calibration does not mean sharp posteriors. The network's intervals can be several times wider "
+             "than the exact ones."),
+            ("6", "Check the model, not only the network",
+             "On the SPX quotes the noise multiplier hits its bound and Heston misses by many half-spreads. Its "
+             "smile is too flat in the deep put wing, most of all at short expiries. An amortized estimator is only "
+             "reliable on data its simulator could have produced."),
+            ("7", "A posterior prices an unquoted product with a range",
+             "Where the model is right, the range covers the true price. On SPX the range is tiny, but refitting "
+             "Heston to different quotes moves the price many times more. The model, not its parameters, dominates "
+             "the uncertainty."),
+            ("8", "Misspecification shows what the next model needs",
+             "Heston follows the SPX skew at the money but not the short-dated curvature and put wing."),
+        ], numbered=True),
+    ])
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.accordion({"Running this notebook": mo.md(r"""
-    The pretrained estimator and its training data are distributed as a separate 465 MB archive; `lab/plans/training-data-guide.md` explains how to download and verify it. From `lab/`, start marimo with `HESTON_BUNDLE` set to the extracted folder (the one that contains `bundle.json`):
+    The pretrained estimator and its training data are distributed as a separate 465 MB archive. `lab/plans/training-data-guide.md` explains how to download and verify it. From `lab/`, start marimo with `HESTON_BUNDLE` set to the extracted folder (the one that contains `bundle.json`):
 
     ```sh
     HESTON_BUNDLE=/path/to/bundle pixi run --locked -e core-reference marimo edit notebooks/heston_spx_calibration.py
