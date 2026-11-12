@@ -1889,7 +1889,7 @@ def _(
     _axes[1].set_xscale("log")
     _axes[1].set_xticks(_days, [str(_d) for _d in _days], fontsize=7)
     _axes[1].minorticks_off()
-    _axes[1].set(xlabel="days to expiry", ylabel="implied-volatility points", title="Skew: deepest put minus at the money")
+    _axes[1].set(xlabel="days to expiry", ylabel="implied-volatility points", title="Put wing: deepest put minus at the money")
     _axes[1].legend(fontsize=7)
 
     _low, _high = BOUNDS[-1]
@@ -1920,7 +1920,7 @@ def _(
         _fig,
         mo.md(f"""
         - **The deep put wing** (left): the SPX quotes lie above the best Heston smile at the deepest put of {_where}, by {_grid[0, 0]:.1f}, {_grid[1, 0]:.1f} and {_grid[2, 0]:.1f} volatility points at {_days[0]}, {_days[1]} and {_days[2]} days, and by {_grid[3:, 0].min():.1f}–{_grid[3:, 0].max():.1f} beyond. The {int(_wing.sum())} puts with $\\delta<-3$ give {100 * _share:.0f}% of the squared misfit.
-        - **A skew too flat at short expiries** (middle): from the money to the deepest put, SPX implied volatility rises {_skew_market[0]:.1f} points at {_days[0]} days, the best Heston smile only {_skew_heston[0]:.1f}. The shortfall is {_gap[0]:.1f}, {_gap[1]:.1f} and {_gap[2]:.1f} points at {_days[0]}, {_days[1]} and {_days[2]} days, and {_gap[3:].min():.1f}–{_gap[3:].max():.1f} beyond.
+        - **A put wing too flat at short expiries** (middle): from the money to the deepest put, SPX implied volatility rises {_skew_market[0]:.1f} points at {_days[0]} days, the best Heston smile only {_skew_heston[0]:.1f}. The shortfall is {_gap[0]:.1f}, {_gap[1]:.1f} and {_gap[2]:.1f} points at {_days[0]}, {_days[1]} and {_days[2]} days, and {_gap[3:].min():.1f}–{_gap[3:].max():.1f} beyond.
         - **A compromise elsewhere:** even with a large $\\sigma_v={_vol_of_vol:.2f}$, above the Feller limit (Section 1), the fit misses the rest of the smile by up to {np.max(np.abs(_rest)):.1f} points{', in both directions' if _rest.min() < 0 < _rest.max() else ''}.
         - **Why $c$ sits at 2** (right): a half-spread is only {np.nanmin(_points):.3f}–{np.nanmax(_points):.2f} volatility points, so these misses amount to **{_c_hat:.1f} half-spreads** (root mean square). $c$ scales the noise of every quote by the same factor, so it cannot improve the fit, only measure it: the likelihood peaks at $c={_c_hat:.1f}$, far outside the prior range.
         - **The usual explanation:** one diffusive variance factor cannot build enough crash risk over a few days for a short-dated put wing this steep. Jumps (the Bates model) or rough volatility are the standard remedies; the pattern above fits this explanation, but neither model is tested here.
