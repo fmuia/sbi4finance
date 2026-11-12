@@ -178,6 +178,20 @@ def _(GRID, HestonGridPilot, json, np, plt, recipe, surface):
         vega = DISCOUNT * FORWARD * surface.bs_vega(np.log(STRIKE / FORWARD), MATURITY, implied)
         return 100 * sd_prices / vega
 
+    def forward_unit_pricer(log_moneyness, maturity, kind):
+        """A Heston pricer for contracts the market does not quote, in forward units (F = D = 1)."""
+        _n = np.size(log_moneyness)
+        return HestonGridPilot({"forward": np.ones(_n), "strike": np.exp(log_moneyness), "discount": np.ones(_n),
+                                "maturity": np.asarray(maturity, dtype=float), "option_type": np.asarray(kind),
+                                "mid": np.full(_n, 0.01), "half_spread": np.full(_n, 1e-4)},
+                               infer_c=True, c_bounds=(0.5, 2.0))
+
+    def atm_shape(log_moneyness, vols):
+        """At-the-money skew and curvature (Lecture 5): a quadratic in log-moneyness through the five nearest strikes."""
+        _near = np.argsort(np.abs(log_moneyness))[:5]
+        _c2, _c1, _ = np.polyfit(log_moneyness[_near], vols[_near], 2)
+        return _c1, 2 * _c2
+
     MARKET_IV = implied_vols(MID)[0]
     if recipe.fingerprint(task) != "c43458baf37617d5c2c7bf53b0dc8e3760d0c91efc2eb307c3141670a29fa077":
         raise ValueError("the contract list differs from the one the pretrained estimator was trained on")
@@ -200,7 +214,9 @@ def _(GRID, HestonGridPilot, json, np, plt, recipe, surface):
         QUOTES,
         REF_VOL,
         TEXT_LABELS,
+        atm_shape,
         design,
+        forward_unit_pricer,
         implied_vols,
         pilot,
         task,
@@ -337,7 +353,7 @@ def _(mo, workflow):
 
     ### Heston dynamics
 
-    The variance $V_t$ follows its own random process, correlated with the price. With $\rho<0$, volatility rises when prices fall, which produces the **skew** of the smile.
+    The variance $V_t$ follows its own random process, correlated with the price:
 
     $$
     \frac{dF_t}{F_t} = \sqrt{V_t}\,dW_t^F,\qquad
@@ -362,6 +378,161 @@ def _(mo, workflow):
 
 
 @app.cell(hide_code=True)
+def _(mo):
+    _card = {"border": "1px solid #d9d8d0", "border-radius": "10px", "padding": "10px 14px", "height": "100%"}
+    _features = [mo.md(_text).style(_card) for _text in (
+        r"""
+        **1. Mean reversion sets the term structure**
+
+        $$\mathbb E[V_t]=v_\infty+(v_0-v_\infty)\,e^{-\kappa t}$$
+
+        - $v_0$ sets short expiries, $v_\infty$ long ones.
+        - $\kappa$ sets the speed: a shock halves in $\ln 2/\kappa$ years.
+
+        *Used in:* Section 4 (average and forward variance), Section 6 (the 5-year option).
+        """,
+        r"""
+        **2. $\rho$ tilts the smile, $\sigma_v$ curves it**
+
+        - $\rho<0$: volatility rises when prices fall, so puts cost more: the **skew**.
+        - $\sigma_v$: a more random variance fattens both tails: the **curvature**, and a larger skew.
+
+        *Used in:* Section 5.4 and the end of Section 6, where Heston misses the SPX quotes.
+        """,
+        r"""
+        **3. The short-expiry skew has a ceiling**
+
+        $$|\psi(T)|\;\longrightarrow\;\frac{|\rho|\,\sigma_v}{4\sqrt{v_0}}\quad\text{as } T\to0$$
+
+        - $\psi(T)$: the **at-the-money skew**, the slope of implied volatility in $\ln(K/F)$ at the money.
+        - Below some expiry, the skew stops growing.
+
+        *Used in:* Section 4 (stressed case), the end of Section 6 (does the SPX skew obey it?).
+        """,
+        r"""
+        **4. Prices in closed form**
+
+        - $(F_t,V_t)$ is a Markov state and the model is affine: its characteristic function is known exactly.
+        - All 63 prices take milliseconds, so the **exact posterior** is affordable.
+
+        *Used in:* Section 5.3 (the PyMC reference), the end of Section 6 (rough Bergomi loses this).
+        """)]
+    _row = lambda _pair: mo.hstack(_pair, widths="equal", gap=1, align="stretch")
+    mo.vstack([
+        mo.md("### Four features to keep in mind\n\nFour properties of Heston return later in the notebook:"),
+        _row(_features[:2]),
+        _row(_features[2:]),
+    ], gap=1)
+    return
+
+
+@app.cell(hide_code=True)
+def _(
+    BOUNDS,
+    DELTA,
+    EXPIRY_DAYS,
+    REF_VOL,
+    TRUTHS,
+    atm_shape,
+    forward_unit_pricer,
+    mo,
+    np,
+    plots,
+    plt,
+    surface,
+):
+    _base = TRUTHS["synthetic-market-like"]  # (v0, kappa, v_inf, sigma_v, rho, c)
+    _v0, _kappa, _v_inf, _xi, _rho, _ = _base
+    _styles = [dict(color=plots.SERIES[0]), dict(color=plots.INK, lw=1.6), dict(color=plots.SERIES[1])]
+
+    def _vary(_index, _values):
+        """The market-like parameters with one entry replaced by each value in turn."""
+        _rows = np.tile(_base, (len(_values), 1))
+        _rows[:, _index] = _values
+        return _rows
+
+    # (a) Feature 1: the expected variance, in closed form.
+    _days = np.geomspace(1, 730, 200)
+    _starts = [_v0, _v_inf, min(2 * _v_inf, BOUNDS[0, 1])]
+    _expected = [_v_inf + (_start - _v_inf) * np.exp(-_kappa * _days / 365) for _start in _starts]
+    _half_life = 365 * np.log(2) / _kappa
+
+    # (b, c) Feature 2: the 30-day smile across the quoted range of moneyness.
+    _smile_t = 30 / 365
+    _d = np.linspace(DELTA.min(), DELTA.max(), 40)
+    _k = _d * REF_VOL * np.sqrt(_smile_t)
+    _kind = np.where(_d <= 0, "put", "call")
+    _smile_pricer = forward_unit_pricer(_k, np.full(_d.size, _smile_t), _kind)
+    _smile = lambda _rows: [100 * surface.implied_vol(_smile_pricer.prices(_row)[None], _k, np.full(_d.size, _smile_t),
+                                                      _kind)[0] for _row in _rows]
+    _rhos = [-0.3, _rho, -0.9]
+    _xis = [_xi / 2, _xi, min(1.5 * _xi, BOUNDS[3, 1])]
+    _rho_smiles, _xi_smiles = _smile(_vary(4, _rhos)), _smile(_vary(3, _xis))
+
+    # (d) Feature 3: the at-the-money skew from one day to one year, measured as in Lecture 5.
+    _grid_t = np.geomspace(1 / 365, 1.0, 36)
+    _grid_d = np.array([-1.25, -0.5, 0.0, 0.5, 1.0])
+    _tt, _dd = np.meshgrid(_grid_t, _grid_d, indexing="ij")
+    _gk, _gt, _gkind = (_dd * REF_VOL * np.sqrt(_tt)).ravel(), _tt.ravel(), np.where(_dd.ravel() <= 0, "put", "call")
+    _grid_iv = surface.implied_vol(forward_unit_pricer(_gk, _gt, _gkind).prices(_base)[None], _gk, _gt,
+                                   _gkind)[0].reshape(_tt.shape)
+    _skew = np.abs([atm_shape(_grid_d * REF_VOL * np.sqrt(_t), _grid_iv[_i])[0] for _i, _t in enumerate(_grid_t)])
+    _ceiling = abs(_rho * _xi / (4 * np.sqrt(_v0)))
+
+    _fig, _axes = plt.subplots(2, 2, figsize=(10.8, 6.2), constrained_layout=True)
+    _ax = _axes[0, 0]
+    for _start, _curve, _style in zip(_starts, _expected, _styles):
+        _ax.plot(_days, 100 * np.sqrt(_curve), label=f"$\\sqrt{{v_0}}$ = {100 * np.sqrt(_start):.0f}%", **_style)
+    _ax.axhline(100 * np.sqrt(_v_inf), color=plots.MUTED, ls="--", lw=1)
+    _ax.axvline(_half_life, color=plots.MUTED, ls=":", lw=1)
+    _ax.text(_half_life * 1.08, 100 * np.sqrt(_starts[-1]), "half-life", fontsize=7, color=plots.MUTED, va="top")
+    _ax.set(xscale="log", xlabel="days ahead", ylabel="volatility (%)",
+            title=f"(a) Expected variance, as a volatility: towards $\\sqrt{{v_\\infty}}$ = {100 * np.sqrt(_v_inf):.0f}%")
+    for _ax, _values, _curves, _symbol, _title in (
+            (_axes[0, 1], _rhos, _rho_smiles, r"\rho", r"(b) $\rho$ tilts the 30-day smile"),
+            (_axes[1, 0], _xis, _xi_smiles, r"\sigma_v", r"(c) $\sigma_v$ curves the 30-day smile")):
+        for _value, _curve, _style in zip(_values, _curves, _styles):
+            _ax.plot(_d, _curve, label=f"${_symbol}$ = {_value:.2f}".replace("-", "−"), **_style)
+        _ax.set(xlabel="standardized moneyness δ", ylabel="implied volatility (%)", title=_title)
+    _ax = _axes[1, 1]
+    _ax.axvspan(min(EXPIRY_DAYS), max(EXPIRY_DAYS), color=plots.GRID, lw=0)
+    _ax.text(np.sqrt(min(EXPIRY_DAYS) * max(EXPIRY_DAYS)), 1.12 * _ceiling, "quoted expiries", fontsize=7,
+             color=plots.MUTED, ha="center")
+    _ax.plot(365 * _grid_t, _skew, **_styles[1], label="market-like parameters")
+    _ax.axhline(_ceiling, color=plots.MUTED, ls=":", lw=1, label=r"ceiling $|\rho|\sigma_v/(4\sqrt{v_0})$")
+    _ax.set(xscale="log", yscale="log", xlabel="days to expiry", ylabel="|at-the-money skew|", ylim=(None, 1.35 * _ceiling),
+            title="(d) The skew levels off at short expiries")
+    for _ax in _axes.flat:
+        _ax.title.set_fontsize(9)
+        _ax.legend(fontsize=7)
+    for _ax in (_axes[0, 0], _axes[1, 1]):
+        _ax.set_xticks([1, 7, 30, 90, 365] + ([730] if _ax is _axes[0, 0] else []))
+        _ax.set_xticklabels([str(_t) for _t in _ax.get_xticks()])
+        _ax.minorticks_off()
+    _axes[1, 1].set_yticks([0.3, 0.5, 1, 2], labels=["0.3", "0.5", "1", "2"])
+
+    _deep = lambda _curves: (_curves[0][0], _curves[-1][0])
+    _call = lambda _curves: (_curves[0][-1], _curves[-1][-1])
+    _atm = lambda _curves: tuple(float(np.interp(0.0, _d, _c)) for _c in (_curves[0], _curves[-1]))
+    _at = lambda _day: float(np.interp(np.log(_day), np.log(365 * _grid_t), _skew))
+    _near = 365 * _grid_t[_skew >= 0.9 * _ceiling].max()
+    _minus = lambda _x: f"{_x:.2f}".replace("-", "−")
+    _wings = f"the put at δ = {_d[0]:.1f}".replace("-", "−"), f"the call at δ = {_d[-1]:.1f}"
+    mo.vstack([
+        mo.md("**Features 1–3 in pictures.** The market-like parameters of Section 4 (black), one parameter changed "
+              "at a time:"),
+        _fig,
+        mo.md(f"""
+        - **(a) Mean reversion:** the expected variance moves from $v_0$ to $v_\\infty$ and covers half the distance in {_half_life:.0f} days ($\\ln 2/\\kappa$). Implied volatilities sit below these curves: a random variance lowers at-the-money volatility (Lecture 10, Figure 10.6).
+        - **(b) Correlation:** from $\\rho={_minus(_rhos[0])}$ to ${_minus(_rhos[-1])}$, {_wings[0]} rises from {_deep(_rho_smiles)[0]:.1f}% to {_deep(_rho_smiles)[1]:.1f}% and {_wings[1]} falls from {_call(_rho_smiles)[0]:.1f}% to {_call(_rho_smiles)[1]:.1f}%.
+        - **(c) Volatility of variance:** from $\\sigma_v={_xis[0]:.2f}$ to ${_xis[-1]:.2f}$, {_wings[0]} rises from {_deep(_xi_smiles)[0]:.1f}% to {_deep(_xi_smiles)[1]:.1f}% and the at-the-money level falls from {_atm(_xi_smiles)[0]:.1f}% to {_atm(_xi_smiles)[1]:.1f}%.
+        - **(d) Short-expiry skew:** {_at(365):.2f} at one year, {_at(30):.2f} at 30 days, {_at(7):.2f} at 7 days. Below {_near:.0f} days it stays within 10% of the ceiling, {_ceiling:.2f}.
+        """),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
 def _(NAMES, TRUTHS, mo, reference_summary):
     _truth = TRUTHS["synthetic-market-like"]
     _market = {_n: reference_summary["cases"]["market"]["parameters"][_n]["regenerated_q05_q50_q95"][1] for _n in NAMES}
@@ -374,7 +545,12 @@ def _(NAMES, TRUTHS, mo, reference_summary):
         - Rates and dividends enter only through $D$ and $F$, read from the market by put–call parity. Divided by $D\,F$, prices are in **forward units**: they depend only on $\ln(K/F)$, $T$ and the Heston parameters, so one parameter set prices every expiry.
         - The index's real-world expected return plays no role. Estimating it would need a time series of prices and a physical-measure model.
         """),
-        "How option prices are computed: the Fourier pricer": mo.md(r"""
+        "Feature 2 in depth: a large σᵥ and the Feller condition": mo.md(rf"""
+        - A steep equity skew needs a large $\sigma_v$ (feature 2), and a large $\sigma_v$ breaks the **Feller condition** $2\kappa v_\infty\ge\sigma_v^2$.
+        - If the condition holds, the variance never reaches zero. Otherwise it can touch zero and is pushed straight back up by the drift. The model and the pricer are valid either way, and the prior does not impose the condition.
+        - The market-like parameters of Section 4 violate it ($\sigma_v^2={_like[1]:.1f}$ against $2\kappa v_\infty={_like[0]:.2f}$), and so do the SPX market posterior medians ($\sigma_v^2={_fit[1]:.1f}$ against $2\kappa v_\infty={_fit[0]:.2f}$): the posterior fits the SPX skew with a volatility of variance far above the Feller limit.
+        """),
+        "Feature 4 in depth: the Fourier pricer": mo.md(r"""
         - Heston is **affine**: the characteristic function $\varphi(u)=\mathbb E^{\mathbb Q}\big[e^{iu\ln(F_T/F_0)}\big]$ is known in closed form, so a European option needs one one-dimensional integral (Lewis, 2001).
         - The pricer uses a **control-variate** form: the Black–Scholes price $C_{\mathrm{BS}}$ with the same expected average variance, plus the integral of the difference of the two characteristic functions (puts get the same correction):
 
@@ -383,10 +559,6 @@ def _(NAMES, TRUTHS, mo, reference_summary):
         - **Why the control variate:** for very cheap options the plain formula is a small difference of two large numbers; this form avoids the cancellation.
         - **Accuracy:** Gauss–Legendre quadrature, with nodes and interval doubled until two successive steps agree to within 2% of the smallest noise standard deviation the prior allows for that contract ($c=0.5$, that is 1% of its half-spread).
         - **Speed:** milliseconds for all 63 options. The prior predictive check in Section 2 times 1,000 simulated data sets.
-        """),
-        "The Feller condition": mo.md(rf"""
-        - If $2\kappa v_\infty\ge\sigma_v^2$, the variance never reaches zero. Otherwise it can touch zero and is pushed straight back up by the drift. The model and the pricer are valid either way, and the prior does not impose the condition.
-        - The market-like parameters of Section 4 violate it ($\sigma_v^2={_like[1]:.1f}$ against $2\kappa v_\infty={_like[0]:.2f}$), and so do the SPX market posterior medians ($\sigma_v^2={_fit[1]:.1f}$ against $2\kappa v_\infty={_fit[0]:.2f}$): the posterior fits the SPX skew with a volatility of variance far above the Feller limit.
         """),
     })
     return
@@ -583,10 +755,16 @@ def _(
             "the simulator prices options exactly and never draws paths.\n"
             f"- **Quotes:** at this expiry the Heston smile runs from {_atm:.1f}% at the money to {_deep:.1f}% at the "
             f"deepest put. The quote errors are at most {np.nanmax(_errors):.2f} volatility points"
-            f"{': invisible on the smile' if np.nanmax(_errors) < 0.01 * np.ptp(_axes[1, 0].get_ylim()) else ''}.\n"
-            "- **Try:** raise $\\sigma_v$ or make $\\rho$ more negative for a steeper skew; set $v_0$ above $v_\\infty$ for "
-            "short expiries above long ones; lower $\\kappa$ to slow the return to $v_\\infty$; raise $c$ for larger "
-            "quote errors. How close can you get to the SPX market (grey)?")
+            f"{': invisible on the smile' if np.nanmax(_errors) < 0.01 * np.ptp(_axes[1, 0].get_ylim()) else ''}.\n\n"
+            "**Try**, feature by feature (Section 1), then see how close you can get to the SPX market (grey):\n\n"
+            "| Move | What you see | Feature |\n"
+            "|:---|:---|:---:|\n"
+            "| set $v_0$ above $v_\\infty$, then switch expiry | short expiries above long ones | 1 |\n"
+            "| lower $\\kappa$ | a slower return to $v_\\infty$ | 1 |\n"
+            "| make $\\rho$ more negative | a steeper skew | 2 |\n"
+            "| raise $\\sigma_v$ | more curvature | 2 |\n"
+            "| raise $v_0$ at the 7-day expiry | a flatter skew: its ceiling falls like $1/\\sqrt{v_0}$ | 3 |\n"
+            "| raise $c$ | larger quote errors | noise |")
     mo.vstack([_fig, mo.md(_text)])
     return
 
@@ -1009,7 +1187,7 @@ def _(CASES, CASE_TITLES, REFERENCES, json, mo):
         })
     mo.accordion({"How the PyMC reference is computed": mo.vstack([
         mo.md(r"""
-        - **Same posterior as the network:** the same uniform prior and the exact likelihood $y_i\sim\mathcal N\big(P_i(\boldsymbol\theta),(c\,h_i)^2\big)$, with prices from the Fourier pricer of Section 1.
+        - **Same posterior as the network:** the same uniform prior and the exact likelihood $y_i\sim\mathcal N\big(P_i(\boldsymbol\theta),(c\,h_i)^2\big)$, with prices from the Fourier pricer of Section 1 (feature 4).
         - **Sampler:** PyMC's `DEMetropolisZ`, a gradient-free Metropolis sampler whose proposals are differences of past draws. The likelihood calls the pricer as a black box without gradients, which rules out NUTS.
         - **Runs:** four chains, started from maximum-likelihood (Powell) fits and dispersed points, never from the true parameters or the network. A short run of 2,000 tuning steps and 2,000 draws comes first; when it fails the checks, a long run of 6,000 and 12,000 follows.
         - **Checks:** R-hat at most 1.01 and bulk and tail effective sample sizes of at least 400 for every parameter; prices accurate to 2% of the smallest noise standard deviation.
@@ -1177,7 +1355,8 @@ def _(
                      f"$\\sqrt{{v_0}}={100 * np.sqrt(_v0):.0f}\\%$ is above the long-run $\\sqrt{{v_\\infty}}="
                      f"{100 * np.sqrt(_v_inf):.0f}\\%$, and the large $\\sigma_v={_xi:.2f}$ pulls long-dated at-the-money "
                      f"volatility further down. Deep puts are at {min(_deep):.0f}–{max(_deep):.0f}%.\n"
-                     "- **Why the curves cross:** Heston's short-dated skew per unit of log-moneyness tends to a constant, "
+                     "- **Why the curves cross:** Heston's short-dated skew per unit of log-moneyness tends to a "
+                     "constant (feature 3, Section 1), "
                      f"$\\rho\\sigma_v/(4\\sqrt{{v_0}})={_rho * _xi / (4 * np.sqrt(_v0)):.2f}$, and $\\delta$ rescales "
                      "log-moneyness by $\\sqrt T$, so short-dated smiles are flat in $\\delta$. From the money to the deepest "
                      f"put they rise {_case_rise[0]:.1f} points at {EXPIRY_DAYS[0]} days and {_case_rise[1]:.1f} at "
@@ -1262,7 +1441,7 @@ def _(
         _corner,
         mo.md("\n".join(_lines)),
         mo.md("**Derived quantities.** Each posterior draw gives an expected average variance over a horizon, the fair "
-              "value of a variance swap, shown here as a volatility:"),
+              "value of a variance swap, shown here as a volatility. It is feature 1 of Section 1, averaged over the horizon:"),
         mo.ui.table(_product_rows, selection=None, pagination=False),
     ])
     return
@@ -1851,9 +2030,9 @@ def _(
     DELTA,
     EXPIRY,
     EXPIRY_DATES,
-    HestonGridPilot,
     MARKET_IV,
     REF_VOL,
+    forward_unit_pricer,
     implied_vols,
     mo,
     neural_draws,
@@ -1868,9 +2047,7 @@ def _(
     _T = np.array([_v[0] for _v in _products.values()])
     _k = np.array([_v[1] * REF_VOL * np.sqrt(_v[0]) for _v in _products.values()])
     _kind = np.array([_v[2] for _v in _products.values()])
-    _pricer = HestonGridPilot({"forward": np.ones(3), "strike": np.exp(_k), "discount": np.ones(3), "maturity": _T,
-                               "option_type": _kind, "mid": np.full(3, 0.1), "half_spread": np.full(3, 1e-4)},
-                              infer_c=True, c_bounds=(0.5, 2.0))
+    _pricer = forward_unit_pricer(_k, _T, _kind)
     _vol = lambda _theta: 100 * surface.implied_vol(_pricer.prices(_theta)[None], _k, _T, _kind)[0]
     _rng = np.random.default_rng(20261114)
     _rows, _widths, _gaps, _network_widths = [], [], [], []
@@ -1913,7 +2090,7 @@ def _(
         f"contracts.{_network_text}\n"
         f"- **The 5-year option is priced about as tightly as the 2-year one** (widest ranges {_widths[:, 2].max():.2f} "
         f"against {_widths[:, 0].max():.2f} points), although no quote reaches beyond eleven months. Heston ties every "
-        "maturity to the same five parameters, so its extrapolation looks certain; that certainty comes from the model, "
+        "maturity to the same five parameters (feature 1, Section 1), so its extrapolation looks certain; that certainty comes from the model, "
         "not from the quotes.\n"
         f"- **Model error is far larger:** on the SPX quotes, the point-estimate Heston smile misses the market by up to "
         f"{_miss[_worst]:.1f} volatility points ({EXPIRY_DATES[EXPIRY[_worst]]}, δ = {DELTA[_worst]:.1f}), "
@@ -2020,7 +2197,7 @@ def _(
         f"{_grid[:, 0].max():.1f} volatility points.\n"
         f"4. The fit needs extreme parameters: $\\sigma_v={_vol_of_vol:.2f}$, so $\\sigma_v^2={_vol_of_vol ** 2:.1f}$ "
         f"against $2\\kappa v_\\infty={2 * _theta[NAMES.index('kappa')] * _theta[NAMES.index('theta')]:.2f}$ (Feller "
-        "condition, Section 1).\n\n"
+        "condition, feature 2 in Section 1).\n\n"
         "No Heston parameters and no better inference remove them: the model lacks a feature of the data. The two "
         "figures below show where the misses are, and which feature is missing.")
     mo.vstack([
@@ -2044,10 +2221,11 @@ def _(
     DELTA,
     EXPIRY,
     EXPIRY_DAYS,
-    HestonGridPilot,
     MARKET_IV,
     MATURITY,
     REF_VOL,
+    atm_shape,
+    forward_unit_pricer,
     implied_vols,
     market_fit,
     mo,
@@ -2062,15 +2240,8 @@ def _(
     _days = np.asarray(EXPIRY_DAYS)
     _k = DELTA * REF_VOL * np.sqrt(MATURITY)  # log-moneyness ln(K/F)
     _fit_iv = implied_vols(market_fit)[0]
-
-    def _shape(_kk, _vols):
-        """At-the-money skew and curvature: a quadratic in log-moneyness through the five quotes nearest the money."""
-        _near = np.argsort(np.abs(_kk))[:5]
-        _c2, _c1, _ = np.polyfit(_kk[_near], _vols[_near], 2)
-        return _c1, 2 * _c2
-
-    _spx = np.array([_shape(_k[EXPIRY == _e], MARKET_IV[EXPIRY == _e]) for _e in range(len(_days))])
-    _fit = np.array([_shape(_k[EXPIRY == _e], _fit_iv[EXPIRY == _e]) for _e in range(len(_days))])
+    _spx = np.array([atm_shape(_k[EXPIRY == _e], MARKET_IV[EXPIRY == _e]) for _e in range(len(_days))])
+    _fit = np.array([atm_shape(_k[EXPIRY == _e], _fit_iv[EXPIRY == _e]) for _e in range(len(_days))])
 
     # The same fit at maturities the market does not quote: one day to one year, five strikes around the money.
     _grid_t = np.geomspace(1 / 365, 1.0, 36)
@@ -2078,11 +2249,9 @@ def _(
     _tt, _dd = np.meshgrid(_grid_t, _grid_d, indexing="ij")
     _gk, _gt = (_dd * REF_VOL * np.sqrt(_tt)).ravel(), _tt.ravel()
     _gkind = np.where(_dd.ravel() <= 0, "put", "call")
-    _grid_pricer = HestonGridPilot({"forward": np.ones(_gk.size), "strike": np.exp(_gk), "discount": np.ones(_gk.size),
-                                    "maturity": _gt, "option_type": _gkind, "mid": np.full(_gk.size, 0.01),
-                                    "half_spread": np.full(_gk.size, 1e-4)}, infer_c=True, c_bounds=(0.5, 2.0))
-    _grid_iv = surface.implied_vol(_grid_pricer.prices(_theta)[None], _gk, _gt, _gkind)[0].reshape(_tt.shape)
-    _curve = np.array([_shape(_grid_d * REF_VOL * np.sqrt(_t), _grid_iv[_i]) for _i, _t in enumerate(_grid_t)])
+    _grid_iv = surface.implied_vol(forward_unit_pricer(_gk, _gt, _gkind).prices(_theta)[None], _gk, _gt,
+                                   _gkind)[0].reshape(_tt.shape)
+    _curve = np.array([atm_shape(_grid_d * REF_VOL * np.sqrt(_t), _grid_iv[_i]) for _i, _t in enumerate(_grid_t)])
     _ceiling = abs(_rho * _xi / (4 * np.sqrt(_v0)))  # Heston's short-maturity skew (Lecture 10, Section 10.8)
     _power = lambda _x: np.polyfit(np.log(_days / 365), np.log(np.abs(_x)), 1)
 
@@ -2133,7 +2302,7 @@ def _(
         f"{100 * np.max(np.abs(_fit[:, 0] / _spx[:, 0] - 1)):.0f}%, with nearly the same power law "
         f"({_minus(_power(_fit[:, 0])[0])} against {_minus(_b)}). But its {_days[0]}-day skew is already "
         f"{100 * abs(_fit[0, 0]) / _ceiling:.0f}% of Heston's ceiling $|\\rho\\sigma_v|/(4\\sqrt{{v_0}})={_ceiling:.2f}$: "
-        "below a week it stops growing (Lecture 10), while a power law keeps growing.\n"
+        "below a week it stops growing (feature 3, Section 1), while a power law keeps growing.\n"
         f"- **Curvature** (middle): the SPX smile gets more curved as maturity shortens: {_spx[2, 1]:.1f}, "
         f"{_spx[1, 1]:.1f} and {_spx[0, 1]:.1f} at {_days[2]}, {_days[1]} and {_days[0]} days. The fit's curvature "
         f"peaks at {_days[_peak]} days ({_fit[_peak, 1]:.1f}) and falls to {_fit[0, 1]:.1f} at {_days[0]} days"
