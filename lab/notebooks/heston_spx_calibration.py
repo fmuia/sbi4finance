@@ -816,7 +816,7 @@ def _(NAMES, bf):
     return (build_workflow,)
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(mo):
     mo.md(r"""
     **Training the pretrained estimator**, as recorded in its training protocol:
@@ -833,7 +833,9 @@ def _(mo):
     history = workflow.fit_offline(data=data["train"], validation_data=data["validation"], epochs=300, batch_size=256)
     ```
 
-    The parameters are standardized but not mapped onto their bounded prior ranges, so a small fraction of posterior draws falls just outside the prior; they are kept, not clipped. The button below runs the same loop at a small scale: 3,000 simulations, 40 epochs, then BayesFlow's own diagnostics.
+    **Note**: the parameters are standardized but not mapped onto their bounded prior ranges, so a small fraction of posterior draws falls just outside the prior. Such draws are kept, not clipped.
+
+    The button below runs the same loop at a small scale: 3,000 simulations, 40 epochs, then BayesFlow's own diagnostics.
     """)
     return
 
@@ -1001,7 +1003,7 @@ def _(CASES, CASE_TITLES, REFERENCES, json, mo):
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(BUNDLE, BUNDLE_HELP, ESTIMATOR, delivery, mo, recipe, task, time):
     estimator = None
     if BUNDLE is None:
@@ -1012,8 +1014,7 @@ def _(BUNDLE, BUNDLE_HELP, ESTIMATOR, delivery, mo, recipe, task, time):
         if recipe.fingerprint(estimator.task) != recipe.fingerprint(task):
             raise ValueError("the pretrained estimator was trained for a different contract list")
         _view = mo.md(f"Pretrained estimator loaded in {time.perf_counter() - _started:.1f} s "
-                      f"({_record['train_rows']:,} simulated data sets, {_record['native_epoch']} epochs); "
-                      "all of its files passed their SHA-256 checks.")
+                      f"({_record['train_rows']:,} simulated data sets, {_record['native_epoch']} epochs).")
     _view
     return (estimator,)
 
