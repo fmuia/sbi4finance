@@ -57,7 +57,7 @@
     "64": "queued_after_all_smaller_fits"
   },
   "updated_utc": "2026-11-12T19:41:40.935008+00:00",
-  "status": "dimension2_extension_running",
+  "status": "complete",
   "completed_fits": {
     "32": {
       "status": "complete",
@@ -113,12 +113,23 @@
       "best_model_sha256": "d7c218ce6d5244e5dd6a3e76d9abaebdc41c92cd22e7d1df90f4360fc57473c1",
       "primary_evaluation_complete": true,
       "secondary_evaluation_complete": true
+    },
+    "2": {
+      "status": "complete",
+      "epochs": 300,
+      "training_seconds": 1603.0649435408413,
+      "best_epoch": 218,
+      "optimizer_updates": 351600,
+      "model_sha256": "fe92efa368bc4708b4a42e85aea2a9b09eb9594ac20f0f5ee1d3d719ecdc4513",
+      "best_model_sha256": "82ee576b1e1ca264325d86ac400982583aaefc3ef6efcd6bfc9a69412df04893",
+      "primary_evaluation_complete": true,
+      "secondary_evaluation_complete": true
     }
   },
   "conclusion": "8\u201364 preserve similar pooled recovery; 4 loses substantial information. Every conditional panel remains outside the declared fidelity criteria. One seed per dimension; no sufficient-statistic claim.",
   "initial_screen_status": "complete",
   "dimension2_extension": {
-    "status": "running",
+    "status": "complete",
     "requested_by_user": true,
     "same_recipe_as_initial_screen": true,
     "train_rows": 300000,
@@ -129,6 +140,10 @@
     "primary": "final300",
     "secondary": "native validation minimum",
     "automatic_local_report_export": true,
-    "interpretation": "Empirical severe-compression test, with no universal phase-transition or below-eight cutoff claim; dimension6 and replication remain untested."
+    "interpretation": "Empirical severe-compression test, with no universal phase-transition or below-eight cutoff claim; dimension6 and replication remain untested.",
+    "best_epoch": 218,
+    "training_seconds": 1603.0649435408413,
+    "both_endpoint_evaluations_complete": true,
+    "automatic_local_report_export_complete": true
   }
 }

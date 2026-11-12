@@ -85,5 +85,16 @@
     "secondary_endpoints_optional": 5,
     "figures_visually_checked_at_report_width": 3,
     "presentation_refresh_report_tests": 4
+  },
+  "dimension2_completion": {
+    "epochs": 300,
+    "evaluated_checkpoints": 2,
+    "independent_saved_data_audit_passed": true,
+    "notebook_endpoint_count": 13,
+    "notebook_cells": 18,
+    "notebook_export_errors": 0,
+    "notebook_log_sha256": "0a900a51e1083f4337da11a7ec73ef156200db9b639b2fb1373b29c89cea9497",
+    "runtime_sources_unchanged": true,
+    "release_checks_passed": true
   }
 }

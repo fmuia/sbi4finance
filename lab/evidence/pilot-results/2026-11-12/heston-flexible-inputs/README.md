@@ -82,7 +82,7 @@ from the saved raw draws reproduces the metrics. The bank, frozen ZCA, priors,
 noise, seed, posterior head, optimizer schedule, 351,600 updates and 90 million
 presentations match the direct baseline.
 
-The initial five fits and all ten checkpoint evaluations completed successfully. The
+All six fits and all twelve checkpoint evaluations completed successfully. The
 following table uses final epoch 300 only, on the same reused 512-case population.
 
 | Representation | SBC screens | `c` RMSE | Initial-variance RMSE | Median `c` 90% width | `c` 90% coverage |
@@ -93,6 +93,7 @@ following table uses final epoch 300 only, on the same reused 512-case populatio
 | MLP 16 | 5/6 | 0.13666 | 0.000126 | 0.4605 | 89.45% |
 | MLP 8 | 6/6 | 0.13593 | 0.000131 | 0.4494 | 90.04% |
 | MLP 4 | 6/6 | 0.43967 | 0.007525 | 1.3472 | 90.82% |
+| MLP 2 | 6/6 | 0.43945 | 0.018809 | 1.3505 | 90.63% |
 
 **The observed deterioration is between 8 and 4 dimensions in this recipe.**
 Eight is the smallest tested representation preserving similar pooled recovery
@@ -127,13 +128,18 @@ outcomes remain available separately in the report and notebook.
 **SetTransformer and masking training remain held while this comparison is assessed.**
 The existing design previews remain available. No Bergomi allocation is changed.
 
-## Requested dimension-two extension
+## Completed dimension-two extension
 
-A fresh two-dimensional summary fit is running with the identical 300k stored
-observations, 300 epochs, seed 9011, two 128-wide SiLU summary layers, posterior
-head and optimization schedule. Final and validation-minimum checkpoints are
-evaluated separately; the local report is updated after both finish. This tests
-a more severe bottleneck without changing the task or selecting a desired
-outcome. The observed 8-to-4 deterioration is an empirical result for this
-recipe, not proof of a universal phase transition: dimension 6 is untested and
+The two-dimensional summary completed the identical 300k/300-epoch recipe in
+26.7 minutes; training, both endpoint evaluations and report export took about
+31 minutes overall. Its validation minimum was epoch 218.
+
+The primary `c` RMSE is 0.43945 and its median 90% width is 1.35048, essentially
+the prior's 1.35 width. Initial-variance RMSE rises to 0.01881, about 143 times
+the dimension-8 value. The validation-minimum checkpoint retains the deterioration.
+The final checkpoint nevertheless passes all six marginal SBC screens, showing
+why calibration alone does not establish information retention.
+
+This strengthens the severe-compression example without proving a universal
+phase transition or failure of every size below 8: dimension 6 is untested and
 independent-seed confirmation remains pending. Masking stays on hold.

@@ -1,11 +1,11 @@
 {
-  "endpoint_count": 11,
+  "endpoint_count": 13,
   "format": "heston_flexible_report_v1",
   "inline_svg_count": 3,
   "new_pricing": false,
   "new_sampling": false,
-  "report_bytes": 413060,
-  "report_sha256": "b28fdd9d5b6b2456f6baa904085ea1eee2f197db3804425b68dab9955fb1d817",
+  "report_bytes": 462989,
+  "report_sha256": "c69bc2f7bdd7dfa9fb1bc2047bafb19758c7aa1ad3a5609b647175e8bdbcbcea",
   "scientific_acceptance": false,
-  "source_study_sha256": "5063c97f0fec34da34fe67cb91ab8755ab3950874fa3ebef694cd5b278a6820e"
+  "source_study_sha256": "56e73e0767559a85700f0a9576de30ab84e876b7e8782efb69beca535841e678"
 }

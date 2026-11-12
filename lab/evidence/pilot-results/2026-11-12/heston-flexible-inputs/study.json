@@ -133,6 +133,30 @@
       "status": "complete",
       "summary_dim": 64,
       "train_rows": 300000
+    },
+    {
+      "directory": "runs/mlp2-seed9011/final",
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "label": "MLP 2 \u2014 final 300 (primary)",
+      "model_available": false,
+      "representation": "mlp",
+      "smoke_test_only": false,
+      "status": "complete",
+      "summary_dim": 2,
+      "train_rows": 300000
+    },
+    {
+      "directory": "runs/mlp2-seed9011/best",
+      "endpoint": "secondary_validation_minimum",
+      "epoch": 218,
+      "label": "MLP 2 \u2014 validation minimum 218 (secondary)",
+      "model_available": false,
+      "representation": "mlp",
+      "smoke_test_only": false,
+      "status": "complete",
+      "summary_dim": 2,
+      "train_rows": 300000
     }
   ],
   "scientific_acceptance": false,
