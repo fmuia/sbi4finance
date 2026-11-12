@@ -1,0 +1,243 @@
+{
+  "format": "bergomi_simulator_pipeline_audit_v1",
+  "date": "2026-11-11",
+  "scope": "Local read-only code investigation plus bounded startup and synthetic-summary IO measurements; no financial simulations, production parameter rows, source/queue mutations, uploads or pushes.",
+  "producer_base_commit": "41478c5",
+  "measurement_environment": {
+    "platform": "local Mac; existing core-reference Python environment",
+    "working_directory": "lab/",
+    "python_executable": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+    "pythonpath": [
+      ".",
+      "src",
+      "../tutorial/src"
+    ],
+    "thread_environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1"
+    },
+    "limitations": [
+      "Filesystem and import caches were not flushed.",
+      "Local timings do not measure Oscar CPU, shared-filesystem latency or current campaign throughput.",
+      "No active campaign or repair processes were modified."
+    ]
+  },
+  "setup_measurements": {
+    "method": "Two fresh Python subprocesses import overnight bank and Budget, read committed production plan, validate it, and compute ten parameter specs/curve tables; no pricing.",
+    "samples": [
+      {
+        "process_wall_seconds": 0.7712566249538213,
+        "imports_seconds": 0.6821640839334577,
+        "read_plan_seconds": 0.0033463749568909407,
+        "validate_plan_seconds": 0.012712208786979318,
+        "row_spec_plus_curve_seconds_mean10": 0.0026036832947283982
+      },
+      {
+        "process_wall_seconds": 0.4933579999487847,
+        "imports_seconds": 0.41016141697764397,
+        "read_plan_seconds": 0.0040284579154103994,
+        "validate_plan_seconds": 0.01110829203389585,
+        "row_spec_plus_curve_seconds_mean10": 0.0026330375112593174
+      }
+    ],
+    "curve_table_nodes": 33565,
+    "comparison": "Worker process setup is amortized over 50 rows; saved request-runtime estimate is about109seconds per row including timeout budgets."
+  },
+  "synthetic_io_measurements": {
+    "method": "Synthetic arrays of production summary shapes only, with independent seeded random values and block-diagonal row covariance; 100 packing repeats and20synthetic rows, seven block attempts plus one completed-row insert each, using existing pack/journal helpers in a temporary /private/tmp directory removed afterward.",
+    "block_compressed_bytes": 2660,
+    "row_compressed_bytes": 13774,
+    "pack_block_plus_row_seconds_mean100": 0.0005047150002792477,
+    "pack_plus_eight_FULL_sqlite_commits_seconds_per_row_mean20": 0.004213304142467678,
+    "journal_bytes_after20_rows": 892928,
+    "limitation": "Synthetic local summaries are not a measurement of the Oscar shared filesystem or actual payload compression distributions."
+  },
+  "findings": [
+    {
+      "id": "fixed_allocation_barrier",
+      "code": [
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 553,
+          "symbol": "run_allocation"
+        },
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 562,
+          "detail": "One process per one of eight fixed50-row shards."
+        },
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 563,
+          "detail": "Allocation waits for all children; no replacement shard is dispatched when a child finishes."
+        }
+      ],
+      "finding": "Completed sibling workers idle until the slowest fixed shard finishes.",
+      "saved_model_evidence": {
+        "path": "lab/evidence/pilot-results/2026-11-11/bergomi-observation-refresh/joint-legacy-budget-300k/timing-audit-1794379793055849275.json",
+        "json_section": "runtime_bootstrap",
+        "method": "5000seeded iid group resamples from initial1000request durations; group=max of8workers each summing50rows; four failures represented by860second budget.",
+        "seed": 20261111,
+        "request_mean_seconds_including_failed_budget": 109.2048107836321,
+        "ideal_full300k_hours_at192busy_CPUs": 47.39792134706254,
+        "barrier_model_full_master_hours_748groups_at24slots": 58.78364608424841,
+        "estimated_barrier_multiplier": 1.2435317822685628,
+        "classification": "Historical modeled scheduling overhead; not observed final-campaign waste or a current ETA."
+      },
+      "proposal": "Persistent eight-worker allocations consume claimable50-row shards from a shared queue; refill a worker immediately when its shard completes. Keep one writer and exclusive lease per shard, original row entropy, complete requested-row ledger, and journal checkpoints. Record claim ownership and interruption recovery. Near allocation deadline checkpoint incomplete work as resumable rather than fail unattempted rows.",
+      "simpler_variant": "Assign substantially more than eight shards to an allocation and refill an eight-process pool locally; this retains an end barrier but amortizes it.",
+      "classification": "Scheduling change can preserve numerical/RNG law and each row result if worker implementation, environment, input and chunking remain unchanged; new orchestration provenance and plan are still required.",
+      "current_campaign_action": "None; do not edit a source-bound active producer in place."
+    },
+    {
+      "id": "independent_adaptive_rungs",
+      "code": [
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 345,
+          "detail": "Loop over full path allocations at every rung."
+        },
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 353,
+          "detail": "Entropy includes rung; each rung uses an independent stream."
+        },
+        {
+          "path": "tutorial/src/sbi4f_tutorial/shared/pricing.py",
+          "line": 139,
+          "detail": "Fresh streams are also documented in rough_surface."
+        }
+      ],
+      "finding": "Rejected lower-rung samples are not reused. For a doubling ladder, work before terminal rung approaches another terminal-rung sample budget.",
+      "proposal": "Explore incremental samples and sufficient statistics only as a separate validated generator.",
+      "classification": "Changes RNG, same-sample control fit, stopping behavior and realized labels; not interchangeable with preserved producer continuation."
+    },
+    {
+      "id": "checkpoint_io_and_imports",
+      "code": [
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 267,
+          "symbol": "pack"
+        },
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 275,
+          "symbol": "journal"
+        },
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 278,
+          "detail": "SQLite DELETE journal and synchronous=FULL."
+        },
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 379,
+          "detail": "Per-attempt summary/payload commit."
+        },
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 410,
+          "detail": "Completed-row summary/payload commit."
+        }
+      ],
+      "finding": "Persistent payloads hold small price/control/covariance summaries rather than simulated paths. Bounded local measurements make imports and summary IO unlikely to dominate pricing; Oscar filesystem latency remains unmeasured.",
+      "recommendation": "Keep checkpoint durability unless a production filesystem profile implicates it."
+    },
+    {
+      "id": "shared_expiry_and_controls",
+      "code": [
+        {
+          "path": "tutorial/src/sbi4f_tutorial/shared/pricing.py",
+          "line": 74,
+          "detail": "Expected integrated-variance controls by maturity."
+        },
+        {
+          "path": "tutorial/src/sbi4f_tutorial/shared/pricing.py",
+          "line": 85,
+          "detail": "Each path chunk is shared across all contracts in the block."
+        },
+        {
+          "path": "tutorial/src/sbi4f_tutorial/shared/pricing.py",
+          "line": 99,
+          "detail": "One multivariate least-squares fit per block."
+        },
+        {
+          "path": "tutorial/src/sbi4f_tutorial/shared/pricing.py",
+          "line": 109,
+          "detail": "Opt-in raw-control diagnostics compute extra covariance matrices."
+        }
+      ],
+      "finding": "The63quotes already use seven independent expiry blocks with nine strikes each. Two controls per expiry are shared across strikes. Some raw-control diagnostic covariances are computed but not retained by the bank.",
+      "proposal": "Profile a narrower diagnostic capture API; retain all currently saved values and control coefficients.",
+      "classification": "Eliminating unused diagnostic calculations can preserve estimator outputs; reusing one long path across the seven blocks changes current grids, streams and cross-expiry Monte Carlo covariance."
+    },
+    {
+      "id": "cheap_c_and_curve_setup",
+      "code": [
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 221,
+          "symbol": "row_spec"
+        },
+        {
+          "path": "lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+          "line": 236,
+          "symbol": "row_curve"
+        },
+        {
+          "path": "tutorial/src/sbi4f_tutorial/rough_options/actual_layout.py",
+          "line": 89,
+          "symbol": "simulation_nodes"
+        }
+      ],
+      "finding": "Inferred c is independent cheap observation augmentation, with no c-driven repricing. Constructing the union grid and curve table is locally about2.6ms/row.",
+      "classification": "Caching immutable task geometry can preserve numerical values; it is a small optimization compared with pricing."
+    }
+  ],
+  "representative_benchmark_design": {
+    "source": "lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation-portable/work-order.json",
+    "source_section": "cases; committed synthetic panel, not production parameter rows",
+    "selected_case_ids": [
+      "joint-00-typical",
+      "joint-01-low_h_high_eta",
+      "joint-03-rising",
+      "joint-04-falling",
+      "joint-11-high_h_high_eta"
+    ],
+    "joint_base_steps": [
+      622,
+      1241,
+      664,
+      1327,
+      1791,
+      950,
+      1796
+    ],
+    "joint_base_sum_steps": 8391,
+    "historical_three_block_steps": [
+      1280,
+      2016,
+      2016
+    ],
+    "historical_three_block_sum_steps": 5312,
+    "path_ladder": [
+      32768,
+      65536,
+      131072,
+      262144,
+      524288,
+      1048576,
+      2097152
+    ],
+    "suggested_bounded_kernel_cases": "622steps and1796steps, then whole63quote surface at first32768paths; fixed shared seeds and matched outputs.",
+    "changing_discretization": "Reducing steps, merging expiry grids, omitting normal channels or altering adaptation requires separate numerical/RNG qualification."
+  },
+  "scientific_acceptance": false,
+  "production_campaign_mutated": false,
+  "production_rows_or_parameters_saved": false,
+  "financial_simulations_run": 0,
+  "network_uploads": 0,
+  "code_reference_scope": "Line references describe producer_base_commit41478c5; investigation edits can subsequently move lines."
+}

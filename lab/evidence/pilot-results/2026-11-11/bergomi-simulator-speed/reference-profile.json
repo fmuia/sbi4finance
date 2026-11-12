@@ -1,0 +1,172 @@
+{
+  "machine": "macOS-26.4.1-arm64-arm-64bit",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "case": "predeclared joint-00-typical",
+  "pairs": 2048,
+  "blocks": [
+    {
+      "block": 0,
+      "steps": 622,
+      "seconds": 0.11071416595950723,
+      "cpu_seconds": 0.10919000000000006,
+      "max_mcse": 4.0254489978291025e-05
+    },
+    {
+      "block": 1,
+      "steps": 1241,
+      "seconds": 0.24449475016444921,
+      "cpu_seconds": 0.24057699999999993,
+      "max_mcse": 5.410821362124897e-05
+    },
+    {
+      "block": 2,
+      "steps": 664,
+      "seconds": 0.12093345797620714,
+      "cpu_seconds": 0.11919400000000002,
+      "max_mcse": 7.892723699260542e-05
+    },
+    {
+      "block": 3,
+      "steps": 1327,
+      "seconds": 0.2551356670446694,
+      "cpu_seconds": 0.25085999999999986,
+      "max_mcse": 0.00011081140326085047
+    },
+    {
+      "block": 4,
+      "steps": 1791,
+      "seconds": 0.40059050009585917,
+      "cpu_seconds": 0.3599999999999999,
+      "max_mcse": 0.00013199772318611542
+    },
+    {
+      "block": 5,
+      "steps": 950,
+      "seconds": 0.15435258392244577,
+      "cpu_seconds": 0.15089900000000012,
+      "max_mcse": 0.00020646272826496998
+    },
+    {
+      "block": 6,
+      "steps": 1796,
+      "seconds": 0.3529862081632018,
+      "cpu_seconds": 0.342028,
+      "max_mcse": 0.00025029707607199334
+    }
+  ],
+  "profile": {
+    "block": 6,
+    "pairs": 4096,
+    "total_seconds": 0.6167757080000001,
+    "calls": [
+      {
+        "name": "_raw_fft",
+        "line": 58,
+        "calls": 12,
+        "self_seconds": 0.170322624,
+        "cumulative_seconds": 0.170330335
+      },
+      {
+        "name": "rough_block",
+        "line": 61,
+        "calls": 1,
+        "self_seconds": 0.12484458300000001,
+        "cumulative_seconds": 0.614632209
+      },
+      {
+        "name": "simulate_rough",
+        "line": 91,
+        "calls": 4,
+        "self_seconds": 0.085913376,
+        "cumulative_seconds": 0.48505312500000003
+      },
+      {
+        "name": "<method 'cumsum' of 'numpy.ndarray' objects>",
+        "line": 0,
+        "calls": 12,
+        "self_seconds": 0.081576167,
+        "cumulative_seconds": 0.081576167
+      },
+      {
+        "name": "rough_driver",
+        "line": 72,
+        "calls": 4,
+        "self_seconds": 0.054630167,
+        "cumulative_seconds": 0.233876042
+      },
+      {
+        "name": "_asset_paths",
+        "line": 73,
+        "calls": 4,
+        "self_seconds": 0.041498715000000005,
+        "cumulative_seconds": 0.142931668
+      },
+      {
+        "name": "_normals",
+        "line": 58,
+        "calls": 8,
+        "self_seconds": 0.016795498000000002,
+        "cumulative_seconds": 0.017965083
+      },
+      {
+        "name": "<method 'reduce' of 'numpy.ufunc' objects>",
+        "line": 0,
+        "calls": 167,
+        "self_seconds": 0.01327579,
+        "cumulative_seconds": 0.01327579
+      },
+      {
+        "name": "column_stack",
+        "line": 607,
+        "calls": 12,
+        "self_seconds": 0.009399248,
+        "cumulative_seconds": 0.009422123000000001
+      },
+      {
+        "name": "<genexpr>",
+        "line": 79,
+        "calls": 16,
+        "self_seconds": 0.007845375,
+        "cumulative_seconds": 0.008411124
+      },
+      {
+        "name": "<built-in method numpy.asarray>",
+        "line": 0,
+        "calls": 78,
+        "self_seconds": 0.0037700430000000003,
+        "cumulative_seconds": 0.0037700430000000003
+      },
+      {
+        "name": "conditional_put_payoffs",
+        "line": 110,
+        "calls": 4,
+        "self_seconds": 0.002683579,
+        "cumulative_seconds": 0.002969499
+      },
+      {
+        "name": "block",
+        "line": 24,
+        "calls": 1,
+        "self_seconds": 0.0021302910000000003,
+        "cumulative_seconds": 0.6167627920000001
+      },
+      {
+        "name": "<built-in method numpy._core._multiarray_umath.interp>",
+        "line": 0,
+        "calls": 5,
+        "self_seconds": 0.00032216600000000003,
+        "cumulative_seconds": 0.00032216600000000003
+      },
+      {
+        "name": "curve_values",
+        "line": 26,
+        "calls": 5,
+        "self_seconds": 0.00027716000000000004,
+        "cumulative_seconds": 0.004551502000000001
+      }
+    ]
+  },
+  "peak_rss_bytes": 1462992896,
+  "scope": "Canonical reference only; predeclared typical synthetic case,2048pairs per expiry; cProfile longest block4096pairs. Local serial process; no producer journals."
+}

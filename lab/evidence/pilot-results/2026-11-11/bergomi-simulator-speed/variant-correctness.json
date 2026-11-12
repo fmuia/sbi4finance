@@ -1,0 +1,60 @@
+{
+  "format": "rough_pricing_variant_correctness_v1",
+  "checks": [
+    {
+      "kernel": "numba",
+      "driver": "reference",
+      "tests": 10,
+      "passed": true,
+      "skips": 0,
+      "failures": []
+    },
+    {
+      "kernel": "numba",
+      "driver": "cached_exact",
+      "tests": 10,
+      "passed": true,
+      "skips": 0,
+      "failures": []
+    },
+    {
+      "kernel": "numba",
+      "driver": "fast_length",
+      "tests": 10,
+      "passed": true,
+      "skips": 0,
+      "failures": []
+    },
+    {
+      "kernel": "cython",
+      "driver": "reference",
+      "tests": 10,
+      "passed": true,
+      "skips": 0,
+      "failures": []
+    },
+    {
+      "kernel": "cython",
+      "driver": "cached_exact",
+      "tests": 10,
+      "passed": true,
+      "skips": 0,
+      "failures": []
+    },
+    {
+      "kernel": "cython",
+      "driver": "fast_length",
+      "tests": 10,
+      "passed": true,
+      "skips": 0,
+      "failures": []
+    }
+  ],
+  "passed": true,
+  "test_sources": {
+    "tutorial/tests/test_rough_pricing_oracles.py": "9fe5b8bb1c7bf42c095417dc2e5c28b359537394d672ecf99cff1944de90d4f6",
+    "tutorial/tests/test_rough_pricing_acceleration.py": "47c1f79ea5a8058e5d4030c8ad2ce6521a21ff4e64cce6297bd4563c0bbacc34"
+  },
+  "cython_extension_sha256": "93de341b15cd9f4a09ad67662b5f5fd402f84df87bf504c8766aac4b233a82b7",
+  "scope": "Existing independent causal-sum/scalar-model/Black oracles and support/parity tests under research driver/kernel overrides; no bank or job changes. This does not certify prior-wide MC coverage or continuous-model bias."
+}

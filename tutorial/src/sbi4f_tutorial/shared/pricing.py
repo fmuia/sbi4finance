@@ -58,7 +58,8 @@ def _block_contracts(contracts, horizon, n_steps):
     return dt, indices
 
 
-def rough_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed, diagnostics=None):
+def rough_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed, diagnostics=None,
+                path_backend="reference"):
     """Prices, standard errors and covariance of the price means for one block.
 
     contracts all have maturity <= horizon on the grid horizon / n_steps.
@@ -67,7 +68,11 @@ def rough_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed
     means with and without the control variates: their ratio is 1 - R^2.
     An opt-in diagnostics["capture_raw_control"] flag also records raw bounded
     put and control summaries from those same paths, without changing the fit.
+    path_backend="numba" opts into an experimental terminal-only path kernel;
+    the default reference path and the fitted estimator remain unchanged.
     """
+    if path_backend not in ("reference", "numba"):
+        raise ValueError("path_backend must be reference or numba")
     dt, indices = _block_contracts(contracts, horizon, n_steps)
     maturities = sorted(set(indices.tolist()))
     xi = curve_values(curve, dt * np.arange(n_steps))
@@ -81,13 +86,21 @@ def rough_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed
         m = min(_PAIR_CHUNK, remaining)
         z = rng.standard_normal((m, n_steps, 3))
         pair = []
-        for sign in (1.0, -1.0):
-            paths = simulate_rough(parameters, curve, dt, sign * z, method="hybrid", conditional_only=True)
-            payoff = conditional_put_payoffs(paths, parameters, puts, indices, spot=1.0, rate=0.0, dividend=0.0)
+        if path_backend == "numba":
+            from ..rough_options._pricing_acceleration import antithetic_terminal_paths
+            compact_paths = antithetic_terminal_paths(parameters, curve, dt, z, maturities)
+            payoff_indices = np.searchsorted(maturities, indices) + 1
+        else:
+            payoff_indices = indices
+        for side, sign in enumerate((1.0, -1.0)):
+            paths = (compact_paths[side] if path_backend == "numba" else
+                     simulate_rough(parameters, curve, dt, sign * z, method="hybrid", conditional_only=True))
+            payoff = conditional_put_payoffs(paths, parameters, puts, payoff_indices, spot=1.0, rate=0.0, dividend=0.0)
             controls = []
-            for i in maturities:
-                iv = paths["integrated_variance"][:, i - 1]
-                iw = paths["volatility_driver_integral"][:, i - 1]
+            for selected, i in enumerate(maturities):
+                column = selected if path_backend == "numba" else i - 1
+                iv = paths["integrated_variance"][:, column]
+                iw = paths["volatility_driver_integral"][:, column]
                 controls.append(np.exp(rho * iw - 0.5 * rho**2 * iv) - 1.0)
                 controls.append(iv - expected_iv[i])
             pair.append((payoff, np.column_stack(controls)))

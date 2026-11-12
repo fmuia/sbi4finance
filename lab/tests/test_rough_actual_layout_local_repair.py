@@ -9,6 +9,8 @@ import unittest
 from unittest.mock import patch
 import numpy as np
 from sbi4finance.calibration import rough_actual_layout_local_repair as repair
+from sbi4finance.calibration import rough_actual_layout_old_budget_bank as legacy
+from rough_actual_layout_fixtures import current_bank_plan
 
 
 class LocalRepairTests(unittest.TestCase):
@@ -20,10 +22,14 @@ class LocalRepairTests(unittest.TestCase):
         manifest={"format":repair.BUNDLE_FORMAT,"producers":{},"rows":[]};self.specs=[]
         evidence=repair.ROOT/"lab/evidence/pilot-results/2026-11-11/bergomi-observation-refresh"
         for kind,row,folder,authname,lane in (("legacy1000",440,"joint-legacy-budget-1000","admission-v2.json","initial1000"),("overnight",1000,"joint-legacy-budget-300k","admission.json","master")):
-            original=repair.bank.pilot.read(evidence/folder/"plan.json")
+            original,fixture_plan=current_bank_plan(metadata/kind,evidence/folder/"plan.json",legacy if kind=="legacy1000" else repair.bank)
             refs={}
-            for name,source in (("plan",evidence/folder/"plan.json"),("admission",evidence/folder/"remote-execution"/authname)):
-                destination=metadata/f"{kind}-{name}.json";shutil.copyfile(source,destination)
+            for name,source in (("plan",fixture_plan),("admission",evidence/folder/"remote-execution"/authname)):
+                destination=metadata/f"{kind}-{name}.json"
+                if name=="admission":
+                    value=repair.bank.pilot.read(source);value["bank_plan_sha256"]=repair.bank.pilot.digest(fixture_plan)
+                    destination.write_text(json.dumps(value))
+                else:shutil.copyfile(source,destination)
                 refs[name]={"path":str(destination.relative_to(self.root)),"sha256":repair.bank.pilot.digest(destination)}
             refs["source_bindings"]=original["source_bindings"];manifest["producers"][kind]=refs
             job=next(j for j in original["jobs"] if j["start"]<=row<j["stop"])

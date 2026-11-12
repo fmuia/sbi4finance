@@ -1,0 +1,34 @@
+{
+  "scope": "SamecanonicalNumba rough_block, actual63 typical,first32768paths perblock,3alternatinglocalserialrepeats. Only RNG allocation replaced by shape-keyed reused contiguous outbuffer;3channelPCG64 drawsunchanged; no source edits.",
+  "times": {
+    "allocate": [
+      5.719616832910106,
+      5.366373375058174,
+      5.211723541142419
+    ],
+    "reuse_out": [
+      5.338031082879752,
+      5.091117999982089,
+      5.212208665907383
+    ]
+  },
+  "median_seconds": {
+    "allocate": 5.366373375058174,
+    "reuse_out": 5.212208665907383
+  },
+  "speedup": 1.0295776165216042,
+  "checks": [
+    {
+      "all_numeric_outputs_bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "all_numeric_outputs_bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    {
+      "all_numeric_outputs_bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    }
+  ]
+}

@@ -17,13 +17,15 @@ from sbi4finance.calibration import rough_actual_layout_pilot_portable as portab
 from sbi4f_tutorial.shared import pricing
 from sbi4f_tutorial.rough_options import simulator
 from test_rough_actual_layout_pilot import completed_evaluation,fake_block
+from rough_actual_layout_fixtures import current_portable,HISTORICAL_PORTABLE
 
 PARENT=original.ROOT/'lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation/work-order.json'
 
 
 def fixture(root):
-    work=portable.prepare(PARENT,root/'portable')
-    return work,root/'portable/work-order.json'
+    work,path=current_portable(root/'portable')
+    path.with_name('pilot.sbatch').write_text(portable.sbatch_text())
+    return work,path
 
 
 class PortableTests(unittest.TestCase):
@@ -31,13 +33,25 @@ class PortableTests(unittest.TestCase):
         guards=ExitStack();guards.enter_context(patch.object(pricing,'rough_block',side_effect=AssertionError('no MC')))
         guards.enter_context(patch.object(simulator,'simulate_rough',side_effect=AssertionError('no MC')));self.addCleanup(guards.close)
 
-    def test_authoritative_panel_is_copied_bitexact_without_new_draws(self):
+    def test_current_source_fixture_preserves_authoritative_panel_without_new_draws(self):
         with tempfile.TemporaryDirectory() as tmp:
             work,path=fixture(Path(tmp));parent=original.read(PARENT)
             self.assertEqual(work['cases'],parent['cases']);self.assertEqual(work['tasks'],parent['tasks'])
             self.assertEqual(work['authoritative_panel_sha256'],portable.AUTHORITATIVE_PANEL_SHA256)
             self.assertEqual(work['parent_work_order']['sha256'],original.digest(PARENT));portable.validate(work)
             self.assertIn('run_rough_actual_layout_pilot_portable.py',path.with_name('pilot.sbatch').read_text())
+
+    def test_historical_work_order_cannot_resume_with_a_changed_source(self):
+        before={path:path.read_bytes() for path in (PARENT,HISTORICAL_PORTABLE)}
+        source=original.ROOT/'tutorial/src/sbi4f_tutorial/shared/pricing.py'
+        real=original.digest
+        def changed(path):return '0'*64 if Path(path)==source else real(path)
+        with tempfile.TemporaryDirectory() as tmp,patch.object(original,'digest',side_effect=changed):
+            out=Path(tmp)/'not-created'
+            with self.assertRaisesRegex(ValueError,'actual execution source differs'):
+                portable.prepare(PARENT,out)
+            self.assertFalse(out.exists())
+        self.assertEqual(before,{path:path.read_bytes() for path in before})
 
     def test_one_ulp_host_math_variation_passes_without_replacing_stored_values(self):
         stored=original.read(PARENT)['cases'];before=deepcopy(stored);host=deepcopy(stored)

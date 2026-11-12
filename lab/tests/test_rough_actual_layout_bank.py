@@ -11,13 +11,14 @@ from unittest.mock import patch
 import numpy as np
 
 from sbi4finance.calibration import rough_actual_layout_bank as bank
+from rough_actual_layout_fixtures import current_portable
 
 
 class ActualBankTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name)
-        self.parent=bank.ROOT/"lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation-portable/work-order.json"
+        _,self.parent=current_portable(self.root)
         self.policy={"grid_pair":[2,4],"paths_ladder":[32768],"mcse_over_strict_sd":.25,
             "refinement_over_strict_sd":None,"refinement_z":3.}
 

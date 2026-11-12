@@ -1,0 +1,13 @@
+{
+  "ported_sources": {
+    "lab/scripts/profile_rough_pricing_speed.py": "2d919b59788bc09a55d5fcf9db4489ecfd7f67ecbd983ce61fbf5d4a8043c62c",
+    "lab/scripts/benchmark_rough_rng.py": "10d8362e0412ee6b40c50daa18b4b41a74c2d62b07d5b0c52d8a1136a127d961"
+  },
+  "original_measured_sources": {
+    "/private/tmp/bergomi-optimized-profile.py": "38cf88976dcc233dea552827f12d247002745940a88d75bfbb8d02bf37e1b060",
+    "/private/tmp/bergomi-rng-buffer.py": "440c151e6e01b9e440b252b5e29d227eaa5db362bc225af9e353075ee90df78b",
+    "/private/tmp/bergomi-rng-buffer-surface.py": "5ec1a7fc5093ffd92fbc8f62d0c3347c77319660f1f8735baeb0fc6c04c926f6",
+    "/private/tmp/bergomi-bitgenerators.py": "47fbfc9215fa60b7d552876983cb73159677cc2c53bab0e4477d85f00db59c1d"
+  },
+  "timing_provenance": "Original full timings measured the temporary source versions; ported scripts preserve algorithms and add CLI/metadata. Only reduced smoke runs were rerun after porting."
+}

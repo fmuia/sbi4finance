@@ -1,0 +1,132 @@
+{
+  "scope": "Given identical Gaussian driver: variance and terminal IV/IW only; excludes RNG, FFT, payoff, controls, journaling. One serial CPU process; fastmath=False; not production route.",
+  "platform": "macOS-26.4.1-arm64-arm-64bit",
+  "numpy": "2.5.3",
+  "numba": "0.68.0",
+  "jit_first_call_seconds": 0.1976336669176817,
+  "rows": [
+    {
+      "n_steps": 622,
+      "pairs_per_chunk": 2048,
+      "checks": {
+        "numpy_terminal_sum": {
+          "integrated_variance_max_abs_difference": 6.938893903907228e-18,
+          "integrated_variance_bitwise_equal": false,
+          "driver_integral_max_abs_difference": 3.3306690738754696e-16,
+          "driver_integral_bitwise_equal": false
+        },
+        "numba_fused": {
+          "integrated_variance_max_abs_difference": 0.0,
+          "integrated_variance_bitwise_equal": true,
+          "driver_integral_max_abs_difference": 0.0,
+          "driver_integral_bitwise_equal": true
+        }
+      },
+      "timings": {
+        "numpy_cumsum": {
+          "all_seconds": [
+            0.02550970809534192,
+            0.023705292027443647,
+            0.023384292144328356,
+            0.023368667112663388,
+            0.02292845887131989
+          ],
+          "median_seconds": 0.023384292144328356,
+          "speedup_vs_numpy_cumsum": 1.0
+        },
+        "numpy_terminal_sum": {
+          "all_seconds": [
+            0.013179500121623278,
+            0.013193375198170543,
+            0.013536125188693404,
+            0.013217125087976456,
+            0.012934583006426692
+          ],
+          "median_seconds": 0.013193375198170543,
+          "speedup_vs_numpy_cumsum": 1.7724268273345956
+        },
+        "numba_fused": {
+          "all_seconds": [
+            0.00816616602241993,
+            0.00802633399143815,
+            0.007863834034651518,
+            0.008024499984458089,
+            0.008040708024054766
+          ],
+          "median_seconds": 0.00802633399143815,
+          "speedup_vs_numpy_cumsum": 2.9134461846806827
+        }
+      }
+    },
+    {
+      "n_steps": 1796,
+      "pairs_per_chunk": 2048,
+      "checks": {
+        "numpy_terminal_sum": {
+          "integrated_variance_max_abs_difference": 1.7763568394002505e-15,
+          "integrated_variance_bitwise_equal": false,
+          "driver_integral_max_abs_difference": 2.886579864025407e-15,
+          "driver_integral_bitwise_equal": false
+        },
+        "numba_fused": {
+          "integrated_variance_max_abs_difference": 0.0,
+          "integrated_variance_bitwise_equal": true,
+          "driver_integral_max_abs_difference": 0.0,
+          "driver_integral_bitwise_equal": true
+        }
+      },
+      "timings": {
+        "numpy_cumsum": {
+          "all_seconds": [
+            0.07890712493099272,
+            0.07856979104690254,
+            0.08017804194241762,
+            0.07920349994674325,
+            0.07962470804341137
+          ],
+          "median_seconds": 0.07920349994674325,
+          "speedup_vs_numpy_cumsum": 1.0
+        },
+        "numpy_terminal_sum": {
+          "all_seconds": [
+            0.05599170783534646,
+            0.056788708083331585,
+            0.057407124899327755,
+            0.05712824990041554,
+            0.056914374930784106
+          ],
+          "median_seconds": 0.056914374930784106,
+          "speedup_vs_numpy_cumsum": 1.3916255786532992
+        },
+        "numba_fused": {
+          "all_seconds": [
+            0.02082854206673801,
+            0.020599749870598316,
+            0.020986333023756742,
+            0.020467041991651058,
+            0.020522041944786906
+          ],
+          "median_seconds": 0.020599749870598316,
+          "speedup_vs_numpy_cumsum": 3.8448767797801806
+        }
+      }
+    }
+  ],
+  "edge_checks": [
+    {
+      "hurst": 0.02,
+      "eta": 3.5,
+      "max_abs_difference": 0.0
+    },
+    {
+      "hurst": 0.35,
+      "eta": 0.5,
+      "max_abs_difference": 0.0
+    },
+    {
+      "hurst": 0.1,
+      "eta": 0.0,
+      "max_abs_difference": 0.0
+    }
+  ]
+}

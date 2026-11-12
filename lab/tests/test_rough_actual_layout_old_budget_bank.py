@@ -7,13 +7,14 @@ import unittest
 from unittest.mock import patch
 import numpy as np
 from sbi4finance.calibration import rough_actual_layout_old_budget_bank as bank
+from rough_actual_layout_fixtures import current_portable
 
 
 class OldBudgetBankTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
-        parent=bank.ROOT/"lab/evidence/pilot-results/2026-11-10/bergomi-observation-refresh/preparation-portable/work-order.json"
-        value=bank.pilot.read(parent);old=value["tasks"]["joint_unknown"]["base_task"]
+        value,parent=current_portable(self.root)
+        old=value["tasks"]["joint_unknown"]["base_task"]
         sigma=old["context"]["quote_noise_std"]
         self.policy={"format":bank.RELAXED_POLICY,"grid_multiplier":1,"paths_ladder":old["numerics"]["paths_ladder"],
             "numerical_reference_forward":float(np.median(sigma)),"numerical_reference_scope":"historical_median_not_observation_noise",
