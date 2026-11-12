@@ -201,6 +201,146 @@ class TrajectoryDiagnosticTests(unittest.TestCase):
         self.assertTrue(ranks.call_args.kwargs["difference"])
         self.assertEqual(set(ranks.call_args.kwargs["targets"]), set(task["parameter_names"]))
 
+    def test_recovery_coordinates_preserve_unsorted_histories_and_posterior_quantiles(self):
+        task, panel = self.panel()
+        bounds = np.asarray(task["prior_bounds"])
+        width = bounds[0, 1] - bounds[0, 0]
+        truth = bounds[0, 0] + width * np.array([.7, .2, .4])
+        panel["data"]["parameters"][:, 0] = truth
+        draws = np.repeat(panel["data"]["parameters"][:, None], 3, axis=1)
+        draws[:, :, 0] += .01 * width * np.array([-1, 0, 1])
+        result = diagnostics.recovery_case_data(task, panel, draws, "hurst")
+        np.testing.assert_array_equal(result["indices"], [0, 1, 2])
+        np.testing.assert_array_equal(result["trajectory_id"], panel["data"]["trajectory_id"])
+        np.testing.assert_array_equal(result["truth"], truth)
+        np.testing.assert_allclose(result["median"], truth)
+        np.testing.assert_allclose(result["lower90"], truth - .009 * width)
+        np.testing.assert_allclose(result["upper90"], truth + .009 * width)
+        with self.assertRaisesRegex(ValueError, "choose a parameter"):
+            diagnostics.recovery_case_data(task, panel, draws, "latent_variance")
+
+    def test_selected_case_contains_actual_paired_rows_and_only_the_requested_prefix(self):
+        task, panel = self.panel(model="rough-joint")
+        draws = np.repeat(panel["data"]["parameters"][:, None], 5, axis=1)
+        draws[2, :, 0] += np.arange(5) * .001
+        with mock.patch.object(inference, "sample") as sample, mock.patch.object(simulation, "generate") as generate:
+            selected = diagnostics.case_view(task, panel, draws, index=2, length=7)
+        sample.assert_not_called()
+        generate.assert_not_called()
+        self.assertEqual(selected["index"], 2)
+        self.assertEqual(selected["length"], 7)
+        self.assertEqual(selected["task_fingerprint"], panel["task_fingerprint"])
+        self.assertEqual(selected["trajectory_id"], panel["data"]["trajectory_id"][2])
+        self.assertEqual(selected["parameter_names"], task["parameter_names"])
+        np.testing.assert_array_equal(selected["draws"], draws[2])
+        np.testing.assert_array_equal(selected["truth"], panel["data"]["parameters"][2])
+        np.testing.assert_array_equal(selected["returns"], panel["data"]["observations"][2, :7, 0])
+        self.assertEqual(selected["returns"].shape, (7,))
+        selected["draws"][:] = np.nan
+        selected["truth"][:] = np.nan
+        selected["returns"][:] = np.nan
+        self.assertTrue(np.isfinite(draws).all())
+        self.assertTrue(np.isfinite(panel["data"]["observations"]).all())
+        self.assertTrue(np.isfinite(panel["data"]["parameters"]).all())
+
+    def test_case_selection_rejects_bad_indices_lengths_and_changed_tasks(self):
+        task, panel = self.panel()
+        draws = np.repeat(panel["data"]["parameters"][:, None], 5, axis=1)
+        for index in (-1, 3, True, np.bool_(False), 1.):
+            with self.subTest(index=index), self.assertRaises(ValueError):
+                diagnostics.case_view(task, panel, draws, index, length=7)
+        for length in (0, 30, True, 7.):
+            with self.subTest(length=length), self.assertRaises(ValueError):
+                diagnostics.case_view(task, panel, draws, index=0, length=length)
+        other = simulation.teaching_task("rough-known", observations=30)
+        for function, args in ((diagnostics.case_view, (0, 7)),
+                               (diagnostics.recovery_case_data, ("hurst",)),
+                               (diagnostics.coverage_table, ())):
+            with self.subTest(function=function.__name__), self.assertRaisesRegex(ValueError, "tasks differ"):
+                function(other, panel, draws, *args)
+
+    def test_coverage_counts_every_history_and_reports_descriptive_wilson_intervals(self):
+        task, panel = self.panel()
+        bounds = np.asarray(task["prior_bounds"])
+        draws = np.repeat(panel["data"]["parameters"][:, None], 5, axis=1)
+        draws[1] -= .1 * (bounds[:, 1] - bounds[:, 0])
+        rows = diagnostics.coverage_table(task, panel, draws)
+        self.assertEqual([row["parameter"] for row in rows], task["parameter_names"])
+        for row in rows:
+            self.assertEqual((row["hits"], row["n"]), (2, 3))
+            self.assertEqual(row["nominal_coverage"], .90)
+            self.assertAlmostEqual(row["coverage"], 2 / 3)
+            # Independent tabulated Wilson result for two successes in three trials.
+            self.assertAlmostEqual(row["wilson95_low"], .207659600802, places=10)
+            self.assertAlmostEqual(row["wilson95_high"], .938508055280, places=10)
+            self.assertNotIn("passed", row)
+
+    def test_all_hit_or_all_miss_cohorts_still_have_finite_uncertainty_intervals(self):
+        task, panel = self.panel()
+        bounds = np.asarray(task["prior_bounds"])
+        draws = np.repeat(panel["data"]["parameters"][:, None], 5, axis=1)
+        for row in diagnostics.coverage_table(task, panel, draws):
+            self.assertEqual(row["hits"], 3)
+            self.assertLess(row["wilson95_low"], 1)
+            self.assertEqual(row["wilson95_high"], 1)
+        draws -= .1 * (bounds[:, 1] - bounds[:, 0])
+        for row in diagnostics.coverage_table(task, panel, draws):
+            self.assertEqual(row["hits"], 0)
+            self.assertEqual(row["wilson95_low"], 0)
+            self.assertGreater(row["wilson95_high"], 0)
+            self.assertLess(row["wilson95_high"], 1)
+
+    def test_native_pairs_uses_selected_physical_rows_and_leaves_sources_unchanged(self):
+        task, panel = self.panel(model="rough-joint")
+        draws = np.repeat(panel["data"]["parameters"][:, None], 5, axis=1)
+        selected = diagnostics.case_view(task, panel, draws, index=1, length=7)
+        recorded, figure = {}, object()
+        dimensions = len(task["parameter_names"])
+        axes = [[mock.Mock() for _ in range(dimensions)] for _ in range(dimensions)]
+
+        def plot(values, **kwargs):
+            recorded["draws"] = values.copy()
+            recorded["truth"] = kwargs["targets"].copy()
+            recorded["labels"] = kwargs["variable_names"]
+            recorded["diag_sharey"] = kwargs["diag_sharey"]
+            values[:] = np.nan
+            kwargs["targets"][:] = np.nan
+            return types.SimpleNamespace(figure=figure, axes=axes)
+
+        pairs = mock.Mock(side_effect=plot)
+        backend = types.SimpleNamespace(diagnostics=types.SimpleNamespace(pairs_posterior=pairs))
+        with mock.patch.dict("sys.modules", {"bayesflow": backend}):
+            result = diagnostics.native_pairs(task, selected["draws"], selected["truth"])
+        self.assertIs(result, figure)
+        np.testing.assert_array_equal(recorded["draws"], draws[1])
+        np.testing.assert_array_equal(recorded["truth"], panel["data"]["parameters"][1])
+        self.assertEqual(len(recorded["labels"]), len(task["parameter_names"]))
+        self.assertFalse(recorded["diag_sharey"])
+        for row, axis_row in enumerate(axes):
+            for column, axis in enumerate(axis_row):
+                axis.set_xlim.assert_called_once_with(*task["prior_bounds"][column])
+                if row != column:
+                    axis.set_ylim.assert_called_once_with(*task["prior_bounds"][row])
+                else:
+                    axis.set_ylim.assert_not_called()
+        self.assertTrue(np.isfinite(selected["draws"]).all())
+        self.assertTrue(np.isfinite(selected["truth"]).all())
+
+    def test_native_pairs_validates_shape_real_values_and_bounds_before_plotting(self):
+        task, panel = self.panel()
+        draws = np.repeat(panel["data"]["parameters"][0:1], 5, axis=0)
+        truth = panel["data"]["parameters"][0]
+        pairs = mock.Mock()
+        backend = types.SimpleNamespace(diagnostics=types.SimpleNamespace(pairs_posterior=pairs))
+        invalid = [(draws[0], truth), (draws[:1], truth), (draws, truth[:2]),
+                   (np.ma.array(draws, mask=True), truth), (draws.astype(complex), truth),
+                   (np.zeros_like(draws), truth), (draws, np.full_like(truth, np.nan))]
+        with mock.patch.dict("sys.modules", {"bayesflow": backend}):
+            for values, target in invalid:
+                with self.subTest(shape=np.shape(values)), self.assertRaises(ValueError):
+                    diagnostics.native_pairs(task, values, target)
+        pairs.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

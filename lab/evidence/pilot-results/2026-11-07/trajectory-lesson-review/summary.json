@@ -5,14 +5,14 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 56,
+    "tutorial_tests": 72,
     "notebook_exports": 7,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 183,
     "local_document_links": 53,
     "marimo_warnings": "existing empty cells in slots 2 and 3",
     "lab_runtime_parity_tests": 12,
-    "trajectory_notebook_cells": 48,
+    "trajectory_notebook_cells": 63,
     "lab_core_tests": 527,
     "lab_optional_skips": 3
   },
@@ -96,19 +96,21 @@
     "architecture": "arm64",
     "scope": "Local CPU; cold/warm setup differs between the benchmark and browser session. Not a performance guarantee."
   },
-  "scope": "Interactive model/input explanations plus optional diagnostics of the actual tutorial or pretrained workflow. All task and prefix guards, final calibration failures and Heston drift-atom limitations retained. Existing weights and posterior evidence unchanged.",
+  "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "3897911a13dd19dfc07d195938f36c3337e110beda9aa39636afdc8f2afeedc1",
+    "tutorial/notebooks/trajectory_inference.py": "ab3311a51fea9a5cf0e5e0de784bb3b69ab7ddd8b2f77db518b93e305a959719",
     "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "ffeb613f3ec53ce6930a7f9ddb2d6b0675ea84493754375cc04a8801e2f031b2",
     "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "5ed98e3d2fce3df3319e3478e08fbdd7f63f00e0f632461bbd783cebf9acac06",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "a24559e42a6656e4a53f05602650e882769708686042131606a7bd93bc82e0fb",
-    "tutorial/README.md": "ba8c82824774726858b11ef5a48b994af4f67c66391023169d05ee94d2d0ec04",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "c81a4a2d5a042aa2c7b618fda8198ca9501acb44f55dd1480aebee7bacb1bc79",
-    "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "46294697b67209ce4c4ad9093401cc17e58612e6f0817d3c78bddad7c26922f7",
-    "tutorial/tests/test_trajectory_diagnostics.py": "8df731ae5ba31b388397cc69d23ae0e0de35ab54063ba642245c9f464ef6942b"
+    "tutorial/README.md": "982b1bf7d824e22295fb6a81ddd7b0a4996248940460114f4d24a226fc0c8f36",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "74d2f97efd0cb91b5b4817a6866d212ae4fd9ea12b1ee37b64ce5f6a44042793",
+    "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "9e2004c217428e3829396e513c31c76d700f7c8a5d2cee5239cae61e576447fe",
+    "tutorial/tests/test_trajectory_diagnostics.py": "1fdd275c57a8125611ca5dc033a85050c766c717f05535b6ff95fb5d46c29a3f",
+    "tutorial/src/sbi4f_tutorial/trajectories/model_checks.py": "2c72c14c2bd8ddd9dd27168fe24bf20fddbd880f799c8009fe3107655806b140",
+    "tutorial/tests/test_trajectory_model_checks.py": "f71ed87750ca7094c0bd503011b5997c0f9e259194cbff16a47c0ae2d821628a"
   },
-  "updated_at_utc": "2026-11-10T14:58:55+00:00",
+  "updated_at_utc": "2026-11-12T05:50:05+00:00",
   "forward_simulator": {
     "paths": 8,
     "days": 252,
@@ -684,5 +686,367 @@
         "release": "c682c302edf03d4d5a34a6116bc7d9fda65fc53f5fe9de6b58b9294c08b784fc"
       }
     }
+  },
+  "spx_alignment_20261112": {
+    "format": "trajectory_spx_alignment_review_v1",
+    "baseline_commit": "5557bd9eb6ec870318c3ecc3ef4134738ccf65ad",
+    "comparison_source": {
+      "pr": "https://github.com/fmuia/sbi4finance/pull/89",
+      "commit": "a8a9fdfc7c5d64b3882127eabab0cce0da7a82a1",
+      "file": "lab/notebooks/heston_spx_calibration.py",
+      "sha256": "58cf0b25c41986862dc1ba6d683de2b12fa5b4d69b5a9b69f727e2a6b8b4cc56"
+    },
+    "scientific_acceptance": false,
+    "new_weights_or_assets": false,
+    "changes": {
+      "workflow_stages": [
+        "Model",
+        "Simulate",
+        "Train",
+        "Infer",
+        "Check",
+        "Use"
+      ],
+      "executing_training_function": {
+        "name": "train_tutorial_model",
+        "training_histories": 128,
+        "validation_histories": 64,
+        "independent_example_histories": 1,
+        "days": 252,
+        "epochs": 2,
+        "optimizer_updates": 8,
+        "loss": "native BayesFlow training/validation; no convergence claim"
+      },
+      "prior_predictive": {
+        "histories": 200,
+        "seed": 20261111,
+        "storage": "reuse full-task-bound session panel"
+      },
+      "posterior_predictive": {
+        "max_paired_draws": 32,
+        "seed": 20261113,
+        "task": "simulate full original task then compare actual posterior prefix",
+        "initialization": "independent zero-origin paths; no continuation or filtering"
+      },
+      "replicated_statistics": [
+        "100 \u00d7 cumulative log return",
+        "100 \u00d7 sqrt(mean squared log return / dt)",
+        "100 \u00d7 largest absolute daily log return"
+      ],
+      "recovery_drilldown": "brush/select actual retained cases and posterior rows; no new inference",
+      "coverage": "descriptive central90 coverage with pointwise Wilson95 binomial intervals; not an acceptance decision",
+      "use": "joint parameter probability from paired draws versus a rule at posterior-mean parameters"
+    },
+    "saved_posterior_helper_checks": {
+      "models": {
+        "heston": {
+          "task_fingerprint": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+          "checkpoint_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+          "checks": [
+            {
+              "case": 0,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:0",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:0",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:0",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:3",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:3",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:3",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            }
+          ]
+        },
+        "rough-known": {
+          "task_fingerprint": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+          "checkpoint_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+          "checks": [
+            {
+              "case": 0,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:0",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:0",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:0",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:3",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:3",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:3",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            }
+          ]
+        },
+        "rough-joint": {
+          "task_fingerprint": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+          "checkpoint_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+          "checks": [
+            {
+              "case": 0,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:0",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:0",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:0",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:3",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:3",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:3",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            }
+          ]
+        }
+      },
+      "passed": true,
+      "scope": "Saved posterior compatibility and unchanged full-task prior/PPC smoke; no training or neural sampling"
+    },
+    "browser": {
+      "page_errors": [],
+      "timing_scope": "UI elapsed only; not isolated benchmarks",
+      "idle_no_train_or_predictive_or_diagnostics": true,
+      "workflow_stage_and_api_map": true,
+      "design_rationale": true,
+      "executing_training_function_visible": true,
+      "no_ready_network_guard": true,
+      "requested_137_predictive_uses_saved_126": true,
+      "tutorial_fit_action_seconds": 2.3566924158949405,
+      "diagnostic_case_rows": 200,
+      "brush_available_rows": 92,
+      "case_and_pair_controls_reuse_draws": true,
+      "coverage_table_present": true,
+      "diagnostic_prefix_reuses_inputs": true,
+      "native_load_infer_action_seconds": 0.8701796249952167,
+      "fresh_137_predictive_source": true,
+      "native_diagnostics_run": true,
+      "minimum_correlation_threshold_gives_zero_probability": true,
+      "joint_threshold_controls": true,
+      "selection_invalidates_predictive_output": true,
+      "saved_prior_and_predictive_models": [
+        "Rough Bergomi \u00b7 known variance curve",
+        "Heston",
+        "Rough Bergomi \u00b7 inferred variance curve"
+      ],
+      "status": "passed",
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "math_render_errors": 0,
+      "marimo_errors": 0,
+      "existing_final_failures_retained": true
+    },
+    "post_browser_changes": "Human-readable parameter labels only; final marimo check and 63-cell export pass.",
+    "verification": {
+      "tutorial_tests": 72,
+      "lab_core_tests": 527,
+      "lab_optional_skips": 3,
+      "notebook_exports": 7,
+      "trajectory_cells": 63,
+      "cell_errors": 0,
+      "runtime_boundary_symbols": 183,
+      "local_document_targets": 53,
+      "log_sha256": {
+        "tests": "ee2aff14d390d7aca8397c3bad9ea8acc92ba77cdf476b8c5bb7d9764d44cabe",
+        "lab-tests": "0c52cf2b3c4d7b3ab2a8fc0699727ff0396e77f5c87e9810015f76eddd953fdb",
+        "exports": "0602e0c11aaf456b1a66c9a8901313b64961b378a1a0bfcb554054cbb0acb8cd",
+        "final-export": "0fb331ff0079fe993493c22a297f8c86e50ec9c87b2a270d3deb97f3c84720db",
+        "marimo": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
+        "release": "1e95ad92085aec43cc13b387746011647c7e997ace3c37b8e71965a06cac83e9"
+      }
+    },
+    "scope": "Software/teaching alignment; no new calibrated estimator, conditional reference, forecast or scientific acceptance."
   }
 }

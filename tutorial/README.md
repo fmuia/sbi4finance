@@ -108,6 +108,10 @@ The three models use daily returns and estimate drift. The joint rough model
 also estimates its variance curve. The estimator accepts any integer history
 length from **1 to 1,260 trading days** (five years).
 
+A stage bar follows the workflow, and a short API map shows where BayesFlow
+enters. A design table explains the masked GRU, spline flow and preprocessing.
+The training code shown is the function called by the button.
+
 Start with the rough model and its supplied variance curve. Inspect returns,
 then use the early simulator to change parameters while keeping innovations
 fixed. It shows eight one-year price paths, daily returns and realized volatility.
@@ -119,9 +123,10 @@ Heston and the inferred-curve model remain available as extensions.
 
 There are two explicit routes:
 
-- **Train here:** generate 128 new one-year histories, fit a 16-unit GRU and
-  two-block spline coupling flow for eight updates, then infer parameters for
-  an independent history. Results stay in the session and have no calibration claim.
+- **Train here:** generate 128 new one-year training histories and a separate
+  validation set. Fit a 16-unit GRU and two-block spline coupling flow for eight
+  updates, inspect training/validation loss, then infer parameters for an
+  independent history. Results stay in the session and have no calibration claim.
 - **Use the optional pretrained model:** inspect saved draws or load the matching
   five-year model. Its larger encoder and flow have their own data and checks.
 
@@ -144,14 +149,27 @@ previous live result.
 The two model sources are labelled beside their outputs. The tutorial fit does
 not reproduce or validate the supplied five-year fits. Production-bank
 instructions and detailed input/diagnostic tables are optional.
-Parameter inference alone does not provide a conditional continuation forecast.
+
+**Compare simulations with the observed history.** The prior-predictive check
+draws 200 independent histories from the declared prior. The posterior-predictive
+check draws 32 complete parameter rows from the displayed supplied-model
+posterior, saved or fresh, and simulates independent histories from the model's
+origin. Both compare return summaries
+with the observed history. The posterior check uses the actual prefix length
+shown beside the posterior, including any labelled saved fallback.
+These are independent replications, not continuations of the observed path.
+Parameter inference alone does not provide the hidden-state or rough-memory
+conditioning needed for a continuation forecast.
+A final threshold exercise compares a joint parameter probability from paired
+draws with the yes/no answer at the posterior-mean parameter vector.
 
 **Check the network you used.** Choose **Network to check**, set **Days per
 diagnostic history**, then press **Check this network on 200 independent histories**.
 This length is separate from the single-history controls above. First use
 generates 200 validation histories for that task and keeps them in session
 memory. Later checks reuse them and draw 200 fresh samples per history for
-recovery and rank-ECDF plots.
+recovery, rank-ECDF and coverage plots. Select a diagnostic history to inspect
+its paired posterior draws and generating values.
 Generation took under 0.1 seconds per 200 histories in our local CPU check, so
 there is no separate diagnostic dataset to download.
 Every history uses the same chosen prefix; later returns and time tokens are
@@ -164,7 +182,8 @@ The figures describe the selected workflow at that history length; they add a
 check of the model you just ran alongside the saved final-cohort results below.
 They do not replace those results or validate the tiny tutorial fit.
 Edit `trajectories/diagnostics.py` for this check; the shared network and masking
-code remains in `trajectories/inference.py`.
+code remains in `trajectories/inference.py`. Prior/posterior-predictive return
+checks live in `trajectories/model_checks.py`.
 
 **Checks are not yet satisfactory:** all three estimators failed the final
 calibration check. The Heston simulator can also produce zero-variance days

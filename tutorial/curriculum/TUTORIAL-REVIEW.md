@@ -148,15 +148,15 @@ new tasks.
    law. A displayed latent path is a teaching aid, not an estimator input.
 5. Add matched reference overlays only at supported cases and lengths. A
    one-day comparison must not imply long-history conditional accuracy.
-6. Develop posterior-predictive replicated-history checks. Continuation forecasts
+6. Provide posterior-predictive replicated-history checks (implemented below). Continuation forecasts
    and future VaR/ES require joint latent-state/history conditioning, including
    rough memory; a parameter posterior alone is insufficient for that extension.
 7. Offer an explicit recovery/rank check of the workflow actually trained or
    loaded. Generate independent validation histories once per task and reuse
    them across checked prefixes; keep this separate from the final-cohort tables.
 
-**Completion:** participants can follow generation → training → checks →
-inference → interpretation for all three tasks. Numerical readiness is governed
+**Completion:** participants can follow generation → training → inference →
+checks → interpretation for all three tasks. Numerical readiness is governed
 by subplan E; a working interface never implies an acceptance certificate.
 
 ### Trajectory revision plan · 7 November 2026
@@ -253,7 +253,65 @@ Check missing-model handling, task/source changes, prefix bounds, future-data
 masking and plot invalidation. The small fit may perform poorly; keep that
 result visible rather than substituting the pretrained diagnostics.
 
-**Verification · 10 November:** 56 tutorial tests, 527 core lab tests (three
+### Align the lesson with the SPX workflow · 12 November 2026
+
+Use the useful structure from the SPX Heston notebook without transferring its
+data, estimator or accuracy claims. Keep the observed-history opening, then
+mark each workflow stage and map its BayesFlow calls. A compact design table
+explains why ordered returns use a masked causal GRU, a spline coupling flow,
+fixed scaling and prior-CDF parameter transforms. Quote whitening and the
+SPX flow-matching recipe are not changes to this task.
+
+Show one named, executing tutorial-training function with `mo.show_code`.
+It generates 128 training histories and a separate validation set, performs
+two epochs/eight updates, plots native BayesFlow training/validation loss and
+infers parameters for an independent example. Continue using the canonical
+preprocessing and network helpers. The supplied estimator remains a separate
+source with its own task, weights and failed final calibration screen.
+
+Move checks after the posterior, dependence and evidence-evolution views.
+Add questions beside results and a short table separating what each check
+answers. The 200-history diagnostic panel gains empirical coverage with
+binomial intervals and a selected
+case view of paired posterior draws. A selected validation case is not a
+matched reference posterior, and repeated inspection does not make it a new
+acceptance cohort.
+
+Add two explicit model checks through `trajectories/model_checks.py`:
+
+- **Prior predictive:** simulate 200 independent P histories from the declared
+  prior and compare return summaries with the selected observation.
+- **Posterior predictive:** keep 32 full parameter rows paired, simulate
+  independent histories from the model's origin and compare the same summaries.
+  Use the displayed supplied-model posterior, saved or fresh, at its actual
+  prefix length, including a labelled saved fallback. The tutorial fit remains
+  a separate source.
+
+The observed history does not supply future shocks or hidden states. These are
+replicated histories, not filtered paths or continuations. They do not provide
+conditional return, VaR or expected-shortfall forecasts, and neither a plausible
+replicate nor a passed rank check establishes posterior accuracy. Preserve all
+existing native-model failures and the Heston drift point-mass limitation.
+No new weights, real-market observations or matched references are introduced.
+
+The final interpretation exercise evaluates a joint parameter event,
+$\Pr(\rho<r_*,a>a_*\mid r_{1:T})$, from the same paired posterior rows.
+Here amplitude $a$ is eta for rough Bergomi or volatility of variance for Heston.
+Compare this fraction with the deterministic yes/no rule at the posterior-mean
+vector. This describes uncertainty about model parameters, not a future return
+or financial event.
+
+**Verification · 12 November:** 72 tutorial tests, 527 core lab tests (three
+optional PyMC skips), all seven exports (63 trajectory cells, zero errors),
+marimo and release/ownership checks pass. Prior/PPC smoke checks cover all three
+models, two supplied cases and requested lengths 1, 137 and 1260, retaining
+all histories and paired rows. Browser review covers actual training/validation
+loss, prior and predictive checks, saved-126 versus fresh-137 conditioning,
+recovery brushing, retained pair views, coverage, threshold controls and a
+760-pixel layout. No runtime or math errors. The comparison source is
+[Heston/SPX PR #89](https://github.com/fmuia/sbi4finance/pull/89) at `a8a9fdf`.
+
+**Earlier diagnostic verification · 10 November:** 56 tutorial tests, 527 core lab tests (three
 optional PyMC skips), all seven exports (48 trajectory cells, zero errors) and
 release/ownership checks pass. Actual diagnostic sampling covers every native
 model at 252 and 137 days. Chrome checks the tutorial and loaded rough-known
