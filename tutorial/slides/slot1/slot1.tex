@@ -69,6 +69,15 @@
 \newcommand\pairs[4][]{\par\vspace{0.35em}\divider{#1}\par\vspace{0.15em}%
   \begin{columns}[T,onlytextwidth]\column{0.32\textwidth}#2\column{0.32\textwidth}#3\column{0.32\textwidth}#4%
   \end{columns}\par\vspace{\footgap}}
+% A row of three cards under a figure: \cards[illustration]{\card{title}{one line}}{\card{..}{..}}{\card[focus]{..}{..}}.
+% A card is a rounded box with a short title and one or two lines of text; [focus] tints the card that carries the point.
+\newcommand\card[3][]{\begin{tikzpicture}[deck]\node[box, #1, align=left, text width=\dimexpr\linewidth-11pt\relax,
+  minimum height=1.06cm, inner xsep=5pt, inner ysep=3.5pt]
+  {\raggedright\hyphenpenalty=10000 {\footnotesize\TitleFont\color{aviation}#2\par}\vspace{1pt}%
+   {\scriptsize\color{aviation!80}#3\par}};\end{tikzpicture}}
+\newcommand\cards[4][]{\par\vspace{0.35em}\divider{#1}\par\vspace{0.3em}%
+  \begin{columns}[T,onlytextwidth]\column{0.32\textwidth}#2\column{0.32\textwidth}#3\column{0.32\textwidth}#4%
+  \end{columns}\par\vspace{\footgap}}
 % A light rule between the rows of a list set as a table (slides 5, 13 and 16), placed after \\
 \newcommand\rowrule{\noalign{\vskip 3.5pt{\color{aviation!15}\hrule height 0.4pt}\vskip 3.5pt}}
 % The state of a check (slide 13): it holds, it holds with a caveat, it raised a flag, it is still to come.
@@ -135,6 +144,40 @@
 
 % ════════════════════════════════════════════════════════════════════════════
 % Uncertainty, Bayes, and the example
+
+% ── The opening, on one smile (draft of 12 November: the first two of the new opening slides) ──
+% The example: one simulated Heston smile at one month, seven quotes; unknown vol of vol and correlation, the other
+% parameters known. tutorial/slides/slot1/opening_figures.py computes it and prints every number quoted here.
+
+\begin{frame}{Bayes in One Picture}
+\key{Beliefs go in. Quotes test them. A \highlight{distribution} comes out.}
+\fig{0.97}{opening-bayes.pdf}
+\cards[illustration]
+  {\card{Encode beliefs}{Prior: a negative correlation, a vol of vol in a range.}}
+  {\card{Test them against data}{The quotes score every pair by how well it fits.}}
+  {\card[focus]{Get a distribution}{Posterior: every pair that fits, with a weight.}}
+\note{Here is the smallest calibration I can show. A volatility model with two unknowns: the vol of vol and the
+correlation. And seven option quotes at one month, each with its bid–ask. On the left is what we believe before the
+quotes: the correlation is negative, and the vol of vol lies in a range. Every pair in this box is equally plausible.
+In the middle are the quotes. They score every pair: a pair whose smile passes through the bars scores high. On the
+right is the result: the pairs that survive, each with a weight. This is the posterior. It is not one pair. Pairs A
+and B sit at its two ends, they are very different, and in the middle you see that both fit the quotes.}
+\end{frame}
+
+\begin{frame}{A Result You Can Read}
+\key{The answer is a range with a \highlight{probability}, not one number.}
+\fig{0.97}{opening-read.pdf}
+\cards[illustration]
+  {\card[focus]{Credible interval}{With 90\% probability, the correlation is between −0.88 and −0.24.}}
+  {\card{Confidence interval}{Over repeated sets of quotes, 90\% of such intervals contain the truth.}}
+  {\card{Any question}{Is the correlation below −0.5? Probability 51\%, though the best fit is −0.45.}}
+\note{What do we do with a posterior? We read it. Take the correlation, on the right. The curve says how plausible
+each value is. With 90 percent probability the correlation is between minus 0.88 and minus 0.24. That is a statement
+about the correlation itself, given these quotes. Least squares gives one value, minus 0.45, and an interval around
+it. That interval means something else: over many repeated sets of quotes, 90 percent of such intervals contain the
+true value. It says nothing direct about this set of quotes. And with a posterior any question has an answer. The
+best fit says minus 0.45. Yet the probability that the correlation is below minus 0.5 is 51 percent.}
+\end{frame}
 
 \begin{frame}{Uncertainty in Finance}
 \key{A number without a range is not enough to \highlight{decide}.}

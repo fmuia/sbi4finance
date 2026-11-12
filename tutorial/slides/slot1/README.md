@@ -13,6 +13,7 @@ in [`curriculum/01-slot1-the-problem.md`](../../curriculum/01-slot1-the-problem.
 | `figures/slot1/*.jpg` | The four presenters' photos, cropped square as on the tutorial's webpage |
 | `export_figures.py` | Regenerates the figures and prints every number the slides quote |
 | `illustration.py` | The running example behind most of the figures: a thin option chain simulated from Heston, and a forward-start call |
+| `opening_figures.py` | Draws the figures of the two draft opening slides and prints their numbers: one simulated Heston smile at one month, with the vol of vol and the correlation unknown and the posterior computed on a grid |
 | `check_posterior.py` | An independent check of the example's posteriors by Metropolis chains; nothing on the slides depends on it |
 | `recorded-results.json` | The recorded results of the Heston SPX study that slide 12 and two backup frames quote, each with its source file, commit and SHA-256 |
 | `spx-design.json` | The tutorial's 63-quote SPX design of 9 November 2026 (strikes, maturities, forwards, discounts, half-spreads), with its source |
