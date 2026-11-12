@@ -2483,8 +2483,10 @@ def _(
     _all_ratios = np.concatenate([_ratios[_c] for _c in _synthetic])
     _agree = int(np.sum((_all_gaps < 0.3) & (np.abs(_all_ratios - 1) < 0.25)))
     _wider, _narrower = int(np.sum(_all_ratios > 1.25)), int(np.sum(_all_ratios < 1))
+    # "Cautious" needs wide intervals around about the right centres, not wide intervals alone.
     _cautious = (" The network is cautious here. It does not claim more precision than the data support, but "
-                     "it does not extract all the information in the quotes either." if _narrower <= 2 else "")
+                 "it does not extract all the information in the quotes either."
+                 if _narrower <= 2 and np.median(_all_gaps) < 1 else "")
     mo.vstack([
         _heading,
         table(_rows, align="l" + "r" * (len(_rows[0]) - 1)),

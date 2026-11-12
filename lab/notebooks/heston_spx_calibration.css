@@ -43,6 +43,14 @@
   --nb-surface: rgba(148, 163, 184, 0.08);
 }
 
+/* ------------------------------------------------------------------ the page
+
+   In the editor marimo limits a cell's output to 610px and scrolls the rest inside the cell. This notebook
+   is read and presented from its outputs, so every output is shown in full. */
+.marimo-cell.interactive .output-area {
+  max-height: none;
+}
+
 /* ------------------------------------------------------------------ markdown: one block, one rhythm
 
    marimo renders markdown with `display: contents`. Inside mo.vstack (a flex column) each heading,
