@@ -1,0 +1,329 @@
+<!doctype html>
+<!--
+  Tutorial webpage. Published to GitHub Pages by .github/workflows/pages.yml
+  on every push to main that changes site/. See site/README.md.
+
+  Editing: all the text is in this file, one block per section (search for
+  "SECTION:"). Placeholders have class="todo"; search for "todo" to find what
+  is left. Colours and layout are in style.css.
+
+  The published page is PUBLIC. Put here only what may be public:
+  no unreleased results, private links or credentials.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- DRAFT: keeps search engines away while the page is a draft. Delete this line when the page is ready. -->
+  <meta name="robots" content="noindex">
+  <title>Amortized Bayesian Calibration of Volatility Models · ICAIF '26 tutorial</title>
+  <meta name="description" content="ICAIF '26 tutorial, Saturday 14 November 2026, Milan. Amortized Bayesian inference for volatility models with BayesFlow: posteriors in seconds from networks trained on simulations, and the checks that say when to trust them.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Amortized Bayesian Calibration of Volatility Models">
+  <meta property="og:description" content="An ICAIF '26 tutorial on simulation-based inference for volatility models with BayesFlow. Saturday 14 November 2026, 11:00–13:00 CET, Bocconi University, Milan.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f8f7f3">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/inter-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="site.js" defer></script>
+  <script src="hero.js" defer></script>
+  <script src="smile.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <button class="theme-toggle" data-theme-toggle type="button" aria-label="Switch to dark mode" hidden>
+    <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/>
+    </svg>
+    <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M20.5 14A9 9 0 0 1 10 3.5 9 9 0 1 0 20.5 14Z"/>
+    </svg>
+  </button>
+
+  <main id="main">
+
+    <!-- ===================== SECTION: Hero ===================== -->
+    <section class="hero" id="top">
+      <canvas class="hero-canvas" data-hero-canvas aria-hidden="true"></canvas>
+      <div class="container hero-content">
+        <div class="hero-text">
+          <p class="eyebrow">ICAIF '26 Tutorial</p>
+          <h1>
+            <span class="hero-title-line">Amortized Bayesian Calibration</span>
+            <span class="hero-title-line">of Volatility Models</span>
+          </h1>
+          <dl class="facts">
+            <div>
+              <dt>When</dt>
+              <dd>Saturday &bull; 14 November 2026<br><span class="nowrap">11:00–13:00 CET</span></dd>
+            </div>
+            <div>
+              <dt>Where</dt>
+              <dd>Room 3 &bull; Bocconi University<br>Via Röntgen 1 &bull; Milan</dd>
+            </div>
+          </dl>
+          <p class="actions">
+            <a class="button" href="#program">View Program</a>
+            <a class="button button-ghost" href="#materials">View Materials</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION: Overview ===================== -->
+    <section class="section" id="overview">
+      <div class="container">
+        <div class="overview-intro">
+          <div class="prose">
+            <h2>Overview</h2>
+            <p>This tutorial introduces amortized Bayesian inference for volatility models using BayesFlow. We will train neural networks to rapidly calibrate volatility models to financial data.</p>
+            <p>The examples will demonstrate the fundamental principles of amortized Bayesian workflows using popular volatility models, such as Heston and rough Bergomi.</p>
+          </div>
+          <figure class="overview-figure">
+            <img data-smile-plot src="assets/smile-fan.svg" width="560" height="400" loading="lazy" alt="Illustrative volatility-smile curves with a narrow spread at quoted strikes and a wider spread beyond them.">
+          </figure>
+        </div>
+        <div class="learning-outcomes">
+          <h3>Learning outcomes</h3>
+          <ul>
+            <li class="card"><svg class="card-icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#trend"></use></svg>Formulate volatility-model calibration as Bayesian inference, specifying a prior and an observation model.</li>
+            <li class="card"><img class="card-icon bayesflow-logo" src="assets/bayesflow.png" alt="" width="48" height="48" loading="lazy">Use BayesFlow to train a neural posterior estimator on simulated data and apply it to new observations.</li>
+            <li class="card"><svg class="card-icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#check"></use></svg>Assess posterior approximations using simulation-based calibration and posterior predictive checks.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION: Presenters ===================== -->
+    <section class="section section-alt" id="presenters">
+      <div class="container">
+        <h2>Presenters</h2>
+        <div class="people">
+          <!-- One <article> per presenter. To add a homepage, wrap the name in <a href="...">. -->
+          <article class="card person">
+            <div class="person-photo person-photo-francesco-muia">
+              <img src="assets/presenters/francesco-muia.jpg" alt="Francesco Muia" width="360" height="360" loading="lazy">
+            </div>
+            <h3>Francesco Muia</h3>
+            <p class="affiliation">
+              <span>Muia AI &amp; Analytics Solutions</span><span class="affiliation-sep" aria-hidden="true"> · </span><span>PyMC Labs</span>
+            </p>
+            <p class="bio">AI and Bayesian data science consultant; PhD in Theoretical Physics and Executive MBA. Extensive research and industry experience in computational finance.</p>
+          </article>
+          <article class="card person">
+            <div class="person-photo person-photo-alexander-fengler">
+              <img src="assets/presenters/alexander-fengler.jpg" alt="Alexander Fengler" width="360" height="360" loading="lazy">
+            </div>
+            <h3>Alexander Fengler</h3>
+            <p class="affiliation">Brown University</p>
+            <p class="bio">Postdoctoral Fellow; PhD in Computational Cognitive Science and MPhil in Statistics. Extensive experience in hedge funds, open source probabilistic modeling, and SBI.</p>
+          </article>
+          <article class="card person">
+            <div class="person-photo person-photo-stefan-radev">
+              <img src="assets/presenters/stefan-radev.jpg" alt="Stefan T. Radev" width="360" height="360" loading="lazy">
+            </div>
+            <h3>Stefan T. Radev</h3>
+            <p class="affiliation">Rensselaer Polytechnic Institute</p>
+            <p class="bio">Assistant Professor and lead developer of BayesFlow. PhD in Statistical Modeling. AI researcher and Bayesian statistician with extensive experience in teaching, workshops, and consulting.</p>
+          </article>
+          <article class="card person">
+            <div class="person-photo person-photo-jerry-huang">
+              <img src="assets/presenters/jerry-huang.jpg" alt="Jerry M. Huang" width="360" height="360" loading="lazy">
+            </div>
+            <h3>Jerry M. Huang</h3>
+            <p class="affiliation">Rensselaer Polytechnic Institute</p>
+            <p class="bio">Postdoctoral Scholar in Statistical Modeling and core BayesFlow developer. Specializes in computational modeling, simulation-based inference, and digital twins across different disciplines.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION: Program ===================== -->
+    <section class="section" id="program">
+      <div class="container">
+        <h2 id="program-title">Program</h2>
+        <p class="section-lead">Saturday 14 November, <span class="nowrap">11:00–13:00 CET</span>.</p>
+
+        <div class="program-table-scroll" role="region" aria-labelledby="program-title" tabindex="0">
+          <table class="program-table" aria-labelledby="program-title">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Session</th>
+                <th scope="col">Presenters</th>
+                <th scope="col">Materials</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>11:00-11:15</td>
+                <th scope="row">Introduction: Bayes for volatility models</th>
+                <td>Francesco Muia</td>
+                <td>
+                  <span class="material-pending">TBD</span>
+                </td>
+              </tr>
+              <tr>
+                <td>11:15-11:30</td>
+                <th scope="row">Amortized Bayesian inference</th>
+                <td>Alexander Fengler</td>
+                <td>
+                  <span class="material-pending">TBD</span>
+                </td>
+              </tr>
+              <tr>
+                <td>11:30-11:40</td>
+                <th scope="row">Neural network architectures</th>
+                <td>Stefan T. Radev</td>
+                <td>
+                  <span class="material-pending">TBD</span>
+                </td>
+              </tr>
+              <tr>
+                <td>11:40-12:00</td>
+                <th scope="row">Worked BayesFlow example: the Heston model</th>
+                <td>Stefan T. Radev</td>
+                <td><a class="notebook-link" href="https://github.com/fmuia/sbi4finance/blob/main/tutorial/notebooks/slot4_heston_bayesflow.py"><svg aria-hidden="true" focusable="false"><use href="assets/icons.svg#notebook"></use></svg>Notebook</a></td>
+              </tr>
+              <tr>
+                <td>12:00-12:30</td>
+                <th scope="row">Rough Bergomi model and application</th>
+                <td>Francesco Muia<br>Alexander Fengler</td>
+                <td><a class="notebook-link" href="https://github.com/fmuia/sbi4finance/blob/main/tutorial/notebooks/slot5_calibration.py"><svg aria-hidden="true" focusable="false"><use href="assets/icons.svg#notebook"></use></svg>Notebook</a></td>
+              </tr>
+              <tr>
+                <td>12:30-13:00</td>
+                <th scope="row">Advanced Topics and Open Question</th>
+                <td>Stefan T. Radev<br>Jerry M. Huang</td>
+                <td class="material-pending">To be added</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION: Materials ===================== -->
+    <section class="section section-alt" id="materials">
+      <div class="container">
+        <h2>Materials</h2>
+        <p class="section-lead">Session notebooks are linked in the <a href="#program">program</a>.</p>
+        <div class="cards cards-4">
+          <article class="card">
+            <svg class="card-icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#notebook"></use></svg>
+            <h3>Notebooks</h3>
+            <p>Application notebooks in marimo. A laptop CPU is enough.</p>
+            <p class="links"><a href="https://github.com/fmuia/sbi4finance/tree/main/tutorial/notebooks">Browse notebooks</a></p>
+          </article>
+          <article class="card">
+            <svg class="card-icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#code"></use></svg>
+            <h3>Code</h3>
+            <p>The tutorial repository, with the simulators, the trained networks and setup instructions.</p>
+            <p class="links"><a href="https://github.com/fmuia/sbi4finance">GitHub repository</a></p>
+          </article>
+          <article class="card">
+            <img class="card-icon bayesflow-logo" src="assets/bayesflow.png" alt="" width="48" height="48" loading="lazy">
+            <h3>BayesFlow</h3>
+            <p>The open-source Python library for amortized Bayesian inference that we use throughout.</p>
+            <p class="links"><a href="https://bayesflow.org/">Documentation <span aria-hidden="true">↗</span></a> <a href="https://github.com/bayesflow-org/bayesflow">GitHub <span aria-hidden="true">↗</span></a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION: Setup ===================== -->
+    <section class="section" id="setup">
+      <div class="container">
+        <h2>Before the tutorial</h2>
+        <p class="section-lead">Bring a laptop and install the tutorial environment before the session. Pixi installs Python 3.12, BayesFlow 2.1, marimo and their dependencies. A CPU is enough to work through the saved examples.</p>
+        <div class="setup-tabs" data-os-tabs>
+          <div class="setup-tab-list" role="tablist" aria-label="Installation operating system" hidden>
+            <button type="button" role="tab" id="tab-macos" data-os="macos" aria-controls="setup-macos" aria-selected="true">macOS</button>
+            <button type="button" role="tab" id="tab-linux" data-os="linux" aria-controls="setup-linux" aria-selected="false" tabindex="-1">Linux</button>
+            <button type="button" role="tab" id="tab-windows" data-os="windows" aria-controls="setup-windows" aria-selected="false" tabindex="-1">Windows</button>
+          </div>
+          <div class="setup-panel" id="setup-macos" role="tabpanel" aria-labelledby="tab-macos" tabindex="0">
+            <h3>macOS (Apple Silicon)</h3>
+            <p class="platform-note">The supplied macOS environment is for Apple Silicon (M1 or later). Intel Macs are not covered by the lockfile.</p>
+            <ol class="setup-steps">
+              <li>
+                <strong>Install Pixi.</strong> Open Terminal and run:
+                <pre><code>curl -fsSL https://pixi.sh/install.sh | sh</code></pre>
+                <p>Close and reopen your terminal, then check that <code>pixi --version</code> works.</p>
+              </li>
+              <li>
+                <strong>Download the tutorial.</strong> <a href="https://github.com/fmuia/sbi4finance/archive/refs/heads/main.zip">Download the repository ZIP</a> and extract it into your Downloads folder. You should have a folder named <code>sbi4finance-main</code>.
+              </li>
+              <li>
+                <strong>Install, check and open a notebook.</strong> In the new terminal, run:
+                <pre><code>cd ~/Downloads/sbi4finance-main/tutorial
+pixi install --locked -e default
+pixi run --locked -e default test
+pixi run --locked -e default slot1</code></pre>
+                <p>If you extracted the ZIP elsewhere, change the first line to the path of its <code>tutorial</code> folder.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="setup-panel" id="setup-linux" role="tabpanel" aria-labelledby="tab-linux" tabindex="0">
+            <h3>Linux (x86-64)</h3>
+            <p class="platform-note">Use a 64-bit Intel or AMD Linux system. ARM Linux is not included in the supplied lockfile.</p>
+            <ol class="setup-steps">
+              <li>
+                <strong>Install Pixi.</strong> Open a terminal and run:
+                <pre><code>curl -fsSL https://pixi.sh/install.sh | sh</code></pre>
+                <p>Close and reopen your terminal, then check that <code>pixi --version</code> works.</p>
+              </li>
+              <li>
+                <strong>Download the tutorial.</strong> <a href="https://github.com/fmuia/sbi4finance/archive/refs/heads/main.zip">Download the repository ZIP</a> and extract it into your Downloads folder. You should have a folder named <code>sbi4finance-main</code>.
+              </li>
+              <li>
+                <strong>Install, check and open a notebook.</strong> In the new terminal, run:
+                <pre><code>cd ~/Downloads/sbi4finance-main/tutorial
+pixi install --locked -e default
+pixi run --locked -e default test
+pixi run --locked -e default slot1</code></pre>
+                <p>If you extracted the ZIP elsewhere, change the first line to the path of its <code>tutorial</code> folder.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="setup-panel" id="setup-windows" role="tabpanel" aria-labelledby="tab-windows" tabindex="0">
+            <h3>Windows (x86-64)</h3>
+            <p class="platform-note">The lockfile includes 64-bit Windows, but this tutorial has not yet been runtime-tested on Windows.</p>
+            <ol class="setup-steps">
+              <li>
+                <strong>Install Pixi.</strong> Open PowerShell and run:
+                <pre><code>powershell -ExecutionPolicy Bypass -c &quot;irm -useb https://pixi.sh/install.ps1 | iex&quot;</code></pre>
+                <p>Close and reopen your terminal, then check that <code>pixi --version</code> works.</p>
+              </li>
+              <li>
+                <strong>Download the tutorial.</strong> <a href="https://github.com/fmuia/sbi4finance/archive/refs/heads/main.zip">Download the repository ZIP</a> and extract it into your Downloads folder. You should have a folder named <code>sbi4finance-main</code>.
+              </li>
+              <li>
+                <strong>Install, check and open a notebook.</strong> In the new terminal, run:
+                <pre><code>cd &quot;$env:USERPROFILE\Downloads\sbi4finance-main\tutorial&quot;
+pixi install --locked -e default
+pixi run --locked -e default test
+pixi run --locked -e default slot1</code></pre>
+                <p>If you extracted the ZIP elsewhere, change the first line to the path of its <code>tutorial</code> folder.</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+        <p class="setup-help">The marimo editor opens in your browser. Stop it with <kbd>Ctrl</kbd> + <kbd>C</kbd> before opening another notebook. Replace <code>slot1</code> with <code>slot2</code>, <code>slot3</code>, <code>heston-options</code> or <code>rough-options</code> for the other sessions.</p>
+        <p class="setup-help">Already have the repository? Run the installation commands from its <code>tutorial</code> folder. See the <a href="https://github.com/fmuia/sbi4finance/blob/main/tutorial/README.md#install">tutorial setup guide</a> and <a href="https://pixi.prefix.dev/latest/installation/">Pixi installation instructions</a> for more detail.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== SECTION: Footer ===================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>A tutorial at <a href="https://icaif2026.org/">ICAIF '26</a>, the 7th ACM International Conference on AI in Finance, Milan, <span class="nowrap">14–17 November 2026</span>.</p>
+      <p>Contact: <a href="mailto:francesco.muia@ai-and-analytics-solutions.com">francesco.muia@ai-and-analytics-solutions.com</a></p>
+    </div>
+  </footer>
+</body>
+</html>

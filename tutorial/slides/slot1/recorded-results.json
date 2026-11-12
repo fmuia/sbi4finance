@@ -1,0 +1,493 @@
+{
+ "as_of": "2026-11-11",
+ "what": "Recorded development results of the Heston SPX study that the slot 1 deck quotes. None is an accepted study of the claims ledger: the evaluation and the references record scientific_acceptance = false.",
+ "parameters": [
+  "initial_variance",
+  "kappa",
+  "theta",
+  "vol_of_vol",
+  "rho",
+  "c"
+ ],
+ "network": {
+  "training_rows": 300000,
+  "epochs": 300,
+  "optimizer_updates": 351600,
+  "posteriors_drawn": 615,
+  "posterior_seconds_total": 164.1
+ },
+ "population": {
+  "surfaces": 512,
+  "draws_per_surface": 512,
+  "levels": [
+   0.5,
+   0.8,
+   0.9,
+   0.95
+  ],
+  "coverage": {
+   "0.5": [
+    0.675781,
+    0.533203,
+    0.556641,
+    0.515625,
+    0.535156,
+    0.5
+   ],
+   "0.8": [
+    0.925781,
+    0.816406,
+    0.84375,
+    0.830078,
+    0.847656,
+    0.789062
+   ],
+   "0.9": [
+    0.974609,
+    0.900391,
+    0.923828,
+    0.892578,
+    0.919922,
+    0.902344
+   ],
+   "0.95": [
+    0.992188,
+    0.941406,
+    0.958984,
+    0.931641,
+    0.966797,
+    0.949219
+   ]
+  },
+  "coverage_wilson95": {
+   "0.5": [
+    [
+     0.634057,
+     0.714887
+    ],
+    [
+     0.489902,
+     0.576009
+    ],
+    [
+     0.513347,
+     0.599091
+    ],
+    [
+     0.472382,
+     0.558636
+    ],
+    [
+     0.491853,
+     0.577936
+    ],
+    [
+     0.456852,
+     0.543148
+    ]
+   ],
+   "0.8": [
+    [
+     0.899769,
+     0.945452
+    ],
+    [
+     0.780557,
+     0.847543
+    ],
+    [
+     0.809752,
+     0.872628
+    ],
+    [
+     0.795117,
+     0.860123
+    ],
+    [
+     0.813949,
+     0.876186
+    ],
+    [
+     0.751638,
+     0.822182
+    ]
+   ],
+   "0.9": [
+    [
+     0.957047,
+     0.985103
+    ],
+    [
+     0.871394,
+     0.923424
+    ],
+    [
+     0.897563,
+     0.94378
+    ],
+    [
+     0.862774,
+     0.916535
+    ],
+    [
+     0.893165,
+     0.940424
+    ],
+    [
+     0.873556,
+     0.925139
+    ]
+   ],
+   "0.95": [
+    [
+     0.980087,
+     0.996958
+    ],
+    [
+     0.917587,
+     0.958652
+    ],
+    [
+     0.938114,
+     0.973019
+    ],
+    [
+     0.906412,
+     0.95044
+    ],
+    [
+     0.947473,
+     0.979168
+    ],
+    [
+     0.926634,
+     0.965113
+    ]
+   ]
+  },
+  "rank_ks": [
+   0.135056,
+   0.028049,
+   0.048039,
+   0.05118,
+   0.047548,
+   0.034305
+  ],
+  "rank_bound": 0.073159,
+  "rank_passed": [
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "truth_median_correlation": [
+   0.999997,
+   0.999683,
+   0.998744,
+   0.999876,
+   0.995749,
+   0.95155
+  ],
+  "median_width90_over_prior": [
+   0.003679,
+   0.01659,
+   0.006947,
+   0.01126,
+   0.010131,
+   0.321671
+  ],
+  "draws_outside_prior": 0.03043
+ },
+ "conditional": {
+  "synthetic-broad": {
+   "standardized_mean_error": [
+    0.7506,
+    0.3042,
+    0.0648,
+    0.0127,
+    0.5801,
+    0.397
+   ],
+   "width_ratio": [
+    1.8745,
+    1.5754,
+    2.0373,
+    1.4613,
+    2.7117,
+    1.334
+   ],
+   "draws_outside_prior": 0.0
+  },
+  "synthetic-market-like": {
+   "standardized_mean_error": [
+    0.9572,
+    0.1165,
+    0.1717,
+    0.3288,
+    0.0403,
+    0.3326
+   ],
+   "width_ratio": [
+    2.8599,
+    1.0514,
+    1.429,
+    1.1124,
+    2.3449,
+    1.2742
+   ],
+   "draws_outside_prior": 0.0
+  },
+  "market": {
+   "standardized_mean_error": [
+    11.2273,
+    5.8419,
+    12.046,
+    1.7728,
+    26.8566,
+    37.2239
+   ],
+   "width_ratio": [
+    5.7643,
+    1.7063,
+    3.4359,
+    2.0459,
+    4.7978,
+    59.4945
+   ],
+   "draws_outside_prior": 0.208252
+  }
+ },
+ "references": {
+  "synthetic-broad": {
+   "likelihood_evaluations": 146094,
+   "tune": 6000,
+   "draws": 12000,
+   "cpu_seconds": 839.1,
+   "wall_seconds": 845.6,
+   "first_attempt_cpu_seconds": 161.4
+  },
+  "synthetic-market-like": {
+   "likelihood_evaluations": 146087,
+   "tune": 6000,
+   "draws": 12000,
+   "cpu_seconds": 1568.1,
+   "wall_seconds": 1579.2,
+   "first_attempt_cpu_seconds": 312.6
+  },
+  "market": {
+   "likelihood_evaluations": 146113,
+   "tune": 6000,
+   "draws": 12000,
+   "cpu_seconds": 1596.6,
+   "wall_seconds": 1608.1,
+   "first_attempt_cpu_seconds": 314.4
+  }
+ },
+ "reference_posteriors": {
+  "synthetic-broad": {
+   "quantiles_05_50_95": [
+    [
+     0.135920498,
+     0.136021982,
+     0.136125406
+    ],
+    [
+     3.063194723,
+     3.080716443,
+     3.098482222
+    ],
+    [
+     0.082883232,
+     0.083061801,
+     0.083233605
+    ],
+    [
+     1.719655031,
+     1.723628567,
+     1.727559975
+    ],
+    [
+     -0.781556605,
+     -0.780779714,
+     -0.780019337
+    ],
+    [
+     0.848960064,
+     0.979803186,
+     1.152530568
+    ]
+   ],
+   "mean": [
+    0.136023144,
+    3.080799021,
+    0.083060371,
+    1.723608331,
+    -0.780782922,
+    0.987439427
+   ],
+   "sd": [
+    6.25873e-05,
+    0.0107578,
+    0.000106701,
+    0.00239029,
+    0.000466812,
+    0.0938375
+   ],
+   "generating_parameters": [
+    0.13606577,
+    3.082741508,
+    0.082839782,
+    1.724074618,
+    -0.780714584,
+    1.0
+   ]
+  },
+  "synthetic-market-like": {
+   "quantiles_05_50_95": [
+    [
+     0.027049987,
+     0.027121354,
+     0.027191994
+    ],
+    [
+     4.344922437,
+     4.410009461,
+     4.473384904
+    ],
+    [
+     0.056044412,
+     0.056320579,
+     0.056608759
+    ],
+    [
+     1.804867259,
+     1.817400469,
+     1.830005746
+    ],
+    [
+     -0.667127173,
+     -0.665768392,
+     -0.664444088
+    ],
+    [
+     0.772782165,
+     0.895921954,
+     1.054052471
+    ]
+   ],
+   "mean": [
+    0.027121224,
+    4.409630248,
+    0.05632401,
+    1.817454457,
+    -0.665775811,
+    0.90335312
+   ],
+   "sd": [
+    4.36556e-05,
+    0.0391758,
+    0.000173876,
+    0.0076406,
+    0.000811985,
+    0.0871416
+   ],
+   "generating_parameters": [
+    0.027111477,
+    4.335648755,
+    0.056477632,
+    1.799335659,
+    -0.66745512,
+    1.0
+   ]
+  },
+  "market": {
+   "quantiles_05_50_95": [
+    [
+     0.027897615,
+     0.028065479,
+     0.02823318
+    ],
+    [
+     4.901013743,
+     5.069955459,
+     5.242736495
+    ],
+    [
+     0.052949318,
+     0.053488702,
+     0.054049902
+    ],
+    [
+     1.773063245,
+     1.804651095,
+     1.835628375
+    ],
+    [
+     -0.699767867,
+     -0.696718372,
+     -0.69369283
+    ],
+    [
+     1.997874626,
+     1.999485376,
+     1.999959136
+    ]
+   ],
+   "mean": [
+    0.028064967,
+    5.070069587,
+    0.053493396,
+    1.804373461,
+    -0.696735735,
+    1.999272803
+   ],
+   "sd": [
+    0.000101983,
+    0.102219,
+    0.000332361,
+    0.0189203,
+    0.00185898,
+    0.000705218
+   ],
+   "generating_parameters": null
+  }
+ },
+ "market_misfit": {
+  "rms_vp": 1.3814,
+  "median_half_spread_vp": 0.0642,
+  "max_abs_vp": 6.0407,
+  "price_rms_in_half_spreads": 13.3721,
+  "neighbour_strike_correlation": 0.6627,
+  "adjacent_expiry_correlation": 0.936
+ },
+ "rough_bergomi": {
+  "pricing_cpu_seconds": [
+   60,
+   105
+  ],
+  "importance_sampling_pricings": 1000,
+  "status": "derived from the pricing cost; neither reference has been run"
+ },
+ "sources": {
+  "evaluation": {
+   "branch": "feat/heston-spread-baseline-20261109 (PR #85)",
+   "path": "lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/recovery-bank-independent/300k-300/evaluation/evaluation.json",
+   "sha256": "50312e178e17c800a9ac8c29f57261efb64b2f187d1d7ef37a09b3df47930f90"
+  },
+  "references": {
+   "branch": "claude/trusting-dijkstra-hmgvcm (PR #89)",
+   "commit": "ea882d973c2e7263f6cb3ffc23d21a7c77e46fa1",
+   "path": "lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook",
+   "reference_comparison_sha256": "b744043034b4a7ab5285cba6fabbeb9d1b5395bfe29ca86678406834f9e0ebc3"
+  },
+  "misfit_and_rough_costs": {
+   "branch": "claude/tender-bardeen-l6tivw",
+   "commit": "625ba48f2e93004d0f93d92a045d8f6c807a6d8c",
+   "path": "lab/plans/option-application/figure-sources/numbers.json",
+   "sha256": "a28b973b1ac601b8b978abd2b38dd81863e0fe2851068685c6cbe0094ef080eb",
+   "text": "lab/plans/option-application/3-full-detail.md, sections 7.1 and 8.4"
+  }
+ }
+}

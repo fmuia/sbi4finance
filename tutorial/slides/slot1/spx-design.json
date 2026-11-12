@@ -1,0 +1,654 @@
+{
+ "what": "The tutorial's 63-quote design of the SPX option application: the strikes, maturities, forwards, discounts and half-spreads of the 63 actual Cboe SPXW quotes of 9 November 2026 (15:13 New York), 7 expiries of 7 to 325 days, 9 strikes each at standardized moneyness z = ln(K/F)/(0.16 sqrt T). The slides' running example simulates its quotes on this design; the market mids are not used and not stored here.",
+ "source": {
+  "copied_from": "lab/plans/option-application/figure-sources/data.json, key 'design', on branch claude/tender-bardeen-l6tivw (commit ea6e25b), file SHA-256 97afcf586ca2dc6ebd78659e126effa2733251bf0ec1a04841b901bd85eefc80",
+  "which_records": "lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/design.json at commit 1c276bb72c1a8d43d1055327934f359708ba1e3f, SHA-256 c6f14b0cd7f6d1ecbcbee01f64cf1715c307547d00a802e2e3f232d52d136236",
+  "documented_in": "lab/plans/option-application/3-full-detail.md, section 5.1"
+ },
+ "valuation_time_utc": "2026-11-09T20:13:37+00:00",
+ "time_convention": "ACT/365F: actual UTC seconds / (365 * 86400)",
+ "reference_volatility": 0.16,
+ "units": "strike, forward and half_spread in index points; maturity in years; discount D(T); a price in forward units is the index-point price divided by D(T) F(T)",
+ "windows": {
+  "short_variance_window": [
+   0.0,
+   0.05762249492643328
+  ],
+  "later_variance_window": [
+   0.2220060565702689,
+   0.8903850520040588
+  ]
+ },
+ "quotes": [
+  {
+   "expiration": "2026-11-16",
+   "maturity": 0.019266331,
+   "forward": 7573.468641,
+   "discount": 0.999318164,
+   "strike": 6775.0,
+   "option_type": "put",
+   "half_spread": 0.05,
+   "target_z": -5.0
+  },
+  {
+   "expiration": "2026-11-16",
+   "maturity": 0.019266331,
+   "forward": 7573.468641,
+   "discount": 0.999318164,
+   "strike": 7010.0,
+   "option_type": "put",
+   "half_spread": 0.075,
+   "target_z": -3.5
+  },
+  {
+   "expiration": "2026-11-16",
+   "maturity": 0.019266331,
+   "forward": 7573.468641,
+   "discount": 0.999318164,
+   "strike": 7205.0,
+   "option_type": "put",
+   "half_spread": 0.1,
+   "target_z": -2.25
+  },
+  {
+   "expiration": "2026-11-16",
+   "maturity": 0.019266331,
+   "forward": 7573.468641,
+   "discount": 0.999318164,
+   "strike": 7365.0,
+   "option_type": "put",
+   "half_spread": 0.2,
+   "target_z": -1.25
+  },
+  {
+   "expiration": "2026-11-16",
+   "maturity": 0.019266331,
+   "forward": 7573.468641,
+   "discount": 0.999318164,
+   "strike": 7490.0,
+   "option_type": "put",
+   "half_spread": 0.2,
+   "target_z": -0.5
+  },
+  {
+   "expiration": "2026-11-16",
+   "maturity": 0.019266331,
+   "forward": 7573.468641,
+   "discount": 0.999318164,
+   "strike": 7565.0,
+   "option_type": "put",
+   "half_spread": 0.2,
+   "target_z": 0.0
+  },
+  {
+   "expiration": "2026-11-16",
+   "maturity": 0.019266331,
+   "forward": 7573.468641,
+   "discount": 0.999318164,
+   "strike": 7655.0,
+   "option_type": "call",
+   "half_spread": 0.1,
+   "target_z": 0.5
+  },
+  {
+   "expiration": "2026-11-16",
+   "maturity": 0.019266331,
+   "forward": 7573.468641,
+   "discount": 0.999318164,
+   "strike": 7745.0,
+   "option_type": "call",
+   "half_spread": 0.05,
+   "target_z": 1.0
+  },
+  {
+   "expiration": "2026-11-16",
+   "maturity": 0.019266331,
+   "forward": 7573.468641,
+   "discount": 0.999318164,
+   "strike": 7910.0,
+   "option_type": "call",
+   "half_spread": 0.05,
+   "target_z": 2.0
+  },
+  {
+   "expiration": "2026-11-23",
+   "maturity": 0.038444413,
+   "forward": 7577.336075,
+   "discount": 0.998042255,
+   "strike": 6475.0,
+   "option_type": "put",
+   "half_spread": 0.1,
+   "target_z": -5.0
+  },
+  {
+   "expiration": "2026-11-23",
+   "maturity": 0.038444413,
+   "forward": 7577.336075,
+   "discount": 0.998042255,
+   "strike": 6800.0,
+   "option_type": "put",
+   "half_spread": 0.15,
+   "target_z": -3.5
+  },
+  {
+   "expiration": "2026-11-23",
+   "maturity": 0.038444413,
+   "forward": 7577.336075,
+   "discount": 0.998042255,
+   "strike": 7060.0,
+   "option_type": "put",
+   "half_spread": 0.15,
+   "target_z": -2.25
+  },
+  {
+   "expiration": "2026-11-23",
+   "maturity": 0.038444413,
+   "forward": 7577.336075,
+   "discount": 0.998042255,
+   "strike": 7290.0,
+   "option_type": "put",
+   "half_spread": 0.25,
+   "target_z": -1.25
+  },
+  {
+   "expiration": "2026-11-23",
+   "maturity": 0.038444413,
+   "forward": 7577.336075,
+   "discount": 0.998042255,
+   "strike": 7460.0,
+   "option_type": "put",
+   "half_spread": 0.25,
+   "target_z": -0.5
+  },
+  {
+   "expiration": "2026-11-23",
+   "maturity": 0.038444413,
+   "forward": 7577.336075,
+   "discount": 0.998042255,
+   "strike": 7575.0,
+   "option_type": "put",
+   "half_spread": 0.4,
+   "target_z": 0.0
+  },
+  {
+   "expiration": "2026-11-23",
+   "maturity": 0.038444413,
+   "forward": 7577.336075,
+   "discount": 0.998042255,
+   "strike": 7695.0,
+   "option_type": "call",
+   "half_spread": 0.25,
+   "target_z": 0.5
+  },
+  {
+   "expiration": "2026-11-23",
+   "maturity": 0.038444413,
+   "forward": 7577.336075,
+   "discount": 0.998042255,
+   "strike": 7825.0,
+   "option_type": "call",
+   "half_spread": 0.15,
+   "target_z": 1.0
+  },
+  {
+   "expiration": "2026-11-23",
+   "maturity": 0.038444413,
+   "forward": 7577.336075,
+   "discount": 0.998042255,
+   "strike": 8075.0,
+   "option_type": "call",
+   "half_spread": 0.1,
+   "target_z": 2.0
+  },
+  {
+   "expiration": "2026-12-09",
+   "maturity": 0.082280029,
+   "forward": 7586.891312,
+   "discount": 0.99522985,
+   "strike": 6000.0,
+   "option_type": "put",
+   "half_spread": 0.1,
+   "target_z": -5.0
+  },
+  {
+   "expiration": "2026-12-09",
+   "maturity": 0.082280029,
+   "forward": 7586.891312,
+   "discount": 0.99522985,
+   "strike": 6450.0,
+   "option_type": "put",
+   "half_spread": 0.2,
+   "target_z": -3.5
+  },
+  {
+   "expiration": "2026-12-09",
+   "maturity": 0.082280029,
+   "forward": 7586.891312,
+   "discount": 0.99522985,
+   "strike": 6850.0,
+   "option_type": "put",
+   "half_spread": 0.25,
+   "target_z": -2.25
+  },
+  {
+   "expiration": "2026-12-09",
+   "maturity": 0.082280029,
+   "forward": 7586.891312,
+   "discount": 0.99522985,
+   "strike": 7175.0,
+   "option_type": "put",
+   "half_spread": 0.3,
+   "target_z": -1.25
+  },
+  {
+   "expiration": "2026-12-09",
+   "maturity": 0.082280029,
+   "forward": 7586.891312,
+   "discount": 0.99522985,
+   "strike": 7410.0,
+   "option_type": "put",
+   "half_spread": 0.3,
+   "target_z": -0.5
+  },
+  {
+   "expiration": "2026-12-09",
+   "maturity": 0.082280029,
+   "forward": 7586.891312,
+   "discount": 0.99522985,
+   "strike": 7580.0,
+   "option_type": "put",
+   "half_spread": 0.45,
+   "target_z": 0.0
+  },
+  {
+   "expiration": "2026-12-09",
+   "maturity": 0.082280029,
+   "forward": 7586.891312,
+   "discount": 0.99522985,
+   "strike": 7760.0,
+   "option_type": "call",
+   "half_spread": 0.3,
+   "target_z": 0.5
+  },
+  {
+   "expiration": "2026-12-09",
+   "maturity": 0.082280029,
+   "forward": 7586.891312,
+   "discount": 0.99522985,
+   "strike": 7925.0,
+   "option_type": "call",
+   "half_spread": 0.3,
+   "target_z": 1.0
+  },
+  {
+   "expiration": "2026-12-09",
+   "maturity": 0.082280029,
+   "forward": 7586.891312,
+   "discount": 0.99522985,
+   "strike": 8300.0,
+   "option_type": "call",
+   "half_spread": 0.125,
+   "target_z": 2.0
+  },
+  {
+   "expiration": "2027-01-08",
+   "maturity": 0.16447181,
+   "forward": 7614.993877,
+   "discount": 0.99112036,
+   "strike": 5600.0,
+   "option_type": "put",
+   "half_spread": 0.15,
+   "target_z": -5.0
+  },
+  {
+   "expiration": "2027-01-08",
+   "maturity": 0.16447181,
+   "forward": 7614.993877,
+   "discount": 0.99112036,
+   "strike": 6100.0,
+   "option_type": "put",
+   "half_spread": 0.25,
+   "target_z": -3.5
+  },
+  {
+   "expiration": "2027-01-08",
+   "maturity": 0.16447181,
+   "forward": 7614.993877,
+   "discount": 0.99112036,
+   "strike": 6600.0,
+   "option_type": "put",
+   "half_spread": 0.3,
+   "target_z": -2.25
+  },
+  {
+   "expiration": "2027-01-08",
+   "maturity": 0.16447181,
+   "forward": 7614.993877,
+   "discount": 0.99112036,
+   "strike": 7025.0,
+   "option_type": "put",
+   "half_spread": 0.35,
+   "target_z": -1.25
+  },
+  {
+   "expiration": "2027-01-08",
+   "maturity": 0.16447181,
+   "forward": 7614.993877,
+   "discount": 0.99112036,
+   "strike": 7375.0,
+   "option_type": "put",
+   "half_spread": 1.0,
+   "target_z": -0.5
+  },
+  {
+   "expiration": "2027-01-08",
+   "maturity": 0.16447181,
+   "forward": 7614.993877,
+   "discount": 0.99112036,
+   "strike": 7610.0,
+   "option_type": "put",
+   "half_spread": 0.5,
+   "target_z": 0.0
+  },
+  {
+   "expiration": "2027-01-08",
+   "maturity": 0.16447181,
+   "forward": 7614.993877,
+   "discount": 0.99112036,
+   "strike": 7875.0,
+   "option_type": "call",
+   "half_spread": 0.8,
+   "target_z": 0.5
+  },
+  {
+   "expiration": "2027-01-08",
+   "maturity": 0.16447181,
+   "forward": 7614.993877,
+   "discount": 0.99112036,
+   "strike": 8125.0,
+   "option_type": "call",
+   "half_spread": 0.25,
+   "target_z": 1.0
+  },
+  {
+   "expiration": "2027-01-08",
+   "maturity": 0.16447181,
+   "forward": 7614.993877,
+   "discount": 0.99112036,
+   "strike": 8600.0,
+   "option_type": "call",
+   "half_spread": 0.15,
+   "target_z": 2.0
+  },
+  {
+   "expiration": "2027-01-29",
+   "maturity": 0.222006057,
+   "forward": 7632.674125,
+   "discount": 0.989275637,
+   "strike": 5200.0,
+   "option_type": "put",
+   "half_spread": 0.15,
+   "target_z": -5.0
+  },
+  {
+   "expiration": "2027-01-29",
+   "maturity": 0.222006057,
+   "forward": 7632.674125,
+   "discount": 0.989275637,
+   "strike": 5875.0,
+   "option_type": "put",
+   "half_spread": 0.2,
+   "target_z": -3.5
+  },
+  {
+   "expiration": "2027-01-29",
+   "maturity": 0.222006057,
+   "forward": 7632.674125,
+   "discount": 0.989275637,
+   "strike": 6440.0,
+   "option_type": "put",
+   "half_spread": 0.35,
+   "target_z": -2.25
+  },
+  {
+   "expiration": "2027-01-29",
+   "maturity": 0.222006057,
+   "forward": 7632.674125,
+   "discount": 0.989275637,
+   "strike": 6950.0,
+   "option_type": "put",
+   "half_spread": 0.35,
+   "target_z": -1.25
+  },
+  {
+   "expiration": "2027-01-29",
+   "maturity": 0.222006057,
+   "forward": 7632.674125,
+   "discount": 0.989275637,
+   "strike": 7350.0,
+   "option_type": "put",
+   "half_spread": 0.35,
+   "target_z": -0.5
+  },
+  {
+   "expiration": "2027-01-29",
+   "maturity": 0.222006057,
+   "forward": 7632.674125,
+   "discount": 0.989275637,
+   "strike": 7625.0,
+   "option_type": "put",
+   "half_spread": 0.4,
+   "target_z": 0.0
+  },
+  {
+   "expiration": "2027-01-29",
+   "maturity": 0.222006057,
+   "forward": 7632.674125,
+   "discount": 0.989275637,
+   "strike": 7925.0,
+   "option_type": "call",
+   "half_spread": 0.3,
+   "target_z": 0.5
+  },
+  {
+   "expiration": "2027-01-29",
+   "maturity": 0.222006057,
+   "forward": 7632.674125,
+   "discount": 0.989275637,
+   "strike": 8230.0,
+   "option_type": "call",
+   "half_spread": 0.25,
+   "target_z": 1.0
+  },
+  {
+   "expiration": "2027-01-29",
+   "maturity": 0.222006057,
+   "forward": 7632.674125,
+   "discount": 0.989275637,
+   "strike": 8870.0,
+   "option_type": "call",
+   "half_spread": 0.1,
+   "target_z": 2.0
+  },
+  {
+   "expiration": "2027-04-30",
+   "maturity": 0.47120697,
+   "forward": 7705.401822,
+   "discount": 0.977485252,
+   "strike": 4400.0,
+   "option_type": "put",
+   "half_spread": 0.2,
+   "target_z": -5.0
+  },
+  {
+   "expiration": "2027-04-30",
+   "maturity": 0.47120697,
+   "forward": 7705.401822,
+   "discount": 0.977485252,
+   "strike": 5200.0,
+   "option_type": "put",
+   "half_spread": 0.3,
+   "target_z": -3.5
+  },
+  {
+   "expiration": "2027-04-30",
+   "maturity": 0.47120697,
+   "forward": 7705.401822,
+   "discount": 0.977485252,
+   "strike": 6025.0,
+   "option_type": "put",
+   "half_spread": 0.4,
+   "target_z": -2.25
+  },
+  {
+   "expiration": "2027-04-30",
+   "maturity": 0.47120697,
+   "forward": 7705.401822,
+   "discount": 0.977485252,
+   "strike": 6725.0,
+   "option_type": "put",
+   "half_spread": 0.4,
+   "target_z": -1.25
+  },
+  {
+   "expiration": "2027-04-30",
+   "maturity": 0.47120697,
+   "forward": 7705.401822,
+   "discount": 0.977485252,
+   "strike": 7290.0,
+   "option_type": "put",
+   "half_spread": 0.55,
+   "target_z": -0.5
+  },
+  {
+   "expiration": "2027-04-30",
+   "maturity": 0.47120697,
+   "forward": 7705.401822,
+   "discount": 0.977485252,
+   "strike": 7690.0,
+   "option_type": "put",
+   "half_spread": 0.7,
+   "target_z": 0.0
+  },
+  {
+   "expiration": "2027-04-30",
+   "maturity": 0.47120697,
+   "forward": 7705.401822,
+   "discount": 0.977485252,
+   "strike": 8150.0,
+   "option_type": "call",
+   "half_spread": 1.4,
+   "target_z": 0.5
+  },
+  {
+   "expiration": "2027-04-30",
+   "maturity": 0.47120697,
+   "forward": 7705.401822,
+   "discount": 0.977485252,
+   "strike": 8600.0,
+   "option_type": "call",
+   "half_spread": 0.25,
+   "target_z": 1.0
+  },
+  {
+   "expiration": "2027-04-30",
+   "maturity": 0.47120697,
+   "forward": 7705.401822,
+   "discount": 0.977485252,
+   "strike": 9600.0,
+   "option_type": "call",
+   "half_spread": 0.15,
+   "target_z": 2.0
+  },
+  {
+   "expiration": "2027-09-30",
+   "maturity": 0.890385052,
+   "forward": 7830.898474,
+   "discount": 0.957792661,
+   "strike": 3600.0,
+   "option_type": "put",
+   "half_spread": 0.2,
+   "target_z": -5.0
+  },
+  {
+   "expiration": "2027-09-30",
+   "maturity": 0.890385052,
+   "forward": 7830.898474,
+   "discount": 0.957792661,
+   "strike": 4600.0,
+   "option_type": "put",
+   "half_spread": 0.35,
+   "target_z": -3.5
+  },
+  {
+   "expiration": "2027-09-30",
+   "maturity": 0.890385052,
+   "forward": 7830.898474,
+   "discount": 0.957792661,
+   "strike": 5600.0,
+   "option_type": "put",
+   "half_spread": 0.55,
+   "target_z": -2.25
+  },
+  {
+   "expiration": "2027-09-30",
+   "maturity": 0.890385052,
+   "forward": 7830.898474,
+   "discount": 0.957792661,
+   "strike": 6475.0,
+   "option_type": "put",
+   "half_spread": 0.6,
+   "target_z": -1.25
+  },
+  {
+   "expiration": "2027-09-30",
+   "maturity": 0.890385052,
+   "forward": 7830.898474,
+   "discount": 0.957792661,
+   "strike": 7250.0,
+   "option_type": "put",
+   "half_spread": 0.65,
+   "target_z": -0.5
+  },
+  {
+   "expiration": "2027-09-30",
+   "maturity": 0.890385052,
+   "forward": 7830.898474,
+   "discount": 0.957792661,
+   "strike": 7830.0,
+   "option_type": "put",
+   "half_spread": 1.9,
+   "target_z": 0.0
+  },
+  {
+   "expiration": "2027-09-30",
+   "maturity": 0.890385052,
+   "forward": 7830.898474,
+   "discount": 0.957792661,
+   "strike": 8445.0,
+   "option_type": "call",
+   "half_spread": 0.65,
+   "target_z": 0.5
+  },
+  {
+   "expiration": "2027-09-30",
+   "maturity": 0.890385052,
+   "forward": 7830.898474,
+   "discount": 0.957792661,
+   "strike": 9105.0,
+   "option_type": "call",
+   "half_spread": 0.55,
+   "target_z": 1.0
+  },
+  {
+   "expiration": "2027-09-30",
+   "maturity": 0.890385052,
+   "forward": 7830.898474,
+   "discount": 0.957792661,
+   "strike": 9800.0,
+   "option_type": "call",
+   "half_spread": 0.3,
+   "target_z": 1.5
+  }
+ ]
+}

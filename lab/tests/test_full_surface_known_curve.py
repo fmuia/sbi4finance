@@ -149,6 +149,8 @@ class KnownCurveContractTests(unittest.TestCase):
                     report = module.evaluate(args)
                 self.assertEqual(load.call_args.kwargs["splits"], ("validation",))
                 self.assertEqual(report["targets"], task["parameter_names"])
+                self.assertEqual(report["performance"]["work"]["posterior_draws"], 24)
+                self.assertEqual(report["performance"]["work"]["sample_calls"], 2)
                 self.assertEqual(len(report["sbc"]["rank_ks"]), len(bounds))
                 diagnostics = report["diagnostics_with_derived_targets"]
                 self.assertEqual(diagnostics["targets"], [*task["parameter_names"], "rho_eta"])

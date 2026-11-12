@@ -6,46 +6,37 @@ app = marimo.App(width="medium", app_title="Slot 2 · What is amortized Bayes?")
 
 @app.cell(hide_code=True)
 def _():
-    import json
-    import os
     import time
-
-    os.environ.setdefault("KERAS_BACKEND", "jax")
 
     import marimo as mo
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from sbi4f_tutorial import inference, plots, surface, teaching
+    import bayesflow as bf
+
+    from sbi4f_tutorial import plots, surface, teaching
 
     ROOT = mo.notebook_dir().parent
     ASSETS = ROOT / "assets"
     RESULTS = ASSETS / "results" / "calibration"
-    TOY_CHECKPOINT = ASSETS / "checkpoints" / "slot2-toy" / "model.keras"
     plots.style()
-    return ASSETS, RESULTS, mo, np, plots, plt, surface, teaching, time
+    return ASSETS, RESULTS, bf, mo, np, plots, plt, surface, teaching, time
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    # Slot 2 · What is amortized Bayes?
+    # What is amortized Bayes?
 
-    **A network that learns the posterior from simulations, once, for every data set**
+    **A neural network that learns the posterior from simulations, once, for every data set**
 
-    Slot 1 ended on a cost. The posterior needs the likelihood evaluated thousands of times for every
-    smile, and for the models of slots 4 and 5 each evaluation is a Fourier integral or a Monte Carlo run. This
-    notebook shows the idea that removes most of that cost for a validation, on slot 1's own example, where the exact answer is
-    known.
+    Slot 1 ended on a cost. The posterior is our ultimate object of interest. However, its estimation needs the likelihood evaluated thousands of times for every smile, and for the models of slots 4 and 5 each evaluation is a Fourier integral or a Monte Carlo run. This notebook shows the idea that removes most of that cost on a simple example.
 
-    Three claims, each backed by a computation below:
+    The slot in brief:
 
-    1. **A network trained on simulated pairs returns the posterior.** It never evaluates the likelihood;
-       it only sees parameters and the data they produce.
-    2. **The cost moves from each data set to one training run.** That pays when many posteriors are
-       needed: a valuation across a book, for example at month-end, or the thousands that validation needs.
-    3. **The network is an approximation, so the workflow checks it.** Simulation-based calibration (SBC)
-       checks it on average; an exact posterior, where one exists, or an audit checks it data set by data set.
+    1. **We will train a neural network on simulated pairs to estimate the posterior.** The network will never evaluate the likelihood; it only sees parameters and the data they produce.
+    2. **The cost moves from each data set to one training run.** This type of inference amortization pays off when many posteriors are needed: a valuation across a book, for example at month-end or a screener that needs to processed thousands of assets.
+    3. **The network is an approximation, so we need diagnostics.** We will discuss simulation-based calibration (SBC), a way to detect systematic biases in the approximate posterior before deployment.
     """)
     return
 
@@ -55,7 +46,7 @@ def _(mo):
     mo.md(r"""
     | | Infer data set by data set | Amortized inference |
     |:---|:---|:---|
-    | Methods | MCMC, sequential Monte Carlo, ABC, particle MCMC | neural posterior estimation, here with flow matching |
+    | Methods | MCMC, SMC, ABC | neural posterior estimation, here with a coupling flow |
     | Needs | the likelihood, or a simulator per proposal | a simulator, once, for the training bank |
     | Cost of the first posterior | one full run | training: the bank plus the network |
     | Cost of each further posterior | one full run | one pass through the network |
@@ -67,30 +58,49 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.accordion({
-        "**Why the trained network is the posterior** (click to open)": mo.md(r"""
-        Draw pairs from the joint distribution $p(\theta, y) = p(\theta)\,p(y \mid \theta)$: a parameter
-        from the prior, then data from the model. Train a conditional density $q_\phi(\theta \mid y)$ to
-        put probability on the true parameter of each pair. Its expected loss splits in two:
+        "**How does the network learn the posterior?** (click to open)": mo.md(r"""
+    During training, wraw pairs from the joint distribution $p(\theta, y) = p(\theta)\,p(y \mid \theta)$: a parameter from the prior, then data from the model. We then train a conditional density $q_\phi(\theta \mid y)$ to put probability on the true parameter of each pair. Its expected loss splits in two:
 
-        $$\mathbb E_{p(\theta, y)}\big[-\log q_\phi(\theta \mid y)\big]
-        = \mathbb E_{p(y)}\Big[\mathrm{KL}\big(p(\theta \mid y)\,\big\|\,q_\phi(\theta \mid y)\big)\Big]
-        + \mathbb E_{p(y)}\big[\mathcal H\big(p(\theta \mid y)\big)\big].$$
+    $$
+    \begin{equation}
+    \mathbb{E}_{p(y)}\left[\mathrm{KL}\left(p(\theta \mid y)\|q_\phi(\theta \mid y)\right)\right] = \mathbb{E}_{p(\theta,y)}\left[-\log q_\phi(\theta \mid y)\right] - \mathbb{E}_{p(y)}\left[\mathcal{H}(p(\theta \mid y))\right].
+    \end{equation}
+    $$
 
-        The second term does not depend on $\phi$. The first is zero only when $q_\phi$ equals the
-        posterior, for every $y$ the prior and the model can produce. So the minimizer is the posterior,
-        and it is learned for all data sets at once. Flow matching (slot 3) reaches the same target with
-        a regression loss on a velocity field.
+    The second term does not depend on $\phi$. The first is zero only when $q_\phi$ equals the posterior for $p(y)$-almost every $y$. So the minimizer is the posterior, and it is learned for all data sets at once. The one-layer coupling flow below learns this conditional density by maximum likelihood.
 
-        Three consequences:
+    But how does the network learn $\log q_\phi(\theta \mid y)$?
 
-        1. **The prior and the simulator are trained in.** Changing either needs retraining or a
-           correction (slot 6).
-        2. **The network is accurate only where the prior puts data.** A real data set unlike any
-           simulation is an extrapolation; the prior predictive check detects it.
-        3. **The minimum is reached only approximately.** The gap between the network and the posterior
-           for one data set is the amortization gap. Where the likelihood can be computed or estimated,
-           importance sampling with the network as proposal corrects it (slots 4 and 5).
-        """)
+    The network is a special kind of generative model that learns an **invertible mapping** between parameters $\theta$ and noise $z$ from a simple base distribution, typically a standard Gaussian. Conditioning on $y$ makes this mapping depend on the observed data.
+
+    There are two main approaches:
+
+    **1. Normalizing flows (single-step transformations)**
+
+    A normalizing flow learns an invertible map $z = f_\phi(\theta; y)$. The change-of-variables formula gives the exact conditional log density:
+
+    $$
+    \log q_\phi(\theta \mid y) = \log p_Z(f_\phi(\theta; y)) + \log \left|\det \frac{\partial f_\phi(\theta; y)}{\partial \theta}\right|.
+    $$
+
+    Both terms can be evaluated directly in a single forward pass, as the normalizing flow is designed to have a cheap Jacobian determinant and the base distribution $p(z)$ is Gaussian. Thus, *the negative log density is the training loss*.
+
+    **2. Continuous normalizing flows (ODE transformations)**
+
+    Instead of a finite sequence of transformations, continuous flows transform noise into parameters through an ODE with a learned velocity field $v_\phi(x,t;y)$. The instantaneous change-of-variables formula gives a similiar expression:
+
+    $$
+    \log q_\phi(\theta \mid y) = \log p_Z(z) - \int_0^1 \nabla_x \cdot v_\phi(x_t,t;y)\,dt,
+    $$
+
+    where $x_0=z$, $x_1=\theta$, and $\nabla_x \cdot v_\phi$ is the divergence of the velocity field. Evaluating this density requires solving an ODE and integrating the divergence, which is computationally expensive. Thus, *flow matching and diffusion models typically use different surrogate training losses* instead of directly maximizing the log posterior.
+
+    **Three consequences:**
+
+    1. **The prior and the simulator are trained in.** Changing either needs retraining or a correction.
+    2. **The network is accurate only where the prior puts data.** A real data set unlike any simulation is an extrapolation; a prior predictive check can flag it.
+    3. **The minimum is reached only approximately.** The gap between the network and the posterior for one data set is the amortization gap. Where the likelihood can be computed, importance sampling with the network as a proposal can correct it.
+    """)
     })
     return
 
@@ -98,7 +108,7 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 1 · The toy: slot 1's posterior, learned
+    ## 1. Learning a simple posterior
 
     Slot 1 computed the posterior of the Black–Scholes volatility from one quote, the at-the-money
     one-month SPY price, on a grid. Here a network learns the same posterior from simulations. The prior
@@ -108,7 +118,7 @@ def _(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(RESULTS, np, surface, teaching):
     spy = teaching.load_json(RESULTS / "spy" / "surface.json")
     _k, _maturity, _kind, _delta = teaching.design_arrays()
@@ -116,91 +126,94 @@ def _(RESULTS, np, surface, teaching):
     QUOTE = {"k": float(_k[_i]), "T": float(_maturity[_i]), "kind": str(_kind[_i]),
              "price": float(spy["prices_forward_units"][_i]), "sd": float(spy["noise_sd"][_i])}
     PRIOR_LOW, PRIOR_HIGH = 0.08, 0.40
-    _rng = np.random.default_rng(2026)
+    rng = np.random.default_rng(2026)
+    return PRIOR_HIGH, PRIOR_LOW, QUOTE, rng
 
 
+@app.cell
+def _(PRIOR_HIGH, PRIOR_LOW, QUOTE, rng, surface):
     def prior():
-        return {"sigma": _rng.uniform(PRIOR_LOW, PRIOR_HIGH)}
+        return {"sigma": rng.uniform(PRIOR_LOW, PRIOR_HIGH)}
 
 
     def quote(sigma):
-        return {"price": surface.bs_price(QUOTE["k"], QUOTE["T"], sigma, QUOTE["kind"]) + QUOTE["sd"] * _rng.standard_normal()}
+        price = surface.bs_price(QUOTE["k"], QUOTE["T"], sigma, QUOTE["kind"])
+        price += QUOTE["sd"] * rng.standard_normal()
+        return {"price": price}
 
-
-    def make_toy_simulator():
-        import bayesflow as bf
-        return bf.make_simulator([prior, quote])
-
-    return PRIOR_HIGH, PRIOR_LOW, QUOTE, make_toy_simulator
+    return prior, quote
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    BayesFlow needs only these two functions that **draw**: `prior()` returns one parameter, and
-    `quote(sigma)` one noisy price for it. `bf.make_simulator` chains them. A bank of 40,000 simulated
-    pairs takes about a second:
+    BayesFlow needs only functions that can simulate parameter and data. `prior()` returns one parameter, and
+    `quote(sigma)` one noisy price for it.
     """)
     return
 
 
-@app.cell
-def _(make_toy_simulator, mo, time, train_button):
-    mo.stop(not train_button.value, mo.md("Toy bank generation and training are off. Press the training button to run a new BayesFlow 2.1 toy; the archived 2.0 model stays untouched."))
-    simulator = make_toy_simulator()
+@app.cell(hide_code=True)
+def _(bf, prior, quote):
+    simulator = bf.make_simulator([prior, quote])
+    return (simulator,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    The code below trains a small flow matching network from scratch when you press the button below it. The `Adapter` tells the network which quantities are considered observed and which latent. It can also be used to preprocess simulations before passing them to the network (e.g., to enforce bounds).
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(PRIOR_HIGH, PRIOR_LOW, bf, mo, simulator, time, train_button):
+    mo.stop(not train_button.value, mo.md("Data generation and training are off. Press the training button to run a new training."))
+
+    adapter = (
+        bf.Adapter()
+            .constrain("sigma", lower=PRIOR_LOW, upper=PRIOR_HIGH)
+            .rename("sigma", "inference_variables")
+            .rename("price", "inference_conditions")
+    )
+
+    workflow = bf.BasicWorkflow(
+        adapter=adapter,
+        initial_learning_rate=1e-3,
+        inference_network=bf.networks.FlowMatching(subnet_kwargs={"widths": (32,)*3}),
+        standardize="all"
+    )
+
     _start = time.perf_counter()
-    bank = simulator.sample(40_000)
+    train_data = simulator.sample(40_000)
     bank_seconds = time.perf_counter() - _start
-    mo.md(f"40,000 toy pairs generated in {bank_seconds:.1f}s.")
-    return bank, simulator
+
+    _start = time.perf_counter()
+    history = workflow.fit_offline(data=train_data, epochs=40, batch_size=256, verbose=0)
+    toy_seconds = time.perf_counter() - _start
+
+    _fig = bf.diagnostics.loss(history)
+
+    mo.vstack([
+        mo.md(f"40,000 simulated pairs generated in {bank_seconds:.1f}s."),
+        mo.md(f"New BayesFlow 2.1 toy trained explicitly in {toy_seconds:.0f}s."),
+        _fig
+    ])
+    return (workflow,)
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    The network is BayesFlow's flow matching, at a toy size. The adapter maps $\sigma$ from its prior
-    interval to the real line and names what the network infers and what it conditions on. Sampling uses
-    BayesFlow 2.1's native adaptive solver (slot 3). The archived 2.0 toy checkpoint is not loaded here.
-    """)
-    return
-
-
-@app.cell
-def _(PRIOR_HIGH, PRIOR_LOW):
-    def build_toy_workflow():
-        import bayesflow as bf
-        adapter = (bf.Adapter().constrain("sigma", lower=PRIOR_LOW, upper=PRIOR_HIGH)
-                   .convert_dtype("float64", "float32")
-                   .rename("sigma", "inference_variables").rename("price", "inference_conditions"))
-        return bf.BasicWorkflow(adapter=adapter,
-                                inference_network=bf.networks.FlowMatching(subnet_kwargs={"widths": [128, 128, 128]}),
-                                standardize=["inference_variables", "inference_conditions"])
-
-    return (build_toy_workflow,)
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    train_button = mo.ui.run_button(label="Train a new BayesFlow 2.1 toy explicitly (30 epochs)")
+    train_button = mo.ui.run_button(label="Train a new BayesFlow 2.1 toy explicitly (40 epochs)")
     train_button
     return (train_button,)
 
 
-@app.cell
-def _(bank, build_toy_workflow, mo, time, train_button):
-    mo.stop(not train_button.value, mo.md("No toy training is running."))
-    _start = time.perf_counter()
-    toy = build_toy_workflow()
-    toy.fit_offline(data=bank, epochs=30, batch_size=256, verbose=0)
-    toy_seconds = time.perf_counter() - _start
-    mo.md(f"New BayesFlow 2.1 toy trained explicitly in {toy_seconds:.0f}s. It is session-only and replaces no saved asset.")
-    return (toy,)
-
-
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 2 · The network against the exact posterior
+    ## 2 The network against the exact posterior
 
     The grid posterior is slot 1's computation with this prior. The network's posterior comes from one
     call with the SPY quote as condition.
@@ -210,37 +223,33 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(PRIOR_HIGH, PRIOR_LOW, QUOTE, mo, np, plt, surface):
-    _sigma = np.linspace(PRIOR_LOW, PRIOR_HIGH, 4001)
-    _miss = (QUOTE["price"] - surface.bs_price(QUOTE["k"], QUOTE["T"], _sigma, QUOTE["kind"])) / QUOTE["sd"]
-    _density = np.exp(-0.5 * (_miss**2 - (_miss**2).min()))
-    _density /= np.trapezoid(_density, _sigma)
-    _fig, _ax = plt.subplots(figsize=(7, 3))
-    _ax.plot(100 * _sigma, _density / 100)
-    _ax.set_xlabel("Black–Scholes volatility (%)")
-    _ax.set_ylabel("exact posterior density")
-    mo.vstack([mo.md("**Exact toy posterior**, available before any optional network training."), _fig])
-    return
-
-
-@app.cell
-def _(PRIOR_HIGH, PRIOR_LOW, QUOTE, np, surface, time, toy):
     sigma_grid = np.linspace(PRIOR_LOW, PRIOR_HIGH, 4001)
     _miss = (QUOTE["price"] - surface.bs_price(QUOTE["k"], QUOTE["T"], sigma_grid, QUOTE["kind"])) / QUOTE["sd"]
     _weights = np.exp(-0.5 * (_miss**2 - (_miss**2).min()))
     exact_density = _weights / np.trapezoid(_weights, sigma_grid)
     exact_mean = np.trapezoid(sigma_grid * exact_density, sigma_grid)
     exact_sd = np.sqrt(np.trapezoid((sigma_grid - exact_mean) ** 2 * exact_density, sigma_grid))
+    _fig, _ax = plt.subplots(figsize=(7, 3))
+    _ax.plot(100 * sigma_grid, exact_density / 100)
+    _ax.set_xlabel("Black–Scholes volatility (%)")
+    _ax.set_ylabel("exact posterior density")
+    mo.vstack([mo.md("**Exact toy posterior**, available before any optional network training."), _fig])
+    return exact_density, exact_mean, exact_sd, sigma_grid
+
+
+@app.cell(hide_code=True)
+def _(QUOTE, np, time, workflow):
+    new_price = np.array([[QUOTE["price"]]])
+
     _start = time.perf_counter()
-    network_draws = np.asarray(toy.sample(num_samples=4000, conditions={"price": np.array([[QUOTE["price"]]])})["sigma"])[0, :, 0]
-    network_seconds = time.perf_counter() - _start
-    return (
-        exact_density,
-        exact_mean,
-        exact_sd,
-        network_draws,
-        network_seconds,
-        sigma_grid,
+
+    network_draws = workflow.sample(
+        num_samples=2000,
+        conditions={"price": new_price}
     )
+
+    network_seconds = time.perf_counter() - _start
+    return network_draws, network_seconds
 
 
 @app.cell(hide_code=True)
@@ -255,23 +264,26 @@ def _(
     plt,
     sigma_grid,
 ):
+    draws_flat = network_draws["sigma"].squeeze()
+
     _fig, _ax = plt.subplots(figsize=(7.2, 3.2), constrained_layout=True)
-    _ax.hist(100 * network_draws, bins=60, density=True, color=plots.SERIES[0], alpha=0.6, label="network, 4,000 draws")
+    _ax.hist(100 * draws_flat, bins=60, density=True, color=plots.SERIES[0], alpha=0.6, label="network, 2,000 draws")
     _ax.plot(100 * sigma_grid, exact_density / 100, color=plots.INK, label="exact posterior (grid)")
     _ax.set_xlim(100 * (exact_mean - 5 * exact_sd), 100 * (exact_mean + 5 * exact_sd))
     _ax.set_yticks([])
     _ax.set_xlabel("Black–Scholes volatility σ (%)")
     _ax.legend(fontsize=8)
     _ax.set_title("the SPY at-the-money one-month quote", loc="left")
+
     mo.vstack([
         _fig,
         mo.md(f"""
         | | mean | standard deviation |
         |:---|---:|---:|
         | exact posterior (grid) | {100 * exact_mean:.2f}% | {100 * exact_sd:.2f} points |
-        | network | {100 * network_draws.mean():.2f}% | {100 * network_draws.std():.2f} points |
+        | network | {100 * draws_flat.mean():.2f}% | {100 * draws_flat.std():.2f} points |
 
-        4,000 draws in {network_seconds:.1f} s, including the first call's compilation.
+        2,000 draws in {network_seconds:.1f} s, including the first call's compilation.
         """),
     ])
     return
@@ -280,46 +292,40 @@ def _(
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 3 · Amortization: many data sets, one call
+    ## 3 Amortization: many data sets, one call
 
-    The same network answers any quote the prior can produce. Here it returns the posteriors of 500
-    different quotes in one call, against the exact grid posterior of each.
+    The same network answers any quote the prior can produce. Here it returns the posteriors of 300 different quotes in one call, against the exact grid posterior of each.
     """)
     return
 
 
-@app.cell
-def _(QUOTE, np, sigma_grid, simulator, surface, time, toy):
-    _quotes = simulator.sample(500)
+@app.cell(hide_code=True)
+def _(QUOTE, np, sigma_grid, simulator, surface, time, workflow):
+    simulations = simulator.sample(300)
+
     _start = time.perf_counter()
-    _draws = np.asarray(toy.sample(num_samples=100, conditions={"price": _quotes["price"]})["sigma"])[:, :, 0]
+    posterior_draws = workflow.sample(
+        num_samples=200, 
+        conditions={"price": simulations["price"]}
+    )
     many_seconds = time.perf_counter() - _start
-    many = {"truth": _quotes["sigma"][:, 0], "price": _quotes["price"][:, 0], "draws": _draws}
-    _misses = (many["price"][:, None] - surface.bs_price(QUOTE["k"], QUOTE["T"], sigma_grid[None, :], QUOTE["kind"])) / QUOTE["sd"]
+
+    _misses = (simulations["price"] - surface.bs_price(QUOTE["k"], QUOTE["T"], sigma_grid[None, :], QUOTE["kind"])) / QUOTE["sd"]
     _w = np.exp(-0.5 * (_misses**2 - (_misses**2).min(axis=1, keepdims=True)))
     many_exact_mean = (_w * sigma_grid).sum(axis=1) / _w.sum(axis=1)
-    return many, many_exact_mean, many_seconds
+    return many_seconds, posterior_draws, simulations
 
 
 @app.cell(hide_code=True)
-def _(
-    PRIOR_HIGH,
-    PRIOR_LOW,
-    many,
-    many_exact_mean,
-    many_seconds,
-    mo,
-    plots,
-    plt,
-):
-    _fig, _ax = plt.subplots(figsize=(5.2, 4.2), constrained_layout=True)
-    _ax.scatter(100 * many_exact_mean, 100 * many["draws"].mean(axis=1), s=8, color=plots.SERIES[0])
-    _lims = [100 * PRIOR_LOW, 100 * PRIOR_HIGH]
-    _ax.plot(_lims, _lims, color=plots.BASELINE, linestyle="--")
-    _ax.set_xlabel("exact posterior mean of σ (%)")
-    _ax.set_ylabel("network posterior mean of σ (%)")
-    _ax.set_title("500 simulated quotes, one call", loc="left")
-    mo.vstack([_fig, mo.md(f"500 posteriors of 100 draws each in **{many_seconds:.1f} s**: "
+def _(bf, many_seconds, mo, plots, posterior_draws, simulations):
+    _fig = bf.diagnostics.recovery(
+        estimates=posterior_draws,
+        targets=simulations,
+        color=plots.SERIES[0],
+        variable_names=[r"Black–Scholes vVolatility $\sigma$"],
+    )
+
+    mo.vstack([_fig, mo.md(f"300 posteriors of 200 draws each in **{many_seconds:.1f} s**: "
                            f"{1000 * many_seconds / 500:.0f} ms per data set.")])
     return
 
@@ -327,15 +333,15 @@ def _(
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 4 · When it pays
+    ## 4 To amortize or not to amortize?
 
     Training is paid once. Each further posterior costs one pass. The break-even is the training cost
-    divided by the cost of one exact posterior. The numbers are the tutorial's, on one 4-core machine.
+    divided by the cost of one exact posterior. The numbers will be hardware-dependent.
     """)
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(ASSETS, RESULTS, np, teaching):
     costs = teaching.load_json(RESULTS / "costs" / "costs.json")
     _bank = teaching.load_json(RESULTS / "heston" / "s1" / "bank-quality.json")["generation"]["cpu_seconds"]
@@ -385,17 +391,17 @@ def _(break_even, cumulative, heston_unit_costs, mo, plots, plt, smiles):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 5 · The workflow, and SBC
+    ## 5 The workflow and simulation-based calibration (SBC)
 
     The amortized workflow is the checklist that slots 4 and 5 follow:
 
     1. State the prior in units a practitioner can judge, and draw data from it: the prior predictive check.
-    2. Simulate the training bank, and train the network.
-    3. Check it on held-out simulations: SBC, coverage, contraction, recovery.
-    4. Where an exact posterior exists, compare with it (slot 4).
+    2. Simulate the training data and train the network.
+    3. Check it on held-out simulations: SBC, recovery, *etc*.
+    4. Where an exact posterior exists, compare with it.
     5. Apply it to the real data, and re-price the posterior over the data: the posterior predictive check.
     6. Where the likelihood can be estimated, correct the posterior of the real data set by importance
-       sampling, and flag it if the correction is unreliable (slot 5).
+       sampling.
     7. Propagate the posterior into the quantity of interest.
 
     **SBC** follows from Bayes' rule. Draw $\theta^\ast$ from the prior and data from the model. Given the
@@ -406,40 +412,26 @@ def _(mo):
     return
 
 
-@app.cell(hide_code=True)
-def _(many, mo, np, plots, plt):
-    _ranks = (many["draws"] < many["truth"][:, None]).mean(axis=1)
-    _grid = np.linspace(0, 1, 201)
-    _ecdf = (np.sort(_ranks)[None, :] <= _grid[:, None]).mean(axis=1)
-    _band = 1.36 / np.sqrt(len(_ranks))  # Kolmogorov-Smirnov 95% band for the whole curve
-    _fig, _ax = plt.subplots(figsize=(6.4, 3.2), constrained_layout=True)
-    _ax.fill_between(_grid, -_band, _band, color=plots.BASELINE, alpha=0.4, label="95% band")
-    _ax.plot(_grid, _ecdf - _grid, color=plots.SERIES[0], label="network")
-    _ax.axhline(0, color=plots.INK, linewidth=0.8)
-    _ax.set_xlabel("rank of the true σ among the posterior draws")
-    _ax.set_ylabel("ECDF minus uniform")
-    _ax.legend(fontsize=8)
-    _ax.set_title("simulation-based calibration, 500 simulated quotes", loc="left")
-    mo.vstack([_fig, mo.md(f"Largest deviation **{np.max(np.abs(_ecdf - _grid)):.3f}** against a 95% band of "
-                           f"±{_band:.3f}: compare the deviation with the reference band; this small demonstration is not a full validation.")])
+@app.cell
+def _(bf, plots, posterior_draws, simulations):
+    calibration_figure = bf.diagnostics.calibration_ecdf(
+        estimates=posterior_draws,
+        targets=simulations,
+        variable_keys=["sigma"],
+        variable_names=[r"Black–Scholes Volatility $\sigma$"],
+        difference=True,
+        legend_location="upper right",
+        rank_ecdf_color=plots.SERIES[0],
+        fill_color=plots.BASELINE,
+    )
+    calibration_figure
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 6 · Where it comes from
-
-    - **Simulation-based inference:** approximate Bayesian computation (Pritchard et al. 1999; Beaumont,
-      Zhang and Balding 2002), MCMC without likelihoods (Marjoram et al. 2003), synthetic likelihood (Wood
-      2010), neural posterior estimation (Papamakarios and Murray 2016; Greenberg, Nonnenmacher and Macke
-      2019), BayesFlow (Radev et al. 2022), flow matching for simulation-based inference (Wildberger et al.
-      2023).
-    - **What finance uses instead:** closed-form likelihood expansions (Aït-Sahalia 2002), indirect
-      inference and the method of moments (Gouriéroux, Monfort and Renault 1993), particle MCMC (Andrieu,
-      Doucet and Holenstein 2010). Each infers one data set at a time.
-
-    ## Takeaways
+    ## 6. Takeaways
 
     1. **The network learns the posterior from simulations alone**, and on slot 1's quote it matches the
        exact posterior.
@@ -449,11 +441,13 @@ def _(mo):
     4. **The network is checked, not trusted**: SBC on average, an exact posterior or an audit one data set
        at a time.
 
-    **Next, slot 3:** which networks represent $q_\phi(\theta \mid y)$, and how they read the data.
-
-    *Evidence and code:* the [curriculum](../curriculum/02-slot2-amortized-bayes.md),
-    `costs/costs.json` (study S9) and `src/sbi4f_tutorial/`.
+    **Next, slot 3:** which networks can represent $q_\phi(\theta \mid y)$, and how they process the data.
     """)
+    return
+
+
+@app.cell
+def _():
     return
 
 

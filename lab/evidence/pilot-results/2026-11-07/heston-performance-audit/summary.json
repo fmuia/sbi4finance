@@ -1,0 +1,245 @@
+{
+  "bank_generation": {
+    "frozen_hkde_matches_parent_of_maturity_reuse_commit": "180e358^",
+    "frozen_hkde_source_sha256": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503",
+    "generation_cpu_includes": "generate_examples plus compressed payload write; process_time excludes queue/idle waits; native source record",
+    "maturity_reuse_commit_date": "2026-10-26T23:41:58+01:00",
+    "maturity_reuse_implemented_commit": "180e358c8288b249104a5a895e654eb8281a9a15",
+    "native_snapshot_sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+    "no_numerical_source_changes": true,
+    "snapshot_configuration": {
+      "test": 5000,
+      "train": 100000,
+      "validation": 5000
+    },
+    "splits": {
+      "test": {
+        "cpu_ms_per_row": 37.930623060399995,
+        "cpu_seconds": 189.65311530199997,
+        "parts": 10,
+        "rows": 5000
+      },
+      "train": {
+        "cpu_ms_per_row": 40.28700987767001,
+        "cpu_seconds": 4028.7009877670007,
+        "parts": 72,
+        "rows": 100000
+      },
+      "validation": {
+        "cpu_ms_per_row": 41.3570542828,
+        "cpu_seconds": 206.785271414,
+        "parts": 10,
+        "rows": 5000
+      }
+    }
+  },
+  "baseline_tooling": {
+    "cause": "lab lock still lists explicit participant Keras pin removed from tutorial pyproject in merged PR69",
+    "dry_run_environment_package_changes": {},
+    "lab_locked_install": "fails: lock file not up-to-date with workspace",
+    "planned_fix": "P1 commit1 refreshes local-package metadata while preserving external package records"
+  },
+  "date": "2026-11-07",
+  "format": "heston_performance_exploratory_audit_v1",
+  "limits": [
+    "64-row pricing panel is not full-prior/corner validation",
+    "short training was not evaluated for posterior calibration/reference agreement",
+    "different machines/runtime versions prevent attributing recorded training-speed differences to a single cause",
+    "The repeat fit uses the same workflow and learned weights; it is not a second independent fit.",
+    "The exact button fit excludes imports and workflow construction, matching the notebook timer.",
+    "Pricing callback timings may overlap device work; they are not an additive decomposition of elapsed time.",
+    "The small fixed-grid prototype is not installed and has not passed the full regression panel.",
+    "The older pricer benchmark reverses the maturity-reuse change on current code; it is not the historical machine/environment.",
+    "A portable benchmark and committed numerical reference are planned before production optimization."
+  ],
+  "live_button": {
+    "configuration": {
+      "batch_size": 64,
+      "batches_per_epoch": 2,
+      "epochs": 15,
+      "subnet_widths": [
+        128,
+        128
+      ]
+    },
+    "format": "heston_live_training_timing_audit_v1",
+    "import_seconds_excluded_from_fit": 34.67450754204765,
+    "jax_devices": [
+      "cpu:0"
+    ],
+    "machine": "arm64",
+    "peak_rss_bytes": 835108864,
+    "python": "3.12.16",
+    "scientific_acceptance": false,
+    "source_commit": "3d6febb3894c0ebe5fc0041954664d43270a73d9",
+    "trials": [
+      {
+        "callback_seconds": 7.276996078435332,
+        "epoch_wall_seconds": [
+          1.5254042499000207,
+          0.4305933329742402,
+          0.5064200839260593,
+          0.5080839580623433,
+          0.5020187920890749,
+          0.44391358306165785,
+          0.3726988750277087,
+          0.3269147080136463,
+          0.4209942080779001,
+          0.4581858339952305,
+          0.5061754999915138,
+          0.47773666703142226,
+          0.5329064999241382,
+          0.47009124991018325,
+          0.4547674999339506
+        ],
+        "fit_process_cpu_seconds": 10.570856,
+        "fit_wall_seconds": 9.360272666090168,
+        "label": "first_fit",
+        "loss_first": 3.207113265991211,
+        "loss_last": 1.4742926359176636,
+        "optimizer_steps_total": 30,
+        "pricing_seconds": 7.261279727332294,
+        "rows": 1984
+      },
+      {
+        "callback_seconds": 7.973080598167144,
+        "epoch_wall_seconds": [
+          0.6844810830662027,
+          0.46006683399900794,
+          0.47467504197265953,
+          0.48879450000822544,
+          0.5027902079746127,
+          1.665747040999122,
+          0.4021425829268992,
+          0.3018740420229733,
+          0.42175383400171995,
+          0.5540547500131652,
+          0.48627095797564834,
+          0.433848041924648,
+          0.4766260830219835,
+          0.5277096669888124,
+          0.5403459999943152
+        ],
+        "fit_process_cpu_seconds": 8.847206000000002,
+        "fit_wall_seconds": 8.43682349997107,
+        "label": "repeat_fit_same_workflow",
+        "loss_first": 1.357043981552124,
+        "loss_last": 1.0053759813308716,
+        "optimizer_steps_total": 30,
+        "pricing_seconds": 7.961283024633303,
+        "rows": 1920
+      }
+    ],
+    "versions": {
+      "bayesflow": "2.1.0",
+      "jax": "0.11.1",
+      "keras": "3.15.1",
+      "numpy": "2.5.3"
+    }
+  },
+  "scope": "Local exploratory comparison; no production optimization, new published estimator or accuracy claim.",
+  "source_commit": "3d6febb3894c0ebe5fc0041954664d43270a73d9",
+  "source_sha256": {
+    "tutorial/notebooks/slot4_heston_bayesflow.py": "e6289cccc09336028e9aed069278a9568d50d16480cb04ed36e4a37a7d4e8eb3",
+    "tutorial/pixi.lock": "3dc95210b1c6d2326abb1c0fec4e128c291d3d3b754891224e12da47d22bf729",
+    "tutorial/src/sbi4f_tutorial/heston_options/lesson.py": "8a29329ae912bb595fe4ea3ff75b31fb2f013dd8ef4186c413f06d6c098bce0f",
+    "tutorial/src/sbi4f_tutorial/heston_options/model.py": "958567be4d3e0c59676d651f12d99b8cfdf64cef8036c6b342a3774133df2292",
+    "tutorial/src/sbi4f_tutorial/shared/pricing.py": "b93283c1269a3984a7db90b074a2593abd8b5fdfb106d1d9b33132fc81b794b2",
+    "tutorial/src/sbi4f_tutorial/shared/tasks.py": "c5a36364e5d48acc2b86a3d13fb2497d857569ffcb6ffff1797288aca4549c41"
+  },
+  "strict_pricer": {
+    "cold_roots_cpu_s": {
+      "1024": 0.020908999999999955,
+      "2048": 0.07676499999999997,
+      "4096": 0.2649969999999999,
+      "512": 0.005461999999999967,
+      "8192": 1.0498720000000001
+    },
+    "numpy": "2.5.3",
+    "platform": "macOS-26.4.1-arm64-arm-64bit",
+    "process_cpu_s": 2.7219930000000003,
+    "python": "3.12.16",
+    "results": {
+      "current": {
+        "failure_count": 0,
+        "failures": [],
+        "max_cpu_ms": 18.488999999999756,
+        "mean_cpu_ms": 4.839687499999995,
+        "median_cpu_ms": 4.59749999999981,
+        "p95_cpu_ms": 5.53025000000018,
+        "rows": 64,
+        "total_cpu_s": 0.3097399999999997
+      },
+      "fixedgrid_prototype": {
+        "failure_count": 0,
+        "failures": [],
+        "max_abs_price_diff_vs_current": 5.551115123125783e-16,
+        "max_cpu_ms": 7.269000000000414,
+        "max_price_diff_over_quote_sigma": 4.297721464006972e-12,
+        "mean_cpu_ms": 1.5070781249999707,
+        "median_cpu_ms": 1.3004999999999267,
+        "p95_cpu_ms": 1.8502999999996825,
+        "rows": 64,
+        "total_cpu_s": 0.09645299999999812
+      },
+      "pre_oct26_maturity_reuse": {
+        "failure_count": 0,
+        "failures": [],
+        "max_abs_price_diff_vs_current": 0.0,
+        "max_cpu_ms": 54.56100000000008,
+        "max_price_diff_over_quote_sigma": 0.0,
+        "mean_cpu_ms": 13.43862499999999,
+        "median_cpu_ms": 12.846499999999983,
+        "p95_cpu_ms": 14.09684999999996,
+        "rows": 64,
+        "total_cpu_s": 0.8600719999999993
+      }
+    },
+    "scope": "64 prior rows; all same strict ladder, all original price bounds; cached fixed-grid prototype only, not installed; pre-Oct26 replica reverses exact180e358 maturity reuse change"
+  },
+  "workloads": {
+    "archived_50k": {
+      "presentations": 25000000,
+      "training_seconds": 1927.098923782,
+      "updates": 98000,
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ]
+    },
+    "live_demo": {
+      "scheduled_presentations": 1920,
+      "updates": 30,
+      "widths": [
+        128,
+        128
+      ]
+    },
+    "native_100k": {
+      "device": "L40S GPU",
+      "presentations": 50000000,
+      "training_and_reload_seconds": 482.206230804,
+      "updates": 195500,
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ]
+    },
+    "native_50k": {
+      "device": "L40S GPU",
+      "presentations": 25000000,
+      "training_and_reload_seconds": 315.827524588,
+      "updates": 98000,
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ]
+    }
+  }
+}
