@@ -1209,7 +1209,7 @@ def _(BUNDLE, BUNDLE_HELP, ESTIMATOR, delivery, mo, recipe, task, time):
 
 @app.cell(hide_code=True)
 def _(CASES, CONDITIONAL_DRAWS, EVAL_SEED, estimator, mo, np, time):
-    neural_draws, neural_seconds = {}, None  # neural_seconds: sampling time per data set
+    neural_draws = {}
     if estimator is None:
         _view = mo.md("")
     else:
@@ -1217,11 +1217,10 @@ def _(CASES, CONDITIONAL_DRAWS, EVAL_SEED, estimator, mo, np, time):
         for _index, _case_id in enumerate(CASES):
             neural_draws[_case_id] = np.asarray(estimator.sample(CASES[_case_id][None], CONDITIONAL_DRAWS,
                                                                  seed=EVAL_SEED + _index)[0])
-        neural_seconds = (time.perf_counter() - _started) / len(CASES)
         _view = mo.md(f"{CONDITIONAL_DRAWS:,} posterior draws for each of the three data sets in "
-                      f"{len(CASES) * neural_seconds:.1f} s.")
+                      f"{time.perf_counter() - _started:.1f} s.")
     _view
-    return neural_draws, neural_seconds
+    return (neural_draws,)
 
 
 @app.cell(hide_code=True)
@@ -1442,44 +1441,23 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(
-    CASES,
-    CONDITIONAL_DRAWS,
-    GRID,
-    REFERENCES,
-    json,
-    mo,
-    neural_seconds,
-    np,
-    plots,
-    plt,
-    prior_batch,
-    prior_seconds,
-):
+def _(CASES, EVALUATION, GRID, REFERENCES, json, mo, np, plots, plt, prior_batch, prior_seconds):
     # Every number below is read from a run record or timed in this notebook.
-    _costs_dir = mo.notebook_dir().parent.parent / "tutorial" / "assets" / "results" / "calibration"
-    _s9 = json.loads((_costs_dir / "costs" / "costs.json").read_text())  # study S9: timings on one machine
-    _pilot = json.loads((_costs_dir / "rough-pilot" / "s1" / "bank-quality.json").read_text())["generation"]
     _recovery = GRID / "recovery-bank-independent"
     _rows = json.loads((_recovery / "bank-protocol.json").read_text())["contract"]["train_rows"]
     _train = next(_job["seconds"] for _job in json.loads((_recovery / "campaign.json").read_text())["jobs"]
                   if _job["id"] == "300k-300_training")
     _pymc = np.array([sum(_a["wall_seconds"] for _a in json.loads(
         (REFERENCES / "references" / _case / "run.json").read_text())["attempts"]) for _case in CASES])
-    _per_draws = CONDITIONAL_DRAWS / 1000
-
-    # Heston, this notebook (seconds).
-    _h_sim = prior_seconds / len(prior_batch["observations"]) * _rows  # one core, timed in Section 2
-    _h_net = (neural_seconds if neural_seconds is not None
-              else _s9["heston_amortized_posterior_1000_draws_cpu_s"]["median"] * _per_draws)
-    _h_once = _h_sim + _train
-    # Rough Bergomi, the same workflow with the simulator swapped (seconds): one surface costs 4.96 CPU-s at the
-    # prior centre and 11.9 on average over the pilot bank (Lecture 14); an exact chain needs 12,293 evaluations.
-    _r_eval = np.array([_s9["rough_likelihood_evaluation_cpu_s"]["median"], _pilot["cpu_seconds_per_surface"]])
-    _r_sim = _rows * _r_eval
-    _r_net = _s9["rough_amortized_posterior_1000_draws_cpu_s"]["median"] * _per_draws
-    _r_exact = _s9["exact_rough_posterior"]["evaluations_for_400_effective_draws"] * _r_eval
-    _r_once = _r_sim + _train
+    # The recorded evaluation of this network: every posterior it drew, with loading and diagnostics included.
+    _evaluation = json.loads((EVALUATION / "evaluation.json").read_text())
+    _posteriors = {"Section 5.2": _evaluation["population"]["raw_draws_used"] // _evaluation["population"]["draws_per_case"],
+                   "validation": (_evaluation["native_validation"]["raw_draws_used"]
+                                  // _evaluation["native_validation"]["draws_per_case"]),
+                   "Section 4": len(_evaluation["cases"])}
+    _net = _evaluation["seconds"] / sum(_posteriors.values())  # an upper bound per posterior
+    _sim = prior_seconds / len(prior_batch["observations"]) * _rows  # Section 2's timing, scaled
+    _once = _sim + _train
 
     def _duration(_seconds):
         if _seconds < 60:
@@ -1488,85 +1466,65 @@ def _(
             return f"{_seconds / 60:.0f} min"
         return f"{_seconds / 3600:.1f} h" if _seconds < 36000 else f"{_seconds / 3600:,.0f} h"
 
-    _span = lambda _pair: f"{_duration(_pair[0])} – {_duration(_pair[1])}"
-    _net_color, _exact_color = plots.SERIES[0], plots.SERIES[1]
-    _bars = [  # (label, low, high, color, one-off)
-        ("Heston (this notebook)", None, None, None, False),
-        (f"simulate {_rows:,} data sets", _h_sim, _h_sim, _net_color, True),
+    _net_color, _pymc_color = plots.SERIES[0], plots.SERIES[1]
+    _bars = [  # (label, low, high, color, paid once)
+        (f"simulate {_rows:,} data sets (estimate)", _sim, _sim, _net_color, True),
         ("train the network", _train, _train, _net_color, True),
-        ("posterior: network", _h_net, _h_net, _net_color, False),
-        ("posterior: PyMC", _pymc.min(), _pymc.max(), _exact_color, False),
-        ("Rough Bergomi (estimate)", None, None, None, False),
-        (f"simulate {_rows:,} data sets", *_r_sim, _net_color, True),
-        ("posterior: network", _r_net, _r_net, _net_color, False),
-        ("posterior: exact chain", *_r_exact, _exact_color, False),
+        ("one posterior: network", _net, _net, _net_color, False),
+        ("one posterior: PyMC", _pymc.min(), _pymc.max(), _pymc_color, False),
     ]
-
-    _fig, _axes = plt.subplots(1, 2, figsize=(11.8, 4.4), constrained_layout=True, gridspec_kw={"width_ratios": [1.15, 1]})
+    _fig, _axes = plt.subplots(1, 2, figsize=(11.6, 3.6), constrained_layout=True, gridspec_kw={"width_ratios": [1.2, 1]})
     _ax = _axes[0]
-    for _y, (_label, _low, _high, _color, _once) in enumerate(_bars):
-        if _low is None:
-            continue
-        _style = dict(color=_color, height=0.62, hatch="///" if _once else None, edgecolor="white", lw=0)
+    for _y, (_label, _low, _high, _color, _once_only) in enumerate(_bars):
+        _style = dict(color=_color, height=0.6, hatch="///" if _once_only else None, edgecolor="white", lw=0)
         _ax.barh(_y, _low, **_style)
         if _high > _low:
             _ax.barh(_y, _high - _low, left=_low, alpha=0.4, **_style)
-        _ax.text(_high * 1.4, _y, _duration(_low) if _high == _low else _span((_low, _high)), va="center", fontsize=7.5)
+        _text = _duration(_low) if _high == _low else f"{_duration(_low)} – {_duration(_high)}"
+        _ax.text(_high * 1.4, _y, ("≤ " if _label == "one posterior: network" else "") + _text, va="center", fontsize=8)
     _ax.set_yticks(range(len(_bars)), [_b[0] for _b in _bars])
-    for _tick, _bar in zip(_ax.get_yticklabels(), _bars):
-        if _bar[1] is None:
-            _tick.set_fontweight("bold")
     _ax.invert_yaxis()
-    _ticks = {"1 s": 1, "1 min": 60, "1 h": 3600, "1 day": 86400, "1 month": 30 * 86400}
+    _ticks = {"0.1 s": 0.1, "1 s": 1, "1 min": 60, "1 h": 3600}
     _ax.set_xscale("log")
     _ax.set_xticks(list(_ticks.values()), list(_ticks))
     _ax.minorticks_off()
-    _ax.set_xlim(0.5, 3e7)
+    _ax.set_xlim(0.05, 4e4)
     _ax.grid(axis="y", visible=False)
-    _ax.set_title("What each step costs (hatched: once)", fontsize=9)
+    _ax.set_title("What each step costs (hatched: paid once)", fontsize=9)
 
     _n = np.geomspace(1, 2000, 200)
-    _check_sets = 512  # the simulated data sets of Section 5.2
+    _check = _posteriors["Section 5.2"]
     _ax = _axes[1]
-    _ax.plot(_n, (_h_once + _n * _h_net) / 3600, color=_net_color, label="Heston: network")
-    _ax.plot(_n, _n * _pymc.mean() / 3600, color=_exact_color, label="Heston: PyMC")
-    _ax.fill_between(_n, (_r_once[0] + _n * _r_net) / 3600, (_r_once[1] + _n * _r_net) / 3600, color=_net_color,
-                     alpha=0.25, lw=0, label="rough Bergomi: network")
-    _ax.fill_between(_n, _n * _r_exact[0] / 3600, _n * _r_exact[1] / 3600, color=_exact_color, alpha=0.25, lw=0,
-                     label="rough Bergomi: exact chain")
-    _ax.axvline(_check_sets, color=plots.MUTED, ls=":", lw=1)
-    _ax.text(_check_sets * 0.9, 0.12, "Section 5.2", fontsize=7, color=plots.MUTED, ha="right")
-    _ax.set(xscale="log", yscale="log", xlabel="number of data sets", ylabel="total time (hours)", ylim=(0.1, None),
+    _ax.plot(_n, (_once + _n * _net) / 3600, color=_net_color, label="network: simulate and train, then sample")
+    _ax.plot(_n, _n * _pymc.mean() / 3600, color=_pymc_color, label="PyMC: one run per data set")
+    _ax.axvline(_check, color=plots.MUTED, ls=":", lw=1)
+    _ax.text(_check * 0.9, 0.12, "Section 5.2", fontsize=7, color=plots.MUTED, ha="right")
+    _ax.set(xscale="log", yscale="log", xlabel="number of data sets", ylabel="total time (hours)",
             title="Total for many data sets")
     _ax.set_xticks([1, 10, 100, 1000], ["1", "10", "100", "1,000"])
-    _hours = [0.1, 1, 10, 100, 1000, 10000, 100000]
+    _hours = [0.1, 1, 10, 100, 1000]
     _ax.set_yticks(_hours, [f"{_h:,g}" for _h in _hours])
     _ax.set_ylim(0.1, None)
     _ax.minorticks_off()
     _ax.title.set_fontsize(9)
     _ax.legend(fontsize=7, loc="upper left")
 
-    _h_even = _h_once / (_pymc.mean() - _h_net)
-    _r_even = _r_once / (_r_exact - _r_net)
-    _h_check = (_h_once + _check_sets * _h_net, _check_sets * _pymc.mean())
     mo.vstack([
         mo.md("### What it costs\n\nThe network is paid for once; PyMC is paid again for every data set:"),
         _fig,
         mo.md(f"""
-        - **Heston:** simulating and training cost {_duration(_h_once)}, as much as {_h_even:.0f} PyMC posteriors. After that, a posterior takes {_duration(_h_net)} instead of {_duration(_pymc.mean())}.
-        - **For a check over {_check_sets} data sets** (Section 5.2): {_duration(_h_check[0])} with the network, {_duration(_h_check[1])} with PyMC.
-        - **Rough Bergomi**, where each simulation costs 5–12 CPU-seconds: the same workflow costs {_span(_r_once)} once, an exact posterior {_span(_r_exact)} every time. The network pays for itself after about {_r_even.mean():.0f} data sets.
+        - **Paid once:** simulating and training take about {_duration(_once)}, as long as {_once / _pymc.mean():.0f} PyMC runs. After that, a posterior takes under {_duration(_net)} instead of {_duration(_pymc.min())} to {_duration(_pymc.max())}.
+        - **For Section 5.2's {_check} data sets:** the network's recorded evaluation took {_evaluation['seconds']:.0f} s, including {sum(_posteriors.values()) - _check} further posteriors. PyMC would need about {_duration(_check * _pymc.mean())}.
         """),
         mo.accordion({"Where the numbers come from": mo.md(f"""
         | Step | Source |
         |:---|:---|
-        | Heston simulation | {len(prior_batch['observations']):,} data sets timed in Section 2 on one core of this machine, scaled to {_rows:,} |
-        | Training | the training run's record: wall time on an Apple-silicon CPU |
-        | Network posterior | {CONDITIONAL_DRAWS:,} draws: {'timed above, averaged over the three data sets' if neural_seconds is not None else 'study S9 (Lecture 14), scaled from 1,000 draws; load the pretrained estimator to time this one'} |
-        | PyMC posterior | the three reference runs (box above), one core, short and long runs together |
-        | Rough Bergomi | Lecture 14 and study S9: 4.96 CPU-s per surface at the centre of the prior, 11.9 on average over the pilot bank; 12,293 evaluations for an exact chain of 400 effective draws |
+        | Simulation | Section 2 timed {len(prior_batch['observations']):,} simulations on one core of this machine; scaled to {_rows:,}. The cost per simulation varies with the parameters drawn, so this is approximate. |
+        | Training | the training job's record: {_duration(_train)} of wall time on an Apple-silicon CPU, loading the data and saving the network included |
+        | Network posterior | this network's recorded evaluation: {sum(_posteriors.values())} posteriors ({_posteriors['Section 5.2']} for Section 5.2, {_posteriors['validation']} for validation, {_posteriors['Section 4']} for Section 4) in {_evaluation['seconds']:.0f} s, diagnostics included; so at most {_net:.2f} s each |
+        | PyMC posterior | the three reference runs (box above): {", ".join(_duration(_s) for _s in _pymc)}, one core, the short and the long run together |
 
-        The machines differ, so read the bars as orders of magnitude. For a single smile, Lecture 14 also gives a cheaper exact route for rough Bergomi, importance sampling.
+        The steps ran on different machines, so compare orders of magnitude, not exact ratios.
         """)}),
     ])
     return
@@ -2528,22 +2486,9 @@ def _(
         f"{np.max(np.abs(100 * (MARKET_IV - _fit_iv)[_near])):.1f} volatility points, but at the deepest put it is "
         f"{_deep[0]:.1f} points too low. With a single diffusive variance factor, the fit cannot price that much crash "
         f"risk into {_days[0]} days without breaking the rest of the smile.\n\n"
-        "**A candidate fix: rough Bergomi** (Lecture 13)\n\n"
-        "- **What it changes:** the variance is rough, with a Hurst exponent $H<\\tfrac12$. The skew then grows like "
-        "$T^{H-1/2}$ as maturity shortens, with no ceiling, and a small $H$ also curves the short smile: the two "
-        "features Heston misses.\n"
-        f"- **What the quotes suggest:** at leading order the SPX skew exponent, {_minus(_b)}, corresponds to "
-        f"$H\\approx{0.5 + _b:.1f}$, close to the values reported for index volatility. A fitted exponent is only a "
-        "rough estimate of $H-\\tfrac12$ (Lecture 5).\n"
-        "- **Why this is where SBI is needed:** rough Bergomi has no Fourier pricer. Each surface needs Monte Carlo, "
-        "5 to 12 CPU-seconds in the tutorial, so an exact posterior like the PyMC reference here becomes very "
-        "expensive (Lecture 14). Amortized inference pays the simulation cost once, and the workflow of this notebook "
-        "carries over with the simulator swapped. Heston was the model on which SBI could be checked against an "
-        "exact answer; rough Bergomi is the model that needs it.\n"
-        "- **Not shown here:** whether rough Bergomi fits these SPX quotes within their spreads. Lectures 13 to 15 "
-        "build and calibrate it.\n\n"
-        "**Other options** keep Heston and change the noise model: widen or reshape it, or add an explicit model-error "
-        "term. The posterior then admits the misfit instead of pushing $c$ against its bound, but the misfit stays.")
+        "**What can be done within Heston:** change the noise model, by widening or reshaping it or by adding an "
+        "explicit model-error term. The posterior then admits the misfit instead of pushing $c$ against its bound, "
+        "but the misfit stays: removing it needs a different model.")
     mo.vstack([mo.md(_lead), _fig, mo.md(_reading)])
     return
 
@@ -2560,7 +2505,7 @@ def _(mo):
     5. **Check single data sets against an exact reference.** Good calibration does not mean sharp posteriors: the network's intervals can be several times wider than the exact ones.
     6. **Check the model, not only the network.** On the SPX quotes the noise multiplier hits its bound and Heston misses by many half-spreads: its smile is too flat in the deep put wing, most of all at short expiries. An amortized estimator is only reliable on data its simulator could have produced.
     7. **Use: a posterior prices an unquoted product with a range.** Where the model is right, the range covers the true price. On SPX the range is tiny, but refitting Heston to different quotes moves the price many times more: the model, not its parameters, dominates the uncertainty.
-    8. **Misspecification points to the next model.** Heston follows the SPX skew but not the short-dated curvature and wing. Rough Bergomi is built for both, and it has no pricing formula: the case where amortized SBI is needed.
+    8. **Misspecification shows what the next model needs.** Heston follows the SPX skew at the money but not the short-dated curvature and put wing.
     """)
     return
 
