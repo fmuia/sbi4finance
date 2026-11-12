@@ -1073,6 +1073,7 @@ def _(CASE_TITLES, mo):
 
 @app.cell(hide_code=True)
 def _(
+    BOUNDS,
     CASES,
     CASE_TITLES,
     DELTA,
@@ -1151,32 +1152,16 @@ def _(
     _i, _j = max(((_a, _b) for _a in range(6) for _b in range(_a)), key=lambda _p: abs(_corr[_p]))
     _relative = {_name: (_ref[_name]["regenerated_q05_q50_q95"][2] - _ref[_name]["regenerated_q05_q50_q95"][0])
                  / (2 * abs(_ref[_name]["regenerated_q05_q50_q95"][1])) for _name in NAMES[:5]}
-    _sharpest = min(_relative, key=_relative.get)
+    _sharpest, _loosest = min(_relative, key=_relative.get), max(_relative, key=_relative.get)
+    _label = lambda _name: TEXT_LABELS[NAMES.index(_name)]
 
+    # The scenario, read with the smile figure.
     if _truth is None:
-        _note = ("- **No known truth** for the SPX quotes.\n"
-                 "- The noise multiplier's posterior is pressed against the top of its prior range, $c=2$: the quotes ask "
-                 "for larger errors than the model allows, because no Heston smile comes close enough. Section 5.4 "
-                 "explains this, and why the network and the reference disagree here.")
+        _scenario = ("- **Real SPX quotes**, the data of the first figure: there is no known truth, and the model itself "
+                     "may be wrong (Section 5.4).")
     else:
-        # Where does the truth sit in the reference posterior? Marginally (in posterior SDs) and jointly (Mahalanobis).
-        _centre, _spread = _reference.mean(axis=0), _reference.std(axis=0, ddof=1)
-        _z = (_truth - _centre) / _spread
-        _precision = np.linalg.inv(np.cov(_reference, rowvar=False))
-        _distance = lambda _x: np.einsum("...i,ij,...j->...", _x - _centre, _precision, _x - _centre)
-        _joint = 100 * np.mean(_distance(_reference) < _distance(_truth))
-        _outside = [TEXT_LABELS[_k] for _k in range(6) if abs(_z[_k]) > 1.645]
-        if _outside:
-            _listed = _outside[0] if len(_outside) == 1 else ", ".join(_outside[:-1]) + " and " + _outside[-1]
-            _note = (f"- **True values** (stars and lines): {_listed} {'lies' if len(_outside) == 1 else 'lie'} up to "
-                     f"{np.max(np.abs(_z)):.1f} posterior SDs from the posterior mean, outside the 90% intervals. One noisy "
-                     "data set can do this: the noise shifts the posterior, and strongly correlated parameters shift "
-                     "together.\n")
-        else:
-            _note = "- **True values** (stars and lines) lie inside the 90% intervals.\n"
-        _note += (f"- **Jointly**, the truth is farther from the posterior centre than {_joint:.0f}% of the draws. For a "
-                  f"correct posterior this share is uniform between 0 and 100%, so a single value of {_joint:.0f}% is no "
-                  "warning sign; coverage is judged over many data sets in Section 5.2.")
+        _scenario = ("- **Simulated from Heston** with $c=1$: the model is right by construction, so this data set tests "
+                     "the inference alone.")
         if _case == "synthetic-broad":
             _first, _last = (EXPIRY == 0), (EXPIRY == len(EXPIRY_DATES) - 1)
             _atm = [100 * _iv[_at][np.argmin(np.abs(DELTA[_at]))] for _at in (_first, _last)]
@@ -1186,7 +1171,7 @@ def _(
                                    for _at in (_first, _last)]
             _case_rise, _spx_rise = _rise(_iv), _rise(MARKET_IV)
             _v0, _v_inf, _xi, _rho = _truth[[0, 2, 3, 4]]
-            _note = (f"- **A stressed market:** at the money, {_atm[0]:.0f}% at {EXPIRY_DAYS[0]} days against {_atm[1]:.0f}% "
+            _scenario = (f"- **A stressed market:** at the money, {_atm[0]:.0f}% at {EXPIRY_DAYS[0]} days against {_atm[1]:.0f}% "
                      f"at {EXPIRY_DAYS[-1]} days, an inverted term structure as after a sell-off. The true spot volatility "
                      f"$\\sqrt{{v_0}}={100 * np.sqrt(_v0):.0f}\\%$ is above the long-run $\\sqrt{{v_\\infty}}="
                      f"{100 * np.sqrt(_v_inf):.0f}\\%$, and the large $\\sigma_v={_xi:.2f}$ pulls long-dated at-the-money "
@@ -1198,17 +1183,83 @@ def _(
                      f"{EXPIRY_DAYS[-1]} days: high and flat meets low and steep.\n"
                      f"- **Unlike the SPX quotes**, where the same rise is {_spx_rise[0]:.1f} and {_spx_rise[1]:.1f} points, much "
                      "closer to parallel: the limitation shown in Section 5.4. As a test of the inference the case is still "
-                     "valid: it is a draw from the model and the prior.\n" + _note)
+                     "valid: it is a draw from the model and the prior.")
+
+    # The corner plot, read in three steps: the exact posterior, where the truth sits, the network against PyMC.
+    _lines = [
+        "**Reading the corner plot.** The diagonal shows each parameter's posterior"
+        + (", the network in blue and PyMC in orange" if _neural is not None else " from PyMC")
+        + "; the panels below show pairs of parameters"
+        + ("; black lines and stars mark the true values." if _truth is not None else "."),
+        "",
+        "**The exact posterior (PyMC)**",
+        "",
+        f"- **Precision:** {_label(_sharpest)} is pinned to ±{100 * _relative[_sharpest]:.2g}% of its value, and the least "
+        f"precise Heston parameter, {_label(_loosest)}, to ±{100 * _relative[_loosest]:.2g}%.",
+        f"- **Dependence:** the strongest pair is {TEXT_LABELS[_j]} with {TEXT_LABELS[_i]} (correlation "
+        f"{_corr[_i, _j]:+.2f}). The quotes pin down combinations of parameters better than each one alone, so a "
+        "quantity that depends on several parameters must come from the joint draws, not the marginals.",
+    ]
+    if _truth is None:
+        _lines.append(f"- **Noise:** $c$ sits at the top of its prior range (median "
+                      f"{_ref['c']['regenerated_q05_q50_q95'][1]:.4f}, bound {BOUNDS[-1, 1]:g}): the quotes ask for more "
+                      "noise than the model allows, because no Heston smile comes close enough (Section 5.4).")
+    else:
+        # Where does the truth sit in the reference posterior? Marginally (in posterior SDs) and jointly (Mahalanobis).
+        _centre, _spread = _reference.mean(axis=0), _reference.std(axis=0, ddof=1)
+        _z = (_truth - _centre) / _spread
+        _precision = np.linalg.inv(np.cov(_reference, rowvar=False))
+        _distance = lambda _x: np.einsum("...i,ij,...j->...", _x - _centre, _precision, _x - _centre)
+        _joint = 100 * np.mean(_distance(_reference) < _distance(_truth))
+        _outside = [TEXT_LABELS[_k] for _k in range(6) if abs(_z[_k]) > 1.645]
+        _lines += ["", "**Where the truth sits**", ""]
+        if _outside:
+            _listed = _outside[0] if len(_outside) == 1 else ", ".join(_outside[:-1]) + " and " + _outside[-1]
+            _lines.append(f"- **Parameter by parameter:** {_listed} {'lies' if len(_outside) == 1 else 'lie'} up to "
+                          f"{np.max(np.abs(_z)):.1f} posterior SDs from the posterior mean, outside the 90% intervals. One "
+                          "noisy data set can do this: the noise shifts the posterior, and strongly correlated parameters "
+                          "shift together.")
+        else:
+            _lines.append("- **Parameter by parameter:** every true value lies inside its 90% interval.")
+        _lines.append(f"- **Jointly:** the truth is farther from the posterior centre than {_joint:.0f}% of the draws. For "
+                      f"a correct posterior this share is uniform between 0 and 100%, so a single value of {_joint:.0f}% is "
+                      "no warning sign; coverage is judged over many data sets in Section 5.2.")
+    _lines += ["", "**The network against PyMC**", ""]
+    if _neural is None:
+        _lines.append("- The pretrained network is not loaded. With the bundle, its posterior appears in blue.")
+    else:
+        # The same measures as the table of Section 5.3: centre gap in PyMC SDs, and the ratio of 90% widths.
+        _gaps = np.array([(_neural[:, _k].mean() - _ref[_n]["regenerated_mean"]) / _ref[_n]["regenerated_sd"]
+                          for _k, _n in enumerate(NAMES)])
+        _widths = np.array([np.subtract(*np.quantile(_neural[:, _k], [.95, .05]))
+                            / (_ref[_n]["regenerated_q05_q50_q95"][2] - _ref[_n]["regenerated_q05_q50_q95"][0])
+                            for _k, _n in enumerate(NAMES)])
+        _far, _wide = int(np.argmax(np.abs(_gaps))), int(np.argmax(_widths))
+        _lines += [
+            f"- **Location:** the network's centres differ from PyMC's by up to {np.max(np.abs(_gaps)):.2g} PyMC "
+            f"standard deviations, most for {TEXT_LABELS[_far]}.",
+            f"- **Width:** its 90% intervals are {_widths.min():.2g} to {_widths.max():.2g} times as wide as PyMC's, "
+            f"widest for {TEXT_LABELS[_wide]}.",
+            f"- **Dependence:** for {TEXT_LABELS[_j]} with {TEXT_LABELS[_i]}, the network's correlation is "
+            f"{np.corrcoef(_neural, rowvar=False)[_i, _j]:+.2f}, against PyMC's {_corr[_i, _j]:+.2f}.",
+        ]
+        if _truth is None:
+            _lines.append("- **Verdict: no agreement.** The SPX quotes lie outside anything the network saw in training "
+                          "(Section 5.4), so it extrapolates. The disagreement is a warning about the model, not a "
+                          "training failure.")
+        elif np.max(np.abs(_gaps)) < 1:
+            _lines.append("- **Verdict: close, but wider.** The network is cautious rather than wrong, consistent with the "
+                          "calibration checks of Section 5.2: one network that serves every data set is less sharp than "
+                          "MCMC run on this one. Section 5.3 compares the three data sets.")
+        else:
+            _lines.append(f"- **Verdict: shifted.** The network's centre misses PyMC's by more than one standard deviation "
+                          f"for {TEXT_LABELS[_far]}. Section 5.3 compares the three data sets.")
     mo.vstack([
         _fig,
-        mo.md(_note),
+        mo.md(_scenario),
         mo.ui.table(_rows, selection=None, pagination=False),
         _corner,
-        mo.md(f"""
-        - **Reading the corner plot:** the diagonal shows each parameter's posterior; the panels below show pairs.
-        - **Narrow posteriors:** {TEXT_LABELS[NAMES.index(_sharpest)]} is pinned to about ±{100 * _relative[_sharpest]:.1f}% of its value, and even the least precise Heston parameter to ±{100 * max(_relative.values()):.0f}%.
-        - **Strong dependence:** the strongest pair is {TEXT_LABELS[_j]} with {TEXT_LABELS[_i]} (correlation {_corr[_i, _j]:+.2f}). The quotes pin down some *combinations* of parameters better than each parameter alone, so a quantity that depends on several parameters must be computed from the joint draws, not from the marginals.
-        """),
+        mo.md("\n".join(_lines)),
         mo.md("**Derived quantities.** Each posterior draw gives an expected average variance over a horizon, the fair "
               "value of a variance swap, shown here as a volatility:"),
         mo.ui.table(_product_rows, selection=None, pagination=False),
