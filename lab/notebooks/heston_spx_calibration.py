@@ -388,34 +388,27 @@ def _(mo):
 
         - $v_0$ sets short expiries, $v_\infty$ long ones.
         - $\kappa$ sets the speed: a shock halves in $\ln 2/\kappa$ years.
-
-        *Used in:* Section 4 (average and forward variance), Section 6 (the 5-year option).
         """,
         r"""
         **2. $\rho$ tilts the smile, $\sigma_v$ curves it**
 
         - $\rho<0$: volatility rises when prices fall, so puts cost more: the **skew**.
         - $\sigma_v$: a more random variance fattens both tails: the **curvature**, and a larger skew.
-
-        *Used in:* Section 5.4 and the end of Section 6, where Heston misses the SPX quotes.
         """,
         r"""
         **3. The short-expiry skew has a ceiling**
 
-        $$|\psi(T)|\;\longrightarrow\;\frac{|\rho|\,\sigma_v}{4\sqrt{v_0}}\quad\text{as } T\to0$$
+        $$\psi(T)=\frac{\partial\,\sigma_{\mathrm{imp}}(k,T)}{\partial k}\bigg|_{k=0},\qquad k=\ln(K/F)$$
 
-        - $\psi(T)$: the **at-the-money skew**, the slope of implied volatility in $\ln(K/F)$ at the money.
-        - Below some expiry, the skew stops growing.
-
-        *Used in:* Section 4 (stressed case), the end of Section 6 (does the SPX skew obey it?).
+        - $\psi(T)$, the **at-the-money skew**, is how fast implied volatility changes with log-moneyness at the money, for expiry $T$.
+        - As $T$ shrinks, $|\psi(T)|$ grows, but only up to a ceiling: $|\psi(T)|\to|\rho|\,\sigma_v/(4\sqrt{v_0})$ as $T\to0$.
+        - **Why:** over a few days the variance barely moves from $v_0$, so the skew depends on $\rho$, $\sigma_v$ and $v_0$ alone. For expiries well below the reversion time $1/\kappa$ it is at the ceiling and grows no further.
         """,
         r"""
         **4. Prices in closed form**
 
         - $(F_t,V_t)$ is a Markov state and the model is affine: its characteristic function is known exactly.
         - All 63 prices take milliseconds, so the **exact posterior** is affordable.
-
-        *Used in:* Section 5.3 (the PyMC reference), the end of Section 6 (rough Bergomi loses this).
         """)]
     _row = lambda _pair: mo.hstack(_pair, widths="equal", gap=1, align="stretch")
     mo.vstack([
@@ -2339,8 +2332,9 @@ def _(
         f"- **Skew** (left): at the money, the fit follows the SPX skew at every expiry, within "
         f"{100 * np.max(np.abs(_fit[:, 0] / _spx[:, 0] - 1)):.0f}%, with nearly the same power law "
         f"({_minus(_power(_fit[:, 0])[0])} against {_minus(_b)}). But its {_days[0]}-day skew is already "
-        f"{100 * abs(_fit[0, 0]) / _ceiling:.0f}% of Heston's ceiling $|\\rho\\sigma_v|/(4\\sqrt{{v_0}})={_ceiling:.2f}$: "
-        "below a week it stops growing (feature 3, Section 1), while a power law keeps growing.\n"
+        f"{100 * abs(_fit[0, 0]) / _ceiling:.0f}% of Heston's ceiling $|\\rho\\sigma_v|/(4\\sqrt{{v_0}})={_ceiling:.2f}$, "
+        f"so shorter expiries can add at most {100 - 100 * abs(_fit[0, 0]) / _ceiling:.0f}% (feature 3, Section 1), "
+        "while a power law keeps growing.\n"
         f"- **Curvature** (middle): the SPX smile gets more curved as maturity shortens: {_spx[2, 1]:.1f}, "
         f"{_spx[1, 1]:.1f} and {_spx[0, 1]:.1f} at {_days[2]}, {_days[1]} and {_days[0]} days. The fit's curvature "
         f"peaks at {_days[_peak]} days ({_fit[_peak, 1]:.1f}) and falls to {_fit[0, 1]:.1f} at {_days[0]} days"

@@ -30,30 +30,30 @@
   margin-bottom: 0;
 }
 
-/* Foldable sections (mo.accordion). marimo renders their content in a shadow root, where markdown keeps the
-   typography default of at most 65 characters per line: a narrow column on the left of a wide box. Use the
-   full width, and set markdown of more than one block, or a list of more than one item, in two columns.
-   An equation stays in its column, right after the sentence that introduces it. Sections with code blocks
-   keep one full-width column, because commands need the width. List items, equations and a lead-in with its
-   list stay whole. */
-[role="region"] .markdown.prose {
+/* Foldable sections (mo.accordion) and callouts (mo.callout). marimo renders their content in a shadow root,
+   where markdown keeps the typography default of at most 65 characters per line: a narrow column on the left
+   of a wide box. Use the full width, and set markdown of more than one block, or a list of more than one item,
+   in two columns. An equation stays in its column, right after the sentence that introduces it. Sections with
+   code blocks keep one full-width column, because commands need the width. List items, equations and a
+   lead-in with its list stay whole. */
+:is([role="region"], .admonition) .markdown.prose {
   max-width: none;
 }
 
-[role="region"] .markdown.prose:has(> :nth-child(2), > :is(ul, ol) > li:nth-child(2)):not(:has(.codehilite-wrapper)) {
+:is([role="region"], .admonition) .markdown.prose:has(> :nth-child(2), > :is(ul, ol) > li:nth-child(2)):not(:has(.codehilite-wrapper)) {
   column-count: 2;
   column-gap: 2.5rem;
 }
 
-[role="region"] .markdown.prose :is(li, pre, table, blockquote, marimo-tex, .codehilite-wrapper) {
+:is([role="region"], .admonition) .markdown.prose :is(li, pre, table, blockquote, marimo-tex, .codehilite-wrapper) {
   break-inside: avoid;
 }
 
-[role="region"] .markdown.prose > :is(p, .paragraph, h3, h4, ul, ol):has(+ :is(ul, ol, marimo-tex)) {
+:is([role="region"], .admonition) .markdown.prose > :is(p, .paragraph, h3, h4, ul, ol):has(+ :is(ul, ol, marimo-tex)) {
   break-after: avoid;
 }
 
-[role="region"] .markdown.prose > marimo-tex {
+:is([role="region"], .admonition) .markdown.prose > marimo-tex {
   display: block;
   max-width: 100%;
   overflow-x: auto;
