@@ -115,7 +115,8 @@ shown unscaled.
 **The deck has not been compiled with the real theme.** On 11 November it was compiled with LuaLaTeX (TeX Live 2023)
 against a stand-in that has the theme's colours, Rubik titles on Inter text, a frame title with an accent rule and a
 footline; no frame overflows there. On 12 November the deck with its new opening was compiled against a plainer
-stand-in (the theme's colours, Rubik throughout); no frame overflows there either. After the upload, check that no frame overflows in the real theme. If a figure
+stand-in (the theme's colours, Rubik titles on Inter text, a plain frame title and a footline); no frame overflows
+there either. After the upload, check that no frame overflows in the real theme. If a figure
 slide does, lower `\figmax` at the top of `slot1.tex`: every figure shrinks to it.
 
 Speaker notes are in `\note{}`; Beamer prints them only with `\setbeameroption{show notes on second screen}`.

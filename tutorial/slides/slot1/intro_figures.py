@@ -243,8 +243,11 @@ def quoted_numbers(inputs, data):
         "the market's volatility": f"{100.0 * inputs.market_volatility * np.sqrt(12.0):.1f} percent",
         "the share in stocks, estimates taken as exact":
             f"{100.0 * data['exact'].min():.0f}\u2013{100.0 * data['exact'].max():.0f}\\%",
-        "the share with their uncertainty, at 10 and 20 years":
-            f"{100.0 * data['uncertain'][at[10]]:.0f}\\% at 10 years, {100.0 * data['uncertain'][at[20]]:.0f}\\% at 20",
+        "the share with their uncertainty, at 20 years": f"{100.0 * data['uncertain'][at[20]]:.0f}\\% at 20 years",
+        "the same at 10 and 20 years, in the speaker notes":
+            f"{100.0 * data['uncertain'][at[10]]:.0f} percent at 10 years and {100.0 * data['uncertain'][at[20]]:.0f} at 20",
+        "the change in standard errors":
+            f"{ex.CHANGE * inputs.mean[k] / inputs.standard_error[k]:.2f} standard errors",
         "the prior of technology's expected return": f"{curves['prior'][0]:.1f}\\% $\\pm$ {curves['prior'][1]:.1f}",
         "what the data say": f"{curves['data'][0]:.1f}\\% $\\pm$ {curves['data'][1]:.1f}",
         "the posterior": f"{curves['posterior'][0]:.1f}\\% $\\pm$ {curves['posterior'][1]:.1f}",

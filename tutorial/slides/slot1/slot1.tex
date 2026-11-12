@@ -147,13 +147,13 @@
 \key{Inputs are estimates. An optimizer \highlight{amplifies} their errors.}
 \fig{0.97}{intro-weights.pdf}
 \pairs[returns]{\pair{Technology's return}{15.7\% to 17.3\% a year}}
-      {\pair{Its standard error}{4.3: three times the change}}
+      {\pair{Size of the change}{0.37 standard errors}}
       {\pair{Its weight in the portfolio}{74\% to 95\%: 21 points}}
 \note{Every number a model produces is computed from estimated inputs. A textbook case: ten US industries, twenty
 years of monthly returns, and the portfolio with the highest Sharpe ratio, short positions allowed. Its inputs are
 the industries' average returns and their covariances. The rings are the weights. Now raise one input: technology's
-average return, from 15.7 to 17.3 percent a year. That is about a third of the standard error of that average, so
-the data cannot tell the two values apart. The dots are the new weights: technology goes from 74\% to 95\%, retail
+average return, from 15.7 to 17.3 percent a year. That is about a third of the standard error of that average, which is 4.3,
+so the data cannot tell the two values apart. The dots are the new weights: technology goes from 74\% to 95\%, retail
 from 31\% to 18\%. The optimizer takes its inputs as exact, and amplifies their errors. The returns are the industry
 portfolios of Kenneth French's data library.}
 \end{frame}
@@ -163,7 +163,7 @@ portfolios of Kenneth French's data library.}
 \fig{0.80}{intro-horizon.pdf}
 \pairs[returns]{\pair{The market's mean return}{9.1\% a year $\pm$ 3.5}}
       {\pair{Taken as exact}{83–84\% at any horizon}}
-      {\pair{With its uncertainty}{58\% at 10 years, 45\% at 20}}
+      {\pair{With its uncertainty}{45\% at 20 years}}
 \note{A second decision: how much to hold in stocks, for an investor who buys and holds. Over the same twenty years
 the US market earned 9.1 percent a year over bills, give or take 3.5, with a volatility of 15.9 percent. Take these
 numbers as exact, and the investor holds about 83 percent in stocks whatever the horizon: the magenta line. But the
@@ -193,8 +193,8 @@ models.}
 \key{The prior states what you believe, and \highlight{how strongly}.}
 \fig{0.97}{intro-prior.pdf}
 \pairs[returns]{\pair{No prior}{technology: 74\% to 95\%}}
-      {\pair{Prior worth 26 years of data}{39\% to 48\%}}
-      {\pair{Prior taken as certain}{12\%, whatever the data say}}
+      {\pair{Prior worth 26 years}{39\% to 48\%}}
+      {\pair{Prior taken as certain}{12\%, and nothing moves}}
 \note{The prior is the part people distrust, so look at what it does. Here the belief is that the ten industries
 have the same expected return, held with more or less weight. On the left it has no weight: these are the weights of
 the first slide, 74 percent for technology and 95 after the change. On the right it is taken as certain: the averages

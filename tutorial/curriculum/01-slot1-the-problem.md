@@ -132,7 +132,7 @@ commit and SHA-256; they are development results as recorded on 11 November 2026
 | Number | Where | Source | Status |
 | --- | --- | --- | --- |
 | Technology's average return raised by 10%, from 15.7% to 17.3% a year (0.37 of its standard error, 4.3): its weight goes from 74% to 95%, retail's from 31% to 18% | slide 1 | the opening example | illustration |
-| The market's mean return 9.1% a year ± 3.5, volatility 15.9%: 83–84% in stocks at every horizon with the estimates taken as exact; 58% at 10 years and 45% at 20 with their uncertainty | slide 2 | the opening example, after Barberis (2000), Figure 1 | illustration |
+| The market's mean return 9.1% a year ± 3.5, volatility 15.9%: 83–84% in stocks at every horizon with the estimates taken as exact; 45% at 20 years with their uncertainty, and 58% at 10 years in the notes | slide 2 | the opening example, after Barberis (2000), Figure 1 | illustration |
 | Technology's expected return: prior 8.9% ± 3.8, data 15.7% ± 4.3, posterior 11.9% ± 2.8 a year; with 90% probability between 7.2% and 16.5% | slide 3 | the opening example | illustration |
 | Technology's weight: 74% to 95% with no prior; 39% to 48% under a prior worth 26 years of data (a weight of 56%); 12% with the prior taken as certain | slide 4 | the opening example; Jorion (1986) | illustration |
 | The best fit misses the 6-month and 1-year quotes by 1.1 half-spreads; the dashed smile by 10 | slide 10 | the running example | illustration |
