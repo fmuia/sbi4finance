@@ -1,0 +1,60 @@
+{
+  "format": "rough_actual_layout_authorized_submission_v1",
+  "created_utc": "2026-11-11T05:18:50.441858+00:00",
+  "host": "login010",
+  "stage_root": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111",
+  "new_repo": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/repo",
+  "base_verified_source_root": "/oscar/scratch/afengler/sbi4finance-rough-actual-layout-portable-20261110",
+  "base_source_revision": "3e979d94bc1966f62b917236a9e9963cc37029b7",
+  "overlay": {
+    "path": "/oscar/scratch/afengler/rough-authorized-a2052392d428.tar",
+    "sha256": "a2052392d428929ce3b5329bd2ca18320289bffc0c45b6d4b2639e472310acc5"
+  },
+  "work_order": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/preparation/work-order.json",
+    "sha256": "38455e9565681ea502cac33116f92c27f2d3396eb3ff06c0248b251e9f9edb45"
+  },
+  "execution_authorization": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/preparation/authorization.json",
+    "sha256": "1e2f962ca0370effa1724607619e8b9fe2c9b6ce4671dd22e6974f986fc6b3b8"
+  },
+  "sbatch": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/preparation/pilot.sbatch",
+    "sha256": "fe3d83d6261f0c1a48465b2fcd41bfdc7bfaeb6d0b9a30c01fa5f449203c755f"
+  },
+  "resource_evidence": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/preflight/resources.json",
+    "sha256": "4ab623e8724e58a339734a83f5f1fd998fb127e8fee9f29adc25db0077f01bef"
+  },
+  "source_bindings_verified": 25,
+  "preflight_command": [
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+    "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/repo/lab/scripts/run_rough_actual_layout_authorized.py",
+    "check",
+    "--work-order",
+    "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/preparation/work-order.json",
+    "--authorization",
+    "/oscar/scratch/afengler/sbi4finance-rough-actual-authorized-20261111/preparation/authorization.json"
+  ],
+  "preflight_exit_code": 0,
+  "environment": {
+    "executable": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+    "python": "3.12.16 (main, Oct 26 2026, 11:37:43) [GCC 15.3.0]",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "requested_parallelism": {
+    "array_components": 48,
+    "concurrent_workers": 16,
+    "CPU_per_worker": 1,
+    "GiB_per_worker": 32,
+    "peak_CPU": 16,
+    "peak_memory_GiB": 512,
+    "allocated_CPU_seconds_ceiling": 28800
+  },
+  "heston_diagnostics_passed": false,
+  "user_direct_authorization_supersedes_execution_condition": true,
+  "scientific_acceptance": false,
+  "numerical_target_established": false,
+  "status": "preflight_passed_not_yet_submitted"
+}

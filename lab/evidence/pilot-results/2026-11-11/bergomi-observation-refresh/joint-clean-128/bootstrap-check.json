@@ -1,0 +1,78 @@
+{
+  "sampled_journals": [
+    {
+      "index": 0,
+      "journal_exists": true,
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "index": 1,
+      "journal_exists": true,
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "index": 2,
+      "journal_exists": true,
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "index": 3,
+      "journal_exists": true,
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "index": 7,
+      "journal_exists": true,
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "index": 15,
+      "journal_exists": true,
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "index": 31,
+      "journal_exists": true,
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "index": 63,
+      "journal_exists": true,
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "index": 95,
+      "journal_exists": true,
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "index": 127,
+      "journal_exists": true,
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    }
+  ],
+  "bootstrap_errors": [],
+  "states": {
+    "RUNNING": 128
+  }
+}

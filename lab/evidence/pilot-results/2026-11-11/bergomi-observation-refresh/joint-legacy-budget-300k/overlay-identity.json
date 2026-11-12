@@ -1,0 +1,27 @@
+{
+  "path": "/private/tmp/rough-main-full-20261111.tar",
+  "sha256": "a3992477dd131f3bc499ede1a1e9a7e04016c957a1839620b62bf4e6665ed7be",
+  "bytes": 1341440,
+  "plan": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-11/bergomi-observation-refresh/joint-legacy-budget-300k/plan.json",
+    "sha256": "fc246356d5a12e4a0c77413efa3c5f81254676ff80f778ba5e5d503671a38a1b"
+  },
+  "producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+    "sha256": "494a4761ee54e84449ea87a4e7d946649ddd46f3e3eecea2cb33718147f0879d"
+  },
+  "CLI": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/rough_actual_layout_overnight_bank.py",
+    "sha256": "55f0eb57d24dbc0b4865207cd6066b58dde76007c4e7b0405656c4d640a0fde7"
+  },
+  "review": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-11/bergomi-observation-refresh/authorized-pilot/intentional-stop.json",
+    "sha256": "6715b95ae8c928f768a77330368764a12403e5d7d7e2e5ecab2d24f329236cb1"
+  },
+  "members": [
+    "repo/lab/src/sbi4finance/calibration/rough_actual_layout_overnight_bank.py",
+    "repo/lab/scripts/rough_actual_layout_overnight_bank.py",
+    "preparation/plan.json",
+    "preparation/pilot-readout.json"
+  ]
+}

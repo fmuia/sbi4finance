@@ -1,0 +1,7 @@
+test_group_eight_cpu_truth_and_one_dead_child_does_not_cancel_siblings (tests.test_rough_actual_layout_overnight_bank.OvernightBankTests.test_group_eight_cpu_truth_and_one_dead_child_does_not_cancel_siblings) ... ok
+test_row_failure_continues_early_export_resume_and_prior_identity (tests.test_rough_actual_layout_overnight_bank.OvernightBankTests.test_row_failure_continues_early_export_resume_and_prior_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.157s
+
+OK

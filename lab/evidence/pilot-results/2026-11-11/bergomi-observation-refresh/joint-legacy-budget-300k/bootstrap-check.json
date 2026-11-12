@@ -1,0 +1,1746 @@
+{
+  "format": "rough_actual_layout_overnight_bootstrap_check_v1",
+  "asof_utc": "2026-11-11T06:33:39.529246+00:00",
+  "job_id": "8823501",
+  "allocation_states": {
+    "PENDING": 724,
+    "RUNNING": 24
+  },
+  "journals_created": 192,
+  "total_prior_draws_saved_before_pricing": 9600,
+  "pricing_block_attempts_committed": 1965,
+  "row_states": {
+    "complete": 140
+  },
+  "bootstrap_errors": [],
+  "live_MaxRSS_KiB": 4367272,
+  "journals": [
+    {
+      "shard": "shard-000000",
+      "draws": 50,
+      "attempts": 19,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000001",
+      "draws": 50,
+      "attempts": 19,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000002",
+      "draws": 50,
+      "attempts": 14,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000003",
+      "draws": 50,
+      "attempts": 20,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000004",
+      "draws": 50,
+      "attempts": 14,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000005",
+      "draws": 50,
+      "attempts": 14,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000006",
+      "draws": 50,
+      "attempts": 11,
+      "rows": []
+    },
+    {
+      "shard": "shard-000007",
+      "draws": 50,
+      "attempts": 20,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000008",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000009",
+      "draws": 50,
+      "attempts": 11,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000010",
+      "draws": 50,
+      "attempts": 12,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000011",
+      "draws": 50,
+      "attempts": 11,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000012",
+      "draws": 50,
+      "attempts": 9,
+      "rows": []
+    },
+    {
+      "shard": "shard-000013",
+      "draws": 50,
+      "attempts": 14,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000014",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000015",
+      "draws": 50,
+      "attempts": 13,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000016",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000017",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000018",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000019",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000020",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000021",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000022",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000023",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000024",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000025",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000026",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000027",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000028",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000029",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000030",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000031",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000032",
+      "draws": 50,
+      "attempts": 13,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000033",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000034",
+      "draws": 50,
+      "attempts": 16,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000035",
+      "draws": 50,
+      "attempts": 11,
+      "rows": []
+    },
+    {
+      "shard": "shard-000036",
+      "draws": 50,
+      "attempts": 12,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000037",
+      "draws": 50,
+      "attempts": 11,
+      "rows": []
+    },
+    {
+      "shard": "shard-000038",
+      "draws": 50,
+      "attempts": 11,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000039",
+      "draws": 50,
+      "attempts": 9,
+      "rows": []
+    },
+    {
+      "shard": "shard-000040",
+      "draws": 50,
+      "attempts": 8,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000041",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000042",
+      "draws": 50,
+      "attempts": 6,
+      "rows": []
+    },
+    {
+      "shard": "shard-000043",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000044",
+      "draws": 50,
+      "attempts": 6,
+      "rows": []
+    },
+    {
+      "shard": "shard-000045",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000046",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000047",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000048",
+      "draws": 50,
+      "attempts": 7,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000049",
+      "draws": 50,
+      "attempts": 7,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000050",
+      "draws": 50,
+      "attempts": 7,
+      "rows": []
+    },
+    {
+      "shard": "shard-000051",
+      "draws": 50,
+      "attempts": 7,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000052",
+      "draws": 50,
+      "attempts": 7,
+      "rows": []
+    },
+    {
+      "shard": "shard-000053",
+      "draws": 50,
+      "attempts": 7,
+      "rows": []
+    },
+    {
+      "shard": "shard-000054",
+      "draws": 50,
+      "attempts": 7,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000055",
+      "draws": 50,
+      "attempts": 8,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000056",
+      "draws": 50,
+      "attempts": 7,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000057",
+      "draws": 50,
+      "attempts": 6,
+      "rows": []
+    },
+    {
+      "shard": "shard-000058",
+      "draws": 50,
+      "attempts": 7,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000059",
+      "draws": 50,
+      "attempts": 6,
+      "rows": []
+    },
+    {
+      "shard": "shard-000060",
+      "draws": 50,
+      "attempts": 5,
+      "rows": []
+    },
+    {
+      "shard": "shard-000061",
+      "draws": 50,
+      "attempts": 6,
+      "rows": []
+    },
+    {
+      "shard": "shard-000062",
+      "draws": 50,
+      "attempts": 6,
+      "rows": []
+    },
+    {
+      "shard": "shard-000063",
+      "draws": 50,
+      "attempts": 7,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000064",
+      "draws": 50,
+      "attempts": 9,
+      "rows": []
+    },
+    {
+      "shard": "shard-000065",
+      "draws": 50,
+      "attempts": 13,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000066",
+      "draws": 50,
+      "attempts": 9,
+      "rows": []
+    },
+    {
+      "shard": "shard-000067",
+      "draws": 50,
+      "attempts": 9,
+      "rows": []
+    },
+    {
+      "shard": "shard-000068",
+      "draws": 50,
+      "attempts": 13,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000069",
+      "draws": 50,
+      "attempts": 14,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000070",
+      "draws": 50,
+      "attempts": 15,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000071",
+      "draws": 50,
+      "attempts": 16,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000072",
+      "draws": 50,
+      "attempts": 19,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000073",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000074",
+      "draws": 50,
+      "attempts": 16,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000075",
+      "draws": 50,
+      "attempts": 18,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000076",
+      "draws": 50,
+      "attempts": 16,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000077",
+      "draws": 50,
+      "attempts": 14,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000078",
+      "draws": 50,
+      "attempts": 14,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000079",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000080",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000081",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000082",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000083",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000084",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000085",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000086",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000087",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000088",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000089",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000090",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000091",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000092",
+      "draws": 50,
+      "attempts": 5,
+      "rows": []
+    },
+    {
+      "shard": "shard-000093",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000094",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000095",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000096",
+      "draws": 50,
+      "attempts": 3,
+      "rows": []
+    },
+    {
+      "shard": "shard-000097",
+      "draws": 50,
+      "attempts": 5,
+      "rows": []
+    },
+    {
+      "shard": "shard-000098",
+      "draws": 50,
+      "attempts": 5,
+      "rows": []
+    },
+    {
+      "shard": "shard-000099",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000100",
+      "draws": 50,
+      "attempts": 5,
+      "rows": []
+    },
+    {
+      "shard": "shard-000101",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000102",
+      "draws": 50,
+      "attempts": 5,
+      "rows": []
+    },
+    {
+      "shard": "shard-000103",
+      "draws": 50,
+      "attempts": 4,
+      "rows": []
+    },
+    {
+      "shard": "shard-000104",
+      "draws": 50,
+      "attempts": 20,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000105",
+      "draws": 50,
+      "attempts": 20,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000106",
+      "draws": 50,
+      "attempts": 13,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000107",
+      "draws": 50,
+      "attempts": 16,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000108",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000109",
+      "draws": 50,
+      "attempts": 12,
+      "rows": []
+    },
+    {
+      "shard": "shard-000110",
+      "draws": 50,
+      "attempts": 20,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000111",
+      "draws": 50,
+      "attempts": 10,
+      "rows": []
+    },
+    {
+      "shard": "shard-000112",
+      "draws": 50,
+      "attempts": 8,
+      "rows": []
+    },
+    {
+      "shard": "shard-000113",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000114",
+      "draws": 50,
+      "attempts": 8,
+      "rows": []
+    },
+    {
+      "shard": "shard-000115",
+      "draws": 50,
+      "attempts": 11,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000116",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000117",
+      "draws": 50,
+      "attempts": 9,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000118",
+      "draws": 50,
+      "attempts": 9,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000119",
+      "draws": 50,
+      "attempts": 9,
+      "rows": []
+    },
+    {
+      "shard": "shard-000120",
+      "draws": 50,
+      "attempts": 16,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000121",
+      "draws": 50,
+      "attempts": 19,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000122",
+      "draws": 50,
+      "attempts": 18,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000123",
+      "draws": 50,
+      "attempts": 12,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000124",
+      "draws": 50,
+      "attempts": 20,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000125",
+      "draws": 50,
+      "attempts": 18,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000126",
+      "draws": 50,
+      "attempts": 12,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000127",
+      "draws": 50,
+      "attempts": 15,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000128",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000129",
+      "draws": 50,
+      "attempts": 9,
+      "rows": []
+    },
+    {
+      "shard": "shard-000130",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000131",
+      "draws": 50,
+      "attempts": 11,
+      "rows": []
+    },
+    {
+      "shard": "shard-000132",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000133",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000134",
+      "draws": 50,
+      "attempts": 14,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000135",
+      "draws": 50,
+      "attempts": 15,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000136",
+      "draws": 50,
+      "attempts": 9,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000137",
+      "draws": 50,
+      "attempts": 8,
+      "rows": []
+    },
+    {
+      "shard": "shard-000138",
+      "draws": 50,
+      "attempts": 11,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000139",
+      "draws": 50,
+      "attempts": 8,
+      "rows": []
+    },
+    {
+      "shard": "shard-000140",
+      "draws": 50,
+      "attempts": 7,
+      "rows": []
+    },
+    {
+      "shard": "shard-000141",
+      "draws": 50,
+      "attempts": 8,
+      "rows": []
+    },
+    {
+      "shard": "shard-000142",
+      "draws": 50,
+      "attempts": 11,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000143",
+      "draws": 50,
+      "attempts": 11,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000144",
+      "draws": 50,
+      "attempts": 9,
+      "rows": []
+    },
+    {
+      "shard": "shard-000145",
+      "draws": 50,
+      "attempts": 7,
+      "rows": []
+    },
+    {
+      "shard": "shard-000146",
+      "draws": 50,
+      "attempts": 11,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000147",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000148",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000149",
+      "draws": 50,
+      "attempts": 11,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000150",
+      "draws": 50,
+      "attempts": 9,
+      "rows": []
+    },
+    {
+      "shard": "shard-000151",
+      "draws": 50,
+      "attempts": 9,
+      "rows": []
+    },
+    {
+      "shard": "shard-000152",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000153",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000154",
+      "draws": 50,
+      "attempts": 8,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000155",
+      "draws": 50,
+      "attempts": 8,
+      "rows": []
+    },
+    {
+      "shard": "shard-000156",
+      "draws": 50,
+      "attempts": 6,
+      "rows": []
+    },
+    {
+      "shard": "shard-000157",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000158",
+      "draws": 50,
+      "attempts": 8,
+      "rows": []
+    },
+    {
+      "shard": "shard-000159",
+      "draws": 50,
+      "attempts": 8,
+      "rows": []
+    },
+    {
+      "shard": "shard-000160",
+      "draws": 50,
+      "attempts": 6,
+      "rows": []
+    },
+    {
+      "shard": "shard-000161",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000162",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000163",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000164",
+      "draws": 50,
+      "attempts": 8,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000165",
+      "draws": 50,
+      "attempts": 8,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000166",
+      "draws": 50,
+      "attempts": 9,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000167",
+      "draws": 50,
+      "attempts": 8,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000168",
+      "draws": 50,
+      "attempts": 14,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000169",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000170",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000171",
+      "draws": 50,
+      "attempts": 15,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000172",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000173",
+      "draws": 50,
+      "attempts": 15,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000174",
+      "draws": 50,
+      "attempts": 14,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000175",
+      "draws": 50,
+      "attempts": 11,
+      "rows": []
+    },
+    {
+      "shard": "shard-000176",
+      "draws": 50,
+      "attempts": 15,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000177",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000178",
+      "draws": 50,
+      "attempts": 9,
+      "rows": []
+    },
+    {
+      "shard": "shard-000179",
+      "draws": 50,
+      "attempts": 10,
+      "rows": []
+    },
+    {
+      "shard": "shard-000180",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000181",
+      "draws": 50,
+      "attempts": 10,
+      "rows": []
+    },
+    {
+      "shard": "shard-000182",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000183",
+      "draws": 50,
+      "attempts": 10,
+      "rows": []
+    },
+    {
+      "shard": "shard-000184",
+      "draws": 50,
+      "attempts": 15,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000185",
+      "draws": 50,
+      "attempts": 15,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000186",
+      "draws": 50,
+      "attempts": 11,
+      "rows": []
+    },
+    {
+      "shard": "shard-000187",
+      "draws": 50,
+      "attempts": 18,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000188",
+      "draws": 50,
+      "attempts": 17,
+      "rows": [
+        [
+          "complete",
+          2
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000189",
+      "draws": 50,
+      "attempts": 15,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000190",
+      "draws": 50,
+      "attempts": 15,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    },
+    {
+      "shard": "shard-000191",
+      "draws": 50,
+      "attempts": 10,
+      "rows": [
+        [
+          "complete",
+          1
+        ]
+      ]
+    }
+  ],
+  "first_draw": [
+    {
+      "id": 1000,
+      "spec": {
+        "context_parameters": [
+          0.10162560822083591,
+          0.02467963651521929,
+          4.163419184606609
+        ],
+        "curve_role": "joint_unknown",
+        "identity_entropy": [
+          1380073777,
+          20261111,
+          0,
+          1000
+        ],
+        "lane": "joint_unknown",
+        "noise_scale": 1.2034690199714968,
+        "parameters": [
+          0.2281595767718731,
+          3.3768809631347874,
+          -0.6985278446092972,
+          0.10162560822083591,
+          0.02467963651521929,
+          4.163419184606609
+        ],
+        "row_id": 1000,
+        "split": "train",
+        "supplied_curve_levels": []
+      }
+    }
+  ],
+  "sstat": "8823502.extern||\n8823502.batch|4325292K|3738124K\n8823503.extern||\n8823503.batch|4209344K|3303296K\n8823504.extern||\n8823504.batch|3612900K|3477488K\n8823505.extern||\n8823505.batch|3635400K|3102236K\n8823506.extern||\n8823506.batch|4367272K|3367548K\n8823507.extern||\n8823507.batch|4258856K|3176256K\n8823508.extern||\n8823508.batch|4203080K|2908400K\n8823509.extern||\n8823509.batch|4177800K|3088320K\n8823510.extern||\n8823510.batch|4092856K|2819844K\n8823511.extern||\n8823511.batch|4255772K|2983264K\n8823512.extern||\n8823512.batch|3878200K|3379616K\n8823513.extern||\n8823513.batch|3835400K|3484780K\n8823514.extern||\n8823514.batch|3946292K|3156788K\n8823515.extern||\n8823515.batch|4132876K|3055304K\n8823516.extern||\n8823516.batch|4324232K|2991044K\n8823517.extern||\n8823517.batch|4281504K|3344968K\n8823518.extern||\n8823518.batch|4243556K|3164284K\n8823519.extern||\n8823519.batch|4067984K|3181952K\n8823520.extern||\n8823520.batch|4093752K|3310120K\n8823521.extern||\n8823521.batch|4018188K|2805552K\n8823522.extern||\n8823522.batch|4149620K|3044812K\n8823523.extern||\n8823523.batch|4131144K|2625460K\n8823524.extern||\n8823524.batch|4204696K|3080956K\n8823525.extern||\n8823525.batch|4263848K|3102120K\n",
+  "scientific_acceptance": false,
+  "scope": "read-only initial live snapshot; eight journal workers per allocation expected; row budgets/failures retained; no precision acceptance"
+}

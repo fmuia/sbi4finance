@@ -1,0 +1,14 @@
+{
+  "asof_utc": "2026-11-11T06:07:55.646722+00:00",
+  "qos": "carney-condo2|cpu=208,mem=2500G||cpu=960,mem=6T|||||\n",
+  "user_queue_before_submission": "",
+  "shared_account_queue": "8820021|carney-condo2|PENDING|32|4G|1\n8820020|carney-condo2|PENDING|12|4G|1\n8820023|carney-condo2|PENDING|1|16G|1\n8794088_[1-32]|carney-condo2|PENDING|2|6G|1\n8794084_[1-37]|carney-condo2|PENDING|2|6G|1\n8794092|carney-condo2|PENDING|1|1G|1\n8805630|carney-condo2|RUNNING|16|32G|1\n8805629|carney-condo2|RUNNING|16|32G|1\n8755673|carney-condo2|RUNNING|2|16G|1\n8755672|carney-condo2|RUNNING|2|16G|1\n8755664|carney-condo2|RUNNING|2|16G|1\n8253302|carney-gcondo2|COMPLETING|4|96G|1\n8253299|carney-gcondo2|COMPLETING|4|96G|1\n8253297|carney-gcondo2|COMPLETING|4|96G|1\n8253294|carney-gcondo2|COMPLETING|4|96G|1\n8806441_[302-307]|carney-gcondo2|PENDING|8|32G|1\n8806634_[100-107%8]|carney-gcondo2|PENDING|8|64G|1\n8781229|carney-gcondo2|PENDING|4|96G|1\n8781228|carney-gcondo2|PENDING|4|96G|1\n8781223|carney-gcondo2|PENDING|4|96G|1\n8781222|carney-gcondo2|PENDING|4|96G|1\n8781218|carney-gcondo2|PENDING|4|96G|1\n8781217|carney-gcondo2|PENDING|4|96G|1\n8781212|carney-gcondo2|PENDING|4|96G|1\n8781211|carney-gcondo2|PENDING|4|96G|1\n8781201|carney-gcondo2|PENDING|4|96G|1\n8781200|carney-gcondo2|PENDING|4|96G|1\n8781195|carney-gcondo2|PENDING|4|96G|1\n8781194|carney-gcondo2|PENDING|4|96G|1\n8781190|carney-gcondo2|PENDING|4|96G|1\n8781189|carney-gcondo2|PENDING|4|96G|1\n8781184|carney-gcondo2|PENDING|4|96G|1\n8781183|carney-gcondo2|PENDING|4|96G|1\n8568988|carney-gcondo2|PENDING|4|32G|1\n8781238|carney-gcondo2|PENDING|4|24G|1\n8568989|carney-gcondo2|PENDING|4|8G|1\n8792706_160|carney-gcondo2|RUNNING|4|16G|1\n8792706_156|carney-gcondo2|RUNNING|4|16G|1\n8792706_154|carney-gcondo2|RUNNING|4|16G|1\n8792706_152|carney-gcondo2|RUNNING|4|16G|1\n8792706_109|carney-gcondo2|RUNNING|4|16G|1\n8781227|carney-gcondo2|RUNNING|4|96G|1\n8781210|carney-gcondo2|RUNNING|4|96G|1\n8781216|carney-gcondo2|RUNNING|4|96G|1\n8781221|carney-gcondo2|RUNNING|4|96G|1\n8781199|carney-gcondo2|RUNNING|4|96G|1\n8781193|carney-gcondo2|RUNNING|4|96G|1\n8781188|carney-gcondo2|RUNNING|4|96G|1\n8781182|carney-gcondo2|RUNNING|4|96G|1\n8568940|carney-gcondo2|RUNNING|4|96G|1\n",
+  "batch": "batch*|14053/1179/48/15280\n",
+  "scheduler_limits": "AccountingStorageEnforce = associations,limits,qos,safe\nMaxArraySize            = 10001\nMaxJobCount             = 65535",
+  "requested": {
+    "CPU": 192,
+    "memory_GiB": 1536,
+    "arraytasks": 1000,
+    "total_allocated_CPU_seconds": 900000
+  }
+}

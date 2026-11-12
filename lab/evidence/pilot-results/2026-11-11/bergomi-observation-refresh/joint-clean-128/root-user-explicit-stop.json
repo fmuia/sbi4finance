@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-11-11T06:00:02.559427+00:00",
+  "reason": "Root executed explicit latest user authorization to kill old Oscar launch before replacement.",
+  "old_job_id": "8821443",
+  "queue_after_cancel": "",
+  "source_and_partial_payloads_preserved": true,
+  "cancellation_executed_by_root": true
+}

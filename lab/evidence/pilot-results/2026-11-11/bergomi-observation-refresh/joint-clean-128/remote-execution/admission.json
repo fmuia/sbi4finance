@@ -1,0 +1,31 @@
+{
+  "format": "rough_actual_layout_bank_execution_authorization_v1",
+  "created_utc": "2026-11-11T05:41:40.949707+00:00",
+  "bank_plan_sha256": "08ed9816e3ecf42dbaa4af03a3e9dfec6a7e523fd9103fae61c036a3203e662e",
+  "generation_authorized": true,
+  "mode": "candidate_only",
+  "label_policy_authorized": true,
+  "pilot_execution_reviewed": true,
+  "pilot_numerical_review_passed": false,
+  "scientific_acceptance": false,
+  "numerical_policy": {
+    "format": "rough_actual_layout_halfspread_reference_mc_policy_v1",
+    "grid_multiplier": 4,
+    "paths_ladder": [
+      262144
+    ],
+    "preferred_mcse_over_h": 0.25,
+    "hardcap_mcse_over_h": 0.5,
+    "refinement_requirement": "record_only_not_certified",
+    "price_target": "finite_hybrid_grid4_expectation"
+  },
+  "numerical_review": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-bank-20261111/preparation/pilot-readout.json",
+    "sha256": "6715b95ae8c928f768a77330368764a12403e5d7d7e2e5ecab2d24f329236cb1"
+  },
+  "direct_user_request": "Start Bergomi simulations, parallelize on Oscar, prioritize jointly inferred c; root approved this finite first128-row tranche before larger300k target.",
+  "heston_diagnostics_passed": false,
+  "supersedes_previous_Heston_success_execution_gate": true,
+  "root_reviewed_exact_plan_sha256": "08ed9816e3ecf42dbaa4af03a3e9dfec6a7e523fd9103fae61c036a3203e662e",
+  "scope": "only128joint training clean-price rows; future300k planned, not allocated; retained failures and MC diagnostics; no scientific precision pass inferred"
+}

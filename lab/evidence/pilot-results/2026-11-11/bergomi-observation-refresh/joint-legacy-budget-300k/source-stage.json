@@ -1,0 +1,9 @@
+{
+  "created_utc": "2026-11-11T06:31:39.615808+00:00",
+  "base_source_root": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/repo",
+  "base_submission": {
+    "path": "/oscar/scratch/afengler/sbi4finance-rough-main-legacy-20261111/submission.json",
+    "sha256": "347d84406d72959f34fd697742b9540458b110f558a360165bed281049a0a42d"
+  },
+  "copy_method": "read-only hardlinks; overlay may only add uniquely named files; bytecode writing disabled"
+}

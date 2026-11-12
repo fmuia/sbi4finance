@@ -1,0 +1,785 @@
+{
+  "format": "rough_actual_layout_main128_early_running_check_v1",
+  "asof_utc": "2026-11-11T05:46:19.208651+00:00",
+  "job_id": "8821443",
+  "states": {
+    "RUNNING": 128
+  },
+  "journals": [
+    {
+      "shard": "shard-000000",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000001",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000002",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000003",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000004",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000005",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000006",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000007",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000008",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000009",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000010",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000011",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000012",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000013",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000014",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000015",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000016",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000017",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000018",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000019",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000020",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000021",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000022",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000023",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000024",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000025",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000026",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000027",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000028",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000029",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000030",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000031",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000032",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000033",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000034",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000035",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000036",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000037",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000038",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000039",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000040",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000041",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000042",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000043",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000044",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000045",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000046",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000047",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000048",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000049",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000050",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000051",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000052",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000053",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000054",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000055",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000056",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000057",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000058",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000059",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000060",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000061",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000062",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000063",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000064",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000065",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000066",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000067",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000068",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000069",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000070",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000071",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000072",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000073",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000074",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000075",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000076",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000077",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000078",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000079",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000080",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000081",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000082",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000083",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000084",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000085",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000086",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000087",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000088",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000089",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000090",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000091",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000092",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000093",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000094",
+      "draws": 1,
+      "attempts": 1,
+      "rows": []
+    },
+    {
+      "shard": "shard-000095",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000096",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000097",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000098",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000099",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000100",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000101",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000102",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000103",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000104",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000105",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000106",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000107",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000108",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000109",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000110",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000111",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000112",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000113",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000114",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000115",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000116",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000117",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000118",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000119",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000120",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000121",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000122",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000123",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000124",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000125",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000126",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    },
+    {
+      "shard": "shard-000127",
+      "draws": 1,
+      "attempts": 0,
+      "rows": []
+    }
+  ],
+  "journals_created": 128,
+  "journals_with_prior_draw": 128,
+  "committed_pricing_block_attempts": 55,
+  "bootstrap_errors": [],
+  "live_MaxRSS_KiB": 1371660,
+  "sstat": "8821444.extern||\n8821444.batch|1344716K|988420K\n8821445.extern||\n8821445.batch|1351420K|1055808K\n8821446.extern||\n8821446.batch|1348472K|1000612K\n8821447.extern||\n8821447.batch|697900K|385104K\n8821448.extern||\n8821448.batch|696616K|618724K\n8821449.extern||\n8821449.batch|687468K|485352K\n8821450.extern||\n8821450.batch|686164K|351640K\n8821451.extern||\n8821451.batch|665836K|480548K\n8821452.extern||\n8821452.batch|666456K|358612K\n8821453.extern||\n8821453.batch|667428K|453220K\n8821454.extern||\n8821454.batch|666712K|502852K\n8821455.extern||\n8821455.batch|673336K|483896K\n8821456.extern||\n8821456.batch|667592K|296440K\n8821457.extern||\n8821457.batch|669196K|623084K\n8821458.extern||\n8821458.batch|668560K|327508K\n8821459.extern||\n8821459.batch|669632K|521616K\n8821460.extern||\n8821460.batch|669120K|544656K\n8821461.extern||\n8821461.batch|669040K|513836K\n8821462.extern||\n8821462.batch|669420K|417416K\n8821463.extern||\n8821463.batch|669632K|505968K\n8821464.extern||\n8821464.batch|669332K|502396K\n8821465.extern||\n8821465.batch|670300K|574204K\n8821466.extern||\n8821466.batch|668264K|555548K\n8821467.extern||\n8821467.batch|669608K|618228K\n8821468.extern||\n8821468.batch|672868K|645920K\n8821469.extern||\n8821469.batch|674904K|643644K\n8821470.extern||\n8821470.batch|672876K|536756K\n8821471.extern||\n8821471.batch|670964K|535204K\n8821472.extern||\n8821472.batch|671196K|537688K\n8821473.extern||\n8821473.batch|669212K|626236K\n8821474.extern||\n8821474.batch|670816K|579344K\n8821475.extern||\n8821475.batch|678120K|577624K\n8821476.extern||\n8821476.batch|677468K|666548K\n8821477.extern||\n8821477.batch|677568K|414748K\n8821478.extern||\n8821478.batch|679824K|576176K\n8821479.extern||\n8821479.batch|678480K|653088K\n8821480.extern||\n8821480.batch|680652K|567312K\n8821481.extern||\n8821481.batch|678252K|617500K\n8821482.extern||\n8821482.batch|681176K|577476K\n8821483.extern||\n8821483.batch|1354632K|941124K\n8821484.extern||\n8821484.batch|1294036K|1123768K\n8821485.extern||\n8821485.batch|1292972K|1142928K\n8821486.extern||\n8821486.batch|1288840K|1053428K\n8821487.extern||\n8821487.batch|1289964K|1213104K\n8821488.extern||\n8821488.batch|1349872K|879148K\n8821489.extern||\n8821489.batch|1289000K|1191584K\n8821490.extern||\n8821490.batch|1324380K|788840K\n8821491.extern||\n8821491.batch|1289792K|1085904K\n8821492.extern||\n8821492.batch|1288848K|984496K\n8821493.extern||\n8821493.batch|1287764K|759560K\n8821494.extern||\n8821494.batch|1291484K|1101832K\n8821495.extern||\n8821495.batch|1288208K|789652K\n8821496.extern||\n8821496.batch|1290320K|1273412K\n8821497.extern||\n8821497.batch|1354440K|679480K\n8821498.extern||\n8821498.batch|695384K|392612K\n8821499.extern||\n8821499.batch|697192K|368972K\n8821500.extern||\n8821500.batch|1313368K|787724K\n8821501.extern||\n8821501.batch|1286084K|1160288K\n8821502.extern||\n8821502.batch|1316248K|884004K\n8821503.extern||\n8821503.batch|1319980K|982032K\n8821504.extern||\n8821504.batch|1289124K|1047832K\n8821505.extern||\n8821505.batch|1332164K|960064K\n8821506.extern||\n8821506.batch|687012K|558052K\n8821507.extern||\n8821507.batch|704708K|342.50M\n8821508.extern||\n8821508.batch|1322996K|1031092K\n8821509.extern||\n8821509.batch|1290528K|1046028K\n8821510.extern||\n8821510.batch|1298124K|1114744K\n8821511.extern||\n8821511.batch|1284344K|1193672K\n8821512.extern||\n8821512.batch|1371660K|779112K\n8821513.extern||\n8821513.batch|1283460K|974348K\n8821514.extern||\n8821514.batch|1313688K|1202028K\n8821515.extern||\n8821515.batch|1317740K|786460K\n8821516.extern||\n8821516.batch|1314748K|985792K\n8821517.extern||\n8821517.batch|1297100K|1001112K\n8821518.extern||\n8821518.batch|1321204K|1300696K\n8821519.extern||\n8821519.batch|1290784K|1046884K\n8821520.extern||\n8821520.batch|1286240K|1166928K\n8821521.extern||\n8821521.batch|1299528K|565000K\n8821522.extern||\n8821522.batch|1313496K|1160748K\n8821523.extern||\n8821523.batch|1312556K|764344K\n8821524.extern||\n8821524.batch|1312640K|726156K\n8821525.extern||\n8821525.batch|1310788K|816836K\n8821526.extern||\n8821526.batch|1282784K|979520K\n8821527.extern||\n8821527.batch|1357500K|742556K\n8821528.extern||\n8821528.batch|1261M|1097320K\n8821529.extern||\n8821529.batch|1326324K|1140296K\n8821530.extern||\n8821530.batch|1332872K|1057520K\n8821531.extern||\n8821531.batch|1324536K|882356K\n8821532.extern||\n8821532.batch|1317884K|951072K\n8821533.extern||\n8821533.batch|1291952K|1084680K\n8821534.extern||\n8821534.batch|1315152K|1306628K\n8821535.extern||\n8821535.batch|1271432K|669120K\n8821536.extern||\n8821536.batch|1317432K|971992K\n8821537.extern||\n8821537.batch|1278212K|896976K\n8821538.extern||\n8821538.batch|1277552K|1070280K\n8821539.extern||\n8821539.batch|672160K|496272K\n8821540.extern||\n8821540.batch|672696K|569376K\n8821541.extern||\n8821541.batch|672920K|579452K\n8821542.extern||\n8821542.batch|672584K|521828K\n8821543.extern||\n8821543.batch|673112K|476688K\n8821544.extern||\n8821544.batch|672388K|610036K\n8821545.extern||\n8821545.batch|672464K|610676K\n8821546.extern||\n8821546.batch|676336K|503044K\n8821547.extern||\n8821547.batch|681896K|386224K\n8821548.extern||\n8821548.batch|672572K|487984K\n8821549.extern||\n8821549.batch|678220K|572660K\n8821550.extern||\n8821550.batch|673492K|394196K\n8821551.extern||\n8821551.batch|675832K|497400K\n8821552.extern||\n8821552.batch|672780K|584716K\n8821553.extern||\n8821553.batch|680548K|448700K\n8821554.extern||\n8821554.batch|672404K|542004K\n8821555.extern||\n8821555.batch|672800K|475816K\n8821556.extern||\n8821556.batch|676816K|585112K\n8821557.extern||\n8821557.batch|676476K|601404K\n8821558.extern||\n8821558.batch|677076K|554004K\n8821559.extern||\n8821559.batch|676184K|534888K\n8821560.extern||\n8821560.batch|672388K|536968K\n8821561.extern||\n8821561.batch|672992K|562940K\n8821562.extern||\n8821562.batch|673468K|558828K\n8821563.extern||\n8821563.batch|669960K|312052K\n8821564.extern||\n8821564.batch|668632K|379504K\n8821565.extern||\n8821565.batch|653.50M|362512K\n8821566.extern||\n8821566.batch|668928K|603736K\n8821567.extern||\n8821567.batch|668704K|646088K\n8821568.extern||\n8821568.batch|668972K|330632K\n8821569.extern||\n8821569.batch|668680K|416800K\n8821570.extern||\n8821570.batch|669208K|338772K\n8821443.extern||\n8821443.batch|670452K|521532K\n",
+  "scope": "live partial evidence; no whole-row numerical quality or full memory certificate"
+}

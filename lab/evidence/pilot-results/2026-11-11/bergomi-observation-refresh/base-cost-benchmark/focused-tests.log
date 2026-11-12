@@ -1,0 +1,8 @@
+test_changed_parameter_or_source_refuses (tests.test_rough_actual_layout_base_benchmark.BaseCostBenchmarkTests.test_changed_parameter_or_source_refuses) ... ok
+test_fake_all_seven_base_blocks_and_no_training_claim (tests.test_rough_actual_layout_base_benchmark.BaseCostBenchmarkTests.test_fake_all_seven_base_blocks_and_no_training_claim) ... ok
+test_four_fixed_rows_and_cost_profile (tests.test_rough_actual_layout_base_benchmark.BaseCostBenchmarkTests.test_four_fixed_rows_and_cost_profile) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.093s
+
+OK
