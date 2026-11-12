@@ -1927,7 +1927,8 @@ def _(
         """),
         mo.accordion({"Misfit by expiry, in half-spreads": mo.ui.table(_table, selection=None, pagination=False)}),
         mo.md("**What to do about it** is a modelling decision: widen or reshape the noise model, add an explicit model-error "
-              "term, or use a richer model, for example with jumps or rough volatility."),
+              "term, or use a richer model, for example with jumps or rough volatility. The end of Section 6 makes the "
+              "case for rough volatility."),
     ])
     return
 
@@ -2027,6 +2028,143 @@ def _(
 
 
 @app.cell(hide_code=True)
+def _(
+    BOUNDS,
+    DELTA,
+    EXPIRY,
+    EXPIRY_DAYS,
+    HestonGridPilot,
+    MARKET_IV,
+    MATURITY,
+    REF_VOL,
+    implied_vols,
+    market_fit,
+    market_residual,
+    mo,
+    np,
+    plots,
+    plt,
+    reference_draws,
+    surface,
+):
+    _theta = reference_draws["market"].mean(axis=0)  # the best Heston fit: the posterior-mean parameters
+    _v0, _kappa, _v_inf, _xi, _rho, _c = _theta
+    _days = np.asarray(EXPIRY_DAYS)
+    _k = DELTA * REF_VOL * np.sqrt(MATURITY)  # log-moneyness ln(K/F)
+    _fit_iv = implied_vols(market_fit)[0]
+
+    def _shape(_kk, _vols):
+        """At-the-money skew and curvature: a quadratic in log-moneyness through the five quotes nearest the money."""
+        _near = np.argsort(np.abs(_kk))[:5]
+        _c2, _c1, _ = np.polyfit(_kk[_near], _vols[_near], 2)
+        return _c1, 2 * _c2
+
+    _spx = np.array([_shape(_k[EXPIRY == _e], MARKET_IV[EXPIRY == _e]) for _e in range(len(_days))])
+    _fit = np.array([_shape(_k[EXPIRY == _e], _fit_iv[EXPIRY == _e]) for _e in range(len(_days))])
+
+    # The same fit at maturities the market does not quote: one day to one year, five strikes around the money.
+    _grid_t = np.geomspace(1 / 365, 1.0, 36)
+    _grid_d = np.array([-1.25, -0.5, 0.0, 0.5, 1.0])
+    _tt, _dd = np.meshgrid(_grid_t, _grid_d, indexing="ij")
+    _gk, _gt = (_dd * REF_VOL * np.sqrt(_tt)).ravel(), _tt.ravel()
+    _gkind = np.where(_dd.ravel() <= 0, "put", "call")
+    _grid_pricer = HestonGridPilot({"forward": np.ones(_gk.size), "strike": np.exp(_gk), "discount": np.ones(_gk.size),
+                                    "maturity": _gt, "option_type": _gkind, "mid": np.full(_gk.size, 0.01),
+                                    "half_spread": np.full(_gk.size, 1e-4)}, infer_c=True, c_bounds=(0.5, 2.0))
+    _grid_iv = surface.implied_vol(_grid_pricer.prices(_theta)[None], _gk, _gt, _gkind)[0].reshape(_tt.shape)
+    _curve = np.array([_shape(_grid_d * REF_VOL * np.sqrt(_t), _grid_iv[_i]) for _i, _t in enumerate(_grid_t)])
+    _ceiling = abs(_rho * _xi / (4 * np.sqrt(_v0)))  # Heston's short-maturity skew (Lecture 10, Section 10.8)
+    _power = lambda _x: np.polyfit(np.log(_days / 365), np.log(np.abs(_x)), 1)
+
+    _fig, _axes = plt.subplots(1, 3, figsize=(11.8, 3.7), constrained_layout=True)
+    _spx_style = dict(color="#222222", s=24, zorder=3, label="SPX quotes")
+    _fit_style = dict(color=plots.SERIES[1], s=22, marker="s", zorder=3, label="best Heston fit")
+    _b, _a = _power(_spx[:, 0])
+    _axes[0].plot(365 * _grid_t, np.abs(_curve[:, 0]), color=plots.SERIES[1], lw=1.2, label="Heston, any maturity")
+    _axes[0].axhline(_ceiling, color=plots.MUTED, ls=":", lw=1, label="Heston's ceiling")
+    _axes[0].plot(_days, np.exp(_a) * (_days / 365) ** _b, color="#222222", ls="--", lw=1,
+                  label=f"SPX power law, $T^{{{_b:.2f}}}$")
+    _axes[0].scatter(_days, np.abs(_spx[:, 0]), **_spx_style)
+    _axes[0].scatter(_days, np.abs(_fit[:, 0]), **_fit_style)
+    _axes[0].set(xscale="log", yscale="log", xlabel="days to expiry", ylabel="|at-the-money skew|",
+                 title="Skew: Heston levels off")
+    from matplotlib.ticker import FuncFormatter as _Formatter
+
+    _axes[0].yaxis.set_major_formatter(_Formatter(lambda _v, _p: f"{_v:g}"))
+    _axes[0].yaxis.set_minor_formatter(_Formatter(lambda _v, _p: f"{_v:g}"))
+    _axes[1].plot(365 * _grid_t, _curve[:, 1], color=plots.SERIES[1], lw=1.2, label="Heston, any maturity")
+    _axes[1].axhline(0, color=plots.MUTED, lw=0.6)
+    _axes[1].scatter(_days, _spx[:, 1], **_spx_style)
+    _axes[1].scatter(_days, _fit[:, 1], **_fit_style)
+    _axes[1].set(xscale="log", xlabel="days to expiry", ylabel="at-the-money curvature",
+                 title="Curvature: Heston turns down")
+    for _ax, _where in zip(_axes[:2], ("lower left", "lower right")):
+        _ax.set_xticks([1, 7, 30, 90, 365], ["1", "7", "30", "90", "365"])
+        _ax.legend(fontsize=7, loc=_where)
+    _short = EXPIRY == 0
+    _order = np.argsort(DELTA[_short])
+    _axes[2].plot(DELTA[_short][_order], 100 * _fit_iv[_short][_order], "-s", color=plots.SERIES[1], ms=4, lw=1.2,
+                  label="best Heston fit")
+    _axes[2].scatter(DELTA[_short], 100 * MARKET_IV[_short], color="#222222", s=24, zorder=3, label="SPX quotes")
+    _axes[2].set(xlabel="standardized moneyness δ", ylabel="implied volatility (%)",
+                 title=f"The {_days[0]}-day smile")
+    _axes[2].legend(fontsize=7)
+
+    # Everything said below is computed here.
+    _deep = np.array([100 * (MARKET_IV - _fit_iv)[EXPIRY == _e][np.argmin(DELTA[EXPIRY == _e])] for _e in range(len(_days))])
+    _rms = [float(np.sqrt(np.mean(market_residual[EXPIRY == _e] ** 2))) for _e in range(len(_days))]
+    _near = _short & (np.abs(DELTA) < 1.3)
+    _peak = int(np.argmax(_fit[:, 1]))
+    _minus = lambda _x: f"{_x:.2f}".replace("-", "−")
+    _negative = 365 * _grid_t[_curve[:, 1] < 0]
+    _signs = (
+        "### Where the model error comes from\n\n"
+        "**Is this model misspecification?** The exact posterior shows four signs, so they are not the network's doing:\n\n"
+        f"1. The noise multiplier sits at its bound: median {np.median(reference_draws['market'][:, -1]):.4f}, bound "
+        f"{BOUNDS[-1, 1]:g}.\n"
+        f"2. Every expiry misses, by {min(_rms):.1f} to {max(_rms):.1f} half-spreads (RMS).\n"
+        f"3. The misses are systematic: the deepest put is underpriced at "
+        f"{'every expiry' if np.all(_deep > 0) else f'{int(np.sum(_deep > 0))} of {len(_days)} expiries'}, by "
+        f"{_deep.min():.1f} to {_deep.max():.1f} volatility points.\n"
+        f"4. The fit needs extreme parameters: $\\sigma_v={_xi:.2f}$, so $\\sigma_v^2={_xi ** 2:.1f}$ against "
+        f"$2\\kappa v_\\infty={2 * _kappa * _v_inf:.2f}$ (Feller condition, Section 1).\n\n"
+        "No Heston parameters and no better inference remove them: the model lacks a feature of the data.")
+    _reading = (
+        "**What Heston cannot do.** Skew and curvature are measured as in Lecture 5: a quadratic in log-moneyness "
+        "through the five quotes nearest the money.\n\n"
+        f"- **Skew** (left): at the money, the fit follows the SPX skew at every expiry, within "
+        f"{100 * np.max(np.abs(_fit[:, 0] / _spx[:, 0] - 1)):.0f}%, with nearly the same power law "
+        f"({_minus(_power(_fit[:, 0])[0])} against {_minus(_b)}). But its {_days[0]}-day skew is already "
+        f"{100 * abs(_fit[0, 0]) / _ceiling:.0f}% of Heston's ceiling $|\\rho\\sigma_v|/(4\\sqrt{{v_0}})={_ceiling:.2f}$: "
+        "below a week it stops growing (Lecture 10), while a power law keeps growing.\n"
+        f"- **Curvature** (middle): the SPX smile gets more curved as maturity shortens: {_spx[2, 1]:.1f}, "
+        f"{_spx[1, 1]:.1f} and {_spx[0, 1]:.1f} at {_days[2]}, {_days[1]} and {_days[0]} days. The fit's curvature "
+        f"peaks at {_days[_peak]} days ({_fit[_peak, 1]:.1f}) and falls to {_fit[0, 1]:.1f} at {_days[0]} days"
+        + (f"; at shorter maturities it falls below zero (under {_negative.max():.0f} days)" if _negative.size else "")
+        + ".\n"
+        f"- **The shortest smile** (right): near the money the fit is within "
+        f"{np.max(np.abs(100 * (MARKET_IV - _fit_iv)[_near])):.1f} volatility points, but at the deepest put it is "
+        f"{_deep[0]:.1f} points too low. With a single diffusive variance factor, the fit cannot price that much crash "
+        f"risk into {_days[0]} days without breaking the rest of the smile.\n\n"
+        "**A candidate fix: rough Bergomi** (Lecture 13)\n\n"
+        "- **What it changes:** the variance is rough, with a Hurst exponent $H<\\tfrac12$. The skew then grows like "
+        "$T^{H-1/2}$ as maturity shortens, with no ceiling, and a small $H$ also curves the short smile: the two "
+        "features Heston misses.\n"
+        f"- **What the quotes suggest:** at leading order the SPX skew exponent, {_minus(_b)}, corresponds to "
+        f"$H\\approx{0.5 + _b:.1f}$, close to the values reported for index volatility. A fitted exponent is only a "
+        "rough estimate of $H-\\tfrac12$ (Lecture 5).\n"
+        "- **Why this is where SBI is needed:** rough Bergomi has no Fourier pricer. Each surface needs Monte Carlo, "
+        "5 to 12 CPU-seconds in the tutorial, so an exact posterior like the PyMC reference here becomes very "
+        "expensive (Lecture 14). Amortized inference pays the simulation cost once, and the workflow of this notebook "
+        "carries over with the simulator swapped. Heston was the model on which SBI could be checked against an "
+        "exact answer; rough Bergomi is the model that needs it.\n"
+        "- **Not shown here:** whether rough Bergomi fits these SPX quotes within their spreads. Lectures 13 to 15 "
+        "build and calibrate it.")
+    mo.vstack([mo.md(_signs), _fig, mo.md(_reading)])
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
     ## Takeaways
@@ -2038,6 +2176,7 @@ def _(mo):
     5. **Check single data sets against an exact reference.** Good calibration does not mean sharp posteriors: the network's intervals can be several times wider than the exact ones.
     6. **Check the model, not only the network.** On the SPX quotes the noise multiplier hits its bound and Heston misses by many half-spreads: its smile is too flat in the deep put wing, most of all at short expiries. An amortized estimator is only reliable on data its simulator could have produced.
     7. **Downstream, a posterior gives a range instead of a number.** Here parameter uncertainty barely moves the prices of unquoted contracts, while model error moves them by volatility points.
+    8. **Misspecification points to the next model.** Heston follows the SPX skew but not the short-dated curvature and wing. Rough Bergomi is built for both, and it has no pricing formula: the case where amortized SBI is needed.
     """)
     return
 
