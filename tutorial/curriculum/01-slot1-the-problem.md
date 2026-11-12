@@ -144,6 +144,12 @@ commit and SHA-256; they are development results as recorded on 11 November 2026
    backup has the status on 11 November.
 9. **"Does the range cover model risk?"** No. It is one model's parameter uncertainty under a stated error model.
 
+## The supporting notebook
+
+`slot1_intro.py` is an introduction to Bayes on Black–Scholes and one SPY close: the data, Bayes with one parameter,
+the range of a price, checking the model, Heston on SPY with quick checks, and the costs. It follows an earlier
+version of this talk. The deck does not use it: none of the deck's figures comes from the notebook.
+
 ## Before the run-through
 
 1. Compile in the Overleaf project with the real theme and check that no frame overflows; the deck has been compiled
