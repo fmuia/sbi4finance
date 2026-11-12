@@ -1,0 +1,60 @@
+{
+  "format": "heston_flexible_software_validation_v1",
+  "source_commit": "b473470",
+  "scientific_acceptance": false,
+  "lab": {
+    "tests_exercised": 875,
+    "initial_passed": 874,
+    "initial_environment_error": "Existing PyMC emulator test attempted to create its cache under a sandbox-read-only home directory.",
+    "retest": "All 7 tests of test_pricer_pymc_reference passed with PYTENSOR_FLAGS pointing to writable /private/tmp cache. No source change required."
+  },
+  "tutorial": {
+    "tests_passed": 65,
+    "notebooks_exported": 7,
+    "all_exported_cells_error_free": true,
+    "check": "Passed with two existing empty-cell warnings in slot2 and slot3."
+  },
+  "new_notebook": {
+    "cells": 18,
+    "absent_evidence_export_errors": 0,
+    "actual_smoke_evidence_export_errors": 0,
+    "strict_check_passed": true
+  },
+  "end_to_end_smoke": {
+    "train_rows": 64,
+    "epochs": 2,
+    "summary_dim": 32,
+    "population_rows": 8,
+    "draws_per_population_case": 32,
+    "conditional_draws_per_case": 32,
+    "conditional_cases": 3,
+    "full_mcmc_reference_comparisons_executed": true,
+    "scientific_accuracy_claim": false
+  },
+  "logs": {
+    "lab_full": {
+      "log_sha256": "73a8f49cb68b0aff9f27dbb1f21e03af55b6eca94ff2f9643754cfab0c109b68"
+    },
+    "lab_pymc_cache_retest": {
+      "log_sha256": "5459e2061caf0502d6b8972b88a6dd695419cde6dbe8aaff757cdcdfbcb9db9e"
+    },
+    "tutorial_tests": {
+      "log_sha256": "0e130b59acc0d33dfe29ff383d11e80360e40465c0e35a16f21e653634c9373e"
+    },
+    "tutorial_notebooks": {
+      "log_sha256": "29f57fc36360b5ee39823084607d241b114dc1aec3f8575991cc8507730a7c0d"
+    },
+    "tutorial_check": {
+      "log_sha256": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649"
+    },
+    "experimental_notebook": {
+      "log_sha256": "81712e4c10deac4c2fdf83689add6397cf61ece14d15211ec7694ff24b19b971"
+    },
+    "release_check": {
+      "log_sha256": "8ef17eb02238b31db249af80b55c5dda4440397f59fe474a7750dbd673aed89a"
+    },
+    "runner_tests": {
+      "log_sha256": "86e3d139f92e4595475b71fd6aa0d963558e372a96cc6fef0c0b4373066aaddb"
+    }
+  }
+}

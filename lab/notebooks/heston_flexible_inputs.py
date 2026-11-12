@@ -180,17 +180,29 @@ def _(mo, run_records):
 def _(mo, run_records, selected_runs):
     compared_runs = [record for record in run_records if record["key"] in selected_runs.value]
     _rows = []
+    _smoke_labels = []
     for _record in compared_runs:
         _run, _entry = _record["run"], _record["entry"]
         _config = _run.get("config", _run.get("configuration", {}))
+        _smoke = _run.get("smoke_test_only", _entry.get("smoke_test_only"))
+        if _smoke is True:
+            _smoke_labels.append(_record["label"])
         _rows.append({"run": _record["label"], "status": _run.get("status", _entry.get("status", "unmeasured")),
+                      "smoke_test_only": _smoke if _smoke is not None else "unrecorded",
                       "representation": _config.get("representation", _entry.get("representation", "unrecorded")),
                       "summary dimension": _config.get("summary_dim", _entry.get("summary_dim", "—")),
                       "training rows": _run.get("train_rows", _config.get("train_rows", "unrecorded")),
-                      "epochs": _run.get("epochs", _config.get("epochs", "unrecorded")),
+                      "completed epochs": _run.get("completed_epochs", _entry.get("completed_epochs", "unrecorded")),
+                      "requested epochs": _run.get("epochs", _config.get("epochs", "unrecorded")),
                       "training seconds": _run.get("elapsed_seconds", _run.get("training_seconds", "unrecorded")),
                       "evidence": "; ".join(_record["errors"]) or "run, history and evaluation present"})
-    _view = mo.ui.table(_rows, selection=None, pagination=False) if _rows else mo.md("*No runs selected.*")
+    _parts = [mo.ui.table(_rows, selection=None, pagination=False)] if _rows else [mo.md("*No runs selected.*")]
+    if _smoke_labels:
+        _parts.append(mo.callout(mo.md(
+            "**Smoke tests are selected:** " + ", ".join(_smoke_labels) + ". "
+            "These tiny runs check software execution, saving and evaluation. Their learning curves "
+            "and posterior diagnostics do not establish scientific accuracy or a useful summary dimension."), kind="warn"))
+    _view = mo.vstack(_parts)
     _view
     return (compared_runs,)
 
