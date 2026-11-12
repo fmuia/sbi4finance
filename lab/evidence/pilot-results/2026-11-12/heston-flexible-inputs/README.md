@@ -73,7 +73,7 @@ retained: no clipping, rejection or resampling at prior boundaries. The existing
 100-row validation and historical 512-case population are development panels;
 neither a smoke fit nor repeated use of these panels establishes fresh acceptance.
 
-## First full-size result and current sequence
+## Completed fixed-grid dimension comparison
 
 The 32-dimensional MLP completed all 300 epochs on the 300k stored noisy
 observations in 37.8 minutes. Its declared final checkpoint and validation
@@ -82,13 +82,26 @@ from the saved raw draws reproduces the metrics. The bank, frozen ZCA, priors,
 noise, seed, posterior head, optimizer schedule, 351,600 updates and 90 million
 presentations match the direct baseline.
 
-| Reused development population, primary endpoint | Direct 63 inputs | MLP summary 32 |
-| --- | ---: | ---: |
-| Six marginal SBC screens passed | 5/6 | 6/6 |
-| Initial-variance nominal-90% coverage | 97.46% | 96.29% |
-| `c` nominal-90% coverage | 90.23% | 89.65% |
-| `c` median-estimate RMSE | 0.13494 | 0.13461 |
-| Raw posterior draws outside prior | 3.043% | 2.324% |
+All five fits and all ten checkpoint evaluations completed successfully. The
+following table uses final epoch 300 only, on the same reused 512-case population.
+
+| Representation | SBC screens | `c` RMSE | Initial-variance RMSE | Median `c` 90% width | `c` 90% coverage |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Direct 63 inputs | 5/6 | 0.13494 | 0.000111 | 0.4343 | 90.23% |
+| MLP 64 | 5/6 | 0.13506 | 0.000121 | 0.4503 | 89.45% |
+| MLP 32 | 6/6 | 0.13461 | 0.000128 | 0.4527 | 89.65% |
+| MLP 16 | 5/6 | 0.13666 | 0.000126 | 0.4605 | 89.45% |
+| MLP 8 | 6/6 | 0.13593 | 0.000131 | 0.4494 | 90.04% |
+| MLP 4 | 6/6 | 0.43967 | 0.007525 | 1.3472 | 90.82% |
+
+**The observed deterioration is between 8 and 4 dimensions in this recipe.**
+Eight is the smallest tested representation preserving similar pooled recovery
+to the direct baseline. Four sharply degrades physical recovery and returns
+nearly prior-width uncertainty for `c` (the prior central-90% width is 1.35),
+despite passing all six marginal SBC screens. This illustrates why calibration
+alone does not establish that an estimator retains the observations' information.
+One seed per dimension does not establish a reproducible minimal dimension or
+a sufficient statistic; follow-up seed confirmation is needed.
 
 Pooled recovery is reasonably preserved. Conditional fidelity is not established:
 MLP32 synthetic physical intervals remain 1.02–2.29 times their MCMC widths,
@@ -98,15 +111,18 @@ declared criteria. The market comparison worsens, including a `c` interval about
 direct network. The validation-minimum checkpoint does not resolve these errors.
 Passing population screens is not a sufficient-statistic result.
 
-The user's clarified priority is a clean **32 / 16 / 8 / 4 / 64** fixed-grid MLP
-comparison, prioritizing the smaller dimensions to locate performance loss. At
-the launch snapshot in [campaign.json](campaign.json), 16 dimensions was running;
-8 and 4 follow automatically, then a full 64-dimensional control. All use the same
-300k rows, 300 epochs, seed
+The user's clean **32 / 16 / 8 / 4 / 64** fixed-grid MLP sequence is complete;
+[campaign.json](campaign.json) retains its launch snapshot and final accounting.
+All use the same 300k rows, 300 epochs, seed
 9011, two 128-wide SiLU summary layers and unchanged posterior/training settings.
 Each fit has a one-hour training cap and separate final/minimum evaluations.
 One early 64-dimensional launch was stopped while priorities were clarified;
 its partial outputs remain private and are excluded from endpoint comparisons.
 
-**SetTransformer and masking training are held until this comparison is assessed.**
+Conditional fidelity remains insufficient for every size: all three complete
+reference panels fail the declared criteria. Smaller-summary pooled recovery
+should not be described as absolute posterior correctness. All validation-minimum
+outcomes remain available separately in the report and notebook.
+
+**SetTransformer and masking training remain held while this comparison is assessed.**
 The existing design previews remain available. No Bergomi allocation is changed.

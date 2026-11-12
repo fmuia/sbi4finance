@@ -1,6 +1,5 @@
 {
   "format": "heston_summary_dimension_campaign_v1",
-  "snapshot_utc": "2026-11-12T17:29:18.131515+00:00",
   "sequence": [
     32,
     16,
@@ -36,7 +35,17 @@
     "backend": "local JAX CPU",
     "automatic_retries": false
   },
-  "states_at_snapshot": {
+  "earlier64_partial": "stopped_for_priority_clarification; preserved outsideGit; excluded_from_comparison; full64starts_fresh",
+  "source": {
+    "runner_sha256": "de332302c4d357e7f6a88d94c32ae159543ad2b5cd8ba15cf839605e269099bc",
+    "inference_sha256": "39f58c9e329b2fdf1ac4b6f290de0895db0bce12b39bd48774dce03487bc986f",
+    "smaller_controller_sha256": "3fe59b309c89879172c84b4ad5c9f458d3bed2b3e7b6e5f9ed0c4cec9421ef64",
+    "larger_control_supervisor_sha256": "f21f737d093be625f797a85bb14db6ea5958c716943429d44008cb1f8c65702a"
+  },
+  "masking_and_settransformer_training": "held_until_dimension_comparison_assessed",
+  "scientific_acceptance": false,
+  "launch_snapshot_utc": "2026-11-12T17:29:18.131515+00:00",
+  "launch_states": {
     "32": "training_and_both_endpoint_evaluations_complete",
     "16": {
       "status": "training",
@@ -46,13 +55,64 @@
     "4": "queued_after8",
     "64": "queued_after_all_smaller_fits"
   },
-  "earlier64_partial": "stopped_for_priority_clarification; preserved outsideGit; excluded_from_comparison; full64starts_fresh",
-  "source": {
-    "runner_sha256": "de332302c4d357e7f6a88d94c32ae159543ad2b5cd8ba15cf839605e269099bc",
-    "inference_sha256": "39f58c9e329b2fdf1ac4b6f290de0895db0bce12b39bd48774dce03487bc986f",
-    "smaller_controller_sha256": "3fe59b309c89879172c84b4ad5c9f458d3bed2b3e7b6e5f9ed0c4cec9421ef64",
-    "larger_control_supervisor_sha256": "f21f737d093be625f797a85bb14db6ea5958c716943429d44008cb1f8c65702a"
+  "updated_utc": "2026-11-12T19:35:06.036134+00:00",
+  "status": "complete",
+  "completed_fits": {
+    "32": {
+      "status": "complete",
+      "epochs": 300,
+      "training_seconds": 2265.45839933306,
+      "best_epoch": 258,
+      "optimizer_updates": 351600,
+      "model_sha256": "662ac5aafb530910a102cfe42078845df276a93739c07f98ce541538baed9590",
+      "best_model_sha256": "4f9ad2a65fa5e3dfc6da47d6e4d459677a00f5007225ca422c50a2217216102b",
+      "primary_evaluation_complete": true,
+      "secondary_evaluation_complete": true
+    },
+    "16": {
+      "status": "complete",
+      "epochs": 300,
+      "training_seconds": 1815.9002846251242,
+      "best_epoch": 258,
+      "optimizer_updates": 351600,
+      "model_sha256": "18d4cc29dd1fa259a8230cf97881c99dc41758636a8b3f26d76063ca08c89b66",
+      "best_model_sha256": "771ef524393c90936c8f455c803fcddc943b3d9d21f735a102d8244ac5b21be1",
+      "primary_evaluation_complete": true,
+      "secondary_evaluation_complete": true
+    },
+    "8": {
+      "status": "complete",
+      "epochs": 300,
+      "training_seconds": 1573.4231985830702,
+      "best_epoch": 258,
+      "optimizer_updates": 351600,
+      "model_sha256": "4076243de3753efe56c89276f0ab1a689d17e62e1f26d63cb2e3c1074af87224",
+      "best_model_sha256": "3a0e1c5750af402c556c5c59c49fdd76ece43b6d7f776d1220c953d3107a0a67",
+      "primary_evaluation_complete": true,
+      "secondary_evaluation_complete": true
+    },
+    "4": {
+      "status": "complete",
+      "epochs": 300,
+      "training_seconds": 1686.1016372081358,
+      "best_epoch": 227,
+      "optimizer_updates": 351600,
+      "model_sha256": "f32a486e08c20f26b70448c65dc530c36578373529691e8ad6fb8bb8db73c34b",
+      "best_model_sha256": "c43879be3f77a4ed74b182a96a7fdc4a6ca406fd0c70ea82009bca7c88887717",
+      "primary_evaluation_complete": true,
+      "secondary_evaluation_complete": true
+    },
+    "64": {
+      "status": "complete",
+      "epochs": 300,
+      "training_seconds": 1545.928223124938,
+      "best_epoch": 258,
+      "optimizer_updates": 351600,
+      "model_sha256": "fbc156dd084b0b80cd8a26c27d1ac30c6bba2694664658b99425f4696340fd84",
+      "best_model_sha256": "d7c218ce6d5244e5dd6a3e76d9abaebdc41c92cd22e7d1df90f4360fc57473c1",
+      "primary_evaluation_complete": true,
+      "secondary_evaluation_complete": true
+    }
   },
-  "masking_and_settransformer_training": "held_until_dimension_comparison_assessed",
-  "scientific_acceptance": false
+  "conclusion": "8\u201364 preserve similar pooled recovery; 4 loses substantial information. Every conditional panel remains outside the declared fidelity criteria. One seed per dimension; no sufficient-statistic claim."
 }

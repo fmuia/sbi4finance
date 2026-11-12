@@ -293,7 +293,9 @@ def render_report(directory):
             raise ValueError("compact development evaluation required")
         rows.append((entry, run, evaluation, read(root / "history.json") if (root / "history.json").exists() else None))
     primary = [row for row in rows if row[1]["endpoint"] == "primary_final"]
-    colors = plt.cm.tab10(np.linspace(0, .9, max(3, len(rows))))
+    palette = {None: "#1f77b4", 32: "#9467bd", 16: "#2ca02c", 8: "#ff7f0e", 4: "#d62728", 64: "#8c564b"}
+    primary_colors = [palette.get(run.get("configuration", {}).get("summary_dim"), "#7f7f7f")
+                      for _, run, _, _ in primary]
     css = "body{margin:0;background:#f6f7f8;color:#233340;font:15px/1.55 system-ui,sans-serif}main{max-width:1160px;margin:auto;padding:30px 22px 65px}h1{line-height:1.2}h2{margin-top:36px}.notice{padding:14px 18px;background:#fff4d9;border-left:4px solid #b98324}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;background:white;font-size:12px}th,td{text-align:left;padding:8px;border-bottom:1px solid #ddd;white-space:nowrap}th{background:#e8edf2}figure{margin:20px 0;background:white;padding:12px;border:1px solid #dce2e7;border-radius:8px}svg{width:100%;height:auto}figcaption,footer{font-size:12px;color:#5a6874}code{overflow-wrap:anywhere}"
     chunks = ['<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Heston learned-summary development</title><style>' + css + '</style></head><body><main>',
               '<h1>Heston learned summaries: complete fixed-grid comparisons</h1>',
@@ -308,42 +310,49 @@ def render_report(directory):
     chunks.append('<p>Fit time and optimizer updates describe the complete training trajectory for both endpoint rows, not additional training for the secondary checkpoint. These wall times were measured on shared local CPUs, so they are not a dedicated performance benchmark. Draws outside support are retained; lower violation rates do not imply conditional accuracy.</p>')
     histories = [row for row in primary if row[3] is not None]
     if histories:
-        fig, axes = plt.subplots(1, len(histories), figsize=(7 * len(histories), 3.8), squeeze=False, constrained_layout=True)
+        columns = min(2, len(histories))
+        grid_rows = (len(histories) + columns - 1) // columns
+        fig, axes = plt.subplots(grid_rows, columns, figsize=(6 * columns, 3.6 * grid_rows),
+                                 squeeze=False, constrained_layout=True)
         for ax, (entry, run, _, history) in zip(axes.flat, histories):
             ax.plot(history["epoch"], history["loss"], label="training", linewidth=1)
             ax.plot(history["epoch"], history["val_loss"], label="validation", linewidth=1)
             ax.axvline(run["best_epoch"], color="#777", linestyle=":", label="validation minimum")
             ax.set(title=entry["label"], xlabel="epoch", ylabel="native loss")
+            ax.title.set_fontsize(11)
             ax.legend(fontsize=8)
+        for ax in axes.flat[len(histories):]:
+            ax.set_visible(False)
         chunks.append('<h2>Learning curves</h2><figure>' + _svg(fig) + '<figcaption>One trajectory per fit; no posterior-based checkpoint selection.</figcaption></figure>')
     chunks.append('<h2>Population recovery and calibration</h2><p>The same 512 historical truths and observations are paired across endpoints, with 512 draws per observation. Sampling uncertainty and repeated use of this development population limit interpretation.</p>')
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.1), constrained_layout=True)
-    x = np.arange(len(NAMES)); width = .8 / len(rows)
+    x = np.arange(len(NAMES)); width = .8 / len(primary)
     baseline_rmse = np.array([rows[0][2]["parameters"][name]["rmse"] for name in NAMES])
-    for index, (entry, _, evaluation, _) in enumerate(rows):
-        offset = x + (index - (len(rows) - 1) / 2) * width
-        axes[0].bar(offset, [evaluation["parameters"][name]["coverage90"] for name in NAMES], width=width, label=entry["label"], color=colors[index])
-        axes[1].bar(offset, np.array([evaluation["parameters"][name]["rmse"] for name in NAMES]) / baseline_rmse,
-                    width=width, label=entry["label"], color=colors[index])
+    for index, (entry, _, evaluation, _) in enumerate(primary):
+        offset = x + (index - (len(primary) - 1) / 2) * width
+        axes[0].bar(offset, [evaluation["parameters"][name]["coverage90"] for name in NAMES], width=width, label=entry["label"], color=primary_colors[index])
+        axes[1].plot(offset, np.array([evaluation["parameters"][name]["rmse"] for name in NAMES]) / baseline_rmse,
+                     linestyle="none", marker="o", markersize=5, label=entry["label"], color=primary_colors[index])
     axes[0].axhline(.9, color="#222", linestyle="--", linewidth=1)
-    axes[0].set(ylim=(0, 1.04), title="Nominal 90% coverage", ylabel="fraction of truths covered")
+    axes[0].set(ylim=(0, 1.04), title="Primary finals: nominal 90% coverage", ylabel="fraction of truths covered")
     axes[1].axhline(1, color="#222", linestyle="--", linewidth=1)
-    axes[1].set(title="Median-estimate RMSE relative to direct baseline", ylabel="RMSE / direct baseline RMSE")
+    axes[1].set_yscale("log")
+    axes[1].set(title="Primary finals: RMSE relative to direct baseline", ylabel="RMSE / direct baseline RMSE (log scale)")
     for ax in axes:
         ax.set_xticks(x, LABELS); ax.grid(axis="y", alpha=.2); ax.set_axisbelow(True)
-    axes[0].legend(fontsize=6.5, loc="lower left")
-    chunks.append('<figure>' + _svg(fig) + '<figcaption>Coverage close to 90% is desirable; lower RMSE is better. These summaries do not replace the conditional checks below.</figcaption></figure>')
+    fig.legend(*axes[0].get_legend_handles_labels(), loc="upper center", bbox_to_anchor=(.5, -.02), ncol=2, fontsize=8)
+    chunks.append('<figure>' + _svg(fig) + '<figcaption>Primary final-300 endpoints only. Coverage close to 90% is desirable; lower RMSE is better. RMSE ratios use a logarithmic axis so the failed small bottleneck does not hide differences among other dimensions. Secondary validation minima remain in the tables below. These summaries do not replace the conditional checks.</figcaption></figure>')
     chunks.append(_table(["Endpoint", "Parameter", "Median-estimate RMSE", "90% coverage", "Median posterior 90% width"], [
         [entry["label"], name, evaluation["parameters"][name]["rmse"], f"{100 * evaluation['parameters'][name]['coverage90']:.3f}%",
          evaluation["parameters"][name]["median_width90"]] for entry, _, evaluation, _ in rows for name in NAMES]))
     chunks.append('<h2>Conditional agreement with matched MCMC</h2><p>Each case uses 4,096 raw network draws and its original matched full reference chain. The mean metric is the saved absolute mean discrepancy in reference-posterior SD units; width is the central-90% interval ratio. Shaded diagnostic bands reproduce the development conventions (mean ≤0.3; width 0.75–1.25), not a new acceptance decision. The market posterior remains sensitive to the declared noise support.</p>')
     fig, axes = plt.subplots(3, 2, figsize=(12, 10), constrained_layout=True)
     for row_index, case_id in enumerate(CASES):
-        for index, (entry, _, evaluation, _) in enumerate(rows):
+        for index, (entry, _, evaluation, _) in enumerate(primary):
             parameters = evaluation["cases"][case_id]["parameters"]
             for col, metric in enumerate(("mean_error_in_reference_sd", "width90_ratio")):
                 axes[row_index, col].plot(x, [parameters[name][metric] for name in NAMES], marker="o", markersize=3,
-                                           label=entry["label"], linewidth=1, color=colors[index])
+                                           label=entry["label"], linewidth=1, color=primary_colors[index])
         for col, bounds in enumerate(((0, .3), (.75, 1.25))):
             ax = axes[row_index, col]
             ax.axhspan(*bounds, color="#c6e6c9", alpha=.4)
@@ -352,8 +361,8 @@ def render_report(directory):
             ax.set_yscale("symlog", linthresh=1 if col == 0 else 2)
             ax.set_ylim(bottom=0)
             ax.grid(axis="y", alpha=.2)
-    axes[0, 0].legend(fontsize=6.5)
-    chunks.append('<figure>' + _svg(fig) + '<figcaption>Vertical axes use a linear region near zero and logarithmic scaling for large errors. Agreement need not improve together across parameters, cases or endpoints.</figcaption></figure>')
+    fig.legend(*axes[0, 0].get_legend_handles_labels(), loc="upper center", bbox_to_anchor=(.5, -.01), ncol=2, fontsize=8)
+    chunks.append('<figure>' + _svg(fig) + '<figcaption>Primary final-300 endpoints only; secondary validation minima are retained in the table. Vertical axes use a linear region near zero and logarithmic scaling for large errors. Agreement need not improve together across parameters, cases or endpoints.</figcaption></figure>')
     chunks.append(_table(["Case", "Endpoint", "Parameter", "Mean discrepancy / reference SD", "90% width ratio"], [
         [case_id, entry["label"], name, evaluation["cases"][case_id]["parameters"][name]["mean_error_in_reference_sd"],
          evaluation["cases"][case_id]["parameters"][name]["width90_ratio"]]

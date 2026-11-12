@@ -1,0 +1,69 @@
+{
+  "batch_size": 256,
+  "best_epoch": 227,
+  "best_validation_loss": 0.3521907329559326,
+  "checkpoint_policy": "final primary; minimum native val_loss secondary; no diagnostic selection",
+  "completed_epochs": 300,
+  "configuration": {
+    "format": "heston_fixed_grid_experimental_inference_v1",
+    "input_features": 63,
+    "posterior_dropout": 0.1,
+    "posterior_widths": [
+      128,
+      128,
+      128
+    ],
+    "representation": "mlp",
+    "summary_activation": "silu",
+    "summary_dim": 4,
+    "summary_widths": [
+      128,
+      128
+    ],
+    "target_transform": "raw_coordinates_native_inference_variable_standardization"
+  },
+  "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+  "devices": [
+    "cpu:0"
+  ],
+  "elapsed_seconds": 1686.1016372081358,
+  "endpoint": "primary_final",
+  "epochs": 300,
+  "evaluated_epoch": 300,
+  "evaluation_scope": "reused development panels; no fresh acceptance claim",
+  "format": "heston_flexible_compact_run_v1",
+  "noise_policy": "immutable stored noisy rows; no fresh-noise augmentation",
+  "optimizer_updates": 351600,
+  "payloads_included": false,
+  "platform": "macOS-26.4.1-arm64-arm-64bit",
+  "preprocessing_sha256": "c051037ca2ae9b41bc001edf621f3ab3d012116bf3a33b3658b16fe72cc58b74",
+  "presentations": 90000000,
+  "pricing_calls": 0,
+  "scientific_acceptance": false,
+  "seed": 9011,
+  "smoke_test_only": false,
+  "source": {
+    "commit": "1dcd9e3adaffeb0430c84cdde642a075dc9347cc",
+    "inference_sha256": "39f58c9e329b2fdf1ac4b6f290de0895db0bce12b39bd48774dce03487bc986f",
+    "runner_sha256": "de332302c4d357e7f6a88d94c32ae159543ad2b5cd8ba15cf839605e269099bc"
+  },
+  "source_hashes": {
+    "draws_sha256": "9b9ec75c3a2329265b52101f2d0cc15536467570487cb308a5900f1bf53e8879",
+    "evaluation_sha256": "88a0f5f354f15bd80c92366d019a345e464d9b1c603f8e19ca28bfca52295d70",
+    "history_sha256": "661c619c6f683e4124abbc2a41bb00e35cd1843208da38a8b153c1e286acff91",
+    "model_sha256": "f32a486e08c20f26b70448c65dc530c36578373529691e8ad6fb8bb8db73c34b",
+    "run_sha256": "994a5570f0a79bf53a8ea0f925e669eec38be84178637fb5cdf716416ce2f4c9"
+  },
+  "status": "complete",
+  "support_policy": "retain raw unbounded draws; no clipping/rejection/resampling",
+  "task_sha256": "1cdb77923ce920df5ce358288776c35d60209a1bc2ceb6a942574bed55af5a9c",
+  "train_rows": 300000,
+  "validation_rows": 100,
+  "versions": {
+    "bayesflow": "2.1.0",
+    "jax": "0.11.1",
+    "jaxlib": "0.11.1",
+    "keras": "3.15.1",
+    "numpy": "2.5.3"
+  }
+}

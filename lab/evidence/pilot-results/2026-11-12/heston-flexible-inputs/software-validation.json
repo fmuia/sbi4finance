@@ -67,5 +67,23 @@
     "report_tests_passed": 4,
     "canonical_tutorial_inference_source_unchanged": true,
     "new_model_or_pricing_calls_from_report_generation": 0
+  },
+  "completed_dimension_comparison": {
+    "all_fits_complete": [
+      32,
+      16,
+      8,
+      4,
+      64
+    ],
+    "all_primary_and_secondary_evaluations_complete": 10,
+    "all_saved_draw_metrics_independently_reproduced": true,
+    "notebook_all_endpoints": 11,
+    "notebook_cells": 18,
+    "notebook_export_errors": 0,
+    "primary_endpoints_selected_by_default": 6,
+    "secondary_endpoints_optional": 5,
+    "figures_visually_checked_at_report_width": 3,
+    "presentation_refresh_report_tests": 4
   }
 }
