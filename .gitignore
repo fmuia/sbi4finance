@@ -10,6 +10,7 @@ lab/cluster/oscar.local.json
 tutorial/.cache/
 tutorial/assets/local-checkpoints/
 output/pdf/
+output/notebooks/
 tmp/pdfs/
 /local-artifacts/heston-spread-baseline-20261109/
 /local-artifacts/heston-flexible/

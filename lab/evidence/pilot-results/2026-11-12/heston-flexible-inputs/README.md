@@ -9,6 +9,25 @@ The experiment plan is [here](../../../../plans/HESTON-FLEXIBLE-INPUTS-PLAN.md).
 bank or model files. Final and validation-minimum endpoints remain separately
 labelled. Only aggregate metrics and source hashes are included.
 
+## Standalone experiment lesson
+
+`lab/notebooks/heston_summary_experiments.py` gives the explanatory rundown intended
+for later harvesting into the SPX tutorial: task and priors, whitening versus
+compression, the matched recipe, interactive recovery/calibration comparisons,
+conditional references and checkpoint selection. It reads only the checked-in
+aggregate study and imports no pricing or neural runtime. No bank, model download
+or environment-variable configuration is required.
+
+From `lab/`, launch it with:
+
+```sh
+pixi run -e core-reference marimo edit notebooks/heston_summary_experiments.py
+```
+
+The broader experiment dashboard in `heston_flexible_inputs.py` remains separate.
+Its masking and geometry controls are still previews. The original SPX notebook
+is not modified by the new lesson.
+
 ## Implemented first increment
 
 - `lab/notebooks/heston_flexible_inputs.py`: saved-run comparisons, learning curves,
@@ -104,7 +123,7 @@ alone does not establish that an estimator retains the observations' information
 One seed per dimension does not establish a reproducible minimal dimension or
 a sufficient statistic; follow-up seed confirmation is needed.
 
-Pooled recovery is reasonably preserved. Conditional fidelity is not established:
+Pooled recovery is reasonably preserved for dimensions 8–64. Conditional fidelity is not established:
 MLP32 synthetic physical intervals remain 1.02–2.29 times their MCMC widths,
 with material mean errors. All three complete conditional panels still fail the
 declared criteria. The market comparison worsens, including a `c` interval about

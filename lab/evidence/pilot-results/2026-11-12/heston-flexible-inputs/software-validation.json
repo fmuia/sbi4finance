@@ -96,5 +96,21 @@
     "notebook_log_sha256": "0a900a51e1083f4337da11a7ec73ef156200db9b639b2fb1373b29c89cea9497",
     "runtime_sources_unchanged": true,
     "release_checks_passed": true
+  },
+  "standalone_summary_lesson": {
+    "notebook": "lab/notebooks/heston_summary_experiments.py",
+    "source_sha256": "cc7cdf8c9d2b0297be846174f6980b33c7930c0d9609819e593f8cbb508acaee",
+    "lab_tests_passed": 885,
+    "lab_test_seconds": 354.088,
+    "lab_test_log_sha256": "6f698a1156b2719dbf06d58a6fab85ca8f1a5fca712fb0f999e4cee24c70645e",
+    "focused_tests_passed": 6,
+    "cells_exported": 19,
+    "export_cell_errors": 0,
+    "strict_marimo_check_passed": true,
+    "release_checks_passed": true,
+    "no_private_data_or_runtime_imports_verified": true,
+    "primary_endpoints": 7,
+    "secondary_endpoints": 6,
+    "visual_review": "default c dashboard, synthetic and market conditional views, initial variance dashboard and checkpoint trajectory"
   }
 }
