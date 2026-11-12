@@ -1183,7 +1183,7 @@ def _(
                      f"put they rise {_case_rise[0]:.1f} points at {EXPIRY_DAYS[0]} days and {_case_rise[1]:.1f} at "
                      f"{EXPIRY_DAYS[-1]} days: high and flat meets low and steep.\n"
                      f"- **Unlike the SPX quotes**, where the same rise is {_spx_rise[0]:.1f} and {_spx_rise[1]:.1f} points, much "
-                     "closer to parallel: the limitation shown in Section 5.4. As a test of the inference the case is still "
+                     "closer to parallel: the limitation analysed at the end of Section 6. As a test of the inference the case is still "
                      "valid: it is a draw from the model and the prior.")
 
     # The corner plot, read in three steps: the exact posterior, where the truth sits, the network against PyMC.
@@ -1820,7 +1820,7 @@ def _(
         **What the PyMC posterior says**, the exact answer for our model and prior:
 
         - **No Heston smile fits the SPX quotes within the assumed noise.** The best fit, at the posterior-mean parameters, misses them by **{_rms:.1f} half-spreads** (root mean square), while the prior caps the noise SD at two half-spreads ($c\\le2$).
-        - **So $c$ piles up at its bound** (last panel), and the Heston parameters settle on the best compromise. Where it fails, and why, is shown below.
+        - **So $c$ piles up at its bound** (last panel), and the Heston parameters settle on the best compromise. Where Heston fails, why, and what could fix it is at the end of Section 6.
 
         **Why the network disagrees with PyMC:**
 
@@ -1829,108 +1829,6 @@ def _(
         """),
     ])
     return market_fit, market_residual
-
-
-@app.cell(hide_code=True)
-def _(
-    BOUNDS,
-    DELTA,
-    EXPIRY,
-    EXPIRY_DATES,
-    EXPIRY_DAYS,
-    H,
-    MARKET_IV,
-    NAMES,
-    QUOTES,
-    implied_vols,
-    market_fit,
-    market_residual,
-    mo,
-    np,
-    plots,
-    plt,
-    reference_draws,
-    vol_point_noise,
-):
-    _fit_iv = 100 * implied_vols(market_fit)[0]
-    _misfit = 100 * MARKET_IV - _fit_iv  # SPX minus the best Heston fit, in volatility points
-    _rows = [np.flatnonzero(EXPIRY == _e)[np.argsort(DELTA[EXPIRY == _e])] for _e in range(len(EXPIRY_DATES))]
-    _grid = np.array([_misfit[_r] for _r in _rows])  # one row per expiry, deepest put first
-    _days = np.asarray(EXPIRY_DAYS)
-    _deep = np.array([_r[0] for _r in _rows])
-    _atm = np.array([_r[np.argmin(np.abs(DELTA[_r]))] for _r in _rows])
-    _skew_market = 100 * (MARKET_IV[_deep] - MARKET_IV[_atm])
-    _skew_heston = _fit_iv[_deep] - _fit_iv[_atm]
-    # Likelihood of c at the best fit: c scales every noise SD, so it peaks where c equals the RMS misfit.
-    _n, _squares = market_residual.size, float(np.sum(market_residual ** 2))
-    _c_hat = np.sqrt(_squares / _n)
-    _c = np.linspace(0.05, max(20.0, 1.5 * _c_hat), 800)
-    _likelihood = np.exp(-_n * np.log(_c / _c_hat) - 0.5 * _squares * (1 / _c ** 2 - 1 / _c_hat ** 2))
-
-    _fig, _axes = plt.subplots(1, 3, figsize=(11.6, 3.6), constrained_layout=True, gridspec_kw={"width_ratios": [1.5, 1, 1]})
-    from matplotlib.colors import LinearSegmentedColormap as _Colormap
-
-    _lim = float(np.max(np.abs(_grid)))
-    _cmap = _Colormap.from_list("misfit", [plots.SERIES[0], "#f0efec", "#e34948"])  # blue below, red above the fit
-    _image = _axes[0].imshow(_grid, cmap=_cmap, vmin=-_lim, vmax=_lim, aspect="auto")
-    for (_i, _j), _value in np.ndenumerate(_grid):
-        _axes[0].text(_j, _i, "0.0" if abs(_value) < 0.05 else f"{_value:+.1f}".replace("-", "−"),
-                      ha="center", va="center", fontsize=6.5, color=plots.INK)
-    _targets = [sorted({QUOTES[_r[_j]]["target_z"] for _r in _rows}, reverse=True) for _j in range(_grid.shape[1])]
-    _axes[0].set_xticks(range(_grid.shape[1]), ["/".join(f"{_t:g}" for _t in _ts) for _ts in _targets])
-    _axes[0].set_yticks(range(len(_days)), [f"{_d} d" for _d in _days])
-    _axes[0].grid(False)
-    _axes[0].set(xlabel="standardized moneyness δ (target)", ylabel="expiry",
-                 title="SPX minus best Heston fit, volatility points")
-    _fig.colorbar(_image, ax=_axes[0], shrink=0.9)
-
-    _axes[1].plot(_days, _skew_market, "o-", color="#222222", lw=1.3, ms=4, label="SPX market")
-    _axes[1].plot(_days, _skew_heston, "o-", color=plots.SERIES[1], lw=1.3, ms=4, label="best Heston fit")
-    _axes[1].set_xscale("log")
-    _axes[1].set_xticks(_days, [str(_d) for _d in _days], fontsize=7)
-    _axes[1].minorticks_off()
-    _axes[1].set(xlabel="days to expiry", ylabel="implied-volatility points", title="Put wing: deepest put minus at the money")
-    _axes[1].legend(fontsize=7)
-
-    _low, _high = BOUNDS[-1]
-    _axes[2].axvspan(_low, _high, color=plots.GRID, lw=0)
-    _axes[2].text(_high + 0.4, 0.97, "prior range", fontsize=7, color=plots.MUTED, va="top")
-    _axes[2].plot(_c, _likelihood, color=plots.INK, lw=1.3)
-    _axes[2].axvline(_c_hat, color=plots.MUTED, ls="--", lw=1)
-    _axes[2].text(_c_hat + 0.4, 1.02, f"c = {_c_hat:.1f}", fontsize=7, color=plots.MUTED)
-    _axes[2].set(xlim=(0, _c[-1]), ylim=(0, 1.12), xlabel="noise multiplier c", ylabel="likelihood, scaled to its maximum",
-                 title="Likelihood of c at the best fit")
-
-    _vol_of_vol = float(reference_draws["market"].mean(axis=0)[NAMES.index("vol_of_vol")])
-    _points = vol_point_noise(H, MARKET_IV)
-    _wing = DELTA < -3
-    _share = float(np.sum(market_residual[_wing] ** 2) / _squares)
-    _rest = _misfit[~_wing]
-    _gap = _skew_market - _skew_heston
-    _under = int(np.sum(_grid[:, 0] > 0))
-    _where = "every expiry" if _under == len(_days) else f"{_under} of {len(_days)} expiries"
-    _table = [{"expiry": f"{_date} ({_days[_e]} d)",
-               "RMS misfit (half-spreads)": round(float(np.sqrt(np.mean(market_residual[_r] ** 2))), 1),
-               "largest misfit (half-spreads)": round(float(market_residual[_r][np.argmax(np.abs(market_residual[_r]))]), 1),
-               "at moneyness δ": round(float(DELTA[_r][np.argmax(np.abs(market_residual[_r]))]), 2)}
-              for _e, (_date, _r) in enumerate(zip(EXPIRY_DATES, _rows))]
-    mo.vstack([
-        mo.md("**Where and why Heston misses.** Each panel compares the SPX quotes with the best Heston fit, the prices at "
-              "the posterior-mean parameters."),
-        _fig,
-        mo.md(f"""
-        - **The deep put wing** (left): the SPX quotes lie above the best Heston smile at the deepest put of {_where}, by {_grid[0, 0]:.1f}, {_grid[1, 0]:.1f} and {_grid[2, 0]:.1f} volatility points at {_days[0]}, {_days[1]} and {_days[2]} days, and by {_grid[3:, 0].min():.1f}–{_grid[3:, 0].max():.1f} beyond. The {int(_wing.sum())} puts with $\\delta<-3$ give {100 * _share:.0f}% of the squared misfit.
-        - **A put wing too flat at short expiries** (middle): from the money to the deepest put, SPX implied volatility rises {_skew_market[0]:.1f} points at {_days[0]} days, the best Heston smile only {_skew_heston[0]:.1f}. The shortfall is {_gap[0]:.1f}, {_gap[1]:.1f} and {_gap[2]:.1f} points at {_days[0]}, {_days[1]} and {_days[2]} days, and {_gap[3:].min():.1f}–{_gap[3:].max():.1f} beyond.
-        - **A compromise elsewhere:** even with a large $\\sigma_v={_vol_of_vol:.2f}$, above the Feller limit (Section 1), the fit misses the rest of the smile by up to {np.max(np.abs(_rest)):.1f} points{', in both directions' if _rest.min() < 0 < _rest.max() else ''}.
-        - **Why $c$ sits at 2** (right): a half-spread is only {np.nanmin(_points):.3f}–{np.nanmax(_points):.2f} volatility points, so these misses amount to **{_c_hat:.1f} half-spreads** (root mean square). $c$ scales the noise of every quote by the same factor, so it cannot improve the fit, only measure it: the likelihood peaks at $c={_c_hat:.1f}$, far outside the prior range.
-        - **The usual explanation:** one diffusive variance factor cannot build enough crash risk over a few days for a short-dated put wing this steep. Jumps (the Bates model) or rough volatility are the standard remedies; the pattern above fits this explanation, but neither model is tested here.
-        """),
-        mo.accordion({"Misfit by expiry, in half-spreads": mo.ui.table(_table, selection=None, pagination=False)}),
-        mo.md("**What to do about it** is a modelling decision: widen or reshape the noise model, add an explicit model-error "
-              "term, or use a richer model, for example with jumps or rough volatility. The end of Section 6 makes the "
-              "case for rough volatility."),
-    ])
-    return
 
 
 @app.cell(hide_code=True)
@@ -2032,6 +1930,119 @@ def _(
     BOUNDS,
     DELTA,
     EXPIRY,
+    EXPIRY_DATES,
+    EXPIRY_DAYS,
+    H,
+    MARKET_IV,
+    NAMES,
+    QUOTES,
+    implied_vols,
+    market_fit,
+    market_residual,
+    mo,
+    np,
+    plots,
+    plt,
+    reference_draws,
+    vol_point_noise,
+):
+    _fit_iv = 100 * implied_vols(market_fit)[0]
+    _misfit = 100 * MARKET_IV - _fit_iv  # SPX minus the best Heston fit, in volatility points
+    _rows = [np.flatnonzero(EXPIRY == _e)[np.argsort(DELTA[EXPIRY == _e])] for _e in range(len(EXPIRY_DATES))]
+    _grid = np.array([_misfit[_r] for _r in _rows])  # one row per expiry, deepest put first
+    _days = np.asarray(EXPIRY_DAYS)
+    _deep = np.array([_r[0] for _r in _rows])
+    _atm = np.array([_r[np.argmin(np.abs(DELTA[_r]))] for _r in _rows])
+    _skew_market = 100 * (MARKET_IV[_deep] - MARKET_IV[_atm])
+    _skew_heston = _fit_iv[_deep] - _fit_iv[_atm]
+    # Likelihood of c at the best fit: c scales every noise SD, so it peaks where c equals the RMS misfit.
+    _n, _squares = market_residual.size, float(np.sum(market_residual ** 2))
+    _c_hat = np.sqrt(_squares / _n)
+    _c = np.linspace(0.05, max(20.0, 1.5 * _c_hat), 800)
+    _likelihood = np.exp(-_n * np.log(_c / _c_hat) - 0.5 * _squares * (1 / _c ** 2 - 1 / _c_hat ** 2))
+
+    _fig, _axes = plt.subplots(1, 3, figsize=(11.6, 3.6), constrained_layout=True, gridspec_kw={"width_ratios": [1.5, 1, 1]})
+    from matplotlib.colors import LinearSegmentedColormap as _Colormap
+
+    _lim = float(np.max(np.abs(_grid)))
+    _cmap = _Colormap.from_list("misfit", [plots.SERIES[0], "#f0efec", "#e34948"])  # blue below, red above the fit
+    _image = _axes[0].imshow(_grid, cmap=_cmap, vmin=-_lim, vmax=_lim, aspect="auto")
+    for (_i, _j), _value in np.ndenumerate(_grid):
+        _axes[0].text(_j, _i, "0.0" if abs(_value) < 0.05 else f"{_value:+.1f}".replace("-", "−"),
+                      ha="center", va="center", fontsize=6.5, color=plots.INK)
+    _targets = [sorted({QUOTES[_r[_j]]["target_z"] for _r in _rows}, reverse=True) for _j in range(_grid.shape[1])]
+    _axes[0].set_xticks(range(_grid.shape[1]), ["/".join(f"{_t:g}" for _t in _ts) for _ts in _targets])
+    _axes[0].set_yticks(range(len(_days)), [f"{_d} d" for _d in _days])
+    _axes[0].grid(False)
+    _axes[0].set(xlabel="standardized moneyness δ (target)", ylabel="expiry",
+                 title="SPX minus best Heston fit, volatility points")
+    _fig.colorbar(_image, ax=_axes[0], shrink=0.9)
+
+    _axes[1].plot(_days, _skew_market, "o-", color="#222222", lw=1.3, ms=4, label="SPX market")
+    _axes[1].plot(_days, _skew_heston, "o-", color=plots.SERIES[1], lw=1.3, ms=4, label="best Heston fit")
+    _axes[1].set_xscale("log")
+    _axes[1].set_xticks(_days, [str(_d) for _d in _days], fontsize=7)
+    _axes[1].minorticks_off()
+    _axes[1].set(xlabel="days to expiry", ylabel="implied-volatility points", title="Put wing: deepest put minus at the money")
+    _axes[1].legend(fontsize=7)
+
+    _low, _high = BOUNDS[-1]
+    _axes[2].axvspan(_low, _high, color=plots.GRID, lw=0)
+    _axes[2].text(_high + 0.4, 0.97, "prior range", fontsize=7, color=plots.MUTED, va="top")
+    _axes[2].plot(_c, _likelihood, color=plots.INK, lw=1.3)
+    _axes[2].axvline(_c_hat, color=plots.MUTED, ls="--", lw=1)
+    _axes[2].text(_c_hat + 0.4, 1.02, f"c = {_c_hat:.1f}", fontsize=7, color=plots.MUTED)
+    _axes[2].set(xlim=(0, _c[-1]), ylim=(0, 1.12), xlabel="noise multiplier c", ylabel="likelihood, scaled to its maximum",
+                 title="Likelihood of c at the best fit")
+
+    _vol_of_vol = float(reference_draws["market"].mean(axis=0)[NAMES.index("vol_of_vol")])
+    _points = vol_point_noise(H, MARKET_IV)
+    _wing = DELTA < -3
+    _share = float(np.sum(market_residual[_wing] ** 2) / _squares)
+    _rest = _misfit[~_wing]
+    _gap = _skew_market - _skew_heston
+    _under = int(np.sum(_grid[:, 0] > 0))
+    _where = "every expiry" if _under == len(_days) else f"{_under} of {len(_days)} expiries"
+    _rms = [float(np.sqrt(np.mean(market_residual[_r] ** 2))) for _r in _rows]
+    _table = [{"expiry": f"{_date} ({_days[_e]} d)",
+               "RMS misfit (half-spreads)": round(_rms[_e], 1),
+               "largest misfit (half-spreads)": round(float(market_residual[_r][np.argmax(np.abs(market_residual[_r]))]), 1),
+               "at moneyness δ": round(float(DELTA[_r][np.argmax(np.abs(market_residual[_r]))]), 2)}
+              for _e, (_date, _r) in enumerate(zip(EXPIRY_DATES, _rows))]
+    _theta = reference_draws["market"].mean(axis=0)  # the best Heston fit: the posterior-mean parameters
+    _signs = (
+        "### Where the model error comes from\n\n"
+        "**Is this model misspecification?** The exact posterior shows four signs, so they are not the network's doing:\n\n"
+        f"1. The noise multiplier sits at its bound: median {np.median(reference_draws['market'][:, -1]):.4f}, bound "
+        f"{BOUNDS[-1, 1]:g}.\n"
+        f"2. Every expiry misses, by {min(_rms):.1f} to {max(_rms):.1f} half-spreads (RMS).\n"
+        f"3. The misses are systematic: the deepest put is underpriced at {_where}, by {_grid[:, 0].min():.1f} to "
+        f"{_grid[:, 0].max():.1f} volatility points.\n"
+        f"4. The fit needs extreme parameters: $\\sigma_v={_vol_of_vol:.2f}$, so $\\sigma_v^2={_vol_of_vol ** 2:.1f}$ "
+        f"against $2\\kappa v_\\infty={2 * _theta[NAMES.index('kappa')] * _theta[NAMES.index('theta')]:.2f}$ (Feller "
+        "condition, Section 1).\n\n"
+        "No Heston parameters and no better inference remove them: the model lacks a feature of the data. The two "
+        "figures below show where the misses are, and which feature is missing.")
+    mo.vstack([
+        mo.md(_signs),
+        mo.md("**Where the misses are.** Each panel compares the SPX quotes with the best Heston fit, the prices at the "
+              "posterior-mean parameters."),
+        _fig,
+        mo.md(f"""
+        - **Largest in the deep put wing** (left): the SPX quotes lie above the best Heston smile at the deepest put of {_where}: {_grid[0, 0]:.1f}, {_grid[1, 0]:.1f} and {_grid[2, 0]:.1f} volatility points at {_days[0]}, {_days[1]} and {_days[2]} days, {_grid[3:, 0].min():.1f}–{_grid[3:, 0].max():.1f} beyond. The {int(_wing.sum())} puts with $\\delta<-3$ give {100 * _share:.0f}% of the squared misfit.
+        - **A put wing too flat at short expiries** (middle): from the money to the deepest put, SPX implied volatility rises {_skew_market[0]:.1f} points at {_days[0]} days, the best Heston smile only {_skew_heston[0]:.1f}. The shortfall is {_gap[0]:.1f}, {_gap[1]:.1f} and {_gap[2]:.1f} points at {_days[0]}, {_days[1]} and {_days[2]} days, and {_gap[3:].min():.1f}–{_gap[3:].max():.1f} beyond.
+        - **A compromise elsewhere:** across the rest of the smile the fit misses by up to {np.max(np.abs(_rest)):.1f} points{', in both directions' if _rest.min() < 0 < _rest.max() else ''}: the best that five parameters can do.
+        - **Why $c$ sits at 2** (right): a half-spread is only {np.nanmin(_points):.3f}–{np.nanmax(_points):.2f} volatility points, so these misses amount to **{_c_hat:.1f} half-spreads** (root mean square). $c$ scales the noise of every quote by the same factor, so it cannot improve the fit, only measure it: the likelihood peaks at $c={_c_hat:.1f}$, far outside the prior range.
+        """),
+        mo.accordion({"Misfit by expiry, in half-spreads": mo.ui.table(_table, selection=None, pagination=False)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(
+    DELTA,
+    EXPIRY,
     EXPIRY_DAYS,
     HestonGridPilot,
     MARKET_IV,
@@ -2039,7 +2050,6 @@ def _(
     REF_VOL,
     implied_vols,
     market_fit,
-    market_residual,
     mo,
     np,
     plots,
@@ -2112,26 +2122,13 @@ def _(
 
     # Everything said below is computed here.
     _deep = np.array([100 * (MARKET_IV - _fit_iv)[EXPIRY == _e][np.argmin(DELTA[EXPIRY == _e])] for _e in range(len(_days))])
-    _rms = [float(np.sqrt(np.mean(market_residual[EXPIRY == _e] ** 2))) for _e in range(len(_days))]
     _near = _short & (np.abs(DELTA) < 1.3)
     _peak = int(np.argmax(_fit[:, 1]))
     _minus = lambda _x: f"{_x:.2f}".replace("-", "−")
     _negative = 365 * _grid_t[_curve[:, 1] < 0]
-    _signs = (
-        "### Where the model error comes from\n\n"
-        "**Is this model misspecification?** The exact posterior shows four signs, so they are not the network's doing:\n\n"
-        f"1. The noise multiplier sits at its bound: median {np.median(reference_draws['market'][:, -1]):.4f}, bound "
-        f"{BOUNDS[-1, 1]:g}.\n"
-        f"2. Every expiry misses, by {min(_rms):.1f} to {max(_rms):.1f} half-spreads (RMS).\n"
-        f"3. The misses are systematic: the deepest put is underpriced at "
-        f"{'every expiry' if np.all(_deep > 0) else f'{int(np.sum(_deep > 0))} of {len(_days)} expiries'}, by "
-        f"{_deep.min():.1f} to {_deep.max():.1f} volatility points.\n"
-        f"4. The fit needs extreme parameters: $\\sigma_v={_xi:.2f}$, so $\\sigma_v^2={_xi ** 2:.1f}$ against "
-        f"$2\\kappa v_\\infty={2 * _kappa * _v_inf:.2f}$ (Feller condition, Section 1).\n\n"
-        "No Heston parameters and no better inference remove them: the model lacks a feature of the data.")
+    _lead = ("**Which feature is missing.** The at-the-money skew and curvature of each smile, measured as in Lecture 5 "
+             "by a quadratic in log-moneyness through the five quotes nearest the money, and the shortest smile:")
     _reading = (
-        "**What Heston cannot do.** Skew and curvature are measured as in Lecture 5: a quadratic in log-moneyness "
-        "through the five quotes nearest the money.\n\n"
         f"- **Skew** (left): at the money, the fit follows the SPX skew at every expiry, within "
         f"{100 * np.max(np.abs(_fit[:, 0] / _spx[:, 0] - 1)):.0f}%, with nearly the same power law "
         f"({_minus(_power(_fit[:, 0])[0])} against {_minus(_b)}). But its {_days[0]}-day skew is already "
@@ -2159,8 +2156,10 @@ def _(
         "carries over with the simulator swapped. Heston was the model on which SBI could be checked against an "
         "exact answer; rough Bergomi is the model that needs it.\n"
         "- **Not shown here:** whether rough Bergomi fits these SPX quotes within their spreads. Lectures 13 to 15 "
-        "build and calibrate it.")
-    mo.vstack([mo.md(_signs), _fig, mo.md(_reading)])
+        "build and calibrate it.\n\n"
+        "**Other options** keep Heston and change the noise model: widen or reshape it, or add an explicit model-error "
+        "term. The posterior then admits the misfit instead of pushing $c$ against its bound, but the misfit stays.")
+    mo.vstack([mo.md(_lead), _fig, mo.md(_reading)])
     return
 
 
