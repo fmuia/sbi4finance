@@ -1,0 +1,45 @@
+{
+  "format": "heston_flexible_study_v1",
+  "payloads_included": false,
+  "runs": [
+    {
+      "directory": "baseline-final",
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "label": "Direct 63-input baseline \u2014 final 300 (primary)",
+      "model_available": false,
+      "representation": "direct",
+      "smoke_test_only": false,
+      "status": "complete",
+      "summary_dim": null,
+      "train_rows": 300000
+    },
+    {
+      "directory": "runs/mlp32-seed9011/final",
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "label": "MLP 32 \u2014 final 300 (primary)",
+      "model_available": false,
+      "representation": "mlp",
+      "smoke_test_only": false,
+      "status": "complete",
+      "summary_dim": 32,
+      "train_rows": 300000
+    },
+    {
+      "directory": "runs/mlp32-seed9011/best",
+      "endpoint": "secondary_validation_minimum",
+      "epoch": 258,
+      "label": "MLP 32 \u2014 validation minimum 258 (secondary)",
+      "model_available": false,
+      "representation": "mlp",
+      "smoke_test_only": false,
+      "status": "complete",
+      "summary_dim": 32,
+      "train_rows": 300000
+    }
+  ],
+  "scientific_acceptance": false,
+  "scope": "Completed fixed-grid MLP development comparisons; masks and moved grids remain untrained.",
+  "stage": "S1"
+}

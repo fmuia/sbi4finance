@@ -1,0 +1,28 @@
+{
+  "checkpoint_policy": "final epoch 300 primary",
+  "completed_epochs": 300,
+  "configuration": {
+    "representation": "direct",
+    "summary_dim": null
+  },
+  "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+  "elapsed_seconds": 1789.0868612499908,
+  "endpoint": "primary_final",
+  "epochs": 300,
+  "evaluated_epoch": 300,
+  "format": "heston_flexible_compact_run_v1",
+  "noise_policy": "immutable stored noisy rows",
+  "optimizer_updates": 351600,
+  "payloads_included": false,
+  "presentations": 90000000,
+  "scientific_acceptance": false,
+  "smoke_test_only": false,
+  "source_hashes": {
+    "bank_record_sha256": "54d8a5bd0993e2838ace1c77471a321fa30f87bf1f7b834112e3dd8f2de3f996",
+    "evaluation_sha256": "50312e178e17c800a9ac8c29f57261efb64b2f187d1d7ef37a09b3df47930f90",
+    "training_run_sha256": "fbda83a3c6cff412e3bb10f7a7041220dc9afe13e4f118710cb2c86b2a234404"
+  },
+  "status": "complete",
+  "support_policy": "raw draws retained without clipping, rejection or resampling",
+  "train_rows": 300000
+}

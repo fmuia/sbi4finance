@@ -1,0 +1,58 @@
+{
+  "format": "heston_summary_dimension_campaign_v1",
+  "snapshot_utc": "2026-11-12T17:29:18.131515+00:00",
+  "sequence": [
+    32,
+    16,
+    8,
+    4,
+    64
+  ],
+  "primary": "final_epoch300",
+  "secondary": "first minimum native val_loss; separately evaluated",
+  "common": {
+    "train_rows": 300000,
+    "validation_rows": 100,
+    "historical_development_rows": 512,
+    "epochs": 300,
+    "batch_size": 256,
+    "seed": 9011,
+    "summary_hidden_widths": [
+      128,
+      128
+    ],
+    "summary_activation": "silu",
+    "summary_output": "linear",
+    "posterior_widths": [
+      128,
+      128,
+      128
+    ],
+    "posterior_dropout": 0.1,
+    "optimizer_schedule": "same native AdamW warmup/cosine horizon",
+    "bank_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+    "training_seconds_cap": 3600,
+    "per_fit_supervisor_seconds_cap_including_evaluations": 4300,
+    "backend": "local JAX CPU",
+    "automatic_retries": false
+  },
+  "states_at_snapshot": {
+    "32": "training_and_both_endpoint_evaluations_complete",
+    "16": {
+      "status": "training",
+      "completed_epochs": 66
+    },
+    "8": "queued_after16",
+    "4": "queued_after8",
+    "64": "queued_after_all_smaller_fits"
+  },
+  "earlier64_partial": "stopped_for_priority_clarification; preserved outsideGit; excluded_from_comparison; full64starts_fresh",
+  "source": {
+    "runner_sha256": "de332302c4d357e7f6a88d94c32ae159543ad2b5cd8ba15cf839605e269099bc",
+    "inference_sha256": "39f58c9e329b2fdf1ac4b6f290de0895db0bce12b39bd48774dce03487bc986f",
+    "smaller_controller_sha256": "3fe59b309c89879172c84b4ad5c9f458d3bed2b3e7b6e5f9ed0c4cec9421ef64",
+    "larger_control_supervisor_sha256": "f21f737d093be625f797a85bb14db6ea5958c716943429d44008cb1f8c65702a"
+  },
+  "masking_and_settransformer_training": "held_until_dimension_comparison_assessed",
+  "scientific_acceptance": false
+}

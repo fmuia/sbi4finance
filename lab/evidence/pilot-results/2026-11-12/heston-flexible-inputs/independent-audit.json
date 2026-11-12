@@ -1,0 +1,52 @@
+{
+  "format": "heston_summary_independent_audit_v1",
+  "scope": "saved-data audit; no retraining or new pricing",
+  "candidate": "MLP32",
+  "matched_bank_and_task": true,
+  "matched_splits_and_observations": true,
+  "matched_frozen_whitening": true,
+  "matched_optimizer_schedule": true,
+  "matched_seed_and_posterior_head": true,
+  "canonical_sources_and_model_payloads_hash_verified": true,
+  "all_metrics_and_exact_SBC_ranks_independently_reproduced": true,
+  "final_optimizer_updates": 351600,
+  "best_optimizer_updates": 302376,
+  "best_epoch": 258,
+  "presentations": 90000000,
+  "model_sha256": "662ac5aafb530910a102cfe42078845df276a93739c07f98ce541538baed9590",
+  "best_model_sha256": "4f9ad2a65fa5e3dfc6da47d6e4d459677a00f5007225ca422c50a2217216102b",
+  "raw_final_draws_sha256": "14090f95857f096d3aa149bea17039a1a08546215acb468bc842a91b42e46e05",
+  "raw_best_draws_sha256": "cc5443d1ebbe2056e2049f242ec8c82bd7c86fa1d194303cea86dba3e1ff131e",
+  "comparison": {
+    "direct_final": {
+      "SBC_screens_passed": 5,
+      "initial_variance_coverage90": 0.974609375,
+      "c_coverage90": 0.90234375,
+      "c_rmse": 0.1349425642060356,
+      "outside_prior_sample_fraction": 0.030429840087890625,
+      "dimensions_passing_both_conditional_margins": {
+        "synthetic-broad": 0,
+        "synthetic-market-like": 1,
+        "market": 0
+      }
+    },
+    "MLP32_final": {
+      "SBC_screens_passed": 6,
+      "initial_variance_coverage90": 0.962890625,
+      "c_coverage90": 0.896484375,
+      "c_rmse": 0.13461189093551604,
+      "outside_prior_sample_fraction": 0.023235321044921875,
+      "dimensions_passing_both_conditional_margins": {
+        "synthetic-broad": 0,
+        "synthetic-market-like": 3,
+        "market": 0
+      }
+    },
+    "MLP32_best": {
+      "SBC_screens_passed": 2,
+      "c_rmse": 0.13438863664618267
+    }
+  },
+  "scientific_acceptance": false,
+  "conclusion": "Pooled recovery is reasonably preserved, conditional fidelity remains inadequate. Compare smaller dimensions before masking; no sufficient-statistic claim."
+}

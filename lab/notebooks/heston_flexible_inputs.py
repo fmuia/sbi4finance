@@ -171,7 +171,20 @@ def _(BUNDLE, STUDY_ROOT, mo, run_records, study_error):
 @app.cell(hide_code=True)
 def _(mo, run_records):
     _options = {f"{record['label']} [{record['key']}]": record["key"] for record in run_records}
-    selected_runs = mo.ui.multiselect(options=_options, value=list(_options)[:5], label="Compare saved runs")
+    _primary_labels = []
+    _completed_primary_labels = []
+    for _record in run_records:
+        _run, _entry = _record["run"], _record["entry"]
+        _status = _run.get("status", _entry.get("status"))
+        _endpoint = _run.get("endpoint", _entry.get("endpoint", _record["evaluation"].get("endpoint")))
+        _smoke = _run.get("smoke_test_only", _entry.get("smoke_test_only"))
+        if _status == "complete" and _endpoint in ("final", "primary_final"):
+            _label = f"{_record['label']} [{_record['key']}]"
+            _completed_primary_labels.append(_label)
+            if _smoke is False:
+                _primary_labels.append(_label)
+    selected_runs = mo.ui.multiselect(options=_options, value=_primary_labels or _completed_primary_labels,
+                                      label="Compare saved runs (completed primary endpoints selected)")
     selected_runs
     return (selected_runs,)
 

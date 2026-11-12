@@ -56,5 +56,16 @@
     "runner_tests": {
       "log_sha256": "86e3d139f92e4595475b71fd6aa0d963558e372a96cc6fef0c0b4373066aaddb"
     }
+  },
+  "comparison_update": {
+    "lab_tests_passed": 879,
+    "lab_elapsed_seconds": 402.78,
+    "environment": "locked core-reference; writable PyTensor cache under /private/tmp",
+    "full_lab_log_sha256": "078e0ac5036d779d993c50f6dd08f2422fd091a552c19bfe356f9545e7ae84f7",
+    "release_checks": "manifest, claims, runtime boundary passed",
+    "release_log_sha256": "8ef17eb02238b31db249af80b55c5dda4440397f59fe474a7750dbd673aed89a",
+    "report_tests_passed": 4,
+    "canonical_tutorial_inference_source_unchanged": true,
+    "new_model_or_pricing_calls_from_report_generation": 0
   }
 }
