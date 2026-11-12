@@ -2176,11 +2176,12 @@ def _(
 @app.cell(hide_code=True)
 def _(mo, workflow):
     mo.vstack([workflow("Use"), mo.md(r"""
-    ## 6. Use: one price or a range?
+    ## 6. Use: pricing a product the market does not quote
 
-    Calibration is usually a means to an end: pricing contracts the market does not quote. With a posterior, every draw of $\boldsymbol\theta$ gives a price, so the price comes with a range. A point estimate gives one number and hides how uncertain it is. How much does this matter here?
-
-    We price three contracts that the SPX quotes do not include, in forward units, and compare a **point estimate** (the posterior-mean parameters) with the **posterior range** (300 posterior draws per data set).
+    - **The job:** a desk holds products that nobody quotes, and must still value them every day. Example: a **forward-start call**. Bought today, it fixes its strike in 3 months at the index level on that day; at 6 months it pays the percentage rise above that level, if positive: $\max(S_{6\mathrm{m}}/S_{3\mathrm{m}}-1,\,0)$ per unit of notional.
+    - **Why a model:** its value depends on how volatile the index will be between month 3 and month 6, which today's quotes do not state directly.
+    - **The recipe:** fit a model to the quoted options, then price the product with it. One fit gives one price; a posterior gives a range, by pricing the product under each posterior draw.
+    - **What the range is for:** judging how reliable the value is, holding a reserve against being wrong, and setting the bid–ask.
     """)])
     return
 
@@ -2189,79 +2190,130 @@ def _(mo, workflow):
 def _(
     BOUNDS,
     CASES,
-    CASE_TITLES,
     DELTA,
     EXPIRY,
-    EXPIRY_DATES,
-    MARKET_IV,
-    REF_VOL,
-    forward_unit_pricer,
-    implied_vols,
+    EXPIRY_DAYS,
+    H,
+    TRUTHS,
     mo,
     neural_draws,
     np,
     pilot,
+    plots,
+    plt,
     reference_draws,
-    surface,
 ):
-    _products = {"2-year at the money": (2.0, 0.0, "call"),
-                 "2-year put at δ = −2": (2.0, -2.0, "put"),
-                 "5-year at the money": (5.0, 0.0, "call")}
-    _T = np.array([_v[0] for _v in _products.values()])
-    _k = np.array([_v[1] * REF_VOL * np.sqrt(_v[0]) for _v in _products.values()])
-    _kind = np.array([_v[2] for _v in _products.values()])
-    _pricer = forward_unit_pricer(_k, _T, _kind)
-    _vol = lambda _theta: 100 * surface.implied_vol(_pricer.prices(_theta)[None], _k, _T, _kind)[0]
-    _rng = np.random.default_rng(20261114)
-    _rows, _widths, _gaps, _network_widths = [], [], [], []
-    for _case_id in CASES:
-        _sources = {"PyMC reference": reference_draws[_case_id]}
-        if _case_id in neural_draws:
-            _all = neural_draws[_case_id]
-            _inside = _all[np.all((_all >= BOUNDS[:, 0]) & (_all <= BOUNDS[:, 1]), axis=1)]
-            if len(_inside) >= 20:
-                _sources["network"] = _inside
-        _point = _vol(reference_draws[_case_id].mean(axis=0))
-        _ranges = {}
-        for _source, _draws in _sources.items():
-            _sample = _draws[_rng.choice(len(_draws), min(300, len(_draws)), replace=False)]
-            _ranges[_source] = np.nanquantile(np.array([_vol(_theta) for _theta in _sample]), [.05, .5, .95], axis=0)
-        for _p, _name in enumerate(_products):
-            _q = _ranges["PyMC reference"][:, _p]
-            _row = {"data set": CASE_TITLES[_case_id], "contract": _name, "point estimate (%)": f"{_point[_p]:.2f}",
-                    "PyMC posterior, 90% range (%)": f"{_q[0]:.2f} to {_q[2]:.2f}"}
-            if "network" in _ranges:
-                _n = _ranges["network"][:, _p]
-                _row["network posterior, 90% range (%)"] = f"{_n[0]:.2f} to {_n[2]:.2f}"
-                _network_widths.append(_n[2] - _n[0])
-            _rows.append(_row)
-            _widths.append(_q[2] - _q[0])
-            _gaps.append(abs(_point[_p] - _q[1]))
-    _widths = np.asarray(_widths).reshape(len(CASES), len(_products))
-    # Model error on the SPX quotes: the point-estimate Heston smile against the market.
-    _fit = implied_vols(pilot.prices(reference_draws["market"].mean(axis=0)))[0]
-    _miss = 100 * np.abs(_fit - MARKET_IV)
-    _worst = int(np.nanargmax(_miss))
-    _network_text = ("" if not _network_widths else
-                     f" The network's ranges are {min(_network_widths):.2f}–{max(_network_widths):.2f} points wide: "
-                     "wider, as in Section 5.3, but still small.")
+    # Price a forward-start call and a volatility swap under posterior draws, and under Heston refitted to SPX subsets.
+    from scipy.optimize import least_squares as _least_squares
+
+    from sbi4finance.calibration import products as _products
+
+    # Monte Carlo prices under one parameter draw, with the same random numbers for every draw, so that differences
+    # between draws are due to the parameters, not to Monte Carlo noise.
+    def _price(_theta):
+        _v0, _kappa, _v_inf, _xi, _rho = _theta[:5]
+        _paths = _products.heston_paths(dict(kappa=_kappa, theta=_v_inf, vol_of_vol=_xi), _v0, 0.5, 252, 4096,
+                                        seed=20261115)
+        return (100 * _products.forward_start_call(_paths, _rho, 0.25, 0.5, 1.0)[0],  # % of notional
+                100 * _products.volatility_swap(_paths, 0.25)[0])  # 3-month volatility swap, % per year
+
+    def _posterior(_draws, _seed, _count=40):
+        _inside = _draws[np.all((_draws >= BOUNDS[:, 0]) & (_draws <= BOUNDS[:, 1]), axis=1)]
+        if len(_inside) < 20:
+            return None
+        _pick = np.random.default_rng(_seed).choice(len(_inside), min(_count, len(_inside)), replace=False)
+        return np.array([_price(_t) for _t in _inside[_pick]])
+
+    _sets = {}
+    for _k, _case in enumerate(("synthetic-market-like", "market")):
+        _sets[_case] = {"PyMC": _posterior(reference_draws[_case], [20261115, _k, 0])}
+        _network_prices = _posterior(neural_draws[_case], [20261115, _k, 1]) if _case in neural_draws else None
+        if _network_prices is not None:
+            _sets[_case]["network"] = _network_prices
+    _truth = np.array(_price(TRUTHS["synthetic-market-like"]))
+
+    # Refit Heston to four subsets of the SPX quotes, by least squares in half-spreads, and price the same products.
+    _subsets = {
+        "all 63 quotes": np.ones(len(H), bool),
+        f"the 3 shortest expiries ({EXPIRY_DAYS[0]}–{EXPIRY_DAYS[2]} d)": EXPIRY < 3,
+        f"the 4 longest expiries ({EXPIRY_DAYS[3]}–{EXPIRY_DAYS[-1]} d)": EXPIRY >= 3,
+        "near the money, |δ| ≤ 1.3": np.abs(DELTA) <= 1.3,
+    }
+    _start = reference_draws["market"].mean(axis=0)
+    _refits = {}
+    for _name, _mask in _subsets.items():
+        def _misfit(_p, _mask=_mask):
+            try:
+                return ((CASES["market"] - pilot.prices(np.r_[_p, 1.0])) / H)[_mask]
+            except (FloatingPointError, ValueError):
+                return np.full(int(_mask.sum()), 1e3)
+        _fit = _least_squares(_misfit, _start[:5], bounds=(BOUNDS[:5, 0], BOUNDS[:5, 1]), x_scale="jac", max_nfev=400)
+        _refits[_name] = (_fit.x, np.array(_price(_fit.x)))
+
+    _colors = {"PyMC": plots.SERIES[1], "network": plots.SERIES[0]}
+    _fig, _axes = plt.subplots(1, 2, figsize=(11.8, 3.3), constrained_layout=True, gridspec_kw={"width_ratios": [1, 1.35]})
+    for _ax, _case in zip(_axes, ("synthetic-market-like", "market")):
+        _labels = []
+        for _source, _values in _sets[_case].items():
+            _q = np.quantile(_values[:, 0], [.05, .95])
+            _ax.plot(_q, [len(_labels)] * 2, color=_colors[_source], lw=7, solid_capstyle="butt", alpha=.75)
+            _ax.scatter(_values[:, 0], np.full(len(_values), len(_labels)), color=_colors[_source], s=7, zorder=3)
+            _labels.append(f"{_source} posterior, 90% range")
+        if _case == "market":
+            for _name, (_, _prices) in _refits.items():
+                _ax.scatter([_prices[0]], [len(_labels)], color=plots.INK, marker="D", s=26, zorder=3)
+                _labels.append(f"refit on {_name}")
+        else:
+            _ax.axvline(_truth[0], color=plots.INK, ls="--", lw=1)
+            _ax.text(_truth[0], len(_labels) - 0.5, " true price", fontsize=7, color=plots.INK, va="center")
+        _ax.set_yticks(range(len(_labels)), _labels, fontsize=8)
+        _ax.set_ylim(len(_labels) - 0.4, -0.6)
+        _ax.set_xlabel("forward-start call, % of notional")
+    _axes[0].set_title("Simulated market-like quotes: Heston is right", fontsize=10)
+    _axes[1].set_title("SPX quotes: the model, not its parameters", fontsize=10)
+
+    # Everything said below is computed here.
+    _like, _spx = (np.quantile(_sets[_c]["PyMC"], [.05, .95], axis=0) for _c in ("synthetic-market-like", "market"))
+    _refit_prices = np.array([_p for _, _p in _refits.values()])
+    _low, _high = _refit_prices.min(axis=0), _refit_prices.max(axis=0)
+    _ratio = (_high - _low) / (_spx[1] - _spx[0])
+    _kappas, _xis = [_x[1] for _x, _ in _refits.values()], [_x[3] for _x, _ in _refits.values()]
+    _covered = [_like[0, _j] <= _truth[_j] <= _like[1, _j] for _j in range(2)]
+    _network = {_c: np.quantile(_sets[_c]["network"][:, 0], [.05, .95]) for _c in _sets if "network" in _sets[_c]}
     _text = (
-        f"- **Point estimate against posterior:** the point estimate lies within {max(_gaps):.3f} volatility points of "
-        "the posterior median price.\n"
-        f"- **Parameter uncertainty is small here:** the PyMC 90% ranges are {_widths.min():.2f}–{_widths.max():.2f} "
-        "volatility points wide. With 63 liquid quotes, ignoring parameter uncertainty costs little for these "
-        f"contracts.{_network_text}\n"
-        f"- **The 5-year option is priced about as tightly as the 2-year one** (widest ranges {_widths[:, 2].max():.2f} "
-        f"against {_widths[:, 0].max():.2f} points), although no quote reaches beyond eleven months. Heston ties every "
-        "maturity to the same five parameters (feature 1, Section 1), so its extrapolation looks certain; that certainty comes from the model, "
-        "not from the quotes.\n"
-        f"- **Model error is far larger:** on the SPX quotes, the point-estimate Heston smile misses the market by up to "
-        f"{_miss[_worst]:.1f} volatility points ({EXPIRY_DATES[EXPIRY[_worst]]}, δ = {DELTA[_worst]:.1f}), "
-        f"{_miss[_worst] / _widths.max():.0f} times the widest posterior range. No parameter posterior captures this.\n"
-        "- **When parameter uncertainty does matter downstream:** when the quotes do not pin down what a contract "
-        "depends on: few or wide quotes, or a model flexible enough that the quotes leave some directions open. Then "
-        "the range, not the point estimate, is the honest answer.")
-    mo.vstack([mo.ui.table(_rows, selection=None, pagination=False), mo.md(_text)])
+        f"- **Where Heston is right** (left, the market-like simulation): the PyMC 90% range is {_like[0, 0]:.3f}–"
+        f"{_like[1, 0]:.3f}% of notional, ±{50 * (_like[1, 0] - _like[0, 0]) / np.mean(_like[:, 0]):.1f}% of the price, "
+        f"and the true price, {_truth[0]:.3f}%, lies {'inside' if _covered[0] else 'outside'} it."
+        + (f" The network's range is {_network['synthetic-market-like'][0]:.3f}–{_network['synthetic-market-like'][1]:.3f}%."
+           if "synthetic-market-like" in _network else "")
+        + (" The use works: an unquoted product gets an honest range.\n" if _covered[0] else
+           " One noisy data set can shift a posterior (Section 4).\n")
+        + f"- **On the SPX quotes** (right): the posterior range is just as narrow, {_spx[0, 0]:.3f}–{_spx[1, 0]:.3f}%. "
+        "But Heston does not fit these quotes, so its parameters depend on which quotes it is fitted to. Four reasonable "
+        f"choices give {_low[0]:.3f}% to {_high[0]:.3f}%, about {_ratio[0]:.0f} times the posterior range: $\\kappa$ runs "
+        f"from {min(_kappas):.1f} to {max(_kappas):.1f}"
+        + (" (its upper bound)" if np.isclose(max(_kappas), BOUNDS[1, 1]) else "")
+        + f" and $\\sigma_v$ from {min(_xis):.2f} to {max(_xis):.2f}."
+        + (f" The network's range, {_network['market'][0]:.3f}–{_network['market'][1]:.3f}%, differs from PyMC's because "
+           "these quotes lie outside its training data (Section 5.4)." if "market" in _network else "")
+        + "\n"
+        f"- **The same for a 3-month volatility swap:** posterior {_spx[0, 1]:.2f}–{_spx[1, 1]:.2f}%, refits "
+        f"{_low[1]:.2f}–{_high[1]:.2f}%, about {_ratio[1]:.0f} times wider. On the simulation its true strike, "
+        f"{_truth[1]:.2f}%, lies {'inside' if _covered[1] else 'outside'} the range {_like[0, 1]:.2f}–{_like[1, 1]:.2f}%.\n"
+        "- **What this means:** a posterior measures uncertainty within the model. On SPX the model is wrong, and that "
+        "error is many times larger and invisible to the posterior. A desk would hold a reserve sized to the refit "
+        "spread, add a model-error term, or use a better model; the rest of this section shows where Heston misses and "
+        "what could fix it.\n"
+        "- **When the posterior range does matter:** when the quotes leave the price open: few or wide quotes, or a model "
+        "flexible enough that the quotes do not pin down what the product depends on.")
+    mo.vstack([
+        _fig,
+        mo.md("*Bars:* 90% ranges over 40 posterior draws, each draw a dot; *diamonds:* Heston refitted to part of the "
+              "SPX quotes. Monte Carlo with 4,096 paths and the same random numbers for every draw. *Note the scales:* "
+              f"the left panel is zoomed in about {np.ptp(_axes[1].get_xlim()) / np.ptp(_axes[0].get_xlim()):.0f} times "
+              "more than the right one."),
+        mo.md(_text),
+    ])
     return
 
 
@@ -2507,7 +2559,7 @@ def _(mo):
     4. **Check calibration over many simulations.** Here five of six parameters are well calibrated; the initial-variance intervals are too wide rather than too narrow.
     5. **Check single data sets against an exact reference.** Good calibration does not mean sharp posteriors: the network's intervals can be several times wider than the exact ones.
     6. **Check the model, not only the network.** On the SPX quotes the noise multiplier hits its bound and Heston misses by many half-spreads: its smile is too flat in the deep put wing, most of all at short expiries. An amortized estimator is only reliable on data its simulator could have produced.
-    7. **Downstream, a posterior gives a range instead of a number.** Here parameter uncertainty barely moves the prices of unquoted contracts, while model error moves them by volatility points.
+    7. **Use: a posterior prices an unquoted product with a range.** Where the model is right, the range covers the true price. On SPX the range is tiny, but refitting Heston to different quotes moves the price many times more: the model, not its parameters, dominates the uncertainty.
     8. **Misspecification points to the next model.** Heston follows the SPX skew but not the short-dated curvature and wing. Rough Bergomi is built for both, and it has no pricing formula: the case where amortized SBI is needed.
     """)
     return
