@@ -1,0 +1,220 @@
+{
+ "tau_information": [
+  {
+   "lengths": [
+    0.75,
+    1.15
+   ],
+   "tau_vp": 1.0,
+   "relative_sd": 0.108,
+   "effective_directions": 42.9,
+   "level_shift_sd_factor": 2.91
+  },
+  {
+   "lengths": [
+    0.75,
+    1.15
+   ],
+   "tau_vp": 2.5,
+   "relative_sd": 0.0991,
+   "effective_directions": 50.9,
+   "level_shift_sd_factor": 2.91
+  },
+  {
+   "lengths": [
+    1.6,
+    2.0
+   ],
+   "tau_vp": 1.0,
+   "relative_sd": 0.1506,
+   "effective_directions": 22.0,
+   "level_shift_sd_factor": 4.69
+  },
+  {
+   "lengths": [
+    1.6,
+    2.0
+   ],
+   "tau_vp": 2.5,
+   "relative_sd": 0.1336,
+   "effective_directions": 28.0,
+   "level_shift_sd_factor": 4.69
+  }
+ ],
+ "misfit": {
+  "rms_vp": 1.3814350911833029,
+  "median_half_spread_vp": 0.06421596164997895,
+  "max_abs_vp": 6.0406877666713985,
+  "price_rms_in_half_spreads": 13.372080230047816,
+  "neighbour_strike_correlation": 0.6627202279668125,
+  "adjacent_expiry_correlation": 0.9360404443885391,
+  "rms_vp_by_expiry_days": {
+   "7": 2.185036171980861,
+   "14": 1.8487202921672177,
+   "30": 1.4098116671524492,
+   "60": 0.8553916235738849,
+   "81": 0.9312573145956436,
+   "172": 0.8424034109676174,
+   "325": 0.9328682260723766
+  }
+ },
+ "whitening_spectrum": {
+  "fit_rows": 2000,
+  "held_out_rows": 1000,
+  "largest_variance": 1910734.582377324,
+  "smallest_variance": 1.314067491735102,
+  "condition_number": 1454061.2216609814,
+  "condition_number_each_input_scaled": 1964321.427675524,
+  "share_of_variance_in_first_three_directions": 0.9672324497696362,
+  "directions_below_twice_noise_variance": 33,
+  "mean_variance_of_those_directions": 1.917845139853768,
+  "c_hat_correlation_with_c": 0.8988790140336455,
+  "c_hat_relative_rms_error": 0.19569989285858413,
+  "largest_abs_correlation_after_whitening": 0.17243967662848658
+ },
+ "prior_predictive": {
+  "simulated_data_sets": 3000,
+  "market_quote_percentile_min": 5.2,
+  "market_quote_percentile_max": 55.166666666666664
+ },
+ "flow_matching_toy": {
+  "1.0": {
+   "exact_mean": 1.50634462684281,
+   "exact_sd": 0.25691615166818094,
+   "flow_mean": 1.51171203344477,
+   "flow_sd": 0.250682399518435
+  },
+  "-0.2": {
+   "exact_mean": -0.23928459010163933,
+   "exact_sd": 0.6827689306196302,
+   "flow_mean": -0.2177953862176825,
+   "flow_sd": 0.6902366095532557
+  }
+ },
+ "information_by_region": {
+  "regions": [
+   "deep puts $\\delta \\leq -2.25$",
+   "near puts $\\delta$ = \u22121.25, \u22120.5",
+   "at the money $\\delta = 0$",
+   "calls $\\delta > 0$",
+   "expiries up to 1 month",
+   "expiries from 2 months"
+  ],
+  "columns": [
+   "$v_0$",
+   "$\\kappa$",
+   "$v_\\infty$",
+   "$\\sigma_v$",
+   "$\\rho$",
+   "short-window variance",
+   "later-window variance"
+  ],
+  "rise_percent": [
+   [
+    55.8,
+    76.1,
+    74.5,
+    86.5,
+    2.6,
+    78.7,
+    71.1
+   ],
+   [
+    20.6,
+    8.7,
+    20.1,
+    7.6,
+    16.8,
+    20.6,
+    24.5
+   ],
+   [
+    4.2,
+    2.5,
+    0.7,
+    2.3,
+    4.1,
+    2.5,
+    0.4
+   ],
+   [
+    123.5,
+    29.5,
+    53.1,
+    76.7,
+    790.6,
+    122.0,
+    75.9
+   ],
+   [
+    143.9,
+    69.7,
+    23.1,
+    91.7,
+    9.5,
+    105.7,
+    11.1
+   ],
+   [
+    100.8,
+    846.2,
+    1502.0,
+    106.5,
+    157.0,
+    38.8,
+    1683.5
+   ]
+  ]
+ },
+ "variance_strip": {
+  "strip_vol": 0.2180772518698072,
+  "formula_vol": 0.21891345947166652
+ },
+ "posterior_to_product": {
+  "draws": 1000,
+  "short_window_volatility_percent": {
+   "mean": 17.732391616169515,
+   "sd": 0.02876453022732137,
+   "q05": 17.685122278257637,
+   "q10": 17.696169076430248,
+   "q95": 17.779932508308345,
+   "reserve_long": 0.036222539739267035
+  },
+  "later_window_volatility_percent": {
+   "mean": 22.612407458484565,
+   "sd": 0.04962251369563103,
+   "q05": 22.534654423419767,
+   "q10": 22.547050804903368,
+   "q95": 22.695445578035944,
+   "reserve_long": 0.06535665358119758
+  },
+  "strongest_parameter_correlation": {
+   "pair": [
+    "kappa",
+    "theta"
+   ],
+   "value": -0.8661165714022867
+  }
+ },
+ "posterior_costs": {
+  "mcmc_likelihood_evaluations": [
+   146094,
+   146087,
+   146113
+  ],
+  "mcmc_cpu_minutes_accepted_run": [
+   14.0,
+   26.1,
+   26.6
+  ],
+  "mcmc_cpu_minutes_first_run": [
+   2.7,
+   5.2,
+   5.2
+  ],
+  "rough_mcmc_cpu_days": [
+   101,
+   177
+  ]
+ }
+}
