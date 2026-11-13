@@ -1152,6 +1152,38 @@ def _(
 
 
 @app.cell(hide_code=True)
+def _(md):
+    md(r"""
+    #### From the equations to one path step
+
+    The path illustration takes 16 steps per trading day. Here is one internal step, with `variance` the
+    numerical state of $V_t$, `xi` the volatility of variance $\sigma_v$, and `dt` the step length in years:
+
+    ```python
+    # Use nonnegative variance in the drift and diffusion coefficients.
+    positive = np.maximum(variance, 0.0)
+    scale = np.sqrt(positive * dt)
+    z_var, z_other = normals[:, day, k, :].T  # independent standard normals
+    z_price = rho * z_var + np.sqrt(1 - rho**2) * z_other
+
+    # Accumulate the log-forward return; its -V/2 term is the Itô correction.
+    step += -0.5 * positive * dt + scale * z_price
+    variance += kappa * (v_inf - positive) * dt + xi * scale * z_var
+    ```
+
+    The two updates share `z_var`, giving price and variance innovations correlation $\rho$.
+    Full truncation uses the nonnegative part in the coefficients even if the numerical variance state crosses zero.
+    `step` accumulates a day's log-forward return; exponentiating the cumulative returns gives the plotted
+    forward-price paths. The forward has zero drift under the pricing measure; its **logarithm** has the
+    $-V_t/2$ drift above.
+
+    These paths illustrate the dynamics. Option prices below come from the checked Fourier pricer, not
+    from averaging these paths.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
 def _(bayesflow):
     bayesflow("""
     `bf.make_simulator` chains two functions by argument name. The prior returns named parameters. The observation model receives them, prices the 63 contracts and adds the noise. It returns every quote divided by its half-spread, so that the network sees the data in noise units.
@@ -1377,7 +1409,7 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(TRAINING, bayesflow, grid, key, md, mo, section, table):
+def _(TRAINING, bayesflow, cards, grid, key, md, mo, section, table):
     _steps = (
         (r"Quotes $\mathbf y$", "63 mid prices, simulated in training and observed at inference", ""),
         ("Preprocessing", r"Division by the half-spreads and the frozen whitening give $\tilde{\mathbf x}$, 63 numbers", ""),
@@ -1390,7 +1422,49 @@ def _(TRAINING, bayesflow, grid, key, md, mo, section, table):
         f'<div class="nb-flow-text">{md(_text).text}</div></div>' for _name, _text, _kind in _steps)
     mo.vstack([
         section("Train", r"The network learns the posterior $q_\phi(\boldsymbol\theta\mid\mathbf y)$ from simulated "
-                r"pairs $(\boldsymbol\theta,\mathbf y)$. No likelihood is ever evaluated.", stage=3),
+                r"pairs $(\boldsymbol\theta,\mathbf y)$, without evaluating a likelihood during fitting.", stage=3),
+        md("""
+        #### Two ways to reuse simulations
+
+        A neural pricer learns prices. An amortized estimator learns a posterior. They learn different maps:
+        """),
+        cards([
+            ("Alternative", "Learn prices, then calibrate", r"""
+             **Train:** five Heston parameters → neural pricer → 63 clean option prices.
+
+             **Calibrate:** observed quotes + surrogate prices + noise model + prior → MCMC → six-parameter draws.
+
+             Check pricing errors against the quote noise, and check MCMC convergence for each data set.
+             """),
+            ("Used here", "Learn the posterior", r"""
+             **Train:** simulate six parameters and 63 noisy quotes; fit the posterior network to these pairs.
+
+             **Calibrate:** observed quotes → frozen preprocessing → posterior network → six-parameter draws.
+
+             Check the conditional posterior against PyMC, as well as calibration across simulated data sets.
+             """),
+        ]),
+        md(r"""
+        The sixth parameter, $c$, controls quote noise. It is inferred alongside the five Heston parameters;
+        it does not change clean prices. The posterior network receives quotes, not a supplied value of $c$.
+
+        Fourier pricing is already fast here, so our PyMC reference uses the checked pricer directly.
+        A price surrogate becomes more useful when pricing is expensive, as with rough Bergomi.
+        """),
+        mo.accordion({"The surrogate-pricer likelihood": md(r"""
+            Let $\boldsymbol\vartheta=(v_0,\kappa,v_\infty,\sigma_v,\rho)$ be the five pricing parameters.
+            A surrogate $\widehat P_\psi(\boldsymbol\vartheta)$ approximates their clean prices. Combined with
+            our quote-noise model, it gives
+
+            $$\log\widehat p(\mathbf y\mid\boldsymbol\vartheta,c)
+            =-\frac12\sum_{i=1}^{63}\left[
+            \left(\frac{y_i-\widehat P_{\psi,i}(\boldsymbol\vartheta)}{c h_i}\right)^2
+            +2\log(c h_i)\right]+\text{constant}.$$
+
+            MCMC combines this likelihood with the same six-parameter prior. The $\log(c h_i)$ term matters
+            because $c$ is inferred. The amortized route instead learns the six-parameter posterior directly
+            from noisy simulations. A fair comparison keeps the contracts, spreads and prior the same.
+            """)}),
         md(r"""
         ### 3.1 The network
 
@@ -2284,6 +2358,19 @@ def _(EXPIRY_DATES, EXPIRY_DAYS, controls, md, mo, section):
         $$\boldsymbol\theta^{(m)}\sim q_\phi(\boldsymbol\theta\mid\mathbf y),\qquad \widetilde y^{(m)}_i=P_i(\boldsymbol\theta^{(m)})+c^{(m)}h_i\,\epsilon^{(m)}_i$$
 
         If the model and the posterior are right, the observed quotes look like one more replicated data set. The PyMC draws go through the same recipe.
+
+        ```python
+        # draws: paired posterior rows selected for one band below; last column is c.
+        rng = np.random.default_rng(20261112)
+        prices = np.array([pilot.prices(row) for row in draws])
+        noise_sd = draws[:, -1:] * H  # each row's c times the 63 half-spreads
+        replicated = prices + noise_sd * rng.standard_normal(prices.shape)
+        ```
+
+        `prices` carries parameter uncertainty. `replicated` also includes fresh, independent quote errors.
+        Each price row stays paired with its own $c$; both arrays are in index points. The bands below use
+        this calculation for the network and PyMC separately. Network rows outside the prior are excluded
+        from pricing, as disclosed below, because the pricer is checked on that range.
         """),
         controls(expiry_choice, hint="Choose an expiry. The tabs below switch the data set."),
     ])
