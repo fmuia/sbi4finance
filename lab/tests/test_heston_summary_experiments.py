@@ -16,7 +16,8 @@ from unittest.mock import patch
 LAB = Path(__file__).resolve().parents[1]
 NOTEBOOK = LAB / "notebooks/heston_summary_experiments.py"
 EVIDENCE = LAB / "evidence/pilot-results/2026-11-12/heston-flexible-inputs"
-DIMENSIONS = {2, 4, 8, 16, 32, 64}
+REQUIRED_DIMENSIONS = {2, 4, 8, 16, 32, 64}
+SUPPORTED_DIMENSIONS = REQUIRED_DIMENSIONS | {5, 6, 7}
 
 
 def json_hashes(root):
@@ -48,6 +49,7 @@ class SummaryNotebookTests(unittest.TestCase):
         cls.select_endpoints = staticmethod(cls.definitions["select_endpoints"])
         cls.read_recovery_figures = staticmethod(cls.definitions["read_recovery_figures"])
         cls.all_runs = cls.definitions["all_runs"]
+        cls.dimensions = {row["dimension"] for row in cls.all_runs if row["dimension"] is not None}
 
     @classmethod
     def tearDownClass(cls):
@@ -67,13 +69,18 @@ class SummaryNotebookTests(unittest.TestCase):
 
     def test_all_complete_endpoints_load_without_bank_or_inference_runtime(self):
         self.assertTrue(self.outputs)
-        self.assertEqual(len(self.all_runs), 13)
+        self.assertTrue(REQUIRED_DIMENSIONS.issubset(self.dimensions))
+        self.assertTrue(self.dimensions.issubset(SUPPORTED_DIMENSIONS))
+        expected_secondary = {row["dimension"] for row in self.all_runs
+                              if row["dimension"] is not None and row["endpoint"] == "primary_final"
+                              and (row["dimension"] in REQUIRED_DIMENSIONS or row["run"]["best_epoch"] != 300)}
+        self.assertEqual(len(self.all_runs), 1 + len(self.dimensions) + len(expected_secondary))
         primary = self.select_endpoints(self.all_runs)
         secondary = self.select_endpoints(self.all_runs, endpoint="secondary_validation_minimum")
-        self.assertEqual(len(primary), 7)
-        self.assertEqual(len(secondary), 6)
-        self.assertEqual({row["dimension"] for row in primary}, DIMENSIONS | {None})
-        self.assertEqual({row["dimension"] for row in secondary}, DIMENSIONS)
+        self.assertEqual(len(primary), 1 + len(self.dimensions))
+        self.assertEqual(len(secondary), len(expected_secondary))
+        self.assertEqual({row["dimension"] for row in primary}, self.dimensions | {None})
+        self.assertEqual({row["dimension"] for row in secondary}, expected_secondary)
         self.assertEqual(len({row["run"]["data_payload_sha256"] for row in self.all_runs}), 1)
         for key in ("truth_sha256", "observations_sha256"):
             self.assertEqual(len({row["evaluation"]["population"][key] for row in self.all_runs}), 1)
@@ -84,13 +91,21 @@ class SummaryNotebookTests(unittest.TestCase):
 
     def test_ui_defaults_preserve_primary_conclusions_and_offer_secondary_discussion(self):
         self.assertEqual(self.definitions["target_selector"].value, "c")
-        self.assertEqual(set(self.definitions["dimension_selector"].value), DIMENSIONS)
+        self.assertEqual(set(self.definitions["dimension_selector"].value), self.dimensions)
         self.assertEqual(self.definitions["checkpoint_dimension"].value, 8)
         self.assertEqual(self.definitions["recovery_model"].value, "mlp8")
-        self.assertEqual(set(self.definitions["recovery_figures"]), DIMENSIONS | {None})
-        self.assertEqual(len(self.definitions["primary_runs"]), 7)
-        self.assertEqual(len(self.definitions["summary_runs"]), 6)
+        self.assertEqual(set(self.definitions["recovery_figures"]), self.dimensions | {None})
+        self.assertEqual(len(self.definitions["primary_runs"]), 1 + len(self.dimensions))
+        self.assertEqual(len(self.definitions["summary_runs"]), len(self.dimensions))
         self.assertTrue(all(row["endpoint"] == "primary_final" for row in self.definitions["primary_runs"]))
+        backend = self.definitions["training_backend"]
+        primary = {row["dimension"]: row for row in self.definitions["primary_runs"]}
+        self.assertEqual(backend(primary[8]), "JAX CPU")
+        self.assertEqual(backend(primary[None]), "Historical CPU (device metadata not stored)")
+        # Hardware labels follow metadata, even when the dimension label is unchanged.
+        self.assertEqual(backend({"dimension": 8, "run": {"devices": ["cuda:0"], "platform": "Linux"}}), "JAX GPU")
+        self.assertEqual(backend({"dimension": 6, "run": {"devices": ["cpu:0"]}}), "JAX CPU")
+        self.assertEqual(backend({"dimension": 5, "run": {}}), "Not recorded")
 
     def test_c_width_ratios_distinguish_informativeness_from_calibration(self):
         primary = {row["dimension"]: row["evaluation"] for row in self.select_endpoints(self.all_runs)}
@@ -113,7 +128,7 @@ class SummaryNotebookTests(unittest.TestCase):
         self.assertEqual(json_hashes(EVIDENCE), self.source_hashes)
 
     def test_recovery_images_are_bound_to_primary_evidence_and_reject_tampering(self):
-        self.assertEqual(set(self.read_recovery_figures(EVIDENCE, self.all_runs)), DIMENSIONS | {None})
+        self.assertEqual(set(self.read_recovery_figures(EVIDENCE, self.all_runs)), self.dimensions | {None})
         for corruption in ("image", "endpoint", "source_evaluation_sha256", "figure"):
             with self.subTest(corruption=corruption), tempfile.TemporaryDirectory() as temporary:
                 root = Path(temporary)
@@ -131,6 +146,42 @@ class SummaryNotebookTests(unittest.TestCase):
                     self.save(path, record)
                 with self.assertRaises(ValueError):
                     self.read_recovery_figures(root, self.all_runs)
+
+    def test_matching_intermediate_pairs_extend_the_screen_and_incomplete_pairs_are_rejected(self):
+        # A structural fixture exercises optional-size loading without claiming that a fit ran.
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            study = self.copied_evidence(root)
+            study["runs"] = [entry for entry in study["runs"]
+                             if entry["summary_dim"] in REQUIRED_DIMENSIONS | {None}]
+            originals = [entry for entry in study["runs"] if entry["summary_dim"] == 8]
+            for original in originals:
+                entry = dict(original, summary_dim=7, label="Test fixture only: intermediate 7",
+                             directory=original["directory"].replace("mlp8-", "mlp7-"))
+                source, destination = root / original["directory"], root / entry["directory"]
+                shutil.copytree(source, destination, dirs_exist_ok=True)
+                path = destination / "run.json"
+                run = json.loads(path.read_text())
+                run["configuration"]["summary_dim"] = 7
+                self.save(path, run)
+                study["runs"].append(entry)
+            self.save(root / "study.json", study)
+            runs = self.read_study(root)
+            self.assertEqual({row["dimension"] for row in runs}, REQUIRED_DIMENSIONS | {7, None})
+            self.assertEqual(len(runs), 15)
+            study["runs"] = [entry for entry in study["runs"]
+                             if not (entry["summary_dim"] == 7 and entry["endpoint"] == "secondary_validation_minimum")]
+            self.save(root / "study.json", study)
+            with self.assertRaisesRegex(ValueError, "distinct validation minima"):
+                self.read_study(root)
+            # If the final checkpoint is itself the validation minimum, no duplicate
+            # secondary is exported or required for a newly added dimension.
+            entry = next(entry for entry in study["runs"] if entry["summary_dim"] == 7)
+            path = root / entry["directory"] / "run.json"
+            run = json.loads(path.read_text())
+            run["best_epoch"] = 300
+            self.save(path, run)
+            self.assertEqual(len(self.read_study(root)), 14)
 
     def test_loader_rejects_directory_escape_and_unsupported_dimension(self):
         with tempfile.TemporaryDirectory() as temporary:

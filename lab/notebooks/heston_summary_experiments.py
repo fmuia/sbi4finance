@@ -1,7 +1,10 @@
 import marimo
 
 __generated_with = "0.25.1"
-app = marimo.App(width="medium", app_title="How much of an option surface must a summary retain?")
+app = marimo.App(
+    width="medium",
+    app_title="How much of an option surface must a summary retain?",
+)
 
 
 @app.cell(hide_code=True)
@@ -20,9 +23,10 @@ def _():
               "rho": "Correlation ρ", "c": "Quote-noise multiplier c"}
     bounds = {"initial_variance": (.01, .16), "kappa": (.1, 10.), "theta": (.01, .16),
               "vol_of_vol": (.1, 3.), "rho": (-.95, -.1), "c": (.5, 2.)}
-    dimensions = (64, 32, 16, 8, 4, 2)
+    required_dimensions = (64, 32, 16, 8, 4, 2)
+    supported_dimensions = (64, 32, 16, 8, 7, 6, 5, 4, 2)
     colors = {64: "#84613f", 32: "#8660b2", 16: "#38946b", 8: "#2976ac",
-              4: "#d17b28", 2: "#c54f52"}
+              7: "#17a2a4", 6: "#b767a4", 5: "#a58d36", 4: "#d17b28", 2: "#c54f52"}
     case_labels = {"synthetic-broad": "Broad-prior synthetic case",
                    "synthetic-market-like": "Market-like synthetic case", "market": "Observed SPX quotes"}
 
@@ -41,8 +45,8 @@ def _():
             run = json.loads((directory / "run.json").read_text())
             evaluation = json.loads((directory / "evaluation.json").read_text())
             dimension, endpoint = entry["summary_dim"], entry["endpoint"]
-            if dimension is not None and (type(dimension) is not int or dimension not in dimensions):
-                raise ValueError("unexpected summary dimension in this six-size experiment")
+            if dimension is not None and (type(dimension) is not int or dimension not in supported_dimensions):
+                raise ValueError("unexpected summary dimension in this fixed-grid experiment")
             if endpoint not in ("primary_final", "secondary_validation_minimum") or (dimension, endpoint) in identities:
                 raise ValueError("unique primary/secondary experiment endpoints are required")
             identities.add((dimension, endpoint))
@@ -77,10 +81,16 @@ def _():
                 raise ValueError("complete finite learning history required")
             runs.append({"dimension": dimension, "endpoint": endpoint, "label": entry["label"],
                          "run": run, "evaluation": evaluation, "history": history})
-        expected = {(None, "primary_final")} | {(d, role) for d in dimensions
-                     for role in ("primary_final", "secondary_validation_minimum")}
-        if identities != expected:
-            raise ValueError("all six fits, twelve endpoints and the historical direct baseline are required")
+        present_dimensions = {dimension for dimension, _ in identities if dimension is not None}
+        expected = {(None, "primary_final")}
+        for dimension in present_dimensions:
+            expected.add((dimension, "primary_final"))
+            primary = next((item for item in runs if item["dimension"] == dimension
+                            and item["endpoint"] == "primary_final"), None)
+            if dimension in required_dimensions or primary is None or primary["run"].get("best_epoch") != 300:
+                expected.add((dimension, "secondary_validation_minimum"))
+        if not set(required_dimensions).issubset(present_dimensions) or identities != expected:
+            raise ValueError("the original six fits, primary endpoints and distinct validation minima are required")
         baseline = next(item for item in runs if item["dimension"] is None)
         reference = baseline["evaluation"]["population"]
         for item in runs:
@@ -136,35 +146,81 @@ def _():
                 raise ValueError("recovery figure checksum differs")
             figures[dimension] = figure
         if set(figures) != set(primary):
-            raise ValueError("all seven primary recovery figures are required")
+            raise ValueError("all primary recovery figures are required")
         return figures
+
+    def training_backend(item):
+        """Label recorded training devices without inferring hardware from summary size."""
+        run = item["run"]
+        devices = run.get("devices", [])
+        if isinstance(devices, str):
+            devices = [devices]
+        descriptor = " ".join(map(str, devices)).lower()
+        if any(kind in descriptor for kind in ("cuda", "gpu", "rocm")):
+            return "JAX GPU"
+        if "tpu" in descriptor:
+            return "JAX TPU"
+        if "cpu" in descriptor:
+            return "JAX CPU"
+        if item["dimension"] is None:
+            return "Historical CPU (device metadata not stored)"
+        return "Not recorded"
 
     def tidy_axes(ax):
         ax.spines[["top", "right"]].set_visible(False)
         ax.grid(axis="y", alpha=.18)
         ax.set_axisbelow(True)
 
-    return (Path, bounds, case_labels, colors, dimensions, json, labels, mo, names,
-            np, plt, read_recovery_figures, read_study, select_endpoints, tidy_axes)
+    return (
+        bounds,
+        case_labels,
+        colors,
+        labels,
+        mo,
+        names,
+        np,
+        plt,
+        read_recovery_figures,
+        read_study,
+        select_endpoints,
+        supported_dimensions,
+        tidy_axes,
+        training_backend,
+    )
 
 
 @app.cell(hide_code=True)
-def _(Path, mo, read_recovery_figures, read_study, select_endpoints):
+def _(
+    mo,
+    read_recovery_figures,
+    read_study,
+    select_endpoints,
+    supported_dimensions,
+):
     evidence_root = mo.notebook_dir().parent / "evidence/pilot-results/2026-11-12/heston-flexible-inputs"
     all_runs = read_study(evidence_root)
     primary_runs = select_endpoints(all_runs)
     recovery_figures = read_recovery_figures(evidence_root, all_runs)
     summary_runs = [item for item in primary_runs if item["dimension"] is not None]
+    dimensions = tuple(d for d in supported_dimensions if any(item["dimension"] == d for item in summary_runs))
     direct_run = next(item for item in primary_runs if item["dimension"] is None)
-    return all_runs, direct_run, evidence_root, primary_runs, recovery_figures, summary_runs
+    return (
+        all_runs,
+        dimensions,
+        direct_run,
+        evidence_root,
+        primary_runs,
+        recovery_figures,
+        summary_runs,
+    )
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
+def _(dimensions, mo):
+    mo.md(rf"""
     # How much of an option surface must a summary retain?
 
-    **A standalone rundown of six Heston learned-summary experiments.**
+    **A standalone rundown of {len(dimensions)} completed Heston learned-summary experiments.**
 
     We observe the prices of 63 options and want a joint posterior over six unknowns:
     a probability distribution for the parameters after seeing those quotes.
@@ -175,10 +231,12 @@ def _(mo):
     included in the repository. Opening it does not train a network, load a checkpoint,
     price an option or require a simulation-bank download.
 
-    **The result to investigate:** dimensions 8–64 retain roughly the direct model's
-    pooled recovery; dimensions 4 and 2 lose substantial information. Some of those
-    models still pass every marginal calibration screen. Understanding that apparent
-    contradiction is the main lesson.
+    **The initial screen:** dimensions 8–64 retain roughly the direct model's
+    pooled recovery; dimensions 4 and 2 lose substantial information. We refine the
+    gap with dimensions **7, 6 and 5** as their matched evaluations complete. Only
+    completed sizes appear in the controls. Some weak summaries still pass every
+    marginal calibration screen; that distinction between calibration and information
+    retention is the main lesson.
     """)
     return
 
@@ -233,7 +291,8 @@ def _(mo):
       \widehat p_\omega\!\left(\phi,c\mid s_\psi(\widetilde x)\right).$$
 
     The summary has two hidden layers of 128 SiLU units (a smooth activation) and a linear output of size
-    $d\in\{64,32,16,8,4,2\}$. The posterior network remains FlowMatching with three
+    $d$. The completed sizes are listed in the schematic and controls below. The
+    posterior network remains FlowMatching with three
     128-wide hidden layers and dropout 0.1. The summary and posterior network learn
     together through the native inference objective. FlowMatching learns to transform
     simple base noise into joint parameter draws conditioned on the inputs. There is no separate summary
@@ -248,7 +307,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo, plt):
+def _(dimensions, mo, plt):
     from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
     def summary_schematic():
@@ -277,7 +336,7 @@ def _(mo, plt):
                     mutation_scale=15, linewidth=1.8, color=color, shrinkA=2, shrinkB=2))
 
             text(.4, 6.7, "One observation, two ways to condition a posterior", 21, weight="bold", ha="left")
-            text(.4, 6.2, "The six summary sizes are separate fits; only the learned output dimension changes.",
+            text(.4, 6.2, f"The {len(dimensions)} completed summary sizes are separate fits; only the learned output dimension changes.",
                  13, gray, ha="left")
             box(.4, 3.2, 1.85, 1.15, "63 noisy\noption quotes", color=green, fill="#EFF7EF")
             box(2.8, 3.2, 2.45, 1.15, "Divide by half-spreads\n+ frozen ZCA\n63 features retained", color=green,
@@ -298,7 +357,11 @@ def _(mo, plt):
             arrow((11.7, 4.95), (12.1, 4.95))
             box(12.15, 4.4, 1.85, 1.1, "Six-parameter\nposterior draws", size=12.5)
 
-            text(7.325, 3.72, "d = 64, 32, 16, 8, 4, 2\n64: representation control", 10.8, purple)
+            # Three lines keep the intermediate dimensions clear in the narrow summary column.
+            _sizes = ", ".join(str(d) for d in dimensions)
+            if len(dimensions) > 6:
+                _sizes = ", ".join(str(d) for d in dimensions[:4]) + "\n" + ", ".join(str(d) for d in dimensions[4:])
+            text(7.325, 3.65, f"d = {_sizes}\n64: representation control", 10.1, purple)
             box(9.1, 3.05, 2.55, .55, "Gaussian base noise", color=gray, fill="white", size=11.5)
             arrow((10.375, 3.65), (10.375, 4.35), gray)
             arrow((10.375, 3.), (10.375, 2.75), gray)
@@ -322,11 +385,24 @@ def _(mo, plt):
         "the learned summary supplies d conditioning coordinates to the posterior sampler. "
         "The purple group is optimized jointly. The direct baseline bypasses the summary. "
         "During inference, all fitted weights are fixed and the true parameters are unknown.")])
-    return summary_diagram, summary_schematic
+    return
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(all_runs, dimensions, mo, primary_runs, training_backend):
+    _hardware_rows = []
+    for _item in primary_runs:
+        _run = _item["run"]
+        _devices = _run.get("devices", [])
+        if isinstance(_devices, str):
+            _devices = [_devices]
+        _hardware_rows.append({
+            "fit": "Direct baseline" if _item["dimension"] is None else f"MLP {_item['dimension']}",
+            "training backend": training_backend(_item),
+            "recorded devices": ", ".join(map(str, _devices)) or "Not stored",
+            "recorded platform": _run.get("platform", "Not stored"),
+            "training minutes": round(_run["elapsed_seconds"] / 60, 1),
+        })
     mo.vstack([
         mo.md("## 3. A matched comparison"),
         mo.ui.table([
@@ -336,12 +412,23 @@ def _(mo):
             {"Held fixed": "Optimization", "Value": "Seed 9011; same native AdamW warmup/cosine schedule"},
             {"Held fixed": "Validation", "Value": "Same 100 observations; final epoch 300 is primary"},
             {"Held fixed": "Development evaluation", "Value": "Same 512 simulated cases, 512 draws per case; three conditional references"},
-            {"Changed": "Learned representation", "Value": "Linear summary output: 64, 32, 16, 8, 4 or 2 coordinates"},
+            {"Changed": "Learned representation", "Value": "Linear summary output: " + ", ".join(map(str, dimensions)) + " coordinates"},
         ], selection=None, pagination=False),
-        mo.md("There are **six new fits**, twelve evaluated checkpoints, and one historical direct-input "
+        mo.md(f"There are **{len(dimensions)} completed summary fits**, {len(all_runs)-1} evaluated summary checkpoints, and one historical direct-input "
               "endpoint. This matches data and optimizer updates, not parameter count or FLOPs. "
               "The same seed label also does not imply identical initial weights across different shapes. "
-              "These are single-seed development comparisons; wall times came from a shared local CPU."),
+              "These are single-seed development comparisons with training hardware recorded separately below."),
+        mo.md("**Training hardware and timing.** The original screen used local JAX CPUs. "
+              "The intermediate extension is assigned to local CPU and Oscar GPU training; "
+              "this table includes only completed fits and reports their recorded devices. "
+              "The historical direct baseline lacks device metadata in its compact record. "
+              "Wall times are descriptive, not a hardware-matched speed comparison."),
+        mo.ui.table(_hardware_rows, selection=None, pagination=False),
+        mo.callout(mo.md(
+            "The source code, data and optimizer-update budget are matched, but CPU and GPU kernels "
+            "can produce different floating-point results and optimizer trajectories. "
+            "A common seed does not guarantee the same trained weights across backends. "
+            "A one-seed deterioration therefore does not locate a purely mathematical information limit."), kind="info"),
     ])
     return
 
@@ -363,7 +450,7 @@ def _(dimensions, mo):
         Start with **MLP 8**, then switch to **MLP 4** and **MLP 2**, or the direct
         baseline. An informative estimate should track the diagonal; a nearly horizontal
         band with broad intervals indicates weak recovery. Look at **c** and initial variance.
-        Axes are fixed across all seven models so the visual comparison stays fair.
+        Axes are fixed across all completed models so the visual comparison stays fair.
         """), recovery_model])
     return (recovery_model,)
 
@@ -414,7 +501,17 @@ def _(dimension_selector, primary_runs, select_endpoints, target_selector):
 
 
 @app.cell(hide_code=True)
-def _(colors, direct_run, labels, names, np, plt, selected_runs, selected_target, tidy_axes):
+def _(
+    colors,
+    dimensions,
+    direct_run,
+    labels,
+    names,
+    plt,
+    selected_runs,
+    selected_target,
+    tidy_axes,
+):
     _index = names.index(selected_target)
     _reference = direct_run["evaluation"]
     _prior_rmse = _reference["population"]["recovery"]["prior_midpoint_rmse"][_index]
@@ -442,7 +539,9 @@ def _(colors, direct_run, labels, names, np, plt, selected_runs, selected_target
     for _ax, _title, _ylabel, _value in zip(_axes.flat, _titles, _ylabels, _direct_values):
         _ax.axhline(_value, color="#4c5964", linestyle="--", linewidth=1.2, label="Direct 63-input model")
         _ax.set_xscale("log", base=2)
-        _ax.set_xticks([2, 4, 8, 16, 32, 64], ["2", "4", "8", "16", "32", "64"])
+        _ticks = sorted(dimensions)
+        _ax.set_xticks(_ticks, [str(d) for d in _ticks])
+        _ax.tick_params(axis="x", labelrotation=45 if len(_ticks) > 6 else 0)
         _ax.set(xlim=(1.6, 80), title=_title, xlabel="Tested summary dimension", ylabel=_ylabel)
         tidy_axes(_ax)
     _axes[0, 0].set_yscale("log")
@@ -507,7 +606,7 @@ def _(mo, summary_runs):
 
 
 @app.cell(hide_code=True)
-def _(case_labels, dimensions, mo):
+def _(case_labels, mo):
     case_selector = mo.ui.dropdown(options={value: key for key, value in case_labels.items()},
                                    value=case_labels["synthetic-broad"], label="Fixed observation for the reference check")
     mo.vstack([mo.md("## 6. Does the posterior match MCMC for a particular surface?"),
@@ -520,7 +619,7 @@ def _(case_labels, dimensions, mo):
 
 
 @app.cell(hide_code=True)
-def _(case_labels, case_selector, labels, names, np, plt, selected_runs):
+def _(case_labels, case_selector, names, np, plt, selected_runs):
     _items = selected_runs
     _case = case_selector.value
     _fig, _axes = plt.subplots(1, 2, figsize=(11, 4.5), constrained_layout=True)
@@ -557,8 +656,8 @@ def _(mo):
     acceptance test implemented by this notebook. The recorded comparisons include
     Monte Carlo diagnostics; these heatmaps simply display their aggregate values.
 
-    **Every complete conditional panel still fails for every model, including the direct
-    baseline.** Good pooled recovery at dimension 8 therefore does not establish a correct
+    **In the original six-size screen, every complete conditional panel fails, including
+    the direct baseline.** Good pooled recovery at dimension 8 therefore does not establish a correct
     full-data posterior. The market reference is particularly concentrated near the upper
     bound of c; large standardized errors there need that context. A summary matching an
     imperfect baseline is a relative development result.
@@ -604,40 +703,70 @@ def _(all_runs, checkpoint_dimension, mo, plt, tidy_axes):
                        "SBC screens": f"{sum(_item['evaluation']['population']['rank_dkw']['passed'])}/6"})
     mo.vstack([_fig, mo.ui.table(_table, selection=None, pagination=False),
                mo.md("A lower validation objective is not a substitute for posterior checks. "
-                     "The small summaries' deterioration persists at their validation minima. "
+                     "For the original 4- and 2-dimensional fits, deterioration also persists at their validation minima. "
                      "All declared endpoints remain visible; we do not choose whichever tells the better story.")])
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## 8. What can we conclude?
+def _(direct_run, mo, names, summary_runs):
+    _by_d = {item["dimension"]: item["evaluation"] for item in summary_runs}
+    _intermediates = [d for d in (7, 6, 5) if d in _by_d]
+    _gap_rows = []
+    for _d in (8, 7, 6, 5, 4):
+        if _d not in _by_d:
+            continue
+        _evaluation = _by_d[_d]
+        _row = {"summary dimension": _d}
+        for _name, _symbol in zip(names, ("v₀", "κ", "θ", "η", "ρ", "c")):
+            _row[_symbol + " RMSE ratio"] = round(
+                _evaluation["parameters"][_name]["rmse"] / direct_run["evaluation"]["parameters"][_name]["rmse"], 2)
+        _row["c 90% width / prior"] = round(_evaluation["parameters"]["c"]["median_width90"] / 1.35, 3)
+        _gap_rows.append(_row)
+    mo.vstack([
+        mo.md(r"""
+        ## 8. What can we conclude?
 
-    - **Eight is the smallest tested size retaining roughly baseline pooled recovery.**
-      Four deteriorates, and two further weakens physical-parameter recovery.
-    - **Calibration and information retention answer different questions.** The small
-      summaries can return nearly prior-width uncertainty for c and still pass SBC.
-    - **This is an empirical breakdown for this recipe.** Dimension 6 is untested,
-      there is one seed per size, and none of the full conditional checks passes.
-      We have not established a universal phase transition or a sufficient statistic.
+        The original six-size screen found similar pooled recovery at dimensions 8–64,
+        with substantial deterioration at 4 and 2. The intermediate-size extension
+        examines that gap one coordinate at a time. The table below shows only completed
+        fits: errors are divided by the direct model's errors, while the final column
+        measures contraction of the c interval relative to its prior width.
+        """),
+        mo.ui.table(_gap_rows, selection=None, pagination=False),
+        mo.md(("**Completed intermediate sizes:** " + ", ".join(map(str, _intermediates)) + ". "
+               if _intermediates else "**Dimensions 7, 6 and 5 are pending completed exports.** ") +
+              "Use the recovery panels and conditional checks alongside these ratios; no numerical pass/fail threshold "
+              "for information retention is imposed after seeing the results."),
+        mo.md(r"""
+        - **Calibration and information retention answer different questions.** A lossy
+          summary can return broad, calibrated uncertainty while recovering parameters poorly.
+        - **Different parameters can deteriorate at different dimensions.** A single
+          summary size need not mark the loss of every kind of information at once.
+        - **This is an empirical comparison for one recipe and one seed per size.**
+          It does not establish an exact universal cutoff or a sufficient statistic.
+          Optimization, architecture, finite data and CPU/GPU numerical trajectories
+          can all contribute. Repeat the relevant sizes on a common backend as well
+          as with independent seeds to isolate the representation effect.
 
-    Before claiming a reproducible threshold, repeat the informative 8-versus-4
-    comparison with another seed and consider an intermediate dimension. Masking and
-    moving-grid inference remain later investigations with different input contracts.
+        Repeat the sizes bracketing a material deterioration with independent seeds
+        before calling that boundary stable. Masking and moving-grid inference remain
+        later investigations with different input contracts.
 
-    **Discussion:** Which plot would you trust if recovery deteriorated but coverage
-    stayed near 90%? What extra evidence would distinguish a bottleneck from an
-    optimization failure? Would a minimal summary for these priors also be minimal
-    for another observation design?
-    """)
+        **Discussion:** Which plot would you trust if recovery deteriorated but coverage
+        stayed near 90%? What extra evidence would distinguish a bottleneck from an
+        optimization failure? Would a minimal summary for these priors also be minimal
+        for another observation design?
+        """),
+    ])
     return
 
 
 @app.cell(hide_code=True)
-def _(all_runs, evidence_root, mo):
+def _(all_runs, evidence_root, mo, training_backend):
     _rows = [{"representation": "Direct" if item["dimension"] is None else f"MLP {item['dimension']}",
               "endpoint": item["endpoint"], "epoch": item["run"]["evaluated_epoch"],
+              "training backend": training_backend(item),
               "model SHA-256": item["run"]["source_hashes"].get("model_sha256", "historical baseline; see source record")}
              for item in all_runs]
     mo.accordion({"Evidence and reproduction": mo.vstack([
@@ -648,16 +777,16 @@ def _(all_runs, evidence_root, mo):
               "All raw neural draws were retained in the original evaluations, including support violations."),
         mo.md("""To retrain one candidate from the verified development bank, run from `lab/`:
 
-```sh
-pixi run -e core-reference python scripts/heston_flexible_experiment.py train \\
-  --bundle "$HESTON_BUNDLE" --out "$NEW_RUN_DIRECTORY" \\
-  --summary-dim 8 --rows 300000 --epochs 300 --seed 9011 --evaluate
-```
+    ```sh
+    pixi run -e core-reference python scripts/heston_flexible_experiment.py train \\
+      --bundle "$HESTON_BUNDLE" --out "$NEW_RUN_DIRECTORY" \\
+      --summary-dim 8 --rows 300000 --epochs 300 --seed 9011 --evaluate
+    ```
 
-This command is documentation, not an action executed by the notebook. New output
-identities are required for each fit. The experiment dashboard remains available in
-`heston_flexible_inputs.py`; this notebook is the explanatory fixed-grid rundown.
-"""),
+    This command is documentation, not an action executed by the notebook. New output
+    identities are required for each fit. The experiment dashboard remains available in
+    `heston_flexible_inputs.py`; this notebook is the explanatory fixed-grid rundown.
+    """),
         mo.ui.table(_rows, selection=None, pagination=True, page_size=7),
     ])})
     return

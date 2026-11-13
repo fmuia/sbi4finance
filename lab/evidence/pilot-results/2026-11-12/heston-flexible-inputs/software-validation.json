@@ -126,5 +126,46 @@
       "focused_test_log_sha256": "69ac78bd2999b7e54100cb805ff97509bc9469a95f1ce74ce2819e4c1ad24ffd",
       "release_log_sha256": "8ef17eb02238b31db249af80b55c5dda4440397f59fe474a7750dbd673aed89a"
     }
+  },
+  "intermediate_dimension_preparation": {
+    "status": "training_underway_results_pending",
+    "requested_dimensions": [
+      7,
+      6,
+      5
+    ],
+    "lab_tests_passed": 892,
+    "lab_test_seconds": 411.713,
+    "lab_test_log_sha256": "ee71d83c26e216bf9cf8bf31e884453b88603fa15fb53448b359094cd6c169dd",
+    "focused_notebook_tests_passed": 8,
+    "focused_export_tests_passed": 9,
+    "current_completed_endpoints": 13,
+    "notebook_cells_exported": 21,
+    "export_cell_errors": 0,
+    "strict_marimo_check_passed": true,
+    "release_checks_passed": true,
+    "notebook_source_sha256": "fdc9275df08fc222201c5eced73c40bf1c115565fe0d036bdde9b42aa799af4d",
+    "new_sizes_appear_only_after_completed_evidence_export": true,
+    "inference_runtime_unchanged": true,
+    "trained_intermediate_metrics_claimed": false,
+    "release_log_sha256": "8ef17eb02238b31db249af80b55c5dda4440397f59fe474a7750dbd673aed89a"
+  },
+  "gpu_evaluation_relocation": {
+    "lab_tests_passed": 895,
+    "lab_test_seconds": 529.242,
+    "lab_test_log_sha256": "c8fec214771e2634788f7f1749864d8dda15d4f8116658f614722659ad99587d",
+    "runner_tests_passed": 8,
+    "verified_bundle_override_rejects_wrong_task_bank_or_whitening": true,
+    "actual300k_bundle_override_verified": true,
+    "original_training_record_unchanged": true,
+    "training_function_and_canonical_inference_source_unchanged": true,
+    "mixed_backend_notebook_tests_passed": 8,
+    "strict_marimo_check_passed": true,
+    "release_checks_passed": true,
+    "notebook_cells_exported": 21,
+    "export_cell_errors": 0,
+    "new_gpu_jobs_have_finite_training_updates": true,
+    "training_results_still_pending": true,
+    "release_log_sha256": "8ef17eb02238b31db249af80b55c5dda4440397f59fe474a7750dbd673aed89a"
   }
 }

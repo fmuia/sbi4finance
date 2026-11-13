@@ -129,6 +129,32 @@ class FlexibleReportTests(unittest.TestCase):
             self.assertNotIn("<script", html)
             self.assertNotIn('src="http', html)
 
+    def test_intermediate_exports_append_paired_endpoints_without_changing_existing_records(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            baseline, first = fixture(root)
+            out = root / "export"
+            report.export_study([first], baseline, out)
+            protected = {path: path.read_bytes() for path in out.rglob("*.json")
+                         if path.name not in ("study.json", "report-summary.json")}
+            additions = []
+            for dimension in (7, 6, 5):
+                source_root = root / f"source{dimension}"
+                source_root.mkdir()
+                _, source = fixture(source_root, dimension=dimension)
+                additions.append(source)
+            study = report.export_study(additions, baseline, out)
+            self.assertEqual(len(study["runs"]), 9)
+            for dimension in (7, 6, 5):
+                entries = [item for item in study["runs"] if item["summary_dim"] == dimension]
+                self.assertEqual({entry["endpoint"] for entry in entries},
+                                 {"primary_final", "secondary_validation_minimum"})
+            for path, original in protected.items():
+                self.assertEqual(path.read_bytes(), original)
+            html = (out / "report.html").read_text()
+            self.assertIn("32, 7, 6, 5", html)
+            self.assertIn("one seed per size cannot establish a universal information cutoff", html)
+
     def test_changed_pairing_or_missing_secondary_is_rejected_before_export(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

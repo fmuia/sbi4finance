@@ -292,15 +292,18 @@ def render_report(directory):
         if evaluation.get("format") != FORMAT or evaluation.get("scientific_acceptance") is not False:
             raise ValueError("compact development evaluation required")
         rows.append((entry, run, evaluation, read(root / "history.json") if (root / "history.json").exists() else None))
-    primary = [row for row in rows if row[1]["endpoint"] == "primary_final"]
-    palette = {None: "#1f77b4", 32: "#9467bd", 16: "#2ca02c", 8: "#ff7f0e", 4: "#d62728", 64: "#8c564b"}
+    primary = sorted([row for row in rows if row[1]["endpoint"] == "primary_final"],
+                     key=lambda row: (row[0]["summary_dim"] is not None, -(row[0]["summary_dim"] or 0)))
+    palette = {None: "#4c5964", 64: "#84613f", 32: "#8660b2", 16: "#38946b", 8: "#2976ac",
+               7: "#17a2a4", 6: "#b767a4", 5: "#a58d36", 4: "#d17b28", 2: "#c54f52"}
+    dimensions = [row[0]["summary_dim"] for row in primary if row[0]["summary_dim"] is not None]
     primary_colors = [palette.get(run.get("configuration", {}).get("summary_dim"), "#7f7f7f")
                       for _, run, _, _ in primary]
     css = "body{margin:0;background:#f6f7f8;color:#233340;font:15px/1.55 system-ui,sans-serif}main{max-width:1160px;margin:auto;padding:30px 22px 65px}h1{line-height:1.2}h2{margin-top:36px}.notice{padding:14px 18px;background:#fff4d9;border-left:4px solid #b98324}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;background:white;font-size:12px}th,td{text-align:left;padding:8px;border-bottom:1px solid #ddd;white-space:nowrap}th{background:#e8edf2}figure{margin:20px 0;background:white;padding:12px;border:1px solid #dce2e7;border-radius:8px}svg{width:100%;height:auto}figcaption,footer{font-size:12px;color:#5a6874}code{overflow-wrap:anywhere}"
     chunks = ['<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Heston learned-summary development</title><style>' + css + '</style></head><body><main>',
               '<h1>Heston learned summaries: complete fixed-grid comparisons</h1>',
               '<p class="notice"><strong>Development evidence only.</strong> Final epoch 300 is primary. The minimum native validation-loss checkpoint is secondary and is shown separately; it was not selected by posterior diagnostics. These results reuse historical development cases, retain every raw draw and do not establish fresh acceptance or a sufficient statistic.</p>',
-              '<p>All fits use 300,000 stored noisy data sets, 63 actual contracts, the same frozen ZCA transform, broad physical priors and inferred Gaussian noise multiplier c. A learned MLP summary layer is added before the same FlowMatching posterior head. The MLP fits use the same declared seed; changing the architecture changes weight shapes and random-number use, so a one-seed screen cannot separate representation effects from optimization variability. The screen order is 32, 16, 8, 4, then 64 dimensions. Only completed endpoints appear below; stopped partial fits are excluded. Mask-aware and moving-grid estimators are not trained by this comparison.</p>',
+              '<p>All fits use 300,000 stored noisy data sets, 63 actual contracts, the same frozen ZCA transform, broad physical priors and inferred Gaussian noise multiplier c. A learned MLP summary layer is added before the same FlowMatching posterior head. The MLP fits use the same declared seed; changing the architecture changes weight shapes and random-number use, so a one-seed screen cannot separate representation effects from optimization variability. Completed summary dimensions shown here are ' + ', '.join(str(d) for d in dimensions) + '. Intermediate integer dimensions investigate the originally observed 8-to-4 breakdown; one seed per size cannot establish a universal information cutoff. Only completed endpoints appear below; stopped partial fits are excluded. Mask-aware and moving-grid estimators are not trained by this comparison.</p>',
               '<h2>Training and endpoint accounting</h2>']
     chunks.append(_table(["Endpoint", "Role", "Epoch", "Rows", "Fit minutes", "Optimizer updates", "Population outside prior", "SBC screens"], [
         [entry["label"], "primary" if run["endpoint"] == "primary_final" else "secondary", run["evaluated_epoch"], run["train_rows"],
@@ -327,7 +330,10 @@ def render_report(directory):
     chunks.append('<h2>Population recovery and calibration</h2><p>The same 512 historical truths and observations are paired across endpoints, with 512 draws per observation. Sampling uncertainty and repeated use of this development population limit interpretation.</p>')
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.1), constrained_layout=True)
     x = np.arange(len(NAMES)); width = .8 / len(primary)
-    baseline_rmse = np.array([rows[0][2]["parameters"][name]["rmse"] for name in NAMES])
+    baseline = [row for row in primary if row[0]["summary_dim"] is None]
+    if len(baseline) != 1:
+        raise ValueError("exactly one primary direct baseline is required")
+    baseline_rmse = np.array([baseline[0][2]["parameters"][name]["rmse"] for name in NAMES])
     for index, (entry, _, evaluation, _) in enumerate(primary):
         offset = x + (index - (len(primary) - 1) / 2) * width
         axes[0].bar(offset, [evaluation["parameters"][name]["coverage90"] for name in NAMES], width=width, label=entry["label"], color=primary_colors[index])

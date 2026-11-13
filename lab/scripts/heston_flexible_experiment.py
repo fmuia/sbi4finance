@@ -237,7 +237,28 @@ def sample_run(directory, quotes, num_samples=512, seed=261112, *, endpoint="fin
     return inference.sample(workflow, conditions, list(NAMES), num_samples, seed=seed)
 
 
-def evaluate(directory, *, endpoint="final", population_rows=512, draws=512, conditional_draws=4096):
+def _evaluation_bank(directory, task, preprocessing, run, bundle=None):
+    """Relocate evaluation inputs explicitly without changing training provenance."""
+    directory = Path(directory)
+    bundle_path = Path(run["bundle"] if bundle is None else bundle).resolve()
+    bank_task, arrays, bank = delivery.load_bank(bundle_path)
+    whitening_sha256 = digest(bundle_path / "bank/whitening.json")
+    if (bank_task != task or bank["data_payload_sha256"] != run["data_payload_sha256"]
+            or bank["whitening_sha256"] != preprocessing["whitening_sha256"]
+            or whitening_sha256 != preprocessing["whitening_sha256"]
+            or digest(directory / "whitening.json") != whitening_sha256):
+        raise ValueError("evaluation bundle task, bank or whitening differs from the training run")
+    provenance = {"bundle_override_used": bundle is not None, "resolved_bundle": str(bundle_path),
+                  "bundle_manifest_sha256": digest(bundle_path / "bundle.json"),
+                  "data_payload_sha256": bank["data_payload_sha256"],
+                  "whitening_sha256": whitening_sha256,
+                  "training_run_sha256": digest(directory / "run.json"),
+                  "evaluator_sha256": digest(__file__)}
+    return arrays, provenance
+
+
+def evaluate(directory, *, endpoint="final", population_rows=512, draws=512, conditional_draws=4096,
+             bundle=None):
     """Reuse raw-draw diagnostics and hash-checked target-matched full MCMC chains."""
     from scripts import evaluate_heston_pr87_grid as diagnostics
     directory = Path(directory).resolve()
@@ -248,8 +269,8 @@ def evaluate(directory, *, endpoint="final", population_rows=512, draws=512, con
             or type(draws) is not int or draws < 32 or type(conditional_draws) is not int or conditional_draws < 32):
         raise ValueError("invalid development evaluation allocation")
     started = time.monotonic()
-    workflow, task, _, run = load_run(directory, endpoint=endpoint)
-    _, arrays, _ = delivery.load_bank(run["bundle"])
+    workflow, task, preprocessing, run = load_run(directory, endpoint=endpoint)
+    arrays, evaluation_source = _evaluation_bank(directory, task, preprocessing, run, bundle)
     quotes = arrays["historical_quotes"][:population_rows]
     truth = np.column_stack([arrays["historical_" + name][:population_rows, 0] for name in NAMES])
     whitening = delivery._whitening(directory / "whitening.json")
@@ -271,6 +292,7 @@ def evaluate(directory, *, endpoint="final", population_rows=512, draws=512, con
     result = {"format": "heston_flexible_evaluation_v1", "status": "started", "endpoint": endpoint,
               "population_rows": population_rows, "draws_per_case": draws, "parameters": parameters,
               "population": summary, "cases": {}, "scientific_acceptance": False,
+              "evaluation_source": evaluation_source,
               "scope": "reused historical development cases; raw draws retained"}
     write(destination.with_suffix(".progress.json"), result)
     payload = {"population": population, "truth": truth, "quantiles": quantiles}
@@ -334,6 +356,7 @@ def main():
     fit.add_argument("--evaluate", action="store_true")
     check = commands.add_parser("evaluate")
     check.add_argument("--directory", type=Path, required=True)
+    check.add_argument("--bundle", type=Path, help="Relocated verified bundle; must match training task, bank and whitening")
     check.add_argument("--endpoint", choices=("final", "best"), default="final")
     check.add_argument("--population-rows", type=int, default=512)
     check.add_argument("--draws", type=int, default=512)

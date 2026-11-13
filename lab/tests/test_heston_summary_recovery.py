@@ -59,6 +59,27 @@ class SummaryRecoveryTests(unittest.TestCase):
             with self.subTest(change=change), self.assertRaises(ValueError):
                 recovery.summarize_draws(self.draws, self.truth, compact)
 
+    def test_completed_intermediates_extend_the_same_required_recovery_panel(self):
+        def study(dimensions):
+            return {"format": "heston_flexible_study_v1", "scientific_acceptance": False,
+                    "runs": [{"summary_dim": d, "endpoint": "primary_final", "epoch": 300,
+                              "status": "complete", "smoke_test_only": False} for d in dimensions]}
+
+        original = [None, 64, 32, 16, 8, 4, 2]
+        for additions in ([], [7], [7, 6], [7, 6, 5]):
+            entries = recovery.primary_entries(study(original + additions))
+            self.assertEqual({item["summary_dim"] for item in entries}, set(original + additions))
+            self.assertIsNone(entries[0]["summary_dim"])
+            self.assertEqual([entry["summary_dim"] for entry in entries[1:]],
+                             sorted((d for d in original + additions if d is not None), reverse=True))
+        for dimensions in (original + [7, 7], original + [3], original[:-1] + [7]):
+            with self.subTest(dimensions=dimensions), self.assertRaises(ValueError):
+                recovery.primary_entries(study(dimensions))
+        invalid = study(original + [7])
+        invalid["runs"][-1]["status"] = "running"
+        with self.assertRaises(ValueError):
+            recovery.primary_entries(invalid)
+
     def test_source_payload_hash_is_checked_before_loading(self):
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary) / "draws.npz"

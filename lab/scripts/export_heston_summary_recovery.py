@@ -20,7 +20,9 @@ LABELS = ("Initial variance $v_0$", "Mean reversion $\\kappa$", "Long-run varian
           "Volatility of variance $\\eta$", "Correlation $\\rho$", "Quote-noise multiplier $c$")
 BOUNDS = np.array(((.01, .16), (.1, 10.), (.01, .16), (.1, 3.), (-.95, -.1), (.5, 2.)))
 COLORS = {None: "#4c5964", 64: "#84613f", 32: "#8660b2", 16: "#38946b",
-          8: "#2976ac", 4: "#d17b28", 2: "#c54f52"}
+          8: "#2976ac", 7: "#17a2a4", 6: "#b767a4", 5: "#a58d36",
+          4: "#d17b28", 2: "#c54f52"}
+REQUIRED_DIMENSIONS = {None, 64, 32, 16, 8, 4, 2}
 
 
 def digest(path):
@@ -71,15 +73,26 @@ def summarize_draws(draws, truth, compact):
     return quantiles, {key: value.tolist() for key, value in metrics.items()}
 
 
+def primary_entries(study):
+    """Keep the original matched panel and any completed intermediate dimensions."""
+    entries = [entry for entry in study["runs"] if entry["endpoint"] == "primary_final"]
+    dimensions = [entry["summary_dim"] for entry in entries]
+    if (study.get("format") != "heston_flexible_study_v1"
+            or study.get("scientific_acceptance") is not False
+            or any(d is not None and type(d) is not int for d in dimensions)
+            or len(dimensions) != len(set(dimensions))
+            or not REQUIRED_DIMENSIONS <= set(dimensions) <= set(COLORS)
+            or any(entry.get("status") != "complete" or entry.get("epoch") != 300
+                   or entry.get("smoke_test_only") is not False for entry in entries)):
+        raise ValueError("unique completed supported finals, including the original seven endpoints, are required")
+    return sorted(entries, key=lambda e: (e["summary_dim"] is not None, -(e["summary_dim"] or 0)))
+
+
 def load_inputs(evidence, run_root, baseline_evaluation, baseline_draws=None, baseline_recovery=None):
     evidence, run_root = Path(evidence), Path(run_root)
-    study = read(evidence / "study.json")
-    entries = [entry for entry in study["runs"] if entry["endpoint"] == "primary_final"]
-    if (study.get("format") != "heston_flexible_study_v1"
-            or len(entries) != 7 or {entry["summary_dim"] for entry in entries} != set(COLORS)):
-        raise ValueError("all seven final endpoints are required")
+    entries = primary_entries(read(evidence / "study.json"))
     results = []
-    for entry in sorted(entries, key=lambda e: (e["summary_dim"] is not None, -(e["summary_dim"] or 0))):
+    for entry in entries:
         directory = (evidence / entry["directory"]).resolve()
         if evidence.resolve() not in directory.parents:
             raise ValueError("study directory escapes evidence")
@@ -186,7 +199,7 @@ def export(evidence, run_root, baseline_evaluation, *, baseline_draws=None, base
                 "source_study_sha256": digest(Path(evidence) / "study.json"),
                 "exporter_sha256": digest(__file__), "shared_axis_limits": limits.tolist(),
                 "prior_bounds": BOUNDS.tolist(), "figures": records, "scientific_acceptance": False,
-                "plot_policy": "All 512 truths, posterior medians and central-90% intervals; common axes per parameter across seven models; raw draws retained without clipping or rejection.",
+                "plot_policy": f"All 512 truths, posterior medians and central-90% intervals; common axes per parameter across {len(results)} models; raw draws retained without clipping or rejection.",
                 "scope": "Reused development cases; figures reveal recovery and information retention, not a new acceptance decision."}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\n")
     return manifest

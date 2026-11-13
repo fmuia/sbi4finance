@@ -145,5 +145,126 @@
     "training_seconds": 1603.0649435408413,
     "both_endpoint_evaluations_complete": true,
     "automatic_local_report_export_complete": true
+  },
+  "intermediate_extension": {
+    "status": "running",
+    "requested_dimensions": [
+      7,
+      6,
+      5
+    ],
+    "execution_order": [
+      7,
+      6,
+      5
+    ],
+    "started_utc": "2026-11-13T00:30:45.076590+00:00",
+    "source_commit": "c31f6f3e8b56de8859bf817729d0faae99c236be",
+    "runner_sha256": "de332302c4d357e7f6a88d94c32ae159543ad2b5cd8ba15cf839605e269099bc",
+    "inference_sha256": "39f58c9e329b2fdf1ac4b6f290de0895db0bce12b39bd48774dce03487bc986f",
+    "supervisor_sha256": "14de28557ba8db02c38557ed3ec4ab00f8a186a9a43f512063b75b402741a069",
+    "max_concurrent_fits": 3,
+    "preserved_recipe": {
+      "train_rows": 300000,
+      "epochs": 300,
+      "batch_size": 256,
+      "seed": 9011,
+      "summary_widths": [
+        128,
+        128
+      ],
+      "summary_activation": "silu",
+      "summary_output": "linear",
+      "posterior_widths": [
+        128,
+        128,
+        128
+      ],
+      "posterior_dropout": 0.1,
+      "bank_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+      "training_seconds_cap": 3600,
+      "final_epoch300_is_primary": true,
+      "validation_minimum_is_secondary": true,
+      "raw_draws_unfiltered": true
+    },
+    "purpose": "Resolve recovery changes within the observed8to4bracket; show parameterwise recovery, contraction, calibration and conditional-reference comparisons without assuming a transition location.",
+    "interpretation": "One-seed empirical fitted-pipeline comparison; no universal minimal sufficient dimension or exact information-theoretic threshold claim.",
+    "states": {
+      "7": "training_local_cpu",
+      "6": "training_oscar_gpu",
+      "5": "training_oscar_gpu"
+    },
+    "automatic_git_push": false,
+    "results_included": false,
+    "automatic_postprocessing": {
+      "report_and_endpoint_export": true,
+      "source_checked_recovery_figures": true,
+      "html_export_and_cell_error_check": true,
+      "saved_optimizer_and_finite_state_audit": true,
+      "owned_notebook_server_refresh": true,
+      "git_push": false,
+      "finalizer_sha256": "14e9fea1d2815f6ff6259b83a5e999322403559d5305a56b70d598f85f9d91ef",
+      "presentation_refresher_sha256": "4e3b89436709796ae7815ba5e48f372cad9f451eee7b2a47bcfcaba73d50e02a",
+      "collector_sha256": "49739682867acd4b04f6b784f520e6c44039a7f46a0158675e302cc4e68e5d01"
+    },
+    "placement": {
+      "7": "local JAX CPU",
+      "6": "Oscar GPU, RTX3090",
+      "5": "Oscar GPU, L40S"
+    },
+    "duplicate_local_jobs_prevented": true,
+    "gpu_migration": {
+      "status": "running",
+      "first_jobs": {
+        "6": "8964671",
+        "5": "8964672"
+      },
+      "failed_before_training": true,
+      "completed_epochs_in_failed_attempts": 0,
+      "cause": "Existing shared GPU Python pyexpat required a newer libexpat; private native overlay prepared without shared environment mutation",
+      "original_training_record_relocation_preserved": true,
+      "resources_per_gpu_job": {
+        "gpus": 1,
+        "cpus": 4,
+        "memory": "24G",
+        "wall_seconds": 4200,
+        "training_cap_seconds": 3600
+      },
+      "source_commit": "c31f6f3e8b56de8859bf817729d0faae99c236be",
+      "source_bundle_sha256": "6f8909d97cd9e338076bf96b9b31e199185f7ecd7cf8f4e0f11773aeef708c39",
+      "original_training_record_preserved_during_return": true,
+      "evaluation_location": "localCPU; verifiedbankoverride; samefullreferences",
+      "full_training_import_and_checkpoint_probe_passed": true,
+      "shared_gpu_environment_modified": false,
+      "native_library_overlay": {
+        "library": "libexpat",
+        "version": "2.8.5",
+        "sha256": "8b61b41a8f5bee8d8d336e8bc5318233d6b435d482a7510f4e01788b618a6598",
+        "scope": "privateprocessLD_PRELOAD; existingverifiedRattlercachepackage"
+      },
+      "collector_sha256": "49739682867acd4b04f6b784f520e6c44039a7f46a0158675e302cc4e68e5d01"
+    },
+    "gpu_jobs": {
+      "6": "8965136",
+      "5": "8965137"
+    }
+  },
+  "oscar_gpu_capacity_check": {
+    "checked_utc": "2026-11-13T00:44:10.942645+00:00",
+    "method": "read-only Slurm association, QoS and partition queries",
+    "standard_gpu_partition_access": true,
+    "standard_gpu_qos_max_gpus_per_user": 2,
+    "standard_gpu_qos_max_cpus_per_user": 12,
+    "standard_gpu_qos_max_memory_per_user": "192G",
+    "condo_gpu_partition_access": true,
+    "capacity_separate_from_cpu_generation_qos": true,
+    "current_campaign_placement": "7localCPU,6and5runningOscarGPU; noduplicatelocaljobs",
+    "migration_prerequisites": [
+      "stage actual63 bundle and immutable source checkout",
+      "support validated bundle relocation during local evaluation",
+      "transfer checkpoints and retain actual CPU/GPU provenance",
+      "avoid duplicate queued local jobs"
+    ],
+    "queue_start_or_gpu_speedup_guaranteed": false
   }
 }

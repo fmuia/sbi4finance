@@ -102,6 +102,24 @@ retained: no clipping, rejection or resampling at prior boundaries. The existing
 100-row validation and historical 512-case population are development panels;
 neither a smoke fit nor repeated use of these panels establishes fresh acceptance.
 
+## Intermediate dimensions 7, 6 and 5: running
+
+After inspecting the parameter-recovery plots, the user requested all three
+intermediate integer dimensions in the 8-to-4 bracket. A background campaign trains **7 locally and 6/5 on separate Oscar GPUs**,
+with the same 300k observations, frozen ZCA,
+seed 9011, two 128-wide SiLU layers, unchanged posterior head and 300 epochs.
+GPU checkpoints return unchanged for evaluation against the local reference panel.
+CPU/GPU kernels can change optimization numerics; backend provenance is shown in
+the lesson and a stable cutoff needs common-backend and seed confirmation.
+Each fit retains final-300 and validation-minimum evaluations; no recovery result
+is assumed in advance. Checkpoints and raw diagnostics stay outside Git. The
+[campaign record](campaign.json) binds the launch and preserved recipe.
+
+The completed-six-size plots remain the available evidence until those extra
+endpoints finish. An observed cutoff is specific to these fitted models and
+this development population; even testing every integer does not prove an exact
+minimal sufficient statistic or a reproducible threshold across seeds.
+
 ## Completed initial screen and dimension-two extension
 
 The 32-dimensional MLP completed all 300 epochs on the 300k stored noisy
