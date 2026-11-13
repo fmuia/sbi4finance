@@ -168,6 +168,18 @@ length. With the matching model downloaded, the CPU action updates the same
 posterior plots using exactly that prefix. Without it, the labelled saved
 fallback remains available. Changing the model, history or length clears a
 previous live result.
+The **Watch the evidence grow** player has separate local play/pause, advance,
+reset and scrub controls. Its default view covers the first 21 trading days;
+day, week and month axis units and longer views make the early changes legible.
+It advances through actual posterior frames rather than interpolating samples.
+The four supplied-curve rough-Bergomi examples include 65 actual saved frames
+each, daily through day 21 and then more widely spaced. Their original 12
+paired-sample snapshots are retained unchanged. Other models keep their
+original saved landmarks; the player states how many frames are available.
+Preparing additional native frames is an explicit bounded action under the
+original prior, with unrevealed returns masked. Playback itself runs no inference
+and does not change the other notebook views. Revealing evidence is parameter
+inference, not hidden-volatility propagation.
 Beside the posterior, a short readout compares its central-90% widths with the
 prior's, reports paired-draw Pearson correlations and locates the synthetic
 truth. These describe concentration and dependence; they do not measure accuracy.
@@ -190,6 +202,14 @@ shown beside the posterior, including any labelled saved fallback.
 These are independent replications, not continuations of the observed path.
 Parameter inference alone does not provide the hidden-state or rough-memory
 conditioning needed for a continuation forecast.
+An early practical-use section distinguishes describing dynamics, repeatedly
+analyzing matched histories and propagating parameter uncertainty into scenarios.
+The PyMC comparison explains latent-path integration and gradient requirements;
+it makes no timing or superiority claim. The final explanation shows why this
+parameter-only training target does not produce a state posterior. It contrasts
+the fresh-cascade risk and allocation applications in amortized-fractals with
+state-conditioned continuation, while preserving their prospective evaluation
+and practical usefulness.
 The final exercise compares replicated-history drawdown at the posterior-mean
 parameter vector with drawdown from complete posterior draws. Both retain
 process randomness; threshold changes reuse the simulated outcomes. These

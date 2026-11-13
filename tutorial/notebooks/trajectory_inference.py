@@ -81,6 +81,40 @@ def _(lesson_workflow, mo):
 
 
 @app.cell(hide_code=True)
+def _(mo):
+    mo.vstack([mo.md(r"""
+    ### What could this inference help us do?
+
+    Think of three questions about an asset's return history:
+
+    1. **What dynamics are plausible?** Estimate a distribution over roughness,
+       volatility-of-volatility, return–volatility dependence and drift, rather
+       than choosing one best-fitting vector. Parameters may remain hard to identify.
+    2. **What changes when more data arrive?** Reuse one trained estimator on
+       longer prefixes or on many matched histories. A rolling-window analysis
+       could monitor changes in the parameters that best describe each window;
+       this requires checking the estimator and model on that window design.
+    3. **Does parameter uncertainty change a scenario calculation?** Keep full
+       parameter draws paired, simulate scenarios and compare their drawdown
+       distribution with the result at one fitted vector. We do this at the end.
+
+    There is a further question: **what is likely to happen immediately after
+    today's observed history?** That also depends on today's hidden volatility
+    and, for rough Bergomi, its memory. Our parameter estimator does not answer
+    that state-estimation question. A recent volatility burst can matter even
+    when the plausible long-run parameters have barely changed.
+
+    These are useful *workflow goals*, not evidence that our present estimator
+    is ready for trading or risk reporting. This lesson uses synthetic data;
+    the supplied networks' failed calibration checks and the rough model's
+    long-history behavior remain material limitations. Parameters under the
+    physical return law also cannot simply replace pricing-measure parameters
+    in an option pricer.
+    """)])
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo, trajectory):
     try:
         _market = trajectory.load_market_example()
@@ -673,6 +707,59 @@ def _(mo, model_checks, ordering_shuffle, prior_predictive_result):
 
 
 @app.cell(hide_code=True)
+def _(mo):
+    mo.vstack([mo.md(r"""
+    ### Why not just fit this model in PyMC?
+
+    **PyMC can fit stochastic-volatility models.** The extra challenge here is
+    the unobserved rough-volatility history: each variance depends on many past
+    shocks, and returns only reveal it indirectly. Simulating a history is easy
+    compared with evaluating its probability after averaging over all those shocks.
+
+    | Route | What has to be computed? | Where does the cost occur? |
+    |:---|:---|:---|
+    | Latent-path MCMC | Infer parameters together with hidden driving shocks, or integrate/filter those shocks using a specialized method | Repeated likelihood or latent-path work for each observed dataset |
+    | Our BayesFlow estimator | Learn parameters from many simulated parameter–return pairs, with hidden paths averaged over by simulation | Upfront simulation and training; later conditional sampling is reusable |
+
+    For one dataset a carefully built MCMC analysis may be the better choice.
+    Amortization is attractive when we will analyze many histories or many
+    prefixes under the **same simulation design and prior**. Its price is an
+    approximate learned posterior that needs the checks below. We have not
+    benchmarked PyMC against these networks, and training is not free.
+    """), mo.accordion({"Where the likelihood and PyMC implementation become harder": mo.md(r"""
+    For our discretized rough Bergomi task, a likelihood is available
+    **conditional on the latent Gaussian innovations**.
+    Let $U$ contain the variance-driving and hybrid-bridge shocks. For one
+    observed day, summing its fine steps gives
+
+    $$I_t=\sum_{j\in t} V_j h,\qquad
+      J_t=\sum_{j\in t}\sqrt{V_jh}\,Z_{W,j},$$
+    $$r_t\mid\Theta,U\sim\mathcal N\!\left(
+      \mu\Delta-\tfrac12 I_t+\rho J_t,\ (1-\rho^2)I_t\right).$$
+
+    The Normal's second argument is its variance. The independent asset-shock
+    channel has been integrated out. We still need
+    to integrate $U$ in $p(r\mid\Theta)$, or infer it jointly with $\Theta$.
+    Five years × 252 days × four fine steps × two Gaussian driving channels
+    gives roughly **10,000 latent coordinates** in a direct augmented model.
+    The H-dependent memory kernel couples these to the whole variance history.
+
+    A PyMC/NUTS implementation would need a deterministic differentiable log
+    density, validated gradients and a parameterization that samples well.
+    Our NumPy/FFT forward simulator is not automatically that PyTensor model.
+    Drawing fresh simulator randomness on every ordinary NUTS likelihood call
+    does not create a valid deterministic target. Particle and pseudo-marginal
+    approaches are alternatives with their own requirements.
+
+    See PyMC's [stochastic-volatility example](https://www.pymc.io/projects/examples/en/latest/time_series/stochastic_volatility.html)
+    and [external-likelihood guide](https://www.pymc.io/projects/examples/en/latest/howto/blackbox_external_likelihood_numpy.html).
+    These explain feasible routes; they are not a matched performance comparison
+    with the Bergomi task shown here.
+    """)})])
+    return
+
+
+@app.cell(hide_code=True)
 def _(cache_task, lesson_workflow, mo, trajectory):
     _figure = trajectory.ASSETS / "illustrations" / "application-workflows-20261101" / "trajectory-prefix-workflow.png"
     mo.vstack([
@@ -1171,15 +1258,131 @@ def _(cache_arrays, cache_task, case_choice, mo, pair_x, pair_y, parameter_label
     return
 
 
-@app.cell
-def _(cache_arrays, cache_task, case_choice, mo, posterior, requested_days, trajectory):
-    mo.vstack([mo.md("### Watch the evidence grow\n\n"
-                     "Drift can remain uncertain after volatility parameters sharpen. Along one history, "
-                     "intervals can move or widen after surprising returns. The parameters themselves stay fixed. "
-                     "Grey shading marks prior support; blue steps and bars show the saved median and central "
-                     "90% interval. A step is held between snapshots, not interpolated. A green diamond, "
-                     "when present, marks fresh inference at the requested day."),
-               trajectory.plot_evolution(cache_task, cache_arrays, case_choice.value, requested_days, posterior=posterior)])
+@app.cell(hide_code=True)
+def _():
+    from sbi4f_tutorial.trajectories import evidence as evidence_frames, evidence_widget
+    # Session-only frame/workflow contexts; no files are written by the player.
+    evidence_contexts = {}
+    return evidence_contexts, evidence_frames, evidence_widget
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Watch the evidence grow
+
+    **Reveal observations; watch the parameter distributions respond.** This local
+    player follows the model and history selected above. The upper observed-day
+    control sets its maximum; the player cursor does not change the other notebook
+    views. Start with the prior, then play, pause, advance or scrub through actual
+    posterior frames. Zoom into the first days and switch the time-axis units.
+
+    Drift may remain uncertain after volatility parameters sharpen. Intervals can
+    move or widen after surprising returns; the generating parameters stay fixed.
+    The posteriors are actual saved or explicitly queried distributions, never
+    interpolated. **This is evidence revelation, not hidden-state propagation or
+    a particle filter.** No process is regenerated during playback.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(inference_mode, mo, requested_days):
+    _ends = {f"First {min(21, requested_days)} trading days": min(21, requested_days),
+             f"First {min(63, requested_days)} trading days": min(63, requested_days),
+             f"All {requested_days} selected trading days": requested_days}
+    playback_horizon = mo.ui.dropdown(options=_ends, value=next(iter(_ends)), label="Exact-query playback horizon")
+    playback_spacing = mo.ui.radio(options={"Daily": 1, "Weekly (5 trading days)": 5,
+        "Monthly (21 trading days)": 21}, value="Daily", inline=True, label="Exact-query spacing")
+    if inference_mode.value == "live":
+        _panel = mo.vstack([playback_horizon, playback_spacing, mo.md(
+            "**Native playback:** prepare up to 61 exact prefixes with 128 paired draws each. "
+            "The action loads the matching supplied network if necessary; it performs no fitting. "
+            "Daily playback works well for the first 21 days. For longer views, choose wider query spacing. "
+            "Already queried days are reused within the same task, checkpoint, history and sampling design.")])
+    else:
+        _panel = mo.md("**Saved playback** selects only actual cached days. Axis-unit changes do not create "
+                       "additional posteriors. Switch the upper estimator route to Fresh inference to prepare exact intermediate days.")
+    _panel
+    return playback_horizon, playback_spacing
+
+
+@app.cell(hide_code=True)
+def _(checkpoint_path, inference_mode, mo, playback_horizon, playback_spacing, selection):
+    _identity = (selection, checkpoint_path.value, inference_mode.value, playback_horizon.value, playback_spacing.value)
+    prepare_playback = mo.ui.run_button(label="Prepare exact-prefix playback")
+    prepare_playback if inference_mode.value == "live" else mo.md("")
+    return (prepare_playback,)
+
+
+@app.cell(hide_code=True)
+def _(cache_arrays, cache_report, cache_task, case_choice, checkpoint_path, evidence_contexts,
+      evidence_frames, inference_mode, model_choice, playback_horizon, playback_spacing,
+      prepare_playback, trajectory):
+    from time import perf_counter as _playback_clock
+    from hashlib import sha256 as _playback_hash
+    _checkpoint = cache_report["checkpoint_sha256"]
+    _history = str(cache_arrays["trajectory_id"][case_choice.value])
+    _path = checkpoint_path.value.strip() or None
+    _history_hash = _playback_hash(cache_arrays["observations"][case_choice.value].tobytes()).hexdigest()
+    _key = (cache_report["task_sha256"], _checkpoint, _history, _history_hash, inference_mode.value, _path)
+    if _key not in evidence_contexts:
+        _dense_error = None
+        _manager = (evidence_frames.saved_manager(cache_task, cache_arrays, case_choice.value, _checkpoint)
+                    if inference_mode.value == "saved" else evidence_frames.native_manager(
+                        cache_task, cache_arrays["observations"][case_choice.value], _checkpoint, _history,
+                        draws=128, seed=20261113))
+        if inference_mode.value == "saved":
+            try:
+                from sbi4f_tutorial.trajectories import evidence_assets as _dense_evidence
+            except ImportError:
+                pass
+            else:
+                try:
+                    _manager = _dense_evidence.load_dense(_manager)
+                except (OSError, ValueError) as _error:
+                    _dense_error = ("Optional denser replay unavailable: " + str(_error) +
+                        ". The original verified snapshots remain available; no extra frames were accepted.")
+        evidence_contexts[_key] = {"manager": _manager, "workflow": None, "dense_error": _dense_error}
+    _context = evidence_contexts[_key]
+    playback_manager = _context["manager"]
+    playback_message, playback_error = None, _context.get("dense_error")
+    if inference_mode.value == "live" and prepare_playback.value:
+        try:
+            _days = evidence_frames.exact_schedule(playback_horizon.value, step=playback_spacing.value)
+            _started = _playback_clock()
+            if _context["workflow"] is None:
+                _loaded_task, _workflow, _record = trajectory.load_live(model_choice.value, _path)
+                if _loaded_task != cache_task or _record["model_sha256"] != _checkpoint:
+                    raise ValueError("playback checkpoint or task differs from this selected history")
+                _context["workflow"] = _workflow
+            _record = evidence_frames.prepare_frames(playback_manager, _context["workflow"], _days)
+            playback_message = (f"Prepared {len(_record['new_lengths'])} new exact prefixes; "
+                f"reused {len(_record['reused_lengths'])}. Total verification/query time: "
+                f"{_playback_clock()-_started:.2f} s. Playing, scrubbing and changing axis units now reuse these draws.")
+        except (ImportError, OSError, ValueError, RuntimeError, FloatingPointError) as _error:
+            playback_error = ("Playback preparation stopped: " + str(_error) +
+                ". No partial new frame batch is displayed. Any already prepared frames still belong to the labelled context.")
+    return playback_error, playback_manager, playback_message
+
+
+@app.cell(hide_code=True)
+def _(cache_arrays, case_choice, evidence_frames, evidence_widget, inference_mode, mo,
+      parameter_labels, playback_error, playback_manager, playback_message, requested_days):
+    _frames = evidence_frames.frame_list(playback_manager, requested_days)
+    _parts = []
+    if playback_error:
+        _parts.append(mo.callout(mo.md("**Evidence player notice:** " + playback_error), kind="warn"))
+    if playback_message:
+        _parts.append(mo.md(playback_message))
+    if not _frames:
+        _parts.append(mo.md("*The prior is ready. Prepare exact prefixes above before playing the native posterior sequence.*"))
+    _html = evidence_widget.render_html(playback_manager["task"],
+        cache_arrays["observations"][case_choice.value], _frames, end=requested_days,
+        labels=parameter_labels, history_label=f"History {case_choice.value+1} · {inference_mode.value} estimator route")
+    _rows = (len(playback_manager["task"]["parameter_names"])+1)//2
+    _parts.append(mo.iframe(_html, height=f"{380+210*_rows}px"))
+    mo.vstack(_parts)
     return
 
 
@@ -1720,8 +1923,30 @@ def _(mo):
         Independent replicated histories check the fitted model from its origin.
         Predicting the next part of the observed history additionally needs its
         current hidden state; rough Bergomi also needs past-shock memory. The GRU
-        summary is not a joint state–parameter posterior, so these results do not
-        provide conditional return, VaR or expected-shortfall forecasts.
+        summary is not a joint state–parameter posterior, so these results are
+        not state-conditioned forecasts of subsequent returns, VaR or expected
+        shortfall.
+
+        **Why didn't we train a state estimator?** We chose one teaching target:
+        fixed parameters given an ordered return history. Keeping the parameter
+        target from the option lessons lets us focus on what changes when the
+        observations become a sequence. The training loss
+        compares inferred parameters with their generating values; it never asks
+        the network to recover the terminal variance or latent shocks. Those
+        states exist in simulation, so adding them is possible. It is a different
+        inference task that needs its own targets, training design and validation.
+        BayesFlow itself does not restrict us to parameter inference.
+
+        With continuous-time Heston, a joint posterior over parameters and today's variance
+        would supply a Markov state from which to continue. For rough Bergomi,
+        today's variance alone does not summarize how past shocks affect future
+        variance. We would need a suitable memory representation, a validated
+        finite-factor approximation, or a model trained directly for future
+        returns conditional on the past. A GRU summary is not automatically a
+        calibrated posterior over any of these states.
+        State estimation need not itself be neural: another route is a
+        conventional filter conditional on each parameter draw. This lesson
+        currently implements neither that filter nor a learned state posterior.
 
         **Takeaways**
 
@@ -1742,6 +1967,39 @@ def _(mo):
         Here $z_T$ includes hidden state and, for rough Bergomi, memory. Filtering
         infers that state from past observations. This network infers fixed
         parameters after averaging over hidden paths.
+
+        Heston's continuous-time state is its variance. Exact continuation of our
+        full-truncation numerical scheme also retains its signed auxiliary
+        variance; replacing it with its positive part loses numerical state.
+        """), "How does amortized-fractals compare?": mo.md(r"""
+        The [expanded MMAR tutorials](https://github.com/stefanradev93/amortized-fractals)
+        also train **parameter-only** estimators. Their practical applications
+        are more developed: rolling risk estimates, stock screening and
+        allocation backtests. Their scenario code draws fresh cascade weights,
+        a fresh cascade phase and new innovations after inferring parameters.
+        It does not infer the observed window's terminal cascade state and
+        continue that same latent realization.
+
+        | | This trajectory lesson | amortized-fractals |
+        |:---|:---|:---|
+        | Inferred quantity | Parameters of a physical return model | MMAR parameters, including extensions for multiple assets and a fractional driver |
+        | Time structure | Daily prefixes of one declared task | Fixed return windows; rolling-window applications |
+        | Scenario calculation | Independent histories from the model's origin | New cascades/phases and return innovations |
+        | Filtered state continuation | Not trained | Not implemented in the inspected scenario helpers |
+
+        The MMAR applications can still be evaluated prospectively: infer from
+        past data, choose a risk estimate or allocation, then score it on later
+        observations. This tests the usefulness of that restart-based rule; it
+        does not turn it into a state-conditioned continuation. A random phase
+        inside a finite cascade window is also not, by itself, a law for evolving
+        that cascade beyond the window.
+
+        Inspect the source
+        [forward scenario helper](https://github.com/stefanradev93/amortized-fractals/blob/069d5dc5943dbe85505849f2fa8bfb563617ff97/mmar/univariate.py#L115),
+        [rolling risk calculation](https://github.com/stefanradev93/amortized-fractals/blob/069d5dc5943dbe85505849f2fa8bfb563617ff97/mmar/risk.py#L55)
+        and [allocation backtest](https://github.com/stefanradev93/amortized-fractals/blob/069d5dc5943dbe85505849f2fa8bfb563617ff97/mmar/allocation.py#L130).
+        The Hurst extension likewise resimulates a fractional driver; it does
+        not condition its future innovations on the observed past.
         """)}),
     ])
     return

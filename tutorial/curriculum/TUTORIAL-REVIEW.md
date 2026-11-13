@@ -437,6 +437,61 @@ posterior replicas, 128/512 drawdown scenarios and threshold reuse. Saved-126
 fallback and fresh-137 predictive checks retain their actual conditioning
 lengths. The new displays fit a 760-pixel layout without runtime or math errors.
 
+### Make evidence revelation interactive and explain the inference target
+
+Separate parameter inference, latent-state filtering and independent scenarios.
+The present loss targets generating parameters, not terminal variance or rough
+memory. BayesFlow can support a different target, but the current GRU summary
+is not a calibrated state posterior. Explain continuous-time Heston's Markov
+variance state and the extra signed auxiliary state in its numerical scheme;
+rough Bergomi additionally needs relevant shock memory or a validated reduced
+representation. Direct past-to-future amortization is another possible task.
+
+Contrast the inspected amortized-fractals source at `069d5dc`: its estimators
+also target parameters. Its rolling risk and allocation applications evaluate
+decisions prospectively, using fresh cascades/phases for scenarios. They do
+not filter the observed cascade state, and a finite random-phase window does
+not itself specify inter-window evolution. Preserve this distinction without
+dismissing restart-based risk prediction or the practical backtests.
+
+An early section motivates parameter uncertainty, repeated matched-history
+analysis and scenario propagation. A compact PyMC comparison explains the
+conditional Gaussian likelihood for the discretized rough task, latent-path
+integration and the roughly 10,000 driving coordinates in a direct five-year
+augmentation. NUTS needs a deterministic differentiable target and validated
+gradients. No matched timing or superiority result is claimed.
+
+Replace the static evidence-evolution chart with a local play/pause/advance/
+reset/scrub player. Start at the prior, zoom to the first 21 days by default,
+and provide day/week/month axes. Link the revealed returns to actual posterior
+distributions and central intervals, with fixed axes and explicit frame/source
+labels. Saved frames remain bound to task, model and history; exact native
+queries use the original prior and mask all future returns. Query preparation
+is explicit and bounded to 61 frames per action; playing and changing units
+perform no inference. The cursor is local and does not silently change the
+other posterior and checking panels. Never interpolate posterior samples or
+present playback as hidden-state propagation.
+
+The known-curve rough-Bergomi replay bundles 53 extra exact-prefix queries for
+each of the same four preserved validation histories: 65 actual frames after
+combining them with the original 12. The first 21 days are daily, followed by
+5-day, 21-day and 63-day spacing. Original paired samples remain byte-identical.
+The 834 KB extra payload is hash-bound to task, checkpoint, replay and observed
+history bytes, accepted through the lab tools and labelled as development
+playback, not new calibration evidence. Other model replays retain their
+original landmarks. Runtime and asset tests cover masked future returns,
+context invalidation, sampling reuse, exact-frame fallback and atomic failure.
+
+**Evidence-player verification · 13 November:** 116 tutorial tests, 529 core
+lab tests (three optional PyMC skips), all seven exports (83 trajectory cells,
+zero errors), marimo and release/ownership checks pass. Browser review verifies
+the prior start, play/pause/reset/advance/scrub, exact saved-frame changes,
+history/model changes, all 65 known-curve frames and the other models' 12
+landmarks, daily native queries through day 21 and query reuse. The 760-pixel
+view has no horizontal overflow. The iframe expands to fit its content, keeping
+the footer visible. The requested user preview remains on port 8792; temporary
+QA servers are stopped separately.
+
 ## E. Resolve trajectory numerical and inference limitations
 
 The zero-origin rough physical-return law is nonstationary even with a flat
