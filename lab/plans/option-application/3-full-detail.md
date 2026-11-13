@@ -1,44 +1,50 @@
 # Option application on SPX · Layer 3: full detail
 
 *Layer 3 of 3 · reference · [Index](README.md) · [Layer 1](1-overview.md) ·
-[Layer 2](2-walkthrough.md) · [Glossary](glossary.md) · Results as of 11 November 2026*
+[Layer 2](2-walkthrough.md) · [Glossary](glossary.md) · Results as of 13 November 2026*
 
 Each step gives the definitions, the derivations, the numbers behind each choice and the
 implementation: code paths, settings and costs. Every quantity is defined by a formula
-where it first appears, and the symbols are those of the tutorial's Heston notebook
-(`lab/notebooks/heston_spx_calibration.py`). The Heston results come from the study in
-[PR #85](https://github.com/fmuia/sbi4finance/pull/85) and from that notebook's run
-record; the rough Bergomi data generation is in
+where it first appears, and the symbols are those of the tutorial's Heston notebook,
+`lab/notebooks/heston_spx_calibration.py`
+([PR #93](https://github.com/fmuia/sbi4finance/pull/93)). The Heston results are those the
+notebook shows: they come from its run record and from the study in
+[PR #85](https://github.com/fmuia/sbi4finance/pull/85). The rough Bergomi data generation
+is in [PR #84](https://github.com/fmuia/sbi4finance/pull/84) and
 [PR #88](https://github.com/fmuia/sbi4finance/pull/88). Every figure is drawn by
 [`figure-sources/make_figures.py`](figure-sources/make_figures.py) from
-[`figure-sources/data.json`](figure-sources/data.json), whose sources and their SHA-256 hashes are listed
-in the file; [Evidence and figures](#evidence-and-figures) says which file each number
-comes from.
+[`figure-sources/data.json`](figure-sources/data.json) and
+[`figure-sources/notebook.json`](figure-sources/notebook.json), whose sources and their
+SHA-256 hashes are listed in the files; [Evidence and figures](#evidence-and-figures) says
+which file each number comes from.
 
 ## Goals
 
-**1. A value and a range for products that no market prices.** Under Heston and rough
-Bergomi, fitted to the same 63 SPX quotes with the same error model, report for each
-product the posterior 5%, 50% and 95% quantiles, the mark, the prudent value at 90% and
-the reserve, and the same for an example book. The products are a forward-starting
-variance swap on two windows, a 6-month-to-1-year forward-start call, a 1-year volatility
-swap and a 1-year down-and-in put.
+**1. A value and a range for products that no market prices.** Under Heston, fitted to
+63 SPX quotes with an error model scaled by their half-spreads, report for each product
+the posterior 5%, 50% and 95% quantiles, the mark, the prudent value at 90% and the
+reserve. The products are a forward-starting variance swap on two windows, a forward-start
+call from 3 to 6 months and a 3-month volatility swap. Rough Bergomi, fitted to the same
+quotes with the same error model, follows; a 1-year down-and-in put and an example book
+are next (10.3).
 
 **2. SBI makes this fast and testable.** The amortized posterior must be calibrated on
 simulated surfaces, agree with reference posteriors where those can be computed, and
 return a posterior in under a second, so that ranges can be produced every day and their
 coverage tested on hundreds of simulated surfaces.
 
-**3. The limits.** Each output is labelled with what it covers: parameter uncertainty
-within one model, under a stated error model.
+**3. The model and the limits.** Check the model on the market quotes, measure how much
+its misfit moves the products, and label each output with what it covers: parameter
+uncertainty within one model, under a stated error model.
 
 **Success criteria.**
 - *Numerical:* option prices refined until two grids agree within 0.01 of the quote's
-  half-spread (step 4); Monte Carlo errors of product prices at most 2% of their 90% range
-  (step 9).
+  half-spread (step 4); product prices simulated with the same random numbers for every
+  posterior draw, so that their spread is the parameters' (step 9).
 - *Inference:* coverage and rank tests on simulated surfaces; agreement with the reference
   posteriors (step 8). Where the network does not agree, results come from the reference.
-- *Model:* the fit to the market is measured and reported (steps 6 and 8).
+- *Model:* the fit to the market is measured and reported, and the products are priced
+  under refits to parts of the quotes as well as under the posterior (steps 6, 8 and 9).
 
 **Not goals.** Hedge ratios under the posterior; a complete model-risk reserve; a claim
 that regulators accept a posterior-based AVA.
@@ -47,11 +53,11 @@ that regulators accept a posterior-based AVA.
 
 The ICAIF '26 tutorial (two hours, 14 November) speaks to AI and statistics researchers
 who know posteriors, MCMC and neural networks but not options, and to finance
-practitioners who know options and calibration but not SBI. The material becomes:
-- **Slot 4, Heston on SPX:** steps 1 to 9 with an exact posterior to check against;
-- **Slot 5, rough Bergomi on SPX:** the same steps for a model priced only by simulation,
-  then the two models side by side;
-- **Slot 6, priors and misspecification:** the error scale and the model's misfit.
+practitioners who know options and calibration but not SBI. For Heston on SPX the material
+is a notebook, `lab/notebooks/heston_spx_calibration.py`, which runs steps 4 to 9 with an
+exact posterior to check against and closes with the model's misfit (steps 6 and 10);
+10.4 maps its sections onto the steps. Rough Bergomi on SPX follows the same steps once
+its simulations are complete.
 
 Background for each step, from the [course](../../../course/README.md):
 
@@ -103,8 +109,8 @@ matter here:
 - **Model risk (Article 11)**, "due to the potential existence of a range of different
   models or model calibrations, which are used by market participants", to be measured
   where possible as "a range of plausible valuations produced from alternative
-  appropriate modelling and calibration approaches" (Article 11(3)). Heston against rough
-  Bergomi belongs here.
+  appropriate modelling and calibration approaches" (Article 11(3)). A second model, or
+  calibrations of one model to different quotes (9.6), belong here.
 
 Where data cannot give a range, the Regulation allows an expert-based approach
 (Articles 9(5)(b) and 11(4)).
@@ -122,8 +128,8 @@ from the range of possible values:
 with $`\alpha = 50\%`$. The factor is a fixed allowance for the fact that many exposures
 do not reach their 90% points at once. When the fair value and EV are both the posterior
 mean, the two methods coincide: each exposure counts for half of its standalone
-adjustment. Step 9 measures the actual offset from the joint posterior draws, for
-comparison; the regulatory factor stays fixed.
+adjustment. The joint posterior draws of a book would measure the actual offset, for
+comparison (3.3); the regulatory factor stays fixed.
 
 **Current practice.** One point calibration per day; ranges from alternative calibrations
 and models, from consensus services that pool banks' prices (some publish 10th and 90th
@@ -132,8 +138,8 @@ nobody quotes: the forward smile, the deep wings, the vol of vol. The course's
 [practice sources](../../../course/practice-sources.md) list what is documented.
 
 **What we propose.** The spread of a posterior over the parameters of a model calibrated
-to quotes, carried through every product, is an Article 9 input; the comparison of two
-models on the same information is an Article 11 question. That a posterior is an
+to quotes, carried through every product, is an Article 9 input; the spread across models,
+or across calibrations of one model to different quotes, is an Article 11 question. That a posterior is an
 acceptable basis for an AVA is our proposal, not established practice.
 
 So the practitioner needs, for every product, a mark and a defensible range; for the
@@ -151,7 +157,7 @@ range does not cover.
 | $`N`$ | 300,000 | simulated training rows, indexed by the superscript $`(n)`$ |
 | $`N_w`$ | 10,000 | training rows used to fit the whitening |
 | $`M`$, $`L`$ | 512, 512 | simulated test surfaces (index $`m`$) and network draws on each (index $`l`$) |
-| $`S`$ | 1,000; 4,096 in 8.3 | draws used from one posterior, indexed by the superscript $`(s)`$ |
+| $`S`$ | 1,000; 4,096 in 8.3; 40 in 9.6 | draws used from one posterior, indexed by the superscript $`(s)`$ |
 
 A **surface** is one set of 63 prices at the design's contracts, simulated or observed.
 
@@ -210,7 +216,7 @@ $`P(\theta) = (P_1(\theta), \dots, P_n(\theta))`$.
 **Errors.** The error model of step 6 is
 
 ```math
-y_i = P_i(\theta) + c\,h_i\,\varepsilon_i,\qquad \varepsilon_i \sim \mathcal N(0, 1)\ \text{independent},\qquad r_i(\theta) = \frac{y_i - P_i(\theta)}{h_i} ,
+y_i = P_i(\theta) + c\,h_i\,\epsilon_i,\qquad \epsilon_i \sim \mathcal N(0, 1)\ \text{independent},\qquad r_i(\theta) = \frac{y_i - P_i(\theta)}{h_i} ,
 ```
 
 with $`r_i(\theta)`$ the **scaled residual**: the miss of the model on quote $`i`$, in
@@ -319,12 +325,12 @@ with a median of 0.064 (step 5).
 
 | Product | Payoff | Role |
 | --- | --- | --- |
-| Forward-starting variance swap, windows $`[0, 21\ \text{days}]`$ and $`[81, 325\ \text{days}]`$ | Realized variance over the window minus a strike agreed today | Marked; closed form for each draw |
-| Forward-start call, $`T_1`$ = 6 months, $`T_2`$ = 1 year | $`(S_{T_2} - m\,S_{T_1})^+`$ at $`T_2`$, with $`m = F(T_2)/F(T_1)`$ | Marked; by simulation |
-| Volatility swap, 1 year | $`\sqrt{\mathrm{RV}_T} - K_{\text{vol}}`$ per unit notional | Marked; by simulation |
-| Down-and-in put, 1 year, strike $`K = S_0`$, barrier $`B = 0.7\,S_0`$, daily closes | $`(K - S_T)^+\,\mathbf{1}\{\min_i S_{t_i} \le B\}`$ | Marked; by simulation |
-| Variance swap at a listed expiry | $`\mathrm{RV}_T - K_{\text{var}}`$ | Check against the strip of listed options |
-| Listed 2-year 90% put | A listed option beyond the last fitted expiry | Check of extrapolation in maturity |
+| Forward-starting variance swap, windows $`[0, 21\ \text{days}]`$ and $`[81, 325\ \text{days}]`$ | Realized variance over the window minus a strike agreed today | Priced; closed form for each draw (9.2) |
+| Forward-start call, $`T_1`$ = 3 months, $`T_2`$ = 6 months | $`(S_{T_2}/S_{T_1} - 1)^+`$ per unit of notional, at $`T_2`$ | Priced; by simulation (9.5) |
+| Volatility swap, 3 months | $`\sqrt{\mathrm{RV}_T} - K_{\text{vol}}`$ per unit notional | Priced; by simulation (9.4) |
+| Down-and-in put, 1 year, strike $`K = S_0`$, barrier $`B = 0.7\,S_0`$, daily closes | $`(K - S_T)^+\,\mathbf{1}\{\min_i S_{t_i} \le B\}`$ | Next; estimator specified (9.7) |
+| Variance swap at a listed expiry | $`\mathrm{RV}_T - K_{\text{var}}`$ | Check against the strip of listed options (next) |
+| Listed 2-year 90% put | A listed option beyond the last fitted expiry | Check of extrapolation in maturity (next) |
 
 Realized variance over $`n_d`$ trading days with closes $`S_{t_0}, \dots, S_{t_{n_d}}`$ is
 the annualized mean of the squared daily log returns,
@@ -339,23 +345,25 @@ the issuing bank, which is therefore long it.
 - *Forward-starting variance:* the term structure of the variance level, so the
   expiries around the window ends; the strips of listed options at those expiries fix it
   for a continuous path (1.5).
-- *Forward start:* the near-the-money level and skew at 6 to 12 months, and above all the
+- *Forward start:* the near-the-money level and skew at 3 to 6 months, and above all the
   forward smile, the smile that will prevail at $`T_1`$, which no listed option fixes. It
   comes from the model's dynamics, inferred from the skew's term structure.
 - *Volatility swap:* the variance level, plus the vol of vol, from the wings and the short
   maturities, since $`K_{\text{vol}} \approx \sqrt{K_{\text{var}}}`$ minus a convexity term
-  (step 9).
+  (9.4).
 - *Down-and-in put:* puts at and below 70% out to 1 year, and the spot–volatility
   dynamics ($`\rho`$ and the vol of vol). At 1 year the barrier sits near $`\delta = -2.5`$.
 
-![Simulated index paths showing the payoffs of the four products](images/products.png)
+![Simulated index paths showing the payoffs of the three products](images/products.png)
 
-**Figure 1.** Simulated paths of the index under Heston at its SPX posterior mean (step 4).
-Top left: each forward-start call fixes its strike at the dot, 6 months in, and pays at 1
-year. Top right: running realized volatility, path by path, against one fixed strike.
-Bottom left: about 12% of paths touch the 70% barrier; on those, the put exists. Bottom
-right: the expected variance over time and its average over the two windows, the strikes
-of the two forward-starting variance swaps.
+**Figure 1.** Simulated paths of the index under Heston at its SPX posterior mean (step 4),
+in forward units. Left: each forward-start call fixes its strike at the dot, 3 months in,
+and pays the rise above it at 6 months. Centre: running realized volatility over 3 months,
+path by path, against one fixed strike. At these parameters the variance stays low most of
+the time and spikes now and then (the Feller condition fails by a factor of six, 4.1), so
+most paths realize less than the strike and a few much more. Right: the expected variance
+over time and its average over the two windows, the strikes of the two forward-starting
+variance swaps.
 
 ### 1.5 What listed options determine: two derivations
 
@@ -463,8 +471,10 @@ common random numbers for rough Bergomi. It is exact when $`P`$ and $`G_j`$ are 
 $`\theta`$ and the errors Gaussian; it misleads where the likelihood is curved, bounded by
 the prior box, or has several modes.
 
-**Expiry-drop refits.** Refit with each of the seven expiries removed in turn, and report
-the minimum to maximum of the product values.
+**Refits to parts of the quotes.** Refit by least squares to subsets of the quotes and
+report the minimum to maximum of the product values. 9.6 uses four subsets of the SPX
+quotes: all 63, the three shortest expiries, the four longest, and the quotes near the
+money. Refitting with each of the seven expiries removed in turn is a finer version.
 
 ## 3. The posterior turns one value into a distribution
 
@@ -520,8 +530,9 @@ book:
 B^{(s)} = \sum_j \omega_j\,G_j^{(s)},\qquad \bar B = \frac1S\sum_{s=1}^{S} B^{(s)},\qquad \mathrm{PV}_{\text{book}} = q_{0.10}\big(B^{(1)}, \dots, B^{(S)}\big),\qquad R_{\text{book}} = \bar B - \mathrm{PV}_{\text{book}} .
 ```
 
-The example book is long one down-and-in put (as an autocallable issuer is), long one
-forward start and short one 1-year volatility swap. Two more numbers explain its reserve:
+The example book, which is among the next steps (10.3), is long one down-and-in put (as
+an autocallable issuer is), long one forward start and short one volatility swap. Two more
+numbers explain its reserve:
 the **diversification ratio** $`R_{\text{book}} / \sum_j |\omega_j|\,R_j`$, which the joint
 draws measure and the Regulation sets at $`1-\alpha = 0.5`$, and the **correlation
 matrix** of the $`G_j^{(s)}`$ across draws. The products are in different units (index
@@ -535,15 +546,16 @@ The posterior needs a prior $`p(\theta)`$ (step 4), the quotes with their half-s
 model, a recipe that produces a surface from nothing:
 
 ```math
-\theta \sim p(\theta),\qquad y_i = P_i(\theta) + c\,h_i\,\varepsilon_i,\quad \varepsilon_i \sim \mathcal N(0, 1),\quad i = 1, \dots, n .
+\theta \sim p(\theta),\qquad y_i = P_i(\theta) + c\,h_i\,\epsilon_i,\quad \epsilon_i \sim \mathcal N(0, 1),\quad i = 1, \dots, n .
 ```
 
 Step 7 learns to invert it, from $`y`$ back to $`\theta`$; step 8 checks the inversion.
 
-## 4. Two models
+## 4. The model
 
-Both models move the index in forward units as $`dX_t/X_t = \sqrt{V_t}\,dW^F_t`$ and differ
-in how the variance $`V`$ behaves.
+The model is Heston (4.1). Rough Bergomi (4.2) is the next model, for what Heston misses
+at short expiries (6.5). Both move the index in forward units as
+$`dX_t/X_t = \sqrt{V_t}\,dW^F_t`$ and differ in how the variance $`V`$ behaves.
 
 ### 4.1 Heston
 
@@ -629,10 +641,31 @@ standard deviation, and the largest change in log-likelihood $`4.7\times10^{-6}`
 check repeated at reference-posterior draws (step 8) gives differences below
 $`10^{-6}`$ of that standard deviation. One pricing of the 63 quotes costs 3 to 11 ms.
 
-**Short maturities.** As $`T \to 0`$ Heston's at-the-money skew tends to a constant, while
-index skews keep steepening. Step 6 shows the consequence on SPX.
+**Skew and curvature.** With $`\rho \lt 0`$, volatility rises when the index falls, so
+puts cost more: the skew. A larger $`\sigma_v`$ makes the variance more random and fattens
+both tails: the curvature. It also steepens the skew and breaks the Feller condition.
 
-### 4.2 Rough Bergomi
+**A ceiling on the short-expiry skew.** Write $`\psi(T)`$ for the at-the-money skew, the
+slope of implied volatility in log-moneyness $`k`$ at the money:
+
+```math
+\psi(T) = \frac{\partial\,\sigma^{\text{imp}}(k, T)}{\partial k}\Big|_{k=0} .
+```
+
+Over a short time the variance barely moves from $`v_0`$, and the expansion of Heston's
+smile in small $`T`$ ([Lecture 10](../../../course/10-heston.md), Section 10.8) gives
+
+```math
+\lim_{T \to 0} |\psi(T)| = \frac{|\rho|\,\sigma_v}{4\sqrt{v_0}} .
+```
+
+For expiries well below the reversion time $`1/\kappa`$ the skew sits at this ceiling and
+grows no further, while index skews keep steepening as the expiry shrinks. At the
+market-like parameters of step 8 the skew is 0.27 at one year, 0.86 at 30 days and 1.51
+at 7 days, and stays within 10% of its ceiling, 1.82, below about 5 days. 6.5 shows the
+consequence on SPX.
+
+### 4.2 Rough Bergomi, the next model
 
 ```math
 V_t = \xi_0(t)\,\exp\!\Big(\eta\,Y_t - \tfrac12\,\eta^2\,t^{2H}\Big),\qquad Y_t = \sqrt{2H}\int_0^t (t-s)^{H-1/2}\,dW^V_s,\qquad \frac{dX_t}{X_t} = \sqrt{V_t}\,dW^F_t,\qquad dW^F_t\,dW^V_t = \rho\,dt .
@@ -704,10 +737,14 @@ effect of a finer grid is recorded on a panel, not imposed.
 
 **Cost.** Pricing the 63 quotes for one parameter set takes a median of about 1 CPU-minute
 and a mean of about 1.7 (90% of sets under 4 minutes). A set that exceeds 860 seconds is
-recorded as a failure and not redrawn: 7 of the first 2,764. The bank of 300,000 sets runs
-on 192 CPUs of Brown's Oscar cluster: 47 hours if every CPU stays busy, about 59 hours
-with the batch structure, from the measured times. Sets for validation (5,000) and
-testing (7,000) follow.
+recorded as a failure and not redrawn: 7 of the first 2,764. The bank of 300,000 sets has
+been running on Brown's Oscar cluster since 11 November, on up to 192 CPUs: 47 hours if
+every CPU stays busy, about 59 hours with the batch structure, from the measured times.
+Rows that ran out of time are recomputed separately with their original parameters,
+errors and random streams (271 of them by 12 November), and merged by row, so that no row
+is drawn twice. Sets for validation (5,000) and testing (7,000) follow. Generating the
+bank does not by itself show that a network trained on it is calibrated; that is the work
+of steps 7 and 8.
 
 ### 4.3 The same information for both
 
@@ -757,6 +794,15 @@ maturity, forward, discount, mid and half-spread
 **Figure 4.** Left: the smile at the 63 quotes, one line per expiry. Right: the design in
 $`(\delta, T)`$, coloured by each quote's half-spread in vol points (median 0.064, from 0.025
 to 0.28). The widest are the calls at $`\delta \approx 2`$ in the first two weeks.
+
+On the scale of $`\delta`$ the seven smiles are nearly parallel. From the money to the
+deepest put, implied volatility rises by 20.5, 22.3, 24.5, 23.7, 25.8, 25.9 and 25.3 vol
+points at the seven expiries, from 7 to 325 days: the skew per unit of $`\delta`$ is about
+the same at one week as at eleven months. That is what the model must reproduce; in
+log-moneyness $`k = \sigma_{\text{ref}}\sqrt{T}\,\delta`$ it means a skew that keeps growing
+as the expiry shrinks (6.5). The half-spread is 0.18% of the mid at
+best, near the money, and 20% at worst, for the cheapest contract, a 7-day call worth
+0.25 index points.
 
 Using actual quotes adds no interpolation error. Because the design is fixed, one trained
 network serves this snapshot; a new design needs its own simulations and network.
@@ -828,7 +874,7 @@ designs, so this comparison describes two cases rather than proving a general ra
 For the $`n = 63`$ quotes,
 
 ```math
-y_i = P_i(\theta) + c\,h_i\,\varepsilon_i,\qquad \varepsilon_i \sim \mathcal N(0, 1)\ \text{independent},\qquad c \sim U(0.5,\ 2) .
+y_i = P_i(\theta) + c\,h_i\,\epsilon_i,\qquad \epsilon_i \sim \mathcal N(0, 1)\ \text{independent},\qquad c \sim U(0.5,\ 2) .
 ```
 
 The three factors of the error term play different roles:
@@ -836,7 +882,7 @@ The three factors of the error term play different roles:
   strike and the expiry it is known and fixed, the same in every simulation. The value at
   which a trade would happen lies between bid and ask, so the half-spread is the natural
   scale of a quote's uncertainty; reading it as one standard deviation is a convention.
-- $`\varepsilon_i`$ is the **random error**: a fresh standard normal draw for every quote
+- $`\epsilon_i`$ is the **random error**: a fresh standard normal draw for every quote
   and every simulated surface.
 - $`c`$ is an **unknown**: one multiplier for all 63 quotes, inferred with the model's
   parameters and never given to the network as an input. It lets the data say how large
@@ -868,7 +914,7 @@ the root-mean-square scaled residual, clipped to the prior's range.
 
 ### 6.3 How precisely the error scale can be learned
 
-At the true parameters $`r_i = c\,\varepsilon_i`$, so $`\sum_i r_i^2/c^2`$ is a sum of
+At the true parameters $`r_i = c\,\epsilon_i`$, so $`\sum_i r_i^2/c^2`$ is a sum of
 $`n`$ squared standard normals, a $`\chi^2_n`$ variable. When the $`p = 5`$ Heston
 parameters are fitted, about $`p`$ of the $`n`$ directions in which the quotes can move
 are absorbed by the fit, and $`\sum_i r_i^2/c^2 \approx \chi^2_{n-p}`$ with
@@ -918,19 +964,84 @@ half-spread, is barely visible.
 | Correlation of $`e_i`$ between neighbouring strikes of one expiry | 0.66 |
 | Correlation of $`e_i`$ between adjacent expiries, same target $`\delta`$ | 0.94 |
 
-On SPX the model, not the quotes, is the main source of error, and the misses are smooth
-across strikes and maturities. The posterior is then the uncertainty of Heston's
-parameters given that Heston is the model, with errors capped at twice the half-spread: it
-leaves out the model's own error. Widening the prior on $`c`$ would not repair this.
-Independent errors would treat the 63 smooth misses as 63 independent pieces of evidence,
-when they form a few smooth bumps, and the posterior would remain too narrow (6.6).
+**Four signs that the model is wrong.** All four come from the exact posterior; the
+network plays no part in them.
+1. $`c`$ sits at its bound: median 1.9995 against an upper limit of 2.
+2. The fit misses at every expiry. Per expiry, the root mean square of $`r_i`$ is 10.7 to
+   17.0 half-spreads, against a largest allowed error of 2 (table below).
+3. The misses are systematic. The deepest put is priced too low at every expiry, by 1.9 to
+   6.0 vol points, and the 14 puts with $`\delta \lt -3`$ give 42% of
+   $`\sum_i r_i^2`$. Elsewhere the fit is a compromise that misses by up to 1.2 vol points
+   in both directions.
+4. The fit needs extreme parameters: $`\sigma_v = 1.80`$, so $`\sigma_v^2 = 3.26`$ against
+   $`2\kappa v_\infty = 0.54`$; the Feller condition fails by a factor of six.
+
+| Expiry (days) | 7 | 14 | 30 | 60 | 81 | 172 | 325 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Root mean square of $`r_i`$ (half-spreads) | 13.8 | 10.7 | 14.7 | 11.0 | 17.0 | 10.7 | 14.3 |
+| Largest $`r_i`$ | 23.9 | 21.0 | 28.5 | 18.5 | 35.4 | 23.3 | 31.5 |
+| $`\delta`$ of the largest | −5.02 | −5.01 | −5.11 | −4.74 | +0.50 | −5.10 | −5.15 |
+
+The largest miss is at the deepest put at six of the seven expiries.
+
+**The likelihood of the error scale.** At fixed model parameters the likelihood of 6.2 is,
+as a function of $`c`$, proportional to $`c^{-n}\exp\big(-\sum_i r_i^2/(2c^2)\big)`$, which
+peaks at $`\hat c = \sqrt{\frac1n\sum_i r_i^2}`$. At the posterior mean that is 13.4. The
+multiplier scales every error by the same factor, so it cannot improve the fit, only
+measure it; the prior's bound stops it at 2.
+
+**Which feature is missing.** Measure each smile's skew $`\psi(T)`$ and curvature at the
+money by fitting a quadratic in $`k`$ through the five quotes nearest the money, as in
+[Lecture 5](../../../course/05-implied-volatility-and-the-smile.md): the skew is the
+linear coefficient and the curvature twice the quadratic one.
+
+![What Heston misses at short expiries: the skew ceiling, the curvature and the 7-day smile](images/heston-skew-ceiling.png)
+
+**Figure 7.** Heston's best fit (the posterior mean) against the SPX quotes. Left: the
+at-the-money skew $`|\psi(T)|`$ of each smile, Heston's skew at any expiry from one day to
+one year, its ceiling $`|\rho|\,\sigma_v/(4\sqrt{v_0}) = 1.88`$ (4.1), and a power law
+fitted to the SPX skews. Centre: the at-the-money curvature. Right: the 7-day smile.
+
+| Expiry (days) | 7 | 14 | 30 | 60 | 81 | 172 | 325 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| SPX skew $`\psi(T)`$ | −1.36 | −1.11 | −0.85 | −0.63 | −0.55 | −0.40 | −0.30 |
+| Best fit's skew | −1.59 | −1.27 | −0.95 | −0.67 | −0.59 | −0.42 | −0.30 |
+| SPX curvature | 13.1 | 9.8 | 6.3 | 4.0 | 3.0 | 1.3 | 0.53 |
+| Best fit's curvature | 11.0 | 17.9 | 12.4 | 7.1 | 5.1 | 1.8 | 0.58 |
+| Rise from the money to the deepest put, SPX (vp) | 20.5 | 22.3 | 24.5 | 23.7 | 25.8 | 25.9 | 25.3 |
+| The same, best fit (vp) | 13.7 | 17.5 | 21.4 | 22.4 | 24.1 | 23.9 | 22.5 |
+
+- *Skew.* The SPX skew follows a power law, $`|\psi(T)| \propto T^{-0.40}`$, and keeps
+  growing as the expiry shrinks. Over the quoted expiries the fit follows it within 16%,
+  with a similar exponent, −0.44. But its 7-day skew is already 85% of the ceiling, so
+  shorter expiries could add at most 15%.
+- *Curvature.* The SPX smile gets more curved as the expiry shrinks. The fit's curvature
+  peaks at 14 days and falls below it; under about 3 days it turns negative.
+- *The deep put wing.* From the money to the deepest put, SPX rises 20.5 vol points at
+  7 days and the fit only 13.7; from 60 days on the shortfall is 1.2 to 2.8 points.
+- *The 7-day smile.* Near the money ($`|\delta| \lt 1.3`$) the fit is within 1.2 vol
+  points; at the deepest put it is 6.0 too low. With one diffusive variance factor, Heston
+  cannot put that much crash risk into one week without breaking the rest of the smile.
+
+What Heston lacks is a short-expiry smile that keeps steepening. Rough Bergomi's skew grows
+like $`T^{H-1/2}`$ with no ceiling (4.2).
+
+**What follows.** On SPX the model, not the quotes, is the main source of error, and the
+misses are smooth across strikes and maturities. The posterior is then the uncertainty of
+Heston's parameters given that Heston is the model, with errors capped at twice the
+half-spread: it leaves out the model's own error. Widening the prior on $`c`$ would not
+repair this. Independent errors would treat the 63 smooth misses as 63 independent pieces
+of evidence, when they form a few smooth bumps, and the posterior would remain too narrow.
+A smooth model-error term (6.6) lets the posterior admit the misfit instead of pushing
+$`c`$ against its bound; the misfit itself stays, and removing it needs a different
+model.
 
 ### 6.6 The smooth model-error extension
 
 The natural extension adds a smooth error in implied volatility:
 
 ```math
-y = P(\theta) + c\,h \odot \varepsilon + \tau\,\nu \odot U,\qquad \varepsilon \sim \mathcal N(0, I_n),\qquad U \sim \mathcal N(0, K_\ell)\ \text{independent},
+y = P(\theta) + c\,h \odot \epsilon + \tau\,\nu \odot U,\qquad \epsilon \sim \mathcal N(0, I_n),\qquad U \sim \mathcal N(0, K_\ell)\ \text{independent},
 ```
 
 with $`\nu`$ the quotes' vegas, $`\tau`$ the model error's size in volatility (inferred),
@@ -1027,7 +1138,7 @@ p(\theta \mid y) = \frac{p(\theta)\,p(y \mid \theta)}{p(y)},\qquad p(y) = \int p
 
 This step computes it. The argument has five links:
 1. evaluating the right-hand side at one $`\theta`$ costs one pricing of the 63 quotes (7.1);
-2. one posterior needs about 146,000 such evaluations, and the work needs hundreds of
+2. one posterior needs about 180,000 such evaluations, and the work needs hundreds of
    posteriors (7.1, 7.2);
 3. the pricings can instead be done once, on simulated parameters, because simulated
    pairs $`(\theta, y)`$ already contain the posterior of every $`y`$ (7.3);
@@ -1066,13 +1177,17 @@ cost of a posterior is therefore
 
 | | Heston | Rough Bergomi |
 | --- | --- | --- |
-| Likelihood evaluations for one posterior by MCMC | 146,000 (measured, 8.1) | of the same order |
-| Cost of one posterior | 14 to 27 CPU-minutes (measured) | 146,000 × 1–2 CPU-minutes = 100 to 180 CPU-days (not run) |
+| Likelihood evaluations for one posterior by MCMC | about 180,000: 34,000 in a short first run, 146,000 in the run that passed (measured, 8.1) | of the same order |
+| Cost of one posterior | 17 to 32 minutes on one core (measured) | 180,000 × 1 to 1.75 CPU-minutes = 125 to 220 CPU-days (not run) |
 
-![CPU time for one posterior by each method](images/posterior-costs.png)
+![What each step costs, and the total time for many sets of quotes](images/posterior-costs.png)
 
-**Figure 7.** CPU time for one posterior, on a logarithmic scale. The darker part of each
-bar is the lower end of its range.
+**Figure 8.** Left: the cost of each step, on a logarithmic scale; hatched bars are paid
+once, and the lighter part of a bar is the upper end of its range. Heston's times are
+measured; the rough Bergomi time follows from the number of evaluations and the measured
+cost of one pricing. Right: the total time for many sets of quotes. Simulation and
+training are paid once, 46 minutes in all; MCMC is paid again for every set, and the 512
+sets of the calibration check (8.2) would take about 230 hours.
 
 ### 7.2 How many posteriors the work needs
 
@@ -1083,8 +1198,9 @@ bar is the lower end of its range.
 | Comparison with exact posteriors (8.3) | 3 per model |
 | Daily use | 1 per model, day and underlying |
 
-By MCMC, the 512 posteriors of the calibration check would cost 120 to 230 CPU-hours for
-Heston and 140 to 250 CPU-years for rough Bergomi. The posterior on the market is cheap;
+By MCMC, the 512 posteriors of the calibration check would cost about 230 hours for
+Heston, at the 27 minutes of an average run, and 175 to 310 CPU-years for rough
+Bergomi. The posterior on the market is cheap;
 showing that its ranges can be trusted is what costs.
 
 ### 7.3 The idea: do the pricings once, on simulated parameters
@@ -1093,12 +1209,12 @@ showing that its ranges can be trusted is what costs.
 $`N`$:
 
 ```math
-\theta^{(n)} \sim p(\theta),\qquad y^{(n)} = P\big(\theta^{(n)}\big) + c^{(n)}\,h \odot \varepsilon^{(n)},\qquad \varepsilon^{(n)} \sim \mathcal N(0, I_{63}) ,
+\theta^{(n)} \sim p(\theta),\qquad y^{(n)} = P\big(\theta^{(n)}\big) + c^{(n)}\,h \odot \epsilon^{(n)},\qquad \epsilon^{(n)} \sim \mathcal N(0, I_{63}) ,
 ```
 
 where $`\odot`$ is the elementwise product and $`c^{(n)}`$ is the last component of
 $`\theta^{(n)}`$. Each pair costs one pricing. The table of $`N`$ = 300,000 pairs, the
-**bank**, costs 300,000 pricings: as many as two posteriors by MCMC.
+**bank**, costs 300,000 pricings: fewer than two posteriors by MCMC.
 
 **Why the pairs contain every posterior.** A pair made this way is a draw from the joint
 density $`p(\theta)\,p(y \mid \theta)`$. By the definition of conditional probability the
@@ -1127,19 +1243,43 @@ generative model can produce.
 | | Pricings | Paid |
 | --- | ---: | --- |
 | The bank | 300,000 | once per model and design |
-| Each posterior from the trained network | 0 | 0.3 s each |
-| Each posterior by MCMC | 146,000 | every time |
+| Each posterior from the trained network | 0 | under 0.3 s each |
+| Each posterior by MCMC | about 180,000 | every time |
 
 The cost of inference is paid once and spread over every later posterior: it is
-**amortized**. For Heston the bank took 16 minutes and the training 30 minutes on one
-workstation; for rough Bergomi the bank takes 47 to 59 hours on 192 CPUs (4.2), about
-what two posteriors by MCMC would.
+**amortized**. For Heston the bank took 16 minutes and the training 30 minutes on the
+processor of a laptop; for rough Bergomi the bank takes 47 to 59 hours on 192 CPUs (4.2),
+fewer pricings than two posteriors by MCMC would need.
+
+**Two ways to use the simulations.** Simulated pairs can train either of two networks.
+- A **neural pricer** learns the clean prices of the five pricing parameters
+  $`\vartheta = (v_0, \kappa, v_\infty, \sigma_v, \rho)`$:
+  $`\widehat P_\psi(\vartheta) \approx P(\vartheta)`$, with weights $`\psi`$. It replaces
+  the pricer in the likelihood of 6.2, and MCMC samples the result with the same
+  six-parameter prior, once for every set of quotes.
+- An **amortized estimator**, the route taken here, learns the posterior
+  $`q_\phi(\theta \mid y)`$ itself from noisy simulated quotes, so a new set of quotes needs
+  no MCMC.
+
+With the neural pricer and the error model of 6.1, the likelihood is
+
+```math
+\log\widehat p(y \mid \vartheta, c) = -\frac12\sum_{i=1}^{63}\Big[\Big(\frac{y_i - \widehat P_{\psi,i}(\vartheta)}{c\,h_i}\Big)^2 + 2\ln(c\,h_i)\Big] + \text{constant} ,
+```
+
+where the $`\ln(c\,h_i)`$ terms matter because $`c`$ is inferred. The checks differ: a
+neural pricer's errors must be small against the quote noise, and each MCMC run must
+converge; an amortized estimator must be calibrated across simulated sets and agree with
+exact posteriors (step 8). A fair comparison of the two keeps the contracts, the spreads
+and the prior the same. Heston's Fourier pricing is already fast, so its exact reference
+uses the pricer directly; a neural pricer pays off where pricing is expensive, as for
+rough Bergomi.
 
 ### 7.4 What the network takes in and what it returns
 
 ![What the estimator takes in and returns, at training and at use](images/network-inputs-outputs.png)
 
-**Figure 8.** Top: training, done once. Bottom: use. The three quantities fitted in
+**Figure 9.** Top: training, done once. Bottom: use. The three quantities fitted in
 training (orange) are the whitening transform $`(\mu, W)`$, the weights $`\phi`$ of the
 velocity network, and the means and standard deviations $`(m_\theta, s_\theta)`$ of the
 unknowns.
@@ -1172,6 +1312,32 @@ Three things do not enter. The strikes, expiries and half-spreads are the same f
 input, since the design is fixed. $`c`$ is an output, never an input. And there is no
 summary network: the 63 numbers enter directly.
 
+**In BayesFlow.** The notebook builds the estimator in three parts: an adapter that names
+the six parameters as the inference variables and the whitened quotes as the condition, a
+`FlowMatching` inference network, and a `BasicWorkflow` that standardizes the parameters
+and trains:
+
+```python
+adapter = (bf.Adapter()
+           .concatenate(NAMES, into="inference_variables")   # theta: the six parameters
+           .rename("observations", "inference_conditions"))   # x-tilde: the whitened quotes
+network = bf.networks.FlowMatching(subnet_kwargs={"widths": (128,) * 3, "dropout": 0.1})
+workflow = bf.BasicWorkflow(adapter=adapter, inference_network=network, standardize="inference_variables")
+history = workflow.fit_offline(data=train, validation_data=validation, epochs=300, batch_size=256)
+draws = workflow.sample(conditions={"observations": x_tilde}, num_samples=4096)
+```
+
+Each design choice has alternatives in BayesFlow:
+
+| Choice | Here | Alternatives |
+| --- | --- | --- |
+| What is learned | the posterior $`q_\phi(\theta \mid y)`$ | a neural pricer, a likelihood or a likelihood ratio, each used inside a new MCMC run per set of quotes (7.3) |
+| Summary network | none: a fixed vector of 63 whitened quotes | `DeepSet` or `SetTransformer` for quote sets of varying size and layout |
+| Inference network | `FlowMatching` | `CouplingFlow` (exact density, one-pass sampling), `DiffusionModel`, `ConsistencyModel` (few sampling steps) |
+| Parameter space | standardized and unbounded, so a few draws leave the prior | bounded transforms in the adapter, so that every draw respects the prior |
+| Training data | a fixed set of simulations (`fit_offline`), one error draw per pair | fresh simulations in every batch (`fit_online`) |
+| Amortized over | quotes of these 63 contracts with these spreads | contract terms and spreads as extra inputs, to reuse one network across days |
+
 ### 7.5 How the network is trained: flow matching
 
 **The task.** For each $`\tilde x`$, the network must turn the noise distribution
@@ -1203,7 +1369,7 @@ between 0 and 1 and more often near 0. Nothing else is needed: no likelihood, no
 no pricing.
 
 **Why minimizing it gives the posterior.** Many lines pass through the same point $`z`$
-at the same time $`t`$, coming from different parameters and noise vectors (Figure 9,
+at the same time $`t`$, coming from different parameters and noise vectors (Figure 10,
 left). A function of $`(z, t, \tilde x)`$ cannot follow each of them. The function that
 minimizes a squared error is the conditional mean, so the best velocity is the average
 over the lines through that point, among the rows whose quotes are $`\tilde x`$:
@@ -1233,8 +1399,8 @@ argument with time running the other way, from noise at 0 to the target at 1.
 
 ![Flow matching on a one-parameter toy model](images/flow-matching.png)
 
-**Figure 9.** A toy model with one parameter, $`\theta \sim U(-2, 2)`$ and
-$`y = \theta^3/4 + 0.3\,\varepsilon`$, for which the averaged velocity can be computed
+**Figure 10.** A toy model with one parameter, $`\theta \sim U(-2, 2)`$ and
+$`y = \theta^3/4 + 0.3\,\epsilon`$, for which the averaged velocity can be computed
 exactly, without a network.
 - *Left:* training pairs. Each line joins a noise draw (at $`t = 1`$) to a simulated
   parameter (at $`t = 0`$). Lines cross. The lines whose simulated $`y`$ is near 1 (red)
@@ -1266,7 +1432,7 @@ network here uses flow matching.
 prices in half-spreads. By 6.1,
 
 ```math
-x = s(\theta) + c\,\varepsilon,\qquad \mathrm{Cov}(x) = \mathrm{Cov}\big(s(\theta)\big) + \mathbb{E}[c^2]\,I_{63},\qquad \mathbb{E}[c^2] = \frac{2^3 - 0.5^3}{3 \times 1.5} = 1.75 ,
+x = s(\theta) + c\,\epsilon,\qquad \mathrm{Cov}(x) = \mathrm{Cov}\big(s(\theta)\big) + \mathbb{E}[c^2]\,I_{63},\qquad \mathbb{E}[c^2] = \frac{2^3 - 0.5^3}{3 \times 1.5} = 1.75 ,
 ```
 
 with the covariances taken over the prior. The two terms have very different sizes:
@@ -1280,7 +1446,7 @@ $`u_k`$ that the parameters do not move, $`\lambda_k \approx 1.75`$ and the coor
 an input is pure error:
 
 ```math
-u_k^\top (x - \mu) \approx c\ u_k^\top \varepsilon \sim \mathcal N(0, c^2) .
+u_k^\top (x - \mu) \approx c\ u_k^\top \epsilon \sim \mathcal N(0, c^2) .
 ```
 
 So the size of $`x`$ along these directions measures $`c`$. With $`K`$ of them,
@@ -1294,22 +1460,26 @@ error (the precision argument of 6.3).
 
 ![Variance of the inputs by direction, correlations before and after whitening, and the error scale read from the small directions](images/whitening-spectrum.png)
 
-**Figure 10.** From 3,000 surfaces simulated from the prior at the 63 quotes; $`\mu`$ and
-the directions are fitted on 2,000 of them and applied to the other 1,000.
+**Figure 11.** From the notebook's 1,000 surfaces simulated from the prior at the 63
+quotes (its Section 2.2); $`\mu`$ and the directions are fitted on 700 of them and applied
+to the other 300, as in the notebook's Section 2.3.
 - *First panel:* the variances $`\lambda_k`$. The largest is $`1.9 \times 10^6`$ and the
-  smallest 1.3: a ratio (condition number) of 1.5 million. The first three directions
+  smallest 1.0: a ratio (condition number) of 1.8 million. The first three directions
   hold 97% of the variance. 33 directions (orange) lie below 3.5, twice the error
   variance: there the inputs carry quote errors and little else.
 - *Second and third panels:* correlations between the 63 inputs, before and after
-  whitening. Before, almost every pair is strongly correlated; after, none is.
+  whitening. Before, almost every pair is strongly correlated (median absolute
+  correlation 0.70); after, the largest is 0.26.
 - *Last panel:* $`\hat c`$ computed from the 33 orange directions against the true $`c`$,
-  on the 1,000 held-out surfaces: correlation 0.90, relative error 20%. The error scale
-  is in the data, in the smallest directions.
+  on the 300 held-out surfaces: correlation 0.84, relative error 27%. The error scale is in
+  the data, in the smallest directions. The notebook shows the same thing another way:
+  the correlation of $`|u_k^\top(x - \mu)|/\sqrt{\lambda_k}`$ with $`c`$ averages 0.34 over
+  the 30 directions of lowest variance and 0.06 over the 10 of highest.
 
 **Why a network does not find it unaided.** A network fed $`x`$, or each $`x_i`$ rescaled
 on its own, sees inputs whose informative directions for $`c`$ are a million times
 smaller in variance than the dominant ones; rescaling each input separately leaves the
-condition number at 2.0 million, because the small directions are combinations of all 63
+condition number at 2.1 million, because the small directions are combinations of all 63
 quotes. For gradient descent on a linear first layer, the curvature of the loss in the
 weights is the input covariance: the step size is limited by the largest eigenvalue, and
 progress along the smallest is about one part in the condition number per step. More data
@@ -1351,7 +1521,7 @@ initial weights; only the input scaling differs.
 
 ![The inferred multiplier with and without whitening, in a controlled comparison](images/whitening-comparison.png)
 
-**Figure 11.** Posterior median of $`c`$, with 90% intervals, against the true $`c`$ on
+**Figure 12.** Posterior median of $`c`$, with 90% intervals, against the true $`c`$ on
 512 simulated surfaces. Left: each input scaled on its own; the network returns the prior
 of $`c`$ whatever the data. Right: whitened inputs.
 
@@ -1375,7 +1545,7 @@ of $`c`$ whatever the data. Right: whitened inputs.
 
 | Item | Value |
 | --- | --- |
-| Rows | $`N`$ = 300,000 pairs $`(\theta^{(n)}, y^{(n)})`$; each keeps one error draw $`\varepsilon^{(n)}`$ for the whole run; 100 more rows for validation |
+| Rows | $`N`$ = 300,000 pairs $`(\theta^{(n)}, y^{(n)})`$; each keeps one error draw $`\epsilon^{(n)}`$ for the whole run; 100 more rows for validation |
 | Input | $`\tilde x^{(n)} = W(x^{(n)} - \mu)`$ |
 | Target | $`\tilde\theta^{(n)}`$; no transform keeps draws inside the prior box, so draws that fall outside it are kept and counted (8.2) |
 | Network | $`v_\phi`$: three hidden layers of 128 units, a 32-dimensional embedding of $`t`$, dropout 0.1 |
@@ -1384,7 +1554,8 @@ of $`c`$ whatever the data. Right: whitened inputs.
 | Learning rate | from $`5 \times 10^{-5}`$ to $`5 \times 10^{-4}`$ over the first 17,580 updates (5%), then to zero along a cosine |
 | Seed | 9011 |
 | Network used | the one after the last pass; the pass with the lowest validation loss (259) was also evaluated and is no better |
-| Cost | 30 minutes of training on the CPU of a laptop; 615 posteriors drawn for step 8 in 164 s, about 0.3 s each |
+| Software | BayesFlow's `FlowMatching` network in a `BasicWorkflow`, trained with `fit_offline` (7.4) |
+| Cost | 30 minutes of training on the processor of an Apple-silicon laptop; 615 posteriors drawn for step 8 in 164 s, under 0.3 s each |
 
 ### 7.8 Rough Bergomi
 
@@ -1392,18 +1563,21 @@ The same construction, with $`\theta = (H, \eta, \rho, \xi_s, \xi_l, \lambda, c)
 numbers, its own bank (4.2) and its own $`(\mu, W)`$. The differences are in cost: a
 pricing takes minutes, so the bank is the expensive part (7.3), and the exact reference of
 step 8 uses importance sampling, which needs about 1,000 pricings per posterior where MCMC
-needs 146,000.
+needs about 180,000. Its bank is being generated (4.2); the network and its checks
+follow.
 
 ## 8. Checking it
 
 The network's $`q_\phi(\theta \mid y)`$ is an approximation, and the model behind it is an
-assumption. Three things can be wrong, and each has its own check:
+assumption. The notebook runs five checks:
 
-| What can be wrong | Check | What the check needs |
-| --- | --- | --- |
-| On average over the surfaces the model can produce, $`q_\phi`$ is not the posterior | coverage and rank test (8.2) | many simulated surfaces with known parameters |
-| For one given $`y`$, $`q_\phi(\theta \mid y)`$ is not the posterior | comparison with a reference posterior (8.3) | the exact posterior of that $`y`$ (8.1) |
-| The model does not describe the market, so that even the exact posterior answers the wrong question | prior predictive, misfit, predictions of unused quotes (8.4) | market quotes |
+| Check | Question | What can be wrong | What the check needs |
+| --- | --- | --- | --- |
+| Posterior predictive (8.4) | Can the inferred parameters regenerate the quotes? | the model, or the posterior | posterior draws and the pricer |
+| Calibration (8.2) | Does a 90% interval contain the truth 90% of the time? | on average over the surfaces the model can produce, $`q_\phi`$ is not the posterior | many simulated surfaces with known parameters |
+| Recovery (8.2) | Does the posterior median find the true parameters? | $`q_\phi`$ is uninformative or biased | the same surfaces |
+| Comparison with the exact posterior (8.3) | Does the network reproduce the posterior of one $`y`$? | for one given $`y`$, $`q_\phi(\theta \mid y)`$ is not the posterior | the exact posterior of that $`y`$ (8.1) |
+| The model on the market (8.4) | Can Heston describe the market at all? | the model, so that even the exact posterior answers the wrong question | the market quotes |
 
 ### 8.1 Reference posteriors
 
@@ -1415,16 +1589,17 @@ assumption. Three things can be wrong, and each has its own check:
 - *Schedule:* 4 chains. A first run of 2,000 tuning steps and 2,000 draws per chain; if
   its diagnostics fail, one declared extension to 6,000 and 12,000. All three cases
   needed the extension.
-- *Starts:* four fits to the data alone, dispersed; never the truth or the network.
+- *Starts:* maximum-likelihood fits to the data alone (Powell's method) and dispersed
+  points; never the truth or the network.
 - *Acceptance:* rank-normalized $`\hat R \le 1.01`$ and bulk and tail effective sample
   sizes of at least 400, for every component of $`\theta`$ and for the two variance
   strikes of 9.2; and the pricing check of 4.1 at sampled draws.
 
-| Case | Parameters that generated it | Likelihood evaluations, accepted run | CPU-minutes, accepted run (first run) | Max $`\hat R`$ | Min bulk / tail ESS |
+| Case | Parameters that generated it | Likelihood evaluations, both runs (accepted run) | Minutes on one core, both runs (accepted run) | Max $`\hat R`$ | Min bulk / tail ESS |
 | --- | --- | ---: | ---: | ---: | ---: |
-| Simulated, market-like | $`v_0`$ 0.027, $`\kappa`$ 4.34, $`v_\infty`$ 0.056, $`\sigma_v`$ 1.80, $`\rho`$ −0.67, $`c`$ 1 | 146,087 | 26.1 (5.2) | 1.003 | 1,958 / 3,120 |
-| Simulated, stressed market | $`v_0`$ 0.136, $`\kappa`$ 3.08, $`v_\infty`$ 0.083, $`\sigma_v`$ 1.72, $`\rho`$ −0.78, $`c`$ 1 | 146,094 | 14.0 (2.7) | 1.002 | 2,183 / 2,863 |
-| SPX quotes, 9 November 2026 | unknown | 146,113 | 26.6 (5.2) | 1.002 | 2,078 / 2,301 |
+| Simulated, market-like | $`v_0`$ 0.027, $`\kappa`$ 4.34, $`v_\infty`$ 0.056, $`\sigma_v`$ 1.80, $`\rho`$ −0.67, $`c`$ 1 | 180,174 (146,087) | 31.6 (26.3) | 1.003 | 1,958 / 3,120 |
+| Simulated, stressed market | $`v_0`$ 0.136, $`\kappa`$ 3.08, $`v_\infty`$ 0.083, $`\sigma_v`$ 1.72, $`\rho`$ −0.78, $`c`$ 1 | 180,188 (146,094) | 16.8 (14.1) | 1.002 | 2,183 / 2,863 |
+| SPX quotes, 9 November 2026 | unknown | 180,226 (146,113) | 32.1 (26.8) | 1.002 | 2,078 / 2,301 |
 
 The market-like case uses parameters within 15% of the market posterior. The stressed
 case is a high-volatility draw from the prior: volatility starts at 37% and reverts
@@ -1435,7 +1610,8 @@ and their 90% widths within 2.3%.
 
 **Rough Bergomi, by importance sampling with the network as proposal.** Draw
 $`\theta^{(s)} \sim q_\phi(\theta \mid y)`$, $`s = 1, \dots, 1{,}000`$, and weight each
-draw by the ratio of the exact posterior density, up to a constant, to the network's:
+draw by the ratio of the exact posterior density, up to a constant, to the network's
+(planned, once the rough Bergomi network exists):
 
 ```math
 \tilde w_s = \frac{p\big(\theta^{(s)}\big)\,\hat p\big(y \mid \theta^{(s)}\big)}{q_\phi\big(\theta^{(s)} \mid y\big)} ,
@@ -1445,7 +1621,7 @@ where $`\hat p(y \mid \theta)`$ is the likelihood of 6.2 computed with Monte Car
 from a fixed seed, with their Monte Carlo covariance added to the error covariance. The
 fixed seed makes $`\hat p`$ a deterministic function of $`\theta`$, so the weighted draws
 target the exact posterior of that numerical model. This costs 1,000 pricings, not
-146,000, because the network has already put the draws where the posterior is. It is
+180,000, because the network has already put the draws where the posterior is. It is
 accepted when the effective sample size
 $`\big(\sum_s \tilde w_s\big)^2 / \sum_s \tilde w_s^2`$ is at least 200 and the
 Pareto-smoothed tail index $`\hat k`$ is below 0.7; otherwise the network is reported as
@@ -1459,12 +1635,12 @@ $`\theta^{(m,l)} \sim q_\phi(\theta \mid y_m)`$. Below, $`j`$ indexes the six co
 of $`\theta`$.
 
 **Recovery.** How close the posterior median of component $`j`$ is to the truth, across
-the surfaces: their correlation over $`m`$, and the median width of the 90% intervals as
+the surfaces: their correlation over $`m`$, and the average width of the 90% intervals as
 a share of the prior's range.
 
 ![Recovery: true parameter against posterior median on 512 simulated surfaces](images/heston-recovery.png)
 
-**Figure 12.** True value $`\theta^{\ast}_{m,j}`$ against the posterior median, with 90%
+**Figure 13.** True value $`\theta^{\ast}_{m,j}`$ against the posterior median, with 90%
 intervals on 60 of the surfaces. The five Heston parameters are recovered almost exactly;
 $`c`$, which is read from the errors alone, has wider intervals.
 
@@ -1488,22 +1664,35 @@ u_{m,j} = \frac1L \sum_{l=1}^{L} \mathbf{1}\big\{\theta^{(m,l)}_j \lt \theta^{\a
 
 If $`q_\phi(\cdot \mid y_m)`$ is the posterior, the truth and the $`L`$ draws are $`L+1`$
 exchangeable draws from the same distribution given $`y_m`$, so $`u_{m,j}`$ is uniform on
-$`[0, 1]`$. The test compares the empirical distribution of the 512 ranks with the
-uniform:
+$`[0, 1]`$. The rank plot compares the empirical distribution of the 512 ranks with the
+uniform, through
 
 ```math
-D_j = \sup_{u \in [0,1]} \Big| \frac1M \sum_{m=1}^{M} \mathbf{1}\{u_{m,j} \le u\} - u \Big| \ \le\ \sqrt{\frac{\ln(2 \times 6 / 0.05)}{2M}} = 0.073 ,
+\Delta_j(z) = \frac1M \sum_{m=1}^{M} \mathbf{1}\{u_{m,j} \le z\} - z,\qquad z \in [0, 1] .
 ```
 
-the Dvoretzky–Kiefer–Wolfowitz bound at 5% shared over the six components. A network
-that returned the prior would also pass (the left panel of Figure 11 is such a case), so
-the test is necessary, not sufficient.
+For uniform ranks, $`M\,(\Delta_j(z) + z)`$ is binomial with $`M`$ trials and probability
+$`z`$. The notebook's band (Säilynoja, Bürkner and Vehtari, 2022) bounds $`\Delta_j`$ at
+every $`z`$ at once, with level $`1 - 0.05/6`$ for each component, so that a calibrated
+network keeps all six curves inside with probability 95%; it is narrow at 0 and 1, where a
+correct curve varies least. The study's record also gives the largest distance
+$`D_j = \sup_z |\Delta_j(z)|`$, against the Dvoretzky–Kiefer–Wolfowitz bound at 5% shared
+over the six components,
+
+```math
+D_j \ \le\ \sqrt{\frac{\ln(2 \times 6 / 0.05)}{2M}} = 0.073 .
+```
+
+Both criteria single out the same component. A network that returned the prior would also
+pass (the left panel of Figure 12 is such a case), so the check is necessary, not
+sufficient; recovery and the comparison of 8.3 test sharpness.
 
 ![Coverage and simulation-based calibration of the Heston network](images/heston-calibration.png)
 
-**Figure 13.** Left: $`\widehat{\mathrm{cov}}_j(\alpha)`$ against $`\alpha`$; a calibrated
-posterior lies on the diagonal, within the grey band. Right: the empirical distribution of
-the ranks minus the uniform; a calibrated posterior stays inside the grey band.
+**Figure 14.** Left: $`\widehat{\mathrm{cov}}_j(\alpha)`$ against $`\alpha`$; a calibrated
+posterior lies on the diagonal, within the grey band. Right: $`\Delta_j(z)`$ for the six
+components; a calibrated network keeps all six curves inside the grey band with
+probability 95%.
 
 | | $`v_0`$ | $`\kappa`$ | $`v_\infty`$ | $`\sigma_v`$ | $`\rho`$ | $`c`$ |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -1511,14 +1700,16 @@ the ranks minus the uniform; a calibrated posterior stays inside the grey band.
 | $`\widehat{\mathrm{cov}}_j(0.8)`$ | 92.6% | 81.6% | 84.4% | 83.0% | 84.8% | 78.9% |
 | $`\widehat{\mathrm{cov}}_j(0.9)`$ | 97.5% | 90.0% | 92.4% | 89.3% | 92.0% | 90.2% |
 | $`\widehat{\mathrm{cov}}_j(0.95)`$ | 99.2% | 94.1% | 95.9% | 93.2% | 96.7% | 94.9% |
+| Rank plot | leaves the band | inside | inside | inside | inside | inside |
 | $`D_j`$ (bound 0.073) | 0.135 | 0.028 | 0.048 | 0.051 | 0.048 | 0.034 |
 | Correlation of truth and posterior median | 0.99999 | 0.9997 | 0.9987 | 0.9999 | 0.996 | 0.95 |
-| Median width of the 90% interval, share of the prior range | 0.37% | 1.7% | 0.69% | 1.1% | 1.0% | 32% |
+| Average width of the 90% interval, share of the prior range | 0.35% | 2.0% | 1.3% | 1.2% | 3.4% | 28% |
 | 95% confidence interval of $`\widehat{\mathrm{cov}}_j(0.9)`$ | 95.7–98.5% | 87.1–92.3% | 89.8–94.4% | 86.3–91.7% | 89.3–94.0% | 87.4–92.5% |
 | Draws outside the prior range | 0.12% | 0.31% | 0.12% | 0.46% | 0.98% | 1.13% |
 
 - **Five of the six components are calibrated** by two criteria: the 95% confidence
-  interval of their 90% coverage contains 90%, and their $`D_j`$ is below the bound. At
+  interval of their 90% coverage contains 90%, and their rank curve stays inside the band
+  (their $`D_j`$ is also below the bound). At
   the 50% and 80% levels $`v_\infty`$ and $`\rho`$ cover a little more than nominal
   (55.7% and 84.8%).
 - **One component is not:** the intervals for $`v_0`$ are too wide. The truth falls
@@ -1536,8 +1727,9 @@ the ranks minus the uniform; a calibrated posterior stays inside the grey band.
 
 ### 8.3 Conditional checks against the references
 
-For each of the three cases, draw $`S = 4{,}096`$ times from the network and compare
-component by component with the reference posterior $`p`$ of 8.1. Two numbers per
+For each of the three cases, draw $`S = 4{,}096`$ times from the network, with the seed of
+its recorded evaluation, and compare component by component with the reference posterior
+$`p`$ of 8.1. Two numbers per
 component: the difference of the means in reference standard deviations, and the ratio of
 the widths of the 90% intervals,
 
@@ -1552,33 +1744,42 @@ $`\mathrm{ME}_j \lt 0.3`$ together with $`0.75 \le \mathrm{WR}_j \le 1.25`$ as a
 
 ![Network against reference posterior on two simulated surfaces and the SPX quotes](images/heston-vs-reference.png)
 
-**Figure 14.** For each case and component, the 90% interval of the reference (grey) and
+**Figure 15.** For each case and component, the 90% interval of the reference (grey) and
 of the network (colour), centred on the reference median and measured in reference
 widths. On the two simulated surfaces the network brackets the reference with wider
 intervals. On the SPX quotes it is far away (note the wider scale).
 
 | Case | | $`v_0`$ | $`\kappa`$ | $`v_\infty`$ | $`\sigma_v`$ | $`\rho`$ | $`c`$ | Variance strike, 0 to 21 days | Variance strike, 81 to 325 days |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Market-like | $`\mathrm{ME}`$ | 0.96 | 0.12 | 0.17 | 0.33 | 0.04 | 0.33 | 0.87 | 0.14 |
-| Market-like | $`\mathrm{WR}`$ | 2.86 | 1.05 | 1.43 | 1.11 | 2.34 | 1.27 | 2.74 | 1.89 |
-| Stressed | $`\mathrm{ME}`$ | 0.75 | 0.30 | 0.06 | 0.01 | 0.58 | 0.40 | 0.78 | 0.11 |
-| Stressed | $`\mathrm{WR}`$ | 1.87 | 1.58 | 2.04 | 1.46 | 2.71 | 1.33 | 2.09 | 1.83 |
-| SPX | $`\mathrm{ME}`$ | 11.2 | 5.8 | 12.0 | 1.8 | 26.9 | 37.2 | 9.2 | 12.4 |
-| SPX | $`\mathrm{WR}`$ | 5.8 | 1.7 | 3.4 | 2.0 | 4.8 | 59 | 5.3 | 4.2 |
+| Market-like | $`\mathrm{ME}`$ | 0.97 | 0.11 | 0.16 | 0.32 | 0.06 | 0.33 | 0.87 | 0.14 |
+| Market-like | $`\mathrm{WR}`$ | 2.91 | 1.07 | 1.43 | 1.13 | 2.31 | 1.27 | 2.74 | 1.89 |
+| Stressed | $`\mathrm{ME}`$ | 0.73 | 0.29 | 0.14 | 0.02 | 0.62 | 0.40 | 0.78 | 0.11 |
+| Stressed | $`\mathrm{WR}`$ | 1.88 | 1.55 | 2.05 | 1.44 | 2.72 | 1.37 | 2.09 | 1.83 |
+| SPX | $`\mathrm{ME}`$ | 11.1 | 5.8 | 11.9 | 1.8 | 26.7 | 37.3 | 9.2 | 12.4 |
+| SPX | $`\mathrm{WR}`$ | 5.7 | 1.7 | 3.4 | 2.0 | 4.8 | 59 | 5.3 | 4.2 |
+
+The parameter columns compare with the references of 8.1, as the notebook does. The two
+variance-strike columns come from the recorded evaluation, which compared with the first
+computation of the references; the two computations agree within 0.07 standard deviations
+in their means and 2.3% in their widths (8.1).
 
 - **Simulated surfaces.** The centres are close: the median $`\mathrm{ME}_j`$ over the
-  12 parameter posteriors is 0.32 and the largest 0.96. The intervals are wider: 10 of
+  12 parameter posteriors is 0.31 and the largest 0.97. The intervals are wider: 10 of
   the 12 are more than 25% wider than the exact ones, up to 2.9 times, and none is
   narrower. One of the 12 ($`\kappa`$, market-like) meets both criteria. The network does
   not claim more precision than the quotes support, but it does not extract all the
   information in them either. This is compatible with 8.2: calibration on average does
   not imply sharp posteriors on each surface.
 - **SPX quotes.** The network is far from the reference: 21% of its draws have
-  $`c \gt 2`$, outside the prior range, and its means for the Heston parameters lie 2 to
-  27 reference standard deviations away. 8.4 explains why. Market results therefore use
-  the reference posterior.
+  $`c \gt 2`$, outside the prior range, and its means for the Heston parameters lie 1.8 to
+  27 reference standard deviations away (37 for $`c`$). 8.4 explains why. Market results
+  therefore use the reference posterior.
 
-### 8.4 Checks of the model on the market
+A calibrated posterior can still be too wide: a network that returned the prior would be
+perfectly calibrated and useless. Only an exact reference shows how much sharpness is
+lost.
+
+### 8.4 Checks of the model: replicated quotes and the market
 
 Everything in 8.2 and 8.3 uses surfaces simulated from the model, for which the model is
 right by construction. On market quotes the model itself is in question.
@@ -1589,11 +1790,14 @@ check).
 
 ![Smiles simulated from the prior against the market smile at three expiries](images/prior-predictive.png)
 
-**Figure 15.** Implied volatilities of 150 surfaces drawn from the prior (blue) and of the
-market (orange), at three expiries. The prior produces calm and stressed markets, flat and
-steep skews, and the market lies inside this range, on its low-volatility side at 7 days.
-Among 3,000 simulated surfaces, each market quote $`y_i/h_i`$ lies between the 5th and the
-55th percentile of its simulated values.
+**Figure 16.** Implied volatilities of 150 of the notebook's 1,000 surfaces drawn from the
+prior (blue) and of the market (orange), at three expiries. The prior produces calm and
+stressed markets, flat and steep skews, and the market lies inside this range, on its
+low-volatility side at 7 days. Among the 1,000 simulated surfaces, each market quote lies
+between the 6th and the 56th percentile of its simulated values; the lowest is the 7-day
+call at $`\delta = 2.0`$. Of the simulated quotes, 0.4% have no implied volatility,
+because the error pushed a very cheap option below its intrinsic value; they remain valid
+data, since errors are added to prices.
 
 This shows that the prior does not exclude the data, quote by quote. It does not show
 that some $`\theta`$ fits all 63 quotes at once.
@@ -1606,6 +1810,38 @@ the SPX quotes, at the mean of the exact posterior, it is 13.4, and the residual
 a smooth pattern across strikes (6.5). No Heston parameters reproduce these quotes within
 the assumed errors.
 
+**Posterior predictive check.** Draw $`\theta^{(m)}`$ from the posterior, price the 63
+contracts and add fresh errors with each draw's own multiplier:
+
+```math
+\tilde y^{(m)}_i = P_i\big(\theta^{(m)}\big) + c^{(m)}\,h_i\,\epsilon^{(m)}_i,\qquad \epsilon^{(m)}_i \sim \mathcal N(0, 1) .
+```
+
+The prices $`P_i(\theta^{(m)})`$ carry the parameter uncertainty; the replicated quotes
+$`\tilde y^{(m)}_i`$ add independent quote errors. If the model and the posterior are
+right, the observed quotes look like one more replicated set: the band of
+$`\tilde y^{(m)}_i - y_i`$ covers zero at most quotes. The notebook prices 40 draws of
+each posterior, keeping each price paired with its own $`c`$; network draws outside the
+prior are left out, because the pricer's accuracy is checked on the prior's range.
+
+![The posterior predictive check on simulated quotes and on the SPX quotes](images/posterior-predictive.png)
+
+**Figure 17.** The check at the 81-day expiry, from 40 draws of the exact posterior, in
+half-spreads: model prices minus the observed quotes (purple) and replicated quotes minus
+the observed quotes (green), pointwise 90% bands. Left: simulated market-like quotes; the
+replicated band covers zero, and the model prices follow the true prices (dashed) more
+closely than any single quote measures them. Right: the SPX quotes.
+
+| Data set | RMS of the posterior-mean prices minus the quotes, 81 days (half-spreads) | Median $`c`$ of the draws |
+| --- | ---: | ---: |
+| Simulated, market-like | 0.69 | 0.92 |
+| Simulated, stressed market | 1.13 | 0.97 |
+| SPX quotes | 17.0 | 2.00 |
+
+On the simulated sets the misses are of the size of $`c`$, as they should be. On the SPX
+quotes they are eight times the largest $`c`$ the prior allows, with the systematic pattern
+of 6.5.
+
 **Why the network and the reference disagree on the market.** The network was trained on
 surfaces that lie within $`c \le 2`$ half-spreads of a Heston surface. The market quotes
 lie 13.4 half-spreads, root mean square, from the best-fitting one: an input unlike any
@@ -1617,7 +1853,7 @@ of training, and comparing with an exact reference is what reveals it.
 **Checks still to compute:**
 - prediction of the held-out quotes (5.4);
 - the model's variance-swap strikes against those of the listed strips (1.5);
-- the listed 2-year 90% put against the model's prediction (9.7).
+- the listed 2-year 90% put against the model's prediction (9.8).
 
 Under the smooth model-error law of 6.6, the prediction for a held-out quote with model
 price $`P_\star(\theta)`$, vega $`\nu_\star`$ and half-spread $`h_\star`$ includes the
@@ -1630,7 +1866,7 @@ conditioning gives, for each posterior draw,
 y_\star \sim \mathcal N\Big(P_\star(\theta) + k_\star^\top\,\Gamma^{-1}\big(y - P(\theta)\big),\ \ \tau^2\nu_\star^2 - k_\star^\top\,\Gamma^{-1} k_\star + (c\,h_\star)^2\Big) .
 ```
 
-Under the law of 6.1 the prediction is $`P_\star(\theta) + c\,h_\star\,\varepsilon_\star`$,
+Under the law of 6.1 the prediction is $`P_\star(\theta) + c\,h_\star\,\epsilon_\star`$,
 which will cover too rarely wherever the misfit is real.
 
 ## 9. From the posterior to the products
@@ -1641,7 +1877,7 @@ A product's value is a function of the parameters,
 $`G_j(\theta) = \mathbb{E}_\theta[\text{discounted payoff}]`$, and the posterior induces its
 distribution (step 3). For each posterior draw, price each product. Path-dependent products
 need simulation: every draw uses the same normals (common random numbers), so Monte Carlo
-noise moves all draws together and the spread across draws is the parameters' (9.8). The
+noise moves all draws together and the spread across draws is the parameters' (9.9). The
 error scales $`c`$ and $`\tau`$ do not enter: they describe how listed options are
 observed, not how the index moves.
 
@@ -1675,28 +1911,34 @@ reference standard deviations of the reference's, with 90% ranges 1.8 to 2.7 tim
 
 ### 9.3 Path simulation
 
-- **Heston:** full-truncation Euler, with $`V^+ = \max(V, 0)`$ in the drift and the
-  volatility,
-  $`V_{t+\Delta} = V_t + \kappa(v_\infty - V_t^+)\,\Delta + \sigma_v\sqrt{V_t^+}\,\Delta W`$,
-  four steps per business day ($`\Delta = 1/1008`$ year); $`I`$ and $`J`$ stored at every
-  close (`calibration.products.heston_paths`).
-- **Rough Bergomi:** the hybrid scheme of 4.2, 2,016 steps per year, $`I`$ and $`J`$ stored
-  at every close (`calibration.products.rough_paths`).
-- **Normals:** antithetic pairs; the normals for $`J^{\perp}`$, one per close, are drawn
-  once and shared by all draws.
-- **Horizon:** 1 year for the swaps, the forward start and the barrier put; 2 years for
-  the check of 9.7, with the curve held flat beyond its last fitted point (stated).
-- **Fit and products on one model:** Heston's fit uses Fourier prices and its products
-  use Euler paths. On each day, the paths must reprice the design's options within
-  0.05 vp of Fourier at the posterior median; otherwise the time step is halved.
+- **Heston, as the notebook prices it:** full-truncation Euler for the variance, with
+  $`V^+ = \max(V, 0)`$ in the drift and the volatility,
+  $`V_{t+\Delta} = V_t + \kappa(v_\infty - V_t^+)\,\Delta + \sigma_v\sqrt{V_t^+\,\Delta}\,Z`$,
+  over 6 months in 252 steps ($`\Delta = 1/504`$ year), for 4,096 paths
+  (`calibration.products.heston_paths`). Each path stores $`I_t`$ and $`J_t`$, the
+  integrals of the notation section, as sums over the steps.
+- **No index path is drawn.** Given the variance path, the log index between two dates is
+  Gaussian (notation section), so each product is a Black–Scholes formula per variance
+  path, averaged over the paths.
+- **Common random numbers:** the same normals (seed 20261115) for every posterior draw and
+  every refit, so that the spread of prices across draws is the parameters' and not
+  Monte Carlo noise.
+- **Units:** forward units, with zero carry and no discounting; the forward-start call as
+  a percentage of its notional, the volatility swap as an annualized volatility in percent.
+- **Rough Bergomi, next:** the hybrid scheme of 4.2, with $`I`$ and $`J`$ stored in the
+  same layout (`calibration.products.rough_paths`).
+- **Fit and products on one model:** Heston's fit uses Fourier prices and its products use
+  Euler paths. A check that the paths reprice the design's options within 0.05 vp of
+  Fourier at the posterior median, with the time step halved otherwise, is among the next
+  steps (10.3).
 
-### 9.4 Volatility swap
+### 9.4 Volatility swap, 3 months
 
-$`K_{\text{vol}}(T) = \mathbb{E}\big[\sqrt{I_T/T}\big]`$, estimated by the path mean of
-$`\sqrt{I_T/T}`$ with antithetic pairs and one control variate
-(`calibration.products.volatility_swap`): $`I_T/T`$ minus its exact mean for rough
-Bergomi, whose discrete mean is exact; $`J_T`$ for Heston, whose Euler scheme shifts the
-mean of $`I`$ but leaves $`J`$ with mean zero.
+$`K_{\text{vol}}(T) = \mathbb{E}\big[\sqrt{I_T/T}\big]`$ with $`T`$ = 3 months, estimated by
+the path mean of $`\sqrt{I_T/T}`$ with one control variate
+(`calibration.products.volatility_swap`): $`J_T`$ for Heston, whose Euler scheme shifts the
+mean of $`I`$ but leaves $`J`$ with mean zero; $`I_T/T`$ minus its exact mean for rough
+Bergomi, whose discrete mean is exact.
 
 **Convexity.** Expanding $`\sqrt{x}`$ to second order around
 $`m = K_{\text{var}} = \mathbb{E}[x]`$, with $`x = I_T/T`$:
@@ -1709,35 +1951,84 @@ The gap between the volatility and the variance strike is set by the variance of
 variance, that is by the vol of vol. This is why the product depends on the wings and the
 short maturities, which pin the vol of vol (5.2).
 
-### 9.5 Forward-start call, 6 months to 1 year
+### 9.5 Forward-start call, 3 to 6 months
 
-**Reduction.** With $`S_t = F(t)\,X_t`$ and $`m = F(T_2)/F(T_1)`$,
-$`S_{T_2} - m\,S_{T_1} = F(T_2)\,(X_{T_2} - X_{T_1})`$, so
+**Payoff.** At $`T_2`$ = 6 months, per unit of notional, $`(S_{T_2}/S_{T_1} - 1)^+`$ with
+$`T_1`$ = 3 months: the percentage rise of the index between the two dates, if positive.
+In forward units with zero carry, $`S_{T_2}/S_{T_1} = X_{T_2}/X_{T_1}`$.
 
-```math
-\text{Value} = D(T_2)\,F(T_2)\ \mathbb{E}\big[X_{T_1}\,(X_{T_2}/X_{T_1} - 1)^+\big].
-```
-
-**Conditional formula.** Given the path of $`W^V`$, $`X_{T_1}`$ depends on $`W^{\perp}`$ over
-$`[0, T_1]`$ and $`X_{T_2}/X_{T_1}`$ on $`W^{\perp}`$ over $`[T_1, T_2]`$, so they are
-conditionally independent. Each is conditionally lognormal (notation section), and
-$`\mathbb{E}[X_{T_1} \mid W] = e^{\rho J_{T_1} - \frac12\rho^2 I_{T_1}}`$. Hence
-(`calibration.products.forward_start_call_spot`)
+**Conditional formula.** Write $`\Delta I = I_{T_2} - I_{T_1}`$ and
+$`\Delta J = J_{T_2} - J_{T_1}`$. Given the path of $`W^V`$, the notation section gives
 
 ```math
-\mathbb{E}\big[\,\cdot \mid W\big] = e^{\rho J_{T_1} - \frac12\rho^2 I_{T_1}}\ \mathrm{BS}_{\text{call}}\Big(F' = e^{\rho(J_{T_2} - J_{T_1}) - \frac12\rho^2(I_{T_2} - I_{T_1})},\ 1,\ w = (1-\rho^2)(I_{T_2} - I_{T_1})\Big).
+\ln\frac{X_{T_2}}{X_{T_1}} \;\Big|\; W^V \;\sim\; \mathcal N\Big(\rho\,\Delta J - \tfrac12\,\Delta I,\ \ (1-\rho^2)\,\Delta I\Big),
 ```
 
-Controls: the difference of effective forwards
-$`e^{\rho J_{T_2} - \frac12\rho^2 I_{T_2}} - e^{\rho J_{T_1} - \frac12\rho^2 I_{T_1}}`$, of
-mean zero, and the control of 9.4.
+so, with $`F' = e^{\rho\,\Delta J - \frac12\rho^2\,\Delta I}`$ and $`w = (1-\rho^2)\,\Delta I`$
+(`calibration.products.forward_start_call`),
+
+```math
+\mathbb{E}\Big[\Big(\frac{X_{T_2}}{X_{T_1}} - 1\Big)^+ \;\Big|\; W^V\Big] = \mathrm{BS}_{\text{call}}\big(F',\ 1,\ w\big),
+```
+
+the undiscounted Black–Scholes call with forward $`F'`$, strike 1 and total variance $`w`$.
+Two controls with mean zero reduce the noise: $`F' - 1`$ and $`\Delta J`$.
 
 **Why it matters.** Its value depends on the smile that will prevail at $`T_1`$, which no
 listed option shows. Heston's future skew flattens through mean reversion, rough
-Bergomi's persists: this is where the two models are expected to differ most. Reported in
-forward units at $`T_2`$ and in index points.
+Bergomi's persists: this is where the two models are expected to differ most.
 
-### 9.6 Down-and-in put, 1 year, strike 100%, barrier 70%, daily closes
+### 9.6 Results: posterior ranges and refits
+
+**Posterior ranges.** For each data set, 40 posterior draws inside the prior are priced
+with the common random numbers of 9.3: draws of the exact posterior, and of the network
+when it is loaded. On the market-like simulation the true parameters are known, so the
+true prices are too.
+
+**Refits.** Heston is refitted by least squares in half-spreads, minimizing
+$`\sum_{i \in A} \big((y_i - P_i(\vartheta))/h_i\big)^2`$ over the five pricing
+parameters $`\vartheta`$ within the prior box, from the posterior mean, for four subsets
+$`A`$ of the SPX quotes: all 63; the three shortest expiries (7 to 30 days); the four
+longest (60 to 325 days); and the quotes near the money ($`|\delta| \le 1.3`$). Each refit
+prices the same products.
+
+| | Forward-start call (% of notional) | Volatility swap (%) | $`\kappa`$ | $`\sigma_v`$ | RMS miss on its quotes (half-spreads) |
+| --- | --- | --- | ---: | ---: | ---: |
+| Market-like simulation: true value | 3.127 | 15.79 | 4.34 | 1.80 | |
+| Market-like simulation: exact posterior, 90% range | 3.125 to 3.139 | 15.77 to 15.80 | | | |
+| SPX: exact posterior, 90% range (medians of $`\kappa`$, $`\sigma_v`$) | 3.164 to 3.188 | 16.14 to 16.21 | 5.07 | 1.80 | 13.4 |
+| SPX: refit to all 63 quotes | 3.170 | 16.16 | 5.07 | 1.80 | 13.4 |
+| SPX: refit to the 3 shortest expiries | 3.579 | 17.63 | 10.00 | 2.10 | 10.8 |
+| SPX: refit to the 4 longest expiries | 3.130 | 16.35 | 4.08 | 1.61 | 12.6 |
+| SPX: refit to the quotes near the money | 3.282 | 16.21 | 4.54 | 1.30 | 8.4 |
+
+![The forward-start call under posterior draws and under refits](images/refits.png)
+
+**Figure 18.** The forward-start call under 40 draws of the exact posterior (dots; the bar
+is the 90% range) and under the four refits (diamonds). Top: the market-like simulation,
+where Heston is right. Bottom: the SPX quotes.
+
+- **Where the model is right,** both ranges contain the true value; the forward-start
+  call's range is ±0.22% of its price.
+- **On SPX,** the refits spread 18 times wider than the posterior range for the
+  forward-start call and 21 times for the volatility swap. The refit to the shortest
+  expiries puts $`\kappa`$ at its upper bound of 10 and $`\sigma_v`$ at 2.1, to reach their
+  skew; the refit near the money needs only $`\sigma_v = 1.30`$, because it no longer
+  has to reach the deep puts. Even on its own quotes each refit misses by 8 to 13
+  half-spreads.
+- **The network on SPX** gives ranges that differ from the exact posterior's, because the
+  SPX quotes lie outside its training data (8.4).
+
+A posterior measures uncertainty within the model. On SPX the model is wrong, so its
+parameters depend on which quotes it is fitted to, and the posterior cannot see that. A
+desk would hold a reserve sized to the refit spread, add a model-error term (6.6), or use
+a better model. The posterior range matters most where the quotes leave the price open:
+with few or wide quotes, or with a model flexible enough that the quotes do not pin what
+the product depends on.
+
+### 9.7 Down-and-in put, 1 year, strike 100%, barrier 70%, daily closes
+
+Specified, not yet priced (10.3).
 
 **Payoff** at $`T`$ = 1 year: $`(K - S_T)^+\,\mathbf{1}\{\min_i S_{t_i} \le B\}`$, with
 $`K = S_0`$, $`B = 0.7\,S_0`$ and $`t_i`$ the 252 closes.
@@ -1775,84 +2066,101 @@ Bergomi). The identity down-and-in + down-and-out = vanilla is checked path by p
 
 **Why it matters.** It is the risk inside autocallable notes, and the issuing bank is long
 it. It depends on the deep put wing out to 1 year and on how volatility rises when the
-index falls ($`\rho`$ and the vol of vol). At Heston's SPX posterior mean, about 12% of the
-simulated 1-year paths touch the barrier (Figure 1).
+index falls ($`\rho`$ and the vol of vol). At Heston's SPX posterior mean, about 13% of
+simulated 1-year paths touch the barrier.
 
-### 9.7 The listed 2-year 90% put (check)
+### 9.8 The listed 2-year 90% put (check)
 
-The model price at the listed expiry nearest 2 years and the strike nearest
+Specified, not yet computed (10.3). The model price at the listed expiry nearest 2 years and the strike nearest
 $`0.9\,F(T)`$: Fourier for Heston, the conditional estimator on 2-year paths for rough
 Bergomi. Converted to implied volatility and compared with the market's, ± its
 half-spread: extrapolation in maturity, checked against a listed price.
 
-### 9.8 Monte Carlo accuracy
+### 9.9 Monte Carlo accuracy
 
-- **Paths:** per product and model, enough that the standard error at the posterior
-  median is at most 2% of the product's posterior 90% range; 20,000 to 100,000 antithetic
-  paths are expected for Heston and 10,000 to 50,000 for rough Bergomi.
-- **Draws:** with $`S = 1{,}000`$ draws, the 90% quantile's error in probability is about
-  $`\sqrt{0.9 \times 0.1/1000} \approx 0.01`$; reported by bootstrap over the draws.
-- **Paths, for quantiles:** all draws rerun with an independent seed, and the differences
-  reported.
-- **Requirement:** with $`\mathrm{SE}_j`$ either of these errors for product $`j`$,
-  $`\mathrm{SE}_j \le 0.02\,(q_{0.95} - q_{0.05})`$; otherwise more paths or draws.
+- **In 9.6:** 4,096 paths and 40 draws per range, with common random numbers, so the
+  simulation error of a price is shared by all draws and does not widen a range. With 40
+  draws each end of a 90% range rests on about two draws, so the ranges are rough; the
+  factor of about 20 between the refits and the posterior ranges does not hinge on that
+  precision.
+- **For the full set of products and the book (10.3):**
+  - *paths:* per product and model, enough that the standard error at the posterior
+    median is at most 2% of the product's posterior 90% range; 20,000 to 100,000
+    antithetic paths are expected for Heston and 10,000 to 50,000 for rough Bergomi;
+  - *draws:* with $`S = 1{,}000`$ draws, the 90% quantile's error in probability is about
+    $`\sqrt{0.9 \times 0.1/1000} \approx 0.01`$; reported by bootstrap over the draws;
+  - *paths, for quantiles:* all draws rerun with an independent seed, and the differences
+    reported;
+  - *requirement:* with $`\mathrm{SE}_j`$ either of these errors for product $`j`$,
+    $`\mathrm{SE}_j \le 0.02\,(q_{0.95} - q_{0.05})`$; otherwise more paths or draws.
 
-### 9.9 Summaries, prudent value and the book
+### 9.10 Summaries, prudent value and the book
 
-Mark, prudent value and reserve as in 3.2. The example book:
+Mark, prudent value and reserve as in 3.2. The example book, among the next steps (10.3):
 
 | Position | Size | Why |
 | --- | --- | --- |
 | Down-and-in put, 1 year | long 1 | the issuer's side of autocallables |
-| Forward-start call, 6 months to 1 year | long 1 | exposure to the future smile |
-| Volatility swap, 1 year | short 1 | exposure to the vol of vol |
+| Forward-start call | long 1 | exposure to the future smile |
+| Volatility swap | short 1 | exposure to the vol of vol |
 
-The put and the forward start are in index points per unit of index, the volatility swap
-in vol points per unit of vega notional; the book fixes the swap's vega notional in
-currency. Reported: the book's prudent value $`q_{0.10}(B^{(s)})`$, its reserve, the
-diversification ratio $`R_{\text{book}}/\sum_j |\omega_j|\,R_j`$ against the Regulation's fixed 0.5,
-and the correlation matrix of the product values across draws.
+The put is in index points per unit of index, the forward start a percentage of its
+notional, the volatility swap in vol points per unit of vega notional; the book fixes each
+notional in currency. Reported: the book's prudent value $`q_{0.10}(B^{(s)})`$, its
+reserve, the diversification ratio $`R_{\text{book}}/\sum_j |\omega_j|\,R_j`$ against the
+Regulation's fixed 0.5, and the correlation matrix of the product values across draws.
 
-### 9.10 Baselines
+### 9.11 Baselines
 
 - **Point calibration** (2.2): least squares in implied volatility from 8 starts, and the
   maximum-likelihood version with $`c`$ estimated. A value with no range.
+- **Refits to parts of the quotes** (2.4): computed in 9.6, on four subsets; refits that
+  leave out one expiry at a time are a finer version.
 - **Delta method** (2.4), with product gradients by central differences under common
-  random numbers.
-- **Expiry-drop refits** (2.4): seven refits, one expiry left out each time.
+  random numbers: next.
 
 ## 10. What the results show, and what they do not
 
 ### 10.1 Results for Heston on SPX, 9 November 2026
 
 - **Cost.** One bank of $`N`$ = 300,000 simulated surfaces (16 minutes) and one training
-  run (30 minutes) give a network that returns a posterior in 0.3 s, against 14 to 27
-  CPU-minutes by MCMC (7.1 to 7.3).
+  run (30 minutes) give a network that returns a posterior in under 0.3 s, against 17 to
+  32 minutes by MCMC (7.1 to 7.3).
 - **Calibration on average.** On $`M`$ = 512 simulated surfaces the network is calibrated
   for five of the six components of $`\theta`$; its intervals for $`v_0`$ are about 1.4
   times too wide (8.2).
+- **Recovery.** The posterior medians of the five Heston parameters correlate with the
+  truth at 0.996 or more, and that of $`c`$ at 0.95 (8.2).
 - **Single surfaces.** On two simulated surfaces its means lie within one reference
-  standard deviation of the exact posterior's (median 0.32) and its 90% intervals are
-  1.05 to 2.9 times as wide (8.3).
+  standard deviation of the exact posterior's (median 0.31), and its 90% intervals are
+  1.07 to 2.9 times as wide; one of 12 parameter posteriors meets both agreement
+  criteria (8.3).
 - **The error scale.** The information about $`c`$ sits in the 33 low-variance directions
   of the inputs. Whitening is what lets the network read it; it then recovers $`c`$ with
   a root-mean-square error of 0.135 (6.3, 7.6, 8.2).
 - **The design.** Calls pin $`\rho`$, expiries beyond 2 months pin the long-run level,
   and the deep puts matter for everything else (5.2).
 - **The market.** Heston misses the SPX quotes by 1.38 vp root mean square, 13.4
-  half-spreads, most at short maturities and deep strikes, and $`c`$ goes to its bound
-  (6.5). The market quotes are unlike any surface in the bank, so the network and the
-  exact posterior disagree there, and market results use the exact posterior (8.3, 8.4).
+  half-spreads, at every expiry, most at short maturities and in the deep put wing, and
+  $`c`$ goes to its bound. Its skew stops at a ceiling of 1.88 as the expiry shrinks,
+  while the SPX skew follows $`T^{-0.40}`$ (6.5). The market quotes are unlike any surface
+  in the bank, so the network and the exact posterior disagree there, and market results
+  use the exact posterior (8.3, 8.4).
 - **Products.** Variance strikes of 17.73% (0 to 21 days) and 22.61% (81 to 325 days),
-  with 90% ranges less than 0.2 vol points wide (9.2).
+  with 90% ranges less than 0.2 vol points wide (9.2). For the forward-start call and the
+  volatility swap, the posterior ranges contain the true prices on the market-like
+  simulation; on SPX, refits to parts of the quotes spread 18 and 21 times wider than the
+  posterior ranges (9.6).
 
 ### 10.2 What the ranges are not
 
 - They are parameter uncertainty within one model, under a stated error model. Where the
-  model misfits, as Heston does on SPX, they are too narrow; the smooth model-error term
-  of 6.6 is the extension that addresses it. It covers misfit on quoted points, not
-  dynamics the quotes cannot reveal, such as the future smile. The comparison of two
-  models shows how far they disagree; neither range is a complete model-risk reserve.
+  model misfits, as Heston does on SPX, they are too narrow: refits of the same model to
+  different quotes move prices about 20 times more (9.6). The smooth model-error term of
+  6.6 lets the posterior admit the misfit; it covers misfit on quoted points, not
+  dynamics the quotes cannot reveal, such as the future smile, and only a different model
+  removes the misfit. Refits and a second model show how far the model's own error moves
+  a price; neither is a complete model-risk reserve.
 - On real data the true value of a forward start or a barrier is never observed; the
   real-data checks are those of 8.4.
 - Hedge ratios under the posterior are not shown.
@@ -1875,77 +2183,102 @@ and the correlation matrix of the product values across draws.
 
 ### 10.3 What remains
 
-1. **Rough Bergomi:** finish the bank (4.2), train its network with the recipe of 7.5,
-   check it (8.1 to 8.3), and compare the two models on the same quotes.
-2. **Products and the book** under the exact SPX posterior: the forward start, the
-   volatility swap, the down-and-in put with its new estimator and tests (9.6), and the
-   book (9.9), with the baselines of 9.10.
-3. **Calibration of the intervals for today's variance**, $`v_0`$ (8.2).
-4. **The smooth model-error term** (6.6): exact posteriors first, then networks trained
+1. **Rough Bergomi.** Its bank of 300,000 surfaces is being generated on the Oscar cluster
+   (4.2). Then its validation and test surfaces, its network with the recipe of 7.5 and
+   its own whitening, its checks (8.1 to 8.3, with importance sampling as the reference),
+   and the two models side by side on the same quotes. It addresses what 6.5 finds
+   missing: a short-expiry skew without a ceiling.
+2. **The smooth model-error term** (6.6): exact posteriors first, then networks trained
    with $`\tau`$.
-5. **Model checks on the market:** held-out quotes, variance swaps from the full strips
-   and the listed 2-year put (8.4).
-6. **Tutorial integration**, below.
+3. **More products and the book:** the down-and-in put with its estimator and tests (9.7),
+   the book (9.10), the delta method (9.11), and the products under more draws and paths
+   (9.9).
+4. **The intervals for today's variance**, $`v_0`$, which are too wide (8.2).
+5. **More checks of the model on the market:** held-out quotes, variance swaps from the
+   full strips, the listed 2-year put (8.4, 9.8), and the repricing check of 9.3.
+6. **A recorded render of the notebook with the pretrained estimator.** Its run record
+   lists the estimator's cells as run so far only with stand-ins. The network numbers
+   here are those of the recorded evaluation, drawn with the seed and number of draws the
+   notebook uses.
 
 ### 10.4 Tutorial integration
 
-- **Slot 4, Heston on SPX:** the desk's daily job and what the posterior adds; the SPX
-  quotes and the design (steps 1 and 5); the error model and the misfit (step 6); the
-  network, whitening and the checks against the exact posterior (steps 7 and 8); the
-  products and the book under the exact posterior (step 9); the limits (step 10).
-- **Slot 5, rough Bergomi on SPX:** why a second model (the short-maturity skew and
-  Heston's misses); its curve, Monte Carlo pricing and accuracy target; the same
-  inference and checks, with importance sampling as the reference; the products under
-  both models side by side.
-- **Slot 6, priors and misspecification:** the posterior as $`c`$ moves from 0.5 to 2
-  (6.4), what the misfit does to it (6.5), and the smooth model-error term (6.6).
+The Heston notebook, `lab/notebooks/heston_spx_calibration.py`, follows the steps:
 
-The Heston material already exists as a class notebook in the lab,
-`lab/notebooks/heston_spx_calibration.py`, organized as model, simulate, train, infer and
-check, with the symbols used here. The tutorial notebooks describe quote errors as in
-step 6. New results enter `tutorial/assets/`
-only through the lab's tools (`lab/studies/accept.py`, then `pixi run manifest` and
-`pixi run claims`); before release, the tutorial's `pixi run test`, `test-notebooks` and
-`check`, and the lab's `pixi run test` and `release-check`.
+| Notebook section | Steps | What it shows |
+| --- | --- | --- |
+| The data | 1, 5 | the 63 SPXW quotes of 20:13 UTC on 9 November 2026, standardized moneyness, the selection rules |
+| 1. Model | 4, 6 | Heston's dynamics and four features (4.1), the observation model with $`c`$ (6.1) |
+| 2. Simulate | 3, 7 | the simulator, illustrative paths, the prior predictive check, whitening (7.6) |
+| 3. Train | 7 | the two ways to use simulations (7.3), the network (7.4), its training record (7.7), and a small network trained live |
+| 4. Infer | 7, 8 | the three data sets, the PyMC reference (8.1), the posteriors, the costs |
+| 5. Check | 8 | the posterior predictive check, calibration, recovery, the comparison with PyMC, Heston against SPX |
+| 6. Use | 9 | the forward-start call and the volatility swap under the posterior and under refits (9.6) |
+| What Heston misses | 6, 10 | the four signs, where the fit misses, the missing feature, what can be done within Heston (6.5) |
+| Takeaways | 10 | |
+
+**Running it.** From `lab/`, with `HESTON_BUNDLE` set to the folder of the pretrained
+estimator (a separate 465 MB archive, described in `lab/plans/training-data-guide.md`):
+
+```bash
+HESTON_BUNDLE=/path/to/bundle pixi run --locked -e core-reference marimo edit notebooks/heston_spx_calibration.py
+```
+
+Without the bundle, the notebook shows the PyMC reference alone, and the cells that need
+the network stay off. `marimo export html` with the same setting renders a static copy with
+every output. Two buttons run optional work: training a small network on 3,000 simulated
+surfaces for 40 passes, in about a minute on a CPU, and resampling the 512 surfaces of
+8.2 with fresh draws.
+
+Rough Bergomi on SPX gets the same treatment once its bank and network exist. The
+tutorial's own Heston notebook, `tutorial/notebooks/slot4_heston_bayesflow.py`, keeps its
+four-parameter configuration on SPY. Results of the SPX notebook are not yet promoted to
+`tutorial/assets/`, and enter there only through the lab's tools
+(`lab/studies/accept.py`, then `pixi run manifest` and `pixi run claims`); before release,
+the tutorial's `pixi run test`, `test-notebooks` and `check`, and the lab's `pixi run test`
+and `release-check`.
 
 ## Back to the goals, the audience and the practitioner
 
 **Goals.**
-1. *Marks and ranges* come from steps 3 and 9: one posterior per model, every product
-   priced under every draw, and a range for the book. For Heston on SPX the
-   forward-starting variance strikes are computed; the path-dependent products and the
-   book follow the methods of 9.3 to 9.9.
+1. *Marks and ranges* come from steps 3 and 9: one posterior, every product priced under
+   every draw. For Heston on SPX the forward-starting variance strikes, a forward-start
+   call and a volatility swap are priced; the refits show that Heston's misfit, not the
+   uncertainty of its parameters, sets how far a price can move. The down-and-in put and
+   the book follow the methods of 9.7 and 9.10.
 2. *Fast and testable:* steps 7 and 8. Pricing once, on simulated pairs that already
    contain every posterior, makes it possible; whitening the inputs makes the error scale
-   readable; the checks show five of six
-   components calibrated and close agreement with exact posteriors on simulated surfaces,
-   while the market results use the exact posterior.
-3. *The limits:* step 10, with the error model of step 6 as the choice that most affects
-   them: on SPX, Heston's misfit is twenty times the quotes' half-spreads, and the ranges
-   do not include it until the model-error term does.
+   readable; the checks show five of six components calibrated and close agreement with
+   exact posteriors on simulated surfaces, while the market results use the exact
+   posterior.
+3. *The model and the limits:* steps 6, 8 and 10. The error model of step 6 is the choice
+   that most affects the ranges. On SPX, Heston's misfit is about twenty times the quotes'
+   half-spreads in vol points, its skew stops at a ceiling, and the ranges do not include
+   the misfit until the model-error term does.
 
-**Audience.** Researchers in AI and statistics see a real inverse problem in which two
-things, not the network's size, decide whether the posterior is right: the error model
-(step 6) and the conditioning of the network's inputs (step 7), with a chain of checks that
-separates approximation error from model error (step 8). Practitioners see calibration
-ranges, book aggregation and a model comparison from one consistent calculation, mapped
-onto the prudent-valuation rules, with a plain statement of what the ranges leave out.
-Both should leave able to say, for their own model, whether they need this, what it costs,
-and how to check it.
+**Audience.** Researchers in AI and statistics see a real inverse problem in which three
+things, not the network's size, decide whether the posterior can be used: the error model
+(step 6), the conditioning of the network's inputs (step 7), and whether the model fits the
+data (steps 6 and 8), with a chain of checks that separates approximation error from model
+error (step 8). Practitioners see calibration ranges and refits from one consistent
+calculation, mapped onto the prudent-valuation rules, with a plain statement of what the
+ranges leave out. Both should leave able to say, for their own model, whether they need
+this, what it costs, and how to check it.
 
 **Practitioner.** A desk and its product control would get, every day:
-- a mark and a range for every product and for the book, from one consistent
-  calculation, with tested coverage;
-- a measure of how well each model fits that day's quotes ($`c`$, $`\tau`$ and the map of
+- a mark and a range for every product, from one consistent calculation, with tested
+  coverage;
+- a measure of how well the model fits that day's quotes ($`c`$, $`\tau`$ and the map of
   misses), which flags the days when a model stops describing the market;
-- a comparison of two models on the same information.
+- the spread of prices across refits to different quotes and, with a second model,
+  across models.
 
-In the terms of the rules, the posterior's range is an Article 9 input, the comparison of
-models belongs to Article 11, and the joint draws measure the offset between products that
-the Annex fixes at 50%. The desk would still have to choose the models, handle the model
-risk beyond one model's parameters and the other AVA categories, such as close-out costs,
-decide how to hedge, take the method through model validation, and have its regulator
-accept a posterior as the basis of a prudent value.
+In the terms of the rules, the posterior's range is an Article 9 input, the spread across
+refits and models belongs to Article 11, and the joint draws of a book would measure the
+offset between products that the Annex fixes at 50%. The desk would still have to choose
+the models, handle the model risk beyond one model's parameters and the other AVA
+categories, such as close-out costs, decide how to hedge, take the method through model
+validation, and have its regulator accept a posterior as the basis of a prudent value.
 
 ## Evidence and figures
 
@@ -1956,6 +2289,7 @@ under `lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid
 | What | File |
 | --- | --- |
 | The 63 quotes, forwards and discounts (steps 1, 5) | `cv-preparation/design.json` |
+| The three data sets of 8.1 and their true parameters | `cv-preparation/conditional-panel.json`, `conditional-truth-audit.json` |
 | Pricing replay over 98 points (4.1) | `cv-preparation/numerical-pilot/run.json` |
 | Bank and training settings (7.3, 7.7) | `recovery-bank-independent/300k-300/protocol.json`, `campaign.json` |
 | Population and conditional checks (8.2, 8.3) | `recovery-bank-independent/300k-300/evaluation/evaluation.json`, `recovery.npz` |
@@ -1963,15 +2297,18 @@ under `lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid
 | 63 against 54 quotes (5.3) | `recovery-bank-independent/reference-width-comparison.json` |
 | Controlled whitening comparison (7.6) | `../noise-scale/capacity-study/whitening-pilot/` |
 
-**Heston notebook and regenerated references:** branch
-`claude/trusting-dijkstra-hmgvcm`, commit `56c22d1`. The class notebook
-`lab/notebooks/heston_spx_calibration.py` presents the same configuration in five stages
-(model, simulate, train, infer, check). Its run record,
+**Heston notebook and its run record:** branch `claude/awesome-fermat-544u9v`, commit
+`cf34bfc` ([PR #93](https://github.com/fmuia/sbi4finance/pull/93), which builds on
+[PR #89](https://github.com/fmuia/sbi4finance/pull/89) and PR #85). The notebook
+`lab/notebooks/heston_spx_calibration.py` presents the configuration of PR #85 in six
+stages (model, simulate, train, infer, check, use), between a description of the data and
+an analysis of what Heston misses. Its run record,
 `lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/`, holds the reference
 posteriors recomputed with the same sampler and seed (`reference-comparison.json`,
 `reference-display-draws.npz`, `references/<case>/`); the parameter table of 4.1, the
-costs of 7.1 and 8.1 and the product numbers of 9.2 use them. The trained network and
-its bank are distributed outside Git (`lab/plans/training-data-guide.md` on that branch).
+costs of 7.1 and 8.1, the comparisons of 8.3, the misfit of 6.5 and the product numbers of
+step 9 use them. The trained network and its bank are distributed outside Git
+(`lab/plans/training-data-guide.md` on that branch).
 
 **The network recipe** (whitened $`y/h`$; flow matching with three 128-unit layers and
 dropout 0.1) is that of Stefan's notebook,
@@ -1979,11 +2316,13 @@ dropout 0.1) is that of Stefan's notebook,
 [PR #87](https://github.com/fmuia/sbi4finance/pull/87); the study scales it to 300,000 rows
 and 300 passes.
 
-**Rough Bergomi bank:** branch `feat/bergomi-actual63-production-20261111`, under
-`lab/evidence/pilot-results/2026-11-11/bergomi-observation-refresh/` (`campaign-summary.json`,
-and the timing audit in `joint-legacy-budget-300k/`); plan in
-[PR #84](https://github.com/fmuia/sbi4finance/pull/84), production in
-[PR #88](https://github.com/fmuia/sbi4finance/pull/88).
+**Rough Bergomi bank:** the plan and its status in
+`lab/plans/BERGOMI-OBSERVATION-REFRESH-PLAN.md`
+([PR #84](https://github.com/fmuia/sbi4finance/pull/84)); the production code, evidence
+and repair packaging on branch `feat/bergomi-actual63-production-20261111`
+([PR #88](https://github.com/fmuia/sbi4finance/pull/88)), under
+`lab/evidence/pilot-results/2026-11-11/bergomi-observation-refresh/`
+(`campaign-summary.json`, and the timing audit in `joint-legacy-budget-300k/`).
 
 **Code.** In the tutorial runtime: the Heston characteristic function and pricer
 (`tutorial/src/sbi4f_tutorial/heston_options/model.py`), the rough simulator
@@ -1992,17 +2331,33 @@ branch of PR #85: the Black control variate (`heston_options/control_variate.py`
 whitening transform (`shared/whitening.py`). In the lab: product pricing
 (`lab/src/sbi4finance/calibration/products.py`).
 
-**Figures.** [`figure-sources/extract_data.py`](figure-sources/extract_data.py) copies the
-numbers the figures need from the files above into
-[`figure-sources/data.json`](figure-sources/data.json), with each source's path, commit and
-SHA-256. [`figure-sources/make_figures.py`](figure-sources/make_figures.py) draws every
-figure in `images/` from that file and the tutorial's Heston pricer. Three figures come
-from computations made in the script itself, each stated in its docstring: Figures 10 and
-15 from 3,000 surfaces simulated from the prior at the 63 quotes, and Figure 9 from a
-one-parameter toy model. The numbers quoted from these computations (the misfit, the
-information by region, the strip check, the precision of $`\tau`$, the spectrum of the
-inputs, the product summaries) are written to
-[`figure-sources/numbers.json`](figure-sources/numbers.json). To redraw:
+**Figures and numbers.**
+- [`figure-sources/extract_data.py`](figure-sources/extract_data.py) copies the numbers
+  the figures need from the study's files into
+  [`figure-sources/data.json`](figure-sources/data.json), with each source's path,
+  commit and SHA-256.
+- [`figure-sources/notebook_numbers.py`](figure-sources/notebook_numbers.py) repeats the
+  notebook's computations from a checkout of its branch, without marimo or BayesFlow, and
+  writes [`figure-sources/notebook.json`](figure-sources/notebook.json): every number the
+  notebook prints that does not need the trained network, recomputed with its seeds and
+  code, and the network's recorded results on the three data sets. The notebook's numbers
+  quoted in the layers come from this file, with the commit and the SHA-256 of each source.
+- [`figure-sources/make_figures.py`](figure-sources/make_figures.py) draws every figure in
+  `images/` from these two files and the tutorial's Heston pricer. Three figures come from
+  computations made in the script itself, each stated in its docstring: Figures 11 and 16
+  from the notebook's 1,000 surfaces simulated from the prior, recomputed with the same
+  seed and in the same order, and Figure 10 from a one-parameter toy model. The numbers
+  quoted from these computations (the misfit, the information by region, the strip check,
+  the precision of $`\tau`$, the spectrum of the inputs, the product summaries, the costs)
+  are written to [`figure-sources/numbers.json`](figure-sources/numbers.json).
+
+To recompute the notebook's numbers, run the first command from the `lab/` folder of a
+checkout of the notebook's branch, with `DOCS` the path of this folder; then redraw from
+the repository root:
+
+```bash
+PYTHONPATH=.:src:../tutorial/src python "$DOCS/figure-sources/notebook_numbers.py" --out "$DOCS/figure-sources/notebook.json" --commit "$(git rev-parse HEAD)"
+```
 
 ```bash
 PYTHONPATH=tutorial/src python lab/plans/option-application/figure-sources/make_figures.py

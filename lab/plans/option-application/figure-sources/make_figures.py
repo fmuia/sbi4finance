@@ -1,7 +1,8 @@
 """Draw the figures of the option-application documentation.
 
-Every figure comes from `data.json` (see `extract_data.py`) or from a computation stated in
-its docstring with the tutorial runtime's Heston pricer. Run from the repository root:
+Every figure comes from `data.json` (see `extract_data.py`), from `notebook.json` (the Heston
+notebook's own numbers, see `notebook_numbers.py`) or from a computation stated in its docstring
+with the tutorial runtime's Heston pricer. Run from the repository root:
 
     PYTHONPATH=tutorial/src python lab/plans/option-application/figure-sources/make_figures.py
 
@@ -24,6 +25,7 @@ from sbi4f_tutorial.heston_options import model  # noqa: E402
 HERE = Path(__file__).resolve().parent
 OUT = HERE.parent / "images"
 DATA = json.loads((HERE / "data.json").read_text())
+NOTEBOOK = json.loads((HERE / "notebook.json").read_text())
 
 LABELS = {"initial_variance": "$v_0$", "kappa": r"$\kappa$", "theta": r"$v_\infty$",
           "vol_of_vol": r"$\sigma_v$", "rho": r"$\rho$", "c": "$c$"}
@@ -82,7 +84,8 @@ def vega(forward, strike, discount, maturity, sigma):
 
 # ---------------------------------------------------------------- Heston helpers
 
-MARKET = dict(zip(NAMES, DATA["heston_300k"]["cases"]["market"]["reference_mean"]))
+# Heston's best fit to the SPX quotes, as in the notebook: the mean of the PyMC reference draws.
+MARKET = dict(zip(NAMES, NOTEBOOK["market"]["best_fit_parameters"]))
 
 
 def heston_parameters(theta):
@@ -157,14 +160,18 @@ def heston_surface(theta, d):
     raise ValueError("quadrature ladder exhausted")
 
 
-def prior_simulation(n=3000, seed=20261111):
-    """n draws of theta from the prior, their 63 clean prices, and x = y / h with y = P + c h eps."""
+def prior_simulation(n=1000, seed=20261111):
+    """The notebook's prior simulation (Section 2.2): n draws of theta, their prices and x = y / h.
+
+    The draws follow the order of the notebook's BayesFlow simulator: all n parameter vectors
+    first, then one vector of 63 errors per data set, so the simulated quotes are the notebook's.
+    """
     d = design()
     rng = np.random.default_rng(seed)
     bounds = np.asarray(DATA["prior_bounds"])
-    theta = rng.uniform(bounds[:, 0], bounds[:, 1], size=(n, 6))
+    theta = np.array([rng.uniform(bounds[:, 0], bounds[:, 1]) for _ in range(n)])
     clean = np.array([heston_surface(row, d) for row in theta])
-    y = clean + theta[:, 5:6] * d["half_spread"] * rng.standard_normal(clean.shape)
+    y = np.array([row + c * d["half_spread"] * rng.standard_normal(len(row)) for row, c in zip(clean, theta[:, 5])])
     return {"theta": theta, "clean": clean, "x": y / d["half_spread"]}
 
 
@@ -287,74 +294,60 @@ def simulate_heston(theta, years=1.0, steps_per_day=4, n_paths=400, seed=7):
 
 
 def fig_products():
-    """Payoffs on simulated paths (Heston at the market reference mean) and the expected variance."""
+    """The notebook's three unquoted products on paths simulated from Heston at its SPX best fit.
+
+    Paths of the index in forward units (X = S/F, so no drift) and of its variance, by the
+    full-truncation Euler scheme; the variance swap uses the closed form of E[V_t].
+    """
     d = design()
-    spot = 7571.54
-    growth = np.log(d["forward"][-1] / spot) / d["maturity"][-1]
-    t, x, v = simulate_heston(MARKET)
-    s = spot * np.exp(growth * t)[:, None] * x
-    fig, axs = plt.subplots(2, 2, figsize=(10.2, 6.6))
-    a, b, c, e = axs.ravel()
-    i1 = len(t) // 2
-    picks = [3, 11, 25, 40]
+    start, end = NOTEBOOK["products"]["forward_start"]
+    t, x, v = simulate_heston(MARKET, years=end, n_paths=400, seed=7)
+    fig, (a, b, e) = plt.subplots(1, 3, figsize=(13.4, 3.7), gridspec_kw={"width_ratios": [1.15, 1, 1.1]})
+    i1 = int(round(start * 252))
     label_y = []
-    for j, p in enumerate(picks[:3]):
+    for j, p in enumerate([3, 11, 25]):
         col = plt.get_cmap("tab10")(j)
-        a.plot(t, s[:, p], lw=1, color=col)
-        strike = s[i1, p] * np.exp(growth * (t[-1] - t[i1]))
-        a.plot(t[i1], s[i1, p], "o", color=col, ms=4)
-        a.hlines(strike, t[i1], t[-1], color=col, ls=":", lw=1.3)
-        payoff = max(s[-1, p] - strike, 0.0)
-        y = s[-1, p]
-        while any(abs(y - other) < 170 for other in label_y):
-            y -= 170
+        a.plot(t, 100 * x[:, p], lw=1, color=col)
+        a.plot(t[i1], 100 * x[i1, p], "o", color=col, ms=4)
+        a.hlines(100 * x[i1, p], t[i1], t[-1], color=col, ls=":", lw=1.3)
+        payoff = 100 * max(x[-1, p] / x[i1, p] - 1, 0.0)
+        y = 100 * x[-1, p]
+        while any(abs(y - other) < 2.2 for other in label_y):
+            y -= 2.2
         label_y.append(y)
-        a.annotate(f"pays {payoff:,.0f}", (t[-1], s[-1, p]), xytext=(t[-1] + 0.02, y), textcoords="data",
+        a.annotate(f"pays {payoff:.1f}%", (t[-1], 100 * x[-1, p]), xytext=(t[-1] + 0.01, y), textcoords="data",
                    fontsize=7.5, color=col, va="center")
     a.axvline(t[i1], color="0.5", lw=0.8, ls="--")
-    a.plot([], [], ls=":", color="0.3", label="strike, set at 6 months (dots)")
+    a.plot([], [], ls=":", color="0.3", label="strike: the level at 3 months (dots)")
     a.legend(frameon=False, loc="upper left", fontsize=7.5)
-    a.set_xlim(-0.02, 1.15)
-    a.set_title("Forward-start call: strike fixed in 6 months, paid at 1 year")
-    a.set_ylabel("index level")
-    returns = np.diff(np.log(s), axis=0)
+    a.set_xlim(-0.01, end + 0.11)
+    a.set_title("Forward-start call: strike fixed at 3 months,\npays the rise above it at 6 months")
+    a.set_ylabel("index, % of today's forward")
+    a.set_xlabel("years")
+    returns = np.diff(np.log(x), axis=0)
     running = np.sqrt(252 * np.cumsum(returns ** 2, axis=0) / np.arange(1, len(t))[:, None])
-    k_vol = np.mean(np.sqrt(np.mean(v[1:], axis=0)))
-    for j, p in enumerate(picks):
-        b.plot(t[10:], 100 * running[9:, p], lw=1, color=plt.get_cmap("tab10")(j))
+    i_end = int(round(start * 252))
+    k_vol = np.mean(np.sqrt(np.mean(v[1:i_end + 1], axis=0)))
+    for j, p in enumerate([3, 11, 25, 40]):
+        b.plot(t[5:i_end + 1], 100 * running[4:i_end, p], lw=1, color=plt.get_cmap("tab10")(j))
     b.axhline(100 * k_vol, color="black", lw=1.2, ls="--", label=f"fair strike, about {100 * k_vol:.0f}%")
-    b.set_ylim(0, 60)
-    b.set_title("Volatility swap: pays realized volatility minus a fixed strike")
+    b.set_ylim(0, 45)
+    b.set_title("Volatility swap, 3 months: pays realized\nvolatility minus a strike fixed today")
     b.set_ylabel("running realized volatility (%)")
+    b.set_xlabel("years")
     b.legend(frameon=False, loc="upper right")
-    hit = np.where(np.min(s / spot, axis=0) <= 0.7)[0]
-    calm = [p for p in range(s.shape[1]) if p not in set(hit)][:6]
-    for p in calm:
-        c.plot(t, 100 * s[:, p] / spot, color="0.7", lw=0.9)
-    if hit.size:
-        p = hit[0]
-        c.plot(t, 100 * s[:, p] / spot, color="#d62728", lw=1.4, label="barrier hit: the put comes alive")
-        first = np.argmax(s[:, p] / spot <= 0.7)
-        c.plot(t[first], 100 * s[first, p] / spot, "o", color="#d62728")
-    c.axhline(70, color="black", ls="--", lw=1, label="barrier, 70%")
-    c.axhline(100, color="0.4", ls=":", lw=1, label="strike, 100%")
-    c.set_title(f"Down-and-in put: exists only if a close falls to 70% ({hit.size / s.shape[1]:.0%} of paths)")
-    c.set_ylabel("index, % of today")
-    c.set_xlabel("years")
-    c.legend(frameon=False, loc="lower left", fontsize=7.5)
     tt = np.linspace(0, 1, 300)
     ev = MARKET["theta"] + (MARKET["initial_variance"] - MARKET["theta"]) * np.exp(-MARKET["kappa"] * tt)
     e.plot(tt, 100 * np.sqrt(ev), color="black", lw=1.5, label=r"$\sqrt{\mathbb{E}[V_t]}$")
-    for name, (start, end), col in (("short window", DATA["design"]["products"]["control"], "#4c78a8"),
-                                    ("later window", DATA["design"]["products"]["affected"], "#f58518")):
-        avg = expected_variance(MARKET, start, end)
-        e.axvspan(start, end, color=col, alpha=0.18)
-        e.hlines(100 * np.sqrt(avg), start, end, color=col, lw=2.5,
-                 label=f"{name}: {100 * np.sqrt(avg):.1f}%")
+    for name, (s0, s1), col in (("0 to 21 days", DATA["design"]["products"]["control"], "#4c78a8"),
+                                ("81 to 325 days", DATA["design"]["products"]["affected"], "#f58518")):
+        avg = expected_variance(MARKET, s0, s1)
+        e.axvspan(s0, s1, color=col, alpha=0.18)
+        e.hlines(100 * np.sqrt(avg), s0, s1, color=col, lw=2.5, label=f"{name}: {100 * np.sqrt(avg):.1f}%")
     for tm in np.unique(d["maturity"]):
         e.plot(tm, 15.2, "|", color="0.3", ms=9)
     e.text(0.02, 15.6, "quoted expiries", fontsize=7, color="0.3")
-    e.set_title("Forward-starting variance: expected variance averaged over a window")
+    e.set_title("Forward-starting variance swap: expected\nvariance averaged over a window")
     e.set_ylabel("volatility (%)")
     e.set_xlabel("years")
     e.legend(frameon=False, loc="lower right")
@@ -386,14 +379,16 @@ def fig_whitening_comparison():
 
 
 def fig_whitening_spectrum(sim):
-    """Why the inputs are whitened, on the prior simulation of the 63-quote design.
+    """Why the inputs are whitened, on the notebook's prior simulation of the 63-quote design.
 
-    mu and Sigma are fitted on the first 2,000 simulated inputs x = y/h; the other panels use the
-    remaining 1,000. c_hat is the root mean square of the coordinates of x - mu along the principal
-    directions whose variance is below twice E[c^2] = 1.75, the variance of the quote errors.
+    As in the notebook (Section 2.3), mu and Sigma are fitted on the first 700 of the 1,000
+    simulated inputs x = y/h, and the other panels use the remaining 300. c_hat is the root mean
+    square of the coordinates of x - mu along the principal directions whose variance is below
+    twice E[c^2] = 1.75, the variance of the quote errors.
     """
     x, c = sim["x"], sim["theta"][:, 5]
-    fit, held = slice(0, 2000), slice(2000, None)
+    split = int(0.7 * len(x))
+    fit, held = slice(0, split), slice(split, None)
     mu = x[fit].mean(axis=0)
     lam, vec = np.linalg.eigh(np.cov(x[fit], rowvar=False))
     lam, vec = lam[::-1], vec[:, ::-1]
@@ -427,7 +422,7 @@ def fig_whitening_spectrum(sim):
     fig.tight_layout()
     save(fig, "whitening-spectrum.png")
     scaled = np.linalg.eigvalsh(np.corrcoef(x[fit], rowvar=False))
-    return {"fit_rows": 2000, "held_out_rows": int(len(c[held])),
+    return {"fit_rows": split, "held_out_rows": int(len(c[held])),
             "largest_variance": float(lam[0]), "smallest_variance": float(lam[-1]),
             "condition_number": float(lam[0] / lam[-1]),
             "condition_number_each_input_scaled": float(scaled[-1] / scaled[0]),
@@ -441,15 +436,16 @@ def fig_whitening_spectrum(sim):
 
 
 def fig_prior_predictive(sim):
-    """150 smiles simulated from the prior (clean prices) against the market, at three expiries."""
+    """150 of the notebook's 1,000 prior-predictive data sets against the market, at three expiries."""
     d = design()
     market_iv = implied_vol(d["mid"], d["forward"], d["strike"], d["discount"], d["maturity"], d["put"])
     unique = np.unique(d["maturity"])
     fig, axs = plt.subplots(1, 3, figsize=(10.4, 3.2), sharey=True)
+    quotes = sim["x"] * d["half_spread"]
     for ax, t in zip(axs, unique[[0, 4, 6]]):
         m = np.flatnonzero(d["maturity"] == t)
         m = m[np.argsort(d["delta"][m])]
-        for row in sim["clean"][:150]:
+        for row in quotes[:150]:
             iv = implied_vol(row[m], d["forward"][m], d["strike"][m], d["discount"][m], d["maturity"][m], d["put"][m])
             ax.plot(d["delta"][m], 100 * iv, color="#4c78a8", alpha=0.13, lw=0.8)
         ax.plot(d["delta"][m], 100 * market_iv[m], "o-", color="#f58518", ms=3.5, lw=1.6, label="market")
@@ -468,7 +464,11 @@ def fig_prior_predictive(sim):
 
 
 def fig_heston_calibration():
-    """Coverage against nominal level, and SBC rank ECDFs with the DKW band (300k network)."""
+    """Coverage against nominal level, and the rank ECDFs with the notebook's simultaneous band.
+
+    The band is that of the notebook's Section 5.2 (Säilynoja, Bürkner and Vehtari 2022): each curve
+    gets level 1 - 0.05/6, so that a calibrated network keeps all six curves inside with 95%.
+    """
     h = DATA["heston_300k"]
     levels = sorted(float(k) for k in h["coverage"])
     cov = np.array([h["coverage"][str(k) if str(k) in h["coverage"] else repr(k)] for k in levels])
@@ -486,8 +486,9 @@ def fig_heston_calibration():
     a.legend(frameon=False, ncol=2)
     ranks = np.asarray(h["fractional_ranks"])
     grid = np.linspace(0, 1, 201)
-    bound = h["sbc_bound"]
-    b.fill_between(grid, -bound, bound, color="0.88", label="95% band for a calibrated posterior")
+    band = NOTEBOOK["calibration"]["band"]
+    b.fill_between(band["grid"], band["low"], band["high"], color="0.88",
+                   label="band holding all six curves\nwith 95% if calibrated")
     for j, name in enumerate(NAMES):
         ecdf = np.searchsorted(np.sort(ranks[:, j]), grid, side="right") / len(ranks)
         b.plot(grid, ecdf - grid, color=PARAM_COLORS[j], lw=1.3, label=LABELS[name])
@@ -522,14 +523,17 @@ def fig_heston_recovery():
 
 
 def fig_heston_reference():
-    """Network against reference posterior on the three test cases, in units of the reference width."""
-    cases = DATA["heston_300k"]["cases"]
+    """Network against the PyMC reference on the three data sets, in units of the reference width.
+
+    As in the notebook: the network's 4,096 draws per data set against the regenerated references.
+    """
+    cases = NOTEBOOK["data_sets"]
     titles = CASE_TITLES
     fig, axs = plt.subplots(1, 3, figsize=(10.4, 3.6), sharey=True)
     for ax, key in zip(axs, ("synthetic-market-like", "synthetic-broad", "market")):
         case = cases[key]
-        ref = np.asarray(case["reference_quantiles_05_50_95"])
-        net = np.asarray(case["neural_quantiles_05_50_95"])
+        ref = np.asarray(case["pymc_q05_q50_q95"]).T
+        net = np.asarray(case["network_q05_q50_q95"]).T
         width = ref[2] - ref[0]
         for j, name in enumerate(NAMES):
             y = len(NAMES) - 1 - j
@@ -692,40 +696,176 @@ def fig_push_forward():
             "strongest_parameter_correlation": {"pair": [NAMES[j], NAMES[i]], "value": float(corr[i, j])}}
 
 
-def fig_costs():
-    """CPU time for one posterior, from the number of pricings of the 63 quotes each method needs.
+def duration(seconds):
+    if seconds < 60:
+        return f"{seconds:.1f} s"
+    if seconds < 3600:
+        return f"{seconds / 60:.0f} min"
+    if seconds < 2 * 86400:
+        return f"{seconds / 3600:.0f} h"
+    return f"{seconds / 86400:,.0f} days"
 
-    Heston MCMC: measured (accepted runs of the regenerated references). Network: 615 posteriors in
-    164 s. Rough Bergomi: pricings times the measured 1-2 CPU-minutes per pricing (derived, not run).
+
+def fig_costs():
+    """What each step costs, and the total for many data sets (the notebook's Section 4.3).
+
+    Heston: the recorded bank (300,000 pricings) and training times, the network's average time per
+    posterior in its recorded evaluation (615 posteriors), and the three PyMC runs, both attempts
+    included, on one core. Rough Bergomi: the same number of likelihood evaluations as the Heston
+    runs, times its measured 1 to 1.75 CPU-minutes per pricing (derived, not run).
     """
-    runs = [case["accepted_run"] for case in DATA["references_regenerated"].values()]
-    evaluations = int(round(np.mean([r["likelihood_evaluations"] for r in runs]), -3))
-    low, high = min(r["cpu_seconds"] for r in runs), max(r["cpu_seconds"] for r in runs)
-    rows = [("Network, after training\n(no pricing)", 164 / 615, 164 / 615, "0.3 seconds", "#2ca02c"),
-            (f"Heston, MCMC\n({evaluations:,} pricings)", low, high, f"{low / 60:.0f}–{high / 60:.0f} minutes (measured)", "#4c78a8"),
-            ("Rough Bergomi, importance sampling\nfrom the network (1,000 pricings)", 1000 * 60, 1000 * 105,
-             "17–29 hours", "#f58518"),
-            (f"Rough Bergomi, MCMC\n({evaluations:,} pricings; not run)", evaluations * 60, evaluations * 105,
-             "100–180 days", "#e45756")]
-    fig, ax = plt.subplots(figsize=(9.0, 3.0))
-    for i, (label, lo, hi, text, color) in enumerate(rows):
-        ax.barh(i, hi, left=0.05, color=color, height=0.55, alpha=0.45)
-        ax.barh(i, lo, left=0.05, color=color, height=0.55)
-        ax.text(hi * 1.5, i, text, va="center", fontsize=8.5)
-    ax.set_xscale("log")
-    ax.set_xlim(0.05, 2e9)
-    ax.set_xticks([1, 60, 3600, 86400, 86400 * 30, 86400 * 365])
-    ax.set_xticklabels(["1 second", "1 minute", "1 hour", "1 day", "1 month", "1 year"])
-    ax.set_yticks(range(len(rows)))
-    ax.set_yticklabels([r[0] for r in rows], fontsize=8.5)
-    ax.invert_yaxis()
-    ax.set_title("CPU time for one posterior")
+    training, costs = NOTEBOOK["training"], NOTEBOOK["costs"]
+    bank, train = training["bank_seconds"], training["training_seconds"]
+    net = costs["network_seconds_per_posterior"]
+    pymc = np.array(list(costs["pymc_seconds"].values()))
+    evaluations = np.mean([run["likelihood_evaluations"] for run in NOTEBOOK["pymc"]["runs"].values()])
+    rough = (evaluations * 60, evaluations * 105)
+    rows = [(f"simulate {training['rows']:,} data sets", bank, bank, "#4c78a8", True),
+            ("train the network", train, train, "#4c78a8", True),
+            ("one posterior: network", net, net, "#4c78a8", False),
+            ("one posterior: PyMC", pymc.min(), pymc.max(), "#f58518", False),
+            ("one posterior: rough Bergomi\nby MCMC (derived, not run)", *rough, "#e45756", False)]
+    fig, (a, b) = plt.subplots(1, 2, figsize=(12.0, 3.6), gridspec_kw={"width_ratios": [1.25, 1]})
+    for i, (label, lo, hi, color, once) in enumerate(rows):
+        style = dict(color=color, height=0.6, hatch="///" if once else None, edgecolor="white", lw=0)
+        a.barh(i, lo, left=0.05, **style)
+        if hi > lo:
+            a.barh(i, hi - lo, left=lo, alpha=0.4, **style)
+        text = (f"≤ {duration(lo)}" if label == "one posterior: network" else duration(lo) if hi == lo
+                else f"{duration(lo)} – {duration(hi)}")
+        a.text(hi * 1.6, i, text, va="center", fontsize=8.5)
+    a.set_xscale("log")
+    a.set_xlim(0.05, 3e9)
+    a.set_xticks([1, 60, 3600, 86400, 86400 * 365])
+    a.set_xticklabels(["1 s", "1 min", "1 h", "1 day", "1 year"])
+    a.minorticks_off()
+    a.set_yticks(range(len(rows)))
+    a.set_yticklabels([r[0] for r in rows], fontsize=8.5)
+    a.invert_yaxis()
+    a.set_title("What each step costs (hatched: paid once)")
+    n = np.geomspace(1, 2000, 200)
+    check = costs["posteriors_in_evaluation"]["calibration"]
+    b.plot(n, (bank + train + n * net) / 3600, color="#4c78a8", label="network: simulate and train once, then sample")
+    b.plot(n, n * pymc.mean() / 3600, color="#f58518", label="PyMC: one run per data set")
+    b.axvline(check, color="0.5", ls=":", lw=1)
+    b.text(check * 0.9, 0.13, f"calibration check\n({check} data sets)", fontsize=7.5, color="0.4", ha="right")
+    b.set(xscale="log", yscale="log", xlabel="number of data sets", ylabel="total time (hours)")
+    b.set_xticks([1, 10, 100, 1000], ["1", "10", "100", "1,000"])
+    b.set_yticks([0.1, 1, 10, 100, 1000], ["0.1", "1", "10", "100", "1,000"])
+    b.set_ylim(0.1, None)
+    b.minorticks_off()
+    b.set_title("Heston: total time for many data sets")
+    b.legend(frameon=False, fontsize=7.5, loc="upper left")
+    fig.tight_layout()
     save(fig, "posterior-costs.png")
-    return {"mcmc_likelihood_evaluations": [r["likelihood_evaluations"] for r in runs],
-            "mcmc_cpu_minutes_accepted_run": [round(r["cpu_seconds"] / 60, 1) for r in runs],
-            "mcmc_cpu_minutes_first_run": [round(case["first_run"]["cpu_seconds"] / 60, 1)
-                                           for case in DATA["references_regenerated"].values()],
-            "rough_mcmc_cpu_days": [round(evaluations * 60 / 86400), round(evaluations * 105 / 86400)]}
+    return {"network_seconds": net, "pymc_minutes": [round(v / 60, 1) for v in pymc],
+            "pymc_likelihood_evaluations": [run["likelihood_evaluations"] for run in NOTEBOOK["pymc"]["runs"].values()],
+            "bank_minutes": round(bank / 60, 1), "training_minutes": round(train / 60, 1),
+            "pymc_hours_for_calibration_check": round(costs["pymc_hours_for_calibration_sets"]),
+            "rough_mcmc_cpu_days": [round(r / 86400) for r in rough]}
+
+
+def fig_refits():
+    """The forward-start call under posterior draws and under refits (the notebook's Section 6).
+
+    Prices: Monte Carlo with 4,096 paths and the same random numbers for every draw, under 40 PyMC
+    draws inside the prior, and under Heston refitted by least squares to four subsets of the SPX quotes.
+    """
+    p = NOTEBOOK["products"]
+    fig, (a, b) = plt.subplots(2, 1, figsize=(9.4, 4.6), gridspec_kw={"height_ratios": [1, 2.2]})
+    like = np.asarray(p["posterior_prices"]["synthetic-market-like"])[:, 0]
+    q = np.quantile(like, [0.05, 0.95])
+    a.plot(q, [0, 0], color="#f58518", lw=7, solid_capstyle="butt", alpha=0.75)
+    a.scatter(like, np.zeros(len(like)), color="#f58518", s=8, zorder=3)
+    a.axvline(p["true_price"][0], color="black", ls="--", lw=1)
+    a.text(p["true_price"][0], -0.45, " true price", fontsize=8, va="center")
+    a.set_yticks([0], ["posterior, 90% range"])
+    a.set_ylim(0.6, -0.7)
+    a.set_title("Simulated market-like quotes: Heston is right, and the range contains the true price")
+    spx = np.asarray(p["posterior_prices"]["market"])[:, 0]
+    q = np.quantile(spx, [0.05, 0.95])
+    labels = ["posterior, 90% range"]
+    b.plot(q, [0, 0], color="#f58518", lw=7, solid_capstyle="butt", alpha=0.75)
+    b.scatter(spx, np.zeros(len(spx)), color="#f58518", s=8, zorder=3)
+    for i, (name, refit) in enumerate(p["refits"].items(), start=1):
+        b.scatter([refit["prices"][0]], [i], color="black", marker="D", s=26, zorder=3)
+        labels.append(f"refit to {name}")
+    b.set_yticks(range(len(labels)), labels, fontsize=8)
+    b.set_ylim(len(labels) - 0.4, -0.6)
+    ratio = p["refit_spread_over_posterior_range"][0]
+    b.set_title(f"SPX quotes: refits to parts of the quotes spread {ratio:.0f} times wider than the posterior range")
+    for ax in (a, b):
+        ax.set_xlabel("forward-start call, % of notional (strike fixed at 3 months, paid at 6)")
+    a.set_xlim(*b.get_xlim())
+    fig.tight_layout()
+    save(fig, "refits.png")
+
+
+def fig_skew_ceiling():
+    """What Heston misses at short expiries (the notebook's closing section).
+
+    At-the-money skew and curvature of each smile, from a quadratic in log-moneyness through the five
+    quotes nearest the money, for the SPX quotes and for Heston's best fit; Heston's curve at any
+    expiry, its short-expiry ceiling |rho| sigma_v / (4 sqrt(v0)), and a power law fitted to SPX.
+    """
+    m = NOTEBOOK["missing_feature"]
+    days = np.asarray(NOTEBOOK["data"]["expiry_days"])
+    grid = np.asarray(m["days_grid"])
+    fig, (a, b, c) = plt.subplots(1, 3, figsize=(12.4, 3.7))
+    a.plot(grid, np.abs(m["fit_skew_grid"]), color="#f58518", lw=1.3, label="Heston's best fit, any expiry")
+    a.axhline(m["ceiling"], color="0.45", ls=":", lw=1.1, label=r"Heston's ceiling $|\rho|\sigma_v/(4\sqrt{v_0})$")
+    a.plot(days, np.exp(m["spx_power_intercept"]) * (days / 365) ** m["spx_power"], color="black", ls="--", lw=1,
+           label=f"SPX power law, $T^{{{m['spx_power']:.2f}}}$")
+    a.scatter(days, np.abs(m["spx_skew"]), color="black", s=22, zorder=3, label="SPX quotes")
+    a.scatter(days, np.abs(m["fit_skew"]), color="#f58518", marker="s", s=20, zorder=3, label="best fit, quoted expiries")
+    a.set(xscale="log", yscale="log", xlabel="days to expiry", ylabel=r"$|\psi(T)|$, at-the-money skew")
+    a.set_title("Skew: Heston levels off at its ceiling")
+    b.plot(grid, m["fit_curvature_grid"], color="#f58518", lw=1.3, label="Heston's best fit, any expiry")
+    b.axhline(0, color="0.6", lw=0.6)
+    b.scatter(days, m["spx_curvature"], color="black", s=22, zorder=3, label="SPX quotes")
+    b.scatter(days, m["fit_curvature"], color="#f58518", marker="s", s=20, zorder=3, label="best fit, quoted expiries")
+    b.set(xscale="log", xlabel="days to expiry", ylabel="at-the-money curvature")
+    b.set_title("Curvature: Heston turns down below 14 days")
+    for ax, where in ((a, "lower left"), (b, "upper right")):
+        ax.set_xticks([1, 7, 30, 90, 365], ["1", "7", "30", "90", "365"])
+        ax.minorticks_off()
+        ax.legend(frameon=False, fontsize=7, loc=where)
+    a.set_yticks([0.3, 0.5, 1, 2], ["0.3", "0.5", "1", "2"])
+    s = m["shortest"]
+    c.plot(s["delta"], s["fit_iv"], "-s", color="#f58518", ms=4, lw=1.2, label="best Heston fit")
+    c.scatter(s["delta"], s["spx_iv"], color="black", s=22, zorder=3, label="SPX quotes")
+    c.set(xlabel=r"standardized moneyness $\delta$", ylabel="implied volatility (%)")
+    c.set_title(f"The {days[0]}-day smile: the deep puts are missed")
+    c.legend(frameon=False, fontsize=7.5)
+    fig.tight_layout()
+    save(fig, "heston-skew-ceiling.png")
+
+
+def fig_posterior_predictive():
+    """The posterior predictive check at the 81-day expiry (the notebook's Section 5.1, PyMC draws).
+
+    For 40 PyMC draws: model prices minus the observed quotes, and replicated quotes (the same prices
+    plus fresh errors with each draw's c) minus the observed quotes, in half-spreads; pointwise 90% bands.
+    """
+    ppc = NOTEBOOK["posterior_predictive"]
+    delta = np.asarray(ppc["delta"])
+    fig, axs = plt.subplots(1, 2, figsize=(10.4, 3.4))
+    for ax, case, title in ((axs[0], "synthetic-market-like", "Simulated market-like quotes"),
+                            (axs[1], "market", "SPX quotes")):
+        entry = ppc[case]
+        ax.fill_between(delta, *entry["replicated_minus_observed_q05_q95"], color="#9bd3ba", alpha=0.6,
+                        label="replicated quotes (90%)")
+        ax.fill_between(delta, *entry["model_minus_observed_q05_q95"], color="#7f53ad", alpha=0.55,
+                        label="model prices (90%)")
+        if entry["true_minus_observed"] is not None:
+            ax.plot(delta, entry["true_minus_observed"], "--", color="0.2", lw=1, label="true prices")
+        ax.axhline(0, color="black", lw=1)
+        ax.set_title(f"{title}, {ppc['days']}-day expiry")
+        ax.set_xlabel(r"standardized moneyness $\delta$")
+        ax.legend(frameon=False, fontsize=7.5, loc="lower left" if case == "market" else "upper left")
+    axs[0].set_ylabel("minus the observed quote,\nin half-spreads")
+    fig.tight_layout()
+    save(fig, "posterior-predictive.png")
 
 
 def fig_flow_matching():
@@ -821,7 +961,7 @@ def fig_network():
     top, height, width = 31.5, 15.5, 21.6
     training = [("Prior", "draw $\\theta^{(n)} \\sim p(\\theta)$\n6 numbers:\n$v_0, \\kappa, v_\\infty, \\sigma_v, \\rho, c$"),
                 ("Pricer", "$P(\\theta^{(n)})$\n63 model prices\n(Heston: Fourier integral)"),
-                ("Error model", "$y^{(n)}_i = P_i(\\theta^{(n)}) + c^{(n)} h_i\\,\\varepsilon^{(n)}_i$\n63 simulated quotes"),
+                ("Error model", "$y^{(n)}_i = P_i(\\theta^{(n)}) + c^{(n)} h_i\\,\\epsilon^{(n)}_i$\n63 simulated quotes"),
                 ("Bank", "$N$ = 300,000 pairs\n$(\\theta^{(n)},\\ y^{(n)})$"),
                 ("Fit", "whitening $(\\mu, W)$\nfrom 10,000 rows;\nvelocity network $v_\\phi$\nby flow matching")]
     for i, (title, body) in enumerate(training):
@@ -899,6 +1039,9 @@ def main():
     numbers["variance_strip"] = fig_variance_strip()
     numbers["posterior_to_product"] = fig_push_forward()
     numbers["posterior_costs"] = fig_costs()
+    fig_refits()
+    fig_skew_ceiling()
+    fig_posterior_predictive()
     (HERE / "numbers.json").write_text(json.dumps(numbers, indent=1) + "\n")
     print(json.dumps(numbers, indent=1))
 

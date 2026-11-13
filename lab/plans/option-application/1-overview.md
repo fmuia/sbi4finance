@@ -1,7 +1,7 @@
 # Option application on SPX · Layer 1: overview
 
 *Layer 1 of 3 · about 10 minutes · [Index](README.md) · [Layer 2](2-walkthrough.md) ·
-[Layer 3](3-full-detail.md) · [Glossary](glossary.md) · Results as of 11 November 2026*
+[Layer 3](3-full-detail.md) · [Glossary](glossary.md) · Results as of 13 November 2026*
 
 ## Goals
 
@@ -10,7 +10,8 @@
 2. Show that simulation-based inference (SBI) makes this posterior fast enough for daily
    use, and cheap enough to test whether its 90% ranges contain the truth 90% of the time
    (steps 7 and 8).
-3. State what the range covers and what it does not (step 10).
+3. Check the model as well as the posterior, and state what the range covers and what it
+   does not (steps 6, 8 and 10).
 
 ## Audience
 
@@ -43,14 +44,14 @@ flowchart TD
   P["Practitioner: a mark and a defensible range for every product"] --> S1["1. Some products have no market price, so they need a model"]
   S1 --> S2["2. Calibration gives one value and hides how far it could move"]
   S2 --> S3["3. A posterior turns that value into a distribution"]
-  S3 --> S4["4. Ingredient: two models and their priors"]
+  S3 --> S4["4. Ingredient: the Heston model and its prior"]
   S3 --> S5["5. Ingredient: 63 SPX quotes"]
   S3 --> S6["6. Ingredient: how quotes differ from the model"]
   S4 --> S7["7. SBI: learn to invert the simulator once, then a posterior in under a second"]
   S5 --> S7
   S6 --> S7
-  S7 --> S8["8. Check the network on simulations and against exact posteriors"]
-  S8 --> S9["9. Price the products under every posterior draw"]
+  S7 --> S8["8. Check the posterior on simulations and against exact posteriors, and the model on the market"]
+  S8 --> S9["9. Price the products under every posterior draw, and compare with refits"]
   S9 --> S10["10. What this shows, and what it does not"]
 ```
 
@@ -75,24 +76,22 @@ mostly a downward slope, the **skew**. Gaps are counted in **vol points**: 0.01 
 volatility.
 
 **Products that are not listed.** Banks also sell products on the index privately (**over
-the counter**), often inside notes sold to investors:
+the counter**), often inside notes sold to investors. Three examples:
 - a **forward-starting variance swap**, which pays the index's realized variance over a
   future window $`[t_1, t_2]`$ minus a strike agreed today;
-- a **forward-start call**, whose strike is set in 6 months at the index level of that
-  day, and which pays at 1 year;
-- a **volatility swap**, which pays the realized volatility over a period minus a strike
-  agreed today;
-- a **down-and-in put**, a put that exists only if the index falls to a barrier, here 70%
-  of today's level. Buyers of **autocallable** notes, a very common structured product,
-  in effect sell this put to the bank.
+- a **forward-start call**, whose strike is set in 3 months at the index level of that
+  day, and which pays at 6 months the percentage rise above it;
+- a **volatility swap**, which pays the index's realized volatility over the next 3 months
+  minus a strike agreed today.
 
-![Simulated index paths showing the payoffs of the four products](images/products.png)
+![Simulated index paths showing the payoffs of the three products](images/products.png)
 
-**Figure 1.** Each panel follows simulated paths of the index. Forward start: the strike is
-fixed at the dot (6 months) and the call pays at 1 year. Volatility swap: realized
-volatility settles path by path, against one fixed strike. Down-and-in put: only the red
-path touches the 70% barrier, so only there does the put exist. Forward-starting
-variance: the expected variance averaged over a short and a later window.
+**Figure 1.** Simulated paths of the index under Heston (step 4), at its fit to the SPX
+quotes. Left: each forward-start call fixes its strike at the dot, at 3 months, and pays
+the rise above it at 6 months. Centre: running realized volatility, path by path, against
+one fixed strike; at these parameters the variance stays low most of the time and spikes
+now and then, so most paths realize less than the strike and a few much more. Right: the
+expected variance over time, averaged over a short and a later window.
 
 These payoffs depend on the index's path or on its future variance. Listed options fix
 the index's distribution at each listed maturity, but not how those distributions are
@@ -146,10 +145,7 @@ $`G_j^{(s)} = G_j(\theta^{(s)})`$, and from them:
 \underbrace{R_j = \bar G_j - \mathrm{PV}_j}_{\text{reserve}} .
 ```
 
-For a product the bank owes, the prudent value is the 90% quantile. For a **book**, in
-which a desk holds $`\omega_j`$ units of product $`j`$, each draw values the whole book,
-$`B^{(s)} = \sum_j \omega_j\,G_j^{(s)}`$, so the book's range includes how the products
-offset each other.
+For a product the bank owes, the prudent value is the 90% quantile.
 
 ![Exact SPX posterior draws of Heston and the variance strike they imply](images/posterior-to-product.png)
 
@@ -164,7 +160,7 @@ The posterior needs three ingredients: a model with its prior (step 4), the quot
 are generated: draw parameters, compute prices, add errors. That is a simulator, and
 step 7 inverts it.
 
-## 4. Two models
+## 4. The model
 
 The first ingredient is the model. **Heston** lets the variance $`V_t`$ of index returns
 move randomly around a long-run level:
@@ -177,26 +173,18 @@ with $`r-q`$ the interest rate less the dividend yield and $`W^F`$, $`W^V`$ two 
 motions. Its parameters are today's variance $`v_0`$, the long-run variance
 $`v_\infty`$, the speed of **mean reversion** $`\kappa`$, the **vol of vol**
 $`\sigma_v`$, and the correlation $`\rho`$ (negative: volatility rises when the index
-falls). A Fourier integral gives its option prices in milliseconds, so its posterior can
-be computed exactly in minutes and serves as the reference.
+falls). The variance drifts from $`v_0`$, which sets short expiries, towards
+$`v_\infty`$, which sets long ones; $`\rho`$ tilts the smile into a skew and $`\sigma_v`$
+curves it. As the expiry shrinks, the skew at the money grows only up to a ceiling,
+$`|\rho|\,\sigma_v/(4\sqrt{v_0})`$. A Fourier integral gives each option price in
+milliseconds, so the posterior can also be computed directly, in about half an hour, and
+serves as the reference.
 
-**Rough Bergomi** makes volatility **rough**, far more irregular than in Heston. Its
-variance is
-
-```math
-V_t = \xi_0(t)\,\exp\!\Big(\eta\,Y_t - \tfrac12\,\eta^2\,t^{2H}\Big),\qquad Y_t = \sqrt{2H}\int_0^t (t-s)^{H-1/2}\,dW^V_s ,
-```
-
-where $`\xi_0(t)`$ is the expected variance at time $`t`$, a curve given by three
-numbers. The Hurst exponent $`H \lt 1/2`$ sets the roughness, $`\eta`$ is the vol of vol
-and $`\rho`$ the correlation with the index. Roughness makes the skew steepen at short
-maturities, as index smiles do. The model has no pricing formula: every price comes from
-a Monte Carlo simulation that takes minutes.
-
-Both models get wide uniform priors, the same quotes and the same error model. Neither
-sees information the other does not. From here on, $`\theta`$ denotes everything inferred:
-the model's parameters and the error multiplier $`c`$ of step 6. For Heston,
-$`\theta = (v_0, \kappa, v_\infty, \sigma_v, \rho, c)`$.
+The prior is uniform on wide ranges of each parameter. From here on, $`\theta`$ denotes
+everything inferred: the model's parameters and the error multiplier $`c`$ of step 6,
+$`\theta = (v_0, \kappa, v_\infty, \sigma_v, \rho, c)`$. A second model, **rough
+Bergomi**, has a skew that keeps steepening at short expiries; it follows the same steps
+once its simulations are complete (step 10).
 
 ## 5. Which quotes
 
@@ -222,6 +210,10 @@ each target is used.
 puts cost up to 42% in volatility terms, calls about 13%. Right: the design, nine quotes
 per expiry; the colour is the half-spread, mostly well under 0.1 vol points.
 
+On this scale the seven smiles are nearly parallel: the skew per unit of $`\delta`$ is
+about the same at one week as at eleven months. That is the feature the model must
+reproduce.
+
 The design is heavy in **out-of-the-money** puts (strikes below the forward), because
 each region of the smile pins something different:
 - deep puts: how much volatility fluctuates and how fast it reverts;
@@ -239,20 +231,23 @@ $`P_i(\theta)`$ plus an error whose size is the quote's half-spread $`h_i`$ time
 common multiplier $`c`$:
 
 ```math
-y_i = P_i(\theta) + c\,h_i\,\varepsilon_i,\qquad \varepsilon_i \sim \mathcal N(0, 1)\ \text{independent}.
+y_i = P_i(\theta) + c\,h_i\,\epsilon_i,\qquad \epsilon_i \sim \mathcal N(0, 1)\ \text{independent}.
 ```
 
 The half-spread $`h_i`$ is data: the price lies somewhere between bid and ask, so it is
 the natural scale of a quote's uncertainty. The multiplier $`c`$ is inferred with the
 model's parameters, between 0.5 and 2: the data say how large the errors are. This
-equation is the likelihood $`p(y \mid \theta)`$ of step 3.
+equation is the likelihood $`p(y \mid \theta)`$ of step 3. It has no term for the model's
+own error: at the right parameters, the model is assumed to price every quote exactly.
 
-On the SPX quotes, $`c`$ goes straight to its upper limit of 2. The reason is in Figure
-4. Measure the model's miss on each quote in half-spreads,
+On the SPX quotes, $`c`$ goes straight to its upper limit of 2. Figure 4 shows why.
+Measure the model's miss on each quote in half-spreads,
 $`r_i(\theta) = (y_i - P_i(\theta))/h_i`$. If the model were right, the $`r_i`$ would
 have a typical size of $`c`$, at most 2. At its best parameters, Heston gives a root mean
 square of 13.4: about 1.4 vol points, where the half-spreads are about 0.06. The misses
-are also **smooth**: neighbouring quotes are missed by similar amounts.
+are **systematic**: neighbouring quotes are missed by similar amounts, and the deepest put
+is priced too low at every expiry, by 1.9 to 6.0 vol points, most at 7 days. There
+Heston's skew has reached its ceiling (step 4), while the market's keeps steepening.
 
 ![Market quotes against Heston's best fit, and the misses by expiry](images/heston-misfit.png)
 
@@ -262,7 +257,7 @@ for all expiries; the red band, ± one median half-spread, is barely visible.
 
 So on the market the model, not the quotes, is the main source of error. The posterior
 is then a statement about the parameters of Heston, given that Heston is the model; it
-does not include the model's own error. Step 10 returns to this.
+does not include the model's own error. Steps 9 and 10 return to this.
 
 ## 7. Computing the posterior: simulation-based inference
 
@@ -272,23 +267,26 @@ the next problem.
 **What it costs directly.** Evaluating the likelihood at one $`\theta`$ needs the model's
 63 prices $`P(\theta)`$: one **pricing**. A pricing takes milliseconds for Heston and 1
 to 2 CPU-minutes for rough Bergomi. The standard method, MCMC, draws from the posterior by
-trying values of $`\theta`$ one after another, and needs about 146,000 pricings per
-posterior: 14 to 27 CPU-minutes for Heston, 100 to 180 CPU-days for rough Bergomi.
+trying values of $`\theta`$ one after another. For Heston it used about 180,000 pricings
+per posterior: 17 to 32 minutes on one processor core. At rough Bergomi's cost per
+pricing, the same run would take four to seven months.
 
 **How many posteriors are needed.** One, for the market quotes of the day. But checking
 that a 90% range contains the truth 90% of the time needs cases where the truth is known:
 hundreds of simulated sets of quotes, each with its own posterior (512 in step 8). That
 check is what the direct route cannot afford.
 
-![CPU time for one posterior by each method](images/posterior-costs.png)
+![What each step costs, and the total time for many sets of quotes](images/posterior-costs.png)
 
-**Figure 5.** CPU time for one posterior, from the number of pricings each method needs.
+**Figure 5.** Left: what each step costs for Heston, and one rough Bergomi posterior by
+MCMC (derived, not run). Right: the total time for many sets of quotes. Simulating and
+training are paid once, about 46 minutes; MCMC is paid again for every set.
 
 **The idea: do the pricings once.** Draw parameters $`\theta^{(n)}`$ from the prior,
 compute their 63 prices and add errors as in step 6, to get simulated quotes
-$`y^{(n)}`$; repeat $`N`$ = 300,000 times. That costs as many pricings as two MCMC
-posteriors. A pair made this way is also a draw of quotes followed by a draw from their
-posterior, because the joint density factors both ways:
+$`y^{(n)}`$; repeat $`N`$ = 300,000 times. That costs fewer pricings than two MCMC
+posteriors: 16 minutes for Heston. A pair made this way is also a draw of quotes followed
+by a draw from their posterior, because the joint density factors both ways:
 
 ```math
 p(\theta)\,p(y \mid \theta) = p(y)\,p(\theta \mid y) .
@@ -297,14 +295,17 @@ p(\theta)\,p(y \mid \theta) = p(y)\,p(\theta \mid y) .
 So the pairs are examples of "quotes, and a draw from their posterior", and a neural
 network can learn from them to return the posterior of any quotes.
 
+A network could instead learn the prices and replace the pricer inside MCMC, which would
+still run for every set of quotes. Learning the posterior itself removes MCMC altogether.
+
 **What the network takes in and returns.** Input: the 63 quotes, each divided by its
 half-spread, $`x_i = y_i/h_i`$, then whitened (below). Output: draws
 $`\theta^{(1)}, \dots, \theta^{(S)}`$ from an approximation $`q_\phi(\theta \mid y)`$ of
 the posterior, where $`\phi`$ denotes the network's weights. To make one draw, the network
 starts from a random vector $`z_1`$ of six standard normals and moves it, step by step,
 along a learned velocity $`v_\phi(z_t, t, \tilde x)`$ until it becomes a parameter vector
-(**flow matching**). After training, a posterior takes 0.3 s and no pricing. The cost of
-inference is paid once: it is **amortized**.
+(**flow matching**). Training takes 30 minutes. After it, a posterior takes under 0.3 s
+and no pricing. The cost of inference is paid once: it is **amortized**.
 
 ![What the estimator takes in and returns, at training and at use](images/network-inputs-outputs.png)
 
@@ -319,29 +320,30 @@ it the network returns the prior of $`c`$ whatever the data; with it, it recover
 
 ## 8. Checking it
 
-The network's posterior is an approximation, and the model is an assumption. Three
-questions, three checks:
-- **Is it right on average?** On 512 simulated sets of quotes with known parameters, do
-  90% intervals contain the truth 90% of the time?
-- **Is it right for one given set of quotes?** Compare with the exact posterior, computed
-  by MCMC, on two simulated sets and on the market quotes.
-- **Does the model describe the market?** Compare the quotes with what the fitted model
-  can produce (step 6).
+The network's posterior is an approximation, and the model is an assumption. Five
+checks, each with its answer:
+- **Can the posterior regenerate the quotes?** Draw parameters from the posterior, price
+  and add fresh errors. On simulated quotes the observed set looks like one more such
+  replicated set. On the SPX quotes it does not: the prices miss it by 13.4 half-spreads,
+  root mean square, where the error model allows at most 2.
+- **Is it right on average?** On 512 simulated sets of quotes with known parameters, the
+  90% intervals of five of the six components contain the truth 89–92% of the time.
+  Those for today's variance $`v_0`$ are too wide (97.5%).
+- **Does it find the truth?** On the same sets, the posterior medians of the five Heston
+  parameters follow the true values almost exactly (correlation at least 0.996), and that
+  of $`c`$, read from the errors alone, less sharply (0.95).
+- **Is it right for one given set of quotes?** Against the exact posterior, computed by
+  MCMC with PyMC, the network is centred within one standard deviation on two simulated
+  sets, with intervals 1.1 to 2.9 times wider: cautious, not overconfident. On the market
+  quotes it disagrees, because they lie 13.4 half-spreads from any Heston surface, unlike
+  anything it learned from. Market results therefore use the exact posterior.
+- **Does the model describe the market?** No: step 6 showed the misfit.
 
 ![Coverage and simulation-based calibration of the Heston network](images/heston-calibration.png)
 
 **Figure 7.** Heston network on 512 simulated sets of quotes. Left: how often central
 intervals contain the truth, against their nominal level. Right: rank of the truth among
-posterior draws; a calibrated posterior stays inside the grey band.
-
-- *On average,* five of the six components of $`\theta`$ are calibrated: their 90%
-  intervals contain the truth 89–92% of the time, and their ranks pass the test. Today's
-  variance $`v_0`$ has intervals that are too wide (97% coverage).
-- *On single simulated sets,* the network is centred within one reference standard
-  deviation of the exact posterior, with intervals up to about 3 times wider.
-- *On the market quotes* it disagrees with the exact posterior. The network learned from
-  quotes at most 2 half-spreads from a Heston surface; the market is 13.4 away, unlike
-  anything it saw. Market results therefore use the exact posterior.
+posterior draws; a calibrated posterior keeps all six curves inside the grey band.
 
 ## 9. From the posterior to the products
 
@@ -349,7 +351,7 @@ With a checked posterior, each product is valued under every draw:
 $`G_j^{(s)} = G_j(\theta^{(s)})`$.
 
 The strike of a **forward-starting variance swap** on $`[t_1, t_2]`$ has a closed form
-under both models: it is the expected variance averaged over the window. For Heston,
+under Heston: it is the expected variance averaged over the window,
 
 ```math
 K_{\text{var}}(t_1, t_2) = v_\infty + (v_0 - v_\infty)\,e^{-\kappa t_1}\,\frac{1 - e^{-\kappa (t_2 - t_1)}}{\kappa\,(t_2 - t_1)} .
@@ -359,46 +361,64 @@ Under the exact SPX posterior, quoted as a volatility $`\sqrt{K_{\text{var}}}`$:
 for the window from today to 21 days (90% range 17.69% to 17.78%) and 22.61% from 81 to
 325 days (22.53% to 22.70%, Figure 2).
 
-The **forward-start call**, the **volatility swap** and the **down-and-in put** depend on
-the whole path, so each draw values them by simulation, with the same random numbers for
-every draw so that the spread reflects the parameters, not simulation noise. Each product
-then gets a mark, a range, a prudent value and a reserve (step 3), and the book gets its
-own range.
+The **forward-start call** and the **volatility swap** depend on the path, so each draw
+values them by simulation, with the same random numbers for every draw so that the spread
+reflects the parameters, not simulation noise.
+- *Where the model is right,* on the simulated market-like quotes, the 90% range of the
+  forward-start call, 3.125% to 3.139% of the notional, contains its true price, 3.127%.
+- *On the SPX quotes* its range is 3.164% to 3.188%. Heston refitted by least squares to
+  parts of the quotes (the three shortest expiries, the four longest, or the quotes near
+  the money) prices it anywhere from 3.13% to 3.58%: a spread 18 times the posterior
+  range (21 times for the volatility swap). The posterior range measures uncertainty
+  within the model; on SPX the model is wrong, and the choice of quotes moves the price
+  far more.
+
+![The forward-start call under posterior draws and under refits](images/refits.png)
+
+**Figure 8.** The forward-start call under 40 posterior draws (dots; the bar is the 90%
+range) and under Heston refitted to parts of the SPX quotes (diamonds). Top: simulated
+quotes, where Heston is right. Bottom: the SPX quotes.
 
 ## 10. What the results show, and what they do not
 
 They show, for Heston on SPX:
-- a network, trained once in under an hour, that returns a posterior in 0.3 s where the
-  exact method takes 14 to 27 CPU-minutes, calibrated for five of six components, with
-  intervals for $`v_0`$ that are too wide;
+- a network, trained once, that returns a posterior in under 0.3 s where the exact method
+  takes 17 to 32 minutes; calibrated for five of six components, and close to the exact
+  posterior on simulated quotes, but wider;
 - what each region of quotes pins, and so which products the quotes leave open;
-- that Heston misses the SPX smile by about 20 times the quotes' own uncertainty, mostly
-  at short maturities and deep strikes.
+- that Heston misses the SPX quotes by 13.4 half-spreads, root mean square, most in the
+  deep put wing and at short expiries, where its skew stops at a ceiling while the
+  market's keeps steepening;
+- that model error dominates: refits of the same model spread about 20 times wider than
+  the posterior range.
 
 They do not:
-- cover the model's own error. The ranges are uncertainty about one model's parameters:
-  the variance strikes above are known to within a tenth of a vol point, while the model
-  misses the quotes by 1.4. A smooth model-error term in the likelihood is the natural
-  extension;
+- cover the model's own error. The ranges are uncertainty about one model's parameters.
+  A smooth model-error term in the likelihood would let the posterior admit the misfit;
+  removing the misfit needs a different model;
 - check the products against a true value on real data, which is never observed;
 - show hedging under parameter uncertainty;
 - establish that a posterior is an accepted basis for a prudent value. That is our
   proposal, not current practice.
 
-Rough Bergomi, built for the short-maturity skew that Heston misses, follows the same
-steps; its simulations are being generated and its results will complete the comparison.
+**Next.** Rough Bergomi follows the same steps: its 300,000 simulated sets of quotes are
+being generated on a computing cluster, and its network and checks come after. Then the
+model-error term, and further products: a **down-and-in put**, a put that exists only if
+the index falls to a barrier, which buyers of **autocallable** notes (a very common
+structured product) in effect sell to the bank; and a **book** of products, valued draw by
+draw so that its range shows how the products offset each other.
 
 ## Back to the goals, the audience and the practitioner
 
 **Goals.** Steps 3 and 9 give every product a mark and a range from one posterior
-(goal 1). Steps 7 and 8 make the posterior fast and tested: 0.3 s per posterior, checked
-on 512 simulated sets of quotes and against exact posteriors (goal 2). Step 10 states the
-limits (goal 3).
+(goal 1). Steps 7 and 8 make the posterior fast and tested (goal 2). Steps 6, 8 and 10
+check the model and state the limits: on SPX, Heston's misfit, not the uncertainty of its
+parameters, sets how far the price can move (goal 3).
 
-**Audience.** In the tutorial, the Heston notebook runs steps 4 to 9 against an exact
-posterior; the rough Bergomi notebook repeats them where only SBI makes the checks
-affordable. Attendees should leave able to say, for their own model, whether they need a
-range like this, what it costs, and how to check it.
+**Audience.** In the tutorial, the Heston notebook runs steps 4 to 9 on the SPX quotes,
+against an exact posterior, and then shows what Heston misses. Attendees should leave
+able to say, for their own model, whether they need a range like this, what it costs, and
+how to check both the posterior and the model.
 
 **Practitioner.** A desk and its **product control** (the team, independent of the
 traders, that verifies the marks) would get every day, from one consistent calculation, a

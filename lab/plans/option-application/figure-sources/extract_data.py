@@ -3,7 +3,7 @@
 The sources are evidence files of the Heston study (PR #85, branch
 `feat/heston-spread-baseline-20261109`) and the regenerated reference posteriors of the
 Heston notebook (`lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/`, branch
-`claude/trusting-dijkstra-hmgvcm`). Pass each file's path; the script copies only the
+`claude/awesome-fermat-544u9v`, PR #93). Pass each file's path; the script copies only the
 fields the figures need into `data.json`, with the SHA-256 of every source.
 
     python extract_data.py \
@@ -15,6 +15,7 @@ fields the figures need into `data.json`, with the SHA-256 of every source.
         --reference-comparison .../heston-actual63-notebook/reference-comparison.json \
         --reference-draws .../heston-actual63-notebook/reference-display-draws.npz \
         --notebook-commit <commit of the notebook branch> \
+        --notebook-branch claude/awesome-fermat-544u9v \
         --commit 1c276bb72c1a8d43d1055327934f359708ba1e3f
 """
 
@@ -57,6 +58,7 @@ def main():
         parser.add_argument(f"--{name}", required=True, type=Path)
     parser.add_argument("--commit", required=True)
     parser.add_argument("--notebook-commit", required=True)
+    parser.add_argument("--notebook-branch", default="claude/awesome-fermat-544u9v")
     parser.add_argument("--out", type=Path, default=HERE / "data.json")
     args = parser.parse_args()
 
@@ -168,7 +170,7 @@ def main():
             "files": {name: {"path": path, "sha256": sha256(getattr(args, name.replace("-", "_")))}
                       for name, path in REPO_PATHS.items()},
             "condition_numbers": "whitening-pilot/README.md of the same commit",
-            "notebook_branch": "claude/trusting-dijkstra-hmgvcm",
+            "notebook_branch": args.notebook_branch,
             "notebook_commit": args.notebook_commit,
             "notebook_files": {name: {"path": path, "sha256": sha256(getattr(args, name.replace("-", "_")))}
                                for name, path in NOTEBOOK_PATHS.items()},

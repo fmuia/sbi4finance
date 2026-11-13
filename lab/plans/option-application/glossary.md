@@ -32,6 +32,8 @@ normals with flipped sign), which cancels part of the Monte Carlo noise.
 At-the-money volatility is the implied volatility there: on 9 November 2026, from 15.2%
 at 7 days to 17.1% at 325 days.
 
+**At-the-money skew** ($`\psi(T)`$). See *skew*.
+
 **Autocallable.** A structured note that pays coupons and is redeemed early ("called
 automatically") if the index is above a set level on an observation date. If the index
 has fallen below a barrier, here 70% of its starting level, the investor bears the loss
@@ -43,6 +45,9 @@ to form the training observations.
 
 **Barrier.** An index level whose crossing switches an option on ("knock-in") or off
 ("knock-out").
+
+**BayesFlow.** A Python library for amortized Bayesian inference with neural networks
+(Radev et al., 2023). Here it trains and runs the flow-matching network.
 
 **Bid.** The highest price at which someone currently offers to buy. The **bid–ask
 spread** is the ask minus the bid; the *half-spread* is half of it.
@@ -123,6 +128,10 @@ the noise of the estimate.
 banks' capital rules. Its Article 105 asks for prudent valuation, and Article 34 deducts
 AVAs from CET1 capital.
 
+**Curvature (of the smile).** How much the smile bends at the money: twice the quadratic
+coefficient of implied volatility in log-moneyness, from a fit through the quotes nearest
+the money.
+
 **Delta method.** A linear approximation that turns the covariance of fitted parameters
 into the variance of a function of them, here a product's price:
 $`\mathrm{Var}\,P \approx \nabla P^\top \mathrm{Cov}(\hat\theta)\,\nabla P`$.
@@ -196,7 +205,8 @@ option reveals it today, and models disagree about it.
 
 **Forward-start call.** A call whose strike is fixed at a future date $`T_1`$ in
 proportion to the index level then, and which pays at a later date $`T_2`$. Here
-$`T_1`$ is 6 months and $`T_2`$ is 1 year. Its value depends on the forward smile.
+$`T_1`$ is 3 months and $`T_2`$ is 6 months, and the call pays the percentage rise
+$`(S_{T_2}/S_{T_1} - 1)^+`$ per unit of notional. Its value depends on the forward smile.
 
 **Forward-starting variance swap.** A variance swap whose period starts at a future date:
 it pays the realized variance between $`t_1`$ and $`t_2`$ minus a strike agreed today. Its
@@ -239,8 +249,8 @@ reproduce an option's market price. It quotes prices in a common unit across str
 maturities.
 
 **Importance sampling.** Drawing from a convenient distribution $`q`$ and weighting each
-draw by $`p/q`$ to obtain expectations under the target $`p`$. Here $`q`$ is the network's
-posterior and $`p`$ the exact one.
+draw by $`p/q`$ to obtain expectations under the target $`p`$. For rough Bergomi, $`q`$
+will be the network's posterior and $`p`$ the exact one.
 
 **Likelihood.** The probability (density) of the observed data given the parameters,
 $`p(y \mid \theta)`$, seen as a function of $`\theta`$.
@@ -262,10 +272,16 @@ possible.
 years.
 
 **MCMC (Markov chain Monte Carlo).** A family of algorithms that draw from a posterior
-using only its density up to a constant. Here it gives Heston's exact posterior.
+using only its density up to a constant. Here it gives Heston's exact posterior, with
+PyMC's DEMetropolisZ sampler, which proposes moves along differences of past draws and
+needs no gradients.
 
 **Mean reversion** ($`\kappa`$). In Heston, the speed at which the variance is pulled back
 to its long-run level $`v_\infty`$: a gap halves in about $`\ln 2/\kappa`$ years.
+
+**Misspecification.** A model is misspecified when no parameter values reproduce the data
+within the assumed errors. Its posterior then describes the best compromise within the
+model, and its ranges leave out the model's own error.
 
 **Model error.** The part of the gap between quotes and model prices that comes from the
 model being wrong rather than from the quotes. On SPX it is smooth across strikes and
@@ -279,6 +295,10 @@ of Article 11 of Regulation 2016/101.
 **Neural posterior estimation (NPE).** Training a conditional density network
 $`q(\theta \mid y)`$ on simulated pairs by maximizing $`\log q(\theta \mid y)`$; the
 optimum is the posterior.
+
+**Neural pricer.** A network trained to return a model's prices for given parameters,
+used in place of an expensive pricer inside MCMC, which then still runs for every set of
+quotes. The alternative to learning the posterior itself.
 
 **Out of the money.** A put whose strike is below the forward, or a call whose strike is
 above it: it would pay nothing if the index ended at the forward. These are the liquid
@@ -303,6 +323,10 @@ product) is computed from them.
 **Posterior.** The distribution of the parameters given the data:
 $`p(\theta \mid y) \propto p(y \mid \theta)\,p(\theta)`$.
 
+**Posterior predictive check.** Drawing parameters from the posterior, simulating quotes
+from them with fresh errors, and checking that the observed quotes look like one more such
+draw. It tests the model and the posterior together.
+
 **Pricing probabilities.** The probabilities under which a price is the expected
 discounted payoff; also called the risk-neutral measure. Under them the index grows on
 average at the interest rate less its dividend yield. Their existence is equivalent to
@@ -310,7 +334,7 @@ the absence of riskless profits.
 
 **Pricing.** Here, one computation of the model's 63 prices $`P(\theta)`$ at one
 parameter vector. It is the unit of cost: one likelihood evaluation needs one pricing, a
-posterior by MCMC about 146,000, the bank 300,000, a posterior from the trained network
+posterior by MCMC about 180,000, the bank 300,000, a posterior from the trained network
 none.
 
 **Prior.** The distribution of the parameters before seeing the data: which values are
@@ -337,6 +361,9 @@ the strike $`K`$. It protects against a fall.
 $`C - P = D(T)\,(F(T) - K)`$: a call minus a put is a forward contract. It is used to read
 the forward and the discount factor from the quotes.
 
+**PyMC.** A Python library for Bayesian modelling and MCMC. Here it computes the exact
+Heston posteriors that the network is checked against.
+
 **Quadrature.** Numerical integration as a weighted sum of the integrand at chosen nodes.
 Heston prices use Gauss–Legendre quadrature, refined until two successive node sets agree.
 
@@ -349,14 +376,22 @@ chains. Close to 1 (here at most 1.01) means the chains agree.
 over a period of $`N`$ trading days: realized variance $`= (252/N)\sum_i r_i^2`$, and
 realized volatility is its square root.
 
+**Recovery.** How close posterior medians come to the true parameters across simulated
+data sets: their correlation with the truth, and the width of the intervals.
+
 **Reference posterior.** A posterior computed directly from the likelihood (by MCMC or
 importance sampling), used to check the network's.
+
+**Refit.** A new calibration of the same model to part of the quotes, such as the short
+expiries only. The spread of a product's value across refits shows how much the choice of
+quotes moves it; on SPX it is about 20 times the posterior range.
 
 **Reserve.** Here, the gap between a product's (or a book's) mark and its prudent value.
 
 **Rough Bergomi.** A stochastic volatility model in which the logarithm of the variance
 is driven by a rough process with Hurst exponent $`H \lt 1/2`$ (Bayer, Friz and
-Gatheral, 2016). It is priced only by Monte Carlo simulation.
+Gatheral, 2016). It is priced only by Monte Carlo simulation. Its at-the-money skew grows
+like $`T^{H-1/2}`$ as the expiry shrinks, with no ceiling; here it is the next model.
 
 **Rough volatility.** Volatility whose paths are rougher than Brownian motion's. It makes
 the skew steepen at short maturities, as index smiles do.
@@ -367,7 +402,8 @@ on quote $`i`$, in half-spreads. Under the error model its typical size is $`c`$
 **SBC (simulation-based calibration).** A check of a posterior method: draw parameters
 from the prior, simulate data, compute the posterior; if the posterior is right, the rank
 of the true parameter among the posterior draws is uniformly distributed. Also called the
-rank test.
+rank test. The plot shows, for each level, the share of ranks below it minus the level; a
+calibrated method stays inside a band built so that this happens with probability 95%.
 
 **SBI (simulation-based inference).** Inference that only needs to simulate data from
 the model, not to evaluate its likelihood. Here, a neural network trained on simulated
@@ -378,7 +414,10 @@ generative model: parameters drawn from the prior, priced by the model, with err
 added.
 
 **Skew.** The slope of implied volatility against strike. For an equity index it is
-negative: low strikes have higher implied volatilities.
+negative: low strikes have higher implied volatilities. The **at-the-money skew**
+$`\psi(T)`$ is the slope in log-moneyness at the money, for expiry $`T`$. In Heston it
+tends to a ceiling, $`|\rho|\,\sigma_v/(4\sqrt{v_0})`$, as $`T`$ shrinks; index skews keep
+growing, roughly as a power of $`T`$.
 
 **Smile.** Implied volatility as a function of strike and maturity. The name comes from
 the U shape it takes in some markets; for an index it is mostly a skew.
