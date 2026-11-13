@@ -170,8 +170,8 @@ def _(cache_arrays, cache_task, case_choice, observed_days, trajectory):
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
+def _(cache_task, mo):
+    mo.vstack([mo.md(r"""
     A daily log return is $r_t=\log S_t-\log S_{t-1}$; 0.01 is about a 1% increase.
     The lower panel adds those log returns through time. **We observe returns,
     not the latent variance or shocks.** One observation is made per trading day,
@@ -179,7 +179,16 @@ def _(mo):
 
     **Try it:** keep the history fixed and reveal more days. Which parameters
     should be hardest to learn from a short history?
-    """)
+    """), mo.callout(mo.md(
+        "**Why can these rough histories become quieter?** Each starts a fresh volatility "
+        "process at day zero. Even with a constant mean-variance curve, its distribution "
+        "changes with time: typical variance can fall while rare large realizations "
+        "keep the mean unchanged. This is a structural effect, amplified by the four "
+        "supplied known-curve examples, not a plotting or normalization effect. "
+        "Individual paths can still flare up, and an increasing inferred curve can offset it. "
+        "These are finite-origin synthetic histories, not stationary slices of market data. "
+        "A stationary or mean-reverting rough return model would be a different training task."
+    ), kind="warn") if cache_task["model"] != "heston" else mo.md("")])
     return
 
 
@@ -237,6 +246,32 @@ def _(cache_task, lesson_workflow, mo):
         """),
         mo.md(_story + "\n\n" + _curve),
         mo.ui.table(_priors, selection=None, pagination=False),
+        mo.accordion({"Why this H prior, and what happens at H = 1/2?": mo.md(r"""
+        **We assume the rough regime when training this estimator.** The uniform
+        prior $H\in[0.03,0.4]$ covers strongly rough through less rough paths.
+        High-frequency volatility studies motivate values often around 0.1
+        ([Gatheral, Jaisson and Rosenbaum](https://arxiv.org/abs/1410.3394)),
+        but do not prescribe our exact endpoints or a uniform density. Those
+        are simulation/training design choices, kept away from the endpoints
+        of the supported interval $0<H<1/2$.
+
+        **Gaussianity and roughness are different properties.** The driver
+        $Y_t=\sqrt{2H}\int_0^t(t-s)^{H-1/2}\,dW_s^V$ is Gaussian for every H:
+        it is a linear integral of Brownian noise. Smaller H makes its paths
+        rougher and changes dependence; it does not make the driver non-Gaussian.
+
+        At the mathematical boundary $H=1/2$, the kernel becomes constant and
+        $Y_t=W_t^V$, ordinary Brownian motion. For $\eta>0$, variance remains
+        random and lognormal at a fixed time. This does **not** give a
+        constant-volatility Gaussian-return model. That benchmark would use
+        $\eta=0$ and a constant supplied variance curve.
+
+        This estimator cannot test whether $H=1/2$ is adequate: its prior
+        excludes that possibility. Our current rough-driver implementation
+        also enforces $0<H<1/2$. Comparing the Brownian boundary needs a
+        matching simulator and estimator; changing a label or slider cannot
+        extend the existing checkpoint's training support.
+        """)}) if not _heston else mo.md(""),
         mo.accordion({"Priors, supplied quantities and numerical details": mo.vstack([
             mo.md("The parameter priors are independent. Uniform priors assign equal probability "
                   "to equal-width intervals; log-uniform priors assign equal probability to equal "
@@ -367,6 +402,21 @@ def _(cache_task, mo):
     P model, $\xi(t_i)=\mathbb E_P[V_i]$ at simulator grid nodes. The Gaussian
     compensator ensures this equality for the hybrid approximation. It is a
     physical-law variance-scale curve, not a Q curve estimated from option prices.
+
+    **A constant mean does not make this process stationary.** At each grid
+    time, $Y_i\sim N(0,q_i)$, so
+
+    $$\mathbb E_P[V_i]=\xi(t_i),\qquad
+      \operatorname{median}(V_i)=\xi(t_i)\exp(-\eta^2q_i/2).$$
+
+    The driver variance $q_i$ grows from zero. Its distribution therefore
+    widens, and its median falls relative to the mean. Rare high-variance
+    realizations keep the ensemble mean at the curve level; there is no
+    pathwise pull back to that level. This explains a tendency for typical
+    histories to become quiet, especially with larger amplitude, but does
+    not force an individual path to decline monotonically. The idealized
+    continuous driver has $q(t)=t^{2H}$; the simulator uses its stated grid
+    variance. Revealing more days changes both evidence and process age.
 
     - **Supplied curve:** $\xi(t)=0.04$. Mean variance is constant at $0.2^2$;
       each realized $V_i$ still fluctuates. The constant does not say that the

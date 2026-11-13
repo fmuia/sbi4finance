@@ -439,6 +439,18 @@ lengths. The new displays fit a 760-pixel layout without runtime or math errors.
 
 ## E. Resolve trajectory numerical and inference limitations
 
+The zero-origin rough physical-return law is nonstationary even with a flat
+mean-variance curve: its Gaussian driver variance grows with age, so the median
+variance can fall while rare large paths preserve the mean. This materially
+affects the supplied known-curve histories. The notebook now explains that
+behavior rather than presenting it as generic stationary market dynamics.
+An eventual stationary or mean-reverting rough physical law would require a
+new simulator specification, banks and estimators. Picking different display
+histories or changing the supplied curve would not resolve that modeling issue.
+The existing H prior also conditions inference on the rough regime; it cannot
+establish preference over an excluded Brownian boundary. The driver remains
+Gaussian for every H.
+
 **Current evidence:** all three selected candidates passed execution and risk
 screens but failed the declared final marginal-calibration screen. Heston's
 discrete simulator can also create deterministic daily returns and an atomic

@@ -124,6 +124,13 @@ Start with the rough model and its supplied variance curve. Inspect returns,
 then use the early simulator to change parameters while keeping innovations
 fixed. It shows eight one-year price paths, daily returns and realized volatility.
 That forward example stays separate from the selected fitted history.
+The observed-history explanation flags an important design limitation:
+zero-origin rough variance is nonstationary even with a constant mean curve.
+Its median can decline while rare large paths keep its mean fixed. The four
+saved known-curve histories strongly illustrate this effect; it is not a plot
+normalization. The H-prior explanation distinguishes roughness from Gaussianity:
+the driver is Gaussian for every H, while H=1/2 is its Brownian boundary. The
+chosen Uniform[0.03,0.4] training prior excludes that boundary and cannot test it.
 An alternate three-setting view compares H or η for rough Bergomi and σ or κ
 for Heston with matched random inputs. **New realizations** refreshes every
 column together; switching display scales does not change the draws.
