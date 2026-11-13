@@ -167,5 +167,45 @@
     "new_gpu_jobs_have_finite_training_updates": true,
     "training_results_still_pending": true,
     "release_log_sha256": "8ef17eb02238b31db249af80b55c5dda4440397f59fe474a7750dbd673aed89a"
+  },
+  "intermediate_dimension_extension": {
+    "status": "all_three_complete",
+    "dimensions": [
+      7,
+      6,
+      5
+    ],
+    "source_sha256": "c1b2ca36d3d8ab1e42bcd1035dedcb956960284da5379d76ac237dc0f08874f7",
+    "cells_exported": 21,
+    "export_cell_errors": 0,
+    "new_primary_endpoints": 3,
+    "training_state_and_source_checked_recovery_export": "passed",
+    "automatic_git_push": false,
+    "verification_utc": "2026-11-13T01:21:15.690779+00:00"
+  },
+  "intermediate_dimension_completion": {
+    "status": "complete",
+    "dimensions": [
+      7,
+      6,
+      5
+    ],
+    "all_training_epochs": 300,
+    "primary_endpoints": 10,
+    "secondary_endpoints": 9,
+    "total_endpoints": 19,
+    "source_sha256": "39526603a7c6761928095f3334e7af5ad93cee776c1ee762139ffe38625437de",
+    "implementation_full_lab_tests_passed": 895,
+    "completed_evidence_focused_tests_passed": 17,
+    "focused_test_log_sha256": "f95b3221f9d6d2382bef8bf8543ba5fea78caa79125329d2de9514adcc6cc08e",
+    "cells_exported": 21,
+    "export_cell_errors": 0,
+    "strict_marimo_check_passed": true,
+    "release_checks_passed": true,
+    "release_log_sha256": "8ef17eb02238b31db249af80b55c5dda4440397f59fe474a7750dbd673aed89a",
+    "raw_final_and_secondary_metrics_and_exact_SBC_ranks_independently_reproduced": true,
+    "all_gpu_training_records_unchanged_after_return_and_evaluation": true,
+    "new_recovery_plots_and_nine_size_schematic_visually_checked": true,
+    "scientific_acceptance": false
   }
 }

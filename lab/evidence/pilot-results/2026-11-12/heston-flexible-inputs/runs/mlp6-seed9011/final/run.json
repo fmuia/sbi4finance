@@ -1,0 +1,69 @@
+{
+  "batch_size": 256,
+  "best_epoch": 258,
+  "best_validation_loss": 0.1012495681643486,
+  "checkpoint_policy": "final primary; minimum native val_loss secondary; no diagnostic selection",
+  "completed_epochs": 300,
+  "configuration": {
+    "format": "heston_fixed_grid_experimental_inference_v1",
+    "input_features": 63,
+    "posterior_dropout": 0.1,
+    "posterior_widths": [
+      128,
+      128,
+      128
+    ],
+    "representation": "mlp",
+    "summary_activation": "silu",
+    "summary_dim": 6,
+    "summary_widths": [
+      128,
+      128
+    ],
+    "target_transform": "raw_coordinates_native_inference_variable_standardization"
+  },
+  "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+  "devices": [
+    "cuda:0"
+  ],
+  "elapsed_seconds": 746.7307485388592,
+  "endpoint": "primary_final",
+  "epochs": 300,
+  "evaluated_epoch": 300,
+  "evaluation_scope": "reused development panels; no fresh acceptance claim",
+  "format": "heston_flexible_compact_run_v1",
+  "noise_policy": "immutable stored noisy rows; no fresh-noise augmentation",
+  "optimizer_updates": 351600,
+  "payloads_included": false,
+  "platform": "Linux-5.14.0-570.62.1.0.1.el9_6.x86_64-x86_64-with-glibc2.34",
+  "preprocessing_sha256": "c051037ca2ae9b41bc001edf621f3ab3d012116bf3a33b3658b16fe72cc58b74",
+  "presentations": 90000000,
+  "pricing_calls": 0,
+  "scientific_acceptance": false,
+  "seed": 9011,
+  "smoke_test_only": false,
+  "source": {
+    "commit": "c31f6f3e8b56de8859bf817729d0faae99c236be",
+    "inference_sha256": "39f58c9e329b2fdf1ac4b6f290de0895db0bce12b39bd48774dce03487bc986f",
+    "runner_sha256": "de332302c4d357e7f6a88d94c32ae159543ad2b5cd8ba15cf839605e269099bc"
+  },
+  "source_hashes": {
+    "draws_sha256": "06f214fdde8d9df0d4c032743f9fc6418c41023a4309244606011b5c52caf1d1",
+    "evaluation_sha256": "fa6bcef82354117ada1535d3339aba6559c0d5acbabee522e43270069cb5a2a6",
+    "history_sha256": "fd7ff6fbb015fe9f5dde88ad5d9531eacc201f7956bd3413e983fcf0baa067de",
+    "model_sha256": "0064acfc815c3245feb57ccd8b4e09102e15c7eb88c608516af07e47a9dbe27d",
+    "run_sha256": "a7230ee5d4eb237397357db6fb78b207febe5d1d5ae3e049fb8d56397d985927"
+  },
+  "status": "complete",
+  "support_policy": "retain raw unbounded draws; no clipping/rejection/resampling",
+  "task_sha256": "1cdb77923ce920df5ce358288776c35d60209a1bc2ceb6a942574bed55af5a9c",
+  "train_rows": 300000,
+  "validation_rows": 100,
+  "versions": {
+    "bayesflow": "2.1.0",
+    "jax": "0.11.1",
+    "jaxlib": "0.11.1",
+    "keras": "3.15.1",
+    "numpy": "2.5.3"
+  }
+}

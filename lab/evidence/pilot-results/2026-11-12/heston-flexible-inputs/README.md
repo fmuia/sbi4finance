@@ -19,7 +19,7 @@ conditional references and checkpoint selection. A rounded-box schematic follows
 the existing Heston notebook artwork and contrasts the jointly trained MLP route
 with the direct baseline. A model selector displays all six true-versus-estimated
 parameter recovery panels, including posterior medians and central 90% intervals
-for all 512 paired cases. All seven final models use the same plot limits.
+for all 512 paired cases. All ten final models use the same plot limits.
 
 The lesson reads only the checked-in study and recovery images, and imports no
 pricing or neural runtime. The [recovery manifest](recovery/manifest.json) binds
@@ -102,23 +102,37 @@ retained: no clipping, rejection or resampling at prior boundaries. The existing
 100-row validation and historical 512-case population are development panels;
 neither a smoke fit nor repeated use of these panels establishes fresh acceptance.
 
-## Intermediate dimensions 7, 6 and 5: running
+## Intermediate dimensions 7, 6 and 5: complete
 
-After inspecting the parameter-recovery plots, the user requested all three
-intermediate integer dimensions in the 8-to-4 bracket. A background campaign trains **7 locally and 6/5 on separate Oscar GPUs**,
-with the same 300k observations, frozen ZCA,
-seed 9011, two 128-wide SiLU layers, unchanged posterior head and 300 epochs.
-GPU checkpoints return unchanged for evaluation against the local reference panel.
-CPU/GPU kernels can change optimization numerics; backend provenance is shown in
-the lesson and a stable cutoff needs common-backend and seed confirmation.
-Each fit retains final-300 and validation-minimum evaluations; no recovery result
-is assumed in advance. Checkpoints and raw diagnostics stay outside Git. The
-[campaign record](campaign.json) binds the launch and preserved recipe.
+All three intermediate dimensions completed the matched 300k/300-epoch recipe,
+with final and distinct validation-minimum evaluations retained. Dimension 7
+trained locally on CPU; dimensions 6 and 5 trained on Oscar GPUs, with all
+evaluations performed locally. Backend differences can affect optimization;
+common-backend and independent-seed confirmation remain necessary. The interactive
+lesson and recovery figures include all nine learned-summary sizes. The following
+local comparison uses final epoch 300 and the same 512 development cases:
 
-The completed-six-size plots remain the available evidence until those extra
-endpoints finish. An observed cutoff is specific to these fitted models and
-this development population; even testing every integer does not prove an exact
-minimal sufficient statistic or a reproducible threshold across seeds.
+| Summary dimension | c RMSE | Initial-variance RMSE | Median c 90% width | c coverage | SBC screens |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 8 | 0.13593 | 0.000131 | 0.4494 | 90.04% | 6/6 |
+| 7 | 0.13040 | 0.000128 | 0.4483 | 90.82% | 5/6 |
+| 6 | 0.13397 | 0.000142 | 0.4471 | 90.43% | 5/6 |
+| 5 | 0.43954 | 0.000115 | 1.3551 | 91.41% | 5/6 |
+| 4 | 0.43967 | 0.007525 | 1.3472 | 90.82% | 6/6 |
+
+The noise-scale result sharpens the original bracket: **`c` recovery deteriorates
+between 6 and 5 coordinates**. The dimension-5 `c` interval is approximately prior
+width (1.355 versus 1.35), while the five physical-parameter RMSEs remain broadly
+similar to the direct baseline (0.80–1.11 times its RMSEs). Dimension 4 also
+substantially degrades physical recovery. The validation-minimum checkpoints
+retain the same `c`-recovery distinction. All complete conditional-reference panels continue
+to fail the recorded comparison conventions, including those of the larger models.
+
+Read the recovery, contraction, coverage and conditional comparisons together.
+Different parameters can deteriorate at different sizes. This one-seed fitted
+pipeline does not establish an exact minimal sufficient statistic or a
+reproducible threshold across seeds. The [campaign](campaign.json) records all
+three outcomes without selecting a preferred checkpoint from diagnostics.
 
 ## Completed initial screen and dimension-two extension
 
@@ -142,9 +156,12 @@ following table uses final epoch 300 only, on the same reused 512-case populatio
 | MLP 4 | 6/6 | 0.43967 | 0.007525 | 1.3472 | 90.82% |
 | MLP 2 | 6/6 | 0.43945 | 0.018809 | 1.3505 | 90.63% |
 
-**The observed deterioration is between 8 and 4 dimensions in this recipe.**
-Eight is the smallest tested representation preserving similar pooled recovery
-to the direct baseline. Four sharply degrades physical recovery and returns
+**The initial screen bracketed deterioration between 8 and 4 dimensions.**
+The intermediate extension resolves distinct changes: `c` recovery deteriorates
+from 6 to 5; physical-parameter recovery deteriorates further from 5 to 4.
+In that initial screen, eight was the smallest tested representation preserving
+similar pooled recovery to the direct baseline; the completed intermediate extension
+above refines that boundary to six for the joint task. Four sharply degrades physical recovery and returns
 nearly prior-width uncertainty for `c` (the prior central-90% width is 1.35),
 despite passing all six marginal SBC screens. This illustrates why calibration
 alone does not establish that an estimator retains the observations' information.

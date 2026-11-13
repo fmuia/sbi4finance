@@ -157,6 +157,78 @@
       "status": "complete",
       "summary_dim": 2,
       "train_rows": 300000
+    },
+    {
+      "directory": "runs/mlp7-seed9011/final",
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "label": "MLP 7 \u2014 final 300 (primary)",
+      "model_available": false,
+      "representation": "mlp",
+      "smoke_test_only": false,
+      "status": "complete",
+      "summary_dim": 7,
+      "train_rows": 300000
+    },
+    {
+      "directory": "runs/mlp7-seed9011/best",
+      "endpoint": "secondary_validation_minimum",
+      "epoch": 258,
+      "label": "MLP 7 \u2014 validation minimum 258 (secondary)",
+      "model_available": false,
+      "representation": "mlp",
+      "smoke_test_only": false,
+      "status": "complete",
+      "summary_dim": 7,
+      "train_rows": 300000
+    },
+    {
+      "directory": "runs/mlp6-seed9011/final",
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "label": "MLP 6 \u2014 final 300 (primary)",
+      "model_available": false,
+      "representation": "mlp",
+      "smoke_test_only": false,
+      "status": "complete",
+      "summary_dim": 6,
+      "train_rows": 300000
+    },
+    {
+      "directory": "runs/mlp6-seed9011/best",
+      "endpoint": "secondary_validation_minimum",
+      "epoch": 258,
+      "label": "MLP 6 \u2014 validation minimum 258 (secondary)",
+      "model_available": false,
+      "representation": "mlp",
+      "smoke_test_only": false,
+      "status": "complete",
+      "summary_dim": 6,
+      "train_rows": 300000
+    },
+    {
+      "directory": "runs/mlp5-seed9011/final",
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "label": "MLP 5 \u2014 final 300 (primary)",
+      "model_available": false,
+      "representation": "mlp",
+      "smoke_test_only": false,
+      "status": "complete",
+      "summary_dim": 5,
+      "train_rows": 300000
+    },
+    {
+      "directory": "runs/mlp5-seed9011/best",
+      "endpoint": "secondary_validation_minimum",
+      "epoch": 227,
+      "label": "MLP 5 \u2014 validation minimum 227 (secondary)",
+      "model_available": false,
+      "representation": "mlp",
+      "smoke_test_only": false,
+      "status": "complete",
+      "summary_dim": 5,
+      "train_rows": 300000
     }
   ],
   "scientific_acceptance": false,

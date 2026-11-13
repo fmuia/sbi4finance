@@ -1,0 +1,954 @@
+{
+  "cases": {
+    "market": {
+      "dependence": {
+        "max_absolute_correlation_difference": 0.3345215608937533,
+        "median_absolute_correlation_difference": 0.14744939463237805,
+        "status": "defined"
+      },
+      "derived_products": {
+        "quantities": [
+          "control",
+          "affected"
+        ],
+        "standardized_mean_error": [
+          9.11063263923456,
+          10.239915992297954
+        ],
+        "status": "defined",
+        "width_ratio": [
+          3.482151119263025,
+          2.535890343802562
+        ]
+      },
+      "parameters": {
+        "c": {
+          "mean_error_in_reference_sd": 69.87433191388999,
+          "width90_ratio": 86.0114420843351
+        },
+        "initial_variance": {
+          "mean_error_in_reference_sd": 10.506415745283423,
+          "width90_ratio": 3.650880519332777
+        },
+        "kappa": {
+          "mean_error_in_reference_sd": 5.628744424091135,
+          "width90_ratio": 1.2074199898479874
+        },
+        "rho": {
+          "mean_error_in_reference_sd": 15.730889584440973,
+          "width90_ratio": 2.8221462231799697
+        },
+        "theta": {
+          "mean_error_in_reference_sd": 10.228452342628392,
+          "width90_ratio": 2.208264252644593
+        },
+        "vol_of_vol": {
+          "mean_error_in_reference_sd": 2.2282042151843116,
+          "width90_ratio": 1.342950604449371
+        }
+      },
+      "reference_chain_sha256": "7af686d421d128c79728c2ecf42db4026c675043467a20ec7c24b8e19c572a4d",
+      "reference_ready": true,
+      "support": {
+        "above_prior": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            568
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.138671875
+          ],
+          "sample_count": 568,
+          "sample_fraction": 0.138671875,
+          "value_count": 568
+        },
+        "below_prior": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "draws_clipped": 0,
+        "draws_discarded": 0,
+        "draws_resampled": 0,
+        "nonfinite": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "nonphysical": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "outside_prior": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            568
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.138671875
+          ],
+          "sample_count": 568,
+          "sample_fraction": 0.138671875,
+          "value_count": 568
+        },
+        "outside_prior_draws_retained_for_calibration": true,
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho",
+          "c"
+        ],
+        "physical_definition": "v0,kappa,theta,vol_of_vol,c strictly positive; -1<=rho<=1; nonfinite is invalid",
+        "raw_shape": [
+          4096,
+          6
+        ],
+        "samples": 4096
+      }
+    },
+    "synthetic-broad": {
+      "dependence": {
+        "max_absolute_correlation_difference": 0.4078684422589103,
+        "median_absolute_correlation_difference": 0.08254636099743212,
+        "status": "defined"
+      },
+      "derived_products": {
+        "quantities": [
+          "control",
+          "affected"
+        ],
+        "standardized_mean_error": [
+          0.8810218951347667,
+          0.9771463977449247
+        ],
+        "status": "defined",
+        "width_ratio": [
+          2.8171919761232855,
+          1.8750328755372074
+        ]
+      },
+      "parameters": {
+        "c": {
+          "mean_error_in_reference_sd": 0.6322437376925805,
+          "width90_ratio": 1.3890231214926299
+        },
+        "initial_variance": {
+          "mean_error_in_reference_sd": 0.6187775717549835,
+          "width90_ratio": 2.4290413272205935
+        },
+        "kappa": {
+          "mean_error_in_reference_sd": 0.2075320065970865,
+          "width90_ratio": 1.5733650814501128
+        },
+        "rho": {
+          "mean_error_in_reference_sd": 0.5247177110059321,
+          "width90_ratio": 2.324501741483299
+        },
+        "theta": {
+          "mean_error_in_reference_sd": 1.2142068092514693,
+          "width90_ratio": 2.0111069647405873
+        },
+        "vol_of_vol": {
+          "mean_error_in_reference_sd": 1.978557959285867,
+          "width90_ratio": 1.5850519883288212
+        }
+      },
+      "reference_chain_sha256": "357bd522d3092dc03c2fbd01787f2bdc3d24463e512022fad193bf195c989f5e",
+      "reference_ready": true,
+      "support": {
+        "above_prior": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "below_prior": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "draws_clipped": 0,
+        "draws_discarded": 0,
+        "draws_resampled": 0,
+        "nonfinite": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "nonphysical": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "outside_prior": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "outside_prior_draws_retained_for_calibration": true,
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho",
+          "c"
+        ],
+        "physical_definition": "v0,kappa,theta,vol_of_vol,c strictly positive; -1<=rho<=1; nonfinite is invalid",
+        "raw_shape": [
+          4096,
+          6
+        ],
+        "samples": 4096
+      }
+    },
+    "synthetic-market-like": {
+      "dependence": {
+        "max_absolute_correlation_difference": 0.3626218318506452,
+        "median_absolute_correlation_difference": 0.09142787161593346,
+        "status": "defined"
+      },
+      "derived_products": {
+        "quantities": [
+          "control",
+          "affected"
+        ],
+        "standardized_mean_error": [
+          0.012382884189994151,
+          0.35901841199417855
+        ],
+        "status": "defined",
+        "width_ratio": [
+          2.9341687160674783,
+          1.799501368053835
+        ]
+      },
+      "parameters": {
+        "c": {
+          "mean_error_in_reference_sd": 1.3258422666783949,
+          "width90_ratio": 1.5232635268145736
+        },
+        "initial_variance": {
+          "mean_error_in_reference_sd": 0.37888455821673417,
+          "width90_ratio": 3.0097696596593306
+        },
+        "kappa": {
+          "mean_error_in_reference_sd": 0.4353647684422639,
+          "width90_ratio": 1.1987905612714023
+        },
+        "rho": {
+          "mean_error_in_reference_sd": 0.05276124210281087,
+          "width90_ratio": 2.09717349496286
+        },
+        "theta": {
+          "mean_error_in_reference_sd": 0.088976329053631,
+          "width90_ratio": 1.4258543804881927
+        },
+        "vol_of_vol": {
+          "mean_error_in_reference_sd": 0.3869767307599415,
+          "width90_ratio": 1.19983177704848
+        }
+      },
+      "reference_chain_sha256": "6f64d045e4bf8907f78d598d00a529db73b5b8ad2464425c807970d9dd005bd9",
+      "reference_ready": true,
+      "support": {
+        "above_prior": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "below_prior": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "draws_clipped": 0,
+        "draws_discarded": 0,
+        "draws_resampled": 0,
+        "nonfinite": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "nonphysical": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "outside_prior": {
+          "per_dimension_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "per_dimension_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sample_count": 0,
+          "sample_fraction": 0.0,
+          "value_count": 0
+        },
+        "outside_prior_draws_retained_for_calibration": true,
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho",
+          "c"
+        ],
+        "physical_definition": "v0,kappa,theta,vol_of_vol,c strictly positive; -1<=rho<=1; nonfinite is invalid",
+        "raw_shape": [
+          4096,
+          6
+        ],
+        "samples": 4096
+      }
+    }
+  },
+  "conditional_mean_metric": "canonical saved comparison.standardized_mean_error; absolute difference in reference posterior SD units",
+  "draws_per_case": 512,
+  "endpoint": "secondary_validation_minimum",
+  "epoch": 258,
+  "format": "heston_flexible_compact_evaluation_v1",
+  "parameters": {
+    "c": {
+      "coverage90": 0.912109375,
+      "mean_width90": 0.4339071710943244,
+      "median_width90": 0.4513158619403839,
+      "rmse": 0.13011685187404534
+    },
+    "initial_variance": {
+      "coverage90": 0.951171875,
+      "mean_width90": 0.0006113174411439101,
+      "median_width90": 0.0005840092897415189,
+      "rmse": 0.00016003131848607458
+    },
+    "kappa": {
+      "coverage90": 0.919921875,
+      "mean_width90": 0.2163690849673003,
+      "median_width90": 0.1542626500129698,
+      "rmse": 0.07919750236243615
+    },
+    "rho": {
+      "coverage90": 0.919921875,
+      "mean_width90": 0.02490894034563098,
+      "median_width90": 0.0065161004662513955,
+      "rmse": 0.02269813089536439
+    },
+    "theta": {
+      "coverage90": 0.9296875,
+      "mean_width90": 0.001841020217398182,
+      "median_width90": 0.0009592564776539879,
+      "rmse": 0.0022257268863617014
+    },
+    "vol_of_vol": {
+      "coverage90": 0.912109375,
+      "mean_width90": 0.035995989217190064,
+      "median_width90": 0.029521310329437167,
+      "rmse": 0.01369931425695621
+    }
+  },
+  "population": {
+    "calibration_status": "defined",
+    "coverage": {
+      "0.5": {
+        "coverage": [
+          0.59375,
+          0.5625,
+          0.517578125,
+          0.556640625,
+          0.51171875,
+          0.5
+        ],
+        "wilson": [
+          [
+            0.5506634111099826,
+            0.6354402809419768
+          ],
+          [
+            0.5192225235093373,
+            0.6048466045253025
+          ],
+          [
+            0.4743257644991892,
+            0.5605686777605532
+          ],
+          [
+            0.5133465627428782,
+            0.599091084538514
+          ],
+          [
+            0.4684953142550904,
+            0.5547676472514046
+          ],
+          [
+            0.45685206921855137,
+            0.5431479307814486
+          ]
+        ]
+      },
+      "0.8": {
+        "coverage": [
+          0.87890625,
+          0.822265625,
+          0.818359375,
+          0.81640625,
+          0.845703125,
+          0.828125
+        ],
+        "wilson": [
+          [
+            0.8477906572251377,
+            0.9043784314848653
+          ],
+          [
+            0.7867885863654592,
+            0.8529428550631516
+          ],
+          [
+            0.78263299633789,
+            0.8493441245885558
+          ],
+          [
+            0.780557332045865,
+            0.8475426286294983
+          ],
+          [
+            0.8118496353612644,
+            0.8744077290803361
+          ],
+          [
+            0.7930328989697278,
+            0.8583300232121304
+          ]
+        ]
+      },
+      "0.9": {
+        "coverage": [
+          0.951171875,
+          0.919921875,
+          0.9296875,
+          0.912109375,
+          0.919921875,
+          0.912109375
+        ],
+        "wilson": [
+          [
+            0.9289134485442119,
+            0.9667105694558431
+          ],
+          [
+            0.8931649760362443,
+            0.9404244779464908
+          ],
+          [
+            0.9041932796740074,
+            0.9487819755641401
+          ],
+          [
+            0.8844149764714027,
+            0.9336658365070025
+          ],
+          [
+            0.8931649760362443,
+            0.9404244779464908
+          ],
+          [
+            0.8844149764714027,
+            0.9336658365070025
+          ]
+        ]
+      },
+      "0.95": {
+        "coverage": [
+          0.98046875,
+          0.951171875,
+          0.96484375,
+          0.953125,
+          0.955078125,
+          0.970703125
+        ],
+        "wilson": [
+          [
+            0.9644243436209257,
+            0.9893570781453667
+          ],
+          [
+            0.9289134485442119,
+            0.9667105694558431
+          ],
+          [
+            0.9451159458429383,
+            0.9776481939146942
+          ],
+          [
+            0.9312006389371313,
+            0.9683005393140062
+          ],
+          [
+            0.9334960572612445,
+            0.9698822812409755
+          ],
+          [
+            0.9522288905280138,
+            0.982166729982866
+          ]
+        ]
+      }
+    },
+    "draws_per_case": 512,
+    "mean_posterior_sd": [
+      0.0001885091478470713,
+      0.066794253885746,
+      0.0005727438838221133,
+      0.011071737855672836,
+      0.0078003378584980965,
+      0.13358549773693085
+    ],
+    "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+    "parameter_names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho",
+      "c"
+    ],
+    "rank_dkw": {
+      "dkw_bound": 0.07315863891965298,
+      "draws_per_surface": 512,
+      "family_alpha": 0.05,
+      "passed": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "rank_ks": [
+        0.18593137952335304,
+        0.07829408444313068,
+        0.07536649567195164,
+        0.04334887785824537,
+        0.13270791911064173,
+        0.02683779905768857
+      ],
+      "surfaces": 512
+    },
+    "raw_draws_used": 262144,
+    "recovery": {
+      "mean_error": [
+        -5.4936698876965384e-05,
+        -0.0059572047193015825,
+        0.00014265724342552277,
+        0.00043209376182932774,
+        0.0029891496706788427,
+        -0.0032027446478465047
+      ],
+      "median_posterior_width90": [
+        0.0005840092897415189,
+        0.1542626500129698,
+        0.0009592564776539879,
+        0.029521310329437167,
+        0.0065161004662513955,
+        0.4513158619403839
+      ],
+      "median_rmse": [
+        0.00016003131848607458,
+        0.07919750236243615,
+        0.0022257268863617014,
+        0.01369931425695621,
+        0.02269813089536439,
+        0.13011685187404534
+      ],
+      "median_width90_over_prior": [
+        0.004325994738826066,
+        0.01731342873321771,
+        0.007105603538177688,
+        0.011310846869516156,
+        0.008517778387256727,
+        0.3343080458817658
+      ],
+      "prior_midpoint_rmse": [
+        0.04356098636756658,
+        2.770875053408706,
+        0.04330901211729393,
+        0.8798982882107513,
+        0.24822332799063374,
+        0.4370734589111061
+      ],
+      "prior_width90": [
+        0.135,
+        8.91,
+        0.135,
+        2.61,
+        0.765,
+        1.35
+      ],
+      "truth_posterior_median_correlation": [
+        0.9999941684688252,
+        0.9995918480824003,
+        0.998682416942012,
+        0.9998849126291386,
+        0.9958648064386283,
+        0.9547107863035138
+      ]
+    },
+    "rows": 512,
+    "sbc_seed": 263112,
+    "support": {
+      "above_prior": {
+        "per_dimension_count": [
+          70,
+          329,
+          131,
+          662,
+          1532,
+          1044
+        ],
+        "per_dimension_fraction": [
+          0.00026702880859375,
+          0.001255035400390625,
+          0.000499725341796875,
+          0.00252532958984375,
+          0.0058441162109375,
+          0.0039825439453125
+        ],
+        "sample_count": 3502,
+        "sample_fraction": 0.01335906982421875,
+        "value_count": 3768
+      },
+      "below_prior": {
+        "per_dimension_count": [
+          10,
+          338,
+          264,
+          680,
+          913,
+          1264
+        ],
+        "per_dimension_fraction": [
+          3.814697265625e-05,
+          0.00128936767578125,
+          0.001007080078125,
+          0.002593994140625,
+          0.003482818603515625,
+          0.00482177734375
+        ],
+        "sample_count": 3450,
+        "sample_fraction": 0.01316070556640625,
+        "value_count": 3469
+      },
+      "draws_clipped": 0,
+      "draws_discarded": 0,
+      "draws_resampled": 0,
+      "nonfinite": {
+        "per_dimension_count": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "per_dimension_fraction": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "sample_count": 0,
+        "sample_fraction": 0.0,
+        "value_count": 0
+      },
+      "nonphysical": {
+        "per_dimension_count": [
+          0,
+          15,
+          0,
+          0,
+          2,
+          0
+        ],
+        "per_dimension_fraction": [
+          0.0,
+          5.7220458984375e-05,
+          0.0,
+          0.0,
+          7.62939453125e-06,
+          0.0
+        ],
+        "sample_count": 17,
+        "sample_fraction": 6.4849853515625e-05,
+        "value_count": 17
+      },
+      "outside_prior": {
+        "per_dimension_count": [
+          80,
+          667,
+          395,
+          1342,
+          2445,
+          2308
+        ],
+        "per_dimension_fraction": [
+          0.00030517578125,
+          0.002544403076171875,
+          0.001506805419921875,
+          0.00511932373046875,
+          0.009326934814453125,
+          0.0088043212890625
+        ],
+        "sample_count": 6874,
+        "sample_fraction": 0.02622222900390625,
+        "value_count": 7237
+      },
+      "outside_prior_draws_retained_for_calibration": true,
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho",
+        "c"
+      ],
+      "physical_definition": "v0,kappa,theta,vol_of_vol,c strictly positive; -1<=rho<=1; nonfinite is invalid",
+      "raw_shape": [
+        512,
+        512,
+        6
+      ],
+      "samples": 262144
+    },
+    "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+  },
+  "population_rows": 512,
+  "scientific_acceptance": false,
+  "scope": "Reused development panels; aggregate diagnostics only; no fresh acceptance or sufficient-statistic claim.",
+  "source_evaluation_sha256": "d8b54a6e50e5549c72c82156b19f4c81de95f163fdda64b72d2ac784adcdfe2e",
+  "status": "complete"
+}

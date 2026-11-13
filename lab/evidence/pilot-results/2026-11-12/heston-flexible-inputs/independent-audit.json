@@ -175,5 +175,81 @@
       "best_c_rmse": 0.43978863465029433,
       "best_SBC_screens_passed": 5
     }
+  },
+  "intermediate_dimensions": {
+    "scope": "Saved model/optimizer-state checks plus independent reconstruction from raw final/minimum draws; no training or pricing",
+    "scientific_acceptance": false,
+    "dimensions": {
+      "7": {
+        "training_status": "complete",
+        "epochs": 300,
+        "updates": 351600,
+        "presentations": 90000000,
+        "training_seconds": 2301.448714334052,
+        "best_epoch": 258,
+        "all_model_and_optimizer_arrays_finite": true,
+        "saved_optimizer_iterations_verified": true,
+        "raw_recovery_metrics_and_support_counts_verified_by_exporter": true,
+        "final_model_sha256": "4b67a2aee58ef78bcebc7a111682b44f9c40e1a83beb01b73a0ed34b26bd08ec",
+        "final_draws_sha256": "c5883d7d49e78185916b38e957f7e65f3e28e79e6bf2db94b704eed8d092019c",
+        "final_evaluation_sha256": "83fd52a33746038c9e29125c9b3f398328dce83158d5e8ec07474fe100a32340",
+        "c_rmse": 0.13040333770941184,
+        "initial_variance_rmse": 0.00012797297237331009,
+        "c_coverage90": 0.908203125,
+        "median_c_width90": 0.44827871620655063,
+        "sbc_screens_passed": 5
+      },
+      "6": {
+        "training_status": "complete",
+        "epochs": 300,
+        "updates": 351600,
+        "presentations": 90000000,
+        "training_seconds": 746.7307485388592,
+        "best_epoch": 258,
+        "all_model_and_optimizer_arrays_finite": true,
+        "saved_optimizer_iterations_verified": true,
+        "raw_recovery_metrics_and_support_counts_verified_by_exporter": true,
+        "final_model_sha256": "0064acfc815c3245feb57ccd8b4e09102e15c7eb88c608516af07e47a9dbe27d",
+        "final_draws_sha256": "06f214fdde8d9df0d4c032743f9fc6418c41023a4309244606011b5c52caf1d1",
+        "final_evaluation_sha256": "fa6bcef82354117ada1535d3339aba6559c0d5acbabee522e43270069cb5a2a6",
+        "c_rmse": 0.13396648209146145,
+        "initial_variance_rmse": 0.00014166265318998254,
+        "c_coverage90": 0.904296875,
+        "median_c_width90": 0.44706626832485186,
+        "sbc_screens_passed": 5
+      },
+      "5": {
+        "training_status": "complete",
+        "epochs": 300,
+        "updates": 351600,
+        "presentations": 90000000,
+        "training_seconds": 583.9915383942425,
+        "best_epoch": 227,
+        "all_model_and_optimizer_arrays_finite": true,
+        "saved_optimizer_iterations_verified": true,
+        "raw_recovery_metrics_and_support_counts_verified_by_exporter": true,
+        "final_model_sha256": "366f09b28222cdd9cbc361bdfa49f6a8a6d86ce150da49807b16fdf98bdca434",
+        "final_draws_sha256": "d0096c65c9d554c8ee5957f10ee51e8786bc7ff3001bf1da8d79e1ae85fa9d6c",
+        "final_evaluation_sha256": "6a71cfaf2209893852310d61df7b618af7ddfd3c6e4ce462d5d321b996ead292",
+        "c_rmse": 0.4395404601675651,
+        "initial_variance_rmse": 0.00011531767345881602,
+        "c_coverage90": 0.9140625,
+        "median_c_width90": 1.3550778850913048,
+        "sbc_screens_passed": 5
+      }
+    },
+    "exact_SBC_ranks_and_pass_bits_reproduced": true,
+    "raw_quantiles_recovery_coverage_and_width_metrics_reproduced": true,
+    "exact_truth_pairing_with_original8and4_verified": true,
+    "verified_dimensions": [
+      8,
+      7,
+      6,
+      5,
+      4
+    ],
+    "final_and_distinct_validation_minimum_both_checked": true,
+    "empirical_result": "c recovery deterioration6to5; five physical parameters largely retainedat5; broader physical deterioration5to4",
+    "universal_sufficiency_or_phase_transition_claim": false
   }
 }

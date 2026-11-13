@@ -217,6 +217,17 @@ def _(
 
 @app.cell(hide_code=True)
 def _(dimensions, mo):
+    _result = (
+        "**The completed refinement:** c recovery stays similar at dimensions 7 and 6, "
+        "then deteriorates sharply at **5**. Five coordinates still retain similar pooled "
+        "recovery for the five Heston parameters; physical recovery deteriorates at 4. "
+        "This is a parameter-specific empirical boundary for these trained models, not "
+        "an exact information-theoretic minimum."
+        if {7, 6, 5}.issubset(dimensions) else
+        "**The initial screen:** dimensions 8–64 retain roughly the direct model's pooled recovery, "
+        "while 4 and 2 lose substantial information. The matched 7-, 6- and 5-dimensional "
+        "extension refines this gap as completed results enter the study."
+    )
     mo.md(rf"""
     # How much of an option surface must a summary retain?
 
@@ -231,12 +242,10 @@ def _(dimensions, mo):
     included in the repository. Opening it does not train a network, load a checkpoint,
     price an option or require a simulation-bank download.
 
-    **The initial screen:** dimensions 8–64 retain roughly the direct model's
-    pooled recovery; dimensions 4 and 2 lose substantial information. We refine the
-    gap with dimensions **7, 6 and 5** as their matched evaluations complete. Only
-    completed sizes appear in the controls. Some weak summaries still pass every
-    marginal calibration screen; that distinction between calibration and information
-    retention is the main lesson.
+    {_result}
+
+    Some weak summaries still pass every marginal calibration screen. That distinction
+    between calibration and information retention is the main lesson.
     """)
     return
 
@@ -336,7 +345,7 @@ def _(dimensions, mo, plt):
                     mutation_scale=15, linewidth=1.8, color=color, shrinkA=2, shrinkB=2))
 
             text(.4, 6.7, "One observation, two ways to condition a posterior", 21, weight="bold", ha="left")
-            text(.4, 6.2, f"The {len(dimensions)} completed summary sizes are separate fits; only the learned output dimension changes.",
+            text(.4, 6.2, f"The {len(dimensions)} completed sizes keep the hidden-layer recipe fixed and vary the summary output dimension.",
                  13, gray, ha="left")
             box(.4, 3.2, 1.85, 1.15, "63 noisy\noption quotes", color=green, fill="#EFF7EF")
             box(2.8, 3.2, 2.45, 1.15, "Divide by half-spreads\n+ frozen ZCA\n63 features retained", color=green,
@@ -419,7 +428,7 @@ def _(all_runs, dimensions, mo, primary_runs, training_backend):
               "The same seed label also does not imply identical initial weights across different shapes. "
               "These are single-seed development comparisons with training hardware recorded separately below."),
         mo.md("**Training hardware and timing.** The original screen used local JAX CPUs. "
-              "The intermediate extension is assigned to local CPU and Oscar GPU training; "
+              "The intermediate extension uses local CPU and Oscar GPU training; "
               "this table includes only completed fits and reports their recorded devices. "
               "The historical direct baseline lacks device metadata in its compact record. "
               "Wall times are descriptive, not a hardware-matched speed comparison."),
@@ -447,7 +456,7 @@ def _(dimensions, mo):
         the point is the posterior median and its vertical line is the central 90%
         interval. The dashed diagonal marks exact point recovery.
 
-        Start with **MLP 8**, then switch to **MLP 4** and **MLP 2**, or the direct
+        Start with **MLP 8**, then compare **MLP 7 → 6 → 5 → 4** and **MLP 2**, or the direct
         baseline. An informative estimate should track the diagonal; a nearly horizontal
         band with broad intervals indicates weak recovery. Look at **c** and initial variance.
         Axes are fixed across all completed models so the visual comparison stays fair.
@@ -723,16 +732,36 @@ def _(direct_run, mo, names, summary_runs):
                 _evaluation["parameters"][_name]["rmse"] / direct_run["evaluation"]["parameters"][_name]["rmse"], 2)
         _row["c 90% width / prior"] = round(_evaluation["parameters"]["c"]["median_width90"] / 1.35, 3)
         _gap_rows.append(_row)
+    _refinement = []
+    _extension_description = ("The completed 7-, 6- and 5-dimensional extension examines that gap one coordinate at a time."
+                              if {7, 6, 5}.issubset(_by_d) else
+                              "The 7-, 6- and 5-dimensional extension refines that gap as matched evaluations complete.")
+    if {7, 6, 5}.issubset(_by_d):
+        _c6, _c5 = (_by_d[d]["parameters"]["c"] for d in (6, 5))
+        _physical_ratios = [_by_d[5]["parameters"][name]["rmse"] /
+                            direct_run["evaluation"]["parameters"][name]["rmse"]
+                            for name in names if name != "c"]
+        _refinement = [mo.callout(mo.md(
+            f"**The clearest new break is c at 6 → 5 coordinates.** "
+            f"Its median-estimate RMSE increases from **{_c6['rmse']:.3f}** to **{_c5['rmse']:.3f}**, "
+            f"and its median 90% interval widens from **{_c6['median_width90']:.3f}** to "
+            f"**{_c5['median_width90']:.3f}**, close to the prior's **1.35**. "
+            f"At dimension 5, all five Heston-parameter RMSEs remain **{min(_physical_ratios):.2f}–"
+            f"{max(_physical_ratios):.2f}×** their direct-model values. "
+            "At dimension 4, physical recovery deteriorates as well. "
+            "Thus six is the smallest tested size retaining similar pooled recovery for all six targets "
+            "in this single-seed comparison; it is not a proven sufficient statistic."), kind="info")]
     mo.vstack([
-        mo.md(r"""
+        mo.md(rf"""
         ## 8. What can we conclude?
 
         The original six-size screen found similar pooled recovery at dimensions 8–64,
-        with substantial deterioration at 4 and 2. The intermediate-size extension
-        examines that gap one coordinate at a time. The table below shows only completed
+        with substantial deterioration at 4 and 2. {_extension_description}
+        The table below shows only completed
         fits: errors are divided by the direct model's errors, while the final column
         measures contraction of the c interval relative to its prior width.
         """),
+        *_refinement,
         mo.ui.table(_gap_rows, selection=None, pagination=False),
         mo.md(("**Completed intermediate sizes:** " + ", ".join(map(str, _intermediates)) + ". "
                if _intermediates else "**Dimensions 7, 6 and 5 are pending completed exports.** ") +

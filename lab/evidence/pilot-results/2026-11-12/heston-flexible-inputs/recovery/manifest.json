@@ -2,7 +2,7 @@
   "draws_per_case": 512,
   "endpoint": "primary_final",
   "epoch": 300,
-  "exporter_sha256": "3cc9006a525c485c135b2bfe4a2fc978b3bf63b3190ba10f1dd637a8e5ea73be",
+  "exporter_sha256": "e16a547806f80148b3a76ef9ae765ed218c27537cdd350907eaf834e027bd32b",
   "figures": [
     {
       "compact_evaluation_sha256": "1eda23b1dc9ceec81fff6b0cfcff2f999b0e5017e5267ce2b3896184d7d65a07",
@@ -12,7 +12,7 @@
       "endpoint": "primary_final",
       "epoch": 300,
       "figure": "recovery/direct-final.png",
-      "figure_sha256": "dc3fa62b83fd83d43a615e75a1a15af9c76a731e5b7b5f02925190ad3c1e17a9",
+      "figure_sha256": "0b06c66dfd703a9b4ed26ac23fdc4a7f17bbcd57f2d4e75eb722448c54bc97d3",
       "intervals_plotted": 512,
       "metrics": {
         "coverage90": [
@@ -56,7 +56,7 @@
       "endpoint": "primary_final",
       "epoch": 300,
       "figure": "recovery/mlp64-final.png",
-      "figure_sha256": "638fee81efe36cb61eb2899cf9e4d5afc0b04847cecdc0b1f9050b5a05219a92",
+      "figure_sha256": "7c9baa3af4dc11ed72b45958028594775b4883751b1f842241943f5aa2c4b754",
       "intervals_plotted": 512,
       "metrics": {
         "coverage90": [
@@ -99,7 +99,7 @@
       "endpoint": "primary_final",
       "epoch": 300,
       "figure": "recovery/mlp32-final.png",
-      "figure_sha256": "3dd2a974e815c57e01861f1fe05ad980f2e778f15559a072422c8f64a166f546",
+      "figure_sha256": "0332713e55f54740390ecafc11d2ccd86d2d5f7cc7e5f47efd248adec79183de",
       "intervals_plotted": 512,
       "metrics": {
         "coverage90": [
@@ -142,7 +142,7 @@
       "endpoint": "primary_final",
       "epoch": 300,
       "figure": "recovery/mlp16-final.png",
-      "figure_sha256": "f61c4b3acc47924c7026ec84df7e2ea40a64fd62ef57a38a7a09f137c74d9aff",
+      "figure_sha256": "25341fc296bcf22d597e064ebce510981e697d4c1c5c15e9a728cc21ae31c37c",
       "intervals_plotted": 512,
       "metrics": {
         "coverage90": [
@@ -185,7 +185,7 @@
       "endpoint": "primary_final",
       "epoch": 300,
       "figure": "recovery/mlp8-final.png",
-      "figure_sha256": "54a836d4db2e96327d6bfd8434a5315e2beab9b6887c5250a229e6d539e386ab",
+      "figure_sha256": "798f98fcd6a0ab10a05c5e7331ec9cd338c640f86e1c9f4e59a5c3bc8992686b",
       "intervals_plotted": 512,
       "metrics": {
         "coverage90": [
@@ -221,6 +221,135 @@
       "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
     },
     {
+      "compact_evaluation_sha256": "2e5348be43ec80245003c7af9c67d69fa23b41007e6b5be0755e651c62b35716",
+      "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+      "dimension": 7,
+      "draws_per_case": 512,
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "figure": "recovery/mlp7-final.png",
+      "figure_sha256": "54f8a7a0cf1a7cc9bbf1e84dd006e6ede4f16ef8170e2fe24a89079976692b1e",
+      "intervals_plotted": 512,
+      "metrics": {
+        "coverage90": [
+          0.962890625,
+          0.912109375,
+          0.91796875,
+          0.91796875,
+          0.9296875,
+          0.908203125
+        ],
+        "median_width90": [
+          0.0004922693595290212,
+          0.14535634517669704,
+          0.0008512348867952928,
+          0.027585920691490212,
+          0.005768855661153802,
+          0.44827871620655063
+        ],
+        "rmse": [
+          0.00012797297237331009,
+          0.07893585609427642,
+          0.0017502488293792006,
+          0.01297711110701179,
+          0.0208777404118096,
+          0.13040333770941184
+        ]
+      },
+      "metrics_reproduced": true,
+      "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+      "rows": 512,
+      "source_draws_sha256": "c5883d7d49e78185916b38e957f7e65f3e28e79e6bf2db94b704eed8d092019c",
+      "source_evaluation_sha256": "83fd52a33746038c9e29125c9b3f398328dce83158d5e8ec07474fe100a32340",
+      "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+    },
+    {
+      "compact_evaluation_sha256": "5ca6cec52d7d98886674aab0a643c5b2a4d713b95acb768ecb8c6f467bbc31a1",
+      "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+      "dimension": 6,
+      "draws_per_case": 512,
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "figure": "recovery/mlp6-final.png",
+      "figure_sha256": "a58ffdf823e4be5446348599d3150d9fedb689a4a5ccc8301bf58002fd1d520c",
+      "intervals_plotted": 512,
+      "metrics": {
+        "coverage90": [
+          0.94921875,
+          0.908203125,
+          0.9140625,
+          0.92578125,
+          0.9375,
+          0.904296875
+        ],
+        "median_width90": [
+          0.0005084197968244601,
+          0.14672440290451094,
+          0.0008900376036763136,
+          0.028844377398490856,
+          0.005912692099809658,
+          0.44706626832485186
+        ],
+        "rmse": [
+          0.00014166265318998254,
+          0.08193755642664263,
+          0.0017399831901128062,
+          0.013209721193379053,
+          0.021219697030238908,
+          0.13396648209146145
+        ]
+      },
+      "metrics_reproduced": true,
+      "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+      "rows": 512,
+      "source_draws_sha256": "06f214fdde8d9df0d4c032743f9fc6418c41023a4309244606011b5c52caf1d1",
+      "source_evaluation_sha256": "fa6bcef82354117ada1535d3339aba6559c0d5acbabee522e43270069cb5a2a6",
+      "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+    },
+    {
+      "compact_evaluation_sha256": "44a5e6174d093ba2297aa30c2c0651253334be97a1b81993ee279d8d475fc5a4",
+      "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+      "dimension": 5,
+      "draws_per_case": 512,
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "figure": "recovery/mlp5-final.png",
+      "figure_sha256": "b730b52ce5c7a3f35fa0f6728d69897fd9c124b3235b8d6e496401c1ad978dbf",
+      "intervals_plotted": 512,
+      "metrics": {
+        "coverage90": [
+          0.955078125,
+          0.900390625,
+          0.8984375,
+          0.91015625,
+          0.923828125,
+          0.9140625
+        ],
+        "median_width90": [
+          0.00047935005277394485,
+          0.15138263702392596,
+          0.0008150134235620499,
+          0.02783398926258074,
+          0.005706185102462791,
+          1.3550778850913048
+        ],
+        "rmse": [
+          0.00011531767345881602,
+          0.07727964561512045,
+          0.001732155674591725,
+          0.013025810662330488,
+          0.01982600844699588,
+          0.4395404601675651
+        ]
+      },
+      "metrics_reproduced": true,
+      "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+      "rows": 512,
+      "source_draws_sha256": "d0096c65c9d554c8ee5957f10ee51e8786bc7ff3001bf1da8d79e1ae85fa9d6c",
+      "source_evaluation_sha256": "6a71cfaf2209893852310d61df7b618af7ddfd3c6e4ce462d5d321b996ead292",
+      "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+    },
+    {
       "compact_evaluation_sha256": "5820a38e61475bd41ca9af51bf1e62928242361a2519a94783400b620784e17e",
       "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
       "dimension": 4,
@@ -228,7 +357,7 @@
       "endpoint": "primary_final",
       "epoch": 300,
       "figure": "recovery/mlp4-final.png",
-      "figure_sha256": "37283954650851e327da603278f45031adf7bee420f5731f2beb6d92ac7e31f6",
+      "figure_sha256": "9e0656ba6730d008b83aab4b7148f4d19950943d9b02bc3061edbf578adf7f3a",
       "intervals_plotted": 512,
       "metrics": {
         "coverage90": [
@@ -271,7 +400,7 @@
       "endpoint": "primary_final",
       "epoch": 300,
       "figure": "recovery/mlp2-final.png",
-      "figure_sha256": "069611e5415a8ed824b089f9743e3a5cf49d218102bd0bc6bd1da114cb85e26b",
+      "figure_sha256": "0aed58151695108356138930e931cb4c339a1b63939bd53b6fcccedf0f514e53",
       "intervals_plotted": 512,
       "metrics": {
         "coverage90": [
@@ -316,7 +445,7 @@
     "rho",
     "c"
   ],
-  "plot_policy": "All 512 truths, posterior medians and central-90% intervals; common axes per parameter across seven models; raw draws retained without clipping or rejection.",
+  "plot_policy": "All 512 truths, posterior medians and central-90% intervals; common axes per parameter across 10 models; raw draws retained without clipping or rejection.",
   "prior_bounds": [
     [
       0.01,
@@ -352,8 +481,8 @@
       0.1672905552536249
     ],
     [
-      -0.3805667686462402,
-      10.529663782119751
+      -0.41672593879699704,
+      10.706302183151244
     ],
     [
       0.0024097380936145777,
@@ -368,9 +497,9 @@
       -0.05320492839813233
     ],
     [
-      0.3878065152168274,
-      2.079586400270462
+      0.38760657787322994,
+      2.084784771203995
     ]
   ],
-  "source_study_sha256": "56e73e0767559a85700f0a9576de30ab84e876b7e8782efb69beca535841e678"
+  "source_study_sha256": "c09f4bd45b284497b74bd264d71221d6e962ba843f81c34ebcaa5b1c6e702973"
 }
