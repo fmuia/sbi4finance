@@ -7,15 +7,25 @@ The experiment plan is [here](../../../../plans/HESTON-FLEXIBLE-INPUTS-PLAN.md).
 [Open the self-contained comparison report](report.html). Its portable
 [study index](study.json) also loads in the experimental notebook without private
 bank or model files. Final and validation-minimum endpoints remain separately
-labelled. Only aggregate metrics and source hashes are included.
+labelled. Portable metrics, source hashes and rendered recovery plots are included;
+raw posterior samples and simulated parameter arrays stay outside Git.
 
 ## Standalone experiment lesson
 
 `lab/notebooks/heston_summary_experiments.py` gives the explanatory rundown intended
 for later harvesting into the SPX tutorial: task and priors, whitening versus
 compression, the matched recipe, interactive recovery/calibration comparisons,
-conditional references and checkpoint selection. It reads only the checked-in
-aggregate study and imports no pricing or neural runtime. No bank, model download
+conditional references and checkpoint selection. A rounded-box schematic follows
+the existing Heston notebook artwork and contrasts the jointly trained MLP route
+with the direct baseline. A model selector displays all six true-versus-estimated
+parameter recovery panels, including posterior medians and central 90% intervals
+for all 512 paired cases. All seven final models use the same plot limits.
+
+The lesson reads only the checked-in study and recovery images, and imports no
+pricing or neural runtime. The [recovery manifest](recovery/manifest.json) binds
+each figure to its final-checkpoint evaluation and raw-draw hashes.
+`lab/scripts/export_heston_summary_recovery.py` regenerates those images from the
+original private payloads after reproducing recovery metrics and support counts. No bank, model download
 or environment-variable configuration is required.
 
 From `lab/`, launch it with:

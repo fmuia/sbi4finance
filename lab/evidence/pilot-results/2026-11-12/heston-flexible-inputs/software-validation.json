@@ -99,18 +99,32 @@
   },
   "standalone_summary_lesson": {
     "notebook": "lab/notebooks/heston_summary_experiments.py",
-    "source_sha256": "cc7cdf8c9d2b0297be846174f6980b33c7930c0d9609819e593f8cbb508acaee",
-    "lab_tests_passed": 885,
-    "lab_test_seconds": 354.088,
-    "lab_test_log_sha256": "6f698a1156b2719dbf06d58a6fab85ca8f1a5fca712fb0f999e4cee24c70645e",
-    "focused_tests_passed": 6,
-    "cells_exported": 19,
+    "source_sha256": "b466ece03558f3c9f78fe4c746f0b0dc4036d26efcefffc6187ccb40251807a0",
+    "lab_tests_passed": 889,
+    "lab_test_seconds": 353.694,
+    "lab_test_log_sha256": "0d38e0896bea18e2d89a58a7367e5c18b0a4c19e1178b2bd9b4b0cd674866d3b",
+    "focused_tests_passed": 10,
+    "cells_exported": 21,
     "export_cell_errors": 0,
     "strict_marimo_check_passed": true,
     "release_checks_passed": true,
     "no_private_data_or_runtime_imports_verified": true,
     "primary_endpoints": 7,
     "secondary_endpoints": 6,
-    "visual_review": "default c dashboard, synthetic and market conditional views, initial variance dashboard and checkpoint trajectory"
+    "visual_review": "rounded Heston-style schematic; six-parameter recovery at dimensions8/2; default c dashboard and saved conditional/checkpoint displays",
+    "recovery_figures": {
+      "final_models": 7,
+      "parameters_per_model": 6,
+      "paired_cases": 512,
+      "draws_per_case": 512,
+      "all_metrics_reproduced_from_raw_draws": true,
+      "raw_support_counts_verified": true,
+      "common_axes_and_no_interval_clipping": true,
+      "manifest": "recovery/manifest.json",
+      "manifest_sha256": "f2eb2bae7cf30535d7af6652081fe3d3fd19e497c502867debad113e73f31bf3",
+      "exporter_sha256": "3cc9006a525c485c135b2bfe4a2fc978b3bf63b3190ba10f1dd637a8e5ea73be",
+      "focused_test_log_sha256": "69ac78bd2999b7e54100cb805ff97509bc9469a95f1ce74ce2819e4c1ad24ffd",
+      "release_log_sha256": "8ef17eb02238b31db249af80b55c5dda4440397f59fe474a7750dbd673aed89a"
+    }
   }
 }

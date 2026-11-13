@@ -5,6 +5,7 @@ from hashlib import sha256
 import importlib.util
 import json
 import os
+import shutil
 from pathlib import Path
 import sys
 import tempfile
@@ -45,6 +46,7 @@ class SummaryNotebookTests(unittest.TestCase):
             cls.outputs, cls.definitions = module.app.run()
         cls.read_study = staticmethod(cls.definitions["read_study"])
         cls.select_endpoints = staticmethod(cls.definitions["select_endpoints"])
+        cls.read_recovery_figures = staticmethod(cls.definitions["read_recovery_figures"])
         cls.all_runs = cls.definitions["all_runs"]
 
     @classmethod
@@ -84,6 +86,8 @@ class SummaryNotebookTests(unittest.TestCase):
         self.assertEqual(self.definitions["target_selector"].value, "c")
         self.assertEqual(set(self.definitions["dimension_selector"].value), DIMENSIONS)
         self.assertEqual(self.definitions["checkpoint_dimension"].value, 8)
+        self.assertEqual(self.definitions["recovery_model"].value, "mlp8")
+        self.assertEqual(set(self.definitions["recovery_figures"]), DIMENSIONS | {None})
         self.assertEqual(len(self.definitions["primary_runs"]), 7)
         self.assertEqual(len(self.definitions["summary_runs"]), 6)
         self.assertTrue(all(row["endpoint"] == "primary_final" for row in self.definitions["primary_runs"]))
@@ -107,6 +111,26 @@ class SummaryNotebookTests(unittest.TestCase):
             self.assertTrue(all(row["endpoint"] == endpoint for row in selected))
             self.assertEqual(sum(row["dimension"] == 8 for row in selected), 1)
         self.assertEqual(json_hashes(EVIDENCE), self.source_hashes)
+
+    def test_recovery_images_are_bound_to_primary_evidence_and_reject_tampering(self):
+        self.assertEqual(set(self.read_recovery_figures(EVIDENCE, self.all_runs)), DIMENSIONS | {None})
+        for corruption in ("image", "endpoint", "source_evaluation_sha256", "figure"):
+            with self.subTest(corruption=corruption), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                shutil.copytree(EVIDENCE / "recovery", root / "recovery")
+                path = root / "recovery/manifest.json"
+                record = json.loads(path.read_text())
+                entry = next(item for item in record["figures"] if item["dimension"] == 8)
+                if corruption == "image":
+                    with (root / entry["figure"]).open("ab") as image:
+                        image.write(b"changed")
+                else:
+                    entry[corruption] = {"endpoint": "secondary_validation_minimum",
+                                         "source_evaluation_sha256": "0" * 64,
+                                         "figure": "../outside.png"}[corruption]
+                    self.save(path, record)
+                with self.assertRaises(ValueError):
+                    self.read_recovery_figures(root, self.all_runs)
 
     def test_loader_rejects_directory_escape_and_unsupported_dimension(self):
         with tempfile.TemporaryDirectory() as temporary:

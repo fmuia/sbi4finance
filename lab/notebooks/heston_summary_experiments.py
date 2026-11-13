@@ -7,6 +7,7 @@ app = marimo.App(width="medium", app_title="How much of an option surface must a
 @app.cell(hide_code=True)
 def _():
     import json
+    from hashlib import sha256
     from pathlib import Path
 
     import marimo as mo
@@ -101,23 +102,61 @@ def _():
                     and (dimensions is None or item["dimension"] is None or item["dimension"] in dimensions)]
         return sorted(selected, key=lambda item: (item["dimension"] is not None, -(item["dimension"] or 0)))
 
+    def read_recovery_figures(root, runs):
+        """Bind the shipped recovery images to the primary matched-study evidence."""
+        root = Path(root).resolve()
+        manifest = json.loads((root / "recovery/manifest.json").read_text())
+        if (manifest.get("format") != "heston_summary_recovery_figures_v1"
+                or manifest.get("endpoint") != "primary_final" or manifest.get("epoch") != 300
+                or manifest.get("rows") != 512 or manifest.get("draws_per_case") != 512
+                or tuple(manifest.get("parameter_names", ())) != names):
+            raise ValueError("the matched six-parameter recovery export is required")
+        primary = {item["dimension"]: item for item in runs if item["endpoint"] == "primary_final"}
+        figures = {}
+        for entry in manifest["figures"]:
+            dimension = entry["dimension"]
+            if dimension not in primary or dimension in figures:
+                raise ValueError("unique recovery figures are required for every primary endpoint")
+            item = primary[dimension]
+            population = item["evaluation"]["population"]
+            if (entry.get("endpoint") != "primary_final" or entry.get("epoch") != 300
+                    or entry.get("metrics_reproduced") is not True
+                    or entry.get("rows") != 512 or entry.get("draws_per_case") != 512
+                    or entry.get("source_evaluation_sha256") != item["evaluation"]["source_evaluation_sha256"]
+                    or entry.get("truth_sha256") != population["truth_sha256"]
+                    or entry.get("observations_sha256") != population["observations_sha256"]
+                    or (dimension is not None and entry.get("source_draws_sha256")
+                        != item["run"]["source_hashes"]["draws_sha256"])):
+                raise ValueError("recovery image and primary evaluation identities differ")
+            relative = Path(entry["figure"])
+            figure = (root / relative).resolve()
+            if relative.is_absolute() or root not in figure.parents:
+                raise ValueError("recovery figures must stay inside the study")
+            if sha256(figure.read_bytes()).hexdigest() != entry["figure_sha256"]:
+                raise ValueError("recovery figure checksum differs")
+            figures[dimension] = figure
+        if set(figures) != set(primary):
+            raise ValueError("all seven primary recovery figures are required")
+        return figures
+
     def tidy_axes(ax):
         ax.spines[["top", "right"]].set_visible(False)
         ax.grid(axis="y", alpha=.18)
         ax.set_axisbelow(True)
 
     return (Path, bounds, case_labels, colors, dimensions, json, labels, mo, names,
-            np, plt, read_study, select_endpoints, tidy_axes)
+            np, plt, read_recovery_figures, read_study, select_endpoints, tidy_axes)
 
 
 @app.cell(hide_code=True)
-def _(Path, mo, read_study, select_endpoints):
+def _(Path, mo, read_recovery_figures, read_study, select_endpoints):
     evidence_root = mo.notebook_dir().parent / "evidence/pilot-results/2026-11-12/heston-flexible-inputs"
     all_runs = read_study(evidence_root)
     primary_runs = select_endpoints(all_runs)
+    recovery_figures = read_recovery_figures(evidence_root, all_runs)
     summary_runs = [item for item in primary_runs if item["dimension"] is not None]
     direct_run = next(item for item in primary_runs if item["dimension"] is None)
-    return all_runs, direct_run, evidence_root, primary_runs, summary_runs
+    return all_runs, direct_run, evidence_root, primary_runs, recovery_figures, summary_runs
 
 
 @app.cell(hide_code=True)
@@ -209,20 +248,81 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    _boxes = [("63 noisy quotes", "fixed observed contracts"),
-              ("Scale + frozen ZCA", "63 dimensions retained"),
-              ("MLP summary", "128 → 128 → d"),
-              ("FlowMatching", "same six-target posterior head")]
-    _parts = []
-    for _index, (_title, _detail) in enumerate(_boxes):
-        if _index:
-            _parts.append('<div style="align-self:center;color:#6c7b88">→</div>')
-        _parts.append(f'<div style="flex:1;min-width:135px;padding:14px 10px;border:1px solid #cddae4;'
-                      f'border-radius:8px;background:#f1f6fa;text-align:center"><b>{_title}</b>'
-                      f'<div style="font-size:0.85em;color:#526579;margin-top:5px">{_detail}</div></div>')
-    mo.Html('<div style="display:flex;flex-wrap:wrap;gap:8px">' + ''.join(_parts) + '</div>')
-    return
+def _(mo, plt):
+    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+
+    def summary_schematic():
+        # Match the Heston lesson's rounded-box artwork and training/inference palette.
+        # Reference: lab/evidence/illustrations/heston-workflow-20261101/render.py.
+        ink, purple, green, gray = "#15153B", "#4E2A84", "#2E7D43", "#63637A"
+        with plt.rc_context({"font.family": "sans-serif", "mathtext.fontset": "dejavusans"}):
+            fig, ax = plt.subplots(figsize=(14.4, 7.1))
+            fig.patch.set_facecolor("white")
+            fig.subplots_adjust(0, 0, 1, 1)
+            ax.set(xlim=(0, 14.4), ylim=(0, 7.1))
+            ax.axis("off")
+
+            def text(x, y, value, size=12, color=ink, weight="normal", ha="center"):
+                ax.text(x, y, value, fontsize=size, color=color, weight=weight,
+                        ha=ha, va="center", linespacing=1.4)
+
+            def box(x, y, w, h, value, color=purple, fill="#F0ECF6", size=13):
+                ax.add_patch(FancyBboxPatch((x, y), w, h,
+                    boxstyle="round,pad=0.015,rounding_size=0.14",
+                    linewidth=1.5, edgecolor=color, facecolor=fill))
+                text(x+w/2, y+h/2, value, size, color)
+
+            def arrow(a, b, color=purple):
+                ax.add_patch(FancyArrowPatch(a, b, arrowstyle="-|>",
+                    mutation_scale=15, linewidth=1.8, color=color, shrinkA=2, shrinkB=2))
+
+            text(.4, 6.7, "One observation, two ways to condition a posterior", 21, weight="bold", ha="left")
+            text(.4, 6.2, "The six summary sizes are separate fits; only the learned output dimension changes.",
+                 13, gray, ha="left")
+            box(.4, 3.2, 1.85, 1.15, "63 noisy\noption quotes", color=green, fill="#EFF7EF")
+            box(2.8, 3.2, 2.45, 1.15, "Divide by half-spreads\n+ frozen ZCA\n63 features retained", color=green,
+                fill="#EFF7EF", size=12.5)
+            arrow((2.3, 3.775), (2.75, 3.775), green)
+            # A shared preprocessing stage, with two independently trained routes.
+            ax.plot([5.3, 5.65, 5.65], [3.775, 3.775, 4.95], color=purple, lw=1.8)
+            arrow((5.65, 4.95), (6., 4.95))
+            ax.plot([5.65, 5.65], [3.775, 2.15], color=green, lw=1.8)
+            arrow((5.65, 2.15), (6., 2.15), green)
+
+            ax.add_patch(FancyBboxPatch((5.82, 4.13), 6.08, 1.92,
+                boxstyle="round,pad=0.015,rounding_size=0.16", linewidth=0, facecolor="#F0ECF6", zorder=-1))
+            text(8.86, 5.72, "SUMMARY + POSTERIOR: JOINTLY TRAINED", 11, purple, "bold")
+            box(6.05, 4.4, 2.55, 1.1, "MLP summary\n128 SiLU → 128 SiLU\nlinear output: d", fill="white", size=12.5)
+            box(9.1, 4.4, 2.55, 1.1, "FlowMatching\nconditioned on d\n3 × 128; dropout 0.1", fill="white", size=12.5)
+            arrow((8.65, 4.95), (9.05, 4.95))
+            arrow((11.7, 4.95), (12.1, 4.95))
+            box(12.15, 4.4, 1.85, 1.1, "Six-parameter\nposterior draws", size=12.5)
+
+            text(7.325, 3.72, "d = 64, 32, 16, 8, 4, 2\n64: representation control", 10.8, purple)
+            box(9.1, 3.05, 2.55, .55, "Gaussian base noise", color=gray, fill="white", size=11.5)
+            arrow((10.375, 3.65), (10.375, 4.35), gray)
+            arrow((10.375, 3.), (10.375, 2.75), gray)
+
+            text(7.325, 3.03, "DIRECT BASELINE", 11, green, "bold")
+            box(6.05, 1.6, 2.55, 1.1, "All 63 features\nNo learned summary", color=green, fill="#EFF7EF", size=12.5)
+            box(9.1, 1.6, 2.55, 1.1, "FlowMatching\nconditioned on 63\n3 × 128; dropout 0.1", color=green, fill="#EFF7EF", size=12.5)
+            arrow((8.65, 2.15), (9.05, 2.15), green)
+            arrow((11.7, 2.15), (12.1, 2.15), green)
+            box(12.15, 1.6, 1.85, 1.1, "Six-parameter\nposterior draws", color=green, fill="#EFF7EF", size=12.5)
+            text(.4, .95, "Training: the generating parameters supervise the joint inference loss; no reconstruction objective.",
+                 12, purple, ha="left")
+            text(.4, .53, "Inference: freeze both networks; input quotes and base noise to sample (v₀, κ, θ, η, ρ, c).", 12, green, ha="left")
+            text(.4, .17, "Same posterior architecture recipe, separately fitted weights. The same 63 contracts are observed in every fit.",
+                 10.8, gray, ha="left")
+        return fig
+
+    summary_diagram = summary_schematic()
+    mo.vstack([summary_diagram, mo.md(
+        "**Read the upper route from left to right:** preprocessing retains 63 coordinates; "
+        "the learned summary supplies d conditioning coordinates to the posterior sampler. "
+        "The purple group is optimized jointly. The direct baseline bypasses the summary. "
+        "During inference, all fitted weights are fixed and the true parameters are unknown.")])
+    return summary_diagram, summary_schematic
 
 
 @app.cell(hide_code=True)
@@ -247,12 +347,51 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
+def _(dimensions, mo):
+    recovery_model = mo.ui.dropdown(
+        options={"Direct 63-input baseline": "direct", **{f"MLP {d}": f"mlp{d}" for d in dimensions}},
+        value="MLP 8", label="Recovery plot: fitted representation")
+    mo.vstack([mo.md("## 4. When does recovery deteriorate?"),
+        mo.md(r"""
+        ### True parameters versus posterior estimates
+
+        Each point is one of the same **512 simulated observations**, with **512 saved
+        posterior draws** per observation. The x-axis gives its generating parameter;
+        the point is the posterior median and its vertical line is the central 90%
+        interval. The dashed diagonal marks exact point recovery.
+
+        Start with **MLP 8**, then switch to **MLP 4** and **MLP 2**, or the direct
+        baseline. An informative estimate should track the diagonal; a nearly horizontal
+        band with broad intervals indicates weak recovery. Look at **c** and initial variance.
+        Axes are fixed across all seven models so the visual comparison stays fair.
+        """), recovery_model])
+    return (recovery_model,)
+
+
+@app.cell(hide_code=True)
+def _(mo, recovery_figures, recovery_model):
+    _key = recovery_model.value
+    _dimension = None if _key == "direct" else int(_key.removeprefix("mlp"))
+    _name = "Direct 63-input baseline" if _dimension is None else f"MLP {_dimension}"
+    mo.vstack([
+        mo.image(recovery_figures[_dimension], width="100%",
+                 alt=f"{_name}: true values versus posterior medians and 90% intervals for all six parameters"),
+        mo.md("**Final epoch 300 only.** All 512 cases and their central intervals are shown; "
+              "the figure was exported from the original unfiltered saved draws. "
+              "The horizontal and vertical dotted lines mark the prior boundaries. "
+              "No model is sampled when you change the selection. These are reused development cases, "
+              "not a fresh acceptance population."),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
 def _(dimensions, labels, mo):
     target_selector = mo.ui.dropdown(options={label: key for key, label in labels.items()},
                                      value=labels["c"], label="Parameter to investigate")
     dimension_selector = mo.ui.multiselect(options={str(d): d for d in dimensions},
                                            value=[str(d) for d in dimensions], label="Summary dimensions")
-    mo.vstack([mo.md("## 4. When does recovery deteriorate?"),
+    mo.vstack([mo.md("### Compare the summary dimensions quantitatively"),
                mo.md(r"""Start with **c**, then examine initial variance or volatility of variance.
                Before looking at the plots, predict which diagnostic should reveal information loss.
 
@@ -424,8 +563,9 @@ def _(mo):
     bound of c; large standardized errors there need that context. A summary matching an
     imperfect baseline is a relative development result.
 
-    The stored records contain aggregate diagnostics, not individual posterior draws.
-    These displays do not manufacture posterior densities or recovery scatterplots.
+    The heatmaps use recorded aggregate diagnostics. The recovery scatterplots above
+    are exported separately from the original saved posterior draws; opening this notebook
+    does not sample new posteriors.
     """)
     return
 
@@ -501,7 +641,8 @@ def _(all_runs, evidence_root, mo):
               "model SHA-256": item["run"]["source_hashes"].get("model_sha256", "historical baseline; see source record")}
              for item in all_runs]
     mo.accordion({"Evidence and reproduction": mo.vstack([
-        mo.md(f"The notebook reads the checked-in aggregate study at `{evidence_root.name}`. "
+        mo.md(f"The notebook reads the checked-in study and recovery images at `{evidence_root.name}`. "
+              "The recovery manifest binds each image to its saved evaluation and raw-draw checksums. "
               "Private simulation payloads and neural models are unnecessary for this rundown. "
               "The adjacent README, campaign record and independent audit document task, data and source identities. "
               "All raw neural draws were retained in the original evaluations, including support violations."),

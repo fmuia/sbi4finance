@@ -1,0 +1,376 @@
+{
+  "draws_per_case": 512,
+  "endpoint": "primary_final",
+  "epoch": 300,
+  "exporter_sha256": "3cc9006a525c485c135b2bfe4a2fc978b3bf63b3190ba10f1dd637a8e5ea73be",
+  "figures": [
+    {
+      "compact_evaluation_sha256": "1eda23b1dc9ceec81fff6b0cfcff2f999b0e5017e5267ce2b3896184d7d65a07",
+      "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+      "dimension": null,
+      "draws_per_case": 512,
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "figure": "recovery/direct-final.png",
+      "figure_sha256": "dc3fa62b83fd83d43a615e75a1a15af9c76a731e5b7b5f02925190ad3c1e17a9",
+      "intervals_plotted": 512,
+      "metrics": {
+        "coverage90": [
+          0.974609375,
+          0.900390625,
+          0.923828125,
+          0.892578125,
+          0.919921875,
+          0.90234375
+        ],
+        "median_width90": [
+          0.000496677961200476,
+          0.14781810045242327,
+          0.0009378699585795361,
+          0.02938975840806965,
+          0.007750228047370911,
+          0.43425638675689693
+        ],
+        "rmse": [
+          0.0001112103407662926,
+          0.06966206413835163,
+          0.0021694867770106845,
+          0.013929797038742942,
+          0.022899646608692266,
+          0.1349425642060356
+        ]
+      },
+      "metrics_reproduced": true,
+      "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+      "rows": 512,
+      "source_draws_sha256": "e7f3412f5ed32386ced4273d0355dc550cbb59d82617f95902faf839a28d21e6",
+      "source_evaluation_sha256": "50312e178e17c800a9ac8c29f57261efb64b2f187d1d7ef37a09b3df47930f90",
+      "source_recovery_sha256": "09d3ed0eee3802330fbb16b08898a1d6698504a5d38b2c10a7506e3e4de96644",
+      "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+    },
+    {
+      "compact_evaluation_sha256": "2dab87fa64269bf1ebaf063109a21a1c825a159470c85387ecc7031eb041f7ee",
+      "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+      "dimension": 64,
+      "draws_per_case": 512,
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "figure": "recovery/mlp64-final.png",
+      "figure_sha256": "638fee81efe36cb61eb2899cf9e4d5afc0b04847cecdc0b1f9050b5a05219a92",
+      "intervals_plotted": 512,
+      "metrics": {
+        "coverage90": [
+          0.95703125,
+          0.8984375,
+          0.91796875,
+          0.91015625,
+          0.927734375,
+          0.89453125
+        ],
+        "median_width90": [
+          0.0004578494466841235,
+          0.12951953411102357,
+          0.0007609920576214721,
+          0.025522989034652666,
+          0.0053225085139274805,
+          0.4503316506743431
+        ],
+        "rmse": [
+          0.00012081109272515671,
+          0.06444156460241046,
+          0.0014656776043383136,
+          0.012305696013844675,
+          0.02034547225585757,
+          0.13506446617481083
+        ]
+      },
+      "metrics_reproduced": true,
+      "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+      "rows": 512,
+      "source_draws_sha256": "7b77cdf5a8a03ed3d509bbeec7dd39e905fbc4b0561623d7285e7afb4d887dd2",
+      "source_evaluation_sha256": "f8fcf2aefd4074920410f480b157fe53251225f326be93e833b721bd6789c6be",
+      "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+    },
+    {
+      "compact_evaluation_sha256": "1eeefa0af43e279e98c9c99591ff5a84cb53fde01e1c363c10a01d98f6e8d2e4",
+      "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+      "dimension": 32,
+      "draws_per_case": 512,
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "figure": "recovery/mlp32-final.png",
+      "figure_sha256": "3dd2a974e815c57e01861f1fe05ad980f2e778f15559a072422c8f64a166f546",
+      "intervals_plotted": 512,
+      "metrics": {
+        "coverage90": [
+          0.962890625,
+          0.896484375,
+          0.927734375,
+          0.900390625,
+          0.92578125,
+          0.896484375
+        ],
+        "median_width90": [
+          0.00047709327191114426,
+          0.12704819440841675,
+          0.0007847159169614322,
+          0.02550274133682244,
+          0.0054359011352062,
+          0.4526790007948876
+        ],
+        "rmse": [
+          0.0001281493500234563,
+          0.06627126732380337,
+          0.0019116198683146958,
+          0.012582740925608581,
+          0.01996744161417394,
+          0.1346118926052927
+        ]
+      },
+      "metrics_reproduced": true,
+      "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+      "rows": 512,
+      "source_draws_sha256": "14090f95857f096d3aa149bea17039a1a08546215acb468bc842a91b42e46e05",
+      "source_evaluation_sha256": "9a831919b84baed10014e9fb8cd45168a33c6b5054010432c0810dab8a8f5ae4",
+      "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+    },
+    {
+      "compact_evaluation_sha256": "3b165eae6bf6d34a2c53804cec55ac3f4f483406130a67dbd559abfba125d08d",
+      "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+      "dimension": 16,
+      "draws_per_case": 512,
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "figure": "recovery/mlp16-final.png",
+      "figure_sha256": "f61c4b3acc47924c7026ec84df7e2ea40a64fd62ef57a38a7a09f137c74d9aff",
+      "intervals_plotted": 512,
+      "metrics": {
+        "coverage90": [
+          0.96484375,
+          0.90234375,
+          0.919921875,
+          0.8984375,
+          0.9375,
+          0.89453125
+        ],
+        "median_width90": [
+          0.0004811013117432539,
+          0.13006378412246722,
+          0.0007921298034489141,
+          0.02555679082870488,
+          0.005623418837785707,
+          0.4605149209499359
+        ],
+        "rmse": [
+          0.00012611814461620092,
+          0.0634091973225266,
+          0.0018017663801258611,
+          0.012536842462174074,
+          0.020444473836759187,
+          0.13666495943263535
+        ]
+      },
+      "metrics_reproduced": true,
+      "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+      "rows": 512,
+      "source_draws_sha256": "a46a675a1a327cd539bdb4d239a3ca396cced413395f0b1b96093ed245dacf41",
+      "source_evaluation_sha256": "1351075abae13177b2bbad42c23559d098193634025e9e72d3967dd2d100dcfa",
+      "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+    },
+    {
+      "compact_evaluation_sha256": "fc75fee6b4b4c58186cdb42ab1f9a350f6a818427471f8b40c06d9b0780b2a07",
+      "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+      "dimension": 8,
+      "draws_per_case": 512,
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "figure": "recovery/mlp8-final.png",
+      "figure_sha256": "54a836d4db2e96327d6bfd8434a5315e2beab9b6887c5250a229e6d539e386ab",
+      "intervals_plotted": 512,
+      "metrics": {
+        "coverage90": [
+          0.953125,
+          0.892578125,
+          0.94140625,
+          0.93359375,
+          0.9296875,
+          0.900390625
+        ],
+        "median_width90": [
+          0.00048062633723021386,
+          0.13756604790687565,
+          0.000841690320521591,
+          0.027250015735626354,
+          0.005758673697710048,
+          0.4493786707520484
+        ],
+        "rmse": [
+          0.00013145226885917491,
+          0.06429236207780258,
+          0.0015845848264872619,
+          0.012378873865613345,
+          0.02020202169423442,
+          0.13593201883141157
+        ]
+      },
+      "metrics_reproduced": true,
+      "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+      "rows": 512,
+      "source_draws_sha256": "e0c3ca3f4d481d334922bcb77cf980efae3f7748f4e5e04dc338ce4173ee9ebd",
+      "source_evaluation_sha256": "e3c83367735b965f3fd8cc5817bd08b8c8e052f85003d459e0dab1503a5ef743",
+      "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+    },
+    {
+      "compact_evaluation_sha256": "5820a38e61475bd41ca9af51bf1e62928242361a2519a94783400b620784e17e",
+      "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+      "dimension": 4,
+      "draws_per_case": 512,
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "figure": "recovery/mlp4-final.png",
+      "figure_sha256": "37283954650851e327da603278f45031adf7bee420f5731f2beb6d92ac7e31f6",
+      "intervals_plotted": 512,
+      "metrics": {
+        "coverage90": [
+          0.92578125,
+          0.9296875,
+          0.92578125,
+          0.9140625,
+          0.927734375,
+          0.908203125
+        ],
+        "median_width90": [
+          0.019075150601565845,
+          1.4594111323356627,
+          0.02037735953927039,
+          0.296942475438118,
+          0.11590140908956528,
+          1.3472239807248116
+        ],
+        "rmse": [
+          0.007525232733944849,
+          0.5673563580857067,
+          0.007471513375990028,
+          0.12410671792424108,
+          0.05103348450913767,
+          0.4396667596741308
+        ]
+      },
+      "metrics_reproduced": true,
+      "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+      "rows": 512,
+      "source_draws_sha256": "9b9ec75c3a2329265b52101f2d0cc15536467570487cb308a5900f1bf53e8879",
+      "source_evaluation_sha256": "88a0f5f354f15bd80c92366d019a345e464d9b1c603f8e19ca28bfca52295d70",
+      "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+    },
+    {
+      "compact_evaluation_sha256": "8284316791e0713f4ac9358566a0f57252150170bbbe87dfc2871feffc935d82",
+      "data_payload_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+      "dimension": 2,
+      "draws_per_case": 512,
+      "endpoint": "primary_final",
+      "epoch": 300,
+      "figure": "recovery/mlp2-final.png",
+      "figure_sha256": "069611e5415a8ed824b089f9743e3a5cf49d218102bd0bc6bd1da114cb85e26b",
+      "intervals_plotted": 512,
+      "metrics": {
+        "coverage90": [
+          0.890625,
+          0.88671875,
+          0.900390625,
+          0.892578125,
+          0.88671875,
+          0.90625
+        ],
+        "median_width90": [
+          0.06099919509142637,
+          2.894988167285919,
+          0.05994318071752786,
+          0.9439522117376327,
+          0.462803579121828,
+          1.3504778757691382
+        ],
+        "rmse": [
+          0.018808521771453042,
+          1.024215090505549,
+          0.019986531553532767,
+          0.38191767948928607,
+          0.1640861727739158,
+          0.4394498966400911
+        ]
+      },
+      "metrics_reproduced": true,
+      "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
+      "rows": 512,
+      "source_draws_sha256": "e08fb7231ed6b2989097d2b718a82d6df78e12ffd7225d6707305f465bd1ae34",
+      "source_evaluation_sha256": "c5b6e906e7e516936dc917e2e29f270cc8c0fee02de55e15045adc5e3445abb0",
+      "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
+    }
+  ],
+  "format": "heston_summary_recovery_figures_v1",
+  "parameter_names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho",
+    "c"
+  ],
+  "plot_policy": "All 512 truths, posterior medians and central-90% intervals; common axes per parameter across seven models; raw draws retained without clipping or rejection.",
+  "prior_bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      10.0
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      3.0
+    ],
+    [
+      -0.95,
+      -0.1
+    ],
+    [
+      0.5,
+      2.0
+    ]
+  ],
+  "rows": 512,
+  "scientific_acceptance": false,
+  "scope": "Reused development cases; figures reveal recovery and information retention, not a new acceptance decision.",
+  "shared_axis_limits": [
+    [
+      0.0033725463449954998,
+      0.1672905552536249
+    ],
+    [
+      -0.3805667686462402,
+      10.529663782119751
+    ],
+    [
+      0.0024097380936145777,
+      0.17494639588892458
+    ],
+    [
+      -0.07997444820404052,
+      3.1545311088562014
+    ],
+    [
+      -1.037163741827011,
+      -0.05320492839813233
+    ],
+    [
+      0.3878065152168274,
+      2.079586400270462
+    ]
+  ],
+  "source_study_sha256": "56e73e0767559a85700f0a9576de30ab84e876b7e8782efb69beca535841e678"
+}
