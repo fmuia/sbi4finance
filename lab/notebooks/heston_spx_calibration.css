@@ -327,7 +327,7 @@ a.nb-rail-step.is-current {
 /* The workflow as a map, under the title. Each stage is a link to its section. */
 .nb-map {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.6rem;
   margin: 0.6rem 0 0.4rem;
 }

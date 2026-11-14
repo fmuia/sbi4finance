@@ -21,27 +21,51 @@ The current [SPX notebook](../notebooks/heston_spx_calibration.py) runs from `la
 with the locked `core-reference` environment. Its saved PyMC examples and small
 live-training example need no download.
 
-To use the pretrained posterior, download `heston-actual63-development-20261111.tar.gz` and `SHA256SUMS`
-from the project [Heston Drive folder](https://drive.google.com/drive/folders/1UYBredhF2hrxoZI-sP7sAawC3V6XQpB8).
-Check the checksum, then extract it outside Git. The archive is 464,907,858 bytes;
-its SHA-256 is `a2c23ab962d534e8807de0488c37e93581062bac8d87e81dc32a2f06c3380b3a`.
-The [delivery receipt](../evidence/pilot-results/2026-11-11/heston-collaborator-delivery/delivery.json)
-records its exact contents. Use your existing project Drive access.
+The pretrained model and bank are in the existing project Google Drive, rather
+than the Git checkout. Download
+[`heston-actual63-development-20261111.tar.gz`](https://drive.google.com/file/d/1ukmoPqlEED4fLbVPX0f8W5JaIPWrLsyI/view)
+in a browser signed into the Google account with project access. The
+[Heston Drive folder](https://drive.google.com/drive/folders/1UYBredhF2hrxoZI-sP7sAawC3V6XQpB8)
+also contains `SHA256SUMS`. An anonymous request redirects to Google sign-in;
+if the signed-in account sees “Request access”, that account needs project Drive
+access. There is no matching public GitHub release for this actual63 bundle.
 
-The archive extracts into `heston-actual63-development/`. Set `HESTON_BUNDLE`
-to that folder, which contains `bundle.json`:
+Install the downloaded archive once with the helper below. It verifies the
+archive checksum, bundle manifest and all 31 payload members, extracts safely into the
+ignored `lab/.cache/heston-actual63/heston-actual63-development/`, and preserves
+the original task, weights and whitening. The notebook discovers this cache
+automatically; no environment variable or owner-specific path is needed.
 
 ```bash
 cd lab
 pixi install --locked -e core-reference
-export HESTON_BUNDLE="/absolute/path/to/extracted/bundle"
-pixi run --locked -e core-reference python scripts/heston_grid_collaborator.py verify \
-  --directory "$HESTON_BUNDLE"
+pixi run --locked -e core-reference python scripts/heston_notebook_bundle.py \
+  --archive "$HOME/Downloads/heston-actual63-development-20261111.tar.gz"
 pixi run --locked -e core-reference marimo edit notebooks/heston_spx_calibration.py
 ```
 
-The loader verifies the original task, weights, whitening and source files. Those
-files are unchanged from the research checkout, so the existing archive works.
+Adjust the archive path if the browser saved it elsewhere. Restart marimo after
+installing while it is already running. To check an existing cache, run
+`pixi run --locked -e core-reference python scripts/heston_notebook_bundle.py --check`.
+
+An existing external extraction also works: set `HESTON_BUNDLE` to the extracted
+`heston-actual63-development/` folder containing `bundle.json`. This setting
+takes precedence over the cache; an invalid path is reported rather than
+silently falling back. Explicit `HESTON_BUNDLE=""` disables the optional model,
+including automatic cache discovery, for a reproducible saved-only run.
+`HESTON_BUNDLE` is a local folder path, not a Drive URL.
+
+The archive is 464,907,858 bytes; its SHA-256 is
+`a2c23ab962d534e8807de0488c37e93581062bac8d87e81dc32a2f06c3380b3a`.
+The [delivery receipt](../evidence/pilot-results/2026-11-11/heston-collaborator-delivery/delivery.json)
+records its exact contents. The native loader additionally verifies the original
+task, weights, whitening and source files. The notebook uses a read-only adapter
+for the exact reviewed Plotly 6.5.0 addition to the lock file: five UI-wheel
+references and its package metadata are the only additions. All original
+numerical dependency versions and other source hashes must still match. Any
+different lock update is rejected. This exception neither rewrites the archived
+provenance nor authorizes generation/resumption under the notebook environment.
+The original archive and canonical loader remain unchanged.
 The lesson uses `300k-300-final300`: FlowMatching with three 128-unit hidden
 layers, trained on 300,000 simulated quote sets. The archive also retains the
 other recorded checkpoints and the bank; downloading it does not start training.
