@@ -148,15 +148,552 @@ new tasks.
    law. A displayed latent path is a teaching aid, not an estimator input.
 5. Add matched reference overlays only at supported cases and lengths. A
    one-day comparison must not imply long-history conditional accuracy.
-6. Develop posterior-predictive replicated-history checks. Continuation forecasts
+6. Provide posterior-predictive replicated-history checks (implemented below). Continuation forecasts
    and future VaR/ES require joint latent-state/history conditioning, including
    rough memory; a parameter posterior alone is insufficient for that extension.
+7. Offer an explicit recovery/rank check of the workflow actually trained or
+   loaded. Generate independent validation histories once per task and reuse
+   them across checked prefixes; keep this separate from the final-cohort tables.
 
-**Completion:** participants can follow generation → training → checks →
-inference → interpretation for all three tasks. Numerical readiness is governed
+**Completion:** participants can follow generation → training → inference →
+checks → interpretation for all three tasks. Numerical readiness is governed
 by subplan E; a working interface never implies an acceptance certificate.
 
+### Trajectory revision plan · 7 November 2026
+
+Carry over the direct BayesFlow workflow and concise prose from Stefan’s Heston
+revision. Keep the sequence model and offline-prefix training appropriate to
+ordered daily returns rather than copying Heston’s architecture or training budget.
+
+1. Start with one rough-known history and the inference question. Bring the
+   observed data forward; keep priors, numerical settings and other model
+   variants available without making them the opening reading task.
+2. Connect simulation, adapter, causal GRU summary, conditional flow, random-prefix
+   training and sampling in one visible walkthrough. Move million-history
+   bank/shard commands into reproduction details. A bounded small fit must
+   use fresh independent pairs and display only its own session results.
+3. Use saved history landmarks in cached mode. Offer arbitrary integer lengths
+   beside explicit live inference. Fresh draws must update the same posterior
+   table, marginals and joint plot, with task/history/length changes invalidating
+   stale results; missing models leave a clearly labelled cached fallback.
+4. Keep one mask illustration and the distinction between a genuine zero return
+   and padding. Move tensor previews and detailed scaling explanations aside.
+5. Keep recovery versus coverage, one clear calibration-failure verdict and a
+   useful diagnostic figure in the main flow. Preserve detailed failure tables,
+   Heston’s drift atom, the lack of a matched conditional reference and the
+   distinction between independent replication and continuation forecasts.
+6. Update the handover and this plan. Check saved/live modes, all models and
+   history choices, missing-checkpoint behavior, plots and narrow layouts.
+
+**Acceptance:** the plotted posterior identifies the returns it actually uses;
+all posterior views share the same paired draws; cached viewing needs no backend
+or downloads; optional fits remain teaching exercises, not scientific acceptance.
+Run tutorial tests, marimo checks and all notebook exports, plus affected lab
+checks and release checks where runtime interfaces change. Models, banks and
+recorded numerical results remain unchanged.
+
+**Status:** implemented. The lesson introduces the model before its observed
+synthetic history, offers actual
+saved lengths by default and places exact-prefix live inference beside the
+posterior. Tables, marginals and the evolution endpoint share the
+selected paired draws. Selection changes clear fresh results; missing models
+leave the labelled saved fallback. A separate five-year exercise generates 128
+fresh histories and trains for eight optimizer updates. Production and detailed
+input/diagnostic material are optional; all scientific limitations remain.
+
+The early forward simulator now exposes parameter controls for all three models.
+It uses eight five-year paths with fixed innovations, showing price paths, daily
+returns and a return-based realized-volatility summary. It shares the canonical
+path implementation with training-pair generation. Extracting that shared path
+block preserves all 54 pre-edit check arrays exactly across three models, three
+splits and two offsets. No new bank identity or latent inference channel is added.
+The generating source bytes have changed; extending a preserved bank still needs
+its matching producer checkout and environment.
+
+The architecture now separates the causal GRU encoder from the spline coupling
+flow in a source-rendered diagram. The visible primary route constructs the
+16-unit/16-summary/two-block tutorial model and performs eight updates. The
+optional pretrained route loads the separate 64-unit/32-summary/six-block model.
+Each route labels its own outputs, and the code shown matches the executed settings.
+Component panels now explain P versus Q, Gaussian innovations, the actual
+left-endpoint daily calculations and the supplied/inferred P variance-scale
+curves. One observed history is one data set, not a Monte Carlo price average.
+A separate input concept diagram traces return/time tokens, masks, the GRU
+and flow conditions, with parameter labels used only in the training loss.
+The simulator uses stated fixed y-axis presets for all parameter settings.
+Manual scale changes alter only the view; outside counts and complete data
+ranges make view clipping explicit without dropping any path or return.
+
+### Presentation scope · 14 November 2026
+
+Remove the standalone parameter-dependence explorer (former 4.2), independent
+network checks and recovery-case controls (former 5.2), and the drawdown
+exercise (former 6.1) from the participant notebook. Remove their UI cells,
+unused controls and notebook-only cell tests, while retaining shared numerical
+helpers and their tests. The separate MMAR take-home keeps its drawdown story.
+
+The core flow keeps posterior marginals and interpretation, evidence playback,
+posterior-predictive checks and saved final-cohort evidence. The observed-history
+chooser moves immediately before posterior inference (4.1),
+posterior computation and reading become 4.2, and evidence playback becomes 4.3. Saved evidence
+remains 5.2, and the retained continuation discussion becomes
+6.1. The Use banner describes forecasting requirements rather than promising
+a scenario exercise. Preserve the explicit failed-calibration verdicts.
+
+The observed-history display has no footer prose or quiet-path gallery audit.
+Its title and panel labels are editable in the notebook cell. Add a source choice:
+original supplied history, or a full-task simulation at user-chosen in-support
+parameters and seed. Custom observations require a matching fresh native query;
+never attach saved samples to them. Bind every dependent view to the task,
+observation bytes and prefix, with empty posterior/PPC output until available.
+The optional prior/PPC producers always return an explicit idle result rather
+than stopping ancestor cells. Lead the PyMC motivation with rough Volterra
+memory and the roughly 10,000 latent driving coordinates in the stated
+five-year conditional formulation.
+
+Verification: 188 tutorial tests, 536 lab tests (three optional skips), all eight
+notebook exports, marimo and release checks. The trajectory has 72 cells and no
+export errors. All three saved/custom routes execute; the actual rough-known
+checkpoint supplies 512 draws for a chosen history at day 137. Changing the seed
+clears the result. Idle prior/PPC cells publish defined empty results and show
+no ancestor-stopped output.
+
+The dated records below describe earlier revisions; live cohort diagnostics
+and the drawdown exercise are superseded by this presentation scope.
+
+### Align the lesson with the SPX workflow · 12 November 2026
+
+**Presentation alignment · 14 November:** match the current Heston/SPX page at
+`d6c3c2c`: one linked workflow map, numbered six-stage banners with short leads,
+completed/current/upcoming stage links, and numbered subsection headings with
+anchors. Use its typography, spacing, rules, tables and foldable-detail styles
+from a tutorial-local stylesheet. The data introduction has the same unnumbered
+"Before the workflow" banner. Code, controls and model behavior are preserved;
+the iframe players retain their own presentation. Setup code stays available
+in the editor while being folded in the reading view.
+
+Use the useful structure from the SPX Heston notebook without transferring its
+data, estimator or accuracy claims. Keep the observed-history opening, then
+mark each workflow stage and map its BayesFlow calls. A compact design table
+explains why ordered returns use a masked causal GRU, a spline coupling flow,
+fixed scaling and prior-CDF parameter transforms. Quote whitening and the
+SPX flow-matching recipe are not changes to this task.
+
+Show one named, executing tutorial-training function with `mo.show_code`.
+It generates 128 training histories and a separate validation set, performs
+two epochs/eight updates, plots native BayesFlow training/validation loss and
+infers parameters for an independent example. Continue using the canonical
+preprocessing and network helpers. The supplied estimator remains a separate
+source with its own task, weights and failed final calibration screen.
+
+Move checks after the posterior, dependence and evidence-evolution views.
+Add questions beside results and a short table separating what each check
+answers. The 200-history diagnostic panel gains empirical coverage with
+binomial intervals and a selected
+case view of paired posterior draws. A selected validation case is not a
+matched reference posterior, and repeated inspection does not make it a new
+acceptance cohort.
+
+Add two explicit model checks through `trajectories/model_checks.py`:
+
+- **Prior predictive:** simulate 200 independent P histories from the declared
+  prior and compare return summaries with the selected observation.
+- **Posterior predictive:** keep 32 full parameter rows paired, simulate
+  independent histories from the model's origin and compare the same summaries.
+  Use the displayed supplied-model posterior, saved or fresh, at its actual
+  prefix length, including a labelled saved fallback. The tutorial fit remains
+  a separate source.
+
+The observed history does not supply future shocks or hidden states. These are
+replicated histories, not filtered paths or continuations. They do not provide
+conditional return, VaR or expected-shortfall forecasts, and neither a plausible
+replicate nor a passed rank check establishes posterior accuracy. Preserve all
+existing native-model failures and the Heston drift point-mass limitation.
+The synthetic inference examples retain the existing weights and reference
+scope. A separate empirical motivation panel is described below.
+
+The final interpretation exercise now propagates complete paired parameter
+draws into independently replicated drawdown. Compare it with process
+simulations at the posterior-mean parameter vector. Both groups retain process
+randomness and use the actual displayed posterior's conditioning length.
+These are fresh-origin scenarios, not conditional forecasts.
+
+### Clarify physical features, learned summaries and finite checks
+
+Carry over the helpful teaching patterns from
+[Heston/SPX PR #89](https://github.com/fmuia/sbi4finance/pull/89) at `224b057`
+and the published learned-summary experiment in
+[PR #91](https://github.com/fmuia/sbi4finance/pull/91) at `1dcd9e3`.
+Keep the trajectory P law, existing weights and numerical task unchanged.
+
+Four responsive cards explain physical price drift versus expected log growth,
+volatility bursts, leverage, and variance level/memory for the selected model.
+The forward controls use predict → move one setting → observe prompts, with
+fixed innovations and the existing explicit axis presets.
+
+Explain the bottleneck beside the architecture: the GRU emits 16 learned
+summary values in the tutorial fit or 32 in the supplied fit. Two known timing
+features condition the flow separately. This is a compression choice, not a
+parameter count or a sufficient-statistic claim. Training loss uses random
+prefixes; validation loss uses full five-year histories. Their gap therefore also
+changes the conditioning-length distribution and cannot by itself diagnose
+overfitting or information loss.
+
+A readout of the actual displayed posterior compares central-90% widths with
+the prior's central-90% widths, reports Pearson dependence from paired draws,
+and shows synthetic-truth positions. It follows the saved/fresh source and
+actual prefix. These are descriptions of concentration and geometry, not an
+accuracy score or a new numerical reference.
+
+Expand the rank guide with one worked calculation of the ECDF difference and
+four toy shapes: calibrated, biased, too narrow and too wide. Explain three
+different uncertainty statements:
+
+- A central 90% posterior interval concerns one parameter for one history.
+- A 95% binomial interval describes uncertainty in empirical coverage across
+  independent histories; it does not include posterior Monte Carlo error.
+- The native 95% ECDF band describes reference variation for each parameter's
+  rank curve. It is not a simultaneous guarantee over all parameters.
+
+Keep the native band calculation unchanged. With 200 posterior draws, strict
+fractional ranks occupy 201 possible positions. Ties and Heston's drift atom
+retain their separate limitations. Marginal rank agreement cannot establish
+conditional or joint posterior fidelity. The supplied final calibration
+failures remain authoritative.
+
+No Q-option-bank timing or terminal-pricer speedup from PR #88/#90 is inherited
+by this P-history lesson. No new simulation, training or inference performance
+claim follows from these presentation changes.
+
+**Latest inheritance verification · 12 November:** 84 tutorial tests, 527 core
+lab tests (three optional PyMC skips), all seven exports (66 trajectory cells,
+zero errors) and release/ownership checks pass. Actual posterior readouts
+match all three models at 1, 252 and 1260 days; the helper also covers the
+137-day request with its saved 126-day posterior. Browser checks cover the
+cards, summary explanations, worked/toy rank views and actual 200-case ECDF
+table. Explanations reuse existing results. No runtime or math errors, and
+the cards and rank views fit at 760 pixels. The native band method, numerical
+law, model weights and frozen calibration decisions remain unchanged.
+
+**Initial SPX-alignment verification · 12 November:** 72 tutorial tests, 527 core lab tests (three
+optional PyMC skips), all seven exports (63 trajectory cells, zero errors),
+marimo and release/ownership checks pass. Prior/PPC smoke checks cover all three
+models, two supplied cases and requested lengths 1, 137 and 1260, retaining
+all histories and paired rows. Browser review covers actual training/validation
+loss, prior and predictive checks, saved-126 versus fresh-137 conditioning,
+recovery brushing, retained pair views, coverage, threshold controls and a
+760-pixel layout. No runtime or math errors. The comparison source is
+[Heston/SPX PR #89](https://github.com/fmuia/sbi4finance/pull/89) at `a8a9fdf`.
+
+**Earlier diagnostic verification · 10 November:** 56 tutorial tests, 527 core lab tests (three
+optional PyMC skips), all seven exports (48 trajectory cells, zero errors) and
+release/ownership checks pass. Actual diagnostic sampling covers every native
+model at 252 and 137 days. Chrome checks the tutorial and loaded rough-known
+sources, session reuse across prefixes, missing networks, task/source changes
+and 760-pixel layout. Canonical generation of 200 histories took 0.016–0.074
+seconds on the local CPU, excluding imports. No new input assets are needed.
+Existing weights, posterior evidence and final calibration decisions remain
+unchanged.
+
+Earlier component verification passed: **46 tutorial tests**, all seven notebook exports
+(the trajectory lesson has 41 cells and zero errors), 12 lab runtime/parity
+tests, the 183-symbol ownership check, marimo/release checks and documentation
+links. The preceding full lab suite passed 527 tests with three optional skips;
+this component/axis pass changes no canonical simulator or inference law.
+
+Chrome checks open the component math for every model, exercise all three
+manual scale presets after parameter changes, inspect outside counts and ranges,
+and verify the input diagram. Fresh inference at 137 days stays source-bound
+when only the view scale changes. The 760-pixel layout has no horizontal
+overflow, and there are no page or math-rendering errors. The earlier workflow
+review also covers history-change invalidation, missing-model fallback, the
+small training action and all 16 simulator-slider range endpoints. Existing
+empty-cell warnings in slots 2 and 3 are unchanged. Handover guidance is updated;
+scientific limitations and the deferred collaborator rehearsal retain their status.
+
+### Connect temporal behavior and financial scenarios
+
+Borrow the useful teaching patterns from amortized-fractals without replacing
+the trajectory model or its inference architecture. A fixed, hash-bound VOO
+window (256 daily simple returns from 3 January 2020 to 7 January 2021) enters
+through the lab acceptance workflow. The opening uses its recorded log-return
+conversion to compare observed tails with a Gaussian reference. This empirical
+motivation is separate from the synthetic histories used for inference.
+
+The simulator gains an alternate matched three-setting view with fixed axes
+and a shared realization-refresh action. Preserve the selected curve in the
+joint model. Explain parameter effects across several paths; do not equate
+Bergomi H with the signed-memory exponent in the separate MMAR extension.
+
+Magnitude and Ordering tabs reuse the same prior or posterior replicas. The
+ordering view compares signed- and absolute-return autocorrelation, and an
+explicit shuffled-prefix intervention demonstrates which information the
+magnitude summaries ignore. Below 21 days or with constant values, dependence
+is unavailable rather than zero. The default 32 posterior replicas appear as
+individual curves; a larger 256-history action supports pointwise descriptive
+bands. These are not simultaneous model-adequacy or calibration guarantees.
+
+Replace the abstract parameter-threshold exercise with point-parameter versus
+posterior-mixture drawdown ECDFs and a reused threshold readout. Simulate the
+unchanged full task before taking the actual posterior prefix. Pair process
+inputs between groups, use independent seeds between chunks, and select whole
+posterior rows with replacement. Include initial wealth in a stable log-space
+drawdown calculation. A threshold or display change reuses outcomes; a changed
+task, posterior, prefix or budget invalidates them. All numerical failures stay
+explicit, without dropping difficult histories.
+
+The new empirical asset and simulator/checking illustrations do not change
+weights, training banks, numerical laws or final calibration decisions.
+Documented failures remain applicable to derived scenario probabilities.
+
+**Verification · 13 November:** 97 tutorial tests, 529 core lab tests (three
+optional PyMC skips), all seven exports (76 trajectory cells, zero errors),
+marimo and release/ownership checks pass. Browser review covers the empirical
+opening, all three matched model views, ordering/shuffle controls, 32/256
+posterior replicas, 128/512 drawdown scenarios and threshold reuse. Saved-126
+fallback and fresh-137 predictive checks retain their actual conditioning
+lengths. The new displays fit a 760-pixel layout without runtime or math errors.
+
+### Make evidence revelation interactive and explain the inference target
+
+Separate parameter inference, latent-state filtering and independent scenarios.
+The present loss targets generating parameters, not terminal variance or rough
+memory. BayesFlow can support a different target, but the current GRU summary
+is not a calibrated state posterior. Explain continuous-time Heston's Markov
+variance state and the extra signed auxiliary state in its numerical scheme;
+rough Bergomi additionally needs relevant shock memory or a validated reduced
+representation. Direct past-to-future amortization is another possible task.
+
+Contrast the inspected amortized-fractals source at `069d5dc`: its estimators
+also target parameters. Its rolling risk and allocation applications evaluate
+decisions prospectively, using fresh cascades/phases for scenarios. They do
+not filter the observed cascade state, and a finite random-phase window does
+not itself specify inter-window evolution. Preserve this distinction without
+dismissing restart-based risk prediction or the practical backtests.
+
+An early section motivates parameter uncertainty, repeated matched-history
+analysis and scenario propagation. A compact PyMC comparison explains the
+conditional Gaussian likelihood for the discretized rough task, latent-path
+integration and the roughly 10,000 driving coordinates in a direct five-year
+augmentation. NUTS needs a deterministic differentiable target and validated
+gradients. No matched timing or superiority result is claimed.
+
+Replace the static evidence-evolution chart with a local play/pause/advance/
+reset/scrub player. Start at the prior in the full selected-horizon view, with
+Fast playback and trading-month axes; offer early-time zoom and day/week axes.
+Link the revealed returns to actual posterior
+distributions and central intervals, with fixed axes and explicit frame/source
+labels. Saved frames remain bound to task, model and history; exact native
+queries use the original prior and mask all future returns. Query preparation
+is explicit and bounded to 61 frames per action; playing and changing units
+perform no inference. The cursor is local and does not silently change the
+other posterior and checking panels. Never interpolate posterior samples or
+present playback as hidden-state propagation.
+
+The known-curve rough-Bergomi replay bundles 53 extra exact-prefix queries for
+each of the same four preserved validation histories: 65 actual frames after
+combining them with the original 12. The first 21 days are daily, followed by
+5-day, 21-day and 63-day spacing. Original paired samples remain byte-identical.
+The 834 KB extra payload is hash-bound to task, checkpoint, replay and observed
+history bytes, accepted through the lab tools and labelled as development
+playback, not new calibration evidence. Other model replays retain their
+original landmarks. Runtime and asset tests cover masked future returns,
+context invalidation, sampling reuse, exact-frame fallback and atomic failure.
+
+**Evidence-player verification · 13 November:** 116 tutorial tests, 529 core
+lab tests (three optional PyMC skips), all seven exports (83 trajectory cells,
+zero errors), marimo and release/ownership checks pass. Browser review verifies
+the prior start, play/pause/reset/advance/scrub, exact saved-frame changes,
+history/model changes, all 65 known-curve frames and the other models' 12
+landmarks, daily native queries through day 21 and query reuse. The 760-pixel
+view has no horizontal overflow. The iframe expands to fit its content, keeping
+the footer visible. The requested user preview remains on port 8792; temporary
+QA servers are stopped separately.
+
+### Refine the model story, paired histories and observation-to-inference route · 14 November 2026
+
+Make the statistical target explicit wherever it matters. The conditional flow
+learns **one joint distribution over a fixed generating parameter vector**.
+Separate density panels are marginals of the same paired samples; they do not
+come from separately trained estimators. This is different from a joint
+posterior over the time-varying hidden state and parameters. Revealing more
+returns changes the evidence about that vector, rather than changing the
+generating parameters or recursively using an earlier posterior as a new prior.
+
+The known-curve rough example conditions on a simulation design with
+ξ(t)=0.04. That deterministic ensemble mean is neither observed realized
+variance nor a time-varying quantity inferred by the GRU. The existing
+rough-joint extension relaxes the supplied curve by jointly inferring the
+static coefficients S, L and k of ξ(t)=L+(S−L)exp(−kt), alongside H, η, ρ and
+drift. It still does not estimate a latent variance history. Retain the
+distinction from pricing-measure forward-variance curves and from state
+filtering/smoothing tasks.
+
+The empirical opening now defaults to **1,726 VOO daily returns from
+3 January 2020 through 13 November 2026**, with its adjusted-close source,
+corporate-action convention and exact `log1p` return conversion recorded in
+the accepted snapshot. The original 256-day crisis window remains selectable.
+Use the same trace and absolute-return tail-frequency layout for observed VOO
+and an explicitly specified rough-Bergomi model. Each Gaussian reference uses
+the corresponding history's mean and standard deviation. One illustrative
+Bergomi history supplies the trace and tail curve; the multi-history band is
+removed to focus on the departure from a matched Gaussian. The example is not
+evidence of a calibrated fit to VOO.
+The full dated market display exceeds the neural estimator's 1,260-day input
+support. It remains a motivation panel, with no out-of-support market query.
+
+Replace the static observed-history view with a local reveal player. Show the
+unchanged daily returns and their **actual paired hidden variance at observed
+day boundaries**, plus marginal-frequency panels on the right. The latent
+asset reconstructs the same original task, generating parameters and
+innovation stream for all four preserved cases of each model. It checks
+observed-history and truth identities before displaying a latent path; it does
+not substitute a newly simulated path. Heston replay is exact, while rough
+replay agrees within the recorded numerical-library tolerance. Heston's signed
+numerical state is retained separately from its effective nonnegative variance.
+The orange path is available because these data are synthetic; it is not a
+neural estimate and never enters inference conditions. The right-hand panels
+summarize revealed values without replacing the ordered inference input.
+The player also reports raw minima, exact-zero counts and early/late medians,
+and offers a log-variance view. True zeros remain undefined in log coordinates;
+they are counted, not replaced by a small positive number. Rough mean/median
+reference curves use the same generating parameters and hybrid-grid variance.
+
+The later audit corrects an incomplete interpretation of the quiet examples:
+the ageing law matters, but the four preserved known-curve paths are also
+unrepresentative of its prior frequency. With a frozen criterion of average
+daily-boundary V in days 1009–1260 below 0.0004, all four saved cases qualify,
+versus 69/512 independent prior paths (13.5%; Wilson 95% interval 10.8–16.7%).
+At the same parameters as case 3, only 2/512 new realizations qualify. The
+compact accepted diagnostic retains every prior value, every original saved
+marker and all four conditional ensembles. It exposes model ageing and chance
+variation without choosing prettier replacement histories. The numerical
+audit found healthy Gaussian inputs and the intended grid compensator, with
+no rough-variance zeros, underflow, clipping, floors or redrawn failures.
+
+Explain η beside the controls as log-variance dispersion under a fixed-mean
+compensator. Increasing η raises the spread across realizations while lowering
+the marginal median; it need not raise an individual realized variance path.
+At a fixed driver realization, the derivative of log variance is
+Y−η Var_grid(Y). Keep the original numerical law and parameter support, and
+distinguish the true hidden variance from rolling volatility estimated from
+returns. The existing zero-origin/nonstationarity limitation stays visible.
+
+Preserve the original workflow image, input diagram and actual training code.
+Use a guided walkthrough of the first real tutorial training pair to answer
+one question: what changes when the observed prefix gets shorter? Show signed
+returns with a zero line, excluded future positions, mask counts and actual
+canonical tokens and timing conditions. The observed prefix changes the
+conditions, while the generating vector and its canonical transformed target
+stay fixed. Separate Training and Inference views: the former scores the known
+transformed label; the latter illustrates conditional sampling and inverse
+target transforms without that label. Balanced label/objective blocks make
+the training-only route explicit. Named stages end at a takeaway rather than
+looping indefinitely. Learned summaries, density values and gradient updates
+are schematic; the separate training action executes the optimizer.
+The encoder comparison identifies the causal
+GRU as a recurrent observation encoder, rather than an autoregressive
+posterior decoder. It also names the separate density-family, unit, transform
+and masking changes from the option lessons instead of implying that adding
+the GRU is the only code difference.
+
+The preceding guided-animation review passed 144 tutorial tests and all seven notebook
+exports (88 trajectory cells, zero errors), plus marimo and release/ownership
+checks. Focused tests bind the physical and transformed joint label to the
+canonical training API at every displayed prefix. Browser checks cover
+prefixes 1/21/63/252, Training and Inference routes, pause/reset/replay,
+stop-at-end behavior and wide/760-pixel layouts without overflow or hidden
+footers. The animation evaluates preprocessing only; it creates no learned
+summary, loss, gradient update or posterior sample.
+
+Default the synthetic calculations to **1,260 days**. The history player uses
+21-trading-day reveal steps and trading-month axes. Posterior playback uses
+the full selected horizon, Fast speed and trading-month axes, with generating
+truth markers in every parameter panel; early zoom remains available. Local
+reveal controls do not silently change other posterior queries. Model
+extensions, prefix changes, native-frame preparation, detailed input/mask
+tables and the optional 200-history network check are collapsed secondary
+tools. Keep the final failed-calibration evidence visible in the main route.
+The forward simulator, live-training/validation/example histories, input
+diagram, architecture, training walkthrough and diagnostic defaults now share
+this five-year maximum. The small fit remains 128 training histories, 64
+validation histories, two epochs and eight optimizer updates. A measured local
+execution completed in 13.4 seconds including imports. A displayed 252-day
+prefix is explicitly one trading year; 252 in time steps and annualization
+remains the trading-days-per-year convention. Group the governing rough
+equations and Heston comparison before showing the observed-history section.
+
+Redesign the prior/posterior-predictive displays around a direct data/model
+comparison, retaining the existing simulation results and parameter targets.
+The prior action explicitly draws one parameter vector and one history for
+each of 200 simulations. Its default observation is the same-length prefix
+of the accepted VOO snapshot; the supplied synthetic history remains an
+alternative. Market returns are used only for these descriptive comparisons,
+never passed through the neural estimator. The posterior check continues to
+use the displayed synthetic posterior and its actual conditioning length,
+including a saved fallback.
+
+The default comparison aligns return paths, cumulative log wealth, pooled
+return histograms and absolute-tail frequencies. A data-fitted IID Gaussian
+reference appears in the same views, so matching a mean and scale is
+distinguished from reproducing extreme moves or temporal dependence. At small
+replication counts, show individual paths; larger panels use labelled
+pointwise simulation bands. The optional Summary view retains the original
+magnitude statistics. Timing compares signed and absolute-return ACF with a
+finite-sample Gaussian band. A feature table reports large-move frequency and
+lag-one amplitude dependence, with explicit unavailable short/constant cases.
+Full denominators and outside-view counts prevent hiding difficult simulations.
+Neither a visually plausible replicate nor a difference from this Gaussian
+reference is a calibration result or a guarantee that the volatility model
+fits. Actions and simulation-budget controls remain collapsed secondary tools.
+
+**Verification · 14 November, after horizon/variance review:** 151 tutorial tests, 531 core lab tests (three
+optional PyMC skips), all seven exports (88 trajectory cells, zero errors),
+marimo and release/ownership checks pass. Browser checks cover both market
+windows, all three paired synthetic-history players, replay and fixed axes,
+the prefix/mask training animation, encoder comparison, full-horizon posterior
+playback and case-bound truth markers, collapsed controls, exact native queries,
+the real/synthetic prior comparison and posterior replicas. Wide and 760-pixel
+views have no horizontal overflow, hidden widget footers, math or runtime
+errors. The final review also checks model → observed history → simulator order,
+full-horizon training and diagnostic defaults, every rough-known and Heston
+history in linear/log views, mean/median references, exact-zero gaps and raw
+value preservation. The accepted gallery audit is bound to the same task and
+original cases. Standalone predictive checks also cover all three models, one-day
+and constant histories, and the optional larger replication budget. The original
+model weights, parameter priors, numerical law and calibration failures are
+preserved. Temporary QA port 8794 is stopped; the user review preview is separate.
+
+**Windows asset loading · 14 November:** reproduced the collaborator's
+`trajectory catalogue/bundle hash differs` failure through Git checkout with
+`core.autocrlf=true`. Git converted JSON metadata to CRLF before the raw hash
+check; numerical arrays and the recorded task were unchanged. Trajectory replay,
+latent-history, dense-evidence, variance-audit, market and closeout checks now
+reuse the option loader's JSON-only CRLF/LF-equivalent digest. NPZ, PNG and model
+payloads keep exact byte hashes, and changed JSON content remains rejected.
+Accepted-asset Git attributes prevent future checkout conversion; legacy CRLF
+checkouts also load without regenerating data or rewriting their pins.
+
+Verification adds three participant regressions for unchanged data/identities
+and genuine corruption, plus an isolated lab Git-checkout test. All **154
+tutorial tests**, the **531-test lab suite plus the new checkout regression**,
+seven exports, marimo and release/ownership checks pass. A separate complete
+trajectory export against CRLF metadata also runs all 88 cells without errors.
+The participant tests remain self-contained; Git policy is checked in the lab.
+
 ## E. Resolve trajectory numerical and inference limitations
+
+The zero-origin rough physical-return law is nonstationary even with a flat
+mean-variance curve: its Gaussian driver variance grows with age, so the median
+variance can fall while rare large paths preserve the mean. This materially
+affects the supplied known-curve histories. The notebook now explains that
+behavior rather than presenting it as generic stationary market dynamics.
+An eventual stationary or mean-reverting rough physical law would require a
+new simulator specification, banks and estimators. Picking different display
+histories or changing the supplied curve would not resolve that modeling issue.
+The existing H prior also conditions inference on the rough regime; it cannot
+establish preference over an excluded Brownian boundary. The driver remains
+Gaussian for every H.
 
 **Current evidence:** all three selected candidates passed execution and risk
 screens but failed the declared final marginal-calibration screen. Heston's
@@ -398,7 +935,7 @@ All paths in the runtime column are relative to `tutorial/src/sbi4f_tutorial/`.
 | Option case selector, posterior table and corner | `shared/backbones.py`: `load_example`, `parameter_rows`, `corner`; cache checks in `shared/full_surface_teaching.py` | Rough cases under `assets/backbones/rough-known*/` or `rough-joint*/`. |
 | Explicit rough forward-simulation button | `rough_options/lesson.py`: `price_rough_smile` → `shared/pricing.py` → `rough_options/{simulator,model}.py` | Reads `assets/tasks/calibration_rough_pilot.json`; it does not replace the selected cached posterior. |
 | Trajectory teaching data generation | `trajectories/simulation.py`: `teaching_task`, `generate`; Heston physical path kernel in `heston_options/simulator.py` | NumPy backend for small tutorial examples; optional accelerated backend for production. Disk-backed banks and verification remain in the lab. |
-| Trajectory case/history views | `trajectories/lesson.py`: `load_example`, `cached_posterior`, `plot_returns`, `plot_evolution` | `assets/trajectories/{heston,rough-known,rough-joint}/`; aggregate diagnostics under `assets/results/trajectories/closeout-20261031/`. |
+| Trajectory case/history and evidence views | `trajectories/lesson.py`: `load_example`, `saved_lengths`, `posterior_view`; `latent_assets.py`/`history_widget.py` for paired synthetic truth; `evidence.py`/`evidence_assets.py`/`evidence_widget.py` for actual posterior frames | Original caches under `assets/trajectories/{heston,rough-known,rough-joint}/`, paired paths under `latent-history-v1/` and dense known-curve frames under `evidence-rough-known-v1/`; final diagnostics under `assets/results/trajectories/closeout-20261031/`. Posterior marginals retain the same paired rows; displayed latent truth never becomes an inference condition. |
 | Actual trajectory prefix/mask and optional inference | `trajectories/inference.py`: `conditioning_data`, `build_workflow`, `sample`; explicit local loading via `trajectories/lesson.py`: `load_live` | Optional model bytes under `assets/local-checkpoints/path-*/`; lab training reuses the numerical definitions. |
 | Shared plot style | `shared/plots.py`: `style` | Historical lab imports remain compatibility entry points. |
 
@@ -811,7 +1348,7 @@ as posterior prediction.
 **Trajectories.** Explain observed daily log returns, hidden variance/shocks,
 physical drift and each model's equation locally. Show the actual generation,
 offline training, random-prefix/mask and GRU/conditional-flow APIs, distinguishing
-a small author example from million-history streaming production. The revealed
+a small tutorial training route from the optional pretrained and million-history streaming routes. The revealed
 history and mask are visible; detailed tensor/accounting fields are optional.
 All integer lengths from 1 to 1,260 remain supported. The 137-day input versus
 126-day cached posterior is explicit, and prefixes use the original prior and

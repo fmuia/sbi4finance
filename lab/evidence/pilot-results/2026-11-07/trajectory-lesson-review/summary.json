@@ -1,0 +1,2201 @@
+{
+  "format": "notebook_workflow_review_v1",
+  "application": "trajectory-inference",
+  "baseline": "3d6febb3894c0ebe5fc0041954664d43270a73d9",
+  "scientific_acceptance": false,
+  "existing_assets_changed": false,
+  "verification": {
+    "tutorial_tests": 188,
+    "notebook_exports": 8,
+    "notebook_cell_errors": 0,
+    "runtime_boundary_symbols": 183,
+    "local_document_links": 48,
+    "marimo_warnings": "inherited empty cells in MMAR take-home and slots 2/3",
+    "lab_runtime_parity_tests": 12,
+    "trajectory_notebook_cells": 72,
+    "lab_core_tests": 536,
+    "lab_optional_skips": 3,
+    "lab_checkout_regression_tests": 1
+  },
+  "browser": {
+    "page_errors": [],
+    "model_components_opened_for_all_three_models": true,
+    "P_vs_Q_refresher": true,
+    "innovations_and_finite_step_math": true,
+    "curve_roles_explained": true,
+    "input_concept_diagram": true,
+    "simulator_checks": [
+      {
+        "model": "Heston",
+        "scales": [
+          "Standard",
+          "Wide",
+          "Very wide"
+        ],
+        "parameter_change": true,
+        "outside_counts_and_ranges_visible": true
+      },
+      {
+        "model": "Rough Bergomi \u00b7 inferred variance curve",
+        "scales": [
+          "Standard",
+          "Wide",
+          "Very wide"
+        ],
+        "parameter_change": true,
+        "outside_counts_and_ranges_visible": true
+      },
+      {
+        "model": "Rough Bergomi \u00b7 known variance curve",
+        "scales": [
+          "Standard",
+          "Wide",
+          "Very wide"
+        ],
+        "parameter_change": true,
+        "outside_counts_and_ranges_visible": true
+      }
+    ],
+    "all_scale_limits_are_explicit": true,
+    "outside_data_counts_visible": true,
+    "fresh_history_days": 137,
+    "fresh_inference_elapsed_seconds": 1.852565208915621,
+    "changing_view_scale_preserves_fresh_source": true,
+    "math_render_errors": 0,
+    "narrow_width": 760,
+    "horizontal_overflow": false,
+    "date": "2026-11-09"
+  },
+  "small_exercise_benchmark": {
+    "exercise": "rough-known;252dailyobservations;128traininghistories;2epochs;batch32;16unitGRU;16summary;2spline_layers;widths32",
+    "generation_seconds": 0.017615542048588395,
+    "model_build_and_training_seconds": 12.850709334015846,
+    "sampling_128_draws_seconds": 1.34992800001055,
+    "draw_shape": [
+      128,
+      4
+    ],
+    "finite_draws": true,
+    "training_loss": [
+      5.77666711807251,
+      5.755234718322754
+    ],
+    "scope": "separate fresh one-year software exercise; no accuracy acceptance or fixed performance guarantee",
+    "native_137day_app_run": {
+      "posterior_source": "live",
+      "draw_shape": [
+        512,
+        4
+      ],
+      "error": null,
+      "bayesflow_sampling_logged_seconds": 1.95,
+      "load_timing_not_recorded": true
+    }
+  },
+  "timing_environment": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "scope": "Local CPU; cold/warm setup differs between the benchmark and browser session. Not a performance guarantee."
+  },
+  "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
+  "source_sha256": {
+    "tutorial/notebooks/trajectory_inference.py": "1e5b57431d1f6fbb4a54ff06607f2358e7d81beb8311751671ca587894344686",
+    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "99453c8df29b1954cc21d8234f785928c530c8f09d6ab0db8d46e73d1a0c3c0c",
+    "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "7749e5245646ff567055a82f2535fafa4f36c537ee9165b53863edeafbe8fdf6",
+    "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
+    "tutorial/tests/test_trajectory_forward.py": "99174f8526cce21eede4af28dda17273d36244c569685c30c54dda693c6860fb",
+    "tutorial/README.md": "0678144dacde4b75e7ad13afcd36276b82073e09a1e74007fcc8cb2e6a696d86",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "ce01829901e5915f9f2cce23e894729b153a8f52357cfcbbb8f0c56bc27b7a37",
+    "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "91092853be3846c730e83f3f45eb3789c2adc96a12b34cb571ba2f3074a32354",
+    "tutorial/tests/test_trajectory_diagnostics.py": "02bf496481c2ad1c0fda1d949a042e1f36d36747b8e9a7b2cfea68d4b99e04ee",
+    "tutorial/src/sbi4f_tutorial/trajectories/model_checks.py": "18440646719d4350e821cb05cee48b16904d09e65c18ff852e9165e163c88ec0",
+    "tutorial/tests/test_trajectory_model_checks.py": "fa8b3376d7fb799ce0e106f60e437357b8c2af00af696846f0d1d168c55f72b6",
+    "tutorial/tests/test_trajectory_posterior_readout.py": "4279e4fb68a3ee790dec4413f0e5fa2c28a841269f1450cd5965c4c20d0c1d25",
+    "tutorial/src/sbi4f_tutorial/shared/path_statistics.py": "5746d45222bd96caf0705e3a6f7fb93285068ef63ea543add23c0e2acc734d2f",
+    "tutorial/tests/test_path_statistics.py": "6b991d3010707a4ea8cc790e5d61dae5dc848e04b5a8c448f0213581825ad094",
+    "lab/scripts/export_market_example.py": "122b89943dafb3b5a256693336243fd57c9335aa992098f72983ce7f22577908",
+    "lab/tests/test_market_example_export.py": "b1003e065f43c6c40f19077da3dfc06016ae95391ae55cae6df0031cdd0fcf3c",
+    "lab/scripts/trajectory_evidence.py": "eeb8871a3845d78885998250e8ea230b7fff5aab7978ba11230bbd40ffbe5666",
+    "tutorial/src/sbi4f_tutorial/trajectories/evidence.py": "543c9a5c42e9ad4f1c0829626c0fd3855c0d25bcad5f808ac9cd54b1c4a428d4",
+    "tutorial/src/sbi4f_tutorial/trajectories/evidence_assets.py": "de42196d29f1b02abe409335b138403d9e5b4f4a5d47af128ac700b4968061b2",
+    "tutorial/src/sbi4f_tutorial/trajectories/evidence_widget.py": "a48c5878e854b988b46422ea90da13224e5e12e3fac97bc683223bbd22802d44",
+    "tutorial/tests/test_trajectory_evidence.py": "a82027c4096607bbeb537f9d7f969373468811963dec8bcee6a72fecc1140e3f",
+    "tutorial/tests/test_trajectory_evidence_assets.py": "c135c3a93558eaa9577a419d17f8c6d075aabaf47909a59961db7ad4c2660925",
+    "tutorial/tests/test_trajectory_evidence_widget.py": "964c42e0975166dfebdfa4f5dbe3e02492c7bf2862eeb9340b3e61cbe4875b4a",
+    "lab/scripts/trajectory_latent_history.py": "3be7b09419c005c3610e59a2e50f12c013335adc1e2b3784c3a4e8bbe42b8486",
+    "tutorial/src/sbi4f_tutorial/trajectories/history_widget.py": "cd9a0764c85bb60a403b162e30929338af2baa474ec36bcb371cc11edc014584",
+    "tutorial/src/sbi4f_tutorial/trajectories/latent_assets.py": "b88d8ae9abb81ba8f1c49700251d09022cf68c24a907a736055f69bc1fc8c30c",
+    "tutorial/src/sbi4f_tutorial/trajectories/market_story.py": "fa187011f41fe76b1c6b00378570c6db4c1da15a143bb5b5381935841e4868ac",
+    "tutorial/src/sbi4f_tutorial/trajectories/predictive_visuals.py": "d124e2678e0e83fa5f2baa6272913d786685fb92bf93c8c95ac1dacc19cd5de8",
+    "tutorial/src/sbi4f_tutorial/trajectories/training_widget.py": "65f76dd6be63592080dd666e9d4ef9e628cd912a1bfab9acbee0418913598d10",
+    "tutorial/tests/test_trajectory_latent_history.py": "d51f5dae1e688ff1b2de6d1505610ab5bc6c64d71a9201b5fcb3b1804f53233d",
+    "tutorial/tests/test_trajectory_market_story.py": "b3fb3a73e569094da6a8835109c1e22049f3229199eee2bd611386edf74f9dae",
+    "tutorial/tests/test_trajectory_predictive_visuals.py": "309b85b741afb2ccb0e40857dcd8fb5f28c5d4dfee1d9e5387534b495452a0b3",
+    "tutorial/tests/test_trajectory_visual_widgets.py": "b6ad9b688e8d1b54e3fb2db9a86e2dd8c9badc4e03d90e343227a847321ae04a",
+    "tutorial/src/sbi4f_tutorial/trajectories/variance_aging.py": "81cc18d4afae99c817ffa3f1274bf8a4060bf150de301309bfcbe25c95f29cd1",
+    "tutorial/tests/test_trajectory_variance_aging.py": "b8f2df2ef7d0f7abaef8060883766ae44994ca6925834a482b4b8bf41f0779e3",
+    ".gitattributes": "43f5e851f28d49c0e8a1a1535b7b9bc8d275b418558dbb3d5f3a75ece7e2f86b",
+    "tutorial/tests/test_trajectory_portability.py": "aebed32f7dbeb91708eaa4dca32f76da2db340dc4daa6f3decfecc257c5b3894",
+    "lab/tests/test_tutorial_asset_checkout.py": "795778eb455c95be36ef46f852c43ac899df1b2252ec8c6847a7cef0a964c8bd",
+    "tutorial/notebooks/trajectory_inference.css": "add434b72c1f573d6696d40915357bbb7ec0bf9bdbdf9135fc8c64a0ee85feef",
+    "tutorial/src/sbi4f_tutorial/trajectories/observations.py": "735fa1f9b034f63bfbaa6d0c3ebb5a99f40cc2b621e13d5ea7aabfd462448f73",
+    "tutorial/tests/test_trajectory_observations.py": "00eff8b20a2fafba764253be209c0f6e92a192e46673349ec27bbdd190086262",
+    "tutorial/tests/test_trajectory_notebook_predictive.py": "e505a28ab8c4ae6daf27412155c908e0d0329b645193fcd6086388fb3d837d29"
+  },
+  "updated_at_utc": "2026-11-14T19:42:22.562401+00:00",
+  "forward_simulator": {
+    "paths": 8,
+    "days": 252,
+    "seed": 20261108,
+    "observations": "daily log returns only",
+    "canonical_path_law_shared_with_generate": true,
+    "before_after_exact_arrays": 54,
+    "comparison_panel": "three models; train/validation/test; starts 0/3; two paths; 29 days; NumPy; seed 2026",
+    "frozen_histories_reproduced": true,
+    "scope": "separate forward illustration; sliders do not replace selected fitted observations; realized volatility is computed from returns",
+    "axis_scales": {
+      "Standard": {
+        "prices": [
+          0.0,
+          200.0
+        ],
+        "returns": [
+          -8.0,
+          8.0
+        ],
+        "realized": [
+          0.0,
+          80.0
+        ]
+      },
+      "Wide": {
+        "prices": [
+          0.0,
+          400.0
+        ],
+        "returns": [
+          -20.0,
+          20.0
+        ],
+        "realized": [
+          0.0,
+          200.0
+        ]
+      },
+      "Very wide": {
+        "prices": [
+          0.0,
+          1000.0
+        ],
+        "returns": [
+          -50.0,
+          50.0
+        ],
+        "realized": [
+          0.0,
+          500.0
+        ]
+      }
+    },
+    "axis_scales_selected_manually": true,
+    "points_outside_view_counted": true,
+    "full_data_min_max_reported": true,
+    "no_path_or_return_dropped": true
+  },
+  "workflow_code": {
+    "comments_explain_option_differences": true,
+    "same": "BasicWorkflow fit/sample pattern",
+    "changed": [
+      "ordered returns as summary_variables",
+      "summary_mask and known time_context",
+      "causal GRU encoder",
+      "spline CouplingFlow instead of displayed option FlowMatching",
+      "fixed scaling and prior-CDF parameter logits outside adapter",
+      "no extra quote noise"
+    ],
+    "model_sources_separately_labelled": true
+  },
+  "previous_full_lab_verification": {
+    "date": "2026-11-08",
+    "tests": 527,
+    "optional_skips": 3,
+    "scope": "preceding complete core suite; the current component/axis review changes no canonical simulator or inference law"
+  },
+  "workflow_browser_20261108": {
+    "page_errors": [],
+    "models_and_simulator_controls": [
+      {
+        "model": "Heston",
+        "parameter_sliders": 5,
+        "range_endpoints": true
+      },
+      {
+        "model": "Rough Bergomi \u00b7 inferred variance curve",
+        "parameter_sliders": 7,
+        "range_endpoints": true
+      },
+      {
+        "model": "Rough Bergomi \u00b7 known variance curve",
+        "parameter_sliders": 4,
+        "range_endpoints": true
+      }
+    ],
+    "forward_simulator_reactive": true,
+    "simulator_keeps_posterior_source": true,
+    "tutorial_network": {
+      "hidden_dim": 16,
+      "summary_dim": 16,
+      "depth": 2,
+      "widths": [
+        32,
+        32
+      ],
+      "bins": 8
+    },
+    "pretrained_network": {
+      "hidden_dim": 64,
+      "summary_dim": 32,
+      "depth": 6,
+      "widths": [
+        64,
+        64
+      ],
+      "bins": 8
+    },
+    "training_elapsed_seconds": 2.3417270840145648,
+    "fresh_history_days": 137,
+    "fresh_elapsed_seconds": 3.8517097090370953,
+    "history_change_invalidates_fresh": true,
+    "missing_model_fallback_days": 126,
+    "narrow_width": 760,
+    "horizontal_overflow": false,
+    "math_render_errors": 0
+  },
+  "component_explanations": {
+    "P_vs_Q_refresher": true,
+    "Gaussian_innovation_channels_explained": true,
+    "actual_discrete_model_math": {
+      "heston_internal_steps_per_day": 8,
+      "rough_internal_steps_per_day": 4
+    },
+    "rough_driver_uses_grid_variance_compensator": true,
+    "known_vs_inferred_P_mean_variance_curve": true,
+    "one_history_is_one_data_set_not_a_price_average": true,
+    "realized_volatility_is_return_derived_not_latent_variance": true
+  },
+  "input_concept_diagram": {
+    "return_tokens": [
+      "return/sqrt(0.04*dt)",
+      "day_index/maximum_days"
+    ],
+    "mask": "true for observed returns; false for padding",
+    "flow_conditions": "GRU summary plus [observed_days/maximum_days, dt/(1/252)]",
+    "generating_parameter_labels": "separate training-loss route only",
+    "latent_variance_in_conditions": false
+  },
+  "canonical_simulation_and_inference_unchanged_this_review": true,
+  "optional_diagnostics_20261110": {
+    "format": "trajectory_optional_diagnostic_review_v1",
+    "scientific_acceptance": false,
+    "reserved_test_evaluated": false,
+    "cohort": {
+      "count": 200,
+      "draws_per_history": 200,
+      "generation_seed": 20261111,
+      "split": "validation",
+      "start": 0,
+      "selection": "Every generated history in canonical order; no filtering or replacement.",
+      "storage": "Session memory only, indexed by the complete task fingerprint.",
+      "prefix": "A separate diagnostic length, identical for all histories; future returns/times masked.",
+      "source": "The actual workflow trained or loaded above; source/prefix changes clear old plots.",
+      "interpretation": "Fixed-seed validation, not a final-test result or a reversal of saved failures."
+    },
+    "generation_measurement": {
+      "format": "trajectory_diagnostic_generation_cost_v1",
+      "scope": "Canonical P-model validation histories for optional native posterior checks. No fitting, neural import or inference. No assets published.",
+      "backend": "numpy",
+      "hardware": {
+        "cpu": "Apple M5 Max",
+        "logical_cpus": 18,
+        "memory_gib": 128,
+        "platform": "macOS-26.4.1-arm64-arm-64bit"
+      },
+      "versions": {
+        "python": "3.12.16",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1"
+      },
+      "seed": 20261111,
+      "split": "validation",
+      "start": 0,
+      "count": 200,
+      "thread_settings": {
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "timing_boundary": "Only simulation.generate; imports, loading tasks and NPZ serialization excluded.",
+      "models": {
+        "heston": {
+          "wall_seconds": 0.07365587493404746,
+          "cpu_seconds": 0.07361599999999999,
+          "days": 1260,
+          "parameter_count": 5,
+          "shapes": {
+            "observations": [
+              200,
+              1260,
+              1
+            ],
+            "parameters": [
+              200,
+              5
+            ],
+            "trajectory_id": [
+              200
+            ]
+          },
+          "all_finite": true,
+          "failed_dropped_replaced_rows": 0,
+          "raw_observation_mib": 1.922607421875,
+          "task_fingerprint": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+          "input_file": "heston-inputs.npz",
+          "input_sha256": "b7d5c1374beae4c992f528f734246ef708502500f4d3a68b8705d5ab2aee0fea",
+          "first_id": "dd233e297f3ff974:20261111:validation:0",
+          "last_id": "dd233e297f3ff974:20261111:validation:199"
+        },
+        "rough-known": {
+          "wall_seconds": 0.06447433307766914,
+          "cpu_seconds": 0.06443099999999996,
+          "days": 1260,
+          "parameter_count": 4,
+          "shapes": {
+            "observations": [
+              200,
+              1260,
+              1
+            ],
+            "parameters": [
+              200,
+              4
+            ],
+            "trajectory_id": [
+              200
+            ]
+          },
+          "all_finite": true,
+          "failed_dropped_replaced_rows": 0,
+          "raw_observation_mib": 1.922607421875,
+          "task_fingerprint": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+          "input_file": "rough-known-inputs.npz",
+          "input_sha256": "cb41e58b97ca1ebf6e9e16d4dcd7b1db7654566888f9a7c65b3e24929cb5f443",
+          "first_id": "eb195dd594de03a9:20261111:validation:0",
+          "last_id": "eb195dd594de03a9:20261111:validation:199"
+        },
+        "rough-joint": {
+          "wall_seconds": 0.0668109580874443,
+          "cpu_seconds": 0.06675700000000001,
+          "days": 1260,
+          "parameter_count": 7,
+          "shapes": {
+            "observations": [
+              200,
+              1260,
+              1
+            ],
+            "parameters": [
+              200,
+              7
+            ],
+            "trajectory_id": [
+              200
+            ]
+          },
+          "all_finite": true,
+          "failed_dropped_replaced_rows": 0,
+          "raw_observation_mib": 1.922607421875,
+          "task_fingerprint": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+          "input_file": "rough-joint-inputs.npz",
+          "input_sha256": "05309d8ef9550e0c398aa05b73129573eb88858a9b24349cf62f63dea818fa73",
+          "first_id": "277c7219e49edb13:20261111:validation:0",
+          "last_id": "277c7219e49edb13:20261111:validation:199"
+        },
+        "tutorial-rough-known252": {
+          "wall_seconds": 0.01648166705854237,
+          "cpu_seconds": 0.01647399999999999,
+          "days": 252,
+          "parameter_count": 4,
+          "shapes": {
+            "observations": [
+              200,
+              252,
+              1
+            ],
+            "parameters": [
+              200,
+              4
+            ],
+            "trajectory_id": [
+              200
+            ]
+          },
+          "all_finite": true,
+          "failed_dropped_replaced_rows": 0,
+          "raw_observation_mib": 0.384521484375,
+          "task_fingerprint": "0f420661b1d8bdaaa926e57282f1b89e13afd41557ec5e5c4c5cf2f09597000e",
+          "input_file": "tutorial-rough-known252-inputs.npz",
+          "input_sha256": "d4642a465a3add4f1fd904cf283021dd2d29abecc8e529ad9cad4541affa8e3d",
+          "first_id": "0f420661b1d8bdaa:20261111:validation:0",
+          "last_id": "0f420661b1d8bdaa:20261111:validation:199"
+        }
+      },
+      "scientific_acceptance": false,
+      "reserved_test_evaluated": false,
+      "total_generation_wall_seconds": 0.22142283315770328,
+      "total_generation_cpu_seconds": 0.22127799999999995,
+      "peak_rss_bytes": 132743168,
+      "status": "complete"
+    },
+    "native_heston_joint_smoke": {
+      "format": "trajectory_native_diagnostics_smoke_v1",
+      "models": {
+        "heston": {
+          "model_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+          "task_fingerprint": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+          "source": "existing matching model outside Git; no cache payload changed",
+          "252": {
+            "shape": [
+              200,
+              200,
+              5
+            ],
+            "all_finite": true,
+            "coverage90": [
+              0.905,
+              0.9,
+              0.835,
+              0.9,
+              0.91
+            ],
+            "parameter_names": [
+              "kappa",
+              "long_variance",
+              "vol_of_vol",
+              "rho",
+              "drift"
+            ],
+            "exact_prefix": 252,
+            "paired_histories_across_lengths": true,
+            "future_returns_do_not_change_conditions": true,
+            "observed_mask_entries": 50400,
+            "padded_tokens_all_zero": true,
+            "physical_prior_bounds_checked_by_native_plot_helper": true
+          },
+          "137": {
+            "shape": [
+              200,
+              200,
+              5
+            ],
+            "all_finite": true,
+            "coverage90": [
+              0.91,
+              0.895,
+              0.845,
+              0.895,
+              0.91
+            ],
+            "parameter_names": [
+              "kappa",
+              "long_variance",
+              "vol_of_vol",
+              "rho",
+              "drift"
+            ],
+            "exact_prefix": 137,
+            "paired_histories_across_lengths": true,
+            "future_returns_do_not_change_conditions": true,
+            "observed_mask_entries": 27400,
+            "padded_tokens_all_zero": true,
+            "physical_prior_bounds_checked_by_native_plot_helper": true
+          }
+        },
+        "rough-joint": {
+          "model_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+          "task_fingerprint": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+          "source": "existing matching model outside Git; no cache payload changed",
+          "252": {
+            "shape": [
+              200,
+              200,
+              7
+            ],
+            "all_finite": true,
+            "coverage90": [
+              0.91,
+              0.895,
+              0.845,
+              0.87,
+              0.845,
+              0.905,
+              0.89
+            ],
+            "parameter_names": [
+              "hurst",
+              "eta",
+              "rho",
+              "short_variance",
+              "long_variance",
+              "decay",
+              "drift"
+            ],
+            "exact_prefix": 252,
+            "paired_histories_across_lengths": true,
+            "future_returns_do_not_change_conditions": true,
+            "observed_mask_entries": 50400,
+            "padded_tokens_all_zero": true,
+            "physical_prior_bounds_checked_by_native_plot_helper": true
+          },
+          "137": {
+            "shape": [
+              200,
+              200,
+              7
+            ],
+            "all_finite": true,
+            "coverage90": [
+              0.925,
+              0.91,
+              0.875,
+              0.9,
+              0.87,
+              0.91,
+              0.895
+            ],
+            "parameter_names": [
+              "hurst",
+              "eta",
+              "rho",
+              "short_variance",
+              "long_variance",
+              "decay",
+              "drift"
+            ],
+            "exact_prefix": 137,
+            "paired_histories_across_lengths": true,
+            "future_returns_do_not_change_conditions": true,
+            "observed_mask_entries": 27400,
+            "padded_tokens_all_zero": true,
+            "physical_prior_bounds_checked_by_native_plot_helper": true
+          }
+        }
+      },
+      "sampling_seed": 20261111,
+      "generation_seed": 20261111,
+      "count": 200,
+      "draws": 200,
+      "lengths": [
+        252,
+        137
+      ],
+      "backend": "jax/cpu",
+      "hardware": "Apple M5 Max18 logical CPUs128GiB",
+      "scope": "Session diagnostic check on independent simulated validation histories; not scientific acceptance, no final test and no revision to existing calibration verdicts.",
+      "scientific_acceptance": false,
+      "reserved_test_evaluated": false,
+      "stages": {
+        "imports": {
+          "wall_seconds": 8.362450458109379,
+          "cpu_seconds": 3.682258
+        },
+        "heston:strict_checkpoint_load": {
+          "wall_seconds": 3.0196196250617504,
+          "cpu_seconds": 7.776174000000001
+        },
+        "heston:helper_generation": {
+          "wall_seconds": 0.08744349982589483,
+          "cpu_seconds": 0.08743400000000001
+        },
+        "heston:sample252": {
+          "wall_seconds": 2.4780803329776973,
+          "cpu_seconds": 3.643305999999999
+        },
+        "heston:native_plots252": {
+          "wall_seconds": 0.5058189579285681,
+          "cpu_seconds": 0.4988639999999993
+        },
+        "heston:sample137": {
+          "wall_seconds": 0.2505897090304643,
+          "cpu_seconds": 0.8275469999999991
+        },
+        "heston:native_plots137": {
+          "wall_seconds": 0.3946250001899898,
+          "cpu_seconds": 0.39096500000000134
+        },
+        "rough-joint:strict_checkpoint_load": {
+          "wall_seconds": 0.597646625014022,
+          "cpu_seconds": 1.1553600000000017
+        },
+        "rough-joint:helper_generation": {
+          "wall_seconds": 0.09807320800609887,
+          "cpu_seconds": 0.29226699999999894
+        },
+        "rough-joint:sample252": {
+          "wall_seconds": 1.4706226659473032,
+          "cpu_seconds": 2.615342000000002
+        },
+        "rough-joint:native_plots252": {
+          "wall_seconds": 0.5013920411001891,
+          "cpu_seconds": 0.5009370000000004
+        },
+        "rough-joint:sample137": {
+          "wall_seconds": 0.27338383300229907,
+          "cpu_seconds": 0.9527389999999976
+        },
+        "rough-joint:native_plots137": {
+          "wall_seconds": 0.5380229998845607,
+          "cpu_seconds": 0.5376030000000007
+        }
+      },
+      "versions": {
+        "bayesflow": "2.1.0",
+        "keras": "3.15.1",
+        "jax": "0.11.1",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1"
+      },
+      "status": "complete",
+      "peak_rss_bytes": 1298513920,
+      "native_figures_visually_checked": true
+    },
+    "browser": {
+      "page_errors": [],
+      "timing_scope": "browser action elapsed times during concurrent verification; not isolated benchmarks",
+      "idle_no_diagnostic_generation_or_sampling": true,
+      "no_ready_network_is_explicit": true,
+      "tutorial_training_action_seconds": 1.8534553342033178,
+      "tutorial_slider_max": "252",
+      "tutorial_252_action_seconds": 0.8129909159615636,
+      "tutorial_252_status": "Source: tutorial network \u00b7 200 independent histories \u00b7 252 observed days each \u00b7 200 posterior draws per history. Input generation: 0.025 s; sampling and plotting: 0.3 s, including compilation if needed.",
+      "tutorial_137_action_seconds": 0.825261791003868,
+      "tutorial_137_status": "Source: tutorial network \u00b7 200 independent histories \u00b7 137 observed days each \u00b7 200 posterior draws per history. Input generation: reused from this session; sampling and plotting: 0.3 s, including compilation if needed.",
+      "prefix_change_invalidates_plots": true,
+      "tutorial_prefix_reuses_generated_histories": true,
+      "native_slider_max": "1260",
+      "native_single_history_load_infer_seconds": 0.8292156669776887,
+      "native_252_action_seconds": 1.3139400410000235,
+      "native_252_status": "Source: pretrained network \u00b7 200 independent histories \u00b7 252 observed days each \u00b7 200 posterior draws per history. Input generation: 0.072 s; sampling and plotting: 0.6 s, including compilation if needed.",
+      "native_137_action_seconds": 1.3389726669993252,
+      "native_137_status": "Source: pretrained network \u00b7 200 independent histories \u00b7 137 observed days each \u00b7 200 posterior draws per history. Input generation: reused from this session; sampling and plotting: 0.5 s, including compilation if needed.",
+      "native_prefix_reuses_generated_histories": true,
+      "task_panels_are_separate": true,
+      "model_changes_clear_loaded_workflow_and_diagnostics": true,
+      "source_changes_invalidate_diagnostics": true,
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "math_render_errors": 0,
+      "marimo_errors": 0,
+      "supplied_final_failures_retained": true,
+      "status": "passed"
+    },
+    "benchmark_script_sha256": {
+      "measure_generation.py": "ad2ba5d389f97baf40db4b8650c570efa62bc5624779f26cc79d1b3078073670",
+      "check_native.py": "1a1a8bad585d35ab8f1a5d7ec38c0c5a4898b6d4de6414342234090c8e3969db"
+    },
+    "verification": {
+      "tutorial_tests": 56,
+      "lab_core_tests": 527,
+      "lab_optional_skips": 3,
+      "notebook_exports": 7,
+      "trajectory_cells": 48,
+      "cell_errors": 0,
+      "runtime_boundary_symbols": 183,
+      "log_sha256": {
+        "tests": "644294be18ef5534ee261e02c579596a5cabbba9b85f1d1184450948bc04072a",
+        "lab-tests": "4a72398c5ebe6254244383a67a09f92afc5a90d5185ac8d91189ebaf62b0f027",
+        "exports": "adb100e093c5c4e7a0b72877be6844e2f50b857f945423b3920da403c9e503d6",
+        "release": "c682c302edf03d4d5a34a6116bc7d9fda65fc53f5fe9de6b58b9294c08b784fc"
+      }
+    }
+  },
+  "spx_alignment_20261112": {
+    "format": "trajectory_spx_alignment_review_v1",
+    "baseline_commit": "5557bd9eb6ec870318c3ecc3ef4134738ccf65ad",
+    "comparison_source": {
+      "pr": "https://github.com/fmuia/sbi4finance/pull/89",
+      "commit": "a8a9fdfc7c5d64b3882127eabab0cce0da7a82a1",
+      "file": "lab/notebooks/heston_spx_calibration.py",
+      "sha256": "58cf0b25c41986862dc1ba6d683de2b12fa5b4d69b5a9b69f727e2a6b8b4cc56"
+    },
+    "scientific_acceptance": false,
+    "new_weights_or_assets": false,
+    "changes": {
+      "workflow_stages": [
+        "Model",
+        "Simulate",
+        "Train",
+        "Infer",
+        "Check",
+        "Use"
+      ],
+      "executing_training_function": {
+        "name": "train_tutorial_model",
+        "training_histories": 128,
+        "validation_histories": 64,
+        "independent_example_histories": 1,
+        "days": 252,
+        "epochs": 2,
+        "optimizer_updates": 8,
+        "loss": "native BayesFlow training/validation; no convergence claim"
+      },
+      "prior_predictive": {
+        "histories": 200,
+        "seed": 20261111,
+        "storage": "reuse full-task-bound session panel"
+      },
+      "posterior_predictive": {
+        "max_paired_draws": 32,
+        "seed": 20261113,
+        "task": "simulate full original task then compare actual posterior prefix",
+        "initialization": "independent zero-origin paths; no continuation or filtering"
+      },
+      "replicated_statistics": [
+        "100 \u00d7 cumulative log return",
+        "100 \u00d7 sqrt(mean squared log return / dt)",
+        "100 \u00d7 largest absolute daily log return"
+      ],
+      "recovery_drilldown": "brush/select actual retained cases and posterior rows; no new inference",
+      "coverage": "descriptive central90 coverage with pointwise Wilson95 binomial intervals; not an acceptance decision",
+      "use": "joint parameter probability from paired draws versus a rule at posterior-mean parameters"
+    },
+    "saved_posterior_helper_checks": {
+      "models": {
+        "heston": {
+          "task_fingerprint": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+          "checkpoint_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+          "checks": [
+            {
+              "case": 0,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:0",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:0",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:0",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:3",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:3",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "dd233e297f3ff974:20261031001:validation:3",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            }
+          ]
+        },
+        "rough-known": {
+          "task_fingerprint": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+          "checkpoint_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+          "checks": [
+            {
+              "case": 0,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:0",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:0",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:0",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:3",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:3",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "eb195dd594de03a9:20261031002:validation:3",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            }
+          ]
+        },
+        "rough-joint": {
+          "task_fingerprint": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+          "checkpoint_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+          "checks": [
+            {
+              "case": 0,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:0",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:0",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 0,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:0",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:3",
+              "requested_length": 1,
+              "posterior_length": 1,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:3",
+              "requested_length": 137,
+              "posterior_length": 126,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            },
+            {
+              "case": 3,
+              "trajectory_id": "277c7219e49edb13:20261031003:validation:3",
+              "requested_length": 1260,
+              "posterior_length": 1260,
+              "posterior_source": "saved",
+              "prior_count": 200,
+              "ppc_count": 32,
+              "all_finite": true,
+              "complete_paired_rows_retained": true,
+              "ppc_observed_prefix_matches_conditioning": true,
+              "full_simulated_length": 1260
+            }
+          ]
+        }
+      },
+      "passed": true,
+      "scope": "Saved posterior compatibility and unchanged full-task prior/PPC smoke; no training or neural sampling"
+    },
+    "browser": {
+      "page_errors": [],
+      "timing_scope": "UI elapsed only; not isolated benchmarks",
+      "idle_no_train_or_predictive_or_diagnostics": true,
+      "workflow_stage_and_api_map": true,
+      "design_rationale": true,
+      "executing_training_function_visible": true,
+      "no_ready_network_guard": true,
+      "requested_137_predictive_uses_saved_126": true,
+      "tutorial_fit_action_seconds": 2.3566924158949405,
+      "diagnostic_case_rows": 200,
+      "brush_available_rows": 92,
+      "case_and_pair_controls_reuse_draws": true,
+      "coverage_table_present": true,
+      "diagnostic_prefix_reuses_inputs": true,
+      "native_load_infer_action_seconds": 0.8701796249952167,
+      "fresh_137_predictive_source": true,
+      "native_diagnostics_run": true,
+      "minimum_correlation_threshold_gives_zero_probability": true,
+      "joint_threshold_controls": true,
+      "selection_invalidates_predictive_output": true,
+      "saved_prior_and_predictive_models": [
+        "Rough Bergomi \u00b7 known variance curve",
+        "Heston",
+        "Rough Bergomi \u00b7 inferred variance curve"
+      ],
+      "status": "passed",
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "math_render_errors": 0,
+      "marimo_errors": 0,
+      "existing_final_failures_retained": true
+    },
+    "post_browser_changes": "Human-readable parameter labels only; final marimo check and 63-cell export pass.",
+    "verification": {
+      "tutorial_tests": 72,
+      "lab_core_tests": 527,
+      "lab_optional_skips": 3,
+      "notebook_exports": 7,
+      "trajectory_cells": 63,
+      "cell_errors": 0,
+      "runtime_boundary_symbols": 183,
+      "local_document_targets": 53,
+      "log_sha256": {
+        "tests": "ee2aff14d390d7aca8397c3bad9ea8acc92ba77cdf476b8c5bb7d9764d44cabe",
+        "lab-tests": "0c52cf2b3c4d7b3ab2a8fc0699727ff0396e77f5c87e9810015f76eddd953fdb",
+        "exports": "0602e0c11aaf456b1a66c9a8901313b64961b378a1a0bfcb554054cbb0acb8cd",
+        "final-export": "0fb331ff0079fe993493c22a297f8c86e50ec9c87b2a270d3deb97f3c84720db",
+        "marimo": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
+        "release": "1e95ad92085aec43cc13b387746011647c7e997ace3c37b8e71965a06cac83e9"
+      }
+    },
+    "scope": "Software/teaching alignment; no new calibrated estimator, conditional reference, forecast or scientific acceptance."
+  },
+  "inherited_learning_20261112": {
+    "format": "trajectory_inherited_learning_review_v1",
+    "baseline_commit": "ce0eaf388fb871c619a067eac1b51047c858aaa8",
+    "main_commit": "6903d8fa7b1ee8c367daaf9ba6997baa0883b8e0",
+    "comparison_sources": [
+      {
+        "pr": "https://github.com/fmuia/sbi4finance/pull/89",
+        "commit": "224b0577fda1b71e249f5d42a73ef4bd3ce7e370",
+        "file": "lab/notebooks/heston_spx_calibration.py",
+        "sha256": "6ba3670a98cdad2e98616ed8b956eefe43841bd72c79b6f4c6e5160ed5ef2034"
+      },
+      {
+        "pr": "https://github.com/fmuia/sbi4finance/pull/91",
+        "commit": "1dcd9e3",
+        "scope": "Compression and validation lessons only; Q-task measured performance not transferred."
+      }
+    ],
+    "scientific_acceptance": false,
+    "existing_weights_or_assets_changed": false,
+    "teaching_changes": {
+      "model_features": "Four responsive P-model cards and predict/move/observe prompts for existing forward controls.",
+      "summary_bottleneck": "16/32 learned values plus two separate known time features; no sufficient-statistic guarantee.",
+      "validation": "Full-length validation versus random-prefix training changes the conditioning distribution.",
+      "posterior_readout": "Physical posterior central90 width / exact prior central90 width; paired Pearson dependence and truth inclusion, never an accuracy score.",
+      "rank_definition": "Strict draw<truth fractions, then count ranks<=z; plotted departure is empirical CDF minus z.",
+      "rank_shape_guide": "Fixed-seed exact Normal-model toy, with biased/narrow/wide alternatives; no trajectory or fitted-network result.",
+      "uncertainty_types": "Posterior90 intervals versus native95 per-curve ECDF reference bands versus Wilson95 coverage intervals.",
+      "finite_resolution": "200 posterior draws yield201 rank positions for continuous targets; ties/atoms need care."
+    },
+    "native_ecdf_band": {
+      "method_changed": false,
+      "explicit_confidence": 0.95,
+      "scope": "Native BayesFlow simulated continuous-uniform band, simultaneous across its rank grid for one parameter curve; not adjusted across parameters. Finite-rank and atom caveats retained."
+    },
+    "actual_saved_posterior_helper_checks": {
+      "models": [
+        "heston",
+        "rough-known",
+        "rough-joint"
+      ],
+      "cases": [
+        0,
+        3
+      ],
+      "requested_lengths": [
+        1,
+        137,
+        1260
+      ],
+      "checks": 18,
+      "passed": true,
+      "scope": "Descriptive readout on unchanged cached posteriors; request137 uses saved126 where appropriate."
+    },
+    "browser": {
+      "page_errors": [],
+      "new_teaching_views_do_not_generate_or_sample": true,
+      "computed_readouts": [
+        {
+          "model": "rough-known",
+          "days": 252,
+          "actual_length": 252,
+          "narrow": "20.0%",
+          "wide": "79.9%",
+          "correlation": "+0.31"
+        },
+        {
+          "model": "rough-known",
+          "days": 1,
+          "actual_length": 1,
+          "narrow": "100.2%",
+          "wide": "102.6%",
+          "correlation": "+0.11"
+        },
+        {
+          "model": "rough-known",
+          "days": 1260,
+          "actual_length": 1260,
+          "narrow": "9.8%",
+          "wide": "53.5%",
+          "correlation": "+0.44"
+        },
+        {
+          "model": "heston",
+          "days": 252,
+          "actual_length": 252,
+          "narrow": "62.3%",
+          "wide": "108.7%",
+          "correlation": "+0.28"
+        },
+        {
+          "model": "heston",
+          "days": 1,
+          "actual_length": 1,
+          "narrow": "99.5%",
+          "wide": "102.7%",
+          "correlation": "-0.08"
+        },
+        {
+          "model": "heston",
+          "days": 1260,
+          "actual_length": 1260,
+          "narrow": "34.8%",
+          "wide": "104.6%",
+          "correlation": "+0.41"
+        },
+        {
+          "model": "rough-joint",
+          "days": 252,
+          "actual_length": 252,
+          "narrow": "62.2%",
+          "wide": "100.1%",
+          "correlation": "+0.47"
+        },
+        {
+          "model": "rough-joint",
+          "days": 1,
+          "actual_length": 1,
+          "narrow": "95.8%",
+          "wide": "103.1%",
+          "correlation": "-0.12"
+        },
+        {
+          "model": "rough-joint",
+          "days": 1260,
+          "actual_length": 1260,
+          "narrow": "22.8%",
+          "wide": "106.3%",
+          "correlation": "+0.72"
+        }
+      ],
+      "summary_bottleneck_and_separate_time_context_visible": true,
+      "worked_rank_definition_four_shapes_and_interval_types_visible": true,
+      "validation_loss_conditioning_difference_visible_after_fit": true,
+      "actual_rank_readout": [
+        {
+          "parameter": "Roughness H",
+          "count": 103,
+          "histories": 200,
+          "cdf": 0.515,
+          "cdf_minus_half": 0.015
+        },
+        {
+          "parameter": "Variance amplitude \u03b7",
+          "count": 96,
+          "histories": 200,
+          "cdf": 0.48,
+          "cdf_minus_half": -0.02
+        },
+        {
+          "parameter": "Correlation \u03c1",
+          "count": 100,
+          "histories": 200,
+          "cdf": 0.5,
+          "cdf_minus_half": 0.0
+        },
+        {
+          "parameter": "Physical drift \u03bc",
+          "count": 97,
+          "histories": 200,
+          "cdf": 0.485,
+          "cdf_minus_half": -0.015
+        }
+      ],
+      "opening_readouts_reuses_existing_draws": true,
+      "status": "passed",
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "math_render_errors": 0,
+      "marimo_errors": 0,
+      "existing_final_failures_retained": true,
+      "model_cards_and_guided_prompt_models": [
+        "rough-known",
+        "heston",
+        "rough-joint"
+      ],
+      "screenshots_visually_reviewed": [
+        "cards-rough-known.png",
+        "narrow-cards.png",
+        "narrow-rank-guide.png",
+        "actual-rank-point.png",
+        "narrow-actual-rank-point.png"
+      ]
+    },
+    "post_browser_change": "Added an explicit Normal-toy caption only; final66-cell export passes.",
+    "verification": {
+      "tutorial_tests": 84,
+      "lab_core_tests": 527,
+      "lab_optional_skips": 3,
+      "notebook_exports": 7,
+      "trajectory_cells": 66,
+      "cell_errors": 0,
+      "runtime_boundary_symbols": 183,
+      "local_document_targets": 53,
+      "log_sha256": {
+        "tests": "59d28c80cc5a21bb8d1c9503a6a51c9d6b4a875b11d385be5ed1626d31310541",
+        "lab-tests": "dfe4630cc5053b686f28f447904a27fcdcf59228dc42e4ecb6b0fd55118cf6b4",
+        "exports": "c6ed02306a271d075d19b35ac016997cb8671539595b3945177618fa1d499559",
+        "final-export": "78cf66a94f6c5ba227a3357dacd812ec52a3f3797ce658c663c0c555713ad244",
+        "marimo": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
+        "release": "fb1ed2558d04d8ed407ef96cbd3c210b2d24fdc08acc337a85fdb739db44af8a"
+      }
+    },
+    "scope": "Explanatory and descriptive refinements; no new trained model, conditional reference, numerical law, forecast, accuracy acceptance or inherited Q-pricer speed claim."
+  },
+  "amortized_fractals_refinement": {
+    "source_repository": "https://github.com/stefanradev93/amortized-fractals",
+    "source_revision": "069d5dc5943dbe85505849f2fa8bfb563617ff97",
+    "changes": [
+      "accepted empirical VOO motivation, separated from synthetic inference",
+      "matched three-setting simulator comparisons",
+      "signed and absolute-return ACF with explicit undefined cases",
+      "shuffled-prefix teaching intervention",
+      "point versus paired-posterior replicated drawdown"
+    ],
+    "empirical_example": {
+      "ticker": "VOO",
+      "n": 256,
+      "start": "2020-01-03",
+      "end": "2021-01-07",
+      "asset": "market-examples/voo-covid-256",
+      "role": "motivation only; no real-market posterior from trajectory weights"
+    },
+    "posterior_predictive_counts": [
+      32,
+      256
+    ],
+    "drawdown_counts_per_group": [
+      128,
+      512
+    ],
+    "prefix_contract": "simulate original full task, then compare actual posterior prefix including labelled fallback",
+    "browser": {
+      "page_errors": [],
+      "checks": [
+        "empirical opening offline and no fit/sampling on opening",
+        "three settings, shared refresh, explicit axis preset",
+        "matched-comparison UI all three model variants",
+        "prior ordering and shuffle reuse generated panel",
+        "posterior ordering default32 and optional256 with stale-panel clearing",
+        "drawdown128/512, threshold reuses scenarios, budget clears prior result",
+        "one-day dependence state and 1260-day selection, history clears drawdown",
+        "137-day request uses labelled saved126 predictive length",
+        "native inference137 updates predictive length"
+      ],
+      "inference_buttons": [
+        "Train the tutorial model and infer its example",
+        "Run CPU inference for 137 observed days"
+      ],
+      "status": "passed",
+      "narrow_width": 760,
+      "marimo_errors": 0,
+      "math_errors": 0,
+      "horizontal_overflow": false
+    },
+    "verification": {
+      "tutorial_tests": 97,
+      "notebook_exports": 7,
+      "notebook_cell_errors": 0,
+      "runtime_boundary_symbols": 183,
+      "local_document_links": 53,
+      "marimo_warnings": "existing empty cells in slots 2 and 3",
+      "lab_runtime_parity_tests": 12,
+      "trajectory_notebook_cells": 76,
+      "lab_core_tests": 529,
+      "lab_optional_skips": 3
+    },
+    "log_sha256": {
+      "tutorial": "5025e3874355be8308a39b27344cabfb740e0df15920946931424957e6b32aa3",
+      "lab": "b6c43d5ebd7bf2a56f8e6616dd21ea200c6b6bffff4b1349e1b2dda5fa56a6f8",
+      "exports": "59c56e04a76198eeb1e9f7a4336af86f0ffc31662ebb5ad3ce4a7d34a250b34c",
+      "final_export": "3fb7fe331ec2cc7800e454ba36226bd6727735ef91aa0bc6177a5bc030abdef8",
+      "marimo": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
+      "release": "3f1b2fb44ada2dd43bd0a2209fb08e4cad78371aaf09e6437e105d4a6aad3eea"
+    },
+    "documentation_links_checked": 48,
+    "scope": "teaching and descriptive scenario calculations under unchanged approximate posterior; no new model, scientific promotion or continuation forecast",
+    "browser_extra": {
+      "21_day_ordering_and_narrow_active_comparison": true,
+      "drawdown_uses_actual_saved126_for_requested137": true,
+      "missing_optional_checkpoint_reported_without_notebook_error": true,
+      "native137_clears_saved_drawdown_and_generates_actual137_scenarios": true,
+      "status": "passed",
+      "page_errors": [],
+      "narrow_width": 760,
+      "horizontal_overflow": false
+    }
+  },
+  "parameter_state_feedback_20261113": {
+    "scope": "parameter inference, explicit evidence revelation and restart-scenario interpretation; no trained state posterior or new scientific acceptance",
+    "source_repository": "https://github.com/stefanradev93/amortized-fractals",
+    "source_commit": "069d5dc5943dbe85505849f2fa8bfb563617ff97",
+    "practical_use_and_pymc_motivation": true,
+    "pymc_timing_or_superiority_claim": false,
+    "parameter_target_vs_filter_and_direct_prediction_explained": true,
+    "mmar_fresh_cascade_phase_and_prospective_evaluation_distinguished": true,
+    "existing_model_prior_simulation_law_and_original_frames_unchanged": true,
+    "dense_saved_playback": {
+      "asset": "trajectories/evidence-rough-known-v1",
+      "bundle_sha256": "cd4d9b1eb3097aed74c91e7e159ffcd9c0a89adc1d3f26ee9338b5d44a821f47",
+      "payload_bytes": 833707,
+      "histories": 4,
+      "new_prefixes_per_history": 53,
+      "total_prefixes_per_history": 65,
+      "paired_draws_per_new_frame": 128,
+      "scientific_acceptance": false
+    },
+    "browser": {
+      "checks": [
+        "prior start, exact saved advance, play/pause/reset, unit changes reuse frame",
+        "saved zoom selects actual63/252 posterior frames without interpolation",
+        "history switch resets local cursor and binds correct history",
+        "all three models have their own frames and correct parameter cards",
+        "native explicit daily1..21 prepared, exact frames and paired128 draw readout",
+        "native repeated preparation reuses all cached day frames",
+        "oversized exact schedule rejected explicitly; all21 cached frames retained",
+        "weekly exact schedule adds9 and reuses5; actualday63 posterior displayed",
+        "active native63 at760px: no horizontal overflow or hidden iframe footer",
+        "upper137day cap resets local cursor and scope without interpolating global saved126"
+      ],
+      "page_errors": [],
+      "status": "passed",
+      "saved_initial_advance_lengths": [
+        1,
+        2,
+        3
+      ],
+      "narrow_width": 760,
+      "math_errors": 0,
+      "marimo_errors": 0,
+      "iframe_heights": {
+        "scroll": 1025,
+        "client": 1025
+      }
+    },
+    "browser_summary_sha256": "240c8df9cf268225a13b599d3df2543b25f7ec9b74f53319a0149d562365595c",
+    "verification": {
+      "tutorial_tests": 116,
+      "notebook_exports": 7,
+      "notebook_cell_errors": 0,
+      "runtime_boundary_symbols": 183,
+      "local_document_links": 53,
+      "marimo_warnings": "existing empty cells in slots 2 and 3",
+      "lab_runtime_parity_tests": 12,
+      "trajectory_notebook_cells": 83,
+      "lab_core_tests": 529,
+      "lab_optional_skips": 3
+    },
+    "log_sha256": {
+      "tests": "fe36306b612d831bae224f760b5c9947f67802fa6d180c49d29d9018b3c07bd9",
+      "lab-tests": "b35477084420f4914083fbda6cb9930c447d5a77390965e0f2b405b37af7f738",
+      "exports": "bfc571ee5bcba19af0b2444c4fb8dc86a1a4f882369e9380ee1199c565cab7c9",
+      "final-export": "9808fbd80302dce6527dc9bf083e5f00d45b3a1fb4a0e8fe51c0a82a886eb4bd",
+      "check": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
+      "release": "0773007cc1d1281993097e92ffede6e3042fe73a2d82d1ac85e1c5d62e2a9a7d"
+    }
+  },
+  "trajectory_feedback_20261114": {
+    "scope": "joint static parameter inference with explicit synthetic latent truth; no new state posterior, real-market neural inference, checkpoint or scientific promotion",
+    "conceptual_assessment": {
+      "parameter_joint_vs_marginal_views": "one conditional joint distribution; marginal plots and complete paired draws share the same source",
+      "state_filtering_vs_smoothing": "marginal p(V_t|returns_so_far) and full-path smoothing are different targets, neither trained by this parameter estimator",
+      "fixed_curve_vs_latent_state": "xi is a deterministic physical mean curve, not the realized V path; rough-joint adds static curve coefficients without adding filtering",
+      "forecast_extension": "requires validated joint parameter/state or directly conditional predictive target; rough memory and finite-origin initialization need review",
+      "bayesflow_reference": "https://bayesflow.org/v2.0.14/_examples/Bivariate_Smoothing.html",
+      "mmar_source_commit": "069d5dc5943dbe85505849f2fa8bfb563617ff97"
+    },
+    "market": {
+      "n_daily_returns": 1726,
+      "first_date": "2020-01-03",
+      "last_date": "2026-11-13",
+      "market_json_sha256": "f6ca7b9c4478145fd7b23a3fac12b143ea48828c703a9f7f06474e8347308964",
+      "arrays_sha256": "ec4c5fffc661e1a89cc940ab2584076b6252e7c8e8a3f1f5968ee2d3f75d2beb",
+      "neural_horizon_days_unchanged": 1260,
+      "bergomi_distribution_comparison": "One fixed illustrative history, same trace and tail views against matched Gaussian; 16-history band removed; no market fit"
+    },
+    "latent_player": {
+      "bundle_sha256": "7beb5b9647fdf2fdec819f5bf0c7f7c5170841572490412643ddebb24a74436c",
+      "payload_bytes": 532076,
+      "models": 3,
+      "cases_per_model": 4,
+      "observed_returns_unchanged": true,
+      "canonical_default_outputs_bitwise_preserved": true,
+      "optional_capture_added": true,
+      "latent_paths_never_neural_conditions": true
+    },
+    "controls": {
+      "observed_prefix_default": 1260,
+      "observed_history_initially_fully_revealed": true,
+      "posterior_player_default_speed": "Fast",
+      "posterior_player_default_units": "Trading months",
+      "posterior_player_default_horizon": "all selected days",
+      "truth_markers": "actual case parameters",
+      "optional_tools_start_collapsed": true
+    },
+    "didactic_additions": [
+      "eta dispersion versus fixed-mean compensation and falling median",
+      "explicit latent likelihood integral and MCMC augmentation routes",
+      "canonical prefix/mask-to-GRU-to-flow schematic playback alongside preserved graphic",
+      "recurrent encoder comparison preserving other implementation differences",
+      "prior-predictive real VOO/synthetic target choice",
+      "prior and posterior paths, cumulative log wealth, return and tail frequencies, timing and fitted IID Gaussian controls"
+    ],
+    "browser": {
+      "widget-browser": {
+        "checks": [
+          "observed history shows1260 initially, actual pairedV, revealed-time marginals, replay/pause/scrub and fixed-axis data reuse",
+          "all three model histories show verified1260day returns and their own boundary variance",
+          "playable actualprefix-mask training route retains originalgraphics, illustrates GRU/flow without inventing activations or autoregressive decoder",
+          "evidence defaults Fast/months/full1260; generating truth lines correct and playback reuses actualframes",
+          "optional network-check tools collapsed and gated; saved calibration failures retained",
+          "plain selected-prefix calculation route opens collapsed extra tools without automatic query or training",
+          "collapsed native-frame action computes21 exact prefixes and preserves synthetic truth annotations"
+        ],
+        "page_errors": [],
+        "status": "passed",
+        "narrow_width": 760,
+        "math_errors": 0,
+        "marimo_errors": 0,
+        "no_hidden_widget_footer": true,
+        "iframe_sizes": {
+          "history": {
+            "scroll": 817,
+            "client": 817
+          },
+          "training": {
+            "scroll": 710,
+            "client": 710
+          },
+          "evidence": {
+            "scroll": 1025,
+            "client": 1025
+          }
+        }
+      },
+      "predictive-browser": {
+        "checks": [
+          "long VOO snapshot through2026-11-13 renders bydefault with illustrative Bergomi",
+          "full/crisis window switches without changing supported neural1260 horizon",
+          "200 prior histories compared with actualVOO same1260days and fittedGaussian featuretable",
+          "alternative synthetic prior observation works and source is relabelled",
+          "32 posterior replicas and Gaussian control render using actualsaved1260posterior"
+        ],
+        "page_errors": [],
+        "horizontal_overflow": false,
+        "math_errors": 0,
+        "status": "passed"
+      }
+    },
+    "browser_log_sha256": {
+      "widget-browser": "d0490f5616c91b8c4a8c52ce1d91ea1817410d4eb928066cb7159360f15883e8",
+      "predictive-browser": "6f98bc0c1bff3d3a3f1ae1a5b024f75f4b5949a4c5bbd5d78e04c0b79297a4b2"
+    },
+    "feature_readout": {
+      "voo_prior": [
+        {
+          "Feature": "Days beyond observed mean \u00b1 3 SD (4 log %)",
+          "Observed": "1.51%",
+          "Model central 90%": "0\u20134.25% (200/200)",
+          "Fitted IID Gaussian central 90%": "0.0794\u20130.48% (200/200)"
+        },
+        {
+          "Feature": "Lag-1 dependence in absolute returns",
+          "Observed": "0.397",
+          "Model central 90%": "0.0127\u20130.495 (200/200)",
+          "Fitted IID Gaussian central 90%": "-0.0501\u20130.0409 (200/200)"
+        }
+      ],
+      "synthetic_posterior": [
+        {
+          "Feature": "Days beyond observed mean \u00b1 3 SD (0.89 log %)",
+          "Observed": "2.62%",
+          "Model central 90%": "1.19\u201340.6% (32/32)",
+          "Fitted IID Gaussian central 90%": "0.0794\u20130.48% (200/200)"
+        },
+        {
+          "Feature": "Lag-1 dependence in absolute returns",
+          "Observed": "0.443",
+          "Model central 90%": "0.266\u20130.602 (32/32)",
+          "Fitted IID Gaussian central 90%": "-0.0535\u20130.0421 (200/200)"
+        }
+      ]
+    },
+    "verification": {
+      "tutorial_tests": 141,
+      "notebook_exports": 7,
+      "notebook_cell_errors": 0,
+      "runtime_boundary_symbols": 183,
+      "local_document_links": 48,
+      "marimo_warnings": "existing empty cells in slots 2 and 3",
+      "lab_runtime_parity_tests": 12,
+      "trajectory_notebook_cells": 88,
+      "lab_core_tests": 531,
+      "lab_optional_skips": 3
+    },
+    "log_sha256": {
+      "tutorial-tests": "066d454f5e97128c3bdc0b3bf5b9a3817881d14a25df578492f2f3963bb79f1a",
+      "lab-tests": "ea6366fa94b425fbe96c0c331310819a563392c89d7122e1ab6581435a2aa258",
+      "exports": "d705016509d3c61e242fc0e0e3f74fced77f0541c2beb0a5d71b0edfd00b1a92",
+      "marimo": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
+      "release": "807ab65bec1dd1237c49b58da48dc252e9f5a98ed06e5552d19f4f06b40e426c"
+    }
+  },
+  "rendering_fixes_20261114": {
+    "scope": "formatting and diagram layout only; equations and inference unchanged",
+    "math": "separate adjacent display blocks so KaTeX receives individual equations",
+    "diagram": "balanced training-label and objective boxes with dashed training arrows",
+    "browser": {
+      "status": "passed",
+      "math_errors": [],
+      "page_errors": [],
+      "all_visible_explanatory_accordions_opened": true
+    },
+    "math_screenshot_sha256": "a44e37e3be53be5671cfc906cf94ed9e432ed65a1ca987dd9aab57843e2d2f53",
+    "diagram_1056px_sha256": "664fcd818dc73dced6b6cd2af3b7cb0d533a7324bebce5db93cb9998020da0ee",
+    "diagram_widths_checked": [
+      1056,
+      600
+    ],
+    "tutorial_tests": 141,
+    "notebook_exports": 7,
+    "trajectory_cells": 88,
+    "notebook_cell_errors": 0,
+    "release_symbols": 183
+  },
+  "guided_training_walkthrough_20261114": {
+    "scope": "didactic interface only; neural training and inference unchanged",
+    "learning_goal": "vary observed evidence while holding generating parameters fixed, and distinguish training scoring from inference sampling",
+    "signed_returns_and_mask": "actual first tutorial training pair; canonical preprocessing, no future return line",
+    "fixed_joint_target": "physical parameters and exact float32 training_data transform remain independent of chosen prefix",
+    "training_mode": "known transformed target scored by conditional joint density; conceptual gradients to both networks",
+    "inference_mode": "no label, loss or update route; schematic joint sampling plus inverse target transform",
+    "network_quantities": "no learned activations, losses, gradients or posterior samples computed or invented",
+    "balanced_training_boxes": true,
+    "named_stages_and_takeaways": true,
+    "end_behavior": "stop at final takeaway; explicit Replay",
+    "one_of_128_training_pairs_explained": true,
+    "browser": {
+      "checks": [
+        "default63day fixed generating pair and exact transformed target match actual live-training row",
+        "prefix1/21/63/252 alter only exact tokens/mask/time context; label and signed-return scale fixed; future path absent",
+        "named six-stage Training playback stops at final update/endcard; Replay and manual step work without looping",
+        "Inference visibly removes generating label/density-score/update route; actual query/inverse-transform described without fabricated samples",
+        "pause/reset work and original static graphics plus recurrent-encoder clarification retained"
+      ],
+      "page_errors": [],
+      "status": "passed",
+      "layouts": [
+        {
+          "viewport": 1280,
+          "mode": "training",
+          "width": 1056,
+          "scrollWidth": 1056,
+          "height": 966,
+          "scrollHeight": 966,
+          "footer": 940.1875
+        },
+        {
+          "viewport": 1280,
+          "mode": "inference",
+          "width": 1056,
+          "scrollWidth": 1056,
+          "height": 912,
+          "scrollHeight": 912,
+          "footer": 885.671875
+        },
+        {
+          "viewport": 760,
+          "mode": "training",
+          "width": 600,
+          "scrollWidth": 600,
+          "height": 1077,
+          "scrollHeight": 1077,
+          "footer": 1051.21875
+        },
+        {
+          "viewport": 760,
+          "mode": "inference",
+          "width": 600,
+          "scrollWidth": 600,
+          "height": 988,
+          "scrollHeight": 988,
+          "footer": 961.921875
+        }
+      ],
+      "math_errors": 0,
+      "marimo_errors": 0
+    },
+    "browser_summary_sha256": "31720878b4ca96825d26adf2b47f46d1dd6d363e8bdbb3d20a50ed52f4f8afea",
+    "tutorial_tests": 144,
+    "exports": 7,
+    "trajectory_cells": 88,
+    "errors": 0,
+    "log_sha256": {
+      "tests": "52beb1e911eed28b94a434af3024c8c28de9a03bda786ed29c3fa23f3165fc1f",
+      "exports": "8bf36dcee7f24ae9326224e9fea62911ee98b4efdff474faf1300b780bfe42c7",
+      "check": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
+      "release": "807ab65bec1dd1237c49b58da48dc252e9f5a98ed06e5552d19f4f06b40e426c"
+    }
+  },
+  "horizon_and_variance_review_20261114": {
+    "interpretation": "Both the finite-origin ageing law and unusually quiet preserved realizations matter; no numerical collapse to zero.",
+    "gallery_event": "Arithmetic mean of actual daily-boundary V on days 1009 through 1260 below 0.0004 = (0.02)^2.",
+    "prior_frequency": {
+      "count": 69,
+      "n": 512,
+      "fraction": 0.134765625,
+      "wilson95": [
+        0.10789254675284977,
+        0.16707848629472477
+      ]
+    },
+    "original_gallery": {
+      "count": 4,
+      "n": 4,
+      "cases_unchanged": true
+    },
+    "fixed_parameter_repetitions": {
+      "n_per_case": 512,
+      "event_counts": [
+        335,
+        109,
+        2,
+        449
+      ]
+    },
+    "numerical_audit": "Strictly positive rough variance, healthy Gaussian channels and matching grid compensator; no zero, floor, underflow, clipping, redraw or history replacement.",
+    "law_limitation": "Finite-origin rough Bergomi is nonstationary at flat mean variance. A stationary physical history model would require a separate task, generation, training and validation.",
+    "changes": [
+      "Complete governing rough equations and explicit CIR-Heston comparison before the observed history.",
+      "All simulator, live-training, diagrams, animation and diagnostic maxima now 1260; 252 retained only for annualization or labelled one-year prefixes.",
+      "History player exposes raw minima, zero counts, early/late medians, optional log variance and paired cross-realization mean/median references.",
+      "Accepted frozen 512-history prior and four conditional ensembles remain separate from posterior validation."
+    ],
+    "unchanged": [
+      "Mathematical and numerical simulation laws",
+      "Priors",
+      "Original saved histories",
+      "Pretrained weights",
+      "Original posterior snapshots",
+      "Calibration-failure decisions"
+    ],
+    "small_fit": {
+      "n_observations": 1260,
+      "history_length_range": [
+        1,
+        1260
+      ],
+      "dt_years": 0.003968253968253968,
+      "network": {
+        "hidden_dim": 16,
+        "summary_dim": 16,
+        "depth": 2,
+        "bins": 8,
+        "widths": [
+          32,
+          32
+        ]
+      },
+      "train": 128,
+      "validation": 64,
+      "epochs": 2,
+      "batch_size": 32,
+      "optimizer_updates": 8,
+      "posterior_shape": [
+        128,
+        4
+      ],
+      "timings": {
+        "generation": 0.06517770793288946,
+        "fit": 2.9820323751773685,
+        "sampling": 1.0670342918019742
+      },
+      "elapsed_including_imports": 13.407549875089899
+    },
+    "browser": {
+      "checks": [
+        "Model introduction precedes observedhistory immediatelybeforeSimulate; renderedexamples/training all statefiveyearhorizons",
+        "animation genuine1260task, exactprefix1/21/63/252/1260maskandcontext, fixed\u03b8/float32target, nofuturetokens",
+        "optionaldiagnostic tools render andactualdayinputdefaults1260 fornewtutorialtask",
+        "all4roughknownhistories preserve1261rawvariances/1260returns andpairedmean/medianrefs; logusespositivevaluesonly; viewchangesnevermutatedata",
+        "all4Hestonhistories preserveactualeffectiveV andzero counts; logleavesgaps withoutpositivefloor; noroughreferencesinvented"
+      ],
+      "page_errors": [],
+      "status": "passed",
+      "math_errors": 0,
+      "marimo_errors": 0,
+      "narrow_width": 760
+    },
+    "final_browser": {
+      "checks": [
+        "model equations precede history and Simulate; validated69of512 gallery diagnostic opens",
+        "history4 rawpositivevariance verified; log view reports zero exactzeros and actualmedian1.74e-8"
+      ],
+      "page_errors": [],
+      "accordion_expanded": "true",
+      "audit_note_visible": true,
+      "math_overflow": [],
+      "horizontal_overflow": false,
+      "math_errors": [],
+      "status": "passed"
+    },
+    "accepted_diagnostic": {
+      "directory": "tutorial/assets/diagnostics/rough-variance-aging-v1",
+      "report_sha256": "68645f59e6ad2d3c02c1ad40dd721884e94e0598c5a852c95ee23db022a4fd6b",
+      "figure_sha256": "1d33afc116ba246e6a23c8a818687c08e0240585204e72cef7658be3e9885612"
+    },
+    "verification": {
+      "tutorial_tests": 151,
+      "lab_tests": 531,
+      "optional_lab_skips": 3,
+      "notebook_exports": 7,
+      "trajectory_cells": 88,
+      "cell_errors": 0,
+      "shared_symbols": 183,
+      "marimo": "passed; existing empty-cell warnings in slots 2 and 3",
+      "release": "passed"
+    },
+    "artifact_directory": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/five-year-alignment"
+  },
+  "windows_asset_loading_20261114": {
+    "reported_error": "ValueError: trajectory catalogue/bundle hash differs at load_example, Windows C:\\Users\\radevs\\Desktop\\Projects\\sbi4finance",
+    "root_cause": "Git core.autocrlf=true converts accepted JSON LF bytes to CRLF, changing raw digests while parsed task/data are unchanged.",
+    "reproduction": {
+      "method": "Isolated real Git checkout/export with core.autocrlf=true before asset-preserving attributes",
+      "affected_json_files": 22,
+      "binary_payload_changes": 0,
+      "base_latent_dense_and_aging_failures_reproduced": true
+    },
+    "fix": [
+      "Protect tutorial/assets/** with Git -text attribute.",
+      "Use existing shared.full_surface_teaching.digest for JSON-only CRLF/LF equivalence across base replay, latent, dense, aging, VOO and notebook closeout.",
+      "Preserve raw inference.sha256, binary data/model hashes, task fingerprints, original observations and all recorded pins."
+    ],
+    "regressions": {
+      "participant_tests": 3,
+      "lab_checkout_test": 1,
+      "content_corruption_rejected": true,
+      "binary_newlines_not_normalized": true,
+      "bit_exact_observations_and_draws": true,
+      "no_rewrite_on_loading": true
+    },
+    "legacy_crlf_export": {
+      "source_head": "bc85aaed1570e49f9aab8b0b2ae9ffce3873c9e3",
+      "tracked_assets_copied": 170,
+      "json_files_converted": 110,
+      "trajectory_cells": 88,
+      "errors": 0,
+      "seconds": 5,
+      "log": "/private/tmp/trajectory-windows-hashes-crlf-export-20261114.log"
+    },
+    "verification": {
+      "tutorial_tests": 154,
+      "full_lab_suite_tests": 531,
+      "optional_lab_skips": 3,
+      "additional_lab_checkout_test": 1,
+      "notebook_exports": 7,
+      "trajectory_cells": 88,
+      "notebook_errors": 0,
+      "release_symbols": 183,
+      "marimo": "passed with existing slots 2/3 empty-cell warnings"
+    },
+    "collaborator_action": "Pull PR #75 branch and restart marimo. No regeneration, re-download, hash replacement or retraining is needed for the CRLF issue.",
+    "scope": "Git CRLF checkout behavior was reproduced locally; a native Windows environment was not available."
+  },
+  "opening_single_history_20261114": {
+    "histories_simulated": 1,
+    "old_displayed_first_path_preserved_bitwise": true,
+    "returns_sha256": "41057b159977f3125f605e09dc0a2fedc630deaf720c0aa4ad7f2dfccf3bc27e",
+    "seed": 20261114,
+    "parameters": {
+      "hurst": 0.12,
+      "eta": 1.2,
+      "rho": -0.7,
+      "drift": 0.07
+    },
+    "figure_review": "Both dated VOO windows rendered and visually inspected; one empirical Bergomi tail versus matched Gaussian, no ensemble band.",
+    "change": "Remove the ensemble band and its 16-history narrative. Preserve the exact original displayed history and matched Gaussian comparison.",
+    "verification": {
+      "tutorial_tests": 154,
+      "notebook_exports": 7,
+      "trajectory_cells": 88,
+      "cell_errors": 0,
+      "figure_review": "both VOO windows",
+      "marimo": "passed; existing empty-cell warnings in slots 2/3",
+      "release_symbols": 183,
+      "lab_tests": 532,
+      "optional_lab_skips": 3
+    },
+    "figures": {
+      "voo-covid-256.png": "e3f15ddeb083cc5636b5c97899d1b12bc7d753b38b628f1305b5c88d1fff3b5d",
+      "voo-2020-20261113.png": "6033d94ea3adf7583b577391d940908b96d888beea549a576c0006513857c44c"
+    },
+    "artifact_directory": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/single-market-history"
+  },
+  "diagnostic_execution_and_model_switching_20261114": {
+    "reported_error": "NameError: diagnostic_result is not defined in optional recovery_case_data cell",
+    "cause": "Idle/no-workflow/failure paths previously stopped before publishing definitions. Normal reactive traversal blocked descendants, but manual editor execution could encounter missing names.",
+    "changes": [
+      "Define inexpensive optional controls and checking callable even when their display is hidden.",
+      "Always publish diagnostic_result=None on idle, missing-network or failed-check paths.",
+      "Publish a result only after generation, sampling, plots and summary calculations succeed.",
+      "Always define empty recovery parameter/picker/points/case/pairs values until inputs are ready.",
+      "Rebuild the run button on visibility/source/task/prefix/workflow changes to clear stale results and require an explicit click.",
+      "Clarify that the model selector changes supplied histories and estimators; live tutorial training remains rough-known."
+    ],
+    "regressions": {
+      "actual_named_marimo_cells": 9,
+      "new_tests": 8,
+      "uses_public_Cell_run": true,
+      "idle_imports_no_neural_backend": true,
+      "idle_or_unready_does_not_generate": true,
+      "complete_cohorts_retained": true,
+      "summary_failure_clears_result": true,
+      "context_changes_require_fresh_click": true
+    },
+    "model_helper_audit": {
+      "status": "passed",
+      "all_four_histories_each_model": true,
+      "all_saved_prefixes_and_paired_latent_paths": true,
+      "stale_results_rejected_across_model_history_prefix": true,
+      "source_sha256": "a0c8ec97cdc8f691c9f37d31bee3b536e01b93ec7b527ed64c3f5cac6fa07d91"
+    },
+    "model_full_app_audit": {
+      "status": "passed",
+      "models": [
+        {
+          "model": "heston",
+          "parameter_names": [
+            "kappa",
+            "long_variance",
+            "vol_of_vol",
+            "rho",
+            "drift"
+          ],
+          "preview_shape": [
+            8,
+            1260,
+            1
+          ],
+          "posterior_shape": [
+            512,
+            5
+          ],
+          "evidence_frames": 12,
+          "tutorial_model": "rough-known",
+          "optional_diagnostic_outputs_defined_and_idle": true,
+          "marginal_panels": 5,
+          "checkpoint_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7"
+        },
+        {
+          "model": "rough-known",
+          "parameter_names": [
+            "hurst",
+            "eta",
+            "rho",
+            "drift"
+          ],
+          "preview_shape": [
+            8,
+            1260,
+            1
+          ],
+          "posterior_shape": [
+            512,
+            4
+          ],
+          "evidence_frames": 65,
+          "tutorial_model": "rough-known",
+          "optional_diagnostic_outputs_defined_and_idle": true,
+          "marginal_panels": 4,
+          "checkpoint_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c"
+        },
+        {
+          "model": "rough-joint",
+          "parameter_names": [
+            "hurst",
+            "eta",
+            "rho",
+            "short_variance",
+            "long_variance",
+            "decay",
+            "drift"
+          ],
+          "preview_shape": [
+            8,
+            1260,
+            1
+          ],
+          "posterior_shape": [
+            512,
+            7
+          ],
+          "evidence_frames": 12,
+          "tutorial_model": "rough-known",
+          "optional_diagnostic_outputs_defined_and_idle": true,
+          "marginal_panels": 7,
+          "checkpoint_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003"
+        }
+      ],
+      "automatically_imported_neural_modules": [],
+      "source_sha256": "d18221dc74b270d8669a79fa2b542e770342cf0fe93a55b29f8f3627e6516b80"
+    },
+    "verification": {
+      "tutorial_tests": 175,
+      "lab_tests": 536,
+      "optional_lab_skips": 3,
+      "notebook_exports": 8,
+      "trajectory_cells": 88,
+      "cell_errors": 0,
+      "release_shared_symbols": 183,
+      "marimo": "passed; inherited empty-cell warnings in MMAR and slots2/3"
+    },
+    "unchanged": [
+      "Simulation laws",
+      "Parameter priors",
+      "Saved trajectories and latent truth",
+      "Pretrained weights",
+      "Posterior snapshots",
+      "Calibration verdicts"
+    ],
+    "artifacts": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/model-switch-audit",
+    "successful_recovery_controls": {
+      "status": "passed",
+      "cells": [
+        "diagnostic_parameter_control",
+        "diagnostic_recovery_plot",
+        "diagnostic_case_controls",
+        "diagnostic_case_view"
+      ],
+      "retained_histories": 200,
+      "paired_draws_per_history": 200,
+      "prefix_days": 137,
+      "selected_initial_case": 0,
+      "scope": "Control/plot check uses repeated generating values as deterministic test draws, not network inference."
+    },
+    "collaborator_update_preserved": {
+      "commit": "26d23c6e64bb11928cd5b959624531bf41f12f41",
+      "description": "Merged MMAR take-home PR #92; fast-forwarded and reapplied trajectory fixes without conflicts."
+    }
+  },
+  "heston_section_style_20261114": {
+    "reference": {
+      "commit": "d6c3c2c",
+      "notebook": "lab/notebooks/heston_spx_calibration.py",
+      "stylesheet": "lab/notebooks/heston_spx_calibration.css",
+      "stylesheet_sha256": "0ab02646a318e5233f189976215dc25f66851ccf8f3bcf997e32441ee9c22a1b"
+    },
+    "local_stylesheet": "tutorial/notebooks/trajectory_inference.css",
+    "changes": [
+      "One linked workflow map and six numbered section banners with completed/current/upcoming links.",
+      "Nineteen numbered subsection headings and unique outline/link anchors.",
+      "Heston typography, paragraph rhythm, tables, accordion Details styling and light/dark colors.",
+      "Unnumbered data banner before the workflow.",
+      "Fold setup/control source in the reading view while retaining displayed teaching examples and editor access.",
+      "Remove empty optional reading panels/name badges without hiding editor cells or actual console output."
+    ],
+    "structure": {
+      "stages": [
+        "1 Model",
+        "2 Simulate",
+        "3 Train",
+        "4 Infer",
+        "5 Check",
+        "6 Use"
+      ],
+      "numbered_subsections": 19,
+      "unique_ids": true,
+      "workflow_links_valid": true,
+      "code_fences_preserved": true
+    },
+    "visual_review": {
+      "wide_width": 1440,
+      "narrow_width": 760,
+      "dark_theme": true,
+      "equations_and_tables_readable": true,
+      "code_overflow_contained": true,
+      "page_horizontal_overflow": false,
+      "idle_reading_panels_removed": true,
+      "visible_accordions_checked": 25,
+      "artifacts": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/section-style",
+      "figures": {
+        "train-narrow.png": "fa9a9cae71103fe4a527f801e3b3d233a79d2a978b9cb3061b18c1779704a937",
+        "details.png": "78c1dc590e33406979d0ece8f513c6104813fa2bea0e7a6bd626c0dda941a482",
+        "model-dark.png": "a0917e6ae38e68b8a94d700e3da7a218c54e55565f2f3ed445e55f6eabb8f743",
+        "model-wide.png": "270bab8a3b0bdad90cfaa8c007893f26a9286aac216dcc11dba88aab23d0ec86",
+        "details-final.png": "4f5fa28256fcbe4d137f57b288397f4b2d6be929b310416580122d785c4f671c"
+      }
+    },
+    "verification": {
+      "tutorial_tests": 175,
+      "lab_tests": 536,
+      "optional_lab_skips": 3,
+      "notebook_exports": 8,
+      "trajectory_cells": 88,
+      "notebook_errors": 0,
+      "release_symbols": 183,
+      "marimo": "passed; inherited empty cells in MMAR and slots2/3"
+    },
+    "unchanged": [
+      "Simulation and inference functions",
+      "Priors and checkpoint contracts",
+      "Asset payloads and pins",
+      "Data/model controls and optional diagnostic state",
+      "Iframe player internals",
+      "Calibration verdicts"
+    ]
+  },
+  "presentation_trim_20261114": {
+    "requested_removals": [
+      "4.2 Inspect parameter dependence",
+      "5.2 Independent network checks",
+      "6.1 Drawdown exercise"
+    ],
+    "removed_ui_cells": 19,
+    "notebook_cells_before": 88,
+    "notebook_cells_after": 69,
+    "renumbering": {
+      "4.3 Watch the evidence grow": "4.2 Watch the evidence grow",
+      "5.3 Saved final-cohort evidence": "5.2 Saved final-cohort evidence",
+      "6.2 Continuation requirements": "6.1 Continuation requirements"
+    },
+    "cleanup": [
+      "Remove pair selectors/scatterplot, live independent-cohort controls/results/recovery views, and drawdown simulation/readout controls.",
+      "Remove the eight notebook-cell tests specific to the deleted optional diagnostics.",
+      "Update the executive summary, Use lead, check-evidence table and participant instructions."
+    ],
+    "preserved": [
+      "Shared numerical diagnostic/predictive helpers and their tests",
+      "Paired-posterior interpretation",
+      "Evidence playback",
+      "Prior/posterior-predictive checks",
+      "Saved final-cohort evidence and calibration failures",
+      "Continuation discussion",
+      "Separate MMAR take-home drawdown exercise"
+    ],
+    "structure": {
+      "numbered_subsections": 16,
+      "stage_links_valid": true,
+      "unique_ids": true,
+      "fenced_code_preserved": true
+    },
+    "three_model_check": {
+      "status": "passed",
+      "models": [
+        {
+          "model": "heston",
+          "posterior_dimensions": 5,
+          "removed_controls_absent": true
+        },
+        {
+          "model": "rough-known",
+          "posterior_dimensions": 4,
+          "removed_controls_absent": true
+        },
+        {
+          "model": "rough-joint",
+          "posterior_dimensions": 7,
+          "removed_controls_absent": true
+        }
+      ]
+    },
+    "verification": {
+      "tutorial_tests": 167,
+      "notebook_exports": 8,
+      "trajectory_cells": 69,
+      "notebook_errors": 0,
+      "marimo": "passed with inherited MMAR and slots2/3 empty-cell warnings",
+      "lab_tests": 536,
+      "optional_lab_skips": 3,
+      "release_symbols": 183
+    },
+    "artifacts": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/presentation-trim"
+  },
+  "observation_choice_20261114": {
+    "scope": "Presentation revision; unchanged tasks, priors, original observations, assets, weights and saved draws",
+    "observed_history_position": "4.1 at the beginning of Infer; immediately before 4.2 Produce and read the posterior",
+    "removed": [
+      "all observed-player footer prose and readouts",
+      "saved quiet-path gallery discussion and figure"
+    ],
+    "editable_notebook_copy": [
+      "history title",
+      "four panel labels"
+    ],
+    "sources": [
+      "original supplied case with its own cached fallback",
+      "chosen in-support parameters and seed, full1260-day task"
+    ],
+    "custom_inference": "matching native checkpoint required; no cached fallback; query bound to task/source/history bytes/prefix",
+    "shared_history_consumers": [
+      "native query",
+      "truth markers",
+      "posterior readout",
+      "evidence player",
+      "prior check",
+      "posterior replication"
+    ],
+    "idle_optional_checks": "always publish None; guard consumers; no mo.stop or ancestor-stopped output",
+    "pymc_opening": "Volterra memory and roughly10000 latent driving coordinates lead the motivation; exact conditional math and feasibility qualifications retained",
+    "execution": {
+      "all_three_saved_and_custom_routes": true,
+      "custom_native_days": 137,
+      "custom_native_paired_draws": [
+        512,
+        4
+      ],
+      "changed_seed_clears_posterior": true,
+      "synthetic_prior_uses_active_history": true,
+      "no_idle_ancestor_stop": true,
+      "custom_native_predictive_replicas": 32,
+      "custom_exact_daily_playback_frames": 21,
+      "playback_reuses_frames_without_sampling": true
+    },
+    "visual_review": "bare four-panel standalone widget artifact; browser host unavailable",
+    "artifacts": "local-artifacts/trajectory-feedback-20261114/chosen-history-integration",
+    "scientific_acceptance": false
+  }
+}

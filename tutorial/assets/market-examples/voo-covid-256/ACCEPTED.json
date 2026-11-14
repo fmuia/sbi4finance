@@ -1,0 +1,9 @@
+{
+  "accepted": "2026-11-12T22:59:56+00:00",
+  "source": "voo-covid-256",
+  "source_sha256": {
+    "market.json": "24fe0c4c33ae030686615d032943bf762e3653bbe81aa2951ec31907fdd3548e",
+    "returns.npz": "8770882ef27cb692216075bb28af0d040bc4a010b3036d36c3a1bf7ab1cb4b5d"
+  },
+  "changes": []
+}

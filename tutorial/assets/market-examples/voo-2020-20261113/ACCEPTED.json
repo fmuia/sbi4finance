@@ -1,0 +1,9 @@
+{
+  "accepted": "2026-11-14T00:22:17+00:00",
+  "source": "voo-2020-20261113",
+  "source_sha256": {
+    "market.json": "f6ca7b9c4478145fd7b23a3fac12b143ea48828c703a9f7f06474e8347308964",
+    "returns.npz": "ec4c5fffc661e1a89cc940ab2584076b6252e7c8e8a3f1f5968ee2d3f75d2beb"
+  },
+  "changes": []
+}

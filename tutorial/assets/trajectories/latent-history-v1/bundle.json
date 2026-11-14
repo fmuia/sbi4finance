@@ -1,0 +1,394 @@
+{
+  "format": "trajectory_paired_latent_v1",
+  "created": "2026-11-14T00:23:15.454816+00:00",
+  "scientific_acceptance": false,
+  "inference_input": false,
+  "state_estimate": false,
+  "preserves_observed_history": true,
+  "observed_day_boundaries": true,
+  "scope": "actual hidden generator paths paired with original synthetic histories; no filtering, posterior-state estimate or new calibration claim",
+  "replay_tolerance": {
+    "rtol": 2e-12,
+    "atol": 2e-14
+  },
+  "backend": "numpy",
+  "models": {
+    "heston": {
+      "task": {
+        "dt_years": 0.003968253968253968,
+        "fixed": {
+          "initial_variance": 0.04
+        },
+        "history_length_range": [
+          1,
+          1260
+        ],
+        "measure": "P",
+        "min_history": 1,
+        "model": "heston",
+        "n_observations": 1260,
+        "numerics": {
+          "scheme": "full_truncation_euler_signed",
+          "substeps": 8
+        },
+        "observation": "decimal_log_returns_only",
+        "parameter_names": [
+          "kappa",
+          "long_variance",
+          "vol_of_vol",
+          "rho",
+          "drift"
+        ],
+        "prefix_lengths": [
+          21,
+          63,
+          126,
+          252,
+          504,
+          756,
+          1260
+        ],
+        "prefix_lengths_role": "validation_landmarks",
+        "prior_bounds": [
+          [
+            0.25,
+            5.0
+          ],
+          [
+            0.01,
+            0.09
+          ],
+          [
+            0.05,
+            0.6
+          ],
+          [
+            -0.95,
+            -0.05
+          ],
+          [
+            -0.1,
+            0.2
+          ]
+        ],
+        "prior_types": [
+          "log_uniform",
+          "log_uniform",
+          "uniform",
+          "uniform",
+          "uniform"
+        ],
+        "task_id": "physical_heston_daily_drift_paths_v2",
+        "task_version": 2
+      },
+      "task_sha256": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+      "case_ids": [
+        "dd233e297f3ff974:20261031001:validation:0",
+        "dd233e297f3ff974:20261031001:validation:1",
+        "dd233e297f3ff974:20261031001:validation:2",
+        "dd233e297f3ff974:20261031001:validation:3"
+      ],
+      "source_replay_bundle_sha256": "6675cf99bf9d4a2e7d3feaad01a085534955473b746afeef2448fbd9816ac00f",
+      "source_posterior_file_sha256": "e152f3626b21e01962ffea8932e7260b6625193411ddc763b58362bfb2cfecac",
+      "source_split": "validation",
+      "source_case_offset": 0,
+      "seed": 20261031001,
+      "histories": [
+        {
+          "case": 0,
+          "case_id": "dd233e297f3ff974:20261031001:validation:0",
+          "observation_sha256": "faa82e8bac2ed0be92ae8728b27635c40a9fc267e04f31301c641a3871b2dcbc",
+          "parameter_sha256": "54ca8bf99e658a8603fecb1ccd57c6e0b694f121434d6658a89798294cd07fb0",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": true,
+          "max_abs_return_error": 0.0
+        },
+        {
+          "case": 1,
+          "case_id": "dd233e297f3ff974:20261031001:validation:1",
+          "observation_sha256": "74098d83191e9e42391ab55e968b26284e804617744901b0287b7444041aba98",
+          "parameter_sha256": "6411b249f12ac78933c85f34b9f8869e2ce0e0ebac525606ff6028a023986d8f",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": true,
+          "max_abs_return_error": 0.0
+        },
+        {
+          "case": 2,
+          "case_id": "dd233e297f3ff974:20261031001:validation:2",
+          "observation_sha256": "a04cc6280a876ff7ded2aebaa8f25f477bf68d232719c9307e22cd82ed860d22",
+          "parameter_sha256": "5e8dcfd66d9b50c2c4a28caf56b21186099d4a2848673b1008196cb72ec26285",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": true,
+          "max_abs_return_error": 0.0
+        },
+        {
+          "case": 3,
+          "case_id": "dd233e297f3ff974:20261031001:validation:3",
+          "observation_sha256": "d52eb8dc96ca2c53c4fa5264a7db9d7e2d1b560a6fd4ea9f40400697103018cb",
+          "parameter_sha256": "eafdefe94002d7e6fd98e6938033bcd5b17323ec6b2e14d879c9c94638a0dd1c",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": true,
+          "max_abs_return_error": 0.0
+        }
+      ]
+    },
+    "rough-known": {
+      "task": {
+        "dt_years": 0.003968253968253968,
+        "fixed": {
+          "variance_level": 0.04
+        },
+        "history_length_range": [
+          1,
+          1260
+        ],
+        "measure": "P",
+        "min_history": 1,
+        "model": "rough-known",
+        "n_observations": 1260,
+        "numerics": {
+          "driver_method": "hybrid",
+          "initialization": "zero_volterra_driver_at_origin",
+          "observation_substeps": 4,
+          "scheme": "log_euler",
+          "variance_compensator": "discrete_hybrid_variance"
+        },
+        "observation": "decimal_log_returns_only",
+        "parameter_names": [
+          "hurst",
+          "eta",
+          "rho",
+          "drift"
+        ],
+        "prefix_lengths": [
+          21,
+          63,
+          126,
+          252,
+          504,
+          756,
+          1260
+        ],
+        "prefix_lengths_role": "validation_landmarks",
+        "prior_bounds": [
+          [
+            0.03,
+            0.4
+          ],
+          [
+            0.2,
+            2.5
+          ],
+          [
+            -0.95,
+            -0.05
+          ],
+          [
+            -0.1,
+            0.2
+          ]
+        ],
+        "prior_types": [
+          "uniform",
+          "uniform",
+          "uniform",
+          "uniform"
+        ],
+        "task_id": "physical_rough_known_daily_drift_paths_v2",
+        "task_version": 2
+      },
+      "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+      "case_ids": [
+        "eb195dd594de03a9:20261031002:validation:0",
+        "eb195dd594de03a9:20261031002:validation:1",
+        "eb195dd594de03a9:20261031002:validation:2",
+        "eb195dd594de03a9:20261031002:validation:3"
+      ],
+      "source_replay_bundle_sha256": "c21aa1f12c59a664469a4ce4d3b6824f61180b10663ee8e765b5dac0c7dde79f",
+      "source_posterior_file_sha256": "2d446c4e3f9ec9de9686748b4f7385846db7631b6382118589c5ee43b8f57892",
+      "source_split": "validation",
+      "source_case_offset": 0,
+      "seed": 20261031002,
+      "histories": [
+        {
+          "case": 0,
+          "case_id": "eb195dd594de03a9:20261031002:validation:0",
+          "observation_sha256": "d314e0b30864e3d24d8539436effdf5e20802a89d9321bf7fe72d68b50f4262f",
+          "parameter_sha256": "195d47cb3757147b51bb73711f418b0f923a7d72f7f9908d1be20a5dbcb83e00",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": false,
+          "max_abs_return_error": 1.5801162461803742e-15
+        },
+        {
+          "case": 1,
+          "case_id": "eb195dd594de03a9:20261031002:validation:1",
+          "observation_sha256": "f5e75f531f83d392d5c4abec545432af67ed0a178215ca64d13a3e3b0db25942",
+          "parameter_sha256": "ec3d96fe0d3daaddf15facef05589c8c5c87d13c4639603ab011c2c7d31c9263",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": false,
+          "max_abs_return_error": 8.357030345518268e-16
+        },
+        {
+          "case": 2,
+          "case_id": "eb195dd594de03a9:20261031002:validation:2",
+          "observation_sha256": "fa98482eee058b7ed80f05adc85215047e885f37af562bb213432741f1cec969",
+          "parameter_sha256": "e721068a3367cdf6fc4c3f4ebf4a89157c06f3cac8b760cffe0fa2dab9a6262a",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": false,
+          "max_abs_return_error": 1.2260158166466084e-15
+        },
+        {
+          "case": 3,
+          "case_id": "eb195dd594de03a9:20261031002:validation:3",
+          "observation_sha256": "21de9965f2a1d9c060cfff262a83cbd8b22756ddf57703a80683da38e565d868",
+          "parameter_sha256": "73bc5b93e56788916d4cf0ea4d7c3a91601404e4493b8d970eb13e79b5b59adb",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": false,
+          "max_abs_return_error": 4.0787685728904677e-16
+        }
+      ]
+    },
+    "rough-joint": {
+      "task": {
+        "dt_years": 0.003968253968253968,
+        "fixed": {},
+        "history_length_range": [
+          1,
+          1260
+        ],
+        "measure": "P",
+        "min_history": 1,
+        "model": "rough-joint",
+        "n_observations": 1260,
+        "numerics": {
+          "driver_method": "hybrid",
+          "initialization": "zero_volterra_driver_at_origin",
+          "observation_substeps": 4,
+          "scheme": "log_euler",
+          "variance_compensator": "discrete_hybrid_variance"
+        },
+        "observation": "decimal_log_returns_only",
+        "parameter_names": [
+          "hurst",
+          "eta",
+          "rho",
+          "short_variance",
+          "long_variance",
+          "decay",
+          "drift"
+        ],
+        "prefix_lengths": [
+          21,
+          63,
+          126,
+          252,
+          504,
+          756,
+          1260
+        ],
+        "prefix_lengths_role": "validation_landmarks",
+        "prior_bounds": [
+          [
+            0.03,
+            0.4
+          ],
+          [
+            0.2,
+            2.5
+          ],
+          [
+            -0.95,
+            -0.05
+          ],
+          [
+            0.01,
+            0.09
+          ],
+          [
+            0.01,
+            0.09
+          ],
+          [
+            0.25,
+            8.0
+          ],
+          [
+            -0.1,
+            0.2
+          ]
+        ],
+        "prior_types": [
+          "uniform",
+          "uniform",
+          "uniform",
+          "log_uniform",
+          "log_uniform",
+          "log_uniform",
+          "uniform"
+        ],
+        "task_id": "physical_rough_joint_daily_drift_paths_v2",
+        "task_version": 2
+      },
+      "task_sha256": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+      "case_ids": [
+        "277c7219e49edb13:20261031003:validation:0",
+        "277c7219e49edb13:20261031003:validation:1",
+        "277c7219e49edb13:20261031003:validation:2",
+        "277c7219e49edb13:20261031003:validation:3"
+      ],
+      "source_replay_bundle_sha256": "4f5be8eb862a4bc54e4244747410a0cd509446810bcd243ef8081cd632302ac2",
+      "source_posterior_file_sha256": "d129ca4b47a31cb457f2350d443a881e338ea1f012e9685c4a222dd2a51141b3",
+      "source_split": "validation",
+      "source_case_offset": 0,
+      "seed": 20261031003,
+      "histories": [
+        {
+          "case": 0,
+          "case_id": "277c7219e49edb13:20261031003:validation:0",
+          "observation_sha256": "5077f6204397ff422fcc228628af7a95639d80d00f049305f894cf4020580dec",
+          "parameter_sha256": "6e86a03c47e9a21acd0d56ecb3dee6f1167e5a27278a91ec14268a053d06ac45",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": false,
+          "max_abs_return_error": 4.064457104213659e-15
+        },
+        {
+          "case": 1,
+          "case_id": "277c7219e49edb13:20261031003:validation:1",
+          "observation_sha256": "c2e06e0763d98aa4f61a6bb6e36250bd673fe72d0d1926d57c787fdf53d7704a",
+          "parameter_sha256": "dcca1f306ecb34145643613bf85d18e7a97d595f7301d11b6ea3c52deaf08ba0",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": false,
+          "max_abs_return_error": 7.650130529057719e-16
+        },
+        {
+          "case": 2,
+          "case_id": "277c7219e49edb13:20261031003:validation:2",
+          "observation_sha256": "ae97f6c35cd31d53ab241a0e19a9a47f8291c5f51998a41249cd759f43848816",
+          "parameter_sha256": "f24ef313198ea7a374cd43364c26a524f0e9332ee3b9dedb420d92de3c8897cb",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": false,
+          "max_abs_return_error": 9.103828801926284e-15
+        },
+        {
+          "case": 3,
+          "case_id": "277c7219e49edb13:20261031003:validation:3",
+          "observation_sha256": "8bf847cd69db3eb66c48e109e3c827fc14fd19accbd21702bf0c0b84eff1b751",
+          "parameter_sha256": "084e5fd3cc99e9cc35e76b2d0878f17ec9ddef408b7b5049ddf12de0860b5edf",
+          "parameters_byte_identical": true,
+          "returns_byte_identical": false,
+          "max_abs_return_error": 4.943094544795912e-15
+        }
+      ]
+    }
+  },
+  "files": {
+    "heston.npz": "3f5469e0da69687ea4c8dd15b41770edaf5088eb6322bbec999050a3a595185a",
+    "rough-known.npz": "f196532021e3bed955045f03c812df130f6009e55dcd30de34441f5a519a1c6f",
+    "rough-joint.npz": "8ce925f4eab49cd2265690d02a5604bf39ac178c88b2125fa6fd00618c248aab"
+  },
+  "runtime_sha256": {
+    "trajectories/simulation.py": "7749e5245646ff567055a82f2535fafa4f36c537ee9165b53863edeafbe8fdf6",
+    "heston_options/simulator.py": "08de17c3e99b00918779ac4ea275d9ba5f435d4cc25c0a47d4e9ba3ecd39d523",
+    "rough_options/simulator.py": "542359c3999c2d6b55860191bf9468aeaf877820128d9e87c94cd7ecb0066bca"
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "format": "mmar_tutorial_review_v1",
+  "updated_at_utc": "2026-11-12T23:26:16+00:00",
+  "tutorial": "tutorial/notebooks/mmar_takehome.py",
+  "model_design": {
+    "format": "mmar_takehome_v1",
+    "window": 256,
+    "parameter_order": [
+      "mu",
+      "sigma_bar",
+      "q",
+      "nu"
+    ],
+    "return_type": "daily_simple",
+    "supported_d": [
+      128,
+      64,
+      32,
+      16,
+      8,
+      4
+    ],
+    "prior": {
+      "mu": {
+        "family": "normal",
+        "mean": 0.0,
+        "sd": 0.0015
+      },
+      "sigma_bar": {
+        "family": "uniform",
+        "bounds": [
+          0.005,
+          0.025
+        ]
+      },
+      "q": {
+        "family": "uniform",
+        "bounds": [
+          0.52,
+          0.9
+        ]
+      },
+      "nu_minus_two": {
+        "family": "log_uniform",
+        "bounds": [
+          0.05,
+          10.0
+        ]
+      }
+    },
+    "acceptance": "redraw the complete 256-day path when nonfinite or any simple return <= -1",
+    "cascade": "binary contrasts 2q/2(1-q), normalized mean one, circular random phase",
+    "upstream_revision": "069d5dc5943dbe85505849f2fa8bfb563617ff97"
+  },
+  "accepted_bundle": "tutorial/assets/takehomes/mmar-v2",
+  "report_sha256": "2e1acb23e2212ca9e0cd73c76ef3f0a9a28f882b99da0450207d7b429574503e",
+  "checkpoint_sha256": "4e2ce00711f3cf1e87969fc20e1dc9a81fe437e6e1862e8cb44df29fa1cb874b",
+  "checkpoint_historical_provenance": "source configuration reconstructed and numerical parity verified; original training seed/bank not independently established",
+  "calibration_scope": {
+    "histories_per_resolution": 200,
+    "draws_per_history": 512,
+    "resolutions": [
+      4,
+      8,
+      128
+    ],
+    "family_tests": 12,
+    "holm_alpha": 0.05,
+    "rejections": 0,
+    "coverage90_range": [
+      0.885,
+      0.93
+    ]
+  },
+  "source_repeat": {
+    "previous_report_sha256": "cb2feb1387d87b83e2d74ec3cba4be42e2b10b48a0e8c660e70d759b9e8b578f",
+    "all_saved_arrays_identical": true,
+    "calibration_identical": true,
+    "scope": "same frozen cohort/checkpoint, no tuning or seed selection; repeat binds final hardened source"
+  },
+  "verification": {
+    "tutorial_tests": 110,
+    "lab_core_tests": 533,
+    "lab_optional_skips": 3,
+    "notebook_exports": 8,
+    "mmar_cells": 41,
+    "cell_errors": 0,
+    "final_mmar_runtime_tests": 13,
+    "final_independence_tests": 3,
+    "documentation_links_checked": 27,
+    "checkpoint_download_http_status": 200
+  },
+  "browser_execution_routes": {
+    "saved_route": true,
+    "threshold_reuse": true,
+    "checkpoint_restore_and_fresh_inference": true,
+    "actual_live_fit_and_fresh_inference": true,
+    "source_reset_to_saved": true,
+    "viewport": 760,
+    "overflow": false,
+    "page_errors": [],
+    "error_flags": []
+  },
+  "final_browser_layout": {
+    "final_bundle": "mmar-v2",
+    "images": 11,
+    "wide_and_narrow_active_plots": [
+      "components",
+      "prior",
+      "posterior",
+      "drawdown",
+      "sensitivity"
+    ],
+    "widths": [
+      1280,
+      760
+    ],
+    "overflow": false,
+    "page_errors": [],
+    "error_flags": [],
+    "temporary_server_stopped": true
+  },
+  "log_sha256": {
+    "tutorial": "33ad4cad12baf4098cbde76e97883976275e2223a5d98dd87d001ecc6d568277",
+    "lab": "9aad8e5e2ca7429f15eb00396206b0ae3924c4a10e1513462c4f3bcd64361cec",
+    "exports": "40554e72190fa33bccdd357e5d5cf7f393129aec805bed5515d269efa9bfb96e",
+    "marimo": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
+    "release": "9a304724dace52c22a46f1e9b793f65d1148f571a884911a2f8b51f1826ad431",
+    "final_runtime": "9b9c4237f6289ad3a5345206daa3c598cf2bf25249053596b4e9d47767628e1c",
+    "final_independence": "7346bcad4819dabcc51fe87b94cb0504e7bc195fe7e3dbd229d43f497f57e94c"
+  },
+  "source_sha256": {
+    "tutorial/src/sbi4f_tutorial/mmar_takehome/diagnostics.py": "d4864dde653c1db60b8fa050898cffa6aeed35b2bce70ac507909cbb9125a926",
+    "tutorial/src/sbi4f_tutorial/mmar_takehome/lesson.py": "f4c5d583d2a3e159262773ac09d9e26a5ec1bf62ddac86f0fa1545dc5ac93534",
+    "tutorial/src/sbi4f_tutorial/mmar_takehome/__init__.py": "7b9e3e00fd80291377c064319e5b532c3a21f04f812444ff1c56f5a12cd529d1",
+    "tutorial/src/sbi4f_tutorial/mmar_takehome/model.py": "edfff690b48496ced1996e75a253f058d30e140b1d6ea55e1cc5c130f6e6d0ea",
+    "tutorial/src/sbi4f_tutorial/mmar_takehome/plots.py": "c6a8fe4c25686cf461a788e900b7046db58c4dca4f59f3afb622d547712641da",
+    "tutorial/src/sbi4f_tutorial/mmar_takehome/inference.py": "632efa61f8a0e9daaad3539f5d0d182eeeb344fd83b70fa37c564a970f7846f4",
+    "tutorial/notebooks/mmar_takehome.py": "03bec206cf051339981bd1da1135c2369bdb3e51b73e84bf7d1a5a3886eb5b17",
+    "tutorial/tests/test_mmar_takehome.py": "5a75401bdd6cab48a9cff77897ebef2c008a757b7944dd6ee2aeb6f492249a8f",
+    "lab/scripts/prepare_mmar_takehome.py": "d1d61adb91b298f1555c9940f6ed75a5cb596fce7abd0337d29ae099e009139d",
+    "lab/studies/accept.py": "ff6c4ef494938a08ba10cd0fc3b74516286fb7e9ed32a16596e9729a74520c80",
+    "lab/tests/test_mmar_checkpoint_acceptance.py": "ac28ad8e87e21e5f43b2d0a6f6774bb099ca6c590c769129c8c89ae40104294a",
+    "tutorial/README.md": "9b6aa230c04bd23f22830f14499ba425706f2f0b9b071d507538090809aa1ffa",
+    "tutorial/curriculum/07-takehome-mmar.md": "442cf3aa2dee3cdceae6f27b1429cf133dd3d19c7a15623b12fd6dd569e26b49",
+    "tutorial/pyproject.toml": "393f59aff3e57778b05fe6b320ca9d35369fbb73b5e6fc8975d300a14c986cdc"
+  },
+  "scope": "complete saved-results take-home with optional verified restoration and session training; approximate parameter posterior and independent full-window scenarios, not state-conditioned forecasts",
+  "final_export_sha256": "6262dc2bc1f42a05f9080db93d7c7e1d28f7c653f9620f4c061e72ff9f0d5143"
+}

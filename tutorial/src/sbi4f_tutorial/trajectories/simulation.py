@@ -210,7 +210,6 @@ def generate(task, split, start, count, seed=30102026, *, backend="numba"):
                           _integer(seed, "seed"))
     if start + count > 2**64:
         raise ValueError("trajectory IDs exceed uint64 range")
-    n = task["n_observations"]
     bounds = np.asarray(task["prior_bounds"])
     parameters = np.empty((count, len(bounds)), dtype=np.float64)
     for row, identifier in enumerate(range(start, start + count)):
@@ -218,6 +217,17 @@ def generate(task, split, start, count, seed=30102026, *, backend="numba"):
         for col, ((low, high), kind) in enumerate(zip(bounds, task["prior_types"], strict=True)):
             parameters[row, col] = (np.exp(np.log(low) + uniform[col] * np.log(high / low))
                                     if kind == "log_uniform" else low + uniform[col] * (high - low))
+    observations = _simulate_observations(task, parameters, digest=digest, split=split,
+                                           start=start, seed=seed, backend=backend)
+    if not np.isfinite(observations).all() or not np.isfinite(parameters).all():
+        raise FloatingPointError(f"nonfinite path in {split}:{start}-{start + count}; no redraw")
+    identities = np.asarray([f"{digest[:16]}:{seed}:{split}:{i}" for i in range(start, start + count)])
+    return {"observations": observations, "parameters": parameters, "trajectory_id": identities}
+
+
+def _simulate_observations(task, parameters, *, digest, split, start, seed, backend, return_details=False):
+    """One numerical implementation for prior-pair generation and fixed-parameter illustrations."""
+    count, n = len(parameters), task["n_observations"]
     if task["model"] == "heston":
         substeps = task["numerics"]["substeps"]
         noise = np.empty((count, n, substeps, 2), dtype=np.float64)
@@ -228,14 +238,21 @@ def generate(task, split, start, count, seed=30102026, *, backend="numba"):
         p = dict(zip(task["parameter_names"], parameters.T, strict=True))
         law = {"drift": p["drift"] if "drift" in p else task["fixed"]["drift"], "kappa": p["kappa"],
                "theta": p["long_variance"], "vol_of_vol": p["vol_of_vol"], "rho": p["rho"]}
-        observations = heston.simulate(law, np.full(n, task["dt_years"]),
-                                       task["fixed"]["initial_variance"], inputs, backend=backend)["log_returns"]
+        result = heston.simulate(law, np.full(n, task["dt_years"]),
+                                task["fixed"]["initial_variance"], inputs, backend=backend)
+        observations = result["log_returns"]
+        if return_details:
+            signed = result["variance_state"][:, :, 0].copy()
+            latent = {"variance_state": signed, "variance": np.maximum(signed, 0.)}
     else:
         observations = np.empty((count, n, 1), dtype=np.float64)
         observation_substeps = task["numerics"].get("observation_substeps", 1)
         internal_count = n * observation_substeps
         dt = task["dt_years"] / observation_substeps
         times = dt * np.arange(internal_count + 1)
+        if return_details:
+            latent = {name: np.empty((count, n+1)) for name in
+                      ("variance", "driver", "driver_variance", "mean_variance", "median_variance")}
         for row, identifier in enumerate(range(start, start + count)):
             normals = _rng(digest, split, identifier, seed, 1).standard_normal((1, internal_count, 3))
             p = dict(zip(task["parameter_names"], parameters[row], strict=True))
@@ -256,7 +273,63 @@ def generate(task, split, start, count, seed=30102026, *, backend="numba"):
                                              + np.sqrt(1 - p["rho"] ** 2) * normals[0, :, 2]))
                 observations[row, :, 0] = (fine_returns if observation_substeps == 1 else
                                            fine_returns.reshape(n, observation_substeps).sum(axis=1))
-    if not np.isfinite(observations).all() or not np.isfinite(parameters).all():
-        raise FloatingPointError(f"nonfinite path in {split}:{start}-{start + count}; no redraw")
-    identities = np.asarray([f"{digest[:16]}:{seed}:{split}:{i}" for i in range(start, start + count)])
-    return {"observations": observations, "parameters": parameters, "trajectory_id": identities}
+                if return_details:
+                    # These are the actual states at observed-day boundaries,
+                    # including the original starting point. No interpolation,
+                    # new innovations or volatility reconstruction is involved.
+                    daily = slice(None, None, observation_substeps)
+                    latent["variance"][row] = variance[daily]
+                    latent["driver"][row] = driver[daily]
+                    latent["driver_variance"][row] = discrete_variance[daily]
+                    latent["mean_variance"][row] = xi[daily]
+                    latent["median_variance"][row] = xi[daily] * np.exp(-.5*p["eta"]**2*discrete_variance[daily])
+    if not np.isfinite(observations).all():
+        raise FloatingPointError("nonfinite simulated returns; no redraw")
+    if not return_details:
+        return observations
+    if not all(np.isfinite(values).all() for values in latent.values()):
+        raise FloatingPointError("nonfinite simulated latent states; no redraw")
+    return {"observations": observations, "latent": latent}
+
+
+def simulate_parameters(task, parameters, seed=20261108, *, backend="numpy", return_details=False):
+    """Simulate chosen parameter rows with fixed innovations from the canonical P law.
+
+    By default returns only daily returns, with shape [rows, observations, 1].
+    ``return_details=True`` additionally exposes boundary latent truth for a
+    simulator illustration, never as observed inference conditions. This
+    session-only forward illustration assigns no training-bank trajectory IDs.
+    Reusing a task and seed reuses innovations when its chosen parameters change.
+    """
+    digest = task_fingerprint(task)
+    seed = _integer(seed, "seed")
+    if backend not in ("numpy", "numba"):
+        raise ValueError("backend must be numpy or numba")
+    if not isinstance(return_details, (bool, np.bool_)):
+        raise ValueError("return_details must be a boolean")
+    if np.iscomplexobj(parameters) or np.ma.isMaskedArray(parameters):
+        raise ValueError("real unmasked parameter rows are required")
+    parameters = np.asarray(parameters, dtype=np.float64)
+    bounds = np.asarray(task["prior_bounds"], dtype=float)
+    if (parameters.ndim != 2 or not 1 <= len(parameters) <= 32 or parameters.shape[1] != len(bounds)
+            or not np.isfinite(parameters).all() or np.any(parameters < bounds[:, 0])
+            or np.any(parameters > bounds[:, 1])):
+        raise ValueError("one to 32 finite complete parameter rows within declared prior support are required")
+    return _simulate_observations(task, parameters, digest=digest, split="train",
+                                   start=0, seed=seed, backend=backend, return_details=return_details)
+
+
+def replay_details(task, split, start, count, seed=30102026, *, backend="numpy"):
+    """Recover the actual latent truth of the same canonical identified histories.
+
+    Parameters and innovations use their original task/split/case RNG domains.
+    Capturing details must preserve observations bitwise on this runtime. Saved
+    historical arrays may differ by numerical-library rounding; their separate
+    asset producer verifies equivalence before publishing a paired latent view.
+    """
+    pairs = generate(task, split, start, count, seed=seed, backend=backend)
+    details = _simulate_observations(task, pairs["parameters"], digest=task_fingerprint(task), split=split,
+                                      start=start, seed=seed, backend=backend, return_details=True)
+    if not np.array_equal(details["observations"], pairs["observations"]):
+        raise RuntimeError("latent capture changed the canonical returns; no paired states can be published")
+    return {**pairs, "latent": details["latent"]}
