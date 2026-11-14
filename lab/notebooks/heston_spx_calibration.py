@@ -92,6 +92,7 @@ def _():
         ESTIMATOR,
         EVALUATION,
         EVAL_SEED,
+        EVIDENCE,
         GRID,
         HestonGridPilot,
         PANEL_BATCH,
@@ -367,7 +368,7 @@ def _(bayesflow, md, mo, workflow_map):
 
 
 @app.cell(hide_code=True)
-def _(GRID, HestonGridPilot, display_units, json, np, plt, recipe, surface):
+def _(GRID, HestonGridPilot, display_units, json, np, plt, recipe):
     task = recipe.read_task(GRID / "cv-preparation" / "task.json")
     pilot = HestonGridPilot(task["records"], infer_c=True, c_bounds=(0.5, 2.0))
     pilot.validate_task(task["target"])
@@ -453,7 +454,6 @@ def _(GRID, HestonGridPilot, display_units, json, np, plt, recipe, surface):
         KIND,
         LABELS,
         MARKET_IV,
-        MARKET_VEGA,
         MATH_LABELS,
         MATURITY,
         MID,
@@ -1114,10 +1114,10 @@ def _(
     pilot,
     plots,
     plt,
+    price_residual_vol_points,
     sim_expiry,
     sim_params,
     sim_seed,
-    price_residual_vol_points,
     vol_point_noise,
 ):
     from scipy.stats import gamma as _gamma
@@ -1513,7 +1513,7 @@ def _(EVIDENCE, mo):
 
 
 @app.cell(hide_code=True)
-def _(caption, key, md, mo, np, plots, plt, table, whitening_ablation_record):
+def _(caption, key, md, mo, np, plots, plt, whitening_ablation_record):
     _record = whitening_ablation_record
     _truth = np.asarray(_record["population"]["c_truth"])
     _arms = _record["arms"]
@@ -1571,22 +1571,22 @@ def _(caption, key, md, mo, np, plots, plt, table, whitening_ablation_record):
            "90% interval. Recovery and calibration must be "
            "checked together. These historical results explain the preprocessing choice; they do not "
            "certify the current checkpoint."),
-        mo.accordion({"Controlled pilot: training details and results": mo.vstack([
-            table(_rows, align="lrrrr"),
-            caption(f"Each arm uses {_training['rows']:,} fixed noisy training rows, "
-                    f"{_training['epochs']} passes, batch size {_training['batch_size']}, and "
-                    f"{_training['optimizer_updates']:,} optimizer updates. Both transformations are fitted "
-                    "on training inputs only and frozen before evaluation. The comparison keeps the same "
-                    "quote-noise law and all input dimensions; no clean prices or true c values are "
-                    "neural inputs."),
-            caption(f"Both displays use the predeclared final epoch {_arms['zca']['checkpoint']['epoch']}. "
-                    f"The ZCA validation loss reached its minimum at epoch "
-                    f"{_arms['zca']['checkpoint']['validation_min_epoch']}; that earlier model's weights "
-                    "were not retained, so its recovery and coverage are not known. The comparison does "
-                    "not select a favorable checkpoint after inspecting these plots."),
-        ])}),
+        # mo.accordion({"Controlled pilot: training details and results": mo.vstack([
+        #     table(_rows, align="lrrrr"),
+        #     caption(f"Each arm uses {_training['rows']:,} fixed noisy training rows, "
+        #             f"{_training['epochs']} passes, batch size {_training['batch_size']}, and "
+        #             f"{_training['optimizer_updates']:,} optimizer updates. Both transformations are fitted "
+        #             "on training inputs only and frozen before evaluation. The comparison keeps the same "
+        #             "quote-noise law and all input dimensions; no clean prices or true c values are "
+        #             "neural inputs."),
+        #     caption(f"Both displays use the predeclared final epoch {_arms['zca']['checkpoint']['epoch']}. "
+        #             f"The ZCA validation loss reached its minimum at epoch "
+        #             f"{_arms['zca']['checkpoint']['validation_min_epoch']}; that earlier model's weights "
+        #             "were not retained, so its recovery and coverage are not known. The comparison does "
+        #             "not select a favorable checkpoint after inspecting these plots."),
+        # ])}),
     ])
-    return (whitening_ablation_figure,)
+    return
 
 
 @app.cell(hide_code=True)
@@ -2377,18 +2377,18 @@ def _(
         {_lead} The tabs switch the data set.
         """),
         mo.ui.tabs({CASE_TITLES[_case]: _posterior_view(_case) for _case in CASE_TITLES}),
-        mo.accordion({"How to read the joint posterior": grid({
-            "Combinations of parameters": "The quotes determine combinations of parameters better than each one "
-                                          "alone. A quantity that depends on several parameters must be computed "
-                                          "from the joint draws, not from the marginals.",
-            "A truth outside its interval": "One noisy data set can put a true value outside its 90% interval. The "
-                                            "noise shifts the posterior, and strongly correlated parameters shift "
-                                            "together.",
-            "Joint distance of the truth": "For a correct posterior, the share of draws closer to the centre than "
-                                           "the truth is uniform between 0 and 100%. A single large share is "
-                                           "therefore no warning sign. Coverage is judged over many data sets in "
-                                           "Section 5.2.",
-        })}),
+        # mo.accordion({"How to read the joint posterior": grid({
+        #     "Combinations of parameters": "The quotes determine combinations of parameters better than each one "
+        #                                   "alone. A quantity that depends on several parameters must be computed "
+        #                                   "from the joint draws, not from the marginals.",
+        #     "A truth outside its interval": "One noisy data set can put a true value outside its 90% interval. The "
+        #                                     "noise shifts the posterior, and strongly correlated parameters shift "
+        #                                     "together.",
+        #     "Joint distance of the truth": "For a correct posterior, the share of draws closer to the centre than "
+        #                                    "the truth is uniform between 0 and 100%. A single large share is "
+        #                                    "therefore no warning sign. Coverage is judged over many data sets in "
+        #                                    "Section 5.2.",
+        # })}),
     ])
     return
 
@@ -2404,13 +2404,11 @@ def _(
     key,
     md,
     mo,
-    note,
     np,
     plots,
     plt,
     prior_batch,
     prior_seconds,
-    table,
 ):
     # Every number below is read from a run record or timed in this notebook.
     _rows, _train = TRAINING["rows"], TRAINING["seconds"]
@@ -2493,28 +2491,7 @@ def _(
         md(f"The estimator's recorded evaluation drew {_total} posteriors in {_evaluation['seconds']:.0f} s, {_check} "
            f"of them for Section 5.2 with {_evaluation['population']['draws_per_case']} draws each. PyMC would need "
            f"about {_duration(_check * _pymc.mean())} for those {_check} data sets."),
-        mo.accordion({"Where the numbers come from": mo.vstack([
-            table([
-                {"Step": "Simulation",
-                 "Source": f"Section 2.2 timed {len(prior_batch['observations']):,} simulations on one core of this "
-                           f"machine. The figure scales that time to {_rows:,}. The cost per simulation varies with "
-                           "the parameters drawn, so this is approximate."},
-                {"Step": "Training",
-                 "Source": f"The training record gives {_duration(_train)} of wall time on one CPU, loading the data "
-                           "and saving the network included."},
-                {"Step": "Network posterior",
-                 "Source": f"The recorded evaluation drew {_total} posteriors in {_evaluation['seconds']:.0f} s, "
-                           f"diagnostics included: {_posteriors['Section 5.2']} for Section 5.2, "
-                           f"{_posteriors['validation']} for validation and {_posteriors['Section 4']} for Section "
-                           f"4.2. That is {_net:.2f} s each on average. A posterior with more draws takes longer, as "
-                           "the timing in Section 4.1 shows."},
-                {"Step": "PyMC posterior",
-                 "Source": f"The reference runs of Section 4.1 took {', '.join(_duration(_s) for _s in _pymc)} on "
-                           "one core, in the order of its table."},
-            ], nowrap=True),
-            note("The steps ran on different machines. Compare orders of magnitude, not exact ratios."),
-        ])}),
-    ])
+        ]) #}),
     return
 
 
@@ -2591,8 +2568,8 @@ def _(
     np,
     pilot,
     plt,
-    reference_draws,
     price_residual_vol_points,
+    reference_draws,
     vol_point_noise,
 ):
     _shown = 40  # posterior draws priced for each band
@@ -2932,7 +2909,6 @@ def _(
     BOUNDS,
     MATH_LABELS,
     NAMES,
-    TEXT_LABELS,
     controls,
     key,
     md,
@@ -2976,15 +2952,7 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(
-    BOUNDS,
-    TEXT_LABELS,
-    caption,
-    mo,
-    plots,
-    recovery_q,
-    recovery_truth,
-):
+def _(BOUNDS, TEXT_LABELS, caption, mo, plots, recovery_q, recovery_truth):
     import importlib.util as _recovery_importlib
 
     _spec = _recovery_importlib.spec_from_file_location(
@@ -3030,7 +2998,6 @@ def _(
     fixed,
     md,
     mo,
-    np,
     recovery_picker,
     recovery_q,
     recovery_selected_case,
@@ -3096,7 +3063,7 @@ def _(
                     "near the edges of the prior with data sets in its middle."),
         ])
     _view
-    return recovery_draws, recovery_posterior_figure
+    return
 
 
 @app.cell(hide_code=True)
@@ -3290,9 +3257,9 @@ def _(
     pilot,
     plots,
     plt,
+    price_residual_vol_points,
     reference_draws,
     times,
-    price_residual_vol_points,
     vol_point_noise,
 ):
     _y = CASES["market"]
@@ -3401,15 +3368,7 @@ def _(
             "pricing/error model. Neural disagreement with PyMC is an approximation problem: even an "
             "inadequate working model has a posterior the network should reproduce."),
     ])
-    return (
-        heston_market_fit_figure,
-        heston_market_predictive_figure,
-        market_fit,
-        market_residual,
-        market_residual_vol_points,
-        market_noise_rms_vol_points,
-        market_rms,
-    )
+    return market_fit, market_residual, market_residual_vol_points, market_rms
 
 
 @app.cell(hide_code=True)
@@ -3462,7 +3421,6 @@ def _(BOUNDS, EVALUATED, MATH_LABELS, NAMES, TRAINING, mo, np):
     summary_primary_runs = [row for row in summary_runs if row["endpoint"] == "primary_final"]
     summary_by_dimension = {row["dimension"]: row for row in summary_primary_runs}
     return (
-        bind_summary_study,
         summary_by_dimension,
         summary_primary_runs,
         summary_record,
@@ -3526,7 +3484,6 @@ def _(
     LABELS,
     caption,
     mo,
-    np,
     plots,
     plt,
     summary_by_dimension,
@@ -3575,7 +3532,17 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(MATH_LABELS, cards, key, md, mo, summary_by_dimension, summary_parameter, summary_primary_runs, table):
+def _(
+    MATH_LABELS,
+    cards,
+    key,
+    md,
+    mo,
+    summary_by_dimension,
+    summary_parameter,
+    summary_primary_runs,
+    table,
+):
     _name = tuple(summary_by_dimension[None]["evaluation"]["parameters"])[summary_parameter.value]
     _rows = []
     for _row in summary_primary_runs:
@@ -3635,7 +3602,19 @@ def _(caption, mo, summary_model, summary_recovery_figures):
 
 
 @app.cell(hide_code=True)
-def _(caption, md, mo, note, plots, plt, summary_model, summary_primary_runs, summary_record, summary_runs, table):
+def _(
+    caption,
+    md,
+    mo,
+    note,
+    plots,
+    plt,
+    summary_model,
+    summary_primary_runs,
+    summary_record,
+    summary_runs,
+    table,
+):
     _dimension = summary_model.value
     _pair = [row for row in summary_runs if row["dimension"] == _dimension]
     _final = next(row for row in _pair if row["endpoint"] == "primary_final")
@@ -3731,6 +3710,7 @@ def _(
     H,
     TRUTHS,
     caption,
+    display_units,
     grid,
     key,
     md,
@@ -3745,7 +3725,6 @@ def _(
     reference_draws,
     table,
     use_intro,
-    display_units,
 ):
     # Price a forward-start call and a volatility swap under posterior draws, and under Heston refitted to SPX subsets.
     _n_paths, _shown = 4096, 40  # Monte Carlo paths per price, and posterior draws priced
@@ -3900,7 +3879,7 @@ def _(
         *_second,
     ])}, expanded=False)
     use_section
-    return use_section, use_summary
+    return (use_summary,)
 
 
 @app.cell(hide_code=True)
@@ -4084,7 +4063,7 @@ def _(
                     "descriptive diagnostic, not a coverage test or an estimate of true market noise."),
         ])}),
     ])
-    return heston_misfit_figure, heston_misfit_vol_summary
+    return
 
 
 @app.cell(hide_code=True)
@@ -4231,7 +4210,7 @@ def _(EVIDENCE, H, MID, QUOTES, mo):
 
 
 @app.cell(hide_code=True)
-def _(cards, grid, md, mo, note, section):
+def _(cards, grid, md, mo, note):
     # Display notation follows the trajectory lesson; saved target keys stay unchanged.
     BERGOMI_PARAMETER_LABELS = {
         "hurst": r"Roughness $H$",
@@ -4391,11 +4370,21 @@ def _(caption, grid, md, mo, np, plots, plt):
             [Friz, Gerhold and Pinter, Sections 5.2–5.3](https://pmc.ncbi.nlm.nih.gov/articles/PMC6043956/).
             """)}),
     ])
-    return bergomi_skew_asymptotics, bergomi_skew_figure
+    return
 
 
 @app.cell(hide_code=True)
-def _(BERGOMI_PARAMETER_LABELS, bergomi_results, caption, md, mo, np, plots, plt, table):
+def _(
+    BERGOMI_PARAMETER_LABELS,
+    bergomi_results,
+    caption,
+    md,
+    mo,
+    np,
+    plots,
+    plt,
+    table,
+):
     _recovery = bergomi_results["recovery"]
     _truth = np.asarray(_recovery["truth"])
     _q = np.asarray(_recovery["q05_q50_q95"])
@@ -4442,11 +4431,21 @@ def _(BERGOMI_PARAMETER_LABELS, bergomi_results, caption, md, mo, np, plots, plt
                     "development panel and do not certify calibration conditional on a particular quote set."),
         ])}),
     ])
-    return (bergomi_recovery_figure,)
+    return
 
 
 @app.cell(hide_code=True)
-def _(DELTA, bergomi_results, caption, md, mo, np, plots, plt, price_residual_vol_points):
+def _(
+    DELTA,
+    bergomi_results,
+    caption,
+    md,
+    mo,
+    np,
+    plots,
+    plt,
+    price_residual_vol_points,
+):
     _g = bergomi_results["geometry"]
     _fit = bergomi_results["fit_comparison"]
     _observed = np.asarray(_g["observed_raw"])
@@ -4489,7 +4488,7 @@ def _(DELTA, bergomi_results, caption, md, mo, np, plots, plt, price_residual_vo
                 "its direct pricer, while Bergomi uses the fixed emulator."),
         md(_comparison + " This one snapshot is a controlled comparison, not a general ranking of the models."),
     ])
-    return (bergomi_fit_figure,)
+    return
 
 
 @app.cell(hide_code=True)
@@ -4527,7 +4526,17 @@ def _(bergomi_results, controls, mo):
 
 
 @app.cell(hide_code=True)
-def _(DELTA, bergomi_expiry, bergomi_results, caption, mo, np, plots, plt, price_residual_vol_points):
+def _(
+    DELTA,
+    bergomi_expiry,
+    bergomi_results,
+    caption,
+    mo,
+    np,
+    plots,
+    plt,
+    price_residual_vol_points,
+):
     _g = bergomi_results["geometry"]
     _observed = np.asarray(_g["observed_raw"])
     _idx = np.flatnonzero(np.asarray(_g["expiry_index"]) == bergomi_expiry.value)
@@ -4575,7 +4584,7 @@ def _(DELTA, bergomi_expiry, bergomi_results, caption, mo, np, plots, plt, price
                 "These are descriptive checks on the fitted quotes, not held-out coverage or a "
                 "calibration certificate."),
     ])
-    return (bergomi_uncertainty_figure,)
+    return
 
 
 @app.cell(hide_code=True)
