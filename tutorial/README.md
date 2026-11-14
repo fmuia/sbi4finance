@@ -186,6 +186,7 @@ matching code and environment.
 | `assets/` | Saved examples, results and figures |
 | `tests/` | Code, data and notebook checks |
 | `curriculum/` | Teaching plans and review notes |
+| `slides/` | Beamer source of the opening talks (slot 1 so far), compiled in the tutorial's Overleaf project |
 
 ## Where the numbers come from
 

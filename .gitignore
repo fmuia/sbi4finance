@@ -3,6 +3,7 @@ __pycache__/
 *.egg-info/
 __marimo__/
 figures/
+!tutorial/slides/*/figures/
 *.out
 lab/cluster/oscar.local.json
 .claude/settings.local.json

@@ -29,7 +29,7 @@ TEXT = {"live": "white", "cached": "#1E1E1E", "slide": "#1E1E1E"}
 # (label, minutes, presenter, mode); mode is "live" (computed on stage), "cached" (loaded from
 # results/) or "slide" (static text or code on screen).
 TUTORIAL = ("The tutorial: one smile, three models, 115 minutes", [
-    ("1  The problem:\nBayes for\nvolatility models", 15, "F", "live"),
+    ("1  Introduction:\nBayes for\nvolatility models", 15, "F", "slide"),
     ("2  What is\namortized Bayes?", 15, "A", "live"),
     ("3  Network\narchitectures", 10, "S", "cached"),
     ("4  Heston on the\nSPY smile, in\nBayesFlow", 20, "S", "live"),
@@ -38,15 +38,13 @@ TUTORIAL = ("The tutorial: one smile, three models, 115 minutes", [
 ])
 
 SLOTS = {
-    1: ("Slot 1, 15 minutes", [
-        ("The marking\nprocedure", 2, "F", "cached"),
-        ("Two calibrations,\ntwo prices", 1.5, "F", "cached"),
-        ("The rules", 1, "F", "slide"),
-        ("The posterior in one example:\nBlack–Scholes on two SPY quotes", 4, "F", "live"),
-        ("Richer models,\ncostlier posteriors", 2, "F", "cached"),
-        ("Every name at month-end,\nevery validation run", 1.5, "F", "slide"),
-        ("Amortized\ninference", 1.5, "F", "slide"),
-        ("The\nafternoon", 1.5, "F", "slide"),
+    1: ("Slot 1, 15 minutes, Beamer slides", [
+        ("Why uncertainty,\nwhy Bayes", 1.75, "F", "slide"),
+        ("The example:\nfive steps,\nsix questions", 2.5, "F", "slide"),
+        ("Bayes for calibration: prior and likelihood, the posterior as draws,\nfrom posterior to prices, why Bayes, "
+         "thin quotes", 6.75, "F", "slide"),
+        ("The cost;\nnext: amortized\ninference", 1.75, "F", "slide"),
+        ("Summary,\nthe team,\nthe rest", 2.25, "F", "slide"),
     ]),
     2: ("Slot 2, 15 minutes", [
         ("Two ways\nto pay", 2, "A", "slide"),

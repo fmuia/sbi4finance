@@ -1,0 +1,686 @@
+% Slot 1 of the ICAIF '26 tutorial: the introduction, Bayes for volatility models (15 minutes).
+% Uses the tutorial's bayesops theme unchanged; compile with LuaLaTeX (the theme needs it).
+% In the Overleaf project: upload this file and figures/slot1/, then Menu > Main document > slot1.tex.
+%
+% Two kinds of evidence, labelled on each slide that shows one:
+%   - ILLUSTRATION (slides 7 to 9 and 11): one running example, a thin option chain simulated from Heston, the model
+%     right by construction, and one exotic, a forward-start call. It shows a mechanism.
+%     tutorial/slides/slot1/illustration.py computes it.
+%   - RESULT (slide 12, and two backup frames): what the tutorial's Heston study on 63 SPX quotes recorded as of
+%     11 November 2026. The numbers are in tutorial/slides/slot1/recorded-results.json, each with its source.
+% tutorial/slides/slot1/export_figures.py draws every figure and prints every number the slides quote.
+% Dashes are typed as Unicode (–): the theme's title fonts do not turn -- into a dash.
+% Speaker notes are in \note{}; Beamer prints them only with \setbeameroption{show notes on second screen}.
+\documentclass[aspectratio=169]{beamer}
+
+\usepackage[cover]{bayesops}
+\noautothankyouframe
+\usepackage{booktabs}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}  % a table column set ragged right
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning}
+\usepackage{unicode-math}
+\setmathfont{Latin Modern Math}
+
+% ─── Slot 1 helpers (what this deck adds to the theme) ────────────────────────
+\providecommand\highlight[1]{\textcolor{neonlake}{#1}}
+\definecolor{orchid}{HTML}{C2187A}  % the figures' second colour: least squares and the classical route
+\definecolor{lagoon}{HTML}{1A9C86}  % a check that holds
+\definecolor{amber}{HTML}{D9820A}   % a check that holds with a caveat
+\definecolor{signal}{HTML}{C2362B}  % a check that raised a flag
+\setbeamercolor{structure}{fg=neonlake}
+\setbeamertemplate{enumerate item}{\color{neonlake}\insertenumlabel.}
+
+% Vertical layout. Every slide is set from the top: the title, then the key line. The strip and the source line sit at
+% the bottom, and the figure or diagram is centred in the space between. \gap is glue of the highest order, so this
+% holds however the theme aligns its frames.
+\newcommand\gap{\par\vskip 0pt plus 1filll\relax}
+\newlength\footgap  % kept free between a slide's last line and the theme's footer
+\setlength\footgap{3mm}
+% A figure on its own centred line. If a frame overflows in the real theme, lower \figmax: every figure shrinks to it.
+\newlength\figmax
+\setlength\figmax{41mm}
+\newcommand\fig[2]{\gap{\centering
+  \includegraphics[width=#1\linewidth, height=\figmax, keepaspectratio]{figures/slot1/#2}\par}\gap}
+\newcommand\source[1]{\par\vspace{-\footgap}\vspace{0.45em}{\fontsize{6.5}{8}\selectfont\color{aviation!60}#1\par}%
+  \vspace{\footgap}}
+% The reading order of a main slide: \key is the one short line everyone reads, under the title; the figure is the
+% evidence; \pairs is an optional strip under it, at most three \pair label–value pairs of a few words each.
+% \detail is small grey text, used only on backup frames.
+\newcommand\key[1]{{\large\TitleFont\color{aviation}#1\par}\vspace{0.4em}}
+\newcommand\pair[2]{{\scriptsize\color{aviation!55}\MakeUppercase{#1}}\\[1pt]{\small\color{aviation}#2}}
+\newcommand\detail[1]{\par\vspace{0.5em}{\footnotesize\color{aviation!60}#1\par}}
+% The rule above a strip carries the kind of evidence the slide shows: \pairs[illustration] or \pairs[result].
+\newcommand\evidence{}
+\newcommand\evidencetag[3]{%
+  \node[anchor=east, draw=#1, fill=#2, text=#1, rounded corners=1.5mm, line width=0.4pt, inner xsep=2.2mm,
+        inner ysep=0pt, minimum height=3.2mm, font=\fontsize{5.5}{6.5}\selectfont\TitleFont] (tag) at (\linewidth, 0)
+    {#3};
+  \coordinate (end) at ([xshift=-1.5mm]tag.west);}
+\newcommand\evidenceillustration{\evidencetag{aviation!60}{white}{ILLUSTRATION · SIMULATED QUOTES}}
+\newcommand\evidenceresult{\evidencetag{neonlake}{neonlake!8}{RESULT · HESTON ON SPX · AS OF 11 NOV}}
+\newcommand\divider[1]{\noindent\begin{tikzpicture}[baseline=0pt]
+  \useasboundingbox (0, -1.5mm) rectangle (\linewidth, 1.5mm);
+  \coordinate (end) at (\linewidth, 0);
+  \csname evidence#1\endcsname
+  \draw[aviation!15, line width=0.4pt] (0, 0) -- (end);
+\end{tikzpicture}}
+\newcommand\pairs[4][]{\par\vspace{0.35em}\divider{#1}\par\vspace{0.15em}%
+  \begin{columns}[T,onlytextwidth]\column{0.32\textwidth}#2\column{0.32\textwidth}#3\column{0.32\textwidth}#4%
+  \end{columns}\par\vspace{\footgap}}
+% A light rule between the rows of a list set as a table (slides 5, 13 and 16), placed after \\
+\newcommand\rowrule{\noalign{\vskip 3.5pt{\color{aviation!15}\hrule height 0.4pt}\vskip 3.5pt}}
+% The state of a check (slide 13): it holds, it holds with a caveat, it raised a flag, it is still to come.
+\newcommand\statusdisc[2]{\tikz[baseline=-0.9mm, x=1mm, y=1mm]{\fill[#1] (0, 0) circle[radius=1.85];#2}}
+\newcommand\holds{\statusdisc{lagoon}{\draw[white, line width=0.9pt, line cap=round, line join=round]
+  (-0.9, -0.05) -- (-0.3, -0.7) -- (0.95, 0.7);}}
+\newcommand\caveat{\statusdisc{amber}{\draw[white, line width=0.9pt, line cap=round]
+  (-0.95, -0.12) .. controls (-0.45, 0.62) and (-0.15, 0.3) .. (0, 0) .. controls (0.15, -0.3) and (0.45, -0.62) ..
+  (0.95, 0.12);}}
+\newcommand\flagged{\statusdisc{signal}{\draw[white, line width=0.9pt, line cap=round] (0, 0.95) -- (0, -0.2);
+  \fill[white] (0, -0.95) circle[radius=0.17];}}
+\newcommand\pending{\tikz[baseline=-0.9mm, x=1mm, y=1mm]{%
+  \draw[aviation!45, line width=0.6pt, dash pattern=on 1.3pt off 1pt] (0, 0) circle[radius=1.85];
+  \foreach \x in {-0.75, 0, 0.75} \fill[aviation!45] (\x, 0) circle[radius=0.19];}}
+\newcommand\statuskey[2]{\scalebox{0.62}{#1}\hspace{1.3mm}#2\hspace{6mm}}  % an entry of the legend under the checks
+% A presenter: \person{photo}{name}{affiliation}{background}
+\newcommand\person[4]{{\centering
+  \tikz\node[circle, minimum size=17mm, inner sep=0pt, draw=aviation!20, line width=0.4pt,
+             path picture={\node at (path picture bounding box.center)
+               {\includegraphics[width=17mm]{figures/slot1/#1}};}] {};\par\vspace{4pt}
+  {\small\TitleFont\color{aviation}#2\par}\vspace{1pt}
+  {\scriptsize\color{aviation!60}#3\par}\vspace{6pt}
+  {\fontsize{5.5}{7}\selectfont\color{aviation!55}\MakeUppercase{Background}\par}\vspace{1pt}
+  {\scriptsize\color{aviation}#4\par}}}
+% Diagram styles, switched on per picture with [deck] so that they cannot change the theme's own drawings
+\tikzset{deck/.style={
+  box/.style={draw=aviation!35, fill=aviation!4, rounded corners=3pt, align=center, font=\footnotesize,
+              inner sep=4pt, text width=2.05cm, minimum height=1.5cm},
+  focus/.style={fill=neonlake!12, draw=neonlake!60},
+  arr/.style={-{Stealth[length=4pt]}, aviation!70, line width=0.6pt},
+  stage/.style={draw=neonlake!60, fill=neonlake!10, rounded corners=3pt, font=\small\bfseries, text=aviation,
+                inner sep=5pt, minimum width=2.15cm},
+  under/.style={font=\scriptsize, text=aviation!75, align=center},
+  chip/.style={draw=aviation!35, fill=aviation!4, rounded corners=7pt, font=\scriptsize, text=aviation,
+               inner xsep=7pt, inner ysep=3.5pt},
+}}
+
+\title[Introduction · Bayes for Volatility Models]{Amortized Bayesian Calibration of Volatility Models}
+\subtitle{Introduction: Bayes for Volatility Models}
+\author{Francesco Muia}
+\venue{ICAIF '26 Tutorial}
+\location{Milan, Italy}
+\date{14 November 2026}
+
+\begin{document}
+
+\titleframe
+\setcounter{framenumber}{0}
+\useclassicframetitle
+
+% ════════════════════════════════════════════════════════════════════════════
+% How every main slide reads: the title and one short key line (\key) are what everyone reads; the figure is the
+% evidence; the strip of facts under it (\pairs, at most three label–value pairs of a few words) is optional, and its
+% rule says whether the evidence is an illustration or a result. Explanations go in the speaker notes, never in
+% sentences on the slide. Style: plain statements, in logical order; each key line follows from the previous one.
+%
+% The argument, in five parts:
+%   1. why uncertainty, and what Bayes offers (slides 1–2);
+%   2. the example and the exercise (3–5): volatility models are the example; the steps and the questions are general;
+%   3. Bayes for calibration (6–11): prior and likelihood, the posterior as draws, from posterior to prices, why
+%      Bayes, and what happens when the quotes run thin;
+%   4. the cost of a posterior, and the handover to amortized inference (12–13);
+%   5. the close (14–16): the summary, the team, the rest of the tutorial.
+
+% ════════════════════════════════════════════════════════════════════════════
+% Uncertainty, Bayes, and the example
+
+\begin{frame}{Uncertainty in Finance}
+\key{A number without a range is not enough to \highlight{decide}.}
+\gap{\small
+\begin{tabular}{@{}L{0.22\linewidth}L{0.75\linewidth}@{}}
+{\TitleFont Valuation} & a mark, and a reserve for what the market does not quote \\ \rowrule
+{\TitleFont Regulation} & a value at 90\% confidence; the sensitivity of fair values \\ \rowrule
+{\TitleFont Risk} & limits and capital rest on estimated parameters \\ \rowrule
+{\TitleFont Trading} & hedges and position sizes inherit the estimation error \\
+\end{tabular}\par}\gap
+\source{Commission Delegated Regulation (EU) 2016/101 (prudent valuation), Article 9; IFRS 13, paragraph 93(h).}
+\note{Finance runs on estimates: a volatility, a correlation, the parameters of a model. Decisions are taken on them,
+so their uncertainty matters. A valuation needs a mark, and a reserve where the market gives no price. Regulation
+asks for it explicitly: European prudent valuation asks for a value at 90 percent confidence, and accounting
+standards for the sensitivity of fair values to inputs that cannot be observed. Risk limits and capital rest on
+estimated parameters. Hedges and position sizes inherit the estimation error. In each case one number is not enough:
+what is needed is a distribution.}
+\end{frame}
+
+\begin{frame}{What Bayes Offers}
+\key{Bayes treats what is unknown as a \highlight{distribution}.}
+\gap{\small
+\begin{tabular}{@{}L{0.33\linewidth}L{0.64\linewidth}@{}}
+{\TitleFont One language} & parameters, predictions, prices: all distributions \\ \rowrule
+{\TitleFont Prior knowledge counts} & what is known before the data is stated, not hidden \\ \rowrule
+{\TitleFont Uncertainty propagates} & anything computed from the parameters gets a range \\ \rowrule
+{\TitleFont It can be checked} & simulate from the model, and compare with the data \\
+\end{tabular}\par}\gap
+\note{Bayesian inference is a general way to get that distribution. Everything unknown is described by a
+distribution: the parameters, and anything computed from them. What is known before the data comes in is stated, as a
+prior, not hidden in a choice of bounds or starting points. Uncertainty propagates: a price, a hedge, a forecast each
+get a range. And the result can be checked, by simulating from the model and comparing with the data. The rest of
+this talk makes these four points concrete on one example.}
+\end{frame}
+
+\begin{frame}{The Example: Volatility Models}
+\key{A calibrated model prices what the market does \highlight{not quote}.}
+\gap{\centering
+\begin{tikzpicture}[deck, box/.append style={minimum height=1.95cm, text width=1.95cm}]
+  \node[box, text width=2.35cm] (q) {%
+    \begin{tikzpicture}[x=3.3mm, y=1.3mm]
+      \draw[neonlake, line width=0.8pt] plot[smooth] coordinates
+        {(0.2,7.6) (1.2,6.0) (2.2,4.5) (3.2,3.2) (4.2,2.3) (5.2,1.9) (6.2,2.1)};
+      \foreach \x/\y in {0.2/7.3, 1.2/6.3, 2.2/4.3, 3.2/3.4, 4.2/2.2, 5.2/2.1, 6.2/1.9}
+        {\draw[aviation, line width=0.45pt] (\x,\y-0.8) -- (\x,\y+0.8);
+         \fill[aviation] (\x,\y) circle[radius=0.8pt];}
+    \end{tikzpicture}\\[3pt]
+    \textbf{Option quotes}\\[-1pt] {\scriptsize by strike and expiry}};
+  \node[box, right=0.36cm of q] (c) {\textbf{Calibration}\\[2pt] {\scriptsize parameters that fit the quotes}};
+  \node[box, focus, right=0.36cm of c] (m) {\textbf{Calibrated model}};
+  \node[box, text width=2.35cm, right=0.36cm of m] (p) {\textbf{Products not quoted}\\[3pt]
+    {\scriptsize forward starts\\[-1pt] barrier options\\[-1pt] volatility swaps}};
+  \node[box, right=0.36cm of p] (b) {\textbf{The book}\\[2pt] {\scriptsize marks and reserves}};
+  \foreach \a/\b in {q/c, c/m, m/p, p/b} \draw[arr] (\a) -- (\b);
+  \node[font=\footnotesize\bfseries, text=neonlake, above=3pt of m] {every day, for many underlyings};
+  \node[font=\footnotesize, text=orchid, below=3pt of c, align=center] {an estimate,\\from noisy quotes};
+  \node[font=\footnotesize, text=orchid, below=3pt of p, align=center] {one price,\\no error bar};
+\end{tikzpicture}\par}\gap
+\pairs{\pair{Quoted}{listed options}}{\pair{Not quoted}{priced by the model}}
+      {\pair{The question}{how sure is that price?}}
+\source{De Spiegeleer, Madan, Reyners and Schoutens (2018); Schoutens, Simons and Tistaert (2004).}
+\note{We make this concrete on one example: the calibration of volatility models. Every day a desk calibrates a model
+to the options the market quotes, for many underlyings, and uses it to value products the market does not quote:
+forward starts, barrier options, volatility swaps. The calibration is an estimate from noisy quotes, yet the value is
+reported as one number. Schoutens, Simons and Tistaert fitted seven models to one option surface: all fitted well, and
+their exotic prices differed substantially. So: how sure is that number, and how is its uncertainty computed and
+checked?}
+\end{frame}
+
+\begin{frame}{An Exercise in Inference}
+\key{Volatility models are the exercise. The \highlight{five steps} are general.}
+\gap{\centering
+\begin{tikzpicture}[deck]
+  \node[stage] (a) {model};
+  \node[stage, right=0.42cm of a] (b) {simulate};
+  \node[stage, right=0.42cm of b] (c) {train};
+  \node[stage, right=0.42cm of c] (d) {infer};
+  \node[stage, right=0.42cm of d] (e) {check};
+  \foreach \x/\y in {a/b, b/c, c/d, d/e} \draw[arr] (\x) -- (\y);
+  \node[under, below=2pt of a] (a1) {prior, simulator,\\error model};
+  \node[under, below=2pt of b] {parameters and\\data, in pairs};
+  \node[under, below=2pt of c] {a network,\\once};
+  \node[under, below=2pt of d] {posterior draws\\for new data};
+  \node[under, below=2pt of e] {coverage,\\exact posteriors};
+  \node[chip, below=1.55cm of c.south] (r) {rough Bergomi options · 12:00};
+  \node[chip, left=0.25cm of r] (h) {Heston options · 11:40};
+  \node[chip, right=0.25cm of r, draw=neonlake!70, fill=neonlake!8, dashed] (y) {your simulator};
+\end{tikzpicture}\par}\gap
+\pairs{\pair{In finance}{pricing and return models}}
+      {\pair{In science}{epidemics, cosmology}}{\pair{What is needed}{a simulator and a prior}}
+\source{Cranmer, Brehmer and Louppe (2020).}
+\note{We chose volatility models as the exercise, because this audience knows them and their difficulties are real.
+The message of the tutorial is the method. Every part runs the same five steps: state a model, simulate pairs of
+parameters and data, train a network once, infer the posterior for new data, and check it. Only the first step is
+about volatility: a prior, a simulator and an error model. The same steps apply wherever a simulator maps parameters
+to data and the way back is hard, in finance and across the sciences. If your model can be simulated, this tutorial
+applies to it.}
+\end{frame}
+
+\begin{frame}{Questions These Methods Answer}
+\key{The methods answer questions about \highlight{uncertainty}.}
+\gap{\small
+\begin{tabular}{@{}L{0.455\linewidth}L{0.515\linewidth}@{}}
+\leavevmode{\scriptsize\color{aviation!55}\MakeUppercase{Question}} &
+  \leavevmode{\scriptsize\color{aviation!55}\MakeUppercase{In today's examples}} \\ \rowrule
+{\TitleFont Which parameters fit the data?} & the posterior of a volatility model \\ \rowrule
+{\TitleFont How uncertain is what they imply?} & the price range of unquoted products \\ \rowrule
+{\TitleFont What do the data determine?} & which parameters the quotes pin \\ \rowrule
+{\TitleFont How wrong is the model?} & is the best configuration still very wrong? \\ \rowrule
+{\TitleFont Can the answer be trusted?} & coverage on simulations; exact posteriors \\ \rowrule
+{\TitleFont Can it be done every day?} & a fraction of a second, after training \\
+\end{tabular}\par}\gap
+\note{These are the questions the methods answer, for any model. Which parameter values are consistent with the data?
+How uncertain is anything computed from them: a price, a reserve, a forecast? What do the data determine, and what do
+they leave open? How wrong is the model? Can the answer be trusted? And can it be produced for every data set, every
+day? On the right is the form each question takes today. Listen for the questions more than for the examples: they are
+what transfers to your own model.}
+\end{frame}
+
+% ════════════════════════════════════════════════════════════════════════════
+% Bayes for calibration
+
+\begin{frame}{Calibration: The Bayesian Way}
+\key{Bayes' rule turns the quotes into a \highlight{distribution} over parameters.}
+\gap{\centering
+\begin{tikzpicture}[deck, box/.append style={text width=3.5cm, minimum height=1.75cm},
+                    sign/.style={font=\Large\TitleFont, text=aviation!70}]
+  \node[box] (prior) {\textbf{Prior}\\[2pt] {\scriptsize plausible parameters,\\[-1pt] before the quotes}};
+  \node[under, below=3pt of prior] {e.g. long-run volatility\\between 10\% and 40\%};
+  \node[sign, right=0.3cm of prior] (times) {$\times$};
+  \node[box, right=0.3cm of times] (fit) {\textbf{Likelihood}\\[2pt] {\scriptsize how well they price the quotes,\\[-1pt]
+    given their bid–ask}};
+  \node[sign, right=0.3cm of fit] (gives) {$\propto$};
+  \node[box, focus, right=0.3cm of gives] (posterior) {\textbf{Posterior}\\[2pt] {\scriptsize every parameter set,\\[-1pt]
+    weighted}};
+  \node[under, below=3pt of fit] {a quote is the model's price\\plus noise the size of its bid–ask};
+  \node[under, below=3pt of posterior] {computed as draws,\\by sampling algorithms};
+\end{tikzpicture}\par}\gap
+\pairs{\pair{Quotes}{$y_i = P_i(\theta) + c\,h_i\,\varepsilon_i$}}
+      {\pair{Prior}{$p(\theta, c)$}}
+      {\pair{Posterior}{$p(\theta, c \mid y) \propto p(y \mid \theta, c)\,p(\theta, c)$}}
+\note{Calibration is an inverse problem. The pricer maps parameters to prices; we see prices, with error, and want the
+parameters. Each quote is the model's price plus noise: its bid–ask half-spread $h$ times a scale $c$ that is
+inferred too, as in the notebooks. That is the likelihood. A prior says which parameters are plausible before the
+quotes. Bayes' rule multiplies the two and returns the posterior: not one parameter set, but every parameter set,
+weighted. Least squares returns its peak, when the prior is flat.}
+\end{frame}
+
+\begin{frame}{Prior and Likelihood}
+\key{The prior says what is plausible. The likelihood \highlight{scores} it.}
+\fig{0.94}{prior-likelihood.pdf}
+\pairs[illustration]{\pair{Prior}{one range per parameter}}{\pair{Likelihood}{errors scaled by bid–ask}}
+      {\pair{Least squares}{this likelihood, maximized}}
+\note{The two ingredients, on an example: seven quotes at six months, simulated from Heston. On the left, the prior: a
+range for each parameter, before any quote. Each grey curve is the smile of one parameter set drawn from it. The prior
+allows a wide family of smiles. On the right, the likelihood. It scores a parameter set by how far its prices fall
+from the quotes, measured in bid–ask half-spreads, with normal errors. The magenta smile misses by about one
+half-spread: likely. The dashed one misses by ten: possible under the prior, very unlikely given the quotes. Least
+squares maximizes exactly this likelihood. Bayes keeps the whole score, and multiplies it by the prior.}
+\end{frame}
+
+\begin{frame}{What a Posterior Looks Like}
+\only<1>{\key{A posterior is computed as \highlight{draws}, by a sampler.}}%
+\only<2>{\key{The draws show what the quotes \highlight{pin}, and what they leave open.}}%
+\only<3>{\key{Least squares keeps the peak, and a \highlight{quadratic} region around it.}}
+\only<1>{\fig{0.94}{posterior-1.pdf}}\only<2>{\fig{0.94}{posterior-2.pdf}}\only<3>{\fig{0.94}{posterior-3.pdf}}
+\pairs[illustration]{\pair{Example}{14 simulated quotes}}
+      {\uncover<2->{\pair{Left open}{a curved valley}}}
+      {\uncover<3>{\pair{The notebook's 63 quotes}{both agree within 2\%}}}
+\note{The posterior has no formula. It is computed as draws, by a sampling algorithm such as Markov chain Monte Carlo.
+Here is one: it starts from a guess, proposes a move, and accepts it more often when the fit improves. After a few
+hundred steps it has found where the posterior is, and it stays there. Second step: 4,000 draws, for fourteen quotes
+at two expiries. On the right, the quotes pin today's volatility and the correlation. On the left they leave a curved
+valley open: a slow reversion to a high long-run volatility fits as well as a fast reversion to a low one. Third step:
+the classical answer, least squares with a quadratic approximation, which also gives ranges. Where the quotes pin the
+parameters it matches the posterior: on the Heston notebook's 63 quotes, within 2 percent. Along the valley it does
+not: its region is straight, and the posterior bends.}
+\end{frame}
+
+\begin{frame}{From Posterior to Prices}
+\key{Each draw prices the exotic. Together the prices form a \highlight{range}.}
+\fig{0.90}{price-range.pdf}
+\pairs[illustration]{\pair{Product}{forward-start call}}{\pair{Mark and 90\% point}{4.70 and 4.92 per 100}}
+      {\pair{Prudent value, if sold}{the 90\% point}}
+\note{What is a posterior for? Take an exotic: a forward-start call, whose strike is set at the money in six months
+and which pays at one year. Price it under each draw, with the desk's own pricer: 4,000 prices. Their mean, 4.70 per
+100 of forward, is a natural mark. If the bank has sold the call, its prudent value is the 90\% point, 4.92; the gap
+is a reserve of 5\% of the mark. Least squares gives one price, 4.77. The same draws price any other product, or a
+whole book, and no sensitivities are needed. The European prudent-valuation rules ask for this 90\% point; banks meet
+them today with consensus data and expert ranges.}
+\end{frame}
+
+\begin{frame}{Why Bayes}
+\key{Bayes makes the calibration's \highlight{assumptions and uncertainty} explicit.}
+\gap{\small
+\begin{tabular}{@{}L{0.40\linewidth}L{0.57\linewidth}@{}}
+{\TitleFont It states the assumptions} & bounds, fixed parameters, penalties: a prior \\ \rowrule
+{\TitleFont Least squares assumes too} & normal errors, fixed weights, a flat prior \\ \rowrule
+{\TitleFont It answers the desk's question} & the distribution of a price, for any product \\ \rowrule
+{\TitleFont It shows what the quotes fix} & which parameters are pinned, which trade off \\ \rowrule
+{\TitleFont It checks the model} & simulated quotes, against the market's \\ \rowrule
+{\TitleFont It is the general case} & least squares is its limit, when quotes are rich \\
+\end{tabular}\par}\gap
+\note{Why Bayes? First, calibration already uses priors, unstated: bounds, fixed parameters, penalties, starting from
+yesterday's fit. Bayes states them, and lets the data overrule them. And least squares is not free of assumptions
+either: it is the best fit under normal errors of fixed relative size and a flat prior. Second, Bayes answers the
+question a desk has: not which parameters, but what is the distribution of this price. Third, the posterior's shape
+shows what the quotes determine. Fourth, it checks the model: simulate quotes from the posterior and compare them with
+the market. Last, it is the general case. Least squares with a quadratic approximation also gives ranges, and it is
+the limit of Bayes when the quotes are informative. The next slide shows both regimes.}
+\end{frame}
+
+\begin{frame}{When the Quotes Run Thin}
+\key{Rich quotes: the two ranges agree. Thin quotes: Bayes \highlight{still answers}.}
+\fig{0.94}{ranges-by-quotes.pdf}
+\pairs[illustration]{\pair{Classical range}{least-squares error bars}}
+      {\pair{The notebook's 63 quotes}{both agree within 2\%}}
+      {\pair{Quotes at 1 year only}{no classical range}}
+\note{An example of the last point. The same simulated surface, read with fewer and fewer expiries; the same
+forward-start call. With three expiries or more, least squares with its error bars and the posterior give the same
+range, as theory predicts when the quotes determine the parameters: the Bernstein–von Mises theorem. There a careful
+classical analysis is all you need. The Heston notebook at 11:40 is in that regime: on its 63 simulated SPX quotes the
+two agree within 2 percent. With fewer expiries they part ways. With two, the quadratic approximation runs past the
+edge of the prior's box. With one, the fit sits on the edge of the box and has no range; the posterior has a wide one,
+set largely by the prior, and it says so.}
+\end{frame}
+
+% ════════════════════════════════════════════════════════════════════════════
+% Simulation-based inference, in brief
+
+\begin{frame}{The Cost of a Posterior}
+\key{One exact posterior costs \highlight{minutes to months} of computing.}
+\fig{0.97}{posterior-cost.pdf}
+\pairs[result]{\pair{A sampler needs}{about 100,000 pricings}}{\pair{Heston pricing}{Fourier: milliseconds each}}
+      {\pair{Rough Bergomi pricing}{Monte Carlo: minutes each}}
+\note{The catch is the cost. A posterior is computed as draws, and a sampler such as Markov chain Monte Carlo needs on
+the order of a hundred thousand pricings of the quotes: 146,000 in our Heston runs. Heston prices by Fourier integral,
+in milliseconds, so its exact posterior takes 14 to 27 CPU-minutes. Rough Bergomi prices by Monte Carlo, one to two
+CPU-minutes per pricing, so the same sampler would take months: an estimate, we have not run it. These are our own
+numbers, and orders of magnitude. The last row is the same Heston posterior from a network trained in advance: a
+fraction of a second. That is the subject of the next talk.}
+\end{frame}
+
+\begin{frame}{Next: Amortized Inference}
+\key{Train a network once, on simulations. Then every posterior is \highlight{fast}.}
+\gap{\centering
+\begin{tikzpicture}[deck, box/.append style={text width=2.2cm, minimum height=1.45cm}]
+  \node[box] (prior) {\textbf{Prior}\\[2pt] {\scriptsize plausible\\[-1pt] parameters}};
+  \node[box, right=0.36cm of prior] (sim) {\textbf{Simulator}\\[2pt] {\scriptsize model prices\\[-1pt] plus errors}};
+  \node[box, right=0.36cm of sim] (bank) {\textbf{A bank}\\[2pt] {\scriptsize of simulated\\[-1pt] pairs}};
+  \node[box, focus, right=0.36cm of bank] (net) {\textbf{A network}\\[2pt] {\scriptsize trained once}};
+  \node[box, right=0.36cm of net] (draws) {\textbf{Posterior draws}\\[2pt] {\scriptsize in a fraction\\[-1pt] of a second}};
+  \node[box, above=0.34cm of net, fill=orchid!8, draw=orchid!50, minimum height=0.62cm] (today) {\textbf{New data}};
+  \foreach \a/\b in {prior/sim, sim/bank, bank/net, net/draws} \draw[arr] (\a) -- (\b);
+  \draw[arr] (today) -- (net);
+\end{tikzpicture}\par}\gap
+\pairs{\pair{Needs}{a simulator and a prior}}{\pair{Pays}{once, in training}}
+      {\pair{Next}{Stefan T. Radev, 11:15}}
+\note{So the power of Bayes comes at a price, and the rest of the tutorial is about paying it once. Draw parameters
+from the prior, simulate data from them, and train a network on these pairs to return the posterior. It needs a
+simulator and a prior, and no formula for the likelihood. After training, a posterior takes a fraction of a second,
+for any new data set. Stefan explains how, in the next talk.}
+\end{frame}
+
+% ════════════════════════════════════════════════════════════════════════════
+% The close: takeaways, the team, the rest of the tutorial
+
+\begin{frame}{Summary}
+\key{Bayes returns a \highlight{distribution}. Amortization makes it fast.}
+\fig{0.97}{summary.pdf}
+\pairs{\pair{A calibration is an estimate}{Bayes: a distribution}}
+      {\pair{Draws price every product}{a mark, a range, a reserve}}
+      {\pair{A posterior is costly}{amortization pays once}}
+\note{Three pictures to take away. A calibration is an estimate, and Bayes turns it into a distribution over
+parameters: it shows what the quotes pin and what they leave open, with the assumptions stated. Every draw prices
+every product, so each price gets a range, a mark and a reserve. With informative quotes the classical ranges agree;
+Bayes is the general case. And a posterior is costly, from minutes to months, unless the cost is paid once: that is
+amortized inference, and the rest of this tutorial. The examples are volatility models; the method is general.}
+\end{frame}
+
+\begin{frame}{The Team}
+\gap
+\begin{columns}[T,onlytextwidth]
+\column{0.235\textwidth}\person{francesco-muia.jpg}{Francesco Muia}{Muia AI \& Analytics Solutions · PyMC Labs}
+  {Bayesian data science consulting; computational finance}
+\column{0.235\textwidth}\person{alexander-fengler.jpg}{Alexander Fengler}{Brown University}
+  {Simulation-based inference; probabilistic modelling}
+\column{0.235\textwidth}\person{stefan-radev.jpg}{Stefan T. Radev}{Rensselaer Polytechnic Institute}
+  {Lead developer of BayesFlow; Bayesian statistics and AI}
+\column{0.235\textwidth}\person{jerry-huang.jpg}{Jerry M. Huang}{Rensselaer Polytechnic Institute}
+  {Core developer of BayesFlow; simulation-based inference}
+\end{columns}
+\gap
+\note{A few words on the team. Stefan Radev is the lead developer of BayesFlow, the library used throughout, and Jerry
+Huang is one of its core developers; both are at Rensselaer. Alexander Fengler, at Brown, works on simulation-based
+inference and probabilistic modelling. I am a consultant in Bayesian data science, with a background in theoretical
+physics and computational finance. Between us: people who build the method, and people who apply it.}
+\end{frame}
+
+\begin{frame}{The Rest of the Tutorial}
+\key{Each part adds one \highlight{building block}.}
+\vspace{0.2em}
+{\centering
+\begin{tikzpicture}[x=1.1mm, y=1mm]
+  \foreach \start/\length/\shade in {0/15/22, 15/15/100, 30/10/75, 40/20/100, 60/30/75, 90/30/100}
+    \fill[neonlake!\shade, rounded corners=1pt] (\start + 0.35, 0) rectangle (\start + \length - 0.35, 2.6);
+  \foreach \minute/\clock in {0/11:00, 15/11:15, 30/11:30, 40/11:40, 60/12:00, 90/12:30, 120/13:00}
+    \node[font=\fontsize{5.5}{7}\selectfont, text=aviation!60, anchor=north] at (\minute, -0.5) {\clock};
+\end{tikzpicture}\par}
+\vspace{0.4em}
+% One row per part: the time, the part over what it adds, and the presenters
+{\footnotesize
+\begin{tabular}{@{}L{0.07\linewidth}L{0.65\linewidth}L{0.21\linewidth}@{}}
+\leavevmode{\TitleFont\color{neonlake}11:15} & {\TitleFont Amortized Bayesian inference}\newline
+  {\scriptsize\color{aviation!60}how a network learns a posterior, and when it pays} & Stefan T. Radev \\ \rowrule
+\leavevmode{\TitleFont\color{neonlake}11:30} & {\TitleFont Neural network architectures}\newline
+  {\scriptsize\color{aviation!60}which networks, for which data} & Stefan T. Radev \\ \rowrule
+\leavevmode{\TitleFont\color{neonlake}11:40} & {\TitleFont Worked example: Heston}\newline
+  {\scriptsize\color{aviation!60}the five steps in BayesFlow, against an exact posterior} & Alexander Fengler \\ \rowrule
+\leavevmode{\TitleFont\color{neonlake}12:00} & {\TitleFont Rough Bergomi and application}\newline
+  {\scriptsize\color{aviation!60}a model priced only by simulation; from posterior to products} &
+  Francesco Muia\newline Alexander Fengler \\ \rowrule
+\leavevmode{\TitleFont\color{neonlake}12:30} & {\TitleFont Advanced topics and open questions}\newline
+  {\scriptsize\color{aviation!60}where the method stops, and what is open} & Stefan T. Radev\newline Jerry M. Huang \\
+\end{tabular}\par}\gap
+\note{The rest of the tutorial adds one building block at a time. Stefan explains how a network learns a posterior and
+when that pays, and presents the networks. Alexander then runs the five steps on Heston in BayesFlow, where an exact
+posterior checks every claim. Alexander and I then take rough Bergomi, a model priced only by simulation. Stefan and
+Jerry close with advanced topics and open questions. Next: amortized Bayesian inference, with Stefan.}
+\end{frame}
+
+% ════════════════════════════════════════════════════════════════════════════
+\appendix
+\section{Backup}
+
+\begin{frame}{Backup: The Coverage Test}
+\key{A 90\% range must contain the truth \highlight{90\% of the time}.}
+\fig{0.97}{coverage.pdf}
+\pairs[result]{\pair{The test}{512 simulated surfaces}}{\pair{Five of six parameters}{89–92\%: on target}}
+      {\pair{Today's variance $v_0$}{97.5\%: too wide}}
+\end{frame}
+
+\begin{frame}{Backup: What the Checks Find}
+\key{The checks decide where the network is \highlight{trusted}.}
+\gap{\small
+\begin{tabular}{@{}L{0.035\linewidth}L{0.25\linewidth}L{0.65\linewidth}@{}}
+ & \leavevmode{\scriptsize\color{aviation!55}\MakeUppercase{Check}} &
+  \leavevmode{\scriptsize\color{aviation!55}\MakeUppercase{Heston on 63 SPX quotes, as of 11 November}} \\ \rowrule
+\holds & {\TitleFont Speed} & 0.3 s per posterior, against 14–27 CPU-minutes \\ \rowrule
+\holds & {\TitleFont Right on average} & 90\% intervals on target for 5 of 6 parameters \\ \rowrule
+\caveat & {\TitleFont Sharp case by case} & ranges 1.05–2.9 times the exact posterior's \\ \rowrule
+\pending & {\TitleFont Rough Bergomi} & simulations being generated; the same checks follow \\
+\end{tabular}\par}
+\vspace{0.7em}
+{\scriptsize\color{aviation!60}\statuskey\holds{holds}\statuskey\caveat{holds, with a caveat}%
+\statuskey\pending{still to come}\par}\gap
+\source{The Heston SPX notebook and its run records. Exact posteriors: MCMC on two simulated surfaces.}
+\end{frame}
+
+\begin{frame}{Backup: What an Assumption Does}
+\key{What the quotes leave open is set by an \highlight{assumption}.}
+\fig{0.94}{assumption.pdf}
+\pairs[illustration]{\pair{Assume a value}{same fit, another price}}{\pair{Fit it freely}{no range: on a bound}}
+      {\pair{State a prior}{today's volatility 10–40\%}}
+\end{frame}
+
+\begin{frame}{Backup: Two Products and a Book}
+\key{One set of posterior draws prices \highlight{every product}, consistently.}
+\fig{0.94}{joint-draws.pdf}
+\pairs[illustration]{\pair{A draw}{one full parameter set}}{\pair{A product}{priced under every draw}}
+      {\pair{A book}{its range is not the sum}}
+\end{frame}
+
+\begin{frame}{Backup: The Running Example}
+\fontsize{7.5}{9.5}\selectfont
+\begin{columns}[T,onlytextwidth]
+\column{0.45\textwidth}
+\begin{tabular}{@{}L{0.17\linewidth}L{0.74\linewidth}@{}}
+\toprule
+\multicolumn{2}{@{}l}{\textbf{Model and data}} \\
+\midrule
+Model & Heston at the notebook's market-like case: $v_0 = 0.0271$, $\kappa = 4.34$, $v_\infty = 0.0565$,
+$\sigma_v = 1.80$, $\rho = -0.667$ \\
+Quotes & 7 strikes, $\delta = \ln(K/F)/(0.16\sqrt{T})$ from $-3.5$ to $1$, at 1, 3 and 6 months, 1 and 2 years;
+each observed once \\
+Spreads & half-spreads of 0.3 volatility points at the money, 1.5 at $\delta = -3.5$ \\
+Errors & normal, $c$ times the half-spread; $c = 1$, inferred on $[0.5, 2]$ \\
+Prior & the notebook's: uniform on the box of slide 6 \\
+Product & a call struck at the money in 6 months, paid at 1 year \\
+\bottomrule
+\end{tabular}
+\column{0.52\textwidth}
+\begin{tabular}{@{}l@{\hspace{6pt}}c@{\hspace{6pt}}c@{\hspace{6pt}}c@{}}
+\toprule
+\multicolumn{4}{@{}l}{\textbf{The forward-start call}, per 100 of forward: 90\% ranges} \\
+\midrule
+Quoted expiries & Fit & Delta method & Posterior \\
+\midrule
+5: 1 month to 2 years & 4.71 & 4.61 to 4.81 & 4.61 to 4.80 \\
+4: 1 month to 1 year & 4.69 & 4.56 to 4.82 & 4.56 to 4.81 \\
+3: 3 months to 1 year & 4.72 & 4.51 to 4.94 & 4.51 to 4.90 \\
+2: 6 months and 1 year & 4.77 & 4.31 to 5.23 & 4.39 to 5.00 \\
+1: 1 year & 5.14 & none & 2.9 to 4.9 \\
+\bottomrule
+\end{tabular}\par\vspace{4pt}
+{\color{aviation!60}Under the generating parameters: 4.66. Slides 2, 3, 6 and 9 use the two expiries, slide 8
+the one. There the fit sits on a bound of the box; with today's volatility assumed between 10\% and 40\%, the best
+fit's price runs from 5.14 to 2.86.\par}
+\end{columns}
+\gap
+\source{An illustration, not a result of the tutorial: one simulated surface, independent quote errors, a model right
+by construction. Posterior by importance sampling and Metropolis moves, checked against independent chains.}
+\end{frame}
+
+\begin{frame}{Backup: The Example and the Notebook}
+\fontsize{7.5}{9.5}\selectfont
+\begin{tabular}{@{}L{0.2\linewidth}L{0.35\linewidth}L{0.39\linewidth}@{}}
+\toprule
+ & \textbf{The example of slides 2 to 9} & \textbf{The Heston notebook, 11:40} \\
+\midrule
+Model, prior, error law & Heston; uniform box; $c$ times the half-spread & the same \\
+Data & simulated: Heston is right by construction & the SPX quotes of 9 November 2026, and quotes simulated on
+the same contracts \\
+Quotes & 14, at the product's two dates; up to 35 & 63: nine strikes on seven expiries, 1 week to 11 months \\
+Half-spreads & 0.3 to 1.5 volatility points; median 0.7 & 0.02 to 0.5 volatility points; median 0.06 \\
+Product & a forward-start call, 6 months to 1 year & the application's products, this forward start among them \\
+What the quotes leave open & a ridge in $\kappa$ and $\sigma_v$: a visible range & almost nothing: 90\% intervals of
+at most about 1\% of the prior's range \\
+\bottomrule
+\end{tabular}
+\detail{The example keeps the notebook's model, prior, error law and parameters, and thins the chain, so that the
+mechanism is visible. On SPX the same calculation gives ranges too narrow to see.}
+\gap
+\source{The Heston SPX notebook and its run records, as of 11 November 2026.}
+\end{frame}
+
+\begin{frame}{Backup: Least Squares on 63 Quotes}
+\footnotesize
+{\small\TitleFont\color{aviation}On the notebook's 63 simulated quotes, the two routes give the same intervals.\par}
+\vspace{0.6em}
+\begin{tabular}{@{}L{0.24\linewidth}L{0.25\linewidth}L{0.25\linewidth}L{0.14\linewidth}@{}}
+\toprule
+\textbf{Parameter} & \textbf{Least squares, 90\%} & \textbf{Exact posterior, 90\%} & \textbf{Width ratio} \\
+\midrule
+Today's variance $v_0$ & 0.02705 to 0.02719 & 0.02705 to 0.02719 & 1.00 \\
+Mean reversion $\kappa$ & 4.344 to 4.474 & 4.345 to 4.473 & 1.01 \\
+Long-run variance $v_\infty$ & 0.05604 to 0.05661 & 0.05604 to 0.05661 & 1.01 \\
+Vol of vol $\sigma_v$ & 1.804 to 1.830 & 1.805 to 1.830 & 1.02 \\
+Correlation $\rho$ & $-$0.6671 to $-$0.6645 & $-$0.6671 to $-$0.6644 & 0.98 \\
+\bottomrule
+\end{tabular}
+\detail{The notebook's simulated case ``market-like parameters'': 63 quotes on the SPX contracts, half-spreads of a
+few hundredths of a volatility point. Least squares: this deck's code, with the error scale estimated and Student-t
+intervals. Exact posterior: the notebook's reference, four MCMC chains of 12,000 draws. The fit lies within 0.03
+posterior standard deviations of the posterior mean for every parameter.}
+\gap
+\source{\texttt{export\_figures.py} prints the comparison; \texttt{recorded-results.json} holds the reference.}
+\end{frame}
+
+\begin{frame}{Backup: The Checks, Parameter by Parameter}
+\fontsize{7.5}{9.5}\selectfont
+\begin{tabular}{@{}L{0.37\linewidth}*{6}{>{\centering\arraybackslash}p{0.075\linewidth}}@{}}
+\toprule
+ & $v_0$ & $\kappa$ & $v_\infty$ & $\sigma_v$ & $\rho$ & $c$ \\
+\midrule
+\multicolumn{7}{@{}l}{\textbf{512 simulated surfaces}: how often an interval contains the truth (\%)} \\
+50\% intervals & 67.6 & 53.3 & 55.7 & 51.6 & 53.5 & 50.0 \\
+80\% intervals & 92.6 & 81.6 & 84.4 & 83.0 & 84.8 & 78.9 \\
+90\% intervals & 97.5 & 90.0 & 92.4 & 89.3 & 92.0 & 90.2 \\
+95\% intervals & 99.2 & 94.1 & 95.9 & 93.2 & 96.7 & 94.9 \\
+Rank test: distance from uniform (bound 0.073) & 0.135 & 0.028 & 0.048 & 0.051 & 0.048 & 0.034 \\
+\midrule
+\multicolumn{7}{@{}l}{\textbf{Against the exact posterior}: width of the network's 90\% interval over the exact one} \\
+Simulated quotes, market-like & 2.86 & 1.05 & 1.43 & 1.11 & 2.34 & 1.27 \\
+Simulated quotes, stressed market & 1.87 & 1.58 & 2.04 & 1.46 & 2.71 & 1.33 \\
+\multicolumn{7}{@{}l}{\textbf{Against the exact posterior}: distance of the means, in exact standard deviations} \\
+Simulated quotes, market-like & 0.96 & 0.12 & 0.17 & 0.33 & 0.04 & 0.33 \\
+Simulated quotes, stressed market & 0.75 & 0.30 & 0.06 & 0.01 & 0.58 & 0.40 \\
+\bottomrule
+\end{tabular}
+\gap
+\source{The Heston network trained on 300,000 simulated surfaces. Development results as recorded on 11 November
+2026, not accepted studies.}
+\end{frame}
+
+\begin{frame}{Backup: The Prudent-Valuation Rules}
+\footnotesize
+\begin{tabular}{@{}L{0.25\linewidth}L{0.7\linewidth}@{}}
+\toprule
+\textbf{Rule} & \textbf{What it asks} \\
+\midrule
+Regulation (EU) 2016/101, Art.~9 & Market price uncertainty: a point in the range of plausible values where the bank
+is 90\% confident it could exit the position at that price or better. \\
+Regulation (EU) 2016/101, Art.~11 & Model risk: the range of models and calibrations used by market participants;
+expert-based ranges where the data cannot give one. \\
+IFRS 13, paragraph 93(h) & The sensitivity of a Level 3 fair value to reasonably possible alternative inputs. \\
+\bottomrule
+\end{tabular}
+\detail{Banks meet these rules today, with consensus marks, proxies, alternative calibrations and expert-based
+ranges. The rules are not by themselves a reason for Bayes. A posterior adds a range derived from the data, with its
+prior stated, that can be tested by coverage. It is one model's parameter uncertainty and does not cover the model's
+own error. A posterior as the basis of a prudent value is a proposal, not current practice.}
+\gap
+\source{Commission Delegated Regulation (EU) 2016/101, Articles 3 and 9 to 11; S\&P Global Market Intelligence (2023),
+\textit{Totem Service}.}
+\end{frame}
+
+\begin{frame}{Backup: Computing a Posterior}
+\footnotesize
+\begin{tabular}{@{}L{0.25\linewidth}L{0.31\linewidth}L{0.36\linewidth}@{}}
+\toprule
+\textbf{Method} & \textbf{Needs} & \textbf{Here} \\
+\midrule
+Least squares with error bars & quotes that determine the parameters & the notebook's 63 simulated quotes: the same
+intervals as the exact posterior \\
+Markov chain Monte Carlo & about 146,000 pricings of the quotes & Heston on SPX, the reference: 14–27 CPU-minutes \\
+Importance sampling & a good proposal, such as a fit or a network & this deck's example; rough Bergomi, with the
+network as proposal: 17–29 CPU-hours, estimated \\
+Amortized inference & one bank of simulations and one training run & 0.3 seconds per data set; testable on hundreds
+of data sets \\
+\bottomrule
+\end{tabular}
+\detail{Markov chain Monte Carlo for rough Bergomi would take 100 to 180 CPU-days per posterior at one to two
+CPU-minutes per pricing; it has not been run.}
+\gap
+\end{frame}
+
+\begin{frame}{Backup: References}
+\scriptsize
+\begin{itemize}
+\item Commission Delegated Regulation (EU) 2016/101 (prudent valuation), Articles 3 and 9 to 11.
+\item Cranmer, K., Brehmer, J., Louppe, G. (2020). The frontier of simulation-based inference. \textit{PNAS} 117(48),
+30055–30062.
+\item De Spiegeleer, J., Madan, D. B., Reyners, S., Schoutens, W. (2018). Machine learning for quantitative finance:
+fast derivative pricing, hedging and fitting. SSRN 3191050.
+\item Kruse, S., Nögel, U. (2005). On the pricing of forward starting options in Heston's model on stochastic
+volatility. \textit{Finance and Stochastics} 9(2), 233–250.
+\item Radev, S. T., Mertens, U. K., Voss, A., Ardizzone, L., Köthe, U. (2022). BayesFlow: learning complex stochastic
+models with invertible neural networks. \textit{IEEE TNNLS} 33(4), 1452–1466.
+\item S\&P Global Market Intelligence (2023). \textit{Totem Service}.
+\item Schoutens, W., Simons, E., Tistaert, J. (2004). A perfect calibration! Now what? \textit{Wilmott Magazine}, March.
+\item Talts, S., Betancourt, M., Simpson, D., Vehtari, A., Gelman, A. (2018). Validating Bayesian inference algorithms
+with simulation-based calibration. arXiv:1804.06788.
+\item van der Vaart, A. W. (1998). \textit{Asymptotic Statistics}, chapter 10 (the Bernstein–von Mises theorem).
+Cambridge University Press.
+\end{itemize}
+\end{frame}
+
+\end{document}
