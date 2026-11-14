@@ -1,7 +1,10 @@
 import marimo
 
 __generated_with = "0.25.1"
-app = marimo.App(width="medium", app_title="MMAR: from turbulent returns to drawdown scenarios")
+app = marimo.App(
+    width="medium",
+    app_title="MMAR: from turbulent returns to drawdown scenarios",
+)
 
 
 @app.cell
@@ -14,7 +17,17 @@ def _():
     from sbi4f_tutorial.shared.paths import ASSETS
     from sbi4f_tutorial.mmar_takehome import model, inference, diagnostics, lesson, plots
     workshop_plots.style()
-    return ASSETS, diagnostics, inference, inspect, lesson, mo, model, np, plots, plt
+    return (
+        ASSETS,
+        diagnostics,
+        inference,
+        inspect,
+        lesson,
+        mo,
+        model,
+        plots,
+        plt,
+    )
 
 
 @app.cell(hide_code=True)
@@ -22,20 +35,14 @@ def _(mo):
     mo.md(r"""
     # From turbulent returns to uncertain drawdown scenarios
 
-    **A complete MMAR take-home · about one hour · saved results work offline**
+    **A Mandelbrotian Model of Market Returns**
 
-    What produces clusters of quiet and turbulent days? How can we carry
-    uncertainty about that mechanism into drawdown scenarios?
+    What produces clusters of quiet and turbulent days? How can we carry uncertainty about that mechanism into drawdown scenarios?
 
-    We will observe one year of returns, build a small **multifractal model of asset
-    returns (MMAR)**, follow its BayesFlow estimator, check it on known truths, then
-    carry its posterior into drawdown scenarios.
-
-    **Observe → Model → Simulate → Build → Check → Infer → Use**
+    We will observe one year of returns, build a small **multifractal model of asset returns (MMAR)**, follow its BayesFlow estimator, check it on known truths, then carry its posterior into drawdown scenarios.
 
     This lesson synthesizes the univariate and resolution experiments from
     [Stefan Radev's amortized-fractals](https://github.com/stefanradev93/amortized-fractals).
-    Its market-wide and multivariate notebooks are the expanded story.
     """)
     return
 
@@ -44,7 +51,7 @@ def _(mo):
 def _(lesson):
     saved_report, saved = lesson.load_saved()
     market, market_dates, observed = lesson.load_market()
-    return market, market_dates, observed, saved, saved_report
+    return market_dates, observed, saved, saved_report
 
 
 @app.cell(hide_code=True)
@@ -60,16 +67,14 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(market_dates, mo):
+def _(mo):
     mo.md(f"""
-    ## 1 · Observe: what should a return model explain?
+    ## 1. Observe: what should a return model explain?
 
-    **VOO · 256 daily simple returns · {market_dates[0]} to {market_dates[-1]}**
+    **VOO: 256 daily simple returns**
 
-    Each observation is $r_t=P_t/P_{{t-1}}-1$, using the cached adjusted-price return
-    window. The Gaussian reference uses the mean and standard deviation of these
-    **same simple returns**. This selected crisis-era window motivates the problem;
-    it is not an out-of-sample forecasting contest.
+    Each observation is $r_t=P_t/P_{{t-1}}-1$. The Gaussian reference uses the mean and standard deviation of these
+    **same simple returns**. This selected crisis-era window motivates the problem.
 
     **Predict first:** do large moves appear alone, or in clusters? Does a constant
     variance explain their magnitude and their placement in time equally well?
@@ -86,7 +91,7 @@ def _(market_dates, observed, plots):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 2 · Model: separate location, scale, clustering and tails
+    ## 2. Model: separate location, scale, clustering and tails
 
     $$r_t=\mu+\bar\sigma\sqrt{\theta_t(q,d)}\,\varepsilon_t,
     \qquad \varepsilon_t=z_t\sqrt{\frac{\nu-2}{U_t}},$$
@@ -178,15 +183,11 @@ def _(mo, plots, tails):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 3 · Check the prior's implications
+    ## 3. Check the prior's implications
 
     The sliders condition on one parameter vector. A **prior-predictive check**
     instead draws the parameters first, then one history per draw. Here 200
     independent simulations use d=8. The dark line marks the observed window.
-
-    The absolute-return ACF checks temporal order. The magnitude summaries and
-    drawdown ask different questions. A band is a pointwise simulation interval,
-    not a simultaneous fit test or posterior-calibration certificate.
     """)
     return
 
@@ -201,7 +202,7 @@ def _(plots, saved):
 @app.cell(hide_code=True)
 def _(mo):
     mo.vstack([mo.md(r"""
-    ## 4 · Build: the sequence and the assumption have different roles
+    ## 4. Build: the sequence and the assumption have different roles
 
     **One training pair:** four parameters drawn from the prior, one known d,
     and the 256-day simple-return history they generate.
@@ -210,10 +211,7 @@ def _(mo):
     <div style="margin:8px 0;color:#167e80"><b>Known log d</b> joins the summary: 16 + 1 = <b>17 conditions</b></div>
     <div>17 conditions → four-layer spline CouplingFlow → <b>4 posterior coordinates</b>: μ, σ̄, q, ν</div>
     </div>'''), mo.md(r"""
-    Like the trajectory lesson, BayesFlow joins a learned sequence summary to a
-    conditional flow. Here the **FusionTransformer uses the full fixed window**;
-    it is not our masked causal GRU and is not trained for arbitrary prefixes.
-    log d is a supplied design condition, not a fifth unknown parameter.
+    Like the trajectory lesson, BayesFlow joins a learned sequence summary to a conditional flow. Here the **FusionTransformer uses the full fixed window**; log d is a supplied design condition.
 
     The source encoder has two 64-dimensional embedding stages and a bidirectional
     LSTM template. Its serialized adapter and fitted standardization travel with
@@ -252,6 +250,7 @@ def _(diagnostics, inference, model):
                                        null=diagnostics.null_statistics(rule))
         return {"workflow": workflow, "history": history, "checks": checks,
                 "seconds": time.perf_counter()-started, "count": count, "epochs": epochs}
+
     return (train_tutorial_model,)
 
 
@@ -276,11 +275,11 @@ def _(ASSETS, mo, route, saved_report):
         "To recompute, place the unchanged pinned source checkpoint in this cache. "
         "The loader verifies its SHA-256 and restores the whole estimator, including preprocessing."),
         mo.accordion({"Download recipe — run once from tutorial/": mo.md(f"""```bash
-mkdir -p assets/local-checkpoints/mmar-sensitivity
-curl -L '{_url}' -o assets/local-checkpoints/mmar-sensitivity/model.keras
-```
-Required SHA-256: `{_hash}`. Download is your explicit action; the notebook makes no network request.
-""")}), checkpoint, load_button]) if route.value == "pretrained" else mo.md("")
+    mkdir -p assets/local-checkpoints/mmar-sensitivity
+    curl -L '{_url}' -o assets/local-checkpoints/mmar-sensitivity/model.keras
+    ```
+    Required SHA-256: `{_hash}`. Download is your explicit action; the notebook makes no network request.
+    """)}), checkpoint, load_button]) if route.value == "pretrained" else mo.md("")
     return checkpoint, load_button
 
 
@@ -336,13 +335,13 @@ def _(mo, tutorial_result):
                       "Central 90% coverage":f"{100*_r['coverage90']:.1f}%",
                       "Mean 90% width":f"{_r['mean_interval_width90']:.4g}"}
                      for _r in tutorial_result["checks"]["records"]], selection=None, pagination=False)])
-    return (bf,)
+    return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 5 · Check: known truths before market interpretation
+    ## 5. Check: known truths before market interpretation
 
     Recovery asks whether posterior estimates improve on always returning the
     prior mean. Calibration asks whether posterior uncertainty behaves as claimed
@@ -396,7 +395,15 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(diagnostic_d, diagnostic_example, diagnostic_parameter, mo, model, plt, saved):
+def _(
+    diagnostic_d,
+    diagnostic_example,
+    diagnostic_parameter,
+    mo,
+    model,
+    plt,
+    saved,
+):
     _d, _case, _j = diagnostic_d.value, diagnostic_example.value, diagnostic_parameter.value
     _history = saved[f"diagnostic_{_d}_histories"][_case]
     _draws = saved[f"diagnostic_{_d}_examples"][_case]
@@ -416,7 +423,7 @@ def _(diagnostic_d, diagnostic_example, diagnostic_parameter, mo, model, plt, sa
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 6 · Infer: use the same observations at d=8
+    ## 6. Infer: use the same observations at d=8
 
     Condition on the **entire fixed 256-day VOO window**, initially assuming
     eight 32-day volatility blocks. The targets retain their original daily units.
@@ -430,7 +437,15 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(inference, lesson, observed, route, saved, supplied_model, tutorial_result):
+def _(
+    inference,
+    lesson,
+    observed,
+    route,
+    saved,
+    supplied_model,
+    tutorial_result,
+):
     active_data = saved
     active_label = "Accepted saved draws from the supplied estimator"
     active_note = None
@@ -483,7 +498,7 @@ def _(active_data, mo, plots, saved):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 7 · Use: what drawdowns does the fitted model generate?
+    ## 7. Use: what drawdowns does the fitted model generate?
 
     A complete posterior row generates one new full-window path. Preserve its
     parameter dependence. **The one-vector comparison also simulates random paths**;
@@ -564,6 +579,11 @@ def _(mo, saved_report):
             f"Checkpoint SHA-256: `{saved_report['checkpoint_sha256']}`. "
             "The reserved test panel and original full draws stay in the lab; compact results and bounded examples "
             "are accepted tutorial assets. No reference posterior or exact-posterior claim is supplied.")})])
+    return
+
+
+@app.cell
+def _():
     return
 
 
