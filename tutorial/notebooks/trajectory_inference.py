@@ -977,9 +977,12 @@ def _(mo):
     # Exactly the first training pair used by the live tutorial route, generated once.
     _animation_pair = _training_animation_simulation.generate(
         _animation_task, "train", start=0, count=1, seed=20261107, backend="numpy")
-    mo.vstack([mo.iframe(training_widget.render_html(_animation_task, _animation_pair["observations"][0]), height="650px"),
-        mo.md("The original workflow graphic remains above. The animation expands its input/encoder/density "
-              "steps using one actual tutorial training pair; playing it does not fit or query a network.")])
+    mo.vstack([mo.iframe(training_widget.render_html(
+        _animation_task, _animation_pair["observations"][0], parameters=_animation_pair["parameters"][0]), height="950px"),
+        mo.md("**What to learn:** changing the observed prefix changes tokens, padding and known time context; "
+              "the generating parameter label stays fixed. Compare Training with Inference to see why that label "
+              "scores a density during fitting but is absent from a posterior query. The original workflow "
+              "graphic remains above. This guided illustration performs no fitting or sampling; the actual Train button below does.")])
     return (training_widget,)
 
 

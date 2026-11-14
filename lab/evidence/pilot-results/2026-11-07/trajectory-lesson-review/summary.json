@@ -5,7 +5,7 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 141,
+    "tutorial_tests": 144,
     "notebook_exports": 7,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 183,
@@ -98,13 +98,13 @@
   },
   "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "3c743b27f429794531ffd61b988d4337068fd6b50d8a63385f9e496d58aeebc2",
+    "tutorial/notebooks/trajectory_inference.py": "77a56a71299bdffd7fa2f3212a808782371cad2b8011c524f0f7058bc1d228fe",
     "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "eed50b4a2ef5f8fbf192d46934622f905e90d2d0710d11b56c54c3a7d5212703",
     "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "7749e5245646ff567055a82f2535fafa4f36c537ee9165b53863edeafbe8fdf6",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "9f30d265bb20a0177cf1526bd387d5d141f4df4bccba5a58c14d253fd56b02c7",
-    "tutorial/README.md": "3b5563937fc8ff9965e716d25828f6626ef4d25e373d9b38f3061f63dc869834",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "d1375cbdf7cb9fbc4daafd905a77c18473cfde66a2131a9d46487dd50b0fd645",
+    "tutorial/README.md": "c7d1d0eee210c6db48a88c5d513a70463e2d2245cad1f65179d0fec397ec8745",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "67088366d9e3f2acc3a164b11b7fb5002c50cc20b9525cfe53c619f7e8ebb419",
     "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "91092853be3846c730e83f3f45eb3789c2adc96a12b34cb571ba2f3074a32354",
     "tutorial/tests/test_trajectory_diagnostics.py": "02bf496481c2ad1c0fda1d949a042e1f36d36747b8e9a7b2cfea68d4b99e04ee",
     "tutorial/src/sbi4f_tutorial/trajectories/model_checks.py": "18440646719d4350e821cb05cee48b16904d09e65c18ff852e9165e163c88ec0",
@@ -126,13 +126,13 @@
     "tutorial/src/sbi4f_tutorial/trajectories/latent_assets.py": "7a5e5e2126679a3995154343dbff9c46a3568ad44fbb28a2334e779a1b6e8bac",
     "tutorial/src/sbi4f_tutorial/trajectories/market_story.py": "12391c74ae958fb23a098ff00bfda18dca2a9e79cb072a27b23217b095f4c030",
     "tutorial/src/sbi4f_tutorial/trajectories/predictive_visuals.py": "d124e2678e0e83fa5f2baa6272913d786685fb92bf93c8c95ac1dacc19cd5de8",
-    "tutorial/src/sbi4f_tutorial/trajectories/training_widget.py": "9793f575ca0b9dc939118ce1e58a870113feb4111656be1ee561420c8664dd66",
+    "tutorial/src/sbi4f_tutorial/trajectories/training_widget.py": "99a3db908d44bd7557ed9919e211305258a70cc5e5ab0d5387c174f371f565c4",
     "tutorial/tests/test_trajectory_latent_history.py": "d51f5dae1e688ff1b2de6d1505610ab5bc6c64d71a9201b5fcb3b1804f53233d",
     "tutorial/tests/test_trajectory_market_story.py": "6d26d149373ca910d1c6e0859f6130b72c67c9b18e24a6b63da9c5bb9145a79a",
     "tutorial/tests/test_trajectory_predictive_visuals.py": "309b85b741afb2ccb0e40857dcd8fb5f28c5d4dfee1d9e5387534b495452a0b3",
-    "tutorial/tests/test_trajectory_visual_widgets.py": "f779579aaecbdd7fce8d401b725a2a962e51c548ee5247ce6e850039025ddbfc"
+    "tutorial/tests/test_trajectory_visual_widgets.py": "e276bfccb266fd5810694490a1a8b970f37ffe0c37f7b26bb0d532e1c89d977f"
   },
-  "updated_at_utc": "2026-11-14T13:40:03+00:00",
+  "updated_at_utc": "2026-11-14T13:58:34+00:00",
   "forward_simulator": {
     "paths": 8,
     "days": 252,
@@ -1594,5 +1594,80 @@
     "trajectory_cells": 88,
     "notebook_cell_errors": 0,
     "release_symbols": 183
+  },
+  "guided_training_walkthrough_20261114": {
+    "scope": "didactic interface only; neural training and inference unchanged",
+    "learning_goal": "vary observed evidence while holding generating parameters fixed, and distinguish training scoring from inference sampling",
+    "signed_returns_and_mask": "actual first tutorial training pair; canonical preprocessing, no future return line",
+    "fixed_joint_target": "physical parameters and exact float32 training_data transform remain independent of chosen prefix",
+    "training_mode": "known transformed target scored by conditional joint density; conceptual gradients to both networks",
+    "inference_mode": "no label, loss or update route; schematic joint sampling plus inverse target transform",
+    "network_quantities": "no learned activations, losses, gradients or posterior samples computed or invented",
+    "balanced_training_boxes": true,
+    "named_stages_and_takeaways": true,
+    "end_behavior": "stop at final takeaway; explicit Replay",
+    "one_of_128_training_pairs_explained": true,
+    "browser": {
+      "checks": [
+        "default63day fixed generating pair and exact transformed target match actual live-training row",
+        "prefix1/21/63/252 alter only exact tokens/mask/time context; label and signed-return scale fixed; future path absent",
+        "named six-stage Training playback stops at final update/endcard; Replay and manual step work without looping",
+        "Inference visibly removes generating label/density-score/update route; actual query/inverse-transform described without fabricated samples",
+        "pause/reset work and original static graphics plus recurrent-encoder clarification retained"
+      ],
+      "page_errors": [],
+      "status": "passed",
+      "layouts": [
+        {
+          "viewport": 1280,
+          "mode": "training",
+          "width": 1056,
+          "scrollWidth": 1056,
+          "height": 966,
+          "scrollHeight": 966,
+          "footer": 940.1875
+        },
+        {
+          "viewport": 1280,
+          "mode": "inference",
+          "width": 1056,
+          "scrollWidth": 1056,
+          "height": 912,
+          "scrollHeight": 912,
+          "footer": 885.671875
+        },
+        {
+          "viewport": 760,
+          "mode": "training",
+          "width": 600,
+          "scrollWidth": 600,
+          "height": 1077,
+          "scrollHeight": 1077,
+          "footer": 1051.21875
+        },
+        {
+          "viewport": 760,
+          "mode": "inference",
+          "width": 600,
+          "scrollWidth": 600,
+          "height": 988,
+          "scrollHeight": 988,
+          "footer": 961.921875
+        }
+      ],
+      "math_errors": 0,
+      "marimo_errors": 0
+    },
+    "browser_summary_sha256": "31720878b4ca96825d26adf2b47f46d1dd6d363e8bdbb3d20a50ed52f4f8afea",
+    "tutorial_tests": 144,
+    "exports": 7,
+    "trajectory_cells": 88,
+    "errors": 0,
+    "log_sha256": {
+      "tests": "52beb1e911eed28b94a434af3024c8c28de9a03bda786ed29c3fa23f3165fc1f",
+      "exports": "8bf36dcee7f24ae9326224e9fea62911ee98b4efdff474faf1300b780bfe42c7",
+      "check": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
+      "release": "807ab65bec1dd1237c49b58da48dc252e9f5a98ed06e5552d19f4f06b40e426c"
+    }
   }
 }

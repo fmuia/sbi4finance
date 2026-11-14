@@ -184,11 +184,15 @@ scaled time/mask tokens, the GRU and flow conditions, with generating labels
 kept on a separate training route. The architecture diagram and visible code
 show each route's actual settings. Switching the supplied model
 also changes its synthetic history.
-The original workflow graphic and input diagram remain, with a new animated
-walkthrough of an actual tutorial training pair. It follows canonical return
-tokens, prefix masks and known time features through the GRU and joint density
-loss. Moving highlights explain the computation; they are not measured neural
-activations and do not fit a model. A comparison diagram distinguishes the
+The original workflow graphic and input diagram remain. The guided walkthrough
+asks what changes when less of the same training history is observed: the
+revealed length, mask and duration change, while past return values and the
+generating parameter vector stay fixed. Training and inference views separate
+the known label and density-loss route from conditional sampling without labels. Concrete token,
+mask, time-context and transformed-label values use the canonical preprocessing;
+network summaries, density evaluation and optimization remain schematic.
+Playback ends at an explicit takeaway rather than looping through highlights.
+The actual training action below performs fitting. A comparison diagram distinguishes the
 recurrent observation encoder from the option lessons' direct condition
 vectors, while also naming the density-family and preprocessing changes.
 The GRU compresses the returns into 16 tutorial or 32 pretrained summary values;

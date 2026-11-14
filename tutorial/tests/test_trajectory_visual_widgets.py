@@ -47,7 +47,8 @@ class TrainingWidgetTests(unittest.TestCase):
     def test_animation_uses_the_actual_preprocessing_tokens_masks_and_known_times(self):
         observations = self.pair["observations"][0].copy()
         observations[0] = 0.
-        payload = training_widget.build_payload(self.task, observations)
+        parameters = self.pair["parameters"][0]
+        payload = training_widget.build_payload(self.task, observations, parameters=parameters)
         self.assertEqual([example["length"] for example in payload["examples"]], [1, 21, 63, 126, 252])
         for example in payload["examples"]:
             n = example["length"]
@@ -58,18 +59,78 @@ class TrainingWidgetTests(unittest.TestCase):
             self.assertTrue(example["mask"][0])
             self.assertEqual(example["tokens"][0][0], 0.)
             self.assertEqual(sum(example["mask"]), n)
+            np.testing.assert_array_equal(example["first"]["token"], actual["observations"][0, 0])
+            np.testing.assert_array_equal(example["last"]["token"], actual["observations"][0, n-1])
+            self.assertEqual(example["first"]["raw_return"], observations[0, 0])
+            self.assertEqual(example["last"]["raw_return"], observations[n-1, 0])
+            self.assertEqual(example["last"]["day"], n)
+            if n < len(observations):
+                self.assertIsNone(example["first_padding"]["raw_return"])
+                self.assertFalse(example["first_padding"]["mask"])
+                self.assertEqual(example["first_padding"]["day"], n+1)
+                np.testing.assert_array_equal(example["first_padding"]["token"], [0., 0.])
+            else:
+                self.assertIsNone(example["first_padding"])
 
     def test_later_returns_never_enter_shorter_prefix_tokens(self):
         observations = self.pair["observations"][0].copy()
-        original = training_widget.build_payload(self.task, observations)
+        parameters = self.pair["parameters"][0]
+        original = training_widget.build_payload(self.task, observations, parameters=parameters)
         observations[21:] += .3
-        changed = training_widget.build_payload(self.task, observations)
+        changed = training_widget.build_payload(self.task, observations, parameters=parameters)
         self.assertEqual(original["examples"][:2], changed["examples"][:2])
         self.assertNotEqual(original["examples"][-1]["tokens"], changed["examples"][-1]["tokens"])
-        html = training_widget.render_html(self.task, observations)
-        self.assertIn("not measured neural activations", html)
-        self.assertIn('id="play"', html)
-        self.assertIn("not an autoregressive posterior decoder", training_widget.encoder_comparison_html())
+        self.assertEqual(original["target"], changed["target"])
+
+    def test_generating_joint_label_and_float32_transform_stay_fixed_across_every_prefix(self):
+        for name in simulation.MODELS:
+            with self.subTest(model=name):
+                task = simulation.teaching_task(name, observations=252)
+                pair = simulation.generate(task, "train", 0, 1, seed=20261107, backend="numpy")
+                observations, parameters = pair["observations"][0], pair["parameters"][0]
+                observations_before, parameters_before = observations.copy(), parameters.copy()
+                payload = training_widget.build_payload(task, observations, parameters=parameters)
+                self.assertEqual(payload["targets"], task["parameter_names"])
+                self.assertEqual(payload["target"]["shape"], [1, len(parameters)])
+                self.assertEqual(payload["target"]["route"], "training_label_only")
+                np.testing.assert_array_equal(payload["target"]["physical"], parameters)
+                transformed = None
+                for example in payload["examples"]:
+                    actual = inference.training_data(pair, task, lengths=np.array([example["length"]]))
+                    self.assertEqual(actual["parameters"].dtype, np.float32)
+                    np.testing.assert_array_equal(payload["target"]["transformed"], actual["parameters"][0])
+                    if transformed is not None:
+                        np.testing.assert_array_equal(actual["parameters"][0], transformed)
+                    transformed = actual["parameters"][0]
+                np.testing.assert_array_equal(observations, observations_before)
+                np.testing.assert_array_equal(parameters, parameters_before)
+
+    def test_training_label_is_optional_and_never_changes_neural_condition_payloads(self):
+        observations, parameters = self.pair["observations"][0], self.pair["parameters"][0]
+        inference_display = training_widget.build_payload(self.task, observations)
+        training_display = training_widget.build_payload(self.task, observations, parameters=parameters)
+        self.assertIsNone(inference_display["target"])
+        self.assertEqual(inference_display["examples"], training_display["examples"])
+        self.assertEqual(inference_display["raw_returns_percent"], training_display["raw_returns_percent"])
+        for example in training_display["examples"]:
+            self.assertTrue(set(example).isdisjoint({"parameters", "target", "truth", "physical", "transformed", "variance"}))
+            actual = inference.conditioning_data(observations[None, :example["length"]], self.task)
+            self.assertEqual(set(actual), {"observations", "summary_mask", "time_context"})
+            np.testing.assert_array_equal(example["tokens"], actual["observations"][0])
+
+    def test_invalid_generating_labels_cannot_be_silently_truncated_or_transformed(self):
+        parameters = self.pair["parameters"][0]
+        bounds = np.asarray(self.task["prior_bounds"])
+        at_boundary = parameters.copy()
+        at_boundary[0] = bounds[0, 0]
+        outside = parameters.copy()
+        outside[1] = bounds[1, 1]+.01
+        for invalid in (parameters[:-1], parameters[None], np.r_[parameters, .1],
+                        np.full_like(parameters, np.nan), np.full_like(parameters, np.inf),
+                        parameters.astype(complex), np.ma.array(parameters, mask=False),
+                        at_boundary, outside):
+            with self.subTest(shape=np.shape(invalid)), self.assertRaises(ValueError):
+                training_widget.build_payload(self.task, self.pair["observations"][0], parameters=invalid)
 
 
 class EvidenceTruthMarkerTests(unittest.TestCase):

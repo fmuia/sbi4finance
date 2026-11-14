@@ -546,14 +546,31 @@ distinguish the true hidden variance from rolling volatility estimated from
 returns. The existing zero-origin/nonstationarity limitation stays visible.
 
 Preserve the original workflow image, input diagram and actual training code.
-Add an animated walkthrough using the first real tutorial training pair and
-canonical return/time tokens, prefix masks and timing conditions. Its moving
-GRU/flow highlights are an explanation of the computation, not measured
-activations or an optimizer run. The encoder comparison identifies the causal
+Use a guided walkthrough of the first real tutorial training pair to answer
+one question: what changes when the observed prefix gets shorter? Show signed
+returns with a zero line, excluded future positions, mask counts and actual
+canonical tokens and timing conditions. The observed prefix changes the
+conditions, while the generating vector and its canonical transformed target
+stay fixed. Separate Training and Inference views: the former scores the known
+transformed label; the latter illustrates conditional sampling and inverse
+target transforms without that label. Balanced label/objective blocks make
+the training-only route explicit. Named stages end at a takeaway rather than
+looping indefinitely. Learned summaries, density values and gradient updates
+are schematic; the separate training action executes the optimizer.
+The encoder comparison identifies the causal
 GRU as a recurrent observation encoder, rather than an autoregressive
 posterior decoder. It also names the separate density-family, unit, transform
 and masking changes from the option lessons instead of implying that adding
 the GRU is the only code difference.
+
+The revised guided animation passes 144 tutorial tests and all seven notebook
+exports (88 trajectory cells, zero errors), plus marimo and release/ownership
+checks. Focused tests bind the physical and transformed joint label to the
+canonical training API at every displayed prefix. Browser checks cover
+prefixes 1/21/63/252, Training and Inference routes, pause/reset/replay,
+stop-at-end behavior and wide/760-pixel layouts without overflow or hidden
+footers. The animation evaluates preprocessing only; it creates no learned
+summary, loss, gradient update or posterior sample.
 
 Default the synthetic calculations to **1,260 days**. The history player uses
 21-trading-day reveal steps and trading-month axes. Posterior playback uses
