@@ -292,3 +292,81 @@ def validate_curve_prior(prior, grid):
         raise ValueError("walk_sd must be a non-negative number")
     if vol[0] <= 0 or not (vol[0] <= level[0] and level[1] <= vol[1]):
         raise ValueError("vol_bounds must be positive and contain the level bounds")
+
+
+MAX_CURVE_DRAWS = 1000  # bounded rejection draws in the declared truncated curve prior
+
+
+def interval_midpoints(task):
+    grid = knots(task)
+    return 0.5 * (grid[1:] + grid[:-1])
+
+
+
+def draw_context(task, rng):
+    """Per-example forward-variance levels and their two summary values for rough; empty for Heston.
+
+    linear_wobble (the pilot): levels sigma0^2 (1 + s tbar_j) exp(u_j), with sigma0 ~ U(level_bounds),
+    s ~ U(slope_bounds), u_j ~ U(-a, a); returns (sigma0, s).
+
+    power_law_walk (the full bank): with tbar_j the midpoint of interval j and x_j = log tbar_j - log tbar_1,
+        log xi_j = 2 log sigma0 + b x_j + W_j,   W_1 = 0,   W_{j+1} - W_j ~ N(0, walk_sd^2 (x_{j+1} - x_j)),
+    sigma0 log-uniform on level_bounds, b ~ U(exponent_bounds); a curve with any level's volatility sqrt(xi_j)
+    outside vol_bounds is drawn again (the prior is truncated to vol_bounds); returns (sigma0, b).
+    """
+    if is_joint_curve_task(task):
+        raise ValueError("joint curve is derived from the six parameter targets; use derived_context")
+    if task["model"] != "rough":
+        return np.empty(0), np.empty(0)
+    prior = task["context_prior"]["forward_variance"]
+    midpoints = interval_midpoints(task)
+    if curve_kind(prior) == "linear_wobble":
+        level = rng.uniform(*prior["level_bounds"])
+        slope = rng.uniform(*prior["slope_bounds"])
+        wobble = prior["log_perturbation"]
+        log_noise = rng.uniform(-wobble, wobble, len(midpoints)) if wobble > 0 else np.zeros(len(midpoints))
+        levels = level**2 * (1.0 + slope * midpoints) * np.exp(log_noise)
+        return levels, np.array([level, slope])
+    x = np.log(midpoints) - np.log(midpoints[0])
+    low, high = np.log(prior["vol_bounds"][0]), np.log(prior["vol_bounds"][1])
+    for _ in range(MAX_CURVE_DRAWS):
+        level = np.exp(rng.uniform(np.log(prior["level_bounds"][0]), np.log(prior["level_bounds"][1])))
+        exponent = rng.uniform(*prior["exponent_bounds"])
+        steps = rng.standard_normal(len(x) - 1) * prior["walk_sd"] * np.sqrt(np.diff(x))
+        log_levels = 2 * np.log(level) + exponent * x + np.concatenate([[0.0], np.cumsum(steps)])
+        log_vol = 0.5 * log_levels
+        if np.all((log_vol >= low) & (log_vol <= high)):
+            return np.exp(log_levels), np.array([level, exponent])
+    raise ValueError("no forward-variance curve inside vol_bounds")
+
+
+
+def _joint_coefficients(task, parameter_values):
+    if not is_joint_curve_task(task):
+        raise ValueError("a six-target joint rough task is required")
+    values = np.asarray(parameter_values, dtype=float)
+    if values.shape != (6,) or not np.isfinite(values).all() or np.any(values[3:] <= 0):
+        raise ValueError("six finite parameters with positive curve coefficients required")
+    return values[3:]
+
+
+
+def derived_context(task, parameter_values):
+    """Auxiliary interval-average xi and its three coefficients, derived from the joint targets.
+
+    These averages preserve analytic W at the design maturities. Pricing uses
+    joint_curve on the finer simulator grids, not these seven buckets.
+    """
+    coefficients = _joint_coefficients(task, parameter_values)
+    grid = knots(task)
+    total = pricing.heston_integrated_variance(grid, *coefficients)
+    return np.diff(total) / np.diff(grid), coefficients.copy()
+
+
+
+def joint_curve(task, parameter_values):
+    """Analytic initial curve evaluated at the union of every block's simulator nodes."""
+    coefficients = _joint_coefficients(task, parameter_values)
+    times = np.unique(np.concatenate([b["horizon"] / b["n_steps"] * np.arange(b["n_steps"] + 1)
+                                      for b in task["numerics"]["blocks"]]))
+    return pricing.heston_variance_curve(times, *coefficients)

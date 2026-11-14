@@ -125,6 +125,8 @@ class PricerLikelihoodTests(unittest.TestCase):
                 self.assertEqual(record['known_curve_levels'] is None,tasks.is_joint_curve_task(task))
                 self.assertEqual(record['known_curve_sha256'] is None,tasks.is_joint_curve_task(task))
                 self.assertIn('pricer_net.py',record['source_sha256'])
+                self.assertIn('tutorial/src/sbi4f_tutorial/rough_options/surrogate.py',
+                              record['shared_runtime_source_sha256'])
                 with np.load(root/'out/chains.npz') as arrays:self.assertEqual(arrays['parameters'].shape,values.shape)
 
     @unittest.skipUnless(PYMC_AVAILABLE,'optional PyMC6 environment')

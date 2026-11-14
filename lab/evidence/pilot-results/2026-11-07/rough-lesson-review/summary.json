@@ -1,0 +1,1022 @@
+{
+  "format": "notebook_workflow_review_v1",
+  "application": "rough-options",
+  "baseline": "3d6febb3894c0ebe5fc0041954664d43270a73d9",
+  "scientific_acceptance": false,
+  "existing_assets_changed": false,
+  "verification": {
+    "tutorial_tests": 101,
+    "lab_core_tests": 573,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "notebook_cell_errors": 0,
+    "runtime_boundary_symbols": 203,
+    "local_document_links": 62,
+    "moved_function_definitions_unchanged": 8,
+    "marimo_warnings": "existing empty cells in slots 2 and 3"
+  },
+  "browser": {
+    "page_errors": [],
+    "path_controls": {
+      "realizations": [
+        "A",
+        "B",
+        "C"
+      ],
+      "views": [
+        "paths",
+        "components"
+      ],
+      "ranges": [
+        "detail",
+        "wide"
+      ],
+      "H_endpoints": [
+        0.02,
+        0.4
+      ]
+    },
+    "math_accordions_opened": [
+      "Read the simulator one component at a time",
+      "What exactly is the forward-variance curve \u03be\u2080?",
+      "Grid approximation and the extra Gaussian channel",
+      "What does this simulation approximate?",
+      "The short-maturity relationship",
+      "Numerical accuracy and the observation model",
+      "A refresher: what does the pricing measure Q mean?",
+      "How the numerical averaging works"
+    ],
+    "dataset_controls": {
+      "draws": [
+        "A",
+        "B",
+        "C"
+      ],
+      "paths": [
+        256,
+        1024,
+        4096
+      ],
+      "expiries_days": [
+        5,
+        21,
+        63,
+        252
+      ],
+      "quote_error_scale": [
+        0,
+        4,
+        1
+      ]
+    },
+    "small_pricer_seconds": 39.002179249888286,
+    "pricer_display_reuses_fit": true,
+    "pricer_fit_summary": "Overall validation RMSE across both 63-price surfaces: 21.18 quote SDs. Selected epoch: 5. Generation: 34.3 s; total: 37.5 s. Changing the display reuses this fit; it does not train again. The likelihood code above explains the next step, but this tiny pricer is not used for MCMC.",
+    "native_known_load_and_sample_seconds": 4.970754582900554,
+    "joint_point_fit_seconds": {
+      "Worked joint example": 0.15046650008298457,
+      "Curve level\u2013decay trade-off": 0.2606706670485437,
+      "Coupled volatility parameters": 0.14333424996584654,
+      "Weakly informed decay": 0.13396137487143278
+    },
+    "joint_case_change_clears_fit": true,
+    "missing_pricer_preserves_posterior_only": true,
+    "removed_three_market_section": true,
+    "math_render_errors": 0,
+    "marimo_errors": 0,
+    "narrow_width": 760,
+    "horizontal_overflow": false
+  },
+  "helper_benchmarks": {
+    "implementation": "exact task grids and precision; bounded session-only helpers",
+    "known_posterior_predictive": {
+      "case": "rough-known100k-validation0",
+      "parameter_draws": 8,
+      "quote_replicates_per_draw": 8,
+      "maturity_years": 0.25,
+      "seed": 2026,
+      "seconds": 4.8151280001038685,
+      "max_mc_se_over_sigma": 0.24408684009751105,
+      "paths_per_draw_per_block": [
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ]
+      ],
+      "target_se_over_sigma": 0.25,
+      "last_rung_cap_used": false
+    },
+    "fresh_known_training_pairs": {
+      "case_task": "rough-known100k-validation0",
+      "examples": 8,
+      "seed": 2026,
+      "seconds": 19.870194291928783,
+      "max_mc_se_over_sigma": 0.2420018766445242,
+      "paths_per_example_per_block": [
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          65536,
+          65536,
+          65536
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ]
+      ],
+      "target_se_over_sigma": 0.25,
+      "last_rung_cap_used": false,
+      "scope": "fresh full-prior examples, no validation examples and no rejected prior rows"
+    },
+    "joint_posterior_predictive_trial": {
+      "case": "rough-joint100k-validation0",
+      "parameter_draws": 8,
+      "seconds": 129.1029069579672,
+      "status": "stopped by 120-second between-surface guard; no partial result",
+      "published_action": false
+    },
+    "scope": "Local bounded workflow and repricing demonstrations; no training convergence or conditional posterior validation claimed."
+  },
+  "scope": "Session-only software illustrations, not new calibrated estimators or posterior acceptance. Banks and existing model weights unchanged.",
+  "source_sha256": {
+    "lab/scripts/calibration_reference.py": "3518261ee7f58fa8e67345e611ee6634ef0e6b4b9ca047a1e58c6ace22c458e0",
+    "lab/scripts/train_full_surface_pricer.py": "b2858261840a9a3c947f82ba817ffbdf983f8f90001f905e84cccc91a88cfcff",
+    "lab/src/sbi4finance/calibration/correction.py": "1390601eed943a76751ab869b53f7caff2e36de927ffc60d372bffb093a00bc6",
+    "lab/src/sbi4finance/calibration/pricer_net.py": "48ed820bdd0f596f421a08da322e3e2d3e05a2b8ab3b08e5009384537e7aeaba",
+    "lab/src/sbi4finance/calibration/pricing.py": "dc554bda791ee4edea22a8de2352579f9fa30b91cc6acaa0fd138d587d06921c",
+    "lab/src/sbi4finance/calibration/tasks.py": "8f24909732836d6618a2e698cd01304984426928f0b42c58786270870b74d052",
+    "lab/src/sbi4finance/runtime_sources.py": "22a29f40eb8d1b9be4b9c58d46028806aeb5adde8457738b013f2a999f9467e1",
+    "lab/studies/runtime_boundary.py": "e3f95c3208b86ea88c6d16553f81edac55bc4294f08852b908a223704817ea6f",
+    "lab/tests/test_full_surface_pricer_cli.py": "b286a4534d5f283728561a0f2b23fc5f6d0e582e6ef02c4c33fe564ac55501a0",
+    "lab/tests/test_pricer_pymc_reference.py": "2077b03dcb0a6aa04d9b7533f65dbc41bd4c0fd93dfd931db3f2f47765a0e9fc",
+    "tutorial/notebooks/slot5_calibration.py": "ec8c31d124cd8ca56a74d544e2e6a2671784196eb85a3193747058abfabda823",
+    "tutorial/src/sbi4f_tutorial/heston_options/model.py": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+    "tutorial/src/sbi4f_tutorial/rough_options/comparison.py": "717a53025bc48c899b49cf2444ffe9e31c04e41977abfc73a80ebb7f9904e8d1",
+    "tutorial/src/sbi4f_tutorial/rough_options/context_checks.py": "2c2927cdd02f3ece4314061dcd99d3be04e08e072338c9b39edca1a551d5955d",
+    "tutorial/src/sbi4f_tutorial/rough_options/data_story.py": "d68c20b629ee84e342d1834850cb977e289ee88614ac09d1b2e2433920e34350",
+    "tutorial/src/sbi4f_tutorial/rough_options/explorer.py": "85bb1c0372b6a4c40da3cba9cec265e2c007b5fc70a77431821b78f2ae13e934",
+    "tutorial/src/sbi4f_tutorial/rough_options/lesson.py": "7458559ce42884960961526e72bcb3658ee4f44c63b64b61d5150bfddb8774cb",
+    "tutorial/src/sbi4f_tutorial/rough_options/studies.py": "09b6af340523d1a5cde627053a935c5f8db3092d0ef8899fb72f0f88148ebd69",
+    "tutorial/src/sbi4f_tutorial/rough_options/surrogate.py": "4ef51bd248fd596cbbbd70a30f80225a2fbc256610faf1f449578a0a2d522edc",
+    "tutorial/src/sbi4f_tutorial/shared/parameter_transforms.py": "e83762a6d2b5a4886ff6792fd88f51b46a27d1ba3d723b9b317f04cdfa47b2e8",
+    "tutorial/src/sbi4f_tutorial/shared/pricing.py": "3f0431d77418ca04ddb676a9d6ce036dc22c097f244965a0b6de7fe34c0e353e",
+    "tutorial/src/sbi4f_tutorial/shared/tasks.py": "4bc28d37c865a04a3f5d214fec5afbecf1db0ab4a2e02dd331d520fe9b08848b",
+    "tutorial/tests/test_independence.py": "e3a2789fc0d407d345c14a94f3cf800ea8fb35ee12ae40e8004aa2c00b0417a6",
+    "tutorial/tests/test_rough_comparison.py": "565c050d589c0d02a746221387cb3f095f1430dc10596f072d53abefda924ad7",
+    "tutorial/tests/test_rough_context.py": "d18fda5017f334b1e111817fa38a41e691797bbfb290e1e396317814de0dd65c",
+    "tutorial/tests/test_rough_data_story.py": "339cabb198cad2eb720dedf691ae087e9e6a20067b27330bba429af1f45ff83b",
+    "tutorial/tests/test_rough_explorer.py": "9ff63ec0b85269150281755665bf8c4ea30f93687e6dbc31f5b10448db82bbe6",
+    "tutorial/tests/test_rough_inputs.py": "9147ebe853137c924194bf18a51c56f09525aeebb41ec12fc0f9f260b23c95fb",
+    "tutorial/tests/test_rough_pricer_loader.py": "77a6da8159933b09c22efdb8fd1249f0645d97600d666ac6d7e910dcc84e3b60",
+    "tutorial/tests/test_rough_session.py": "fade7005723db92c00306c885619ebc9b872863a32294fa8f2937e0ed527a838",
+    "tutorial/tests/test_rough_studies.py": "2af10f7ad4171f113bd92f068475fbebaa46f93ac46057fe4245443250c68050",
+    "tutorial/tests/test_rough_surrogate.py": "49b4761e6de900aa3ac83f6a0355e10216d00c3a4a971821ec097be05c902f3c",
+    "tutorial/src/sbi4f_tutorial/rough_options/diagnostics.py": "8f6e7ce1493eee0ac8ef421ecd21961c505bae5bcca8bd1ff2ee3abb2c80ace9",
+    "tutorial/tests/test_rough_diagnostics.py": "a94977be9433b2c5e884cf4aad7c8ffe369842960f1984d9f657483be51d6c17"
+  },
+  "timing_environment": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "scope": "Local CPU runs; browser elapsed includes UI round trips. Not a hardware-independent speed guarantee."
+  },
+  "initial_revision_source_sha256": {
+    "lab/src/sbi4finance/calibration/pricing.py": "dc554bda791ee4edea22a8de2352579f9fa30b91cc6acaa0fd138d587d06921c",
+    "lab/src/sbi4finance/calibration/tasks.py": "8f24909732836d6618a2e698cd01304984426928f0b42c58786270870b74d052",
+    "lab/studies/runtime_boundary.py": "87e38e0cbf7c569b57db1e930a336cabdc2870d893b9d3af7757adf27bd20102",
+    "tutorial/notebooks/slot5_calibration.py": "5714dd9b8356db533890f2a513df109bf459ec3276c383eba95a287f22c72eb4",
+    "tutorial/src/sbi4f_tutorial/rough_options/lesson.py": "4a3164006411713001784ed0841fb1915f7b1be9754e4f1b9f9ac140fb742204",
+    "tutorial/src/sbi4f_tutorial/shared/pricing.py": "68a690b4b425cf3d50f68c303989c96a930ca48f83940d3bace344855d60fb09",
+    "tutorial/src/sbi4f_tutorial/shared/tasks.py": "fb6240751ab4eeab4a46aab5d0329322705557c2a71a151f280409b853fdf7b2",
+    "tutorial/tests/test_rough_session.py": "26dae70ed3c8e3f173371e89140741080cdc22aac819415992afb6f0a9cad2b6"
+  },
+  "review_followup": {
+    "date": "2026-11-08",
+    "previous_head": "6e56f98ba9aebe0c1d73c0fa61ca79430ab1dc7c",
+    "tutorial_tests": 46,
+    "lab_core_tests": 527,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "cell_errors": 0,
+    "shipped_artifacts": 155,
+    "newly_published_comparison_sha256": "80eec85c42c97b65847cf8d7cfe4e417ee9abc70466c04e5f86f85fdfbd7c87e",
+    "comparison_existing_source_unchanged": true,
+    "known_curve_surrogate_cases": 3,
+    "known_curve_surrogate_case_passes": 2,
+    "failed_heston_importance_case": 291,
+    "importance_effective_sample_size": 1.0001911512980377,
+    "maximum_importance_weight": 0.9999044334842025,
+    "raw_price_arrays_and_original_figure_changed": false,
+    "scope": "Restore existing approximate-surrogate comparisons and correct pilot uncertainty presentation; no new financial simulation, training or MCMC.",
+    "browser": {
+      "page_errors": [],
+      "visible_two_routes": true,
+      "three_case_surrogate_table": true,
+      "failed_heston_distribution_label": true,
+      "original_figure_optional": true,
+      "narrow_width": 760,
+      "horizontal_overflow": false
+    }
+  },
+  "initial_browser": {
+    "page_errors": [],
+    "native_workflow_visible": true,
+    "ppc_elapsed_seconds": 5.933668458950706,
+    "training_elapsed_seconds": 20.135736708994955,
+    "joint_options": [
+      "Worked joint example",
+      "Curve level\u2013decay trade-off",
+      "Coupled volatility parameters",
+      "Weakly informed decay"
+    ],
+    "archive_toggle": true,
+    "narrow_width": 760,
+    "horizontal_overflow": false
+  },
+  "additional_studies_redesign": {
+    "date": "2026-11-08",
+    "tutorial_tests": 57,
+    "lab_core_tests": 527,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "cell_errors": 0,
+    "rough_notebook_cells": 39,
+    "local_document_link_targets": 51,
+    "study_execution": [
+      {
+        "study": "context",
+        "outputs": 33,
+        "checkpoint": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+        "reference_cases": 3
+      },
+      {
+        "study": "dependence",
+        "outputs": 33,
+        "checkpoint": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+        "reference_cases": 3
+      },
+      {
+        "study": "reference",
+        "outputs": 33,
+        "checkpoint": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+        "reference_cases": 3
+      },
+      {
+        "study": "tail",
+        "outputs": 33,
+        "checkpoint": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+        "reference_cases": 3
+      }
+    ],
+    "browser": {
+      "page_errors": [],
+      "studies": [
+        "context support",
+        "paired uncertainty propagation",
+        "surrogate disagreement",
+        "unobserved tail"
+      ],
+      "current_joint_cases": [
+        "Joint worked example",
+        "Curve level\u2013decay trade-off",
+        "Coupled volatility parameters",
+        "Weakly informed decay"
+      ],
+      "reference_cases": 3,
+      "context_width_endpoints": [
+        0.05,
+        0.6
+      ],
+      "tail_width_endpoints": [
+        0,
+        0.5
+      ],
+      "shuffled_marginals_control": true,
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "math_render_errors": 0,
+      "old_archive_absent": true
+    },
+    "fresh_calculations": [
+      "current known-curve context support for a fixed SPY snapshot",
+      "current paired joint draws through analytic variance-rate functionals",
+      "matching current neural/surrogate discrepancy metric plots",
+      "independent post-one-year tail prior through analytic integrals"
+    ],
+    "retired_from_notebook": [
+      "ten earlier SPY/pilot/cost/export/classical/product/long-end/cross-model sections",
+      "pilot-only product histogram renderer"
+    ],
+    "retained_existing_evidence": "matching three-case deterministic-surrogate comparison; no new MCMC",
+    "scope": "Intentional question/action/interpretation studies. Context controls propose a new design; shuffled marginals are artificial; tail parameter remains prior-driven. No model weights, simulation banks or acceptance decisions changed."
+  },
+  "simulator_and_network_workflows": {
+    "date": "2026-11-08",
+    "tutorial_tests": 71,
+    "lab_core_tests": 527,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "rough_notebook_cells": 55,
+    "cell_errors": 0,
+    "runtime_shared_symbols": 203,
+    "changes": [
+      "early fixed-shock Q path explorer",
+      "Heston versus rough short-maturity skew shape guides and same-design finite-price comparison",
+      "actual architecture decomposition for dense pricer and time-conditioned flow matching",
+      "commented executable clean-label pricer training and Gaussian likelihood",
+      "same/different BayesFlow table and inline Heston comparisons",
+      "explicit saved,small-train,and optional validated pretrained-load routes"
+    ],
+    "browser": {
+      "page_errors": [],
+      "path_H_endpoints": [
+        0.02,
+        0.4
+      ],
+      "fixed_shocks_control": true,
+      "smile_expiries": [
+        5,
+        21,
+        63,
+        252
+      ],
+      "smile_elapsed_seconds": 3.787787541979924,
+      "code_visible": [
+        "simulator",
+        "pricer fit and likelihood",
+        "BayesFlow fit",
+        "pretrained load and sample"
+      ],
+      "small_pricer_elapsed_seconds": 13.577211290947162,
+      "pretrained_load_elapsed_seconds": 1.860046749934554,
+      "pretrained_missing_folder": true,
+      "changed_folder_clears_old_output": true,
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "math_render_errors": 0
+    },
+    "session_routes": {
+      "pricer": {
+        "timing": {
+          "generation": 15.79394687502645,
+          "total": 25.3506011669524
+        },
+        "validation_rmse_quote_sd": 21.183124255063845,
+        "selected_epoch": 5,
+        "history": {
+          "loss": [
+            243.0347900390625,
+            237.70375061035156,
+            232.500732421875,
+            230.6312255859375,
+            229.48585510253906
+          ],
+          "val_loss": [
+            478.2814025878906,
+            463.0836181640625,
+            454.2271423339844,
+            449.6519775390625,
+            448.72479248046875
+          ]
+        },
+        "loglike_midpoint": [
+          -9423.574965468704
+        ]
+      },
+      "pretrained": {
+        "draw_shape": [
+          512,
+          3
+        ],
+        "timing": {
+          "load": 0.9991232499014586,
+          "sampling": 2.030290708062239
+        },
+        "task_matches": true,
+        "checkpoint_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4"
+      }
+    },
+    "new_checks": [
+      "canonical hybrid simulator parity and controls",
+      "clean-label features/likelihood units and legacy payload activations",
+      "shared physical-parameter transforms and Jacobian",
+      "matched Fourier repricing, mean variance and correlation",
+      "no second rough Monte Carlo run for expiry selection",
+      "near-ATM inversion failure and explicit wing availability",
+      "changed checkpoint folder resets explicit action"
+    ],
+    "scientific_scope": "No existing assets, model weights, saved posterior evidence or scientific acceptance changed. Tiny supervised fit is an API exercise, not a reference pricer. Asymptotic shape guides are not finite-price curves or calibrations to SPY."
+  },
+  "pre_workflow_verification": {
+    "tutorial_tests": 57,
+    "lab_core_tests": 527,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "notebook_cell_errors": 0,
+    "runtime_boundary_symbols": 192,
+    "local_document_links": 51,
+    "moved_function_definitions_unchanged": 8,
+    "marimo_warnings": "existing empty cells in slots 2 and 3"
+  },
+  "main_integration": {
+    "main_commit": "ad5bef6dbd6de6af3ad88b7c572c8697bb2463f6",
+    "main_heston_pricing_and_refinement_functions_preserved_unchanged": true,
+    "tutorial_curve_helpers_preserved_unchanged": true,
+    "lab_core_tests": 573,
+    "lab_optional_skips": 3,
+    "tutorial_tests": 71,
+    "notebook_exports": 7,
+    "notebook_cell_errors": 0,
+    "release_check": true,
+    "browser": {
+      "page_errors": [],
+      "main_pricing_comparison_action": true,
+      "commented_workflow_and_heston_comparison_visible": true,
+      "math_render_errors": 0
+    }
+  },
+  "pre_round2_verification": {
+    "tutorial_tests": 71,
+    "lab_core_tests": 573,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "notebook_cell_errors": 0,
+    "runtime_boundary_symbols": 203,
+    "local_document_links": 52,
+    "moved_function_definitions_unchanged": 8,
+    "marimo_warnings": "existing empty cells in slots 2 and 3"
+  },
+  "model_and_data_story_revision": {
+    "date": "2026-11-09",
+    "requirements": [
+      "component math, Gaussian innovations and Y/V/relative-return decomposition",
+      "fixed simulator and pricing-comparison axes with explicit outside counts",
+      "prior market to path/payoff to conditional expected-price estimate to independent quote error",
+      "Q/P and forward-variance interval-level explanations",
+      "grayscale expiry lines and open-ended step curve",
+      "direct held-out numerical-price versus small-pricer predictions",
+      "exact 70/63 market input diagrams with labels separated",
+      "remove three-market MCMC section and optional repetition",
+      "six-input joint-pricer counterpart and guarded native load",
+      "matched same-underlying point calibration versus paired-posterior fair-strike propagation"
+    ],
+    "tutorial_tests": 91,
+    "lab_core_tests": 573,
+    "optional_skips": 3,
+    "notebook_exports": 7,
+    "rough_cells": 70,
+    "cell_errors": 0,
+    "runtime_shared_symbols": 203,
+    "browser": {
+      "page_errors": [],
+      "path_controls": {
+        "realizations": [
+          "A",
+          "B",
+          "C"
+        ],
+        "views": [
+          "paths",
+          "components"
+        ],
+        "ranges": [
+          "detail",
+          "wide"
+        ],
+        "H_endpoints": [
+          0.02,
+          0.4
+        ]
+      },
+      "math_accordions_opened": [
+        "Read the simulator one component at a time",
+        "What exactly is the forward-variance curve \u03be\u2080?",
+        "Grid approximation and the extra Gaussian channel",
+        "What does this simulation approximate?",
+        "The short-maturity relationship",
+        "Numerical accuracy and the observation model",
+        "A refresher: what does the pricing measure Q mean?",
+        "How the numerical averaging works"
+      ],
+      "dataset_controls": {
+        "draws": [
+          "A",
+          "B",
+          "C"
+        ],
+        "paths": [
+          256,
+          1024,
+          4096
+        ],
+        "expiries_days": [
+          5,
+          21,
+          63,
+          252
+        ],
+        "quote_error_scale": [
+          0,
+          4,
+          1
+        ]
+      },
+      "small_pricer_seconds": 39.002179249888286,
+      "pricer_display_reuses_fit": true,
+      "pricer_fit_summary": "Overall validation RMSE across both 63-price surfaces: 21.18 quote SDs. Selected epoch: 5. Generation: 34.3 s; total: 37.5 s. Changing the display reuses this fit; it does not train again. The likelihood code above explains the next step, but this tiny pricer is not used for MCMC.",
+      "native_known_load_and_sample_seconds": 4.970754582900554,
+      "joint_point_fit_seconds": {
+        "Worked joint example": 0.15046650008298457,
+        "Curve level\u2013decay trade-off": 0.2606706670485437,
+        "Coupled volatility parameters": 0.14333424996584654,
+        "Weakly informed decay": 0.13396137487143278
+      },
+      "joint_case_change_clears_fit": true,
+      "missing_pricer_preserves_posterior_only": true,
+      "removed_three_market_section": true,
+      "math_render_errors": 0,
+      "marimo_errors": 0,
+      "narrow_width": 760,
+      "horizontal_overflow": false
+    },
+    "actual_joint_point_check": {
+      "chi2": 50.87682912112705,
+      "parameters": [
+        0.024934611862022945,
+        1.2956818193644075,
+        -0.9854103791268811,
+        0.14770566981937286,
+        0.044092252339323824,
+        6.924718432951008
+      ],
+      "q90Kvar": [
+        0.05780677484272336,
+        0.059243678804246545,
+        0.06057907320112126
+      ],
+      "pointKvar": 0.05904037591312794,
+      "same_bank": true,
+      "runs": [
+        {
+          "start_index": 0,
+          "initial_logits": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "initial_parameters": [
+            0.18499999999999997,
+            2.0,
+            -0.595,
+            0.08499999999999999,
+            0.08499999999999999,
+            4.125
+          ],
+          "success": true,
+          "status": "converged",
+          "message": "`ftol` termination condition is satisfied.",
+          "scipy_status": 2,
+          "chi2": 50.87682912112705,
+          "parameters": [
+            0.024934611862022945,
+            1.2956818193644075,
+            -0.9854103791268811,
+            0.14770566981937286,
+            0.044092252339323824,
+            6.924718432951008
+          ],
+          "active_numerical_bounds": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "evaluations": 132
+        },
+        {
+          "start_index": 1,
+          "initial_logits": [
+            -0.7903677719964292,
+            1.1588202388356872,
+            5.1746860213098715,
+            -0.4651047197401485,
+            1.3586947319383096,
+            1.353393732887328
+          ],
+          "initial_parameters": [
+            0.12298960334085615,
+            2.7833548400080548,
+            -0.20444466667476036,
+            0.06786633149401704,
+            0.12933212133384506,
+            6.408800288396396
+          ],
+          "success": true,
+          "status": "converged",
+          "message": "`ftol` termination condition is satisfied.",
+          "scipy_status": 2,
+          "chi2": 50.876829288140385,
+          "parameters": [
+            0.02493508884010528,
+            1.295675823882833,
+            -0.985404452093515,
+            0.14770570032278693,
+            0.04409217900376118,
+            6.924715696348217
+          ],
+          "active_numerical_bounds": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "evaluations": 138
+        },
+        {
+          "start_index": 2,
+          "initial_logits": [
+            2.000558905663871,
+            0.7728296026828716,
+            -0.7784591367326785,
+            -0.13935154513302234,
+            -2.8328743404258114,
+            -0.07015845142597898
+          ],
+          "initial_parameters": [
+            0.3106823965098021,
+            2.5523980265550974,
+            -0.7414248628437519,
+            0.07978275706582635,
+            0.01833600181949218,
+            3.9891237300658173
+          ],
+          "success": true,
+          "status": "converged",
+          "message": "`ftol` termination condition is satisfied.",
+          "scipy_status": 2,
+          "chi2": 50.8768291365946,
+          "parameters": [
+            0.024934678518579986,
+            1.295677739862936,
+            -0.9854117591074519,
+            0.14770566211441147,
+            0.04409227551113134,
+            6.924720635123435
+          ],
+          "active_numerical_bounds": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "evaluations": 112
+        }
+      ]
+    },
+    "canonical_numerical_law_changed": false,
+    "model_weights_or_existing_assets_changed": false,
+    "scientific_acceptance": false,
+    "scope": "Forward/data/pricer teaching simulations and local least-squares points; no new reference posterior, cross-underlying model or realized-risk forecast.",
+    "cache_boundary_check": "Reject symlinked caches that escape tutorial/assets before any model read."
+  },
+  "new_assets": [
+    "diagnostics/rough-known-200"
+  ],
+  "cached_diagnostic_review": {
+    "recorded_at": "2026-11-10T14:40:30+00:00",
+    "format": "rough_cached_diagnostic_review_v1",
+    "scientific_acceptance": false,
+    "reserved_test_evaluated": false,
+    "inputs": {
+      "directory": "tutorial/assets/diagnostics/rough-known-200",
+      "cases": 200,
+      "quotes_per_market": 63,
+      "curve_levels_per_market": 7,
+      "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+      "compressed_inputs_bytes": 304717,
+      "files_sha256": {
+        "ACCEPTED.json": "d4dca92805f285ca70b98000ed428e94b5c3edbe28d6975bb4fb9d5e60d38859",
+        "inputs.npz": "3ee6be73abc6b6412d2ce1fc8d2975337a41e721c497d5454dd036260034180f",
+        "panel.json": "274027d587d21fd1ebbf492b7fb69a18ad49e048d1ef3d184e5bf903fa8e8ece",
+        "task.json": "e5ae108b2a6bf39921cd61bd05db50a431c5538486466a22a2db16b66080b644"
+      },
+      "generation_root_seed": 20261110,
+      "split": "validation",
+      "selection": "All validation IDs 0..199, in generation order, with no dropped or replaced markets.",
+      "no_cached_weights_or_posterior_draws": true
+    },
+    "generation": {
+      "producer_commit": "1351dc9619225ed90c1327ff2c5f60eacd0702cf",
+      "wall_seconds": 688.4477960444055,
+      "cpu_seconds": 685.8795800000006,
+      "run_with_serialization_wall_seconds": 689.2876509591006,
+      "imports_excluded": true,
+      "workers": 1,
+      "hardware": {
+        "platform": "macOS-26.4.1-arm64-arm-64bit",
+        "machine": "arm64",
+        "logical_cpu_count": 18,
+        "workers": 1,
+        "thread_settings": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1"
+        }
+      },
+      "cpu_brand": "Apple M5 Max",
+      "versions": {
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "python": "3.12.16"
+      },
+      "numerical_policy": {
+        "blocks": [
+          {
+            "horizon": 0.03968253968253968,
+            "n_steps": 80
+          },
+          {
+            "horizon": 0.25,
+            "n_steps": 504
+          },
+          {
+            "horizon": 1.0,
+            "n_steps": 504
+          }
+        ],
+        "max_mc_se_over_quote_sigma": 0.25,
+        "max_mc_se_over_quote_sigma_last_rung": 0.5,
+        "method": "hybrid",
+        "paths_ladder": [
+          32768,
+          65536,
+          131072,
+          262144,
+          524288,
+          1048576,
+          2097152
+        ]
+      },
+      "max_mc_se_over_quote_sigma": 0.24932126999810525,
+      "per_market_median_wall_seconds": 1.2633930620504543,
+      "per_market_max_wall_seconds": 27.32738433405757,
+      "source_sha256": {
+        "gbm_bank.py": "94cac3413ec95ed90f05ed3f1934ea5ae5451068b29c105c22fb838a51b27ecc",
+        "runtime_sources.py": "22a29f40eb8d1b9be4b9c58d46028806aeb5adde8457738b013f2a999f9467e1",
+        "bergomi.py": "bfdffb8175d26a6dd46620092ffc0c205a114cb2d1e0dc523f1cd8eb96ee215f",
+        "rough_bergomi.py": "eb3f123f0bc642c224ee17718964ed01b927a482dcc03767e760aea0546ad55d",
+        "calibration/surface.py": "ec661b14550a1931b3fa20e79cfcfab102920b24e303d8aaf22e23bfd70971e0",
+        "calibration/pricing.py": "dc554bda791ee4edea22a8de2352579f9fa30b91cc6acaa0fd138d587d06921c",
+        "calibration/tasks.py": "8f24909732836d6618a2e698cd01304984426928f0b42c58786270870b74d052",
+        "calibration/bank.py": "e8a40cb9c7fadfb472bc6e48fa5874f62f9fa7afd30156bd70e44feec7596353",
+        "tutorial/src/sbi4f_tutorial/rough_options/model.py": "546d03f66fd7f1321bcc71a37bdb5cba0b5f6b41e51a1ff4e0ac13a03915bd69",
+        "tutorial/src/sbi4f_tutorial/rough_options/simulator.py": "542359c3999c2d6b55860191bf9468aeaf877820128d9e87c94cd7ecb0066bca",
+        "tutorial/src/sbi4f_tutorial/shared/bank_helpers.py": "39df3eaa28c703840c00123d8e68fb4b22551c01a76a5cf7aeee2f7e049ea452",
+        "tutorial/src/sbi4f_tutorial/shared/gbm.py": "52184ef8c6e472ae8f7a2423d3ff3ec759ddbc919edbcd238dc6eba0ca87fa1a",
+        "tutorial/src/sbi4f_tutorial/shared/pricing.py": "3f0431d77418ca04ddb676a9d6ce036dc22c097f244965a0b6de7fe34c0e353e",
+        "tutorial/src/sbi4f_tutorial/shared/surface.py": "62a51bf361174b551b1a9553c58e23ce55940c377e2478f6d7c4b708cf4eb1c8",
+        "tutorial/src/sbi4f_tutorial/shared/tasks.py": "4bc28d37c865a04a3f5d214fec5afbecf1db0ab4a2e02dd331d520fe9b08848b"
+      },
+      "full_raw_npz_sha256": "6aa31ccb4f6cb00171369dbff34d170e3ed6228cc726705059ce4967e4055b4c",
+      "benchmark_script_sha256": "9206421b345860f01423dd57954d3501b698f62169a71865bef2b9f390d37b90",
+      "scope": "Finite-grid task precision checks retained; not a continuum-accuracy certificate."
+    },
+    "native_inference_benchmark": {
+      "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+      "checkpoint_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+      "cases": 200,
+      "draws_per_market": 200,
+      "cold_seed": 20261110,
+      "warm_seed": 20261111,
+      "backend": "cpu",
+      "hardware": {
+        "python": "3.12.16",
+        "platform": "macOS-26.4.1-arm64-arm-64bit",
+        "machine": "arm64",
+        "logical_cpus": 18,
+        "cpu_brand": "Apple M5 Max",
+        "physical_memory_gib": 128
+      },
+      "versions": {
+        "bayesflow": "2.1.0",
+        "keras": "3.15.1",
+        "jax": "0.11.1",
+        "jaxlib": "0.11.1",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "matplotlib": "3.11.2"
+      },
+      "stages": {
+        "numpy_and_input_read": {
+          "status": "complete",
+          "peak_rss_before_bytes": 24477696,
+          "wall_seconds": 0.051878583151847124,
+          "cpu_seconds": 0.809805,
+          "peak_rss_after_bytes": 51593216
+        },
+        "backend_imports": {
+          "status": "complete",
+          "peak_rss_before_bytes": 51593216,
+          "wall_seconds": 9.382251166040078,
+          "cpu_seconds": 9.643759000000001,
+          "peak_rss_after_bytes": 366329856
+        },
+        "native_checkpoint_load": {
+          "status": "complete",
+          "peak_rss_before_bytes": 366329856,
+          "wall_seconds": 0.8576091250870377,
+          "cpu_seconds": 1.4373210000000007,
+          "peak_rss_after_bytes": 489275392
+        },
+        "cold_sampling": {
+          "status": "complete",
+          "peak_rss_before_bytes": 489308160,
+          "wall_seconds": 33.63357033301145,
+          "cpu_seconds": 302.546462,
+          "peak_rss_after_bytes": 3742679040
+        },
+        "warm_sampling": {
+          "status": "complete",
+          "peak_rss_before_bytes": 3742679040,
+          "wall_seconds": 33.45733483298682,
+          "cpu_seconds": 308.117852,
+          "peak_rss_after_bytes": 4284743680
+        },
+        "draw_serialization": {
+          "status": "complete",
+          "peak_rss_before_bytes": 4284743680,
+          "wall_seconds": 0.12662516604177654,
+          "cpu_seconds": 0.15349700000001576,
+          "peak_rss_after_bytes": 4284743680
+        },
+        "native_diagnostic_rendering": {
+          "status": "complete",
+          "peak_rss_before_bytes": 4284743680,
+          "wall_seconds": 1.230537084164098,
+          "cpu_seconds": 0.7861010000000306,
+          "peak_rss_after_bytes": 4284743680
+        }
+      },
+      "timing_boundary": {
+        "generation": "Excluded: input NPZ already exists.",
+        "imports": "Timed separately in a fresh Python process.",
+        "load": "Canonical native loader plus reading all estimator weights to synchronize; no forward call.",
+        "cold_sampling": "First sample call after loading; 200 markets batched together; physical-unit NumPy output synchronizes device work.",
+        "warm_sampling": "Second call at identical input/output shapes, independent random seed.",
+        "diagnostics": "Recovery and calibration rank-ECDF figures; excluded from sampling timings.",
+        "serialization": "Posterior draws, inputs and figures; excluded from sampling timings."
+      },
+      "empirical_90_percent_coverage": [
+        0.91,
+        0.91,
+        0.895
+      ],
+      "parameter_names": [
+        "hurst",
+        "eta",
+        "rho"
+      ],
+      "worker_sha256": "8358e7b019a62f69232f9d9aa80e1e65c3a03eb51d6405b3047f4e2549cf4517",
+      "scope": "Small fixed prior-predictive validation panel. Coverage is descriptive, not acceptance."
+    },
+    "browser": {
+      "url": "http://127.0.0.1:8791",
+      "page_errors": [],
+      "request_failures": [],
+      "idle_open_seconds": 3.636031833011657,
+      "opens_without_training_model_loading_or_diagnostic_sampling": true,
+      "untrained_network_has_actionable_message": true,
+      "pretrained_load_and_single_case_sample_seconds": 5.932307667098939,
+      "diagnostic_action_seconds": 38.38684079097584,
+      "diagnostic_status": "Source: pretrained network \u00b7 200 markets \u00d7 200 posterior draws.",
+      "added_diagnostic_images": 2,
+      "changing_source_clears_previous_figures": true,
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "marimo_errors": 0,
+      "math_render_errors": 0,
+      "expensive_generation_actions_invoked": false,
+      "passed": true,
+      "live_tutorial": {
+        "page_errors": [],
+        "timing_scope": "UI elapsed with concurrent checks; not a performance benchmark",
+        "tutorial_generation_and_fit_action_seconds": 16.685009208042175,
+        "tutorial_fit_status": "Generated 8 fresh markets; trained for 5 epochs (10 optimizer updates). Generation: 14.2 s; fitting including compilation: 0.5 s; total including imports and sampling: 15.2 s. These session draws are separate from the pretrained results below.",
+        "tutorial_diagnostic_action_seconds": 9.505163917085156,
+        "tutorial_diagnostic_status": "Source: tutorial network \u00b7 200 markets \u00d7 200 posterior draws.",
+        "added_diagnostic_images": 2,
+        "changing_source_clears_tutorial_figures": true,
+        "unloaded_pretrained_source_is_not_replaced_by_tutorial_fit": true,
+        "marimo_errors": 0,
+        "math_render_errors": 0,
+        "generated_markets": 8,
+        "stored_diagnostic_markets": 200,
+        "fresh_200_generation_invoked": false,
+        "passed": true
+      },
+      "timing_scope": "UI elapsed; separate from uncontended performance benchmarks",
+      "watch_reload_note": "An initial live-fit UI wait was invalidated by a notebook edit; the stable-source repeat passed.",
+      "screenshots": [
+        "01-idle.png",
+        "02-no-network.png",
+        "03-diagnostics-controls.png",
+        "04-native-recovery.png",
+        "05-native-rank-ecdf.png",
+        "06-source-change-clears.png",
+        "07-narrow.png",
+        "08-tutorial-recovery.png",
+        "09-tutorial-rank-ecdf.png"
+      ]
+    },
+    "verification": {
+      "tutorial_tests": 101,
+      "lab_core_tests": 573,
+      "lab_optional_skips": 3,
+      "notebook_exports": 7,
+      "rough_notebook_cells": 76,
+      "notebook_cell_errors": 0,
+      "runtime_boundary_symbols": 203,
+      "tutorial_tests_log_sha256": "1229abba8a8671a6284e944682653c45e021ebe5b1ccd5d9514615a2deee0e9e",
+      "lab_tests_log_sha256": "12f2863eb8f8d438ea87355cda277175f4f1f6c0f07efa4801723de487baa069",
+      "exports_log_sha256": "5b99407392dbdc7aceb93ad416f2ac24a79ddfd9a442c12328cdadf237e1ca40",
+      "final_rough_export_log_sha256": "9c95a426bbbe6e533b990e9c0f7f2346040fd8d44f55ecbe7c890e2104edfc81",
+      "release_check_log_sha256": "979231483ba5049a9e950129e009eccf2b6676a27b8576fb5fce210fdc57ff0c"
+    },
+    "scope": "Reusable inputs and optional selected-workflow diagnostics. Existing models and saved posterior evidence unchanged; no final-test or reference-posterior result."
+  }
+}

@@ -107,6 +107,82 @@ Use your own GitHub or Drive account with access to the files; Drive Desktop
 and Oscar are not required. Put downloaded models in `assets/local-checkpoints/`
 as instructed. The loaders check that the model matches the selected example.
 
+## Rough options
+
+Start with the supplied-curve example: infer H, eta and rho from option quotes
+and seven known forward-variance levels. The joint-curve extension estimates
+three curve coefficients as well. These examples use different observations
+and curve families; they are not a matched comparison of curve uncertainty.
+
+Start by changing H, eta, rho and the variance scale in the component simulator.
+Its driver, variance, return and price panels use fixed axes. Random realizations
+and values outside the view are explained. Collapsible notes cover each
+equation, the Q measure and the forward-variance curve. A second simulator
+shows how path payoffs become estimated prices and independently noisy quotes.
+Compare Heston and rough Bergomi through short-maturity skew: an instant shape
+guide sits beside the model, and an optional pricing action compares actual
+smiles on the same contract grid. A dated SPY example motivates the pattern;
+the illustrative parameters are not market calibrations.
+The architecture diagram then separates the forward pricer from the conditional
+posterior network. Both have visible, commented training code. A short table and
+inline comments mark what stays the same as Heston and what changes: curve
+conditioning and offline reuse of Monte Carlo prices.
+
+Choose how to run the lesson:
+
+- **Saved results:** no download or training needed.
+- **Tutorial version:** train a small pricer or posterior network on fresh markets.
+- **Pretrained version:** optionally load the matching posterior weights and draw
+  for the worked example. See the [model guide](../lab/plans/training-data-guide.md).
+- **Network check:** choose the trained tutorial network or loaded pretrained
+  network, then run recovery and rank-ECDF plots on **200 markets × 200 draws**.
+  The 200 input markets are bundled; posterior draws are generated when requested.
+
+The small fits demonstrate the APIs; their outputs stay separate from the saved
+accuracy checks. Monte Carlo pricing error is reported separately from quote noise.
+The network check reuses a fixed validation panel, not an untouched final test.
+It needs no new option pricing. Generating the panel took about **11½ minutes**
+on one local CPU worker; checking the pretrained network took about **34 seconds**
+for sampling, plus plotting and model loading. The input cache is about **305 KB**.
+An [optional regeneration recipe](../lab/plans/training-data-guide.md#fixed-rough-option-diagnostic-inputs)
+keeps this expensive step outside the notebook.
+
+Edit the path explorer and architecture figure in `rough_options/explorer.py`,
+the Heston comparison in `rough_options/comparison.py`,
+the supervised pricer in `rough_options/surrogate.py`, and the notebook for its
+controls and visible workflows. Lab pricer training reuses the same implementation.
+The fixed validation panel and native BayesFlow checks use `rough_options/diagnostics.py`.
+
+The **Additional studies** selector offers three short learning extensions:
+
+- Check whether a new market's supplied curve fits the simulation design.
+- Propagate paired parameter draws into a variance-swap strike; compare with
+  deliberately shuffled marginals.
+- Change an explicit assumption beyond the latest quoted maturity.
+
+Each has a prediction prompt, a control or calculation, and an interpretation.
+They use current task/checkpoint evidence and freshly evaluated analytic checks.
+SPY is a fixed real-market example for the input-support check; its supplied
+curve is outside the current known-curve training prior, so no supported SPY
+posterior is claimed. Old pilot outputs and timing projections are absent from
+the student narrative; their source records remain in the repository.
+
+An input figure explains the 70 supplied-curve features and the 63-feature joint
+task. The pricer check shows predicted prices against numerical labels at one
+expiry, then signed errors in quote-SD units.
+
+The joint extension includes its six-input pricer counterpart. An optional
+matching model load adds a least-squares point calibration beside the saved
+posterior propagation: compare one variance-swap strike with a distribution
+of fair strikes on the **same underlying**. This is not a transfer to another
+underlying or a forecast of realized variance. Exact-model and joint MCMC
+references remain unfinished.
+
+Edit the data story in `rough_options/data_story.py`, input figures in
+`rough_options/lesson.py`, and uncertainty/point-fit calculations in
+`rough_options/studies.py`. The point fit needs the published joint-pricer
+folder; posterior propagation works without it.
+
 ## Trajectory inference
 
 The three models use daily returns and estimate drift. The joint rough model
@@ -135,8 +211,8 @@ Useful starting points:
 
 - **Heston:** are the model, quote noise, posterior comparison and predictive
   checks clear?
-- **Rough Bergomi:** is the difference between a supplied and an estimated
-  variance curve clear? Are the remaining checks easy to spot?
+- **Rough Bergomi:** is the supplied/inferred curve distinction clear? Does
+  each Additional study have a useful question, action and takeaway?
 - **Trajectories:** can you follow how longer histories change the posterior?
   Is the distinction between saved and freshly computed results clear?
 

@@ -1,0 +1,11 @@
+{
+  "accepted": "2026-11-08T22:09:23+00:00",
+  "source": "lab/evidence/pilot-results/2026-10-28/known100k-fixed50k-pymc",
+  "source_sha256": {
+    "README.md": "c299bf10b8093eeaf4d7c4add561726bf61965f7d06ecc7987ffd18ad7e7e8b0",
+    "comparison.json": "80eec85c42c97b65847cf8d7cfe4e417ee9abc70466c04e5f86f85fdfbd7c87e",
+    "sha256sums.txt": "4aa54f21dd8365570d803365c4d84c87b51e9d5ece8632c1b2a8422696930b51",
+    "terminal-accounting.psv": "42d369f735bc049419c25a2eddf67133253aa52d80f14b4d910823de556974bf"
+  },
+  "changes": []
+}

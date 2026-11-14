@@ -26,6 +26,9 @@ from ..rough_bergomi import simulate_rough
 
 # Shared implementations are owned by the tutorial runtime.
 from sbi4f_tutorial.shared.pricing import (
+    heston_variance_values,
+    heston_integrated_variance,
+    heston_variance_curve,
     _PAIR_CHUNK,
     step_curve,
     _block_contracts,
@@ -33,39 +36,3 @@ from sbi4f_tutorial.shared.pricing import (
     rough_surface,
     heston_surface,
 )
-
-
-def heston_variance_values(times, short_variance, long_variance, decay):
-    """Positive Heston-shaped initial mean curve in variance units, not Heston dynamics."""
-    t = np.asarray(times, dtype=float)
-    coefficients = np.asarray([short_variance, long_variance, decay], dtype=float)
-    if (coefficients.shape != (3,) or not np.isfinite(coefficients).all() or np.any(coefficients <= 0)
-            or not np.isfinite(t).all() or np.any(t < 0)):
-        raise ValueError("positive finite curve coefficients and nonnegative finite times required")
-    # Convex weights avoid cancellation when the short level is far below the long level.
-    weight = -np.expm1(-decay * t)
-    return short_variance * (1.0 - weight) + long_variance * weight
-
-
-def heston_integrated_variance(times, short_variance, long_variance, decay):
-    """Analytic W(T)=integral_0^T xi(s)ds; expm1 resolves small decay*T."""
-    t = np.asarray(times, dtype=float)
-    heston_variance_values(t, short_variance, long_variance, decay)  # shared validation
-    average_short_weight = np.ones_like(t)
-    np.divide(-np.expm1(-decay * t), decay * t, out=average_short_weight, where=t != 0)
-    return t * (short_variance * average_short_weight + long_variance * (1.0 - average_short_weight))
-
-
-def heston_variance_curve(times, short_variance, long_variance, decay):
-    """Sample the analytic curve at all simulator grid nodes, including time zero.
-
-    The simulator consumes a piecewise-linear table. When every block grid is
-    included, its node/left-cell evaluations equal the analytic curve. Its
-    expected integrated-variance control remains the same discrete left sum,
-    not the continuous W(T). Changing the grid changes that numerical model.
-    """
-    t = np.asarray(times, dtype=float)
-    if t.ndim != 1 or len(t) < 2 or t[0] != 0 or np.any(np.diff(t) <= 0):
-        raise ValueError("increasing curve grid from zero with at least two nodes required")
-    return {"times": t.tolist(),
-            "values": heston_variance_values(t, short_variance, long_variance, decay).tolist()}

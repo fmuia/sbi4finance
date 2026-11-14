@@ -59,3 +59,10 @@ def option_inference_runtime_hashes(task):
 def path_inference_runtime_hashes():
     """Current physical-parameter transforms, masks, GRU adapter and sampler."""
     return runtime_hashes(("sbi4f_tutorial.trajectories.inference",))
+
+
+def option_pricer_runtime_hashes(task):
+    """Forward-emulator features, training, export and numerical dependencies."""
+    return {**option_inference_runtime_hashes(task),
+            **runtime_hashes(("sbi4f_tutorial.rough_options.surrogate",
+                              "sbi4f_tutorial.shared.parameter_transforms"))}
