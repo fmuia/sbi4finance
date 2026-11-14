@@ -192,16 +192,17 @@ Run tutorial tests, marimo checks and all notebook exports, plus affected lab
 checks and release checks where runtime interfaces change. Models, banks and
 recorded numerical results remain unchanged.
 
-**Status:** implemented. The lesson starts with observed returns, offers actual
+**Status:** implemented. The lesson introduces the model before its observed
+synthetic history, offers actual
 saved lengths by default and places exact-prefix live inference beside the
 posterior. Tables, marginals, joint plots and the evolution endpoint share the
 selected paired draws. Selection changes clear fresh results; missing models
-leave the labelled saved fallback. A separate one-year exercise generates 128
+leave the labelled saved fallback. A separate five-year exercise generates 128
 fresh histories and trains for eight optimizer updates. Production and detailed
 input/diagnostic material are optional; all scientific limitations remain.
 
 The early forward simulator now exposes parameter controls for all three models.
-It uses eight one-year paths with fixed innovations, showing price paths, daily
+It uses eight five-year paths with fixed innovations, showing price paths, daily
 returns and a return-based realized-volatility summary. It shares the canonical
 path implementation with training-pair generation. Extracting that shared path
 block preserves all 54 pre-edit check arrays exactly across three models, three
@@ -232,10 +233,11 @@ validation stream distinguish these histories from training examples and the
 single history used to illustrate inference. No diagnostic inputs or posterior
 draws are published or written to the repo.
 
-Select the trained one-year rough-known workflow or the loaded native workflow.
-Their tasks remain separate: the tutorial model supports at most 252 days,
-while each native model has its own 1,260-day task. **Days per diagnostic history**
-is separate from the single-history control and defaults to 252 days.
+Select the trained five-year rough-known workflow or the loaded native workflow.
+The tutorial fit shares the rough-known task design while retaining its own
+small network and training set; other native models have their own matching
+tasks. All support up to 1,260 days. **Days per diagnostic history** is separate
+from the single-history control and defaults to the full 1,260 days.
 All 200 histories use that length, and the
 preprocessing masks every later return and time token. Changing the prefix reuses
 the same histories; changing the source, task or workflow invalidates stale plots.
@@ -318,7 +320,7 @@ Explain the bottleneck beside the architecture: the GRU emits 16 learned
 summary values in the tutorial fit or 32 in the supplied fit. Two known timing
 features condition the flow separately. This is a compression choice, not a
 parameter count or a sufficient-statistic claim. Training loss uses random
-prefixes; validation loss uses full-year histories. Their gap therefore also
+prefixes; validation loss uses full five-year histories. Their gap therefore also
 changes the conditioning-length distribution and cannot by itself diagnose
 overfitting or information loss.
 
@@ -536,6 +538,22 @@ numerical state is retained separately from its effective nonnegative variance.
 The orange path is available because these data are synthetic; it is not a
 neural estimate and never enters inference conditions. The right-hand panels
 summarize revealed values without replacing the ordered inference input.
+The player also reports raw minima, exact-zero counts and early/late medians,
+and offers a log-variance view. True zeros remain undefined in log coordinates;
+they are counted, not replaced by a small positive number. Rough mean/median
+reference curves use the same generating parameters and hybrid-grid variance.
+
+The later audit corrects an incomplete interpretation of the quiet examples:
+the ageing law matters, but the four preserved known-curve paths are also
+unrepresentative of its prior frequency. With a frozen criterion of average
+daily-boundary V in days 1009–1260 below 0.0004, all four saved cases qualify,
+versus 69/512 independent prior paths (13.5%; Wilson 95% interval 10.8–16.7%).
+At the same parameters as case 3, only 2/512 new realizations qualify. The
+compact accepted diagnostic retains every prior value, every original saved
+marker and all four conditional ensembles. It exposes model ageing and chance
+variation without choosing prettier replacement histories. The numerical
+audit found healthy Gaussian inputs and the intended grid compensator, with
+no rough-variance zeros, underflow, clipping, floors or redrawn failures.
 
 Explain η beside the controls as log-variance dispersion under a fixed-mean
 compensator. Increasing η raises the spread across realizations while lowering
@@ -563,7 +581,7 @@ posterior decoder. It also names the separate density-family, unit, transform
 and masking changes from the option lessons instead of implying that adding
 the GRU is the only code difference.
 
-The revised guided animation passes 144 tutorial tests and all seven notebook
+The preceding guided-animation review passed 144 tutorial tests and all seven notebook
 exports (88 trajectory cells, zero errors), plus marimo and release/ownership
 checks. Focused tests bind the physical and transformed joint label to the
 canonical training API at every displayed prefix. Browser checks cover
@@ -580,6 +598,14 @@ reveal controls do not silently change other posterior queries. Model
 extensions, prefix changes, native-frame preparation, detailed input/mask
 tables and the optional 200-history network check are collapsed secondary
 tools. Keep the final failed-calibration evidence visible in the main route.
+The forward simulator, live-training/validation/example histories, input
+diagram, architecture, training walkthrough and diagnostic defaults now share
+this five-year maximum. The small fit remains 128 training histories, 64
+validation histories, two epochs and eight optimizer updates. A measured local
+execution completed in 13.4 seconds including imports. A displayed 252-day
+prefix is explicitly one trading year; 252 in time steps and annualization
+remains the trading-days-per-year convention. Group the governing rough
+equations and Heston comparison before showing the observed-history section.
 
 Redesign the prior/posterior-predictive displays around a direct data/model
 comparison, retaining the existing simulation results and parameter targets.
@@ -605,7 +631,7 @@ Neither a visually plausible replicate nor a difference from this Gaussian
 reference is a calibration result or a guarantee that the volatility model
 fits. Actions and simulation-budget controls remain collapsed secondary tools.
 
-**Verification · 14 November:** 141 tutorial tests, 531 core lab tests (three
+**Verification · 14 November, after horizon/variance review:** 151 tutorial tests, 531 core lab tests (three
 optional PyMC skips), all seven exports (88 trajectory cells, zero errors),
 marimo and release/ownership checks pass. Browser checks cover both market
 windows, all three paired synthetic-history players, replay and fixed axes,
@@ -613,8 +639,12 @@ the prefix/mask training animation, encoder comparison, full-horizon posterior
 playback and case-bound truth markers, collapsed controls, exact native queries,
 the real/synthetic prior comparison and posterior replicas. Wide and 760-pixel
 views have no horizontal overflow, hidden widget footers, math or runtime
-errors. Standalone predictive checks also cover all three models, one-day and
-constant histories, and the optional larger replication budget. The original
+errors. The final review also checks model → observed history → simulator order,
+full-horizon training and diagnostic defaults, every rough-known and Heston
+history in linear/log views, mean/median references, exact-zero gaps and raw
+value preservation. The accepted gallery audit is bound to the same task and
+original cases. Standalone predictive checks also cover all three models, one-day
+and constant histories, and the optional larger replication budget. The original
 model weights, parameter priors, numerical law and calibration failures are
 preserved. Temporary QA port 8794 is stopped; the user review preview is separate.
 

@@ -71,6 +71,18 @@ class TrajectoryForwardTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "16 paths"):
                     lesson.simulator_preview(task, chosen, paths=17)
 
+    def test_preview_and_matched_comparison_default_to_the_complete_five_year_horizon(self):
+        task, _, _ = lesson.load_example("rough-known")
+        parameters = {"hurst": .1, "eta": 1.5, "rho": -.7, "drift": .05}
+        preview = lesson.simulator_preview(task, parameters, paths=2)
+        comparison = lesson.simulator_comparison(task, parameters, "hurst", paths=2)
+        self.assertEqual(preview["observations"].shape, (2, 1260, 1))
+        for item in (preview, *comparison["previews"]):
+            self.assertEqual(item["task"]["n_observations"], 1260)
+            self.assertEqual(item["task"]["history_length_range"], [1, 1260])
+            self.assertEqual(item["task"]["dt_years"], 1 / 252)
+            self.assertEqual(item["observations"].shape[1:], (1260, 1))
+
     def test_simulator_limits_stay_fixed_when_parameters_change_and_only_presets_change_them(self):
         task, _, _ = lesson.load_example("rough-known")
         parameters = {"hurst": .1, "eta": .5, "rho": -.7, "drift": .05}

@@ -144,15 +144,23 @@ truth, never a network input or an estimated state. Play, advance, reset and
 scrub reuse that one history; the defaults reveal 21 days per step on trading-month
 axes. Fixed axes and outside counts keep comparisons honest.
 
+The model introduction groups the price, Volterra-driver, variance and
+correlation equations, with Heston's mean-reverting variance equation beside
+them. The observed synthetic history follows that introduction.
 The separate forward simulator changes parameters while keeping innovations
-fixed. It shows eight one-year price paths, daily returns and return-based
+fixed. It shows eight five-year price paths, daily returns and return-based
 realized volatility. This noisy rolling statistic differs from the hidden
 variance revealed for the fitted synthetic history.
 The observed-history explanation flags an important design limitation:
 zero-origin rough variance is nonstationary even with a constant mean curve.
 Its median can decline while rare large paths keep its mean fixed. The four
-saved known-curve histories strongly illustrate this effect; it is not a plot
-normalization. The H-prior explanation distinguishes roughness from Gaussianity:
+saved known-curve histories are also an unusually quiet gallery. A frozen
+512-history prior audit separates that finite-gallery effect from the model's
+age-dependent distribution. The original examples remain unchanged. The
+history player adds paired mean/median reference curves, a log-variance view
+and exact-zero/minimum/first-versus-last-window readouts. Logarithms leave true
+zeros undefined instead of replacing them with a positive floor.
+The H-prior explanation distinguishes roughness from Gaussianity:
 the driver is Gaussian for every H, while H=1/2 is its Brownian boundary. The
 chosen Uniform[0.03,0.4] training prior excludes that boundary and cannot test it.
 Increasing η increases log-variance dispersion, while its compensator preserves
@@ -169,7 +177,7 @@ Heston and the inferred-curve model remain available as extensions.
 
 There are two explicit routes:
 
-- **Train here:** generate 128 new one-year training histories and a separate
+- **Train here:** generate 128 new five-year training histories and a separate
   validation set. Fit a 16-unit GRU and two-block spline coupling flow for eight
   updates, inspect training/validation loss, then infer parameters for an
   independent history. Results stay in the session and have no calibration claim.
@@ -198,7 +206,7 @@ vectors, while also naming the density-family and preprocessing changes.
 The GRU compresses the returns into 16 tutorial or 32 pretrained summary values;
 two known timing features condition the flow separately. Summary size is a
 design choice, not a guarantee that all information survives. Training uses
-random prefixes while validation loss uses full-year histories, so their loss
+random prefixes while validation loss uses full five-year histories, so their loss
 gap also reflects different conditioning lengths.
 
 **Saved mode** offers only lengths with saved posterior snapshots, so the
@@ -285,7 +293,9 @@ Generation took under 0.1 seconds per 200 histories in our local CPU check, so
 there is no separate diagnostic dataset to download.
 Every history uses the same chosen prefix; later returns and time tokens are
 masked. Generating parameters are labels for the checks, never model inputs.
-The one-year tutorial fit and five-year pretrained fits keep separate tasks.
+The tutorial and supplied rough-known fits now share the five-year task
+design, while retaining separate weights and training sets. Other supplied
+models keep their own matching task definitions.
 
 These independent, fixed-seed histories are reusable validation data, not an untouched final
 test. Neither the inputs nor the new posterior draws are written to the repo.

@@ -11,6 +11,23 @@ from sbi4f_tutorial.trajectories import (
 
 
 class HistoryWidgetTests(unittest.TestCase):
+    def test_mean_and_median_references_remain_paired_and_tiny_values_are_not_floored(self):
+        history = {"returns": np.array([.01, -.01, 0.]),
+                   "variance": np.array([.04, 1e-8, 0., 1e-15]),
+                   "mean_variance": np.full(4, .04),
+                   "median_variance": np.array([.04, .02, .01, .005])}
+        payload = history_widget.build_payload(history, end=3)
+        np.testing.assert_array_equal(payload["variance"], history["variance"])
+        np.testing.assert_array_equal(payload["mean_variance"], history["mean_variance"])
+        np.testing.assert_array_equal(payload["median_variance"], history["median_variance"])
+        short = history_widget.build_payload(history, end=1)
+        history["mean_variance"][2:] = np.nan
+        history["median_variance"][2:] = np.nan
+        history["variance"][2:] = np.nan
+        self.assertEqual(history_widget.build_payload(history, end=1), short)
+        with self.assertRaisesRegex(ValueError, "references"):
+            history_widget.build_payload({**history, "mean_variance": np.array([.04])}, end=1)
+
     def test_all_models_show_original_returns_and_verified_effective_boundary_variance(self):
         for model in simulation.MODELS:
             with self.subTest(model=model):
@@ -41,7 +58,7 @@ class HistoryWidgetTests(unittest.TestCase):
 
 class TrainingWidgetTests(unittest.TestCase):
     def setUp(self):
-        self.task = simulation.teaching_task("rough-known", observations=252)
+        self.task = simulation.teaching_task("rough-known", observations=1260)
         self.pair = simulation.generate(self.task, "train", 0, 1, seed=20261107, backend="numpy")
 
     def test_animation_uses_the_actual_preprocessing_tokens_masks_and_known_times(self):
@@ -49,7 +66,7 @@ class TrainingWidgetTests(unittest.TestCase):
         observations[0] = 0.
         parameters = self.pair["parameters"][0]
         payload = training_widget.build_payload(self.task, observations, parameters=parameters)
-        self.assertEqual([example["length"] for example in payload["examples"]], [1, 21, 63, 126, 252])
+        self.assertEqual([example["length"] for example in payload["examples"]], [1, 21, 63, 126, 252, 1260])
         for example in payload["examples"]:
             n = example["length"]
             actual = inference.conditioning_data(observations[None, :n], self.task)
@@ -85,7 +102,7 @@ class TrainingWidgetTests(unittest.TestCase):
     def test_generating_joint_label_and_float32_transform_stay_fixed_across_every_prefix(self):
         for name in simulation.MODELS:
             with self.subTest(model=name):
-                task = simulation.teaching_task(name, observations=252)
+                task = simulation.teaching_task(name, observations=1260)
                 pair = simulation.generate(task, "train", 0, 1, seed=20261107, backend="numpy")
                 observations, parameters = pair["observations"][0], pair["parameters"][0]
                 observations_before, parameters_before = observations.copy(), parameters.copy()

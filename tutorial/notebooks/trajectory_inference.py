@@ -61,8 +61,9 @@ def _(lesson_workflow, mo):
     | **Train here** | Generate a small training set, fit the GRU and flow, then infer parameters | A new tutorial model, kept in this session |
     | **Optional pretrained model** | Load the supplied estimator and reveal more days | A larger, separately trained model; saved draws work without a download |
 
-    First inspect an observed history, then explore the forward simulator. Both
-    training and model loading are explicit actions; the small simulator runs locally.
+    First introduce the model, inspect a five-year synthetic history, then explore
+    the forward simulator. Training and model loading are explicit actions;
+    the small simulator runs locally.
 
     The supplied estimators learn useful information, but **all three failed
     their final marginal-calibration screen**. We will inspect that distinction.
@@ -200,82 +201,6 @@ def _(mo, model_choice, trajectory):
     return cache_arrays, cache_report, cache_task
 
 
-@app.cell
-def _(cache_arrays, mo):
-    case_choice = mo.ui.dropdown(
-        options={f"History {index + 1}": index for index in range(len(cache_arrays["trajectory_id"]))},
-        value="History 1", label="Supplied synthetic history")
-    inference_mode = mo.ui.radio(
-        options={"Use saved posterior samples": "saved", "Compute posterior for selected prefix": "live"},
-        value="Use saved posterior samples", inline=True, label="Posterior calculation")
-    mo.vstack([mo.md("## The observed history"), case_choice, inference_mode])
-    return case_choice, inference_mode
-
-
-@app.cell
-def _(cache_arrays, inference_mode, mo, trajectory):
-    _lengths = trajectory.saved_lengths(cache_arrays)
-    if inference_mode.value == "saved":
-        observed_days = mo.ui.slider(steps=_lengths, value=1260,
-                                    label="Observed trading days", show_value=True)
-        _caption = "Saved samples come from the supplied trained network at this exact prefix. No model is loaded."
-    else:
-        observed_days = mo.ui.slider(1, 1260, step=1, value=1260,
-                                    label="Observed trading days", show_value=True, include_input=True)
-        _caption = ("Choose a prefix, then press Compute posterior below. This loads the matching trained network "
-                    "and draws parameter samples; no training is performed. Until then, the labelled saved snapshot is shown.")
-    mo.accordion({"Optional: change the prefix used for posterior calculations": mo.vstack([observed_days, mo.md(_caption)])})
-    return (observed_days,)
-
-
-@app.cell
-def _(cache_arrays, cache_task, case_choice, mo, observed_days, trajectory):
-    from sbi4f_tutorial.trajectories import history_widget, latent_assets
-    requested_days = observed_days.value
-    selection = trajectory.selection_key(cache_task, cache_arrays, case_choice.value, requested_days)
-    try:
-        _paired_history = latent_assets.load_history(cache_task, cache_arrays, case_choice.value)
-        _html = history_widget.render_html(_paired_history, end=requested_days,
-            label=f"{trajectory.MODEL_LABELS[cache_task['model']]} · synthetic history {case_choice.value+1}")
-        _display = mo.vstack([mo.iframe(_html, height="750px"),
-            mo.accordion({"How is the hidden path paired with these returns?": mo.md(
-                "The original daily returns are unchanged. A verified replay of the same generating "
-                "parameters and random innovations reconstructs variance at day boundaries, including V₀. "
-                "The paired asset is checked against the selected history and task. "
-                "For Heston this is effective nonnegative variance; its signed numerical state is a separate quantity. "
-                "This is simulation truth—not volatility estimated from returns—and it never enters the neural conditions.")})])
-    except (OSError, ValueError) as _error:
-        _display = mo.vstack([mo.callout(mo.md("**Paired hidden-state display unavailable:** " + str(_error) +
-            ". The observed returns remain available below; no replacement variance path is invented."), kind="warn"),
-            trajectory.plot_returns(cache_task, cache_arrays, case_choice.value, requested_days)])
-    _display
-    return requested_days, selection
-
-
-@app.cell(hide_code=True)
-def _(cache_task, mo):
-    mo.vstack([mo.md(r"""
-    A daily log return is $r_t=\log S_t-\log S_{t-1}$; 0.01 is about a 1% increase.
-    The blue panels show observed returns; orange panels reveal their paired
-    synthetic variance for explanation only. **The inference data are returns,
-    not that latent variance or the process shocks.** One observation is made per trading day,
-    with $\Delta t=1/252$ year, for up to five years.
-
-    **Try it:** keep the history fixed and reveal more days. Which parameters
-    should be hardest to learn from a short history?
-    """), mo.callout(mo.md(
-        "**Why can these rough histories become quieter?** Each starts a fresh volatility "
-        "process at day zero. Even with a constant mean-variance curve, its distribution "
-        "changes with time: typical variance can fall while rare large realizations "
-        "keep the mean unchanged. This is a structural effect, amplified by the four "
-        "supplied known-curve examples, not a plotting or normalization effect. "
-        "Individual paths can still flare up, and an increasing inferred curve can offset it. "
-        "These are finite-origin synthetic histories, not stationary slices of market data. "
-        "A stationary or mean-reverting rough return model would be a different training task."
-    ), kind="warn") if cache_task["model"] != "heston" else mo.md("")])
-    return
-
-
 @app.cell(hide_code=True)
 def _(cache_task, lesson_workflow, mo):
     parameter_labels = {
@@ -298,39 +223,81 @@ def _(cache_task, lesson_workflow, mo):
                for _name, _kind, _bounds in zip(cache_task["parameter_names"], cache_task["prior_types"],
                                                cache_task["prior_bounds"], strict=True)]
     _heston = cache_task["model"] == "heston"
-    _story = (
-        r"**Heston:** variance reverts toward a long-run level: "
-        r"$dV_t=\kappa(L-V_t)dt+\sigma\sqrt{V_t}\,dW_t^V$. "
-        "Initial variance is supplied; κ and physical drift are inferred here."
-        if _heston else
-        r"**Rough Bergomi:** variance depends on a weighted history of random shocks: "
-        r"$V_t=\xi(t)\exp(\eta Y_t-\tfrac12\eta^2\operatorname{Var}_{\rm grid}(Y_t))$. "
-        "H controls roughness, η log-variance dispersion, and ξ the deterministic mean variance scale.")
-    _curve = ("The supplied initial variance is not the realized subsequent variance."
+    _curve = ("**Selected task: Heston.** Initial variance is supplied; the five "
+              "parameters in the table are inferred. A supplied initial value "
+              "does not fix the subsequent realized variance path."
               if _heston else
-              "We supply the deterministic mean-variance curve ξ(t)=0.04; we do not fix the realized variance path. "
-              "Relaxing that curve assumption is already available in the separate rough Bergomi joint-curve example."
+              r"**Selected task: rough Bergomi with a supplied curve.** We set $\xi(t)=0.04$, "
+              "the deterministic ensemble mean of variance, and infer four parameters. "
+              "Each realized variance path remains random. The joint-curve example relaxes this assumption."
               if cache_task["model"] == "rough-known" else
-              r"Here the curve is inferred: $\xi(t)=L+(S-L)e^{-kt}$. Its three fixed coefficients join the other parameter targets. "
-              "This changes the unknown parameter vector; it does not turn the estimator into a latent-state filter.")
+              r"**Selected task: rough Bergomi with an inferred curve.** We use $\xi(t)=L+(S-L)e^{-kt}$. "
+              "The short level S, long level L and decay k join the other four parameters as joint targets. "
+              "These coefficients are constant within each generated history; the realized variance is random. "
+              "Learning a mean curve does not turn this estimator into a latent-state filter.")
     _steps = cache_task["numerics"].get("substeps", cache_task["numerics"].get("observation_substeps"))
     mo.vstack([
         lesson_workflow("Model"), mo.md(r"""
         ## 1. Model: dynamics and unknowns
 
-        This is a **physical-measure model** for returns, with an inferred drift μ:
+        **The price equation is shared with Heston; the variance mechanism changes.**
+        We model one ordered return history under the physical probability **P**.
+        Here are the rough Bergomi components together, in continuous time:
 
-        $$d\log S_t=(\mu-V_t/2)dt+\sqrt{V_t}\,dW_t^S,
-        \qquad d\langle W^S,W^V\rangle_t=\rho\,dt.$$
+        $$\begin{aligned}
+        \frac{dS_t}{S_t}&=\mu\,dt+\sqrt{V_t}\,dW_t^S,
+        &d\langle W^S,W^V\rangle_t&=\rho\,dt,\\
+        Y_t&=\sqrt{2H}\int_0^t(t-s)^{H-1/2}\,dW_s^V,
+        &q(t)&=\operatorname{Var}(Y_t)=t^{2H},\\
+        V_t&=\xi(t)\exp\!\left(\eta Y_t-\tfrac12\eta^2q(t)\right),
+        &Y_0&=0,\quad V_0=\xi(0).
+        \end{aligned}$$
 
-        Volatility is $\sqrt{V_t}$. The physical measure **P** describes the
-        statistical law of returns. The option lessons used a pricing measure
-        **Q**, under which discounted prices are martingales. A drift or variance
-        parameter fitted under one measure need not have the same value under
-        the other. This lesson fits the declared P law, with **no extra
-        measurement-error or quote-noise term**.
+        Time is measured in years, with **252 observed trading days per year**.
+        $W^S$ and $W^V$ are standard Brownian drivers under P.
+
+        - **Price $S_t$:** μ is the annual proportional price drift. Variance $V_t$
+          sets the noise scale; volatility is $\sqrt{V_t}$.
+        - **Driver $Y_t$:** a weighted history of Gaussian innovations. The power-law
+          kernel gives recent innovations more weight; H controls its roughness.
+        - **Variance $V_t$:** exponentiating the driver makes it positive. η controls
+          log-variance dispersion. The compensator $-\eta^2q(t)/2$ ensures
+          $\mathbb E_P[V_t]=\xi(t)$; it does not pull each path toward that mean.
+        - **Correlation ρ:** price and variance-driver innovations are correlated.
+          Negative ρ creates leverage, linking negative price innovations with
+          positive variance-driver innovations.
+
+        We observe daily **log returns**, so Itô's formula supplies the correction
+
+        $$d\log S_t=(\mu-V_t/2)\,dt+\sqrt{V_t}\,dW_t^S.$$
+
+        **What differs from Heston?** Keep the same price equation and correlation,
+        but replace the driver and exponential variance construction by
+
+        $$dV_t=\kappa(L-V_t)\,dt+\sigma\sqrt{V_t}\,dW_t^V.$$
+
+        | | Heston variance | Rough Bergomi variance above |
+        |:---|:---|:---|
+        | Random mechanism | Square-root diffusion | Exponential of a Gaussian Volterra driver |
+        | Memory | Current variance is a Markov state | With $\eta>0$ and $H<1/2$, current variance alone does not summarize the past |
+        | Mean reversion | $\kappa(L-V_t)$ pulls variance toward L | No corresponding restoring drift; $\xi(t)$ specifies the ensemble mean |
+
+        These equations describe the mathematical models. **The estimator learns
+        our declared finite-step simulator:** rough Bergomi uses the hybrid
+        driver's actual variance $q_i=\operatorname{Var}_{\rm grid}(Y_i)$ in the
+        compensator, rather than substituting $t_i^{2H}$. The numerical updates
+        appear together in **The discrete model, step by step** below.
+
+        The option lessons used a pricing probability **Q**, under which discounted
+        prices are martingales. A parameter fitted under P need not have the same
+        value under Q; this is a declared return-history law, not a fitted change
+        of measure. Returns contain process randomness, with **no extra
+        measurement-error or quote-noise term**. The variance constructions follow
+        [Heston](https://doi.org/10.1093/rfs/6.2.327) and
+        [Bayer, Friz and Gatheral](https://realvol.com/RVOL2Paper.pdf); our physical
+        drift, initialization and training priors are explicit tutorial choices.
         """),
-        mo.md(_story + "\n\n" + _curve),
+        mo.md(_curve),
         mo.ui.table(_priors, selection=None, pagination=False),
         mo.accordion({"Why this H prior, and what happens at H = 1/2?": mo.md(r"""
         **We assume the rough regime when training this estimator.** The uniform
@@ -342,8 +309,8 @@ def _(cache_task, lesson_workflow, mo):
         of the supported interval $0<H<1/2$.
 
         **Gaussianity and roughness are different properties.** The driver
-        $Y_t=\sqrt{2H}\int_0^t(t-s)^{H-1/2}\,dW_s^V$ is Gaussian for every H:
-        it is a linear integral of Brownian noise. Smaller H makes its paths
+        $Y_t$ above is Gaussian for every H: it is a linear integral of
+        Brownian noise. Smaller H makes its paths
         rougher and changes dependence; it does not make the driver non-Gaussian.
 
         At the mathematical boundary $H=1/2$, the kernel becomes constant and
@@ -369,10 +336,11 @@ def _(cache_task, lesson_workflow, mo):
             mo.md(f"The simulator uses **{_steps} internal steps per day**, then supplies one daily return. "
                   "Inference is trained for that finite-step law. Changing models does not change "
                   "the daily observation frequency."),
-            mo.md(r"For rough Bergomi, the idealized Gaussian driver is "
-                  r"$Y_t=\sqrt{2H}\int_0^t(t-s)^{H-1/2}\,dW_s^V$. The hybrid-grid "
-                  r"implementation uses its own Gaussian variance in the exponential compensator, "
-                  r"written $\operatorname{Var}_{\rm grid}(Y_t)$ above. Each history starts at the declared origin."),
+            mo.md("The Heston implementation uses a signed auxiliary variance state and its positive part. "
+                  "The rough implementation uses a hybrid Gaussian driver and its matching variance compensator. "
+                  "The step-by-step equations below describe the selected numerical law. "
+                  "Each history starts at the declared origin; extending it reveals an older process, "
+                  "rather than a stationary window shifted to a new starting date."),
             mo.ui.table([{"setting": _name.replace("_", " "), "value": _value}
                          for _name, _value in cache_task["numerics"].items()], selection=None, pagination=False),
         ])}),
@@ -463,14 +431,15 @@ def _(cache_task, mo):
     belongs to this actual finite-step law.
     """ if _heston else r"""
     **Four internal steps make one observed day.** With $h=1/(252\cdot4)$,
-    the hybrid driver has the form
-    $Y_i=\sum_{j=0}^{i-1}w_{ij}(H,h)Z_j^W+b(H,h)Z_{i-1}^B$ for $i\ge1$.
-    Its known grid variance $q_i=\operatorname{Var}_{\rm grid}(Y_i)$ is used in
+    the hybrid driver and return update are
 
-    $$V_i=\xi(t_i)\exp(\eta Y_i-\tfrac12\eta^2q_i),$$
-
-    $$\Delta\ell_i=(\mu-V_i/2)h+\sqrt{V_i h}
-       (\rho Z_i^W+\sqrt{1-\rho^2}Z_i^\perp).$$
+    $$\begin{aligned}
+    Y_i&=\sum_{j=0}^{i-1}w_{ij}(H,h)Z_j^W+b(H,h)Z_{i-1}^B,
+       &q_i&=\operatorname{Var}_{\rm grid}(Y_i),\qquad i\ge1,\\
+    V_i&=\xi(t_i)\exp(\eta Y_i-\tfrac12\eta^2q_i),\\
+    \Delta\ell_i&=(\mu-V_i/2)h+\sqrt{V_i h}
+       (\rho Z_i^W+\sqrt{1-\rho^2}Z_i^\perp).
+    \end{aligned}$$
 
     Thus $Y_i$ uses earlier shocks, while $Z_i^W$ drives the next return step
     and contributes to $Y_{i+1}$. The return step uses left-endpoint variance. Four consecutive
@@ -518,6 +487,18 @@ def _(cache_task, mo):
     continuous driver has $q(t)=t^{2H}$; the simulator uses its stated grid
     variance. Revealing more days changes both evidence and process age.
 
+    **What is this model suitable for?** It gives a precisely specified synthetic
+    task: learn which parameter combinations can generate an ordered history,
+    and test whether inference recovers those combinations. Its finite-origin
+    rough variance law is **not a stationary model of an arbitrary five-year
+    market window**. Quiet later segments can be a model effect, rather than
+    evidence that a market has permanently become calm. Before using this law
+    for real-market continuation forecasts, we would need to review the physical
+    variance dynamics and initialization/prehistory, specify the state-inference
+    target, and validate a corresponding simulator and estimator. A different
+    initialization or mean-reverting rough law would require a new training task;
+    changing the plot or reusing the present checkpoint would not implement it.
+
     - **Supplied curve:** $\xi(t)=0.04$. Mean variance is constant at $0.2^2$;
       each realized $V_i$ still fluctuates. The constant does not say that the
       average realized volatility is exactly 20%.
@@ -560,13 +541,118 @@ def _(cache_task, mo):
     return
 
 
+@app.cell
+def _(cache_arrays, mo):
+    case_choice = mo.ui.dropdown(
+        options={f"History {index + 1}": index for index in range(len(cache_arrays["trajectory_id"]))},
+        value="History 1", label="Supplied synthetic history")
+    inference_mode = mo.ui.radio(
+        options={"Use saved posterior samples": "saved", "Compute posterior for selected prefix": "live"},
+        value="Use saved posterior samples", inline=True, label="Posterior calculation")
+    mo.vstack([mo.md("## The observed history"), case_choice, inference_mode])
+    return case_choice, inference_mode
+
+
+@app.cell
+def _(cache_arrays, inference_mode, mo, trajectory):
+    _lengths = trajectory.saved_lengths(cache_arrays)
+    if inference_mode.value == "saved":
+        observed_days = mo.ui.slider(steps=_lengths, value=1260,
+                                    label="Observed trading days", show_value=True)
+        _caption = "Saved samples come from the supplied trained network at this exact prefix. No model is loaded."
+    else:
+        observed_days = mo.ui.slider(1, 1260, step=1, value=1260,
+                                    label="Observed trading days", show_value=True, include_input=True)
+        _caption = ("Choose a prefix, then press Compute posterior below. This loads the matching trained network "
+                    "and draws parameter samples; no training is performed. Until then, the labelled saved snapshot is shown.")
+    mo.accordion({"Optional: change the prefix used for posterior calculations": mo.vstack([observed_days, mo.md(_caption)])})
+    return (observed_days,)
+
+
+@app.cell
+def _(cache_arrays, cache_task, case_choice, mo, observed_days, trajectory):
+    from sbi4f_tutorial.trajectories import history_widget, latent_assets
+    requested_days = observed_days.value
+    selection = trajectory.selection_key(cache_task, cache_arrays, case_choice.value, requested_days)
+    try:
+        _paired_history = latent_assets.load_history(cache_task, cache_arrays, case_choice.value)
+        _html = history_widget.render_html(_paired_history, end=requested_days,
+            label=f"{trajectory.MODEL_LABELS[cache_task['model']]} · synthetic history {case_choice.value+1}")
+        _display = mo.vstack([mo.iframe(_html, height="750px"),
+            mo.accordion({"How is the hidden path paired with these returns?": mo.md(
+                "The original daily returns are unchanged. A verified replay of the same generating "
+                "parameters and random innovations reconstructs variance at day boundaries, including V₀. "
+                "The paired asset is checked against the selected history and task. "
+                "For Heston this is effective nonnegative variance; its signed numerical state is a separate quantity. "
+                "This is simulation truth—not volatility estimated from returns—and it never enters the neural conditions.")})])
+    except (OSError, ValueError) as _error:
+        _display = mo.vstack([mo.callout(mo.md("**Paired hidden-state display unavailable:** " + str(_error) +
+            ". The observed returns remain available below; no replacement variance path is invented."), kind="warn"),
+            trajectory.plot_returns(cache_task, cache_arrays, case_choice.value, requested_days)])
+    _display
+    return requested_days, selection
+
+
+@app.cell(hide_code=True)
+def _(cache_task, mo):
+    _contents = [mo.md(r"""
+    A daily log return is $r_t=\log S_t-\log S_{t-1}$; 0.01 is about a 1% increase.
+    The blue panels show observed returns; orange panels reveal their paired
+    synthetic variance for explanation only. **The inference data are returns,
+    not that latent variance or the process shocks.** One observation is made per trading day,
+    with $\Delta t=1/252$ year, for a common maximum of **1,260 days (five years)**.
+
+    **Try it:** keep the history fixed and reveal more days. Switch to the
+    log-variance view: very small positive values remain distinguishable from
+    exact zero. Dashed references show the mean and median across possible
+    realizations at each time; neither is a restoring force on this path.
+    """)]
+    if cache_task["model"] != "heston":
+        _contents.append(mo.callout(mo.md(
+            "**This model's variance distribution changes with its age.** The zero-origin "
+            "rough driver spreads out through time. Its compensator keeps ensemble mean "
+            "variance fixed while lowering the pointwise median; there is no Heston-like "
+            "restoring drift. This is a finite-origin synthetic law, not a stationary slice "
+            "of market data. A stationary or prehistory-aware physical model requires its "
+            "own specification, training and validation."), kind="warn"))
+    if cache_task["model"] == "rough-known":
+        from sbi4f_tutorial.trajectories import variance_aging as _variance_aging
+        try:
+            _diagnostic = _variance_aging.load(cache_task)
+            _report = _diagnostic["report"]
+            _prior = _report["prior_ensemble"]
+            _saved_count = sum(row["event"] for row in _report["saved_cases"])
+            _contents.append(mo.callout(mo.md(
+                f"**These four cached histories are also an unusually quiet gallery.** "
+                f"Average variance in the last year falls below 0.0004 in **{_saved_count}/4** "
+                f"displayed histories, compared with **{_prior['count']}/{_prior['n']} "
+                f"({100*_prior['fraction']:.1f}%)** of independent histories drawn from the same "
+                "prior. Thus model ageing and the particular realizations both matter; "
+                "these four do not show what every rough-Bergomi path does."), kind="info"))
+            _contents.append(mo.accordion({"Compare the four saved paths with independent realizations": mo.vstack([
+                mo.image(_diagnostic["figure_path"]),
+                mo.md("The event is the **arithmetic mean of true daily-boundary variance over "
+                    "days 1009–1260 below 0.0004 = (2%)²**. Left: all 512 prior histories; "
+                    "right: 512 new realizations at each saved history's fixed parameters. "
+                    "For history 3's parameters, this quiet-final-year event occurs in only "
+                    "**2/512** repeats. The four original histories have not been replaced. "
+                    "The simulation audit found no numerical zeros, underflow, floor or redraw "
+                    "in the rough cohorts. This checks the simulator and example gallery; it "
+                    "does not validate a posterior or a real-market model."),
+            ])}))
+        except (OSError, ValueError, KeyError) as _error:
+            _contents.append(mo.callout(mo.md("**Variance-ageing comparison unavailable:** " + str(_error)), kind="warn"))
+    mo.vstack(_contents)
+    return
+
+
 @app.cell(hide_code=True)
 def _(lesson_workflow, mo):
     mo.vstack([lesson_workflow("Simulate"), mo.md(r"""
     ## 2. Simulate: try the forward model
 
     **Choose the parameters; see the histories they can generate.** The sliders
-    use the model's declared parameter ranges. Eight independent one-year paths
+    use the model's declared parameter ranges. Eight independent five-year paths
     share those parameters. A fixed seed keeps the same innovations when a
     slider changes, so it is easier to see a parameter's effect.
 
@@ -641,7 +727,7 @@ def _(cache_task, mo, simulator_compare, simulator_controls, simulator_refresh, 
         _limits = trajectory.SIMULATOR_SCALES[simulator_scale.value]
         if simulator_view.value == "Compare three settings":
             _comparison = trajectory.simulator_comparison(cache_task, simulator_controls.value,
-                simulator_compare.value, paths=4, days=252, seed=_seed)
+                simulator_compare.value, paths=4, days=1260, seed=_seed)
             _display = trajectory.simulator_comparison_figure(_comparison, scale=simulator_scale.value)
             _detail = mo.md("**Held fixed:** " + ", ".join(
                 f"{name} = {value:g}" for name, value in _comparison["fixed_parameters"].items())
@@ -650,7 +736,7 @@ def _(cache_task, mo, simulator_compare, simulator_controls, simulator_refresh, 
                 "One realization need not change monotonically. Change the random inputs and inspect again.")
         else:
             simulation_preview = trajectory.simulator_preview(
-                cache_task, simulator_controls.value, paths=8, days=252, seed=_seed)
+                cache_task, simulator_controls.value, paths=8, days=1260, seed=_seed)
             _display = trajectory.forward_simulator_figure(simulation_preview, scale=simulator_scale.value)
             _detail = mo.accordion({"Exact axis limits, outside counts and data ranges": mo.ui.table(
                 trajectory.simulator_axis_summary(simulation_preview, simulator_scale.value),
@@ -697,7 +783,7 @@ def _(mo):
     # Forward simulation at chosen parameters; fixed seed keeps innovations fixed.
     parameters = simulator_controls.value
     preview = trajectory.simulator_preview(
-        cache_task, parameters, paths=8, days=252, seed=20261108)
+        cache_task, parameters, paths=8, days=1260, seed=20261108)
     # Plot returns and return-based summaries; no posterior is fitted here.
     trajectory.forward_simulator_figure(preview, scale=simulator_scale.value)
     # Scale selection changes the view only; no path value is clipped or discarded.
@@ -932,19 +1018,19 @@ def _(cache_task, lesson_workflow, mo, trajectory):
         from sbi4f_tutorial.trajectories import simulation, inference
 
         # A physical-measure return model; process randomness needs no extra quote noise.
-        task = simulation.teaching_task("rough-known", observations=252)
+        task = simulation.teaching_task("rough-known", observations=1260)
         pairs = simulation.generate(
             task, "train", start=0, count=128, seed=20261107, backend="numpy")
         # A fresh, independent history is used only after training.
         example = simulation.generate(
             task, "validation", start=0, count=1, seed=20261108, backend="numpy")
-        # 128 training histories, each with 252 daily returns
+        # 128 training histories, each with 1,260 daily returns (five years)
         # One independently generated history for the inference example
         ```
 
         The simulator samples both parameters and process innovations. It retains
         aligned parameter labels, daily returns and history IDs. This tutorial route
-        uses **rough Bergomi with a supplied curve**, one-year histories and drift
+        uses **rough Bergomi with a supplied curve**, five-year histories and drift
         inference, regardless of the model selected for the supplied examples.
         The implementation lives in `src/sbi4f_tutorial/trajectories/`.
         """),
@@ -955,16 +1041,16 @@ def _(cache_task, lesson_workflow, mo, trajectory):
 @app.cell(hide_code=True)
 def _(mo, trajectory):
     from sbi4f_tutorial.trajectories import simulation as _input_simulation
-    _task = _input_simulation.teaching_task("rough-known", observations=252)
+    _task = _input_simulation.teaching_task("rough-known", observations=1260)
     mo.vstack([
         mo.md("### From a return sequence to network inputs\n\n"
-              "The tutorial model uses a 252-day maximum. Each observed day becomes a scaled return "
+              "The tutorial and supplied models both use a 1,260-day maximum (five trading years). Each observed day becomes a scaled return "
               "and a known time coordinate. Padding gets a false mask; a genuine zero return remains "
               "observed. Generating parameter labels follow a separate training route."),
         trajectory.input_concept_figure(_task),
         mo.md("The query supplies the upper route only. `training_data` also transforms the "
-              "parameter labels for density scoring during training. The supplied five-year model "
-              "uses the same input format with a 1,260-day maximum."),
+              "parameter labels for density scoring during training. Both models "
+              "use the same input format and daily time step."),
     ])
     return
 
@@ -973,7 +1059,7 @@ def _(mo, trajectory):
 def _(mo):
     from sbi4f_tutorial.trajectories import training_widget
     from sbi4f_tutorial.trajectories import simulation as _training_animation_simulation
-    _animation_task = _training_animation_simulation.teaching_task("rough-known", observations=252)
+    _animation_task = _training_animation_simulation.teaching_task("rough-known", observations=1260)
     # Exactly the first training pair used by the live tutorial route, generated once.
     _animation_pair = _training_animation_simulation.generate(
         _animation_task, "train", start=0, count=1, seed=20261107, backend="numpy")
@@ -995,7 +1081,7 @@ def _(mo, training_widget):
 @app.cell(hide_code=True)
 def _(trajectory):
     from sbi4f_tutorial.trajectories import simulation as _architecture_simulation
-    _task = _architecture_simulation.teaching_task("rough-known", observations=252)
+    _task = _architecture_simulation.teaching_task("rough-known", observations=1260)
     trajectory.architecture_figure(_task, network=trajectory.TUTORIAL_NETWORK)
     return
 
@@ -1024,7 +1110,7 @@ def _(mo):
     |:---|:---|:---|
     | Causal GRU | 16 hidden units → 16 summary values | 64 hidden units → 32 summary values |
     | Spline coupling flow | 2 blocks, subnets [32, 32], 8 bins | 6 blocks, subnets [64, 64], 8 bins |
-    | Training data | 128 one-year histories | One million five-year histories per model |
+    | Training data | 128 five-year histories | One million five-year histories per model |
 
     **What changes from the option lessons?** The `BasicWorkflow` pattern stays:
     simulate pairs, adapt inputs, fit, then sample. The observation representation
@@ -1133,7 +1219,7 @@ def _(mo):
     ### Run the tutorial training route
 
     The button executes the simulation, network, training and sampling steps
-    above. It creates a **new one-year rough Bergomi model**. Its loss and
+    above. It creates a **new five-year rough Bergomi model**. Its loss and
     posterior summary appear here, separately from the supplied model below.
 
     The button runs these steps on the CPU, keeps results only in this session,
@@ -1159,7 +1245,7 @@ def _(mo, path_simulation, trajectory):
         from sbi4f_tutorial.trajectories import inference
 
         started = time.perf_counter()
-        task = path_simulation.teaching_task("rough-known", observations=252)
+        task = path_simulation.teaching_task("rough-known", observations=1260)
         # Three independent random streams: fitting, validation loss, and the example.
         pairs = path_simulation.generate(task, "train", 0, 128, seed=20261107, backend="numpy")
         validation = path_simulation.generate(task, "validation", 0, 64, seed=20261112, backend="numpy")
@@ -1186,7 +1272,7 @@ def _(mo, path_simulation, trajectory):
 
 @app.cell
 def _(mo, path_simulation, train_demo_button, train_tutorial_model, trajectory):
-    tutorial_task = path_simulation.teaching_task("rough-known", observations=252)
+    tutorial_task = path_simulation.teaching_task("rough-known", observations=1260)
     tutorial_workflow = None
     _output = mo.md("The training example is idle until requested.")
     if train_demo_button.value:
@@ -1199,7 +1285,7 @@ def _(mo, path_simulation, train_demo_button, train_tutorial_model, trajectory):
                       f"128 posterior draws: **{_timing['sampling']:.2f} s**. Imports precede these timers."),
                 _loss,
                 mo.md("Training loss scores the fitting histories; validation loss scores independent histories. "
-                      "Validation uses their full one-year length while training sees random prefixes, "
+                      "Validation uses their full five-year length while training sees random prefixes, "
                       "so a loss difference also changes the distribution of conditioning lengths. "
                       "Two loss values cannot diagnose convergence, overfitting, information preservation or calibrated posteriors. "
                       "Use the independent recovery and rank checks below."),
@@ -1775,7 +1861,7 @@ def _(mo, show_independent_tools):
 @app.cell(hide_code=True)
 def _(cache_task, diagnostic_source, mo, trajectory, tutorial_task):
     diagnostic_task = tutorial_task if diagnostic_source.value == "tutorial" else cache_task
-    diagnostic_days = mo.ui.slider(1, diagnostic_task["n_observations"], step=1, value=252,
+    diagnostic_days = mo.ui.slider(1, diagnostic_task["n_observations"], step=1, value=diagnostic_task["n_observations"],
                                    label="Days per diagnostic history", show_value=True, include_input=True)
     mo.vstack([
         mo.md(f"**Diagnostic task: {trajectory.MODEL_LABELS[diagnostic_task['model']]} · "

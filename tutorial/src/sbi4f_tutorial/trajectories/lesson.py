@@ -341,7 +341,7 @@ TUTORIAL_NETWORK = {"hidden_dim": 16, "summary_dim": 16, "depth": 2,
                     "bins": 8, "widths": [32, 32]}
 
 
-def simulator_preview(task, parameters, *, paths=8, days=252, seed=20261108):
+def simulator_preview(task, parameters, *, paths=8, days=1260, seed=20261108):
     """A small given-parameter forward example, separate from every fitted history."""
     from copy import deepcopy
     from . import simulation
@@ -511,7 +511,7 @@ SIMULATOR_COMPARISONS = {
 }
 
 
-def simulator_comparison(task, parameters, parameter, *, paths=4, days=252, seed=20261108):
+def simulator_comparison(task, parameters, parameter, *, paths=4, days=1260, seed=20261108):
     """Compare three settings with the same per-row innovations in every column."""
     _teaching_task(task)
     choices = ("vol_of_vol", "kappa") if task["model"] == "heston" else ("hurst", "eta")
