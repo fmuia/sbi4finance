@@ -5,7 +5,9 @@
     python lab/studies/accept.py --checkpoint RUN_DIR --to local-checkpoints/MODEL_ID
 
 Native BF2.1 checkpoint bytes and task/training metadata are preserved, retaining
-bound hashes. Historical BF2.0 exports keep their original optimizer-stripping
+bound hashes. Imported MMAR checkpoints preserve their original bytes and explicit
+source/provenance limits; their wrapper does not imply new BF2.1 training.
+Historical BF2.0 exports keep their original optimizer-stripping
 route and same-seed comparison. Replay exports first validate the full bound
 case, copy its bytes unchanged and explicitly retain scientific_acceptance=false.
 ACCEPTED.json is a copy receipt, not a new scientific-acceptance decision.
@@ -41,6 +43,27 @@ def recorded_source(source):
     """The source as ACCEPTED.json records it: relative to the repository, or else its name alone. A local
     absolute path would travel with the tutorial; the files' SHA-256 identify the source."""
     return str(source.relative_to(REPOSITORY)) if source.is_relative_to(REPOSITORY) else source.name
+
+
+def validate_mmar_checkpoint(source, metadata):
+    """Validate the imported artifact without deserializing or changing its model.
+
+    The task wrapper reconstructs the current source model's declared design.
+    It does not reconstruct the upstream historical training bank or random seed.
+    """
+    from sbi4f_tutorial.mmar_takehome import model
+
+    task = json.loads((source / "task.json").read_text())
+    canonical = lambda value: json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    task_json = canonical(task)
+    if task_json != canonical(model.DESIGN):
+        raise ValueError("imported MMAR task must equal the runtime's complete model design")
+    if hashlib.sha256(task_json.encode()).hexdigest() != metadata.get("task_sha256"):
+        raise ValueError("imported MMAR task hash differs from its wrapper record")
+    if sha256(source / "model.keras") != metadata.get("model_sha256"):
+        raise ValueError("imported MMAR checkpoint bytes differ from its wrapper record")
+    if not all(isinstance(metadata.get(key), str) and metadata[key].strip() for key in ("origin", "scope")):
+        raise ValueError("imported MMAR wrapper must record its source origin and historical-provenance scope")
 
 
 def accept_run(source, destination, keep):
@@ -168,18 +191,31 @@ def main():
         for name in ("task.json", "training.json"):
             shutil.copy2(source / name, staging / name)
         metadata = json.loads((source / "training.json").read_text())
-        native = metadata.get("format") in ("full_surface_training_v1", "path_posterior_v1")
+        native = metadata.get("format") in ("full_surface_training_v1", "path_posterior_v1", "mmar_posterior_v1")
         if native:
-            model_key = "model_sha256" if metadata["format"] == "path_posterior_v1" else "checkpoint_sha256"
-            if sha256(source / "model.keras") != metadata[model_key]:
-                raise ValueError("native checkpoint bytes differ from training record")
+            if metadata["format"] == "mmar_posterior_v1":
+                try:
+                    validate_mmar_checkpoint(source, metadata)
+                except (ValueError, OSError, KeyError):
+                    shutil.rmtree(staging)
+                    raise
+            else:
+                model_key = "model_sha256" if metadata["format"] == "path_posterior_v1" else "checkpoint_sha256"
+                if sha256(source / "model.keras") != metadata[model_key]:
+                    raise ValueError("native checkpoint bytes differ from training record")
             if metadata["format"] == "path_posterior_v1":
                 from sbi4finance.path_inference import inference as path_inference
                 task = path_inference.validate_task(json.loads((source / "task.json").read_text()))
                 if path_inference.fingerprint(task) != metadata["task_sha256"]:
                     raise ValueError("native path task differs from training record")
             shutil.copy2(source / "model.keras", staging / "model.keras")
-            record["changes"] = ["native BF2.1 model and metadata copied unchanged; checkpoint hash retained"]
+            if metadata["format"] == "mmar_posterior_v1":
+                record["changes"] = ["imported MMAR checkpoint and reconstructed wrapper copied unchanged; original model bytes retained"]
+                record["checkpoint_origin"] = metadata["origin"]
+                record["scope"] = metadata["scope"]
+                record["checkpoint_provenance"] = "imported source artifact; not a newly trained native BF2.1 model"
+            else:
+                record["changes"] = ["native BF2.1 model and metadata copied unchanged; checkpoint hash retained"]
             record["scientific_acceptance"] = False
         else:
             strip_optimizer(source / "model.keras", staging / "model.keras")
