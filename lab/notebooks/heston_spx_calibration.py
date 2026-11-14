@@ -158,6 +158,7 @@ def _(TRAINING, mo):
         ("Infer", "Condition on observed quotes and draw from the posterior in seconds"),
         ("Check", "Test the posterior on simulated data and against PyMC, and the model on the SPX quotes"),
         ("Use", "Price a product the market does not quote, with a range instead of one number"),
+        ("Advanced", "Diagnose Heston's limitations and explore inference with rough Bergomi"),
     )
 
     # ---- text: section numbers become anchors and links
@@ -216,7 +217,7 @@ def _(TRAINING, mo):
                        + "</div>" for label, content in labelled)
 
     def workflow_map():
-        """The six stages and what each one does, shown once under the title. Each stage links to its section."""
+        """The numbered sections, shown once under the title, with links to each section."""
         steps = "".join(
             f'<a class="nb-map-step" href="#{_anchor(number)}"><div class="nb-map-name"><span>{number}</span>{name}</div>'
             f'<div class="nb-map-text">{text}</div></a>'
@@ -1460,7 +1461,7 @@ def _(TRAINING, bayesflow, cards, grid, key, md, mo, note, section, table):
 
         Fourier pricing is already fast here, so our PyMC reference uses the checked pricer directly.
         A price surrogate becomes more useful when pricing is expensive, as with rough Bergomi.
-        The <a class="nb-ref" href="#beyond-heston:-rough-bergomi">closing extension</a> shows that route on these SPX quotes.
+        The Bergomi extension in Section 7.2 shows that route on these SPX quotes.
         """),
         mo.accordion({"The surrogate-pricer likelihood": md(r"""
             Let $\boldsymbol\vartheta=(v_0,\kappa,v_\infty,\sigma_v,\rho)$ be the five pricing parameters.
@@ -2095,7 +2096,7 @@ def _(
                     "ones low and steep.",
                 "Contrast with SPX":
                     f"On SPX the same rise is {spx_rise[0]:.1f} and {spx_rise[1]:.1f} points, much closer to parallel. "
-                    'The <a class="nb-ref" href="#what-heston-misses">closing section</a> analyses this limit of '
+                    'The <a class="nb-ref" href="#s7-1">advanced section</a> analyses this limit of '
                     "Heston. As a test of the inference the data set is still valid, because it is a draw from the "
                     "model and the prior.",
             }, kind="reading")
@@ -2634,7 +2635,7 @@ def _(grid, mo, stack, table):
             "**Whether the posterior is sharp.** A network that ignored the quotes and returned the prior would "
             "pass. The recovery plot (Section 5.3) and the PyMC reference (Section 5.4) check sharpness.",
             "**Whether the model is right.** The test data come from the same simulator. Section 5.5 and the "
-            '<a class="nb-ref" href="#what-heston-misses">closing section</a> test the model on the SPX quotes.',
+            '<a class="nb-ref" href="#s7-1">advanced section</a> test the model on the SPX quotes.',
         ])}, columns=1),
     ])})
     ecdf_guide
@@ -3139,7 +3140,7 @@ def _(
         "PyMC posterior":
             "PyMC samples the exact posterior of our model and prior. The noise multiplier $c$ piles up at its bound "
             "(last panel), and the Heston parameters settle on the best compromise. The "
-            '<a class="nb-ref" href="#what-heston-misses">closing section</a> shows where the fit misses and which '
+            '<a class="nb-ref" href="#s7-1">advanced section</a> shows where the fit misses and which '
             "feature is missing.",
     }
     if _neural is not None:
@@ -3465,7 +3466,7 @@ def _(grid, md, mo, section):
         section("Use", "An optional application: carry parameter uncertainty into the price of an unquoted product.",
                 stage=6),
         md('The product-pricing example is folded below. Continue to '
-           '<a class="nb-ref" href="#what-heston-misses">What Heston misses</a> for the main lesson.'),
+           '<a class="nb-ref" href="#s7">Advanced</a> for model diagnostics and the Bergomi extension.'),
     ])
     return FORWARD_START, use_intro
 
@@ -3649,6 +3650,12 @@ def _(
 
 
 @app.cell(hide_code=True)
+def _(section):
+    section("Advanced", "Diagnose what Heston misses, then explore rough Bergomi and its inference checks.", stage=7)
+    return
+
+
+@app.cell(hide_code=True)
 def _(
     BOUNDS,
     DELTA,
@@ -3746,10 +3753,13 @@ def _(
     _message = ("**The misfit sits in the deep put wing and is largest at short expiries.**"
                 if np.argmax(_grid[:, 0]) == 0 else "**The misfit sits in the deep put wing.**")
     mo.vstack([
-        section("What Heston misses", "On the SPX quotes the model is wrong. This section shows the signs, locates "
-                "the misfit and names the missing feature.", kicker="After the workflow"),
+        md("""
+        ### 7.1 What Heston misses
+
+        On the SPX quotes the model is wrong. We inspect the signs, locate the misfit and identify the missing feature.
+        """),
         md(r"""
-        ### Four signs of model misspecification
+        #### Four signs of model misspecification
 
         The PyMC reference for the SPX quotes shows four signs of misspecification. The network plays no part in them.
         """),
@@ -3771,7 +3781,7 @@ def _(
         **No Heston parameters and no better inference remove these signs.** The model lacks a feature of the data.
         """),
         md(r"""
-        ### Where the fit misses
+        #### Where the fit misses
 
         The misfit is largest for deep puts and at short expiries.
         """),
@@ -3889,7 +3899,7 @@ def _(
     _negative = 365 * _grid_t[_curve[:, 1] < 0]
     mo.vstack([
         md(r"""
-        ### Which feature is missing
+        #### Which feature is missing
 
         The at-the-money skew and curvature of each smile show what Heston lacks at short expiries.
         """),
@@ -3920,7 +3930,7 @@ def _(
                 f"that much crash risk into {_days[0]} days without breaking the rest of the smile.",
         }, kind="reading"),
         md(r"""
-        ### What can be done within Heston
+        #### What can be done within Heston
 
         Change the noise model: widen it or add an explicit model-error term. The posterior then admits the misfit instead of pushing $c$ against its bound.
         """),
@@ -3947,9 +3957,12 @@ def _(EVIDENCE, H, MID, QUOTES, mo):
 @app.cell(hide_code=True)
 def _(cards, grid, md, mo, note, section):
     mo.vstack([
-        section("Beyond Heston: rough Bergomi",
-                "Can a richer volatility model improve the fit, and can we still learn its posterior? "
-                "A saved follow-up study separates those two questions.", kicker="Extension · 6–8 minutes"),
+        md("""
+        ### 7.2 Beyond Heston: rough Bergomi
+
+        Can a richer volatility model improve the fit, and can we still learn its posterior?
+        A saved follow-up study separates those two questions.
+        """),
         mo.callout(md(r"**Separate saved experiment.** This extension widens $c$ to $\mathrm{Uniform}(0.5,50)$ for "
                       r"both Heston and Bergomi. The Heston estimator above still uses $c\in[0.5,2]$; its live "
                       "controls and checkpoint are unchanged. Everything below works without a model download."),
@@ -4295,11 +4308,11 @@ def _(
              "half-spreads (RMS). An amortized estimator is only reliable on data its simulator could have "
              "produced."),
             ("Section 6", "A posterior gives an unquoted product a price range", _range),
-            ('<a class="nb-ref" href="#what-heston-misses">What Heston misses</a>',
+            ("Section 7.1",
              "Misspecification shows what the next model needs",
              "Heston follows the SPX skew at the money. It misses the short-expiry curvature and the deep put "
              "wing."),
-            ('<a class="nb-ref" href="#beyond-heston:-rough-bergomi">Beyond Heston</a>',
+            ("Section 7.2",
              "A richer model and a reliable posterior are separate goals",
              "Rough Bergomi improves the matched SPX fit. A fixed-price-emulator control still exposes "
              "underestimated noise in the amortizer, so this extension remains a development result."),
