@@ -1449,6 +1449,7 @@ def _(TRAINING, bayesflow, cards, grid, key, md, mo, note, section, table):
 
         Fourier pricing is already fast here, so our PyMC reference uses the checked pricer directly.
         A price surrogate becomes more useful when pricing is expensive, as with rough Bergomi.
+        The <a class="nb-ref" href="#beyond-heston:-rough-bergomi">closing extension</a> shows that route on these SPX quotes.
         """),
         mo.accordion({"The surrogate-pricer likelihood": md(r"""
             Let $\boldsymbol\vartheta=(v_0,\kappa,v_\infty,\sigma_v,\rho)$ be the five pricing parameters.
@@ -3903,6 +3904,241 @@ def _(
 
 
 @app.cell(hide_code=True)
+def _(EVIDENCE, H, MID, QUOTES, mo):
+    # Saved aggregate results only: this section never loads a checkpoint or runs a pricer.
+    import importlib.util as _bergomi_importlib
+
+    _bergomi_spec = _bergomi_importlib.spec_from_file_location(
+        "_bergomi_capstone_for_spx", mo.notebook_dir() / "_bergomi_capstone_results.py")
+    _bergomi_module = _bergomi_importlib.module_from_spec(_bergomi_spec)
+    _bergomi_spec.loader.exec_module(_bergomi_module)
+    bergomi_results = _bergomi_module.load_results(
+        EVIDENCE / "2026-11-14/bergomi-capstone", expected_contracts=QUOTES,
+        expected_spreads=H, expected_observations=MID)
+    return (bergomi_results,)
+
+
+@app.cell(hide_code=True)
+def _(cards, grid, md, mo, note, section):
+    mo.vstack([
+        section("Beyond Heston: rough Bergomi",
+                "Can a richer volatility model improve the fit, and can we still learn its posterior? "
+                "A saved follow-up study separates those two questions.", kicker="Extension · 6–8 minutes"),
+        mo.callout(md(r"**Separate saved experiment.** This extension widens $c$ to $\mathrm{Uniform}(0.5,50)$ for "
+                      r"both Heston and Bergomi. The Heston estimator above still uses $c\in[0.5,2]$; its live "
+                      "controls and checkpoint are unchanged. Everything below works without a model download."),
+                   kind="info"),
+        cards([
+            ("Financial model", "Roughness and the initial variance curve", r"""
+             Rough Bergomi lets volatility fluctuate on short time scales through **roughness $H$**,
+             **volatility amplitude $\eta$** and **price–volatility correlation $\rho$**.
+             Three more coefficients describe the initial forward-variance curve: short variance,
+             long variance and decay. They are **inferred jointly**, rather than supplied as known.
+             """),
+            ("Observation model", "The same spread-based Gaussian noise", r"""
+             The six pricing/curve parameters determine the mean. A seventh parameter, $c$, determines
+             the observation-error SD: $c h_i$ for quote $i$. Errors are independent standard Gaussians.
+
+             Thus Heston has **six posterior targets** here; Bergomi has **seven**.
+             """),
+        ]),
+        md("#### Two learned maps, two different jobs"),
+        grid({
+            "Learn prices, then run MCMC":
+                "Expensive Monte Carlo price bank → **fixed neural price emulator** → likelihood + prior → MCMC.",
+            "Learn the posterior":
+                "**The same fixed emulator** → simulated noisy quotes + parameters → **amortizer** → posterior draws.",
+        }),
+        note("The second route describes the matched control shown below. Both methods use exactly the same "
+             "mean-price function, contracts, spreads and priors. That lets us assess posterior approximation "
+             "without a difference in pricing targets. The expensive price bank is reused.", label="Control"),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(DELTA, bergomi_results, caption, md, mo, np, plots, plt):
+    _g = bergomi_results["geometry"]
+    _fit = bergomi_results["fit_comparison"]
+    _observed, _h = np.asarray(_g["observed_raw"]), np.asarray(_g["half_spread_raw"])
+    _expiry = np.asarray(_g["expiry_index"])
+    _fig, _axes = plt.subplots(1, 3, figsize=(11.6, 3.0), sharey=True, constrained_layout=True)
+    for _axis, _e in zip(_axes, [0, len(_g["expiry_labels"]) // 2, len(_g["expiry_labels"]) - 1]):
+        _idx = np.flatnonzero(_expiry == _e)
+        _idx = _idx[np.argsort(DELTA[_idx])]
+        for _name, _label, _color in [("heston", "Heston", plots.SERIES[1]),
+                                      ("bergomi", "Rough Bergomi", plots.SERIES[0])]:
+            _residual = (np.asarray(_fit[_name]["price_mean_raw"]) - _observed) / _h
+            _axis.plot(DELTA[_idx], _residual[_idx], "o-", ms=3, lw=1.4, color=_color, label=_label)
+        _axis.axhline(0, color=plots.INK, lw=.8)
+        _axis.set(title=_g["expiry_labels"][_e], xlabel="Standardized log-moneyness z")
+    _axes[0].set_ylabel("Mean model price − observed quote\n(half-spreads)")
+    _axes[-1].legend(fontsize=8)
+    plt.close(_fig)
+    bergomi_fit_figure = _fig
+    mo.vstack([
+        md("#### Does the richer model fit these quotes better?"),
+        _fig,
+        caption("Posterior-average model prices on the same 63 SPX contracts. Three of seven expiries are "
+                "shown; the RMS below uses all 63. The zero line is the observed quote. Both studies use "
+                "the same spread-based Gaussian error law and widened c prior; Heston uses its direct "
+                "pricer, while Bergomi uses the fixed emulator."),
+        md(f"The residual RMS falls from **{_fit['heston']['rms_over_h']:.2f} to "
+           f"{_fit['bergomi']['rms_over_h']:.2f} half-spreads** "
+           f"(**{100 * _fit['rms_reduction_fraction']:.0f}% lower**). "
+           "Rough Bergomi improves this fit, but visible residuals remain. This one snapshot is a "
+           "controlled comparison, not a general ranking of the models."),
+    ])
+    return (bergomi_fit_figure,)
+
+
+@app.cell(hide_code=True)
+def _(bergomi_results, grid, md, mo, note):
+    _mcmc = bergomi_results["posteriors"]["mcmc"]["q05_q50_q95"]
+    _neural = bergomi_results["posteriors"]["amortizer"]["q05_q50_q95"]
+    mo.vstack([
+        md("#### A better price fit does not guarantee an accurate learned posterior"),
+        grid({
+            "MCMC on the fixed price emulator":
+                f"Noise multiplier **c = {_mcmc[1][-1]:.2f}**, central 90% interval "
+                f"**[{_mcmc[0][-1]:.2f}, {_mcmc[2][-1]:.2f}]**.",
+            "Matched amortizer":
+                f"Noise multiplier **c = {_neural[1][-1]:.2f}**, central 90% interval "
+                f"**[{_neural[0][-1]:.2f}, {_neural[2][-1]:.2f}]**.",
+        }),
+        md("The two routes can predict similar central prices while disagreeing about how much observation "
+           "noise is needed. Here the amortizer underestimates c relative to the matching reference. "
+           "Changing the financial model has not resolved that inference error."),
+        note("This MCMC reference targets the posterior of a **fixed price emulator**. It is not certified "
+             "exact inference under continuous-time Bergomi. Its Monte Carlo training labels and time "
+             "discretization have separate numerical errors. Agreement with this reference would test "
+             "the inference method; it would not establish the financial model's adequacy.", label="Limit"),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(bergomi_results, controls, mo):
+    _labels = bergomi_results["geometry"]["expiry_labels"]
+    bergomi_expiry = mo.ui.dropdown(options={_label: _i for _i, _label in enumerate(_labels)},
+                                    value=_labels[0], label="Bergomi expiry")
+    controls(bergomi_expiry, hint="Start at the shortest expiry, then compare all seven. The saved posterior stays fixed.")
+    return (bergomi_expiry,)
+
+
+@app.cell(hide_code=True)
+def _(DELTA, bergomi_expiry, bergomi_results, caption, mo, np, plots, plt):
+    _g = bergomi_results["geometry"]
+    _h, _observed = np.asarray(_g["half_spread_raw"]), np.asarray(_g["observed_raw"])
+    _idx = np.flatnonzero(np.asarray(_g["expiry_index"]) == bergomi_expiry.value)
+    _idx = _idx[np.argsort(DELTA[_idx])]
+    _fig, _axes = plt.subplots(1, 3, figsize=(11.6, 3.3), constrained_layout=True,
+                               gridspec_kw={"width_ratios": [1, 1.3, 1.3]})
+    for _name, _label, _color in [("mcmc", "MCMC · fixed emulator", plots.SERIES[1]),
+                                  ("amortizer", "Amortizer", plots.SERIES[0])]:
+        _hist = bergomi_results["posteriors"][_name]["histograms"]["c"]
+        _axes[0].stairs(_hist["density"], _hist["edges"], color=_color, lw=1.6, label=_label)
+        for _axis, _kind in zip(_axes[1:], ["clean", "noisy"]):
+            _q = np.asarray(bergomi_results["predictives"][_name][f"{_kind}_q05_q50_q95_raw"])
+            _q = (_q[:, _idx] - _observed[_idx]) / _h[_idx]
+            _axis.fill_between(DELTA[_idx], _q[0], _q[2], color=_color, alpha=.17)
+            _axis.plot(DELTA[_idx], _q[1], "o-", color=_color, ms=3, lw=1.3)
+    _axes[0].set(xlabel="Noise multiplier c", ylabel="Posterior density", title="Observation-noise scale")
+    _axes[0].legend(fontsize=7, loc="upper right")
+    _c_low = min(bergomi_results["posteriors"][_name]["q05_q50_q95"][0][-1]
+                 for _name in ["mcmc", "amortizer"])
+    _c_high = max(bergomi_results["posteriors"][_name]["q05_q50_q95"][2][-1]
+                  for _name in ["mcmc", "amortizer"])
+    _axes[0].set_xlim(max(.5, .65 * _c_low), 1.2 * _c_high)
+    for _axis, _title in zip(_axes[1:], ["Parameter uncertainty only", "Parameters + observation noise"]):
+        _axis.axhline(0, color=plots.INK, lw=.8)
+        _axis.set(title=_title, xlabel="Standardized log-moneyness z")
+    _axes[1].set_ylabel("Predicted − observed quote\n(half-spreads)")
+    _limits = [_axis.get_ylim() for _axis in _axes[1:]]
+    for _axis in _axes[1:]:
+        _axis.set_ylim(min(_v[0] for _v in _limits), max(_v[1] for _v in _limits))
+    plt.close(_fig)
+    bergomi_uncertainty_figure = _fig
+    _predictives = bergomi_results["predictives"]
+    mo.vstack([
+        _fig,
+        caption(f"{_g['expiry_labels'][bergomi_expiry.value]}. Lines are medians; shaded regions are pointwise "
+                "central 90% intervals. Middle: prices induced by the joint parameter posterior, with no "
+                "fresh quote noise. Right: the same paired physical/curve/c draws, with fresh independent "
+                "Gaussian errors of SD c × half-spread. Both panels use the same vertical scale. "
+                "The observed quotes lie on zero; the right bands are expected to be wider."),
+        caption(f"Across all 63 viewed quotes, noisy bands include "
+                f"{_predictives['mcmc']['noisy_in_band_count']}/63 for MCMC and "
+                f"{_predictives['amortizer']['noisy_in_band_count']}/63 for the amortizer. "
+                "These are descriptive checks on the fitted quotes, not held-out coverage or a "
+                "calibration certificate."),
+    ])
+    return (bergomi_uncertainty_figure,)
+
+
+@app.cell(hide_code=True)
+def _(bergomi_results, grid, md, mo, table):
+    _labels = [r"Roughness $H$", r"Volatility amplitude $\eta$", r"Correlation $\rho$",
+               "Short variance", "Long variance", "Curve decay", r"Noise multiplier $c$"]
+    _rows = []
+    for _j, _label in enumerate(_labels):
+        _bound = bergomi_results["parameter_bounds"][_j]
+        _row = {"Parameter": _label, "Uniform prior": f"[{_bound[0]:.3g}, {_bound[1]:.3g}]"}
+        for _name, _heading in [("mcmc", "MCMC"), ("amortizer", "Amortizer")]:
+            _q = bergomi_results["posteriors"][_name]["q05_q50_q95"]
+            _row[_heading + " median [90% interval]"] = f"{_q[1][_j]:.3g} [{_q[0][_j]:.3g}, {_q[2][_j]:.3g}]"
+        _rows.append(_row)
+    _training = bergomi_results["training"]
+    _reference = bergomi_results["reference"]
+    mo.accordion({
+        "All seven inferred parameters": table(_rows),
+        "Saved experiment and numerical scope": mo.vstack([
+            grid({
+                "Training checkpoint": f"{_training['rows']:,} training examples; {_training['epochs']} epochs; "
+                    f"batch size {_training['batch_size']}; {_training['optimizer_updates']:,} optimizer updates. "
+                    f"The shown checkpoint is epoch {_training['checkpoint_epoch']}. These are the rows used "
+                    "by this saved control, rather than the size of any larger simulation pool.",
+                "What is being compared": "The matched amortizer was trained on the same deterministic price "
+                    "emulator used in the reference likelihood. The original network trained directly on "
+                    "Monte Carlo labels has a different numerical target and is not shown here.",
+            }),
+            md("The emulator approximates Monte Carlo price estimates, not exact clean prices. Sampling "
+               "error, time-discretization bias and emulator error remain separate from physical quote noise. "
+               "Increasing c is not a validation of those numerical approximations."),
+            md(f"**Reference diagnostics:** {_reference['chains']} chains, "
+               f"{_reference['draws_per_chain']:,} saved draws each; maximum R-hat "
+               f"{_reference['max_r_hat']:.4f}, minimum bulk/tail ESS "
+               f"{_reference['min_ess_bulk']:,.0f}/{_reference['min_ess_tail']:,.0f}, "
+               f"{_reference['divergences']} divergences. Each predictive band uses "
+               f"{bergomi_results['predictives']['mcmc']['draw_count']:,} saved paired draws per method."),
+            md("The [aggregate run record](../evidence/pilot-results/2026-11-14/bergomi-capstone/results.json) "
+               "binds this display to hashes of the quote ordering, task, price emulator and control checkpoint. "
+               "The [study notes](../evidence/pilot-results/2026-11-14/bergomi-capstone/README.md) document "
+               "the reference target and numerical limitations."),
+        ]),
+    })
+    return
+
+
+@app.cell(hide_code=True)
+def _(grid, key, mo):
+    mo.vstack([
+        grid({
+            "Financial result": "The richer model reduces residuals on the same quotes, while a sizeable "
+                "noise multiplier and structured misfit remain. Better fit alone does not establish "
+                "that independent Gaussian quote errors describe the market.",
+            "Inference result": "The two algorithms share a working posterior, yet the development "
+                "amortizer does not reproduce it on this market observation. More training data, capacity "
+                "or better optimization could still help; this is a conditional failure, not an "
+                "accepted Bergomi calibration.",
+        }),
+        key("**Expensive simulation makes reuse valuable; it does not make validation optional.** "
+            "A financial model can fit better while its learned posterior still needs work."),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
 def _(
     SPREAD_RANGE,
     calibration_summary,
@@ -3951,6 +4187,10 @@ def _(
              "Misspecification shows what the next model needs",
              "Heston follows the SPX skew at the money. It misses the short-expiry curvature and the deep put "
              "wing."),
+            ('<a class="nb-ref" href="#beyond-heston:-rough-bergomi">Beyond Heston</a>',
+             "A richer model and a reliable posterior are separate goals",
+             "Rough Bergomi improves the matched SPX fit. A fixed-price-emulator control still exposes "
+             "underestimated noise in the amortizer, so this extension remains a development result."),
         ]),
     ])
     return

@@ -39,6 +39,11 @@ without a bank or checkpoint download. The
 [standalone investigation](notebooks/heston_summary_experiments.py) remains
 available for the full rundown.
 
+The closing **Beyond Heston: rough Bergomi** extension compares saved fits on the
+same SPX quotes and separates mean-price fit from posterior accuracy. Its widened
+noise prior and matched fixed-emulator experiment are distinct from the main
+Heston checkpoint. It also works without a bank or model download.
+
 To use the pretrained posterior, follow the [bundle instructions](plans/training-data-guide.md#heston-spx-notebook-and-optional-pretrained-model).
 The [lesson run record](evidence/pilot-results/2026-11-11/heston-actual63-notebook/README.md#delivery-scope)
 maps its code and results, and explains which research files were left out.

@@ -11,3 +11,5 @@ tutorial/.cache/
 tutorial/assets/local-checkpoints/
 output/pdf/
 tmp/pdfs/
+local-artifacts/bergomi-capstone-20261114/
+local-artifacts/bergomi-capstone/
