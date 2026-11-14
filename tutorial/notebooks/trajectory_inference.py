@@ -1,7 +1,10 @@
 import marimo
 
 __generated_with = "0.25.1"
-app = marimo.App(width="medium", app_title="Learn volatility dynamics from observed paths")
+app = marimo.App(
+    width="medium",
+    app_title="Learn volatility dynamics from observed paths",
+)
 
 
 @app.cell
@@ -15,7 +18,17 @@ def _():
     from sbi4f_tutorial.trajectories import diagnostics as path_checks, simulation as path_simulation, model_checks
     from sbi4f_tutorial.trajectories import predictive_visuals
     plots.style()
-    return json, mo, model_checks, np, path_checks, path_simulation, plt, predictive_visuals, trajectory
+    return (
+        json,
+        mo,
+        model_checks,
+        np,
+        path_checks,
+        path_simulation,
+        plt,
+        predictive_visuals,
+        trajectory,
+    )
 
 
 @app.cell(hide_code=True)
@@ -38,6 +51,7 @@ def _(mo):
                             if active is None else "") + '</div>')
         return mo.Html('<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));'
                        'gap:6px;margin:8px 0">' + ''.join(boxes) + '</div>')
+
     return (lesson_workflow,)
 
 
@@ -85,33 +99,20 @@ def _(lesson_workflow, mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.vstack([mo.md(r"""
-    ### What could this inference help us do?
+    ### The problem this notebook addresses
 
-    Think of three questions about an asset's return history:
+    An asset's daily returns are visible; its volatility process and generating
+    parameters are hidden. This notebook addresses the inverse problem:
+    **infer which fixed stochastic-volatility parameters can explain one ordered
+    return history, while quantifying the uncertainty that remains.** Different
+    parameter combinations can produce similar histories, making a single
+    best-fitting vector an incomplete answer.
 
-    1. **What dynamics are plausible?** Estimate a distribution over roughness,
-       volatility-of-volatility, return–volatility dependence and drift, rather
-       than choosing one best-fitting vector. Parameters may remain hard to identify.
-    2. **What changes when more data arrive?** Reuse one trained estimator on
-       longer prefixes or on many matched histories. A rolling-window analysis
-       could monitor changes in the parameters that best describe each window;
-       this requires checking the estimator and model on that window design.
-    3. **Does parameter uncertainty change a scenario calculation?** Keep full
-       parameter draws paired, simulate scenarios and compare their drawdown
-       distribution with the result at one fitted vector. We do this at the end.
-
-    There is a further question: **what is likely to happen immediately after
-    today's observed history?** That also depends on today's hidden volatility
-    and, for rough Bergomi, its memory. Our parameter estimator does not answer
-    that state-estimation question. A recent volatility burst can matter even
-    when the plausible long-run parameters have barely changed.
-
-    These are useful *workflow goals*, not evidence that our present estimator
-    is ready for trading or risk reporting. This lesson uses synthetic data;
-    the supplied networks' failed calibration checks and the rough model's
-    long-history behavior remain material limitations. Parameters under the
-    physical return law also cannot simply replace pricing-measure parameters
-    in an option pricer.
+    We train BayesFlow on simulated parameter–history pairs to approximate the
+    joint parameter posterior. Synthetic examples let us reveal more evidence,
+    compare inference with known generating values, and check the learned
+    uncertainty. We then carry paired posterior draws into a drawdown scenario
+    to show the effect of parameter uncertainty.
     """)])
     return
 
@@ -122,7 +123,11 @@ def _(mo):
         "2020 to latest available · 13 November 2026": "voo-2020-20261113",
         "2020 crisis window · 256 trading days": "voo-covid-256"},
         value="2020 to latest available · 13 November 2026", label="VOO market window")
-    market_window
+    mo.vstack([
+        market_window,
+        mo.md("This selects the **VOO observations in the next chart**. "
+              "The illustrative Bergomi history stays fixed for comparison."),
+    ])
     return (market_window,)
 
 
@@ -144,6 +149,8 @@ def _(illustrative_market_model, market_story, market_window, mo, trajectory):
                 "Compare VOO with an explicit rough-Bergomi simulation using the **same trace and "
                 "tail-frequency views**. A Gaussian benchmark is matched to each displayed history's "
                 "mean and standard deviation. Does that match its frequency of large moves?"),
+            mo.md(f"**Selected VOO window: {_market['dates'][0]} to {_market['dates'][-1]} · "
+                  f"{len(_market['dates']):,} daily returns.**"),
             market_story.comparison_figure(_market, illustrative_market_model),
             mo.md("**Bergomi can produce more large moves than a matched Gaussian.** "
                 "The purple tail curve lies above its Gaussian benchmark for large daily returns, "
@@ -151,10 +158,9 @@ def _(illustrative_market_model, market_story, market_window, mo, trajectory):
                 "but their scale changes with hidden variance. Mixing returns from quiet and volatile "
                 "periods changes the marginal return distribution. This illustrates non-Gaussian "
                 "behavior; these parameters have not been fitted to VOO."),
-            mo.md(f"**VOO: {_market['dates'][0]} to {_market['dates'][-1]} · "
-                f"{len(_market['dates']):,} daily returns.** The full market snapshot extends beyond "
-                "the neural estimator's five-year training horizon. The following synthetic lesson "
-                "uses **1,260 trading days**. Showing a longer market history does not extend that "
+            mo.md("**The synthetic lesson uses 1,260 trading days.** The longer VOO snapshot "
+                "contains 1,726 returns and extends beyond the neural estimator's five-year "
+                "training horizon. This descriptive market comparison does not extend that "
                 "estimator's supported input length."),
             mo.accordion({"Data, model settings and interpretation": mo.md(
                 "The dated VOO snapshot preserves adjusted-close returns, including corporate-action "
@@ -721,7 +727,16 @@ def _(cache_task, mo, parameter_labels, simulator_view):
 
 
 @app.cell
-def _(cache_task, mo, simulator_compare, simulator_controls, simulator_refresh, simulator_scale, simulator_view, trajectory):
+def _(
+    cache_task,
+    mo,
+    simulator_compare,
+    simulator_controls,
+    simulator_refresh,
+    simulator_scale,
+    simulator_view,
+    trajectory,
+):
     try:
         _seed = 20261108 + simulator_refresh.value
         simulation_preview = None
@@ -753,7 +768,7 @@ def _(cache_task, mo, simulator_compare, simulator_controls, simulator_refresh, 
         simulation_preview = None
         _panel = mo.callout(mo.md("This forward example could not be simulated: " + str(_error)), kind="warn")
     _panel
-    return (simulation_preview,)
+    return
 
 
 @app.cell(hide_code=True)
@@ -872,8 +887,20 @@ def _(mo, prior_target, selection):
 
 
 @app.cell(hide_code=True)
-def _(cache_arrays, cache_task, case_choice, diagnostic_panels, mo, model_checks,
-      path_checks, path_simulation, prior_check_button, prior_target, requested_days, trajectory):
+def _(
+    cache_arrays,
+    cache_task,
+    case_choice,
+    diagnostic_panels,
+    mo,
+    model_checks,
+    path_checks,
+    path_simulation,
+    prior_check_button,
+    prior_target,
+    requested_days,
+    trajectory,
+):
     mo.stop(not prior_check_button.value, mo.md("*Optional: simulate from the prior and compare magnitude and ordering.*"))
     _key = path_simulation.task_fingerprint(cache_task)
     _reused = _key in diagnostic_panels
@@ -896,7 +923,13 @@ def _(cache_arrays, cache_task, case_choice, diagnostic_panels, mo, model_checks
 
 
 @app.cell(hide_code=True)
-def _(mo, model_checks, ordering_shuffle, predictive_visuals, prior_predictive_result):
+def _(
+    mo,
+    model_checks,
+    ordering_shuffle,
+    predictive_visuals,
+    prior_predictive_result,
+):
     _comparison = predictive_visuals.compare(prior_predictive_result)
     _control = ("Brown is a separate 200-history IID Gaussian control fitted to the observed prefix. "
                 "It matches its mean and variance by construction; tails and timing can still differ. "
@@ -1004,7 +1037,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(cache_task, lesson_workflow, mo, trajectory):
+def _(lesson_workflow, mo, trajectory):
     _figure = trajectory.ASSETS / "illustrations" / "application-workflows-20261101" / "trajectory-prefix-workflow.png"
     mo.vstack([
         lesson_workflow("Train"), mo.md("## 3. Train a tutorial model here\n\n"
@@ -1200,12 +1233,12 @@ def _(mo):
                   "The fits completed five epochs; exact reproduction also requires their "
                   "recorded seeds, optimizer and checkpoint selection."),
             mo.md(r"""```bash
-# From lab/, with the matching native bank.
-python scripts/train_path_posterior.py \
-    --bank /path/to/native-bank --out /path/to/new-run \
-    --streaming --training-limit 1000000 --cache-shards 2 \
-    --prefix-policy uniform_log_mixture --epochs 5 --batch-size 128
-```"""),
+    # From lab/, with the matching native bank.
+    python scripts/train_path_posterior.py \
+        --bank /path/to/native-bank --out /path/to/new-run \
+        --streaming --training-limit 1000000 --cache-shards 2 \
+        --prefix-policy uniform_log_mixture --epochs 5 --batch-size 128
+    ```"""),
             mo.md("The prefix policy mixes uniform integer lengths with more exposure to short histories. "
                   "Every integer length is possible; the prior and process law stay unchanged. "
                   "Supporting a length does not establish calibration at that length."),
@@ -1272,7 +1305,13 @@ def _(mo, path_simulation, trajectory):
 
 
 @app.cell
-def _(mo, path_simulation, train_demo_button, train_tutorial_model, trajectory):
+def _(
+    mo,
+    path_simulation,
+    train_demo_button,
+    train_tutorial_model,
+    trajectory,
+):
     tutorial_task = path_simulation.teaching_task("rough-known", observations=1260)
     tutorial_workflow = None
     _output = mo.md("The training example is idle until requested.")
@@ -1370,7 +1409,18 @@ def _(checkpoint_path, inference_mode, mo, requested_days, selection):
 
 
 @app.cell
-def _(cache_arrays, cache_task, case_choice, checkpoint_path, inference_mode, live_button, model_choice, requested_days, selection, trajectory):
+def _(
+    cache_arrays,
+    cache_task,
+    case_choice,
+    checkpoint_path,
+    inference_mode,
+    live_button,
+    model_choice,
+    requested_days,
+    selection,
+    trajectory,
+):
     live_result, live_error, live_timing = None, None, None
     pretrained_workflow = None
     if inference_mode.value == "live" and live_button.value:
@@ -1396,7 +1446,14 @@ def _(cache_arrays, cache_task, case_choice, checkpoint_path, inference_mode, li
 
 
 @app.cell
-def _(cache_arrays, cache_task, case_choice, live_result, requested_days, trajectory):
+def _(
+    cache_arrays,
+    cache_task,
+    case_choice,
+    live_result,
+    requested_days,
+    trajectory,
+):
     posterior = trajectory.posterior_view(
         cache_task, cache_arrays, case_choice.value, requested_days, live=live_result)
     return (posterior,)
@@ -1423,7 +1480,15 @@ def _(inference_mode, live_error, live_timing, mo, posterior, requested_days):
 
 
 @app.cell
-def _(cache_arrays, cache_task, case_choice, np, parameter_labels, plt, posterior):
+def _(
+    cache_arrays,
+    cache_task,
+    case_choice,
+    np,
+    parameter_labels,
+    plt,
+    posterior,
+):
     _names = cache_task["parameter_names"]
     _figure, _axes = plt.subplots((len(_names) + 1) // 2, 2,
                                  figsize=(10, 2.45 * ((len(_names) + 1) // 2)), squeeze=False)
@@ -1462,7 +1527,15 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(cache_arrays, cache_task, case_choice, mo, parameter_labels, posterior, trajectory):
+def _(
+    cache_arrays,
+    cache_task,
+    case_choice,
+    mo,
+    parameter_labels,
+    posterior,
+    trajectory,
+):
     _reading = trajectory.posterior_readout(cache_task, posterior["draws"],
                                           truth=cache_arrays["truth"][case_choice.value])
     _small = _reading["narrowest_relative_to_prior"]
@@ -1504,7 +1577,18 @@ def _(cache_task, mo, parameter_labels):
 
 
 @app.cell
-def _(cache_arrays, cache_task, case_choice, mo, pair_x, pair_y, parameter_labels, plt, posterior):
+def _(
+    cache_arrays,
+    cache_task,
+    case_choice,
+    mo,
+    pair_x,
+    pair_y,
+    parameter_labels,
+    plt,
+    posterior,
+    trajectory,
+):
     mo.stop(pair_x.value == pair_y.value, mo.md("Choose two different parameters for the joint view."))
     _x = cache_task["parameter_names"].index(pair_x.value)
     _y = cache_task["parameter_names"].index(pair_y.value)
@@ -1565,7 +1649,14 @@ def _(mo, requested_days):
 
 
 @app.cell(hide_code=True)
-def _(checkpoint_path, inference_mode, mo, playback_horizon, playback_spacing, selection):
+def _(
+    checkpoint_path,
+    inference_mode,
+    mo,
+    playback_horizon,
+    playback_spacing,
+    selection,
+):
     _identity = (selection, checkpoint_path.value, inference_mode.value, playback_horizon.value, playback_spacing.value)
     prepare_playback = mo.ui.run_button(label="Prepare exact-prefix playback")
     if inference_mode.value == "live":
@@ -1585,9 +1676,21 @@ def _(checkpoint_path, inference_mode, mo, playback_horizon, playback_spacing, s
 
 
 @app.cell(hide_code=True)
-def _(cache_arrays, cache_report, cache_task, case_choice, checkpoint_path, evidence_contexts,
-      evidence_frames, inference_mode, model_choice, playback_horizon, playback_spacing,
-      prepare_playback, trajectory):
+def _(
+    cache_arrays,
+    cache_report,
+    cache_task,
+    case_choice,
+    checkpoint_path,
+    evidence_contexts,
+    evidence_frames,
+    inference_mode,
+    model_choice,
+    playback_horizon,
+    playback_spacing,
+    prepare_playback,
+    trajectory,
+):
     from time import perf_counter as _playback_clock
     from hashlib import sha256 as _playback_hash
     _checkpoint = cache_report["checkpoint_sha256"]
@@ -1636,8 +1739,19 @@ def _(cache_arrays, cache_report, cache_task, case_choice, checkpoint_path, evid
 
 
 @app.cell(hide_code=True)
-def _(cache_arrays, case_choice, evidence_frames, evidence_widget, inference_mode, mo,
-      parameter_labels, playback_error, playback_manager, playback_message, requested_days):
+def _(
+    cache_arrays,
+    case_choice,
+    evidence_frames,
+    evidence_widget,
+    inference_mode,
+    mo,
+    parameter_labels,
+    playback_error,
+    playback_manager,
+    playback_message,
+    requested_days,
+):
     _frames = evidence_frames.frame_list(playback_manager, requested_days)
     _parts = []
     if playback_error:
@@ -1657,7 +1771,15 @@ def _(cache_arrays, case_choice, evidence_frames, evidence_widget, inference_mod
 
 
 @app.cell(hide_code=True)
-def _(cache_arrays, cache_task, case_choice, mo, plt, requested_days, trajectory):
+def _(
+    cache_arrays,
+    cache_task,
+    case_choice,
+    mo,
+    plt,
+    requested_days,
+    trajectory,
+):
     _revealed = cache_arrays["observations"][case_choice.value:case_choice.value + 1, :requested_days]
     _inputs = trajectory.conditioning_data(_revealed, cache_task)
     _maximum = cache_task["n_observations"]
@@ -1675,11 +1797,11 @@ def _(cache_arrays, cache_task, case_choice, mo, plt, requested_days, trajectory
               "Only the revealed prefix and known time design enter inference."),
         _mask_figure,
         mo.md(r"""```python
-revealed = cache_arrays["observations"][case_choice.value:case_choice.value + 1,
-                                       :observed_days.value]
-inputs = trajectory.conditioning_data(revealed, cache_task)
-# observations, time_context, summary_mask
-```"""),
+    revealed = cache_arrays["observations"][case_choice.value:case_choice.value + 1,
+                                           :observed_days.value]
+    inputs = trajectory.conditioning_data(revealed, cache_task)
+    # observations, time_context, summary_mask
+    ```"""),
         mo.ui.table([{"day": _i + 1, "role": "observed" if _mask[0, _i] else "padding",
                       "scaled return": float(_inputs["observations"][0, _i, 0]),
                       "normalized time": float(_inputs["observations"][0, _i, 1]), "mask": bool(_mask[0, _i])}
@@ -1695,7 +1817,6 @@ inputs = trajectory.conditioning_data(revealed, cache_task)
               "This input preview does not load a model or perform inference."),
     ])})
     return
-
 
 
 @app.cell(hide_code=True)
@@ -1742,7 +1863,16 @@ def _(mo, posterior, predictive_count, selection):
 
 
 @app.cell(hide_code=True)
-def _(cache_arrays, cache_task, case_choice, mo, model_checks, posterior, predictive_count, replicate_button):
+def _(
+    cache_arrays,
+    cache_task,
+    case_choice,
+    mo,
+    model_checks,
+    posterior,
+    predictive_count,
+    replicate_button,
+):
     mo.stop(not replicate_button.value, mo.md("*Optional: generate independent posterior-predictive histories.*"))
     try:
         posterior_predictive_result = model_checks.replicate_check(cache_task,
@@ -1753,7 +1883,15 @@ def _(cache_arrays, cache_task, case_choice, mo, model_checks, posterior, predic
 
 
 @app.cell(hide_code=True)
-def _(mo, model_checks, ordering_shuffle, posterior, posterior_predictive_result, predictive_visuals, requested_days):
+def _(
+    mo,
+    model_checks,
+    ordering_shuffle,
+    posterior,
+    posterior_predictive_result,
+    predictive_visuals,
+    requested_days,
+):
     _result = posterior_predictive_result
     _comparison = predictive_visuals.compare(_result)
     _control = ("The brown IID Gaussian reference is fitted to this observed prefix's mean and SD. "
@@ -1875,7 +2013,14 @@ def _(cache_task, diagnostic_source, mo, trajectory, tutorial_task):
 
 
 @app.cell(hide_code=True)
-def _(diagnostic_days, diagnostic_source, diagnostic_task, mo, pretrained_workflow, tutorial_workflow):
+def _(
+    diagnostic_days,
+    diagnostic_source,
+    diagnostic_task,
+    mo,
+    pretrained_workflow,
+    tutorial_workflow,
+):
     # Any changed source, prefix, task or model requires a fresh explicit click.
     _request = (diagnostic_source.value, diagnostic_days.value, diagnostic_task,
                 id(tutorial_workflow), id(pretrained_workflow))
@@ -1900,9 +2045,19 @@ def _(mo, path_checks, show_independent_tools):
 
 
 @app.cell(hide_code=True)
-def _(check_independent_histories, diagnostic_days, diagnostic_panels, diagnostic_source,
-      diagnostic_task, mo, path_checks, path_simulation, pretrained_workflow,
-      run_diagnostics, tutorial_workflow):
+def _(
+    check_independent_histories,
+    diagnostic_days,
+    diagnostic_panels,
+    diagnostic_source,
+    diagnostic_task,
+    mo,
+    path_checks,
+    path_simulation,
+    pretrained_workflow,
+    run_diagnostics,
+    tutorial_workflow,
+):
     mo.stop(not run_diagnostics.value, mo.md("*Choose a network and run the check when ready. "
         "Changing the diagnostic prefix reuses the same independent histories.*"))
     _workflow = tutorial_workflow if diagnostic_source.value == "tutorial" else pretrained_workflow
@@ -1971,7 +2126,14 @@ def _(diagnostic_result, mo, parameter_labels):
 
 
 @app.cell(hide_code=True)
-def _(diagnostic_result, mo, parameter_labels, path_checks, plt, recovery_parameter):
+def _(
+    diagnostic_result,
+    mo,
+    parameter_labels,
+    path_checks,
+    plt,
+    recovery_parameter,
+):
     recovery_points = path_checks.recovery_case_data(diagnostic_result["task"], diagnostic_result["panel"],
                                                     diagnostic_result["draws"], recovery_parameter.value)
     _lo, _hi = diagnostic_result["task"]["prior_bounds"][diagnostic_result["task"]["parameter_names"].index(recovery_parameter.value)]
@@ -2000,7 +2162,16 @@ def _(mo, np, recovery_picker, recovery_points):
 
 
 @app.cell(hide_code=True)
-def _(diagnostic_case, diagnostic_result, mo, np, path_checks, plt, show_diagnostic_pairs, trajectory):
+def _(
+    diagnostic_case,
+    diagnostic_result,
+    mo,
+    np,
+    path_checks,
+    plt,
+    show_diagnostic_pairs,
+    trajectory,
+):
     _case = path_checks.case_view(diagnostic_result["task"], diagnostic_result["panel"],
         diagnostic_result["draws"], diagnostic_case.value, diagnostic_result["length"])
     _figure, _axis = plt.subplots(figsize=(8.5, 2.2), layout="constrained")
@@ -2054,7 +2225,14 @@ def _(json, trajectory):
 
 
 @app.cell(hide_code=True)
-def _(aggregate_images, aggregate_problem, aggregate_report, cache_task, mo, parameter_labels, trajectory):
+def _(
+    aggregate_images,
+    aggregate_problem,
+    aggregate_report,
+    cache_task,
+    mo,
+    parameter_labels,
+):
     _contents = [mo.md("### Saved final-cohort evidence\n\n"
                        "**Learning information and reporting reliable uncertainty are different achievements.** "
                        "Recovery asks whether estimates improve over a prior-only baseline. Calibration asks "
@@ -2143,7 +2321,14 @@ def _(cache_task, mo, posterior, scenario_count, selection):
 
 
 @app.cell(hide_code=True)
-def _(cache_task, drawdown_button, mo, model_checks, posterior, scenario_count):
+def _(
+    cache_task,
+    drawdown_button,
+    mo,
+    model_checks,
+    posterior,
+    scenario_count,
+):
     mo.stop(not drawdown_button.value, mo.md("*Optional: propagate the displayed posterior into replicated-history drawdown.*"))
     try:
         drawdown_result = model_checks.generate_drawdown(cache_task, posterior["draws"], posterior["length"],
