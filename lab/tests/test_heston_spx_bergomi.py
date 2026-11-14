@@ -3,6 +3,7 @@
 import importlib.util
 import os
 from pathlib import Path
+import re
 import sys
 from types import SimpleNamespace
 import unittest
@@ -53,7 +54,7 @@ class HestonSPXBergomiTests(unittest.TestCase):
         record = self.defs["bergomi_results"]
         geometry = record["geometry"]
         observed = np.asarray(geometry["observed_raw"])
-        spreads = np.asarray(geometry["half_spread_raw"])
+        vega = np.asarray(self.defs["MARKET_VEGA"])
         expiry_index = np.asarray(geometry["expiry_index"])
         z = np.asarray(self.defs["DELTA"])
         figure = self.defs["bergomi_fit_figure"]
@@ -62,10 +63,52 @@ class HestonSPXBergomiTests(unittest.TestCase):
             indices = np.flatnonzero(expiry_index == expiry)
             indices = indices[np.argsort(z[indices])]
             for line, model in zip(axis.lines[:2], ["heston", "bergomi"]):
-                expected = (np.asarray(record["fit_comparison"][model]["price_mean_raw"])
-                            - observed) / spreads
+                expected = 100 * (np.asarray(record["fit_comparison"][model]["price_mean_raw"])
+                                  - observed) / vega
                 np.testing.assert_allclose(line.get_xdata(), z[indices])
                 np.testing.assert_allclose(line.get_ydata(), expected[indices])
+
+    def test_bergomi_display_symbols_match_the_trajectory_lesson(self):
+        labels = self.defs["BERGOMI_PARAMETER_LABELS"]
+        symbols = {name: re.search(r"\$([^$]+)\$", label).group(1)
+                   for name, label in labels.items()}
+        self.assertEqual(symbols, {"hurst": "H", "eta": r"\eta", "rho": r"\rho",
+                                   "short_variance": "S", "long_variance": "L",
+                                   "decay": "k", "c": "c"})
+        self.assertEqual(list(labels), self.defs["bergomi_results"]["parameter_names"])
+        self.assertEqual([axis.get_title() for axis in self.defs["bergomi_recovery_figure"].axes[:7]],
+                         list(labels.values()))
+
+    def test_heston_displayed_rms_and_heatmap_use_the_same_volatility_point_residuals(self):
+        observed = np.asarray(self.defs["MID"])
+        expected = 100 * (np.asarray(self.defs["market_fit"]) - observed) / self.defs["MARKET_VEGA"]
+        expected_rms = float(np.sqrt(np.mean(expected ** 2)))
+        np.testing.assert_allclose(self.defs["market_residual_vol_points"], expected)
+        self.assertAlmostEqual(self.defs["market_rms"], expected_rms, places=12)
+        summary = self.defs["heston_misfit_vol_summary"]
+        self.assertAlmostEqual(summary["rms"], expected_rms, places=12)
+        expiry, z = np.asarray(self.defs["EXPIRY"]), np.asarray(self.defs["DELTA"])
+        rows = [np.flatnonzero(expiry == index) for index in range(7)]
+        rows = [indices[np.argsort(z[indices])] for indices in rows]
+        grid = np.asarray(self.defs["heston_misfit_figure"].axes[0].images[0].get_array())
+        np.testing.assert_allclose(grid, np.asarray([expected[indices] for indices in rows]))
+        np.testing.assert_allclose(summary["expiry_rms"],
+                                   [np.sqrt(np.mean(expected[indices] ** 2)) for indices in rows])
+
+    def test_noisy_band_inclusion_is_preserved_for_every_contract_and_method(self):
+        record = self.defs["bergomi_results"]
+        observed = np.asarray(record["geometry"]["observed_raw"])
+        for method in ("mcmc", "amortizer"):
+            with self.subTest(method=method):
+                predictive = record["predictives"][method]
+                raw = np.asarray(predictive["noisy_q05_q50_q95_raw"])
+                converted = self.defs["price_residual_vol_points"](raw, observed)
+                self.assertEqual(converted.shape, (3, 63))
+                np.testing.assert_allclose(converted, 100 * (raw - observed) / self.defs["MARKET_VEGA"])
+                raw_inside = (raw[0] <= observed) & (observed <= raw[2])
+                converted_inside = (converted[0] <= 0) & (0 <= converted[2])
+                np.testing.assert_array_equal(raw_inside, converted_inside)
+                self.assertEqual(int(converted_inside.sum()), predictive["noisy_in_band_count"])
 
     def test_parameter_and_noisy_panels_keep_paired_quantiles_and_common_scale(self):
         self.check_predictive_figure(self.defs, 0)
@@ -104,7 +147,7 @@ class HestonSPXBergomiTests(unittest.TestCase):
         record = definitions["bergomi_results"]
         geometry = record["geometry"]
         observed = np.asarray(geometry["observed_raw"])
-        spreads = np.asarray(geometry["half_spread_raw"])
+        vega = np.asarray(definitions["MARKET_VEGA"])
         z = np.asarray(definitions["DELTA"])
         indices = np.flatnonzero(np.asarray(geometry["expiry_index"]) == expiry)
         indices = indices[np.argsort(z[indices])]
@@ -117,7 +160,7 @@ class HestonSPXBergomiTests(unittest.TestCase):
         for axis, kind in [(clean, "clean"), (noisy, "noisy")]:
             for line, method in zip(axis.lines[:2], ["mcmc", "amortizer"]):
                 quantiles = np.asarray(record["predictives"][method][f"{kind}_q05_q50_q95_raw"])
-                expected = (quantiles[1, indices] - observed[indices]) / spreads[indices]
+                expected = 100 * (quantiles[1, indices] - observed[indices]) / vega[indices]
                 np.testing.assert_allclose(line.get_xdata(), z[indices])
                 np.testing.assert_allclose(line.get_ydata(), expected)
 

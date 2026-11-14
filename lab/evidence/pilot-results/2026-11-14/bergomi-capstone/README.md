@@ -24,11 +24,15 @@ the final comparison explicitly uses separate Heston and Bergomi references
 with common `[0.5,50]` support.
 
 The Heston-versus-Bergomi fit curves average clean prices over 1,024 reference
-draws each: 256 evenly spaced retained draws from each of four chains. RMS of
-the posterior-average residual, divided by each quote's half-spread, is
-**13.34705 for Heston and 9.62270 for Bergomi**, a 27.9% reduction. This is a
-posterior-calibrated comparison on these quotes, not a prior predictive or
-general model ranking. The Bergomi reference prices were independently
+draws each: 256 evenly spaced retained draws from each of four chains. The
+notebook displays model-minus-observed residuals as
+`100 * (model_price - observed_price) / market_Black_vega`, with each quote's
+vega fixed at its observed Black implied volatility. Residual RMS in these
+local volatility-point equivalents is **1.09050 for Heston and 0.82879 for
+Bergomi**, a 24.0% reduction. This is a posterior-calibrated comparison on these
+quotes, not a prior predictive or general model ranking. The original stored
+half-spread-scaled source metrics (13.34705 and 9.62270) remain unchanged;
+they are not relabelled as volatility-point errors. The Bergomi reference prices were independently
 regenerated through the original canonical emulator and matched the preserved
 comparison arrays exactly.
 
@@ -72,8 +76,13 @@ stays paired with the physical draw; there is no conditional `c` redraw.
 
 The stored emulator output is in forward-normalized units,
 `P_forward = P_raw/(D*F)`. Both clean prices and half-spreads convert by `D*F`
-exactly once. The predictive panels use raw price units and show central 90%
-pointwise bands. Newly generated noisy bands contain **57/63 viewed quotes for
+exactly once. The stored bands remain raw prices. The notebook applies the
+same fixed-market-vega conversion to all clean and noisy band endpoints and
+shows central 90% pointwise intervals in volatility-point equivalents. This
+positive affine conversion preserves every quoted-price inclusion flag; it
+does not invert, clip or omit Gaussian prices without a valid Black implied
+volatility. Exact Black inversion is reserved for absolute smile levels.
+Display units do not change the saved price-noise likelihood. Newly generated noisy bands contain **57/63 viewed quotes for
 MCMC and 40/63 for the fixed-emulator control**. These are descriptive checks
 on calibration observations, not held-out or repeated-sampling coverage.
 
