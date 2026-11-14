@@ -195,7 +195,7 @@ recorded numerical results remain unchanged.
 **Status:** implemented. The lesson introduces the model before its observed
 synthetic history, offers actual
 saved lengths by default and places exact-prefix live inference beside the
-posterior. Tables, marginals, joint plots and the evolution endpoint share the
+posterior. Tables, marginals and the evolution endpoint share the
 selected paired draws. Selection changes clear fresh results; missing models
 leave the labelled saved fallback. A separate five-year exercise generates 128
 fresh histories and trains for eight optimizer updates. Production and detailed
@@ -224,45 +224,22 @@ The simulator uses stated fixed y-axis presets for all parameter settings.
 Manual scale changes alter only the view; outside counts and complete data
 ranges make view clipping explicit without dropping any path or return.
 
-### Optional diagnostics of the selected workflow
+### Presentation scope · 14 November 2026
 
-The optional check generates **200 independent validation histories** from the
-selected source task and keeps them in session memory. One history is one data
-set; paths are not averaged into an observation. Its fixed seed and separate
-validation stream distinguish these histories from training examples and the
-single history used to illustrate inference. No diagnostic inputs or posterior
-draws are published or written to the repo.
+Remove the standalone parameter-dependence explorer (former 4.2), independent
+network checks and recovery-case controls (former 5.2), and the drawdown
+exercise (former 6.1) from the participant notebook. Remove their UI cells,
+unused controls and notebook-only cell tests, while retaining shared numerical
+helpers and their tests. The separate MMAR take-home keeps its drawdown story.
 
-Select the trained five-year rough-known workflow or the loaded native workflow.
-The tutorial fit shares the rough-known task design while retaining its own
-small network and training set; other native models have their own matching
-tasks. All support up to 1,260 days. **Days per diagnostic history** is separate
-from the single-history control and defaults to the full 1,260 days.
-All 200 histories use that length, and the
-preprocessing masks every later return and time token. Changing the prefix reuses
-the same histories; changing the source, task or workflow invalidates stale plots.
-Generating parameters and hidden paths never enter inference conditions.
+The core flow keeps posterior marginals and interpretation, evidence playback,
+posterior-predictive checks and saved final-cohort evidence. Playback becomes
+4.2, saved evidence becomes 5.2, and the retained continuation discussion becomes
+6.1. The Use banner describes forecasting requirements rather than promising
+a scenario exercise. Preserve the explicit failed-calibration verdicts.
 
-The optional diagnostic chain now has explicit idle values. Lightweight controls
-and the checking function remain defined while hidden; the producer always
-returns `diagnostic_result=None` before a completed check. Recovery controls,
-brush points and the selected case likewise return empty values while idle.
-This avoids undefined-name failures when cells are run manually in the editor.
-Closing the tools or changing their context rebuilds the run button and clears
-old plots. Sampling and all summary calculations must succeed before a complete
-result is published. No idle path initializes a backend or generates histories.
-
-**Check this network on 200 independent histories** draws **200 posterior samples per history** and uses native
-BayesFlow recovery and rank-ECDF plots with physical parameter labels. These
-show how the selected model behaves at the chosen length. They complement the
-stored final-cohort table; they do not certify the tutorial fit or reverse the
-three native models' failed final calibration screens. Repeated use makes the
-session panel validation data, not an untouched final test. A prior-returning
-estimator can pass a rank check, so recovery must be read alongside ranks.
-
-Check missing-model handling, task/source changes, prefix bounds, future-data
-masking and plot invalidation. The small fit may perform poorly; keep that
-result visible rather than substituting the pretrained diagnostics.
+The dated records below describe earlier revisions; live cohort diagnostics
+and the drawdown exercise are superseded by this presentation scope.
 
 ### Align the lesson with the SPX workflow · 12 November 2026
 

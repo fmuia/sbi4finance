@@ -283,53 +283,21 @@ The 32/256 replication budgets and actions are optional controls.
 These are independent replications, not continuations of the observed path.
 Parameter inference alone does not provide the hidden-state or rough-memory
 conditioning needed for a continuation forecast.
-An early practical-use section distinguishes describing dynamics, repeatedly
-analyzing matched histories and propagating parameter uncertainty into scenarios.
+The executive summary states the inverse problem: infer fixed volatility
+parameters and their uncertainty from one ordered return history.
 The PyMC comparison explains latent-path integration and gradient requirements;
 it makes no timing or superiority claim. The final explanation shows why this
 parameter-only training target does not produce a state posterior. It contrasts
 the fresh-cascade risk and allocation applications in amortized-fractals with
 state-conditioned continuation, while preserving their prospective evaluation
 and practical usefulness.
-The final exercise compares replicated-history drawdown at the posterior-mean
-parameter vector with drawdown from complete posterior draws. Both retain
-process randomness; threshold changes reuse the simulated outcomes. These
-scenarios start at the model's origin and do not condition on today's latent
-variance or rough-shock memory. The supplied posterior's calibration failures
-also apply to calculations derived from it.
-
-**Check the network you used.** Expand the optional independent-history tools,
-choose **Network to check**, set **Days per
-diagnostic history**, then press **Check this network on 200 independent histories**.
-This length is separate from the single-history controls above. First use
-generates 200 validation histories for that task and keeps them in session
-memory. Later checks reuse them and draw 200 fresh samples per history for
-recovery, rank-ECDF and coverage plots. Select a diagnostic history to inspect
-its paired posterior draws and generating values.
-Before a check completes, the recovery-selection panels stay empty. Closing the
-tools or changing the source, task, length or workflow clears the displayed
-result and requires a fresh click; failed checks expose no partial result.
-The rank guide includes a worked ECDF difference and four illustrative shapes.
-It distinguishes posterior intervals, uncertainty in empirical coverage, and
-the native 95% rank-ECDF band for each parameter. With 200 draws, ranks have
-201 possible positions; Heston's drift atom needs separate interpretation.
-Generation took under 0.1 seconds per 200 histories in our local CPU check, so
-there is no separate diagnostic dataset to download.
-Every history uses the same chosen prefix; later returns and time tokens are
-masked. Generating parameters are labels for the checks, never model inputs.
-The tutorial and supplied rough-known fits now share the five-year task
-design, while retaining separate weights and training sets. Other supplied
-models keep their own matching task definitions.
-
-These independent, fixed-seed histories are reusable validation data, not an untouched final
-test. Neither the inputs nor the new posterior draws are written to the repo.
-The figures describe the selected workflow at that history length; they add a
-check of the model you just ran alongside the saved final-cohort results below.
-They do not replace those results or validate the tiny tutorial fit.
-Edit `trajectories/diagnostics.py` for this check; the shared network and masking
-code remains in `trajectories/inference.py`. Prior/posterior-predictive numerical
-checks live in `trajectories/model_checks.py`; their data/model comparison views
-live in `trajectories/predictive_visuals.py`.
+The presentation ends by explaining the state and memory information needed
+for a continuation forecast. The separate parameter-pair explorer, live
+200-history network check and drawdown exercise have been removed from this
+notebook. Posterior prediction and the saved final-cohort evidence remain in
+the core flow. Numerical diagnostics and predictive helpers stay available in
+`trajectories/diagnostics.py` and `trajectories/model_checks.py`; comparison
+views live in `trajectories/predictive_visuals.py`.
 
 **Checks are not yet satisfactory:** all three estimators failed the final
 calibration check. The Heston simulator can also produce zero-variance days

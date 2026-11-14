@@ -44,7 +44,7 @@ def _(mo):
         ("Train", "Learn a conditional density"),
         ("Infer", "Condition on observed returns"),
         ("Check", "Replicate, recover, calibrate"),
-        ("Use", "Interpret joint uncertainty"),
+        ("Use", "What a continuation forecast requires"),
     )
 
     def _anchor(number):
@@ -149,8 +149,8 @@ def _(mo):
     We train BayesFlow on simulated parameter–history pairs to approximate the
     joint parameter posterior. Synthetic examples let us reveal more evidence,
     compare inference with known generating values, and check the learned
-    uncertainty. We then carry paired posterior draws into a drawdown scenario
-    to show the effect of parameter uncertainty.
+    uncertainty. We also clarify the additional information needed to turn
+    parameter inference into a continuation forecast.
     """)])
     return
 
@@ -1599,49 +1599,6 @@ def _(cache_arrays, cache_task, case_choice, mo, parameter_labels, posterior, tr
 
 
 @app.cell(hide_code=True)
-def _(cache_task, mo, parameter_labels, lesson_md):
-    _options = {parameter_labels[_name]: _name for _name in cache_task["parameter_names"]}
-    _x = "vol_of_vol" if cache_task["model"] == "heston" else "eta"
-    pair_x = mo.ui.dropdown(options=_options, value=parameter_labels[_x], label="Horizontal parameter")
-    pair_y = mo.ui.dropdown(options=_options, value=parameter_labels["rho"], label="Vertical parameter")
-    mo.vstack([lesson_md("### 4.2 Inspect parameter dependence"), mo.hstack([pair_x, pair_y], justify="start")])
-    return pair_x, pair_y
-
-
-@app.cell(hide_code=True)
-def _(
-    cache_arrays,
-    cache_task,
-    case_choice,
-    mo,
-    pair_x,
-    pair_y,
-    parameter_labels,
-    plt,
-    posterior,
-    trajectory,
-):
-    mo.stop(pair_x.value == pair_y.value, mo.md("Choose two different parameters for the joint view."))
-    _x = cache_task["parameter_names"].index(pair_x.value)
-    _y = cache_task["parameter_names"].index(pair_y.value)
-    _figure, _axis = plt.subplots(figsize=(7, 4.2), layout="constrained")
-    _axis.scatter(posterior["draws"][:, _x], posterior["draws"][:, _y], s=10, alpha=.28, color="#2563eb",
-                  label="paired neural draws")
-    _axis.scatter(cache_arrays["truth"][case_choice.value, _x], cache_arrays["truth"][case_choice.value, _y],
-                  marker="x", color="#111827", s=60, label="synthetic truth")
-    _axis.set(xlabel=parameter_labels[pair_x.value], ylabel=parameter_labels[pair_y.value],
-              xlim=cache_task["prior_bounds"][_x], ylim=cache_task["prior_bounds"][_y],
-              title=f"Joint parameter uncertainty · {posterior['length']} observed days")
-    _axis.legend(fontsize=8)
-    mo.vstack([_figure, mo.md("Each point preserves two coordinates from the **same posterior draw**. "
-                              "Shuffling columns would destroy dependence. These trade-offs describe "
-                              "the learned approximation, not an independently validated joint posterior."),
-               mo.accordion({"Numerical posterior summary": mo.ui.table(
-                   trajectory.posterior_rows(cache_task, posterior["draws"]), selection=None, pagination=False)})])
-    return
-
-
-@app.cell(hide_code=True)
 def _():
     from sbi4f_tutorial.trajectories import evidence as evidence_frames, evidence_widget
     # Session-only frame/workflow contexts; no files are written by the player.
@@ -1652,7 +1609,7 @@ def _():
 @app.cell(hide_code=True)
 def _(mo, lesson_md):
     lesson_md(r"""
-    ### 4.3 Watch the evidence grow
+    ### 4.2 Watch the evidence grow
 
     **Reveal observations; watch the parameter distributions respond.** This local
     player follows the model and history selected above. The upper observed-day
@@ -1857,7 +1814,7 @@ def _(mo, lesson_md, lesson_section):
     | Check | Question | Evidence here |
     |:---|:---|:---|
     | Replicated histories | Can fitted parameters reproduce these return summaries? | Independent, zero-origin posterior-predictive histories |
-    | Many independent histories | Does this estimator recover parameters and report uncertainty? | The selected model's recovery, ranks and coverage |
+    | Many independent histories | Does this estimator recover parameters and report uncertainty? | Saved final-cohort recovery and marginal coverage |
     | One conditional posterior | Does the approximation match an independent numerical reference? | No matched reference for these histories and lengths |
 
     The saved final-cohort results below answer a broader validation question.
@@ -1950,289 +1907,6 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(mo, path_checks, lesson_md):
-    _worked = mo.md(r"""
-    **One history gives one rank.** Draw its parameters from the prior, simulate
-    the observed prefix, then draw 200 parameter samples from its approximate
-    posterior. If 140 draws are below the generating value, its rank is
-    **140 / 200 = 0.70**. Generating truths remain evaluation labels.
-
-    **Many histories give a curve.** Repeat over 200 independent histories. At
-    a horizontal position z, count the share of ranks at or below z. This is
-    the empirical CDF, $F_N(z)$. The plotted height is **$F_N(z)-z$**.
-    Near zero means consistency with uniform ranks at this resolution.
-    """).style({"min-width": "260px"})
-    _shapes = mo.md(r"""
-    **Read the direction, not just the grey band.**
-
-    - **Above zero:** more ranks are below z than the uniform reference predicts.
-    - **Below zero:** fewer ranks are below z.
-    - **Above on the left, below on the right:** ranks tend toward the extremes;
-      posterior intervals may be too narrow.
-    - **The reverse:** ranks tend toward the centre; intervals may be too wide.
-    - **An upper arch:** truths tend to fall below posterior draws; the fitted
-      centres may be too high. A lower arch suggests the reverse.
-
-    These are clues, rather than unique diagnoses.
-    """).style({"min-width": "260px"})
-    mo.vstack([lesson_md("### 5.2 Independent network checks"), mo.accordion({"Read rank curves step by step": mo.vstack([
-        mo.hstack([_worked, _shapes], widths="equal", wrap=True, align="start", gap=1),
-        path_checks.rank_shape_guide(),
-        mo.md("**Illustrations, not trajectory results.** These Normal examples share the same simulated "
-              "data and random noise; only the approximate posterior's centre or spread changes. "
-              "The correct posterior is known analytically."),
-        mo.md(f"""
-        **Three different intervals appear in this lesson:**
-
-        | Display | What is uncertain? |
-        |:---|:---|
-        | Central 90% posterior interval | A parameter for one observed history, under this approximation |
-        | Grey {100*path_checks.RANK_BAND_CONFIDENCE:.0f}% ECDF reference band | Sampling variation of one rank curve over independent histories |
-        | 95% binomial interval in the coverage table | A coverage rate estimated using 200 histories |
-
-        BayesFlow's grey band is simultaneous across its plotted rank grid **for
-        one parameter curve**. It is not a 95% joint statement across all 4, 5
-        or 7 parameter panels. Its continuous-uniform reference is approximate:
-        200 draws give 201 possible rank positions, and ties need additional care,
-        especially for the Heston drift atom. The band itself is simulation-based.
-
-        Staying inside it is not a certificate of correct posteriors. A network
-        that always returns the prior can have uniform ranks without learning.
-        Read recovery, dependence, conditional checks and the saved final screens too.
-        """),
-    ])})])
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    show_independent_tools = mo.ui.checkbox(value=False, label="Show independent-network check tools")
-    mo.accordion({"Optional: check a network on 200 independent histories": mo.vstack([
-        mo.md("A loss curve shows fitting progress. An independent check asks whether the selected "
-              "network recovers generating parameters and reports uncertainty. This optional action "
-              "generates 200 validation histories and 200 parameter draws per history. "
-              "The histories stay in session memory and are reused across diagnostic prefixes; "
-              "labels never condition the network. Nothing runs until requested."),
-        show_independent_tools])})
-    return (show_independent_tools,)
-
-
-@app.cell(hide_code=True)
-def diagnostic_network_controls(mo, show_independent_tools):
-    # Define lightweight controls even while their optional display is hidden.
-    diagnostic_source = mo.ui.radio(
-        options={"Tutorial network trained above": "tutorial", "Pretrained network loaded above": "pretrained"},
-        value="Tutorial network trained above", label="Network to check", inline=True)
-    _output = diagnostic_source if show_independent_tools.value else mo.md("")
-    _output
-    return (diagnostic_source,)
-
-
-@app.cell(hide_code=True)
-def diagnostic_history_controls(cache_task, diagnostic_source, mo, show_independent_tools, trajectory, tutorial_task):
-    diagnostic_task = tutorial_task if diagnostic_source.value == "tutorial" else cache_task
-    diagnostic_days = mo.ui.slider(1, diagnostic_task["n_observations"], step=1, value=diagnostic_task["n_observations"],
-                                   label="Days per diagnostic history", show_value=True, include_input=True)
-    _output = mo.md("")
-    if show_independent_tools.value:
-        _output = mo.vstack([
-            mo.md(f"**Diagnostic task: {trajectory.MODEL_LABELS[diagnostic_task['model']]} · "
-                  f"maximum {diagnostic_task['n_observations']} days.** "
-                  "This separate control gives every diagnostic history the same observed length. "
-                  "It does not change the single example selected above. Later returns are masked."),
-            diagnostic_days,
-        ])
-    _output
-    return diagnostic_days, diagnostic_task
-
-
-@app.cell(hide_code=True)
-def diagnostic_run_control(diagnostic_days, diagnostic_source, diagnostic_task, mo,
-                           pretrained_workflow, show_independent_tools, tutorial_workflow):
-    # Rebuilding the button requires a fresh click for every changed context.
-    _request = (show_independent_tools.value, diagnostic_source.value, diagnostic_days.value,
-                diagnostic_task, id(tutorial_workflow), id(pretrained_workflow))
-    run_diagnostics = mo.ui.run_button(label="Check this network on 200 independent histories")
-    _output = run_diagnostics if show_independent_tools.value else mo.md("")
-    _output
-    return (run_diagnostics,)
-
-
-@app.cell(hide_code=True)
-def independent_check_code(mo, path_checks, show_independent_tools):
-    def check_independent_histories(workflow, task, panel, days):
-        # Only observed returns, known times and masks enter the network.
-        draws = path_checks.evaluate(workflow, task, panel, days, draws=200, seed=20261111)
-        recovery, ranks = path_checks.plot_diagnostics(task, panel, draws)
-        return draws, recovery, ranks
-
-    _output = mo.show_code() if show_independent_tools.value else mo.md("")
-    _output
-    return (check_independent_histories,)
-
-
-@app.cell(hide_code=True)
-def run_independent_check(check_independent_histories, diagnostic_days, diagnostic_panels,
-                          diagnostic_source, diagnostic_task, mo, path_checks, path_simulation,
-                          pretrained_workflow, run_diagnostics, show_independent_tools, tutorial_workflow):
-    # Always publish an explicit idle result, including after a context change.
-    diagnostic_result = None
-    _output = mo.md("")
-    if show_independent_tools.value:
-        _output = mo.md("*Choose a network and run the check when ready. "
-                        "Changing the diagnostic prefix reuses the same independent histories.*")
-        if run_diagnostics.value:
-            _workflow = tutorial_workflow if diagnostic_source.value == "tutorial" else pretrained_workflow
-            if _workflow is None:
-                _output = mo.callout(mo.md("**No matching network is ready.** "
-                    "Train the tutorial network above, or choose Compute posterior for selected prefix and load the matching "
-                    "pretrained model with the CPU-inference button above. Then run this check."), kind="info")
-            else:
-                from time import perf_counter as _diagnostic_clock
-                _key = path_simulation.task_fingerprint(diagnostic_task)
-                _reused = _key in diagnostic_panels
-                _started = _diagnostic_clock()
-                try:
-                    if not _reused:
-                        # Fixed seed, independent validation IDs. Keep all rows; never redraw failures.
-                        diagnostic_panels[_key] = path_checks.generate_panel(diagnostic_task, count=200, seed=20261111)
-                    _panel = diagnostic_panels[_key]
-                    _generation_seconds = _diagnostic_clock() - _started
-                    _started = _diagnostic_clock()
-                    _diagnostic_draws, _recovery, _ranks = check_independent_histories(
-                        _workflow, diagnostic_task, _panel, diagnostic_days.value)
-                    _check_seconds = _diagnostic_clock() - _started
-                    _coverage = path_checks.coverage_table(diagnostic_task, _panel, _diagnostic_draws)
-                    _rank_rows = path_checks.rank_readout(diagnostic_task, _panel, _diagnostic_draws, z=.5)
-                    _output = mo.vstack([
-                        mo.md(f"**Source: {diagnostic_source.value} network · 200 independent histories · "
-                              f"{diagnostic_days.value} observed days each · 200 posterior draws per history.** "
-                              f"Input generation: **{'reused from this session' if _reused else f'{_generation_seconds:.3f} s'}**; "
-                              f"sampling and plotting: **{_check_seconds:.1f} s**, including compilation if needed."),
-                        _recovery, _ranks,
-                        mo.ui.table([{"parameter": row["label"], "inside central 90% interval": f'{row["hits"]}/{row["n"]}',
-                                      "empirical coverage": f'{100*row["coverage"]:.1f}%',
-                                      "95% binomial interval": f'{100*row["wilson95_low"]:.1f}–{100*row["wilson95_high"]:.1f}%'}
-                                     for row in _coverage], selection=None, pagination=False),
-                        mo.accordion({"Read one point from the actual rank curves": mo.vstack([
-                            mo.md("At **z = 0.5**, divide the number of ranks at or below 0.5 by the number of histories, "
-                                  "then subtract 0.5. This is the plotted ECDF difference at that position, using all retained cases."),
-                            mo.ui.table([{"parameter": row["label"], "ranks ≤ 0.5": f'{row["cases_below_z"]}/{row["n"]}',
-                                          "empirical CDF": f'{row["empirical_cdf"]:.3f}',
-                                          "CDF − 0.5": f'{row["departure"]:+.3f}'} for row in _rank_rows],
-                                        selection=None, pagination=False),
-                        ])}),
-                        mo.md("Recovery compares generating truths with posterior medians and central 90% intervals. "
-                              "The rank ECDF checks calibration averaged over the declared prior: near-zero differences "
-                              "mean roughly uniform ranks. Inspect both; returning the prior can pass a rank check without learning. "
-                              "These fixed-seed validation examples are reused across prefixes. Nested prefixes are not "
-                              "independent replicates, and these checks do not replace the final-test results below. "
-                              "A tiny fit may perform poorly; successful execution does not establish accuracy."),
-                    ])
-                    diagnostic_result = {"task": diagnostic_task, "panel": _panel, "draws": _diagnostic_draws,
-                                         "length": diagnostic_days.value, "source": diagnostic_source.value}
-                except (ImportError, RuntimeError, ValueError, FloatingPointError) as _error:
-                    _output = mo.callout(mo.md(f"**Diagnostic check stopped:** {_error}. "
-                        "No partial or selectively accepted cohort is displayed."), kind="warn")
-    _output
-    return (diagnostic_result,)
-
-
-@app.cell(hide_code=True)
-def diagnostic_parameter_control(diagnostic_result, mo, parameter_labels):
-    recovery_parameter = None
-    _output = mo.md("")
-    if diagnostic_result is not None:
-        _names = diagnostic_result["task"]["parameter_names"]
-        recovery_parameter = mo.ui.dropdown(options={parameter_labels[name]: name for name in _names},
-                                           value=parameter_labels[_names[0]], label="Parameter for recovery selection")
-        _output = mo.vstack([mo.md("#### Inspect a history behind the recovery plot\n\n"
-            "Drag a box around points, then choose a history from that selection. With no box, "
-            "all 200 are available in generation order. The history and posterior below use the "
-            "actual retained rows from this check; selecting a point runs no new inference."), recovery_parameter])
-    _output
-    return (recovery_parameter,)
-
-
-@app.cell(hide_code=True)
-def diagnostic_recovery_plot(
-    diagnostic_result,
-    mo,
-    parameter_labels,
-    path_checks,
-    plt,
-    recovery_parameter,
-):
-    recovery_picker, recovery_points = None, None
-    _output = mo.md("")
-    if diagnostic_result is not None and recovery_parameter is not None:
-        recovery_points = path_checks.recovery_case_data(diagnostic_result["task"], diagnostic_result["panel"],
-                                                        diagnostic_result["draws"], recovery_parameter.value)
-        _lo, _hi = diagnostic_result["task"]["prior_bounds"][diagnostic_result["task"]["parameter_names"].index(recovery_parameter.value)]
-        _figure, _axis = plt.subplots(figsize=(6.5, 4), layout="constrained")
-        _axis.plot([_lo, _hi], [_lo, _hi], "--", color="#64748b", linewidth=1)
-        _axis.vlines(recovery_points["truth"], recovery_points["lower90"], recovery_points["upper90"], color="#2563eb", alpha=.22)
-        _axis.scatter(recovery_points["truth"], recovery_points["median"], color="#2563eb", s=12, alpha=.7)
-        _axis.set(xlabel="Generating value", ylabel="Posterior median", xlim=(_lo, _hi), ylim=(_lo, _hi),
-                  title=f"Select independent histories · {parameter_labels[recovery_parameter.value]}")
-        recovery_picker = mo.ui.matplotlib(_axis, debounce=True)
-        _output = recovery_picker
-    _output
-    return recovery_picker, recovery_points
-
-
-@app.cell(hide_code=True)
-def diagnostic_case_controls(diagnostic_result, mo, np, recovery_picker, recovery_points):
-    diagnostic_case, show_diagnostic_pairs = None, None
-    _output = mo.md("")
-    if diagnostic_result is not None and recovery_picker is not None and recovery_points is not None:
-        _selection = (np.flatnonzero(recovery_picker.value.get_mask(recovery_points["truth"], recovery_points["median"]))
-                      if recovery_picker.value else np.array([], dtype=int))
-        _pool = _selection if len(_selection) else np.arange(len(recovery_points["truth"]))
-        _options = {f"Diagnostic history {index+1}": int(index) for index in _pool}
-        diagnostic_case = mo.ui.dropdown(options=_options, value=next(iter(_options)), label="Diagnostic history to inspect")
-        show_diagnostic_pairs = mo.ui.checkbox(value=False, label="Show all parameter pairs for this diagnostic history")
-        _output = mo.vstack([mo.md(f"**{len(_pool)} histories available.** Default: the first in generation order, not a selected best or worst case."),
-                   diagnostic_case, show_diagnostic_pairs])
-    _output
-    return diagnostic_case, show_diagnostic_pairs
-
-
-@app.cell(hide_code=True)
-def diagnostic_case_view(
-    diagnostic_case,
-    diagnostic_result,
-    mo,
-    np,
-    path_checks,
-    plt,
-    show_diagnostic_pairs,
-    trajectory,
-):
-    _output = mo.md("")
-    if diagnostic_result is not None and diagnostic_case is not None and show_diagnostic_pairs is not None:
-        _case = path_checks.case_view(diagnostic_result["task"], diagnostic_result["panel"],
-            diagnostic_result["draws"], diagnostic_case.value, diagnostic_result["length"])
-        _figure, _axis = plt.subplots(figsize=(8.5, 2.2), layout="constrained")
-        _axis.plot(np.arange(1, _case["length"]+1), 100*_case["returns"], color="#2563eb", linewidth=.8)
-        _axis.set(xlabel="Observed trading day", ylabel="Daily log return (%)",
-                  title=f"Diagnostic history {_case['index']+1} · {_case['length']} days")
-        _rows = trajectory.posterior_rows(diagnostic_result["task"], _case["draws"])
-        for _row, _truth in zip(_rows, _case["truth"], strict=True):
-            _row["generating truth"] = float(_truth)
-        _parts = [mo.md(f"**Source: {diagnostic_result['source']} network · diagnostic history {_case['index']+1}.** "
-                       "These are separate from the four supplied example histories."), _figure,
-                  mo.ui.table(_rows, selection=None, pagination=False)]
-        if show_diagnostic_pairs.value:
-            _parts += [path_checks.native_pairs(diagnostic_result["task"], _case["draws"], _case["truth"]),
-                       mo.md("Native `bf.diagnostics.pairs_posterior`: the same 200 paired draws, with generating truths marked. "
-                             "Changing the selected history does not sample or fit another model.")]
-        _output = mo.vstack(_parts)
-    _output
-    return
-
-
-@app.cell(hide_code=True)
 def _(json, trajectory):
     aggregate_report, aggregate_images, aggregate_problem = None, {}, None
     _folder = trajectory.ASSETS / "results" / "trajectories" / "closeout-20261031"
@@ -2266,7 +1940,7 @@ def _(json, trajectory):
 
 @app.cell(hide_code=True)
 def _(aggregate_images, aggregate_problem, aggregate_report, cache_task, mo, parameter_labels, lesson_md):
-    _contents = [lesson_md("### 5.3 Saved final-cohort evidence\n\n"
+    _contents = [lesson_md("### 5.2 Saved final-cohort evidence\n\n"
                        "**Learning information and reporting reliable uncertainty are different achievements.** "
                        "Recovery asks whether estimates improve over a prior-only baseline. Calibration asks "
                        "whether nominal 90% intervals contain truth about 90% of the time across independent "
@@ -2323,96 +1997,10 @@ def _(aggregate_images, aggregate_problem, aggregate_report, cache_task, mo, par
 
 @app.cell(hide_code=True)
 def _(mo, lesson_md, lesson_section):
-    scenario_count = mo.ui.radio(options={"128 histories per group": 128,
-        "512 histories per group: optional refinement": 512}, value="128 histories per group",
-        label="Replicated drawdown budget")
-    mo.vstack([lesson_section("Use", "Carry paired parameter draws into a drawdown scenario and compare them with a point estimate.", stage=6), lesson_md(r"""
-    ### 6.1 What does uncertainty change about drawdown?
-
-    **How much drawdown can this fitted model generate?** Compare two collections
-    of independent histories: one at the posterior-mean parameter vector, and one
-    mixing complete paired parameter draws from the approximate posterior. Both
-    collections retain process randomness: one parameter vector still generates
-    a distribution of outcomes.
-
-    Wealth starts at one and equals $W_t=\exp(\sum_{s\leq t}r_s)$. Maximum drawdown
-    is the largest proportional decline from a previous peak, including initial
-    wealth. These are replicated histories from the model's origin over the same
-    number of days as the posterior, **not the next days after our observation**.
-    """), scenario_count])
-    return (scenario_count,)
-
-
-@app.cell(hide_code=True)
-def _(cache_task, mo, posterior, scenario_count, selection):
-    _identity = (cache_task, selection, posterior, scenario_count.value)
-    drawdown_button = mo.ui.run_button(label=f"Generate replicated drawdown over {posterior['length']} days")
-    mo.vstack([drawdown_button, mo.md(f"**{posterior['source']} posterior · {posterior['length']} days.** "
-        "Changing the model, history, posterior or simulation budget clears the previous scenarios. "
-        "The matched random inputs are shared between groups, and refreshed across simulation chunks.")])
-    return (drawdown_button,)
-
-
-@app.cell(hide_code=True)
-def _(
-    cache_task,
-    drawdown_button,
-    mo,
-    model_checks,
-    posterior,
-    scenario_count,
-):
-    mo.stop(not drawdown_button.value, mo.md("*Optional: propagate the displayed posterior into replicated-history drawdown.*"))
-    try:
-        drawdown_result = model_checks.generate_drawdown(cache_task, posterior["draws"], posterior["length"],
-            count=scenario_count.value, seed=20261115)
-    except (ValueError, RuntimeError, FloatingPointError) as _error:
-        mo.stop(True, mo.callout(mo.md(f"**Drawdown scenario stopped:** {_error}. No histories are replaced or filtered."), kind="warn"))
-    return (drawdown_result,)
-
-
-@app.cell(hide_code=True)
-def _(drawdown_result, mo, model_checks, posterior):
-    mo.vstack([model_checks.plot_drawdown(drawdown_result),
-        mo.md(f"**Independent replicated-history drawdown · {drawdown_result['length']} days · "
-              f"{posterior['source']} approximate posterior.** The highlighted wealth curves are a few "
-              "realizations, while the ECDF uses every simulated outcome. The point group fixes all "
-              "parameters at their posterior means; the mixture samples complete posterior rows with "
-              "replacement. Neither is a state-conditioned forecast. Posterior mixing can increase "
-              "or decrease a drawdown probability; there is no predetermined direction.")])
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    drawdown_threshold = mo.ui.slider(1, 80, step=1, value=20, show_value=True,
-        label="Drawdown exceeds (%)")
-    drawdown_threshold
-    return (drawdown_threshold,)
-
-
-@app.cell(hide_code=True)
-def _(drawdown_result, drawdown_threshold, mo, model_checks):
-    _rows = model_checks.drawdown_readout(drawdown_result, drawdown_threshold.value / 100)
     mo.vstack([
-        mo.ui.table([{"parameter treatment": row["group"],
-                      f"drawdown > {drawdown_threshold.value}%": f'{row["exceedances"]}/{row["count"]}',
-                      "simulated proportion": f'{100*row["proportion"]:.1f}%'} for row in _rows],
-                    selection=None, pagination=False),
-        mo.md("The threshold reuses these same scenarios; moving it runs no simulation or inference. "
-              "These are finite Monte Carlo proportions under an approximate posterior, not precise "
-              "market-risk probabilities. A small difference can be simulation variation. This "
-              "illustration combines process and parameter uncertainty without separately estimating "
-              "their contributions. The calibration failures above still qualify the result."),
-    ])
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, lesson_md):
-    mo.vstack([
+        lesson_section("Use", "Identify what must be added to turn parameter inference into a continuation forecast.", stage=6),
         lesson_md(r"""
-        ### 6.2 What would a continuation forecast need?
+        ### 6.1 What would a continuation forecast need?
 
         Independent replicated histories check the fitted model from its origin.
         Predicting the next part of the observed history additionally needs its
@@ -2526,7 +2114,7 @@ def _(mo, lesson_md):
         vector and history. Independently sampling the two marginal posteriors
         would discard their dependence and can change the predictive result.
         The same principle explains why we keep parameter coordinates paired
-        in the drawdown calculation. Marginalizing hidden paths in parameter
+        when generating replicated histories. Marginalizing hidden paths in parameter
         inference does not make the parameter posterior factorize.
 
         Heston's continuous-time state is its variance. Exact continuation of our

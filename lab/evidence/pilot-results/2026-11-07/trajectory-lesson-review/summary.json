@@ -5,14 +5,14 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 175,
+    "tutorial_tests": 167,
     "notebook_exports": 8,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 183,
     "local_document_links": 48,
     "marimo_warnings": "inherited empty cells in MMAR take-home and slots 2/3",
     "lab_runtime_parity_tests": 12,
-    "trajectory_notebook_cells": 88,
+    "trajectory_notebook_cells": 69,
     "lab_core_tests": 536,
     "lab_optional_skips": 3,
     "lab_checkout_regression_tests": 1
@@ -99,13 +99,13 @@
   },
   "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "55be2d6429b8096c3c0c57b18f99532f563ef062670fc8d83d57d1473af27996",
+    "tutorial/notebooks/trajectory_inference.py": "33eaa718268b099706e331d2e71622b26f57c10ebb5e205c78fd856f443d62ab",
     "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "7054b13d46b1a369daace82a3c337cae0717aadce1093e6993714668b8419504",
     "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "7749e5245646ff567055a82f2535fafa4f36c537ee9165b53863edeafbe8fdf6",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "99174f8526cce21eede4af28dda17273d36244c569685c30c54dda693c6860fb",
-    "tutorial/README.md": "1a918c443e38b2aad2bc3c411c7b61c03685d6df87acb7d1eda4c04e4e79f97b",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "ab094361d1060b8b6c109abac2d66ceb66202cf1dcefa4abb459f66451ff3183",
+    "tutorial/README.md": "8fb6598ba5ad071a6bf4473abeab16f2bc1a584b081b4b279dfcf9ddfe4ed70a",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "f6ecacbb3960923e7e6e4c45167fb39f31636010e67e0b8d517a749177929d16",
     "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "91092853be3846c730e83f3f45eb3789c2adc96a12b34cb571ba2f3074a32354",
     "tutorial/tests/test_trajectory_diagnostics.py": "02bf496481c2ad1c0fda1d949a042e1f36d36747b8e9a7b2cfea68d4b99e04ee",
     "tutorial/src/sbi4f_tutorial/trajectories/model_checks.py": "18440646719d4350e821cb05cee48b16904d09e65c18ff852e9165e163c88ec0",
@@ -137,10 +137,9 @@
     ".gitattributes": "43f5e851f28d49c0e8a1a1535b7b9bc8d275b418558dbb3d5f3a75ece7e2f86b",
     "tutorial/tests/test_trajectory_portability.py": "aebed32f7dbeb91708eaa4dca32f76da2db340dc4daa6f3decfecc257c5b3894",
     "lab/tests/test_tutorial_asset_checkout.py": "795778eb455c95be36ef46f852c43ac899df1b2252ec8c6847a7cef0a964c8bd",
-    "tutorial/tests/test_trajectory_notebook_diagnostics.py": "48dcc59ca711bbb48c80800bef3d350b2a60c3b7721ca01bd4a7cdc941654675",
     "tutorial/notebooks/trajectory_inference.css": "add434b72c1f573d6696d40915357bbb7ec0bf9bdbdf9135fc8c64a0ee85feef"
   },
-  "updated_at_utc": "2026-11-14T18:30:37.566303+00:00",
+  "updated_at_utc": "2026-11-14T19:42:22.562401+00:00",
   "forward_simulator": {
     "paths": 8,
     "days": 252,
@@ -2085,5 +2084,71 @@
       "Iframe player internals",
       "Calibration verdicts"
     ]
+  },
+  "presentation_trim_20261114": {
+    "requested_removals": [
+      "4.2 Inspect parameter dependence",
+      "5.2 Independent network checks",
+      "6.1 Drawdown exercise"
+    ],
+    "removed_ui_cells": 19,
+    "notebook_cells_before": 88,
+    "notebook_cells_after": 69,
+    "renumbering": {
+      "4.3 Watch the evidence grow": "4.2 Watch the evidence grow",
+      "5.3 Saved final-cohort evidence": "5.2 Saved final-cohort evidence",
+      "6.2 Continuation requirements": "6.1 Continuation requirements"
+    },
+    "cleanup": [
+      "Remove pair selectors/scatterplot, live independent-cohort controls/results/recovery views, and drawdown simulation/readout controls.",
+      "Remove the eight notebook-cell tests specific to the deleted optional diagnostics.",
+      "Update the executive summary, Use lead, check-evidence table and participant instructions."
+    ],
+    "preserved": [
+      "Shared numerical diagnostic/predictive helpers and their tests",
+      "Paired-posterior interpretation",
+      "Evidence playback",
+      "Prior/posterior-predictive checks",
+      "Saved final-cohort evidence and calibration failures",
+      "Continuation discussion",
+      "Separate MMAR take-home drawdown exercise"
+    ],
+    "structure": {
+      "numbered_subsections": 16,
+      "stage_links_valid": true,
+      "unique_ids": true,
+      "fenced_code_preserved": true
+    },
+    "three_model_check": {
+      "status": "passed",
+      "models": [
+        {
+          "model": "heston",
+          "posterior_dimensions": 5,
+          "removed_controls_absent": true
+        },
+        {
+          "model": "rough-known",
+          "posterior_dimensions": 4,
+          "removed_controls_absent": true
+        },
+        {
+          "model": "rough-joint",
+          "posterior_dimensions": 7,
+          "removed_controls_absent": true
+        }
+      ]
+    },
+    "verification": {
+      "tutorial_tests": 167,
+      "notebook_exports": 8,
+      "trajectory_cells": 69,
+      "notebook_errors": 0,
+      "marimo": "passed with inherited MMAR and slots2/3 empty-cell warnings",
+      "lab_tests": 536,
+      "optional_lab_skips": 3,
+      "release_symbols": 183
+    },
+    "artifacts": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/presentation-trim"
   }
 }
