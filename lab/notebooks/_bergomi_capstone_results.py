@@ -1,8 +1,10 @@
 """Validate compact, read-only evidence for the rough-Bergomi closing section.
 
 The loader uses only the standard library and NumPy. It never loads a bank,
-network or posterior chain, and performs no pricing, sampling or writes. Saved
-quantiles describe the original joint posterior draws, not a repaired noise
+network or posterior chain, and performs no pricing, sampling or writes. The
+record contains market aggregates and synthetic recovery coordinates, not
+simulated quote payloads or raw joint draws. Saved quantiles describe the
+original joint posterior draws, not a repaired noise
 conditional. The reference is a fixed-emulator posterior, not exact Bergomi.
 """
 
@@ -167,9 +169,9 @@ def _validate(record, expected_contracts, expected_spreads, expected_observation
                "comparison_heston_c_bounds", "parameter_names", "parameter_bounds", "task", "geometry",
                "geometry_sha256", "fit_comparison", "posteriors", "predictives", "predictive_protocol",
                "training", "reference", "source_bindings", "numerical_qualification_passed",
-               "scientific_acceptance", "scope", "caveats"}
+               "scientific_acceptance", "scope", "caveats", "recovery"}
     _require(set(record) == allowed, "only the reviewed compact aggregate fields may be published")
-    _require(record.get("format") == "bergomi_capstone_results_v1" and record.get("schema_version") == 1,
+    _require(record.get("format") == "bergomi_capstone_results_v2" and record.get("schema_version") == 2,
              "unsupported Bergomi capstone record")
     _require(record.get("status") == "development"
              and record.get("scientific_acceptance") is False
@@ -269,6 +271,7 @@ def _validate(record, expected_contracts, expected_spreads, expected_observation
              and reference["mcmc_diagnostics_passed"] is True
              and reference["gradient_checks_passed"] is True,
              "the displayed approximate reference requires passing measured diagnostics and gradients")
+    _validate_recovery(record["recovery"], sources)
 
     _require(set(record["posteriors"]) == set(METHODS)
              and set(record["predictives"]) == set(METHODS),
@@ -348,3 +351,42 @@ def _validate(record, expected_contracts, expected_spreads, expected_observation
     _require(np.isclose(comparison["rms_reduction_fraction"],
                         1 - rms_values["bergomi"] / rms_values["heston"], rtol=1e-10, atol=1e-10),
              "the stated RMS reduction and saved prices differ")
+
+
+def _validate_recovery(recovery, sources):
+    _require(recovery["case_count"] == 800 and recovery["posterior_draws_per_case"] == 256
+             and recovery["population"] == "held_out_amortizer_development"
+             and recovery["availability_selected"] is True
+             and recovery["prior_wide_acceptance"] is False
+             and recovery["used_for_amortizer_training"] is False
+             and recovery["used_for_training_monitor"] is False
+             and recovery["raw_draws_clipped"] is False,
+             "recovery must retain the unfiltered, held-out development population and its limitations")
+    truth = _finite(recovery["truth"], (800, 7), "development generating values")
+    q = _finite(recovery["q05_q50_q95"], (3, 800, 7), "development marginal quantiles")
+    bounds = np.asarray(PARAMETER_BOUNDS)
+    _require(np.all((truth >= bounds[:, 0]) & (truth <= bounds[:, 1]))
+             and np.all(np.diff(q, axis=0) >= 0),
+             "development truths or quantile ordering differ")
+    _require(recovery["truth_sha256"] == canonical_sha256(recovery["truth"])
+             and recovery["quantiles_sha256"] == canonical_sha256(recovery["q05_q50_q95"]),
+             "development generating values or marginal summaries changed")
+    expected = {
+        "median_rmse": np.sqrt(np.mean((q[1] - truth) ** 2, axis=0)),
+        "coverage90": np.mean((q[0] <= truth) & (truth <= q[2]), axis=0),
+        "median_width90": np.median(q[2] - q[0], axis=0),
+    }
+    for key, values in expected.items():
+        actual = _finite(recovery[key], (7,), "development " + key, nonnegative=True)
+        _require(np.allclose(actual, values, rtol=1e-12, atol=1e-14),
+                 "development recovery metrics differ from the plotted summaries: " + key)
+    counts = _finite(recovery["raw_support_count"], (7,), "development raw support counts", nonnegative=True)
+    fractions = _finite(recovery["raw_support_fraction"], (7,), "development raw support fractions", nonnegative=True)
+    total = 800 * 256
+    _require(np.all(counts == np.floor(counts)) and np.all(counts <= total)
+             and np.allclose(fractions, counts / total, rtol=0, atol=1e-15)
+             and type(recovery["raw_joint_support_count"]) is int
+             and counts.max() <= recovery["raw_joint_support_count"] <= min(total, counts.sum()),
+             "raw support violations must be counted without clipping")
+    _require(recovery["source_checkpoint_sha256"] == sources["control_checkpoint"],
+             "development recovery must use the same displayed checkpoint")

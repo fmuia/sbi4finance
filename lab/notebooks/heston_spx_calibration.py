@@ -35,7 +35,8 @@ def _():
     from sbi4f_tutorial.shared.whitening import fit_whitening
     from sbi4finance.calibration.heston_grid import HestonGridPilot
     from scripts import audit_heston_grid_coverage as grid_rules  # the contract-selection rules of the grid
-    from scripts import heston_grid_collaborator as delivery
+    from scripts import heston_notebook_bundle as bundle_setup
+    delivery = bundle_setup.load_delivery_module()
     from scripts import reproduce_heston_pr87_grid as recipe
 
     _threads = {_key: os.environ.get(_key) for _key in
@@ -56,15 +57,24 @@ def _():
     EVALUATION = GRID / "recovery-bank-independent" / "300k-300" / "evaluation"
     REFERENCES = EVIDENCE / "2026-11-11" / "heston-actual63-notebook"
     ESTIMATOR = "300k-300-final300"  # trained for 300 epochs on 300,000 simulated data sets
-    BUNDLE = os.environ.get("HESTON_BUNDLE") or None
+    _bundle_error = None
+    try:
+        BUNDLE = bundle_setup.resolve_bundle(os.environ.get("HESTON_BUNDLE"), lab=LAB)
+    except ValueError as _error:
+        BUNDLE, _bundle_error = None, str(_error)
     # Seeds and draw counts of the saved evaluation, so that fresh draws are directly comparable with it.
     EVAL_SEED, CONDITIONAL_DRAWS, PANEL_DRAWS, PANEL_BATCH = 261112, 4096, 512, 16
 
     BUNDLE_HELP = mo.callout(mo.md(
-        "**The pretrained estimator is not loaded.** Set `HESTON_BUNDLE` to the folder that contains `bundle.json` "
-        "and restart marimo. `lab/plans/training-data-guide.md` explains how to obtain and check the bundle. Until "
-        "then, results that need the trained network are left out and the PyMC reference is shown on its own."),
-        kind="warn")
+        "**Install the optional Heston model to enable fresh posteriors.** "
+        f"[Download the bundle from Google Drive]({bundle_setup.DRIVE_FILE_URL}) using your project Google account. "
+        "From `lab/`, install the downloaded archive once:\n\n"
+        "```bash\npixi run --locked -e core-reference python scripts/heston_notebook_bundle.py "
+        f"--archive ~/Downloads/{bundle_setup.ARCHIVE_FILENAME}\n```\n\n"
+        "Restart marimo: the notebook finds the verified local cache automatically. `HESTON_BUNDLE` is an optional "
+        "override pointing to an **extracted local folder**, not a Drive URL. The saved references and Bergomi "
+        "results work without this download."
+        + (f"\n\n**Local setup problem:** {_bundle_error}" if _bundle_error else "")), kind="warn")
 
     plots.style()
     return (
@@ -80,6 +90,7 @@ def _():
         PANEL_DRAWS,
         REFERENCES,
         bf,
+        bundle_setup,
         delivery,
         expected_variance,
         fit_whitening,
@@ -2752,8 +2763,6 @@ def _(
     recovery_truth,
     table,
 ):
-    recovery_parameter = mo.ui.dropdown(options={_label: _j for _j, _label in enumerate(TEXT_LABELS)},
-                                        value=TEXT_LABELS[-1], label="Parameter")
     # How well each parameter is recovered: the median against the truth, and the 90% interval against the prior range.
     _corr = [float(np.corrcoef(recovery_q[1, :, _j], recovery_truth[:, _j])[0, 1]) for _j in range(len(NAMES))]
     _share = [float(100 * np.mean(recovery_q[2, :, _j] - recovery_q[0, :, _j]) / (BOUNDS[_j, 1] - BOUNDS[_j, 0]))
@@ -2780,39 +2789,44 @@ def _(
         """),
         table(_rows, align="lrr"),
         key(_message),
-        controls(recovery_parameter, hint="Choose a parameter. Then drag a box around points in the plot to see the "
-                                          "posterior of one of them."),
+        controls(hint="Click a point in any of the six recovery panels. The data-set number and full joint "
+                      "posterior below update for that same simulated data set."),
     ])
-    return (recovery_parameter,)
+    return
 
 
 @app.cell(hide_code=True)
 def _(
     BOUNDS,
-    LABELS,
+    TEXT_LABELS,
     caption,
     mo,
     plots,
-    plt,
-    recovery_parameter,
     recovery_q,
     recovery_truth,
 ):
-    _j = recovery_parameter.value
-    _fig, _ax = plt.subplots(figsize=(6.2, 4.4), constrained_layout=True)
-    _lo, _hi = BOUNDS[_j]
-    _ax.plot([_lo, _hi], [_lo, _hi], "--", color=plots.MUTED, lw=1)
-    _ax.vlines(recovery_truth[:, _j], recovery_q[0, :, _j], recovery_q[2, :, _j], color=plots.SERIES[0], alpha=.18, lw=.8)
-    _ax.scatter(recovery_truth[:, _j], recovery_q[1, :, _j], s=9, color=plots.SERIES[0], alpha=.75)
-    _ax.set(xlabel=f"true value of {LABELS[_j]}", ylabel=f"posterior median of {LABELS[_j]}",
-            title=f"{len(recovery_truth)} simulated data sets: truth against posterior")
-    recovery_picker = mo.ui.matplotlib(_ax, debounce=True)
+    import importlib.util as _recovery_importlib
+
+    _spec = _recovery_importlib.spec_from_file_location(
+        "_heston_recovery_picker_for_spx", mo.notebook_dir() / "_heston_recovery_picker.py")
+    _picker_module = _recovery_importlib.module_from_spec(_spec)
+    _spec.loader.exec_module(_picker_module)
+    _recovery_figure = _picker_module.recovery_figure(recovery_truth, recovery_q, BOUNDS, TEXT_LABELS,
+                                                    color=plots.SERIES[0])
+    recovery_selected_case = lambda points, count: _picker_module.selected_case(points, count, _recovery_figure)
+    recovery_picker = mo.ui.plotly(
+        _recovery_figure,
+        config={"displayModeBar": False, "responsive": True})
     mo.vstack([
         recovery_picker,
-        caption("Each point is one simulated data set: its true value against the posterior median, with the 90% "
-                "interval as a bar. A point on the dashed diagonal is recovered exactly."),
+        caption("All six panels contain the same data sets. Each point shows a true value against its posterior "
+                "median; the dashed line is exact recovery. To keep the panels readable, 90% interval bars are "
+                "shown for 32 evenly spaced data sets per panel. Hover for any interval; click a point to "
+                "inspect all six parameters together below. Point IDs preserve the original data-set row. "
+                "Fresh posterior computation requires the live marimo notebook; a static HTML export only "
+                "shows its initial outputs."),
     ])
-    return (recovery_picker,)
+    return recovery_picker, recovery_selected_case
 
 
 @app.cell(hide_code=True)
@@ -2837,23 +2851,16 @@ def _(
     md,
     mo,
     np,
-    recovery_parameter,
     recovery_picker,
     recovery_q,
+    recovery_selected_case,
     recovery_truth,
     table,
 ):
-    _j = recovery_parameter.value
-    _x, _y = recovery_truth[:, _j], recovery_q[1, :, _j]
-    _surprise = np.abs(_y - _x) / (recovery_q[2, :, _j] - recovery_q[0, :, _j])   # error in units of the 90% width
-    _selected = np.flatnonzero(recovery_picker.value.get_mask(_x, _y)) if recovery_picker.value else np.array([], int)
-    _pool = _selected if len(_selected) else np.arange(len(_x))
-    recovery_case = int(_pool[np.argmax(_surprise[_pool])])
+    recovery_case = recovery_selected_case(recovery_picker.value, len(recovery_truth))
     _case = recovery_case
-    _how = (f"The box selects {len(_selected)} data sets. The table shows the one whose median is farthest from "
-            "the truth, relative to its interval." if len(_selected) else
-            "Nothing is selected yet. The table shows the data set whose median is farthest from the truth, "
-            "relative to its interval.")
+    _how = ("The point you selected identifies this same data set in every recovery panel." if recovery_picker.value else
+            "Data set zero is the initial example. Click a point in any panel to choose a different data set.")
     _rows = []
     for _k in range(len(NAMES)):
         _digits = decimals(recovery_q[2, _case, _k] - recovery_q[0, _case, _k])
@@ -2864,16 +2871,18 @@ def _(
                                                f"{fixed(recovery_q[2, _case, _k], _digits)}]",
             "Truth inside": "yes" if recovery_q[0, _case, _k] <= recovery_truth[_case, _k] <= recovery_q[2, _case, _k] else "no"})
     mo.vstack([
-        md(f"#### One data set\n\nThis is data set {_case} of the recorded evaluation. {_how}"),
+        md(f"#### Selected data set: {_case}\n\n{_how}"),
         table(_rows, align="lrrl"),
-        bayesflow("The cell below draws fresh posterior draws for this data set and plots them with "
-                  "`bf.diagnostics.pairs_posterior`."),
+        bayesflow("With the pretrained bundle loaded, the cell below samples the full joint posterior for "
+                  "this data set's quotes and plots it with `bf.diagnostics.pairs_posterior`. "
+                  "The stored recovery quantiles are not used to construct posterior draws."),
     ])
     return (recovery_case,)
 
 
 @app.cell
 def _(
+    BUNDLE_HELP,
     EVAL_SEED,
     LABELS,
     bf,
@@ -2886,18 +2895,28 @@ def _(
     recovery_case,
     recovery_truth,
 ):
-    mo.stop(estimator is None or held_out_quotes is None,
-            note("The pair plot of the selected data set needs the pretrained estimator."))
-    _draws = np.asarray(estimator.sample(held_out_quotes[recovery_case][None], 2000,
-                                         seed=EVAL_SEED + 5000 + recovery_case))[0]
-    _grid = bf.diagnostics.pairs_posterior(_draws, targets=recovery_truth[recovery_case], variable_names=LABELS,
-                                           height=1.45, label_fontsize=10, tick_fontsize=7, legend_fontsize=9)
-    mo.vstack([
-        getattr(_grid, "figure", None) or _grid.fig,
-        caption("The true values are marked in red and labelled Targets. Posterior shapes differ from one data set "
-                "to the next: compare data sets near the edges of the prior with data sets in its middle."),
-    ])
-    return
+    recovery_draws, recovery_posterior_figure = None, None
+    if estimator is None or held_out_quotes is None:
+        _view = mo.vstack([
+            note(f"Data set {recovery_case} is selected. Its recovery table updates on every click. "
+                 "The full joint posterior has not been computed because the pretrained bundle is not loaded."),
+            BUNDLE_HELP,
+        ])
+    else:
+        with mo.status.spinner(title=f"Computing the full joint posterior for data set {recovery_case}…"):
+            recovery_draws = np.asarray(estimator.sample(held_out_quotes[recovery_case][None], 2000,
+                                                       seed=EVAL_SEED + 5000 + recovery_case))[0]
+            _grid = bf.diagnostics.pairs_posterior(recovery_draws, targets=recovery_truth[recovery_case], variable_names=LABELS,
+                                                 height=1.45, label_fontsize=10, tick_fontsize=7, legend_fontsize=9)
+            recovery_posterior_figure = getattr(_grid, "figure", None) or _grid.fig
+        _view = mo.vstack([
+            recovery_posterior_figure,
+            caption(f"Fresh joint posterior for data set {recovery_case}: 2,000 draws conditioned only on its "
+                    "63 quotes. The true values are marked in red and labelled Targets. Compare data sets "
+                    "near the edges of the prior with data sets in its middle."),
+        ])
+    _view
+    return recovery_draws, recovery_posterior_figure
 
 
 @app.cell(hide_code=True)
@@ -3425,9 +3444,7 @@ def _(caption, md, mo, note, plots, plt, summary_model, summary_primary_runs, su
 def _(grid, md, mo, section):
     FORWARD_START = (0.25, 0.5)  # in years: the strike is fixed after three months, the option expires after six
     _fix, _end = (f"{12 * _t:.0f}" for _t in FORWARD_START)
-    mo.vstack([
-        section("Use", "A desk holds products that nobody quotes, and must still value them every day. A posterior "
-                "gives each value a range.", stage=6),
+    use_intro = mo.vstack([
         md(rf"""
         ### 6.1 Pricing a product the market does not quote
 
@@ -3444,7 +3461,13 @@ def _(grid, md, mo, section):
                                 "wrong and the bid–ask spread.",
         }),
     ])
-    return (FORWARD_START,)
+    mo.vstack([
+        section("Use", "An optional application: carry parameter uncertainty into the price of an unquoted product.",
+                stage=6),
+        md('The product-pricing example is folded below. Continue to '
+           '<a class="nb-ref" href="#what-heston-misses">What Heston misses</a> for the main lesson.'),
+    ])
+    return FORWARD_START, use_intro
 
 
 @app.cell(hide_code=True)
@@ -3471,6 +3494,7 @@ def _(
     plt,
     reference_draws,
     table,
+    use_intro,
 ):
     # Price a forward-start call and a volatility swap under posterior draws, and under Heston refitted to SPX subsets.
     _n_paths, _shown = 4096, 40  # Monte Carlo paths per price, and posterior draws priced
@@ -3610,7 +3634,8 @@ def _(
     if "market" in _network:
         _second.append(note("The network's ranges differ from PyMC's because the SPX quotes lie outside its "
                             "training data (Section 5.5)."))
-    mo.vstack([
+    use_section = mo.accordion({"Optional: forward-start and volatility-swap pricing": mo.vstack([
+        use_intro,
         _ranges("synthetic-market-like", 1.9, "Market-like simulation: Heston is right"),
         caption(f"The bars are 90% ranges over {_shown} posterior draws, and each dot is one draw. The prices are "
                 f"Monte Carlo estimates with {_n_paths:,} paths and the same random numbers for every draw."),
@@ -3618,8 +3643,9 @@ def _(
         md(f"The table adds a {_months}-month volatility swap, priced in the same way. {_swap}"),
         table(_simulated, align="lrr"),
         *_second,
-    ])
-    return (use_summary,)
+    ])}, expanded=False)
+    use_section
+    return use_section, use_summary
 
 
 @app.cell(hide_code=True)
@@ -3928,10 +3954,39 @@ def _(cards, grid, md, mo, note, section):
                       r"both Heston and Bergomi. The Heston estimator above still uses $c\in[0.5,2]$; its live "
                       "controls and checkpoint are unchanged. Everything below works without a model download."),
                    kind="info"),
+        md(r"""
+        #### The driving equations
+
+        As in the trajectory lesson, rough Bergomi replaces Heston's square-root variance diffusion
+        by an exponential Gaussian Volterra construction. Here we work under the **pricing measure Q**,
+        with deterministic carry removed from the normalized price $X_t$, starting at $X_0=1$:
+
+        $$\begin{aligned}
+        \frac{dX_t}{X_t}&=\sqrt{V_t}\,dW_t^S,
+        &d\langle W^S,W^V\rangle_t&=\rho\,dt,\\
+        G_t&=\sqrt{2H}\int_0^t(t-s)^{H-1/2}\,dW_s^V,
+        &q(t)&=\operatorname{Var}(G_t)=t^{2H},\\
+        V_t&=\xi_0(t)\exp\!\left(\eta G_t-\tfrac12\eta^2q(t)\right),
+        &G_0&=0,\quad V_0=\xi_0(0),\\
+        \xi_0(t)&=v_{\rm long}+(v_{\rm short}-v_{\rm long})e^{-\lambda t}.
+        \end{aligned}$$
+
+        Time is in years. $W^S$ and $W^V$ are correlated Brownian drivers. The power-law kernel
+        gives recent variance innovations more weight; **H controls roughness**. **η scales
+        log-variance dispersion**. The compensator makes $\mathbb E_Q[V_t]=\xi_0(t)$; it does
+        not pull each realized path toward that curve. Negative **ρ** introduces leverage.
+        We call the driver $G_t$ to distinguish it from the observed noisy quotes.
+
+        The three curve coefficients $v_{\rm short},v_{\rm long},\lambda$ are inferred jointly
+        with $H,\eta,\rho$. The seventh target is $c$ in $Y_i=P_i(\phi)+c h_i Z_i$.
+        These are the continuous-time equations. The stored pricing labels use finite grids
+        and the hybrid driver's actual grid variance in the compensator; the fixed emulator
+        and its numerical limitations are kept explicit below.
+        """),
         cards([
             ("Financial model", "Roughness and the initial variance curve", r"""
              Rough Bergomi lets volatility fluctuate on short time scales through **roughness $H$**,
-             **volatility amplitude $\eta$** and **price–volatility correlation $\rho$**.
+             **log-variance dispersion $\eta$** and **price–volatility correlation $\rho$**.
              Three more coefficients describe the initial forward-variance curve: short variance,
              long variance and decay. They are **inferred jointly**, rather than supplied as known.
              """),
@@ -3954,6 +4009,59 @@ def _(cards, grid, md, mo, note, section):
              "without a difference in pricing targets. The expensive price bank is reused.", label="Control"),
     ])
     return
+
+
+@app.cell(hide_code=True)
+def _(bergomi_results, caption, md, mo, np, plots, plt, table):
+    _recovery = bergomi_results["recovery"]
+    _truth = np.asarray(_recovery["truth"])
+    _q = np.asarray(_recovery["q05_q50_q95"])
+    _labels = [r"Roughness $H$", r"Dispersion $\eta$", r"Correlation $\rho$",
+               r"Short variance $v_{\rm short}$", r"Long variance $v_{\rm long}$",
+               r"Curve decay $\lambda$", r"Noise multiplier $c$"]
+    _fig, _axes = plt.subplots(2, 4, figsize=(11.6, 5.8), constrained_layout=True)
+    _rows = []
+    for _j, _axis in enumerate(_axes.flat[:7]):
+        _low, _high = bergomi_results["parameter_bounds"][_j]
+        _ordered = np.argsort(_truth[:, _j], kind="stable")
+        _bars = _ordered[np.linspace(0, len(_ordered) - 1, 40, dtype=int)]
+        _axis.plot([_low, _high], [_low, _high], color=plots.INK, lw=.8, ls="--")
+        _axis.vlines(_truth[_bars, _j], _q[0, _bars, _j], _q[2, _bars, _j],
+                     color=plots.SERIES[0], alpha=.3, lw=.65)
+        _axis.scatter(_truth[:, _j], _q[1, :, _j], color=plots.SERIES[0],
+                      s=5, alpha=.45, linewidths=0, rasterized=True)
+        _axis.set(title=_labels[_j], xlabel="Generating value", ylabel="Posterior median")
+        _axis.tick_params(labelsize=8)
+        _rows.append({"Parameter": _labels[_j],
+                      "Median RMSE": f"{_recovery['median_rmse'][_j]:.3g}",
+                      "90% interval frequency": f"{100 * _recovery['coverage90'][_j]:.1f}%",
+                      "Raw draws outside prior": f"{100 * _recovery['raw_support_fraction'][_j]:.2f}%"})
+    _axes.flat[-1].axis("off")
+    _axes.flat[-1].text(.02, .9, "800 simulated datasets\n256 posterior draws each\n\nAll medians shown\n90% widths on 40 cases/panel\nDashed line: median = truth",
+                       transform=_axes.flat[-1].transAxes, va="top", fontsize=10, linespacing=1.7)
+    plt.close(_fig)
+    bergomi_recovery_figure = _fig
+    mo.vstack([
+        md("#### Does it recover known parameters on simulations?"),
+        _fig,
+        caption("Each dot is one simulated quote set: its generating parameter against the amortizer's "
+                "posterior median. Vertical bars show central 90% marginal intervals for 40 cases spread "
+                "across each parameter's generating range. The unit line means exact median recovery. "
+                "These are the same saved 200k-trained fixed-emulator control and seven targets used below."),
+        md("The **800 development datasets were excluded from the amortizer's training and training-monitor "
+           "sets**. They reuse the availability-selected physical bank and a development panel that has "
+           "already been inspected. This is a synthetic recovery check, not prior-wide acceptance or "
+           "evidence that the real-market posterior is accurate. The market comparison below asks a "
+           "different question."),
+        mo.accordion({"Recovery metrics and raw support violations": mo.vstack([
+            table(_rows),
+            caption(f"No posterior draws were clipped or filtered: {_recovery['raw_joint_support_count']:,} "
+                    f"of {_recovery['case_count'] * _recovery['posterior_draws_per_case']:,} joint draws "
+                    "lie outside at least one prior bound. Interval frequencies describe this finite "
+                    "development panel and do not certify calibration conditional on a particular quote set."),
+        ])}),
+    ])
+    return (bergomi_recovery_figure,)
 
 
 @app.cell(hide_code=True)
@@ -4078,7 +4186,7 @@ def _(DELTA, bergomi_expiry, bergomi_results, caption, mo, np, plots, plt):
 
 @app.cell(hide_code=True)
 def _(bergomi_results, grid, md, mo, table):
-    _labels = [r"Roughness $H$", r"Volatility amplitude $\eta$", r"Correlation $\rho$",
+    _labels = [r"Roughness $H$", r"Log-variance dispersion $\eta$", r"Correlation $\rho$",
                "Short variance", "Long variance", "Curve decay", r"Noise multiplier $c$"]
     _rows = []
     for _j, _label in enumerate(_labels):
@@ -4201,7 +4309,7 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(grid, md, mo, note):
+def _(bundle_setup, grid, md, mo, note):
     mo.accordion({
         "References": grid([
             r"""
@@ -4217,31 +4325,44 @@ def _(grid, md, mo, note):
             """,
         ]),
         "Running this notebook": mo.vstack([
-            md("The pretrained estimator and its training data are distributed as a separate 465 MB archive. "
-               "`lab/plans/training-data-guide.md` explains how to download and verify it."),
+            md("The optional pretrained estimator and training bank are a separate 465 MB archive. "
+               f"[Download it from Google Drive]({bundle_setup.DRIVE_FILE_URL}) with your project Google account. "
+               "The installer verifies the archive and installs it into the notebook's local cache. "
+               "A Drive link is a download location; it is not a local `HESTON_BUNDLE` path."),
             grid({
+                "Install once": f"""
+                From `lab/`, install the downloaded archive. No training starts.
+
+                ```bash
+                pixi run --locked -e core-reference python scripts/heston_notebook_bundle.py \\
+                  --archive ~/Downloads/{bundle_setup.ARCHIVE_FILENAME}
+                ```
+                """,
                 "Live notebook": r"""
-                From `lab/`, start marimo with `HESTON_BUNDLE` set to the extracted folder, the one that contains `bundle.json`.
+                Start marimo after installation. The local cache is discovered automatically.
 
                 ```text
-                HESTON_BUNDLE=/path/to/bundle \
-                  pixi run --locked -e core-reference \
+                pixi run --locked -e core-reference \
                   marimo edit notebooks/heston_spx_calibration.py
                 ```
                 """,
+                "Existing extracted folder": r"""
+                If the bundle already lives elsewhere, `HESTON_BUNDLE` may point to its local folder containing `bundle.json`.
+                Restart marimo after changing it. Leave it unset to use the default cache.
+                """,
                 "Static copy": r"""
-                The same setting renders a static copy with every output. In it the tabs and the foldable sections still work, and the other controls show their initial state.
+                This renders the initial outputs. Tabs and folds work in the export; clicking a recovery point needs a running marimo notebook.
 
                 ```text
-                HESTON_BUNDLE=/path/to/bundle \
-                  pixi run --locked -e core-reference \
+                pixi run --locked -e core-reference \
                   marimo export html notebooks/heston_spx_calibration.py \
                   -o heston_spx_calibration.html
                 ```
                 """,
             }),
-            note("Without `HESTON_BUNDLE`, results that need the network are left out and the PyMC reference is "
-                 "shown alone. The reference posteriors and their run records are in "
+            note("Without an installed bundle, fresh Heston inference is unavailable and the saved PyMC reference is "
+                 "shown alone. Saved recovery summaries and the Bergomi extension remain available. "
+                 "The reference posteriors and their run records are in "
                  "`lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/`. Posterior draws use fixed "
                  "seeds, so the figures are reproducible."),
         ]),

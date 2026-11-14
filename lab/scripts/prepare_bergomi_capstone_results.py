@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Curate aggregate-only evidence for the Heston notebook's Bergomi capstone.
+"""Curate compact plotting evidence for the Heston notebook's Bergomi capstone.
 
 Run from ``lab/`` with NumPy installed. ``--artifacts`` is the preserved private
 noise-experiment directory; ``--frozen-prices`` is a private NPZ produced with
@@ -7,7 +7,8 @@ the original research checkout's ``Actual63Emulator.prices``. Its sibling JSON
 manifest binds that canonical producer, emulator, posterior draws and selection.
 This script never trains, reprices with Monte Carlo, or implements a financial
 kernel. It validates the inputs, converts forward-price units exactly once,
-and publishes only summaries. The raw inputs are intentionally not distributed.
+and publishes market aggregates plus synthetic recovery coordinates and
+marginal quantiles. Raw joint draws and simulated quotes are not distributed.
 
 Example (paths supplied by the operator)::
 
@@ -32,7 +33,7 @@ from pathlib import Path
 import numpy as np
 
 
-FORMAT = "bergomi_capstone_results_v1"
+FORMAT = "bergomi_capstone_results_v2"
 NAMES = ["hurst", "eta", "rho", "short_variance", "long_variance", "decay", "c"]
 BOUNDS = [[.02, .35], [.5, 3.5], [-.99, -.2], [.01, .16], [.01, .16], [.25, 8.], [.5, 50.]]
 
@@ -48,6 +49,25 @@ def digest(path: Path) -> str:
 def fingerprint(value) -> str:
     encoded = json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
     return hashlib.sha256(encoded).hexdigest()
+
+
+def plotting_json(value, level=0):
+    """Keep numeric plot rows on one line so the evidence remains reviewable."""
+    if isinstance(value, list):
+        if all(isinstance(item, (int, float)) for item in value):
+            return json.dumps(value, allow_nan=False)
+        rows = [plotting_json(item, level + 1) for item in value]
+        opening, closing = "[", "]"
+    elif isinstance(value, dict):
+        rows = [json.dumps(key) + ": " + plotting_json(item, level + 1)
+                for key, item in value.items()]
+        opening, closing = "{", "}"
+    else:
+        return json.dumps(value, allow_nan=False)
+    if not rows:
+        return opening + closing
+    padding = "  " * (level + 1)
+    return opening + "\n" + padding + (",\n" + padding).join(rows) + "\n" + "  " * level + closing
 
 
 def array_digest(value) -> str:
@@ -69,6 +89,65 @@ def same(actual, expected, label: str):
 
 def quantiles(value):
     return np.quantile(value, [.05, .5, .95], axis=0).tolist()
+
+
+def development_recovery(artifacts, control, protocol, evaluation):
+    """Publish generating coordinates and marginals, not raw draws or quotes."""
+    path = control / "evaluation/development-posterior.npz"
+    bank_path = artifacts / "bank-gaussian-c50-v1"
+    parent = read(control / "bank.json")["parent_bank"]
+    require(digest(bank_path / "bank.json") == parent["manifest_sha256"]
+            and digest(bank_path / "bank.npz") == parent["payload_sha256"],
+            "preserved parent bank identity differs")
+    with np.load(bank_path / "bank.npz", allow_pickle=False) as source:
+        parameters = source["parameters"].copy()
+    with np.load(path, allow_pickle=False) as source:
+        values, truth = source["draws"].copy(), source["truth"].copy()
+    require(values.shape == (800, 256, 7) and truth.shape == (800, 7)
+            and np.isfinite(values).all() and np.isfinite(truth).all(),
+            "the saved 800-case seven-target development panel is required")
+    start = protocol["train_rows"] + protocol["monitor_rows"]
+    require(start == 200200 and parameters.shape == (201000, 7),
+            "the original training, monitor and probe allocation is required")
+    same(truth, parameters[start:], "untouched development truths")
+    rows = lambda array: np.ascontiguousarray(array).view(np.dtype((np.void, array.dtype.itemsize * array.shape[1]))).ravel()
+    require(not np.intersect1d(rows(parameters[:start]), rows(truth)).size,
+            "development parameters overlap training or monitor rows")
+    require(not np.intersect1d(rows(parameters[:start, :6]), rows(truth[:, :6])).size,
+            "development physical coefficients overlap training or monitor rows")
+    bounds = np.asarray(BOUNDS)
+    require(np.all((truth >= bounds[:, 0]) & (truth <= bounds[:, 1])), "development truths outside the prior")
+    q = np.quantile(values, [.05, .5, .95], axis=1)
+    outside = (values < bounds[:, 0]) | (values > bounds[:, 1])
+    rmse = np.sqrt(np.mean((q[1] - truth) ** 2, axis=0))
+    coverage = np.mean((q[0] <= truth) & (truth <= q[2]), axis=0)
+    widths = np.median(q[2] - q[0], axis=0)
+    for j, name in enumerate(NAMES):
+        saved = evaluation["development"]["parameters"][name]
+        require(np.isclose(saved["median_rmse"], rmse[j], rtol=1e-12)
+                and saved["coverage"]["0.9"] == coverage[j]
+                and np.isclose(saved["median_interval_width90"], widths[j], rtol=1e-12),
+                "saved development recovery summary differs: " + name)
+    return {
+        "case_count": 800, "posterior_draws_per_case": 256,
+        "population": "held_out_amortizer_development", "availability_selected": True,
+        "prior_wide_acceptance": False, "used_for_amortizer_training": False,
+        "used_for_training_monitor": False, "raw_draws_clipped": False,
+        "truth": truth.tolist(), "q05_q50_q95": q.tolist(),
+        "truth_sha256": fingerprint(truth.tolist()), "quantiles_sha256": fingerprint(q.tolist()),
+        "median_rmse": rmse.tolist(), "coverage90": coverage.tolist(),
+        "median_width90": widths.tolist(),
+        "raw_support_count": outside.sum(axis=(0, 1)).tolist(),
+        "raw_support_fraction": outside.mean(axis=(0, 1)).tolist(),
+        "raw_joint_support_count": int(outside.any(axis=2).sum()),
+        "source_payload_sha256": digest(path),
+        "source_checkpoint_sha256": evaluation["source_checkpoint_sha256"],
+        "source_parent_bank_manifest_sha256": parent["manifest_sha256"],
+        "source_parent_bank_payload_sha256": parent["payload_sha256"],
+        "scope": "800 simulated development datasets excluded from the amortizer's training and monitor sets. "
+                 "The inherited physical bank is availability-selected; this reused development panel is not "
+                 "a prior-wide or real-market calibration certificate. All raw posterior draws are retained.",
+    }
 
 
 def curate(artifacts: Path, frozen_path: Path, design_path: Path):
@@ -261,7 +340,7 @@ def curate(artifacts: Path, frozen_path: Path, design_path: Path):
         "training_bank_payload": protocol["bank"]["payload_sha256"],
     }
     return {
-        "format": FORMAT, "schema_version": 1, "status": "development",
+        "format": FORMAT, "schema_version": 2, "status": "development",
         "observation_model": {"family": "gaussian", "formula": "Y_i=P_i(phi)+c*h_i*Z_i",
                               "c_bounds": [.5, 50.], "h_units": "raw price half-spread", "independent": True},
         "host_heston_c_bounds": [.5, 2.], "comparison_heston_c_bounds": [.5, 50.],
@@ -271,6 +350,7 @@ def curate(artifacts: Path, frozen_path: Path, design_path: Path):
                  "target_names": NAMES},
         "geometry": geometry, "geometry_sha256": fingerprint(geometry),
         "fit_comparison": fit_comparison, "posteriors": posteriors, "predictives": predictives,
+        "recovery": development_recovery(artifacts, control, protocol, evaluation),
         "predictive_protocol": {"seed": 20261114, "shared_gaussian_innovations": True,
                                 "quantile_levels": [.05, .5, .95], "raw_price_conversion": "P_raw=P_forward*D*F exactly once",
                                 "scope": "Descriptive posterior predictive checks on viewed calibration quotes; not held-out coverage."},
@@ -310,7 +390,8 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("evidence/pilot-results/2026-11-14/bergomi-capstone/results.json"))
     args = parser.parse_args()
     record = curate(args.artifacts, args.frozen_prices, args.design)
-    text = json.dumps(record, indent=2, allow_nan=False) + "\n"
+    text = plotting_json(record) + "\n"
+    require(json.loads(text) == record, "compact JSON must preserve every plotting value")
     require(not any(token in text for token in ("/Users/", "ssh.", "oscar", "row_id", "bank.npz")),
             "public aggregates must not expose private paths, hosts or row-level payloads")
     args.output.parent.mkdir(parents=True, exist_ok=True)

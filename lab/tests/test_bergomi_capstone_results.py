@@ -146,6 +146,33 @@ class BergomiCapstoneResultsTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "duplicate result key"):
                 MODULE.load_results(root)
 
+    def test_development_recovery_is_held_out_same_checkpoint_and_unclipped(self):
+        recovery = self.record["recovery"]
+        self.assertEqual(np.asarray(recovery["truth"]).shape, (800, 7))
+        self.assertEqual(np.asarray(recovery["q05_q50_q95"]).shape, (3, 800, 7))
+        self.assertGreater(recovery["raw_joint_support_count"], 0)
+        self.assertGreater(min(recovery["coverage90"]), .85)
+        for mutation in (
+            lambda r: r["recovery"].update(used_for_amortizer_training=True),
+            lambda r: r["recovery"].update(used_for_training_monitor=True),
+            lambda r: r["recovery"].update(prior_wide_acceptance=True),
+            lambda r: r["recovery"].update(raw_draws_clipped=True),
+            lambda r: r["recovery"].update(source_checkpoint_sha256="0" * 64),
+            lambda r: r["recovery"]["raw_support_count"].__setitem__(0, 0),
+        ):
+            with self.subTest(mutation=mutation):
+                self.assert_rejected(mutation)
+
+    def test_development_recovery_metrics_and_point_order_cannot_drift(self):
+        for mutation in (
+            lambda r: r["recovery"]["coverage90"].__setitem__(0, 0),
+            lambda r: r["recovery"]["truth"].reverse(),
+            lambda r: r["recovery"]["median_rmse"].__setitem__(0, 0),
+            lambda r: r["recovery"]["q05_q50_q95"][0][0].__setitem__(0, 10),
+        ):
+            with self.subTest(mutation=mutation):
+                self.assert_rejected(mutation)
+
 
 if __name__ == "__main__":
     unittest.main()

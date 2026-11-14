@@ -70,6 +70,27 @@ class HestonSPXBergomiTests(unittest.TestCase):
     def test_parameter_and_noisy_panels_keep_paired_quantiles_and_common_scale(self):
         self.check_predictive_figure(self.defs, 0)
 
+    def test_bergomi_recovery_shows_all_raw_cases_and_seven_parameters(self):
+        record = self.defs["bergomi_results"]
+        recovery = record["recovery"]
+        truth = np.asarray(recovery["truth"])
+        quantiles = np.asarray(recovery["q05_q50_q95"])
+        figure = self.defs["bergomi_recovery_figure"]
+        self.assertEqual(truth.shape, (800, 7))
+        self.assertEqual(len(figure.axes), 8)
+        for parameter, axis in enumerate(figure.axes[:7]):
+            offsets = axis.collections[1].get_offsets()
+            np.testing.assert_allclose(offsets[:, 0], truth[:, parameter])
+            np.testing.assert_allclose(offsets[:, 1], quantiles[1, :, parameter])
+            self.assertEqual(len(axis.collections[0].get_segments()), 40)
+            np.testing.assert_allclose(axis.lines[0].get_xdata(), record["parameter_bounds"][parameter])
+            np.testing.assert_allclose(axis.lines[0].get_ydata(), record["parameter_bounds"][parameter])
+
+    def test_optional_product_pricing_starts_collapsed(self):
+        self.assertIn("data-expanded='[]'", self.defs["use_section"].text)
+        self.assertIn("Optional: forward-start and volatility-swap pricing", self.defs["use_section"].text)
+        self.assertTrue(self.defs["use_summary"])
+
     def test_last_expiry_can_be_selected_without_a_model(self):
         # App.run overrides only the selector's cell; the saved posterior is fixed.
         definitions = dict(self.defs)

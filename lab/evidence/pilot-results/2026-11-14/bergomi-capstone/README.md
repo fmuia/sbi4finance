@@ -1,8 +1,10 @@
 # Bergomi closing example: compact evidence
 
-`results.json` is the aggregate-only input to the closing section of
-`lab/notebooks/heston_spx_calibration.py`. It contains no posterior draws, bank
-rows, checkpoints, private paths, or compute-cluster metadata. It is a
+`results.json` is the compact plotting input to the closing section of
+`lab/notebooks/heston_spx_calibration.py`: market aggregates plus synthetic
+recovery coordinates and marginal quantiles. It contains no raw joint
+posterior draws, simulated quotes, bank payloads, checkpoints, private paths,
+or compute-cluster metadata. It is a
 development result, not a scientific-acceptance or numerical-pricing certificate.
 
 ## Working posterior and matched comparison
@@ -81,6 +83,39 @@ disagreement: an approximate financial model still defines a posterior the
 amortizer should approximate. These results do not establish that additional
 data, capacity or optimization cannot help.
 
+## Synthetic parameter recovery
+
+The closing section also shows all seven parameters on the exact-control
+amortizer's saved **800 simulated development datasets**, using 256 posterior
+draws per dataset. Each point is the generating value against its posterior
+median; central 90% marginal widths are displayed for 40 cases per parameter,
+spread across that parameter's generating range. The public record contains
+only generating values, 5/50/95% marginal quantiles, finite-panel recovery
+metrics and support counts. It contains no raw joint draws or quote payloads.
+
+The preparer verifies the parent bank's manifest and payload hashes, checks
+that the generating values match its preserved development partition, and
+checks that those full parameter vectors do not occur in the 200,000 training
+or 200 training-monitor rows. The truths and quantiles retain their common
+dataset ordering. Recovery summaries are recomputed from the original,
+unfiltered posterior draws and agree with the saved evaluation.
+
+The physical bank was availability-selected, and this development panel has
+already been inspected. These figures do not establish prior-wide acceptance
+or real-market calibration. Good pooled synthetic recovery does not settle
+the conditional neural/reference disagreement on the market observation.
+The raw neural draws have some prior-support violations, which are reported
+rather than clipped away. Marginal interval frequencies are descriptive
+frequencies on these 800 cases, not a calibration certificate.
+
+The displayed driving equations use the same normalized Volterra kernel,
+variance compensator and correlated Brownian drivers as the trajectory lesson
+in #75. Here the measure is risk neutral, deterministic carry is removed from
+the price, and the mean variance curve is jointly inferred rather than supplied.
+The mathematical compensator uses `q(t)=t^(2H)`; the finite-grid pricing labels
+use the hybrid driver's actual grid variance. No equation change is used to
+relabel the existing simulation bank or trained checkpoint.
+
 The frozen mean emulator approximates **finite-grid MC price estimates**.
 MC uncertainty, discretization bias and emulator error are excluded from the
 displayed bands and remain numerically unqualified, especially near low `c`.
@@ -107,6 +142,9 @@ financial kernel. Raw inputs remain private; reproduction requires those inputs.
 All immutable source bindings are recorded by SHA-256 in `results.json`,
 including the contracts, observations, spreads, fixed emulator, training task,
 checkpoint, raw posterior payloads, source fit arrays and aggregation script.
+The recovery block additionally binds its original development posterior
+payload, checkpoint, preserved parent bank and ordered generating/quantile
+summaries. Updating these public aggregates does not modify their raw sources.
 The common emulator pricer hash is
 `fbc7c5ad60205112a42b739a3ebb3a3fbb5f36a3f8b46723674895c15966053a`.
 The exact-control checkpoint hash is
