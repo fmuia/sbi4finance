@@ -648,6 +648,23 @@ and constant histories, and the optional larger replication budget. The original
 model weights, parameter priors, numerical law and calibration failures are
 preserved. Temporary QA port 8794 is stopped; the user review preview is separate.
 
+**Windows asset loading · 14 November:** reproduced the collaborator's
+`trajectory catalogue/bundle hash differs` failure through Git checkout with
+`core.autocrlf=true`. Git converted JSON metadata to CRLF before the raw hash
+check; numerical arrays and the recorded task were unchanged. Trajectory replay,
+latent-history, dense-evidence, variance-audit, market and closeout checks now
+reuse the option loader's JSON-only CRLF/LF-equivalent digest. NPZ, PNG and model
+payloads keep exact byte hashes, and changed JSON content remains rejected.
+Accepted-asset Git attributes prevent future checkout conversion; legacy CRLF
+checkouts also load without regenerating data or rewriting their pins.
+
+Verification adds three participant regressions for unchanged data/identities
+and genuine corruption, plus an isolated lab Git-checkout test. All **154
+tutorial tests**, the **531-test lab suite plus the new checkout regression**,
+seven exports, marimo and release/ownership checks pass. A separate complete
+trajectory export against CRLF metadata also runs all 88 cells without errors.
+The participant tests remain self-contained; Git policy is checked in the lab.
+
 ## E. Resolve trajectory numerical and inference limitations
 
 The zero-origin rough physical-return law is nonstationary even with a flat

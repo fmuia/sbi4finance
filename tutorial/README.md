@@ -102,6 +102,15 @@ Use your own GitHub or Drive account with access to the files; Drive Desktop
 and Oscar are not required. Put downloaded models in `assets/local-checkpoints/`
 as instructed. The loaders check that the model matches the selected example.
 
+**Windows checkouts:** accepted assets are protected from Git line-ending
+conversion. Participant JSON checks also accept LF/CRLF differences in older
+checkouts; array and model files still require exact hashes, and changed JSON
+content remains an error. If an older checkout reports `trajectory
+catalogue/bundle hash differs`, pull the updated branch and restart marimo to
+load the corrected helper code. No data regeneration or model download is
+needed for this line-ending issue. Other checksum failures can indicate a
+mixed or damaged asset set; do not replace the recorded hashes to bypass them.
+
 ## Trajectory inference
 
 The three models use daily log returns and infer **one joint distribution over

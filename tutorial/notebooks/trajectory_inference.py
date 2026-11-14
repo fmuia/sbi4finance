@@ -2032,7 +2032,7 @@ def _(json, trajectory):
             for _name in ("closeout-summary.json", "figure-metadata.json", "drift-learning.png", "marginal-coverage.png"):
                 _path = _folder / _name
                 if (not _path.resolve().is_relative_to(trajectory.ASSETS.resolve())
-                        or trajectory.sha256(_path) != _accepted["source_sha256"][_name]):
+                        or trajectory.asset_digest(_path) != _accepted["source_sha256"][_name]):
                     raise ValueError("packaged aggregate evidence hash differs: " + _name)
             _report = json.loads((_folder / "closeout-summary.json").read_text())
             if (_report.get("format") != "trajectory_workshop_closeout_summary_v1"

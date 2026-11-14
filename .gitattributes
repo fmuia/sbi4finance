@@ -1,4 +1,8 @@
 # Preserve raw scientific evidence while keeping review focused on code/reports.
+# Accepted assets carry byte-level checksums. Git must not rewrite their line
+# endings on checkout (notably when core.autocrlf=true on Windows).
+tutorial/assets/** -text
+
 lab/evidence/pilot-results/**/*.json linguist-generated=true
 lab/evidence/pilot-results/**/*.npz linguist-generated=true
 lab/evidence/pilot-results/**/*.png linguist-generated=true

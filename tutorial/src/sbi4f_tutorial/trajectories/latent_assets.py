@@ -11,6 +11,7 @@ import json
 import numpy as np
 
 from ..shared.paths import ASSETS
+from ..shared.full_surface_teaching import digest as asset_digest
 from . import lesson, simulation
 
 
@@ -39,7 +40,7 @@ def load_history(task, arrays, case):
     case = simulation._integer(case, "latent history case", minimum=0)
     folder = ASSETS / "trajectories" / ASSET_FOLDER
     source = _asset_file(folder / "bundle.json")
-    _require(source.is_file() and hashlib.sha256(source.read_bytes()).hexdigest() == BUNDLE_SHA256,
+    _require(source.is_file() and asset_digest(source) == BUNDLE_SHA256,
              "paired latent bundle is missing or differs from its pinned identity")
     bundle = json.loads(source.read_text())
     _require(bundle.get("format") == "trajectory_paired_latent_v1"
@@ -58,7 +59,7 @@ def load_history(task, arrays, case):
     _require(set(bundle.get("files", {})) == {model+".npz" for model in simulation.MODELS},
              "paired latent file identities differ")
     payload = _asset_file(folder / filename)
-    _require(payload.is_file() and hashlib.sha256(payload.read_bytes()).hexdigest() == bundle["files"][filename],
+    _require(payload.is_file() and asset_digest(payload) == bundle["files"][filename],
              "paired latent arrays differ from their bound file hash")
     with np.load(payload, allow_pickle=False) as saved:
         data = {key: saved[key] for key in saved.files}

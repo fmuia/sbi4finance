@@ -5,12 +5,12 @@ new simulations, posterior sampling or network import. This is a model-law
 illustration, not a new calibration result or replacement history selection.
 """
 
-import hashlib
 import json
 
 import numpy as np
 
 from ..shared.paths import ASSETS
+from ..shared.full_surface_teaching import digest as asset_digest
 from . import latent_assets, lesson, simulation
 
 
@@ -31,7 +31,7 @@ def _asset_file(path):
 
 
 def _sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return asset_digest(path)
 
 
 def _wilson(count, n):

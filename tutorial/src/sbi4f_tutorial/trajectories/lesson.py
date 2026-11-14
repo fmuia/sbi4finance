@@ -13,6 +13,7 @@ from pathlib import Path
 import numpy as np
 
 from ..shared.paths import ASSETS
+from ..shared.full_surface_teaching import digest as asset_digest
 from .inference import (
     FORMAT, DEFAULT_NETWORK, LOGISTIC_SD, PREFIX_POLICIES, BACKEND_SEED_MAPPING,
     fingerprint, sha256, integer, backend_seed, validate_task, _bounds,
@@ -69,11 +70,16 @@ def _teaching_task(task):
 
 
 def load_example(name):
-    """Validate all cached bytes, identities and daily return/draw axes offline."""
+    """Validate cached identities offline; only JSON CRLF/LF is equivalent.
+
+    This also accepts existing Windows checkouts whose JSON line endings were
+    converted before the asset-preserving Git attributes were introduced.
+    Binary arrays and model files retain exact byte-level validation.
+    """
     entry = catalogue()["artifacts"][name]
     cache = _asset_path(CATALOGUE.parent / entry["cache"])
     bundle_path = _asset_path(cache / "bundle.json")
-    _require(sha256(bundle_path) == entry["bundle_sha256"], "trajectory catalogue/bundle hash differs")
+    _require(asset_digest(bundle_path) == entry["bundle_sha256"], "trajectory catalogue/bundle hash differs")
     report = json.loads(bundle_path.read_text())
     _require(report.get("format") == "trajectory_teaching_replay_v1"
              and report.get("role") == "cached_development_trajectory_replay"
@@ -83,7 +89,7 @@ def load_example(name):
              and report.get("model") == name and set(report.get("files", {})) == TRAJECTORY_FILES,
              "trajectory replay format or development scope differs")
     for filename, expected in report["files"].items():
-        _require(sha256(_asset_path(cache / filename)) == expected, "trajectory asset checksum differs: " + filename)
+        _require(asset_digest(_asset_path(cache / filename)) == expected, "trajectory asset checksum differs: " + filename)
     task = _teaching_task(json.loads((cache / "task.json").read_text()))
     training = json.loads((cache / "training.json").read_text())
     evaluation = json.loads((cache / "evaluation.json").read_text())
@@ -443,7 +449,7 @@ def load_market_example(name="voo-covid-256"):
     folder = _asset_path(ASSETS / "market-examples" / name)
     accepted = json.loads(_asset_path(folder / "ACCEPTED.json").read_text())
     for filename in ("market.json", "returns.npz"):
-        _require(sha256(_asset_path(folder / filename)) == accepted["source_sha256"][filename],
+        _require(asset_digest(_asset_path(folder / filename)) == accepted["source_sha256"][filename],
                  "market motivation checksum differs: " + filename)
     metadata = json.loads((folder / "market.json").read_text())
     with np.load(folder / "returns.npz", allow_pickle=False) as saved:

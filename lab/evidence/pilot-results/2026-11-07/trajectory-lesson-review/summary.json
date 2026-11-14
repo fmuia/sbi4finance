@@ -5,7 +5,7 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 151,
+    "tutorial_tests": 154,
     "notebook_exports": 7,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 183,
@@ -14,7 +14,8 @@
     "lab_runtime_parity_tests": 12,
     "trajectory_notebook_cells": 88,
     "lab_core_tests": 531,
-    "lab_optional_skips": 3
+    "lab_optional_skips": 3,
+    "lab_checkout_regression_tests": 1
   },
   "browser": {
     "page_errors": [],
@@ -98,13 +99,13 @@
   },
   "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "df1b7fb2e40cc81a901f6c5c818febb5eb5429fa4efbafd9415a739376ff64bd",
-    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "038231632394a249920107a70ef6a1e80211f86e75d510cb761429d0f349ce4f",
+    "tutorial/notebooks/trajectory_inference.py": "512a901f3568611375037f37e13e968f960cd79eca0f482df6ac735b7d4dae28",
+    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "7054b13d46b1a369daace82a3c337cae0717aadce1093e6993714668b8419504",
     "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "7749e5245646ff567055a82f2535fafa4f36c537ee9165b53863edeafbe8fdf6",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "99174f8526cce21eede4af28dda17273d36244c569685c30c54dda693c6860fb",
-    "tutorial/README.md": "cdd8bc82b3cedbea7972c573cf4c90ee430bd5a9df592e02ed56f87f67e9bbf2",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "ede9d25f9a7e0479e0d444a7ddbd741907be83da8a3f09dee93404fe2a7c0bc6",
+    "tutorial/README.md": "57d5b0b8a69f7216d98a5c26d0d82d0405d2383c1d1377d456ea46492f5e6a55",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "13bcd0c7c139b4a6f2db872d5c3d441e13a4e46a2d6d1d463fe41281f639f5ae",
     "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "91092853be3846c730e83f3f45eb3789c2adc96a12b34cb571ba2f3074a32354",
     "tutorial/tests/test_trajectory_diagnostics.py": "02bf496481c2ad1c0fda1d949a042e1f36d36747b8e9a7b2cfea68d4b99e04ee",
     "tutorial/src/sbi4f_tutorial/trajectories/model_checks.py": "18440646719d4350e821cb05cee48b16904d09e65c18ff852e9165e163c88ec0",
@@ -116,14 +117,14 @@
     "lab/tests/test_market_example_export.py": "b1003e065f43c6c40f19077da3dfc06016ae95391ae55cae6df0031cdd0fcf3c",
     "lab/scripts/trajectory_evidence.py": "eeb8871a3845d78885998250e8ea230b7fff5aab7978ba11230bbd40ffbe5666",
     "tutorial/src/sbi4f_tutorial/trajectories/evidence.py": "543c9a5c42e9ad4f1c0829626c0fd3855c0d25bcad5f808ac9cd54b1c4a428d4",
-    "tutorial/src/sbi4f_tutorial/trajectories/evidence_assets.py": "67ee13a2e1d7cb4e4c78d79ed4a828d33b45886be842b7a0a1ae148cde5f5f2e",
+    "tutorial/src/sbi4f_tutorial/trajectories/evidence_assets.py": "de42196d29f1b02abe409335b138403d9e5b4f4a5d47af128ac700b4968061b2",
     "tutorial/src/sbi4f_tutorial/trajectories/evidence_widget.py": "a48c5878e854b988b46422ea90da13224e5e12e3fac97bc683223bbd22802d44",
     "tutorial/tests/test_trajectory_evidence.py": "a82027c4096607bbeb537f9d7f969373468811963dec8bcee6a72fecc1140e3f",
     "tutorial/tests/test_trajectory_evidence_assets.py": "c135c3a93558eaa9577a419d17f8c6d075aabaf47909a59961db7ad4c2660925",
     "tutorial/tests/test_trajectory_evidence_widget.py": "964c42e0975166dfebdfa4f5dbe3e02492c7bf2862eeb9340b3e61cbe4875b4a",
     "lab/scripts/trajectory_latent_history.py": "3be7b09419c005c3610e59a2e50f12c013335adc1e2b3784c3a4e8bbe42b8486",
     "tutorial/src/sbi4f_tutorial/trajectories/history_widget.py": "a14d28a472e91cdc9de3f619605c88dca349afdd359d140224f6e3c8a25796a1",
-    "tutorial/src/sbi4f_tutorial/trajectories/latent_assets.py": "7a5e5e2126679a3995154343dbff9c46a3568ad44fbb28a2334e779a1b6e8bac",
+    "tutorial/src/sbi4f_tutorial/trajectories/latent_assets.py": "b88d8ae9abb81ba8f1c49700251d09022cf68c24a907a736055f69bc1fc8c30c",
     "tutorial/src/sbi4f_tutorial/trajectories/market_story.py": "12391c74ae958fb23a098ff00bfda18dca2a9e79cb072a27b23217b095f4c030",
     "tutorial/src/sbi4f_tutorial/trajectories/predictive_visuals.py": "d124e2678e0e83fa5f2baa6272913d786685fb92bf93c8c95ac1dacc19cd5de8",
     "tutorial/src/sbi4f_tutorial/trajectories/training_widget.py": "65f76dd6be63592080dd666e9d4ef9e628cd912a1bfab9acbee0418913598d10",
@@ -131,10 +132,13 @@
     "tutorial/tests/test_trajectory_market_story.py": "6d26d149373ca910d1c6e0859f6130b72c67c9b18e24a6b63da9c5bb9145a79a",
     "tutorial/tests/test_trajectory_predictive_visuals.py": "309b85b741afb2ccb0e40857dcd8fb5f28c5d4dfee1d9e5387534b495452a0b3",
     "tutorial/tests/test_trajectory_visual_widgets.py": "a305e28be06f294944c3457e23fd0353faf0b912a81aaba078e2a1c0f898634d",
-    "tutorial/src/sbi4f_tutorial/trajectories/variance_aging.py": "6beedd0732cd1db143f643373767e56d8da8098d8aa4c6cd395d328639937f6c",
-    "tutorial/tests/test_trajectory_variance_aging.py": "b8f2df2ef7d0f7abaef8060883766ae44994ca6925834a482b4b8bf41f0779e3"
+    "tutorial/src/sbi4f_tutorial/trajectories/variance_aging.py": "81cc18d4afae99c817ffa3f1274bf8a4060bf150de301309bfcbe25c95f29cd1",
+    "tutorial/tests/test_trajectory_variance_aging.py": "b8f2df2ef7d0f7abaef8060883766ae44994ca6925834a482b4b8bf41f0779e3",
+    ".gitattributes": "43f5e851f28d49c0e8a1a1535b7b9bc8d275b418558dbb3d5f3a75ece7e2f86b",
+    "tutorial/tests/test_trajectory_portability.py": "aebed32f7dbeb91708eaa4dca32f76da2db340dc4daa6f3decfecc257c5b3894",
+    "lab/tests/test_tutorial_asset_checkout.py": "795778eb455c95be36ef46f852c43ac899df1b2252ec8c6847a7cef0a964c8bd"
   },
-  "updated_at_utc": "2026-11-14T14:41:02.685621+00:00",
+  "updated_at_utc": "2026-11-14T17:02:44.282725+00:00",
   "forward_simulator": {
     "paths": 8,
     "days": 252,
@@ -1791,5 +1795,50 @@
       "release": "passed"
     },
     "artifact_directory": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/five-year-alignment"
+  },
+  "windows_asset_loading_20261114": {
+    "reported_error": "ValueError: trajectory catalogue/bundle hash differs at load_example, Windows C:\\Users\\radevs\\Desktop\\Projects\\sbi4finance",
+    "root_cause": "Git core.autocrlf=true converts accepted JSON LF bytes to CRLF, changing raw digests while parsed task/data are unchanged.",
+    "reproduction": {
+      "method": "Isolated real Git checkout/export with core.autocrlf=true before asset-preserving attributes",
+      "affected_json_files": 22,
+      "binary_payload_changes": 0,
+      "base_latent_dense_and_aging_failures_reproduced": true
+    },
+    "fix": [
+      "Protect tutorial/assets/** with Git -text attribute.",
+      "Use existing shared.full_surface_teaching.digest for JSON-only CRLF/LF equivalence across base replay, latent, dense, aging, VOO and notebook closeout.",
+      "Preserve raw inference.sha256, binary data/model hashes, task fingerprints, original observations and all recorded pins."
+    ],
+    "regressions": {
+      "participant_tests": 3,
+      "lab_checkout_test": 1,
+      "content_corruption_rejected": true,
+      "binary_newlines_not_normalized": true,
+      "bit_exact_observations_and_draws": true,
+      "no_rewrite_on_loading": true
+    },
+    "legacy_crlf_export": {
+      "source_head": "bc85aaed1570e49f9aab8b0b2ae9ffce3873c9e3",
+      "tracked_assets_copied": 170,
+      "json_files_converted": 110,
+      "trajectory_cells": 88,
+      "errors": 0,
+      "seconds": 5,
+      "log": "/private/tmp/trajectory-windows-hashes-crlf-export-20261114.log"
+    },
+    "verification": {
+      "tutorial_tests": 154,
+      "full_lab_suite_tests": 531,
+      "optional_lab_skips": 3,
+      "additional_lab_checkout_test": 1,
+      "notebook_exports": 7,
+      "trajectory_cells": 88,
+      "notebook_errors": 0,
+      "release_symbols": 183,
+      "marimo": "passed with existing slots 2/3 empty-cell warnings"
+    },
+    "collaborator_action": "Pull PR #75 branch and restart marimo. No regeneration, re-download, hash replacement or retraining is needed for the CRLF issue.",
+    "scope": "Git CRLF checkout behavior was reproduced locally; a native Windows environment was not available."
   }
 }

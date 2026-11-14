@@ -10,6 +10,7 @@ import json
 import numpy as np
 
 from ..shared.paths import ASSETS
+from ..shared.full_surface_teaching import digest as asset_digest
 from . import evidence, lesson, simulation
 
 
@@ -30,7 +31,7 @@ def _require(condition, message):
 
 
 def _sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return asset_digest(path)
 
 
 def _draws_sha(values):
