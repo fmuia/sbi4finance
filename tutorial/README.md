@@ -299,6 +299,9 @@ generates 200 validation histories for that task and keeps them in session
 memory. Later checks reuse them and draw 200 fresh samples per history for
 recovery, rank-ECDF and coverage plots. Select a diagnostic history to inspect
 its paired posterior draws and generating values.
+Before a check completes, the recovery-selection panels stay empty. Closing the
+tools or changing the source, task, length or workflow clears the displayed
+result and requires a fresh click; failed checks expose no partial result.
 The rank guide includes a worked ECDF difference and four illustrative shapes.
 It distinguishes posterior intervals, uncertainty in empirical coverage, and
 the native 95% rank-ECDF band for each parameter. With 200 draws, ranks have

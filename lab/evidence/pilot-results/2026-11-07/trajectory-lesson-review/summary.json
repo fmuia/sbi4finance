@@ -5,15 +5,15 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 154,
-    "notebook_exports": 7,
+    "tutorial_tests": 175,
+    "notebook_exports": 8,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 183,
     "local_document_links": 48,
-    "marimo_warnings": "existing empty cells in slots 2 and 3",
+    "marimo_warnings": "inherited empty cells in MMAR take-home and slots 2/3",
     "lab_runtime_parity_tests": 12,
     "trajectory_notebook_cells": 88,
-    "lab_core_tests": 532,
+    "lab_core_tests": 536,
     "lab_optional_skips": 3,
     "lab_checkout_regression_tests": 1
   },
@@ -99,13 +99,13 @@
   },
   "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "7e9748c4b7dd8051364de6235e04c8761059c0b080415c296fea44070eb2f619",
+    "tutorial/notebooks/trajectory_inference.py": "4cb47708eee2f931562daf8b71c70726efb78a29c57196ff7dfb10901e1cb8e9",
     "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "7054b13d46b1a369daace82a3c337cae0717aadce1093e6993714668b8419504",
     "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "7749e5245646ff567055a82f2535fafa4f36c537ee9165b53863edeafbe8fdf6",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "99174f8526cce21eede4af28dda17273d36244c569685c30c54dda693c6860fb",
-    "tutorial/README.md": "8448b2ef167270c01533e645b50e74673925def0aca7225ed7f722e552a32ad3",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "11404a13388ad2d26d8e8b4738bf66d0a0455f61037474cdcc368047cfb56b5b",
+    "tutorial/README.md": "90032d178a1a469abef615eccd5ec0177fee762fd6e69bebb271a5111ee32b59",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "c8668c12b68f4c8f2c5a338c389fe4b8032fd47f6f57c60b8a275c3e588a49ec",
     "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "91092853be3846c730e83f3f45eb3789c2adc96a12b34cb571ba2f3074a32354",
     "tutorial/tests/test_trajectory_diagnostics.py": "02bf496481c2ad1c0fda1d949a042e1f36d36747b8e9a7b2cfea68d4b99e04ee",
     "tutorial/src/sbi4f_tutorial/trajectories/model_checks.py": "18440646719d4350e821cb05cee48b16904d09e65c18ff852e9165e163c88ec0",
@@ -136,9 +136,10 @@
     "tutorial/tests/test_trajectory_variance_aging.py": "b8f2df2ef7d0f7abaef8060883766ae44994ca6925834a482b4b8bf41f0779e3",
     ".gitattributes": "43f5e851f28d49c0e8a1a1535b7b9bc8d275b418558dbb3d5f3a75ece7e2f86b",
     "tutorial/tests/test_trajectory_portability.py": "aebed32f7dbeb91708eaa4dca32f76da2db340dc4daa6f3decfecc257c5b3894",
-    "lab/tests/test_tutorial_asset_checkout.py": "795778eb455c95be36ef46f852c43ac899df1b2252ec8c6847a7cef0a964c8bd"
+    "lab/tests/test_tutorial_asset_checkout.py": "795778eb455c95be36ef46f852c43ac899df1b2252ec8c6847a7cef0a964c8bd",
+    "tutorial/tests/test_trajectory_notebook_diagnostics.py": "48dcc59ca711bbb48c80800bef3d350b2a60c3b7721ca01bd4a7cdc941654675"
   },
-  "updated_at_utc": "2026-11-14T17:09:11.661880+00:00",
+  "updated_at_utc": "2026-11-14T17:34:41.131425+00:00",
   "forward_simulator": {
     "paths": 8,
     "days": 252,
@@ -1870,5 +1871,151 @@
       "voo-2020-20261113.png": "6033d94ea3adf7583b577391d940908b96d888beea549a576c0006513857c44c"
     },
     "artifact_directory": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/single-market-history"
+  },
+  "diagnostic_execution_and_model_switching_20261114": {
+    "reported_error": "NameError: diagnostic_result is not defined in optional recovery_case_data cell",
+    "cause": "Idle/no-workflow/failure paths previously stopped before publishing definitions. Normal reactive traversal blocked descendants, but manual editor execution could encounter missing names.",
+    "changes": [
+      "Define inexpensive optional controls and checking callable even when their display is hidden.",
+      "Always publish diagnostic_result=None on idle, missing-network or failed-check paths.",
+      "Publish a result only after generation, sampling, plots and summary calculations succeed.",
+      "Always define empty recovery parameter/picker/points/case/pairs values until inputs are ready.",
+      "Rebuild the run button on visibility/source/task/prefix/workflow changes to clear stale results and require an explicit click.",
+      "Clarify that the model selector changes supplied histories and estimators; live tutorial training remains rough-known."
+    ],
+    "regressions": {
+      "actual_named_marimo_cells": 9,
+      "new_tests": 8,
+      "uses_public_Cell_run": true,
+      "idle_imports_no_neural_backend": true,
+      "idle_or_unready_does_not_generate": true,
+      "complete_cohorts_retained": true,
+      "summary_failure_clears_result": true,
+      "context_changes_require_fresh_click": true
+    },
+    "model_helper_audit": {
+      "status": "passed",
+      "all_four_histories_each_model": true,
+      "all_saved_prefixes_and_paired_latent_paths": true,
+      "stale_results_rejected_across_model_history_prefix": true,
+      "source_sha256": "a0c8ec97cdc8f691c9f37d31bee3b536e01b93ec7b527ed64c3f5cac6fa07d91"
+    },
+    "model_full_app_audit": {
+      "status": "passed",
+      "models": [
+        {
+          "model": "heston",
+          "parameter_names": [
+            "kappa",
+            "long_variance",
+            "vol_of_vol",
+            "rho",
+            "drift"
+          ],
+          "preview_shape": [
+            8,
+            1260,
+            1
+          ],
+          "posterior_shape": [
+            512,
+            5
+          ],
+          "evidence_frames": 12,
+          "tutorial_model": "rough-known",
+          "optional_diagnostic_outputs_defined_and_idle": true,
+          "marginal_panels": 5,
+          "checkpoint_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7"
+        },
+        {
+          "model": "rough-known",
+          "parameter_names": [
+            "hurst",
+            "eta",
+            "rho",
+            "drift"
+          ],
+          "preview_shape": [
+            8,
+            1260,
+            1
+          ],
+          "posterior_shape": [
+            512,
+            4
+          ],
+          "evidence_frames": 65,
+          "tutorial_model": "rough-known",
+          "optional_diagnostic_outputs_defined_and_idle": true,
+          "marginal_panels": 4,
+          "checkpoint_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c"
+        },
+        {
+          "model": "rough-joint",
+          "parameter_names": [
+            "hurst",
+            "eta",
+            "rho",
+            "short_variance",
+            "long_variance",
+            "decay",
+            "drift"
+          ],
+          "preview_shape": [
+            8,
+            1260,
+            1
+          ],
+          "posterior_shape": [
+            512,
+            7
+          ],
+          "evidence_frames": 12,
+          "tutorial_model": "rough-known",
+          "optional_diagnostic_outputs_defined_and_idle": true,
+          "marginal_panels": 7,
+          "checkpoint_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003"
+        }
+      ],
+      "automatically_imported_neural_modules": [],
+      "source_sha256": "d18221dc74b270d8669a79fa2b542e770342cf0fe93a55b29f8f3627e6516b80"
+    },
+    "verification": {
+      "tutorial_tests": 175,
+      "lab_tests": 536,
+      "optional_lab_skips": 3,
+      "notebook_exports": 8,
+      "trajectory_cells": 88,
+      "cell_errors": 0,
+      "release_shared_symbols": 183,
+      "marimo": "passed; inherited empty-cell warnings in MMAR and slots2/3"
+    },
+    "unchanged": [
+      "Simulation laws",
+      "Parameter priors",
+      "Saved trajectories and latent truth",
+      "Pretrained weights",
+      "Posterior snapshots",
+      "Calibration verdicts"
+    ],
+    "artifacts": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/model-switch-audit",
+    "successful_recovery_controls": {
+      "status": "passed",
+      "cells": [
+        "diagnostic_parameter_control",
+        "diagnostic_recovery_plot",
+        "diagnostic_case_controls",
+        "diagnostic_case_view"
+      ],
+      "retained_histories": 200,
+      "paired_draws_per_history": 200,
+      "prefix_days": 137,
+      "selected_initial_case": 0,
+      "scope": "Control/plot check uses repeated generating values as deterministic test draws, not network inference."
+    },
+    "collaborator_update_preserved": {
+      "commit": "26d23c6e64bb11928cd5b959624531bf41f12f41",
+      "description": "Merged MMAR take-home PR #92; fast-forwarded and reapplied trajectory fixes without conflicts."
+    }
   }
 }

@@ -243,6 +243,15 @@ preprocessing masks every later return and time token. Changing the prefix reuse
 the same histories; changing the source, task or workflow invalidates stale plots.
 Generating parameters and hidden paths never enter inference conditions.
 
+The optional diagnostic chain now has explicit idle values. Lightweight controls
+and the checking function remain defined while hidden; the producer always
+returns `diagnostic_result=None` before a completed check. Recovery controls,
+brush points and the selected case likewise return empty values while idle.
+This avoids undefined-name failures when cells are run manually in the editor.
+Closing the tools or changing their context rebuilds the run button and clears
+old plots. Sampling and all summary calculations must succeed before a complete
+result is published. No idle path initializes a backend or generates histories.
+
 **Check this network on 200 independent histories** draws **200 posterior samples per history** and uses native
 BayesFlow recovery and rank-ECDF plots with physical parameter labels. These
 show how the selected model behaves at the chosen length. They complement the

@@ -194,7 +194,9 @@ def _(mo, trajectory):
         model_choice,
         mo.md("The other examples infer the rough variance curve or use Heston. "
               "Each model has its own synthetic histories and fitted estimator; "
-              "switching models changes the data as well as the assumptions."),
+              "switching models changes the data as well as the assumptions. "
+              "This selects the supplied example; the small live-training exercise "
+              "below remains rough Bergomi with the supplied curve."),
     ])})
     return (model_choice,)
 
@@ -1988,145 +1990,144 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo, show_independent_tools):
-    mo.stop(not show_independent_tools.value, mo.md(""))
+def diagnostic_network_controls(mo, show_independent_tools):
+    # Define lightweight controls even while their optional display is hidden.
     diagnostic_source = mo.ui.radio(
         options={"Tutorial network trained above": "tutorial", "Pretrained network loaded above": "pretrained"},
         value="Tutorial network trained above", label="Network to check", inline=True)
-    diagnostic_source
+    _output = diagnostic_source if show_independent_tools.value else mo.md("")
+    _output
     return (diagnostic_source,)
 
 
 @app.cell(hide_code=True)
-def _(cache_task, diagnostic_source, mo, trajectory, tutorial_task):
+def diagnostic_history_controls(cache_task, diagnostic_source, mo, show_independent_tools, trajectory, tutorial_task):
     diagnostic_task = tutorial_task if diagnostic_source.value == "tutorial" else cache_task
     diagnostic_days = mo.ui.slider(1, diagnostic_task["n_observations"], step=1, value=diagnostic_task["n_observations"],
                                    label="Days per diagnostic history", show_value=True, include_input=True)
-    mo.vstack([
-        mo.md(f"**Diagnostic task: {trajectory.MODEL_LABELS[diagnostic_task['model']]} · "
-              f"maximum {diagnostic_task['n_observations']} days.** "
-              "This separate control gives every diagnostic history the same observed length. "
-              "It does not change the single example selected above. Later returns are masked."),
-        diagnostic_days,
-    ])
+    _output = mo.md("")
+    if show_independent_tools.value:
+        _output = mo.vstack([
+            mo.md(f"**Diagnostic task: {trajectory.MODEL_LABELS[diagnostic_task['model']]} · "
+                  f"maximum {diagnostic_task['n_observations']} days.** "
+                  "This separate control gives every diagnostic history the same observed length. "
+                  "It does not change the single example selected above. Later returns are masked."),
+            diagnostic_days,
+        ])
+    _output
     return diagnostic_days, diagnostic_task
 
 
 @app.cell(hide_code=True)
-def _(
-    diagnostic_days,
-    diagnostic_source,
-    diagnostic_task,
-    mo,
-    pretrained_workflow,
-    tutorial_workflow,
-):
-    # Any changed source, prefix, task or model requires a fresh explicit click.
-    _request = (diagnostic_source.value, diagnostic_days.value, diagnostic_task,
-                id(tutorial_workflow), id(pretrained_workflow))
+def diagnostic_run_control(diagnostic_days, diagnostic_source, diagnostic_task, mo,
+                           pretrained_workflow, show_independent_tools, tutorial_workflow):
+    # Rebuilding the button requires a fresh click for every changed context.
+    _request = (show_independent_tools.value, diagnostic_source.value, diagnostic_days.value,
+                diagnostic_task, id(tutorial_workflow), id(pretrained_workflow))
     run_diagnostics = mo.ui.run_button(label="Check this network on 200 independent histories")
-    run_diagnostics
+    _output = run_diagnostics if show_independent_tools.value else mo.md("")
+    _output
     return (run_diagnostics,)
 
 
 @app.cell(hide_code=True)
-def _(mo, path_checks, show_independent_tools):
-    mo.stop(not show_independent_tools.value, mo.md(""))
+def independent_check_code(mo, path_checks, show_independent_tools):
     def check_independent_histories(workflow, task, panel, days):
-        # The helper passes observed returns, times and masks to inference.sample.
-        # Future returns and generating parameters never enter those conditions.
+        # Only observed returns, known times and masks enter the network.
         draws = path_checks.evaluate(workflow, task, panel, days, draws=200, seed=20261111)
-        # Native BayesFlow diagnostics compare physical-unit draws with separate truths.
         recovery, ranks = path_checks.plot_diagnostics(task, panel, draws)
         return draws, recovery, ranks
 
-    mo.show_code()
+    _output = mo.show_code() if show_independent_tools.value else mo.md("")
+    _output
     return (check_independent_histories,)
 
 
 @app.cell(hide_code=True)
-def _(
-    check_independent_histories,
-    diagnostic_days,
-    diagnostic_panels,
-    diagnostic_source,
-    diagnostic_task,
-    mo,
-    path_checks,
-    path_simulation,
-    pretrained_workflow,
-    run_diagnostics,
-    tutorial_workflow,
-):
-    mo.stop(not run_diagnostics.value, mo.md("*Choose a network and run the check when ready. "
-        "Changing the diagnostic prefix reuses the same independent histories.*"))
-    _workflow = tutorial_workflow if diagnostic_source.value == "tutorial" else pretrained_workflow
-    mo.stop(_workflow is None, mo.callout(mo.md("**No matching network is ready.** "
-        "Train the tutorial network above, or choose Compute posterior for selected prefix and load the matching "
-        "pretrained model with the CPU-inference button above. Then run this check."), kind="info"))
-    from time import perf_counter as _diagnostic_clock
-    _key = path_simulation.task_fingerprint(diagnostic_task)
-    _reused = _key in diagnostic_panels
-    _started = _diagnostic_clock()
-    try:
-        if not _reused:
-            # Fixed seed, independent validation IDs. Keep all rows; never redraw failures.
-            diagnostic_panels[_key] = path_checks.generate_panel(diagnostic_task, count=200, seed=20261111)
-        _panel = diagnostic_panels[_key]
-        _generation_seconds = _diagnostic_clock() - _started
-        _started = _diagnostic_clock()
-        _diagnostic_draws, _recovery, _ranks = check_independent_histories(
-            _workflow, diagnostic_task, _panel, diagnostic_days.value)
-        _check_seconds = _diagnostic_clock() - _started
-    except (ImportError, RuntimeError, ValueError, FloatingPointError) as _error:
-        mo.stop(True, mo.callout(mo.md(f"**Diagnostic check stopped:** {_error}. "
-            "No partial or selectively accepted cohort is displayed."), kind="warn"))
-    diagnostic_result = {"task": diagnostic_task, "panel": _panel, "draws": _diagnostic_draws,
-                         "length": diagnostic_days.value, "source": diagnostic_source.value}
-    _coverage = path_checks.coverage_table(diagnostic_task, _panel, _diagnostic_draws)
-    _rank_rows = path_checks.rank_readout(diagnostic_task, _panel, _diagnostic_draws, z=.5)
-    mo.vstack([
-        mo.md(f"**Source: {diagnostic_source.value} network · 200 independent histories · "
-              f"{diagnostic_days.value} observed days each · 200 posterior draws per history.** "
-              f"Input generation: **{'reused from this session' if _reused else f'{_generation_seconds:.3f} s'}**; "
-              f"sampling and plotting: **{_check_seconds:.1f} s**, including compilation if needed."),
-        _recovery, _ranks,
-        mo.ui.table([{"parameter": row["label"], "inside central 90% interval": f'{row["hits"]}/{row["n"]}',
-                      "empirical coverage": f'{100*row["coverage"]:.1f}%',
-                      "95% binomial interval": f'{100*row["wilson95_low"]:.1f}–{100*row["wilson95_high"]:.1f}%'}
-                     for row in _coverage], selection=None, pagination=False),
-        mo.accordion({"Read one point from the actual rank curves": mo.vstack([
-            mo.md("At **z = 0.5**, divide the number of ranks at or below 0.5 by the number of histories, "
-                  "then subtract 0.5. This is the plotted ECDF difference at that position, using all retained cases."),
-            mo.ui.table([{"parameter": row["label"], "ranks ≤ 0.5": f'{row["cases_below_z"]}/{row["n"]}',
-                          "empirical CDF": f'{row["empirical_cdf"]:.3f}',
-                          "CDF − 0.5": f'{row["departure"]:+.3f}'} for row in _rank_rows],
-                        selection=None, pagination=False),
-        ])}),
-        mo.md("Recovery compares generating truths with posterior medians and central 90% intervals. "
-              "The rank ECDF checks calibration averaged over the declared prior: near-zero differences "
-              "mean roughly uniform ranks. Inspect both; returning the prior can pass a rank check without learning. "
-              "These fixed-seed validation examples are reused across prefixes. Nested prefixes are not "
-              "independent replicates, and these checks do not replace the final-test results below. "
-              "A tiny fit may perform poorly; successful execution does not establish accuracy."),
-    ])
+def run_independent_check(check_independent_histories, diagnostic_days, diagnostic_panels,
+                          diagnostic_source, diagnostic_task, mo, path_checks, path_simulation,
+                          pretrained_workflow, run_diagnostics, show_independent_tools, tutorial_workflow):
+    # Always publish an explicit idle result, including after a context change.
+    diagnostic_result = None
+    _output = mo.md("")
+    if show_independent_tools.value:
+        _output = mo.md("*Choose a network and run the check when ready. "
+                        "Changing the diagnostic prefix reuses the same independent histories.*")
+        if run_diagnostics.value:
+            _workflow = tutorial_workflow if diagnostic_source.value == "tutorial" else pretrained_workflow
+            if _workflow is None:
+                _output = mo.callout(mo.md("**No matching network is ready.** "
+                    "Train the tutorial network above, or choose Compute posterior for selected prefix and load the matching "
+                    "pretrained model with the CPU-inference button above. Then run this check."), kind="info")
+            else:
+                from time import perf_counter as _diagnostic_clock
+                _key = path_simulation.task_fingerprint(diagnostic_task)
+                _reused = _key in diagnostic_panels
+                _started = _diagnostic_clock()
+                try:
+                    if not _reused:
+                        # Fixed seed, independent validation IDs. Keep all rows; never redraw failures.
+                        diagnostic_panels[_key] = path_checks.generate_panel(diagnostic_task, count=200, seed=20261111)
+                    _panel = diagnostic_panels[_key]
+                    _generation_seconds = _diagnostic_clock() - _started
+                    _started = _diagnostic_clock()
+                    _diagnostic_draws, _recovery, _ranks = check_independent_histories(
+                        _workflow, diagnostic_task, _panel, diagnostic_days.value)
+                    _check_seconds = _diagnostic_clock() - _started
+                    _coverage = path_checks.coverage_table(diagnostic_task, _panel, _diagnostic_draws)
+                    _rank_rows = path_checks.rank_readout(diagnostic_task, _panel, _diagnostic_draws, z=.5)
+                    _output = mo.vstack([
+                        mo.md(f"**Source: {diagnostic_source.value} network · 200 independent histories · "
+                              f"{diagnostic_days.value} observed days each · 200 posterior draws per history.** "
+                              f"Input generation: **{'reused from this session' if _reused else f'{_generation_seconds:.3f} s'}**; "
+                              f"sampling and plotting: **{_check_seconds:.1f} s**, including compilation if needed."),
+                        _recovery, _ranks,
+                        mo.ui.table([{"parameter": row["label"], "inside central 90% interval": f'{row["hits"]}/{row["n"]}',
+                                      "empirical coverage": f'{100*row["coverage"]:.1f}%',
+                                      "95% binomial interval": f'{100*row["wilson95_low"]:.1f}–{100*row["wilson95_high"]:.1f}%'}
+                                     for row in _coverage], selection=None, pagination=False),
+                        mo.accordion({"Read one point from the actual rank curves": mo.vstack([
+                            mo.md("At **z = 0.5**, divide the number of ranks at or below 0.5 by the number of histories, "
+                                  "then subtract 0.5. This is the plotted ECDF difference at that position, using all retained cases."),
+                            mo.ui.table([{"parameter": row["label"], "ranks ≤ 0.5": f'{row["cases_below_z"]}/{row["n"]}',
+                                          "empirical CDF": f'{row["empirical_cdf"]:.3f}',
+                                          "CDF − 0.5": f'{row["departure"]:+.3f}'} for row in _rank_rows],
+                                        selection=None, pagination=False),
+                        ])}),
+                        mo.md("Recovery compares generating truths with posterior medians and central 90% intervals. "
+                              "The rank ECDF checks calibration averaged over the declared prior: near-zero differences "
+                              "mean roughly uniform ranks. Inspect both; returning the prior can pass a rank check without learning. "
+                              "These fixed-seed validation examples are reused across prefixes. Nested prefixes are not "
+                              "independent replicates, and these checks do not replace the final-test results below. "
+                              "A tiny fit may perform poorly; successful execution does not establish accuracy."),
+                    ])
+                    diagnostic_result = {"task": diagnostic_task, "panel": _panel, "draws": _diagnostic_draws,
+                                         "length": diagnostic_days.value, "source": diagnostic_source.value}
+                except (ImportError, RuntimeError, ValueError, FloatingPointError) as _error:
+                    _output = mo.callout(mo.md(f"**Diagnostic check stopped:** {_error}. "
+                        "No partial or selectively accepted cohort is displayed."), kind="warn")
+    _output
     return (diagnostic_result,)
 
 
 @app.cell(hide_code=True)
-def _(diagnostic_result, mo, parameter_labels):
-    _names = diagnostic_result["task"]["parameter_names"]
-    recovery_parameter = mo.ui.dropdown(options={parameter_labels[name]: name for name in _names},
-                                       value=parameter_labels[_names[0]], label="Parameter for recovery selection")
-    mo.vstack([mo.md("### Inspect a history behind the recovery plot\n\n"
-        "Drag a box around points, then choose a history from that selection. With no box, "
-        "all 200 are available in generation order. The history and posterior below use the "
-        "actual retained rows from this check; selecting a point runs no new inference."), recovery_parameter])
+def diagnostic_parameter_control(diagnostic_result, mo, parameter_labels):
+    recovery_parameter = None
+    _output = mo.md("")
+    if diagnostic_result is not None:
+        _names = diagnostic_result["task"]["parameter_names"]
+        recovery_parameter = mo.ui.dropdown(options={parameter_labels[name]: name for name in _names},
+                                           value=parameter_labels[_names[0]], label="Parameter for recovery selection")
+        _output = mo.vstack([mo.md("### Inspect a history behind the recovery plot\n\n"
+            "Drag a box around points, then choose a history from that selection. With no box, "
+            "all 200 are available in generation order. The history and posterior below use the "
+            "actual retained rows from this check; selecting a point runs no new inference."), recovery_parameter])
+    _output
     return (recovery_parameter,)
 
 
 @app.cell(hide_code=True)
-def _(
+def diagnostic_recovery_plot(
     diagnostic_result,
     mo,
     parameter_labels,
@@ -2134,35 +2135,43 @@ def _(
     plt,
     recovery_parameter,
 ):
-    recovery_points = path_checks.recovery_case_data(diagnostic_result["task"], diagnostic_result["panel"],
-                                                    diagnostic_result["draws"], recovery_parameter.value)
-    _lo, _hi = diagnostic_result["task"]["prior_bounds"][diagnostic_result["task"]["parameter_names"].index(recovery_parameter.value)]
-    _figure, _axis = plt.subplots(figsize=(6.5, 4), layout="constrained")
-    _axis.plot([_lo, _hi], [_lo, _hi], "--", color="#64748b", linewidth=1)
-    _axis.vlines(recovery_points["truth"], recovery_points["lower90"], recovery_points["upper90"], color="#2563eb", alpha=.22)
-    _axis.scatter(recovery_points["truth"], recovery_points["median"], color="#2563eb", s=12, alpha=.7)
-    _axis.set(xlabel="Generating value", ylabel="Posterior median", xlim=(_lo, _hi), ylim=(_lo, _hi),
-              title=f"Select independent histories · {parameter_labels[recovery_parameter.value]}")
-    recovery_picker = mo.ui.matplotlib(_axis, debounce=True)
-    recovery_picker
+    recovery_picker, recovery_points = None, None
+    _output = mo.md("")
+    if diagnostic_result is not None and recovery_parameter is not None:
+        recovery_points = path_checks.recovery_case_data(diagnostic_result["task"], diagnostic_result["panel"],
+                                                        diagnostic_result["draws"], recovery_parameter.value)
+        _lo, _hi = diagnostic_result["task"]["prior_bounds"][diagnostic_result["task"]["parameter_names"].index(recovery_parameter.value)]
+        _figure, _axis = plt.subplots(figsize=(6.5, 4), layout="constrained")
+        _axis.plot([_lo, _hi], [_lo, _hi], "--", color="#64748b", linewidth=1)
+        _axis.vlines(recovery_points["truth"], recovery_points["lower90"], recovery_points["upper90"], color="#2563eb", alpha=.22)
+        _axis.scatter(recovery_points["truth"], recovery_points["median"], color="#2563eb", s=12, alpha=.7)
+        _axis.set(xlabel="Generating value", ylabel="Posterior median", xlim=(_lo, _hi), ylim=(_lo, _hi),
+                  title=f"Select independent histories · {parameter_labels[recovery_parameter.value]}")
+        recovery_picker = mo.ui.matplotlib(_axis, debounce=True)
+        _output = recovery_picker
+    _output
     return recovery_picker, recovery_points
 
 
 @app.cell(hide_code=True)
-def _(mo, np, recovery_picker, recovery_points):
-    _selection = (np.flatnonzero(recovery_picker.value.get_mask(recovery_points["truth"], recovery_points["median"]))
-                  if recovery_picker.value else np.array([], dtype=int))
-    _pool = _selection if len(_selection) else np.arange(len(recovery_points["truth"]))
-    _options = {f"Diagnostic history {index+1}": int(index) for index in _pool}
-    diagnostic_case = mo.ui.dropdown(options=_options, value=next(iter(_options)), label="Diagnostic history to inspect")
-    show_diagnostic_pairs = mo.ui.checkbox(value=False, label="Show all parameter pairs for this diagnostic history")
-    mo.vstack([mo.md(f"**{len(_pool)} histories available.** Default: the first in generation order, not a selected best or worst case."),
-               diagnostic_case, show_diagnostic_pairs])
+def diagnostic_case_controls(diagnostic_result, mo, np, recovery_picker, recovery_points):
+    diagnostic_case, show_diagnostic_pairs = None, None
+    _output = mo.md("")
+    if diagnostic_result is not None and recovery_picker is not None and recovery_points is not None:
+        _selection = (np.flatnonzero(recovery_picker.value.get_mask(recovery_points["truth"], recovery_points["median"]))
+                      if recovery_picker.value else np.array([], dtype=int))
+        _pool = _selection if len(_selection) else np.arange(len(recovery_points["truth"]))
+        _options = {f"Diagnostic history {index+1}": int(index) for index in _pool}
+        diagnostic_case = mo.ui.dropdown(options=_options, value=next(iter(_options)), label="Diagnostic history to inspect")
+        show_diagnostic_pairs = mo.ui.checkbox(value=False, label="Show all parameter pairs for this diagnostic history")
+        _output = mo.vstack([mo.md(f"**{len(_pool)} histories available.** Default: the first in generation order, not a selected best or worst case."),
+                   diagnostic_case, show_diagnostic_pairs])
+    _output
     return diagnostic_case, show_diagnostic_pairs
 
 
 @app.cell(hide_code=True)
-def _(
+def diagnostic_case_view(
     diagnostic_case,
     diagnostic_result,
     mo,
@@ -2172,23 +2181,26 @@ def _(
     show_diagnostic_pairs,
     trajectory,
 ):
-    _case = path_checks.case_view(diagnostic_result["task"], diagnostic_result["panel"],
-        diagnostic_result["draws"], diagnostic_case.value, diagnostic_result["length"])
-    _figure, _axis = plt.subplots(figsize=(8.5, 2.2), layout="constrained")
-    _axis.plot(np.arange(1, _case["length"]+1), 100*_case["returns"], color="#2563eb", linewidth=.8)
-    _axis.set(xlabel="Observed trading day", ylabel="Daily log return (%)",
-              title=f"Diagnostic history {_case['index']+1} · {_case['length']} days")
-    _rows = trajectory.posterior_rows(diagnostic_result["task"], _case["draws"])
-    for _row, _truth in zip(_rows, _case["truth"], strict=True):
-        _row["generating truth"] = float(_truth)
-    _parts = [mo.md(f"**Source: {diagnostic_result['source']} network · diagnostic history {_case['index']+1}.** "
-                   "These are separate from the four supplied example histories."), _figure,
-              mo.ui.table(_rows, selection=None, pagination=False)]
-    if show_diagnostic_pairs.value:
-        _parts += [path_checks.native_pairs(diagnostic_result["task"], _case["draws"], _case["truth"]),
-                   mo.md("Native `bf.diagnostics.pairs_posterior`: the same 200 paired draws, with generating truths marked. "
-                         "Changing the selected history does not sample or fit another model.")]
-    mo.vstack(_parts)
+    _output = mo.md("")
+    if diagnostic_result is not None and diagnostic_case is not None and show_diagnostic_pairs is not None:
+        _case = path_checks.case_view(diagnostic_result["task"], diagnostic_result["panel"],
+            diagnostic_result["draws"], diagnostic_case.value, diagnostic_result["length"])
+        _figure, _axis = plt.subplots(figsize=(8.5, 2.2), layout="constrained")
+        _axis.plot(np.arange(1, _case["length"]+1), 100*_case["returns"], color="#2563eb", linewidth=.8)
+        _axis.set(xlabel="Observed trading day", ylabel="Daily log return (%)",
+                  title=f"Diagnostic history {_case['index']+1} · {_case['length']} days")
+        _rows = trajectory.posterior_rows(diagnostic_result["task"], _case["draws"])
+        for _row, _truth in zip(_rows, _case["truth"], strict=True):
+            _row["generating truth"] = float(_truth)
+        _parts = [mo.md(f"**Source: {diagnostic_result['source']} network · diagnostic history {_case['index']+1}.** "
+                       "These are separate from the four supplied example histories."), _figure,
+                  mo.ui.table(_rows, selection=None, pagination=False)]
+        if show_diagnostic_pairs.value:
+            _parts += [path_checks.native_pairs(diagnostic_result["task"], _case["draws"], _case["truth"]),
+                       mo.md("Native `bf.diagnostics.pairs_posterior`: the same 200 paired draws, with generating truths marked. "
+                             "Changing the selected history does not sample or fit another model.")]
+        _output = mo.vstack(_parts)
+    _output
     return
 
 
