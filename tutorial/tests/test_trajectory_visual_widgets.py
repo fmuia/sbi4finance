@@ -1,6 +1,8 @@
 """Visual controls preserve real data, masks and generating-value annotations."""
 
 import copy
+from html.parser import HTMLParser
+import json
 import unittest
 
 import numpy as np
@@ -11,6 +13,66 @@ from sbi4f_tutorial.trajectories import (
 
 
 class HistoryWidgetTests(unittest.TestCase):
+    def test_presentation_options_omit_annotations_without_altering_history_values(self):
+        from itertools import product
+
+        class Elements(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.ids, self.tags = set(), []
+
+            def handle_starttag(self, tag, attrs):
+                self.tags.append(tag)
+                self.ids.add(dict(attrs).get("id"))
+
+        history = {"returns": np.array([.01, -.01, 0.]),
+                   "variance": np.array([.04, 1e-8, 0., 1e-15]),
+                   "mean_variance": np.full(4, .04),
+                   "median_variance": np.array([.04, .02, .01, .005])}
+        expected = history_widget.build_payload(history, end=3)
+        for header, footer, references in product((True, False), repeat=3):
+            with self.subTest(header=header, footer=footer, references=references):
+                rendered = history_widget.render_html(history, end=3, show_header=header,
+                    show_footer=footer, show_references=references)
+                payload, _ = json.JSONDecoder().raw_decode(rendered.split("const data=", 1)[1])
+                self.assertEqual({key: payload[key] for key in expected}, expected)
+                self.assertEqual(payload["presentation"]["show_references"], references)
+                elements = Elements()
+                elements.feed(rendered)
+                self.assertEqual("title" in elements.ids, header)
+                self.assertEqual("description" in elements.ids, header)
+                for name in ("variance-legend", "variance-readout", "counts"):
+                    self.assertEqual(name in elements.ids, footer)
+                self.assertEqual(elements.tags.count("svg"), 4)
+                for name in ("returns", "variance", "returnhist", "variancehist", "scrub", "play"):
+                    self.assertIn(name, elements.ids)
+        default = history_widget.render_html(history, end=3)
+        payload, _ = json.JSONDecoder().raw_decode(default.split("const data=", 1)[1])
+        self.assertTrue(all(payload["presentation"][key]
+                            for key in ("show_header", "show_footer", "show_references")))
+
+    def test_notebook_labels_are_text_data_and_cannot_inject_html(self):
+        history = {"returns": np.array([0., -.01]), "variance": np.full(3, .04)}
+        literal = '</script><img src="invalid" onerror="alert(1)">'
+        labels = {"returns": literal, "variance": "Annual variance V",
+                  "returnhist": "Return distribution", "variancehist": "Variance distribution",
+                  "description": "Notebook-owned explanation"}
+        rendered = history_widget.render_html(history, end=2, labels=labels)
+        payload, _ = json.JSONDecoder().raw_decode(rendered.split("const data=", 1)[1])
+        self.assertEqual(payload["presentation"]["labels"], labels)
+        self.assertNotIn('</script><img', rendered)
+        self.assertNotIn('<img src="invalid"', rendered)
+        self.assertIn('<\\/script>', rendered)
+
+    def test_presentation_rejects_ambiguous_flags_and_nontext_labels(self):
+        history = {"returns": np.zeros(2), "variance": np.full(3, .04)}
+        for flag in ("show_header", "show_footer", "show_references"):
+            with self.subTest(flag=flag), self.assertRaisesRegex(ValueError, "booleans"):
+                history_widget.render_html(history, end=2, **{flag: "false"})
+        for labels in ([], {"unknown": "text"}, {"returns": 1}, {"description": None}):
+            with self.subTest(labels=labels), self.assertRaisesRegex(ValueError, "labels"):
+                history_widget.render_html(history, end=2, labels=labels)
+
     def test_mean_and_median_references_remain_paired_and_tiny_values_are_not_floored(self):
         history = {"returns": np.array([.01, -.01, 0.]),
                    "variance": np.array([.04, 1e-8, 0., 1e-15]),

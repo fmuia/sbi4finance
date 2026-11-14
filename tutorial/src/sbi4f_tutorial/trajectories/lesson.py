@@ -220,9 +220,9 @@ def posterior_readout(task, draws, truth=None):
                  "generating truth must be real unmasked physical values")
         truth = np.asarray(truth)
         _require(truth.shape == (dimensions,) and truth.dtype.kind in "fiu"
-                 and np.isfinite(truth).all() and np.all(truth > bounds[:, 0])
-                 and np.all(truth < bounds[:, 1]),
-                 "generating truth must be one finite row strictly inside prior bounds")
+                 and np.isfinite(truth).all() and np.all(truth >= bounds[:, 0])
+                 and np.all(truth <= bounds[:, 1]),
+                 "generating truth must be one finite row within prior bounds")
     probabilities = np.array([.05, .5, .95])
     posterior = np.quantile(values, probabilities, axis=0)
     prior = bounds[:, 0] + probabilities[:, None] * (bounds[:, 1] - bounds[:, 0])

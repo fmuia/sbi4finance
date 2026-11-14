@@ -5,14 +5,14 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 167,
+    "tutorial_tests": 188,
     "notebook_exports": 8,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 183,
     "local_document_links": 48,
     "marimo_warnings": "inherited empty cells in MMAR take-home and slots 2/3",
     "lab_runtime_parity_tests": 12,
-    "trajectory_notebook_cells": 69,
+    "trajectory_notebook_cells": 72,
     "lab_core_tests": 536,
     "lab_optional_skips": 3,
     "lab_checkout_regression_tests": 1
@@ -99,18 +99,18 @@
   },
   "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "33eaa718268b099706e331d2e71622b26f57c10ebb5e205c78fd856f443d62ab",
-    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "7054b13d46b1a369daace82a3c337cae0717aadce1093e6993714668b8419504",
+    "tutorial/notebooks/trajectory_inference.py": "1e5b57431d1f6fbb4a54ff06607f2358e7d81beb8311751671ca587894344686",
+    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "99453c8df29b1954cc21d8234f785928c530c8f09d6ab0db8d46e73d1a0c3c0c",
     "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "7749e5245646ff567055a82f2535fafa4f36c537ee9165b53863edeafbe8fdf6",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "99174f8526cce21eede4af28dda17273d36244c569685c30c54dda693c6860fb",
-    "tutorial/README.md": "8fb6598ba5ad071a6bf4473abeab16f2bc1a584b081b4b279dfcf9ddfe4ed70a",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "f6ecacbb3960923e7e6e4c45167fb39f31636010e67e0b8d517a749177929d16",
+    "tutorial/README.md": "0678144dacde4b75e7ad13afcd36276b82073e09a1e74007fcc8cb2e6a696d86",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "ce01829901e5915f9f2cce23e894729b153a8f52357cfcbbb8f0c56bc27b7a37",
     "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "91092853be3846c730e83f3f45eb3789c2adc96a12b34cb571ba2f3074a32354",
     "tutorial/tests/test_trajectory_diagnostics.py": "02bf496481c2ad1c0fda1d949a042e1f36d36747b8e9a7b2cfea68d4b99e04ee",
     "tutorial/src/sbi4f_tutorial/trajectories/model_checks.py": "18440646719d4350e821cb05cee48b16904d09e65c18ff852e9165e163c88ec0",
     "tutorial/tests/test_trajectory_model_checks.py": "fa8b3376d7fb799ce0e106f60e437357b8c2af00af696846f0d1d168c55f72b6",
-    "tutorial/tests/test_trajectory_posterior_readout.py": "e2b64c53a7220e0dea19d9b44dc5a272e6ccef718b8d8fe0d49a095c1af66008",
+    "tutorial/tests/test_trajectory_posterior_readout.py": "4279e4fb68a3ee790dec4413f0e5fa2c28a841269f1450cd5965c4c20d0c1d25",
     "tutorial/src/sbi4f_tutorial/shared/path_statistics.py": "5746d45222bd96caf0705e3a6f7fb93285068ef63ea543add23c0e2acc734d2f",
     "tutorial/tests/test_path_statistics.py": "6b991d3010707a4ea8cc790e5d61dae5dc848e04b5a8c448f0213581825ad094",
     "lab/scripts/export_market_example.py": "122b89943dafb3b5a256693336243fd57c9335aa992098f72983ce7f22577908",
@@ -123,7 +123,7 @@
     "tutorial/tests/test_trajectory_evidence_assets.py": "c135c3a93558eaa9577a419d17f8c6d075aabaf47909a59961db7ad4c2660925",
     "tutorial/tests/test_trajectory_evidence_widget.py": "964c42e0975166dfebdfa4f5dbe3e02492c7bf2862eeb9340b3e61cbe4875b4a",
     "lab/scripts/trajectory_latent_history.py": "3be7b09419c005c3610e59a2e50f12c013335adc1e2b3784c3a4e8bbe42b8486",
-    "tutorial/src/sbi4f_tutorial/trajectories/history_widget.py": "a14d28a472e91cdc9de3f619605c88dca349afdd359d140224f6e3c8a25796a1",
+    "tutorial/src/sbi4f_tutorial/trajectories/history_widget.py": "cd9a0764c85bb60a403b162e30929338af2baa474ec36bcb371cc11edc014584",
     "tutorial/src/sbi4f_tutorial/trajectories/latent_assets.py": "b88d8ae9abb81ba8f1c49700251d09022cf68c24a907a736055f69bc1fc8c30c",
     "tutorial/src/sbi4f_tutorial/trajectories/market_story.py": "fa187011f41fe76b1c6b00378570c6db4c1da15a143bb5b5381935841e4868ac",
     "tutorial/src/sbi4f_tutorial/trajectories/predictive_visuals.py": "d124e2678e0e83fa5f2baa6272913d786685fb92bf93c8c95ac1dacc19cd5de8",
@@ -131,13 +131,16 @@
     "tutorial/tests/test_trajectory_latent_history.py": "d51f5dae1e688ff1b2de6d1505610ab5bc6c64d71a9201b5fcb3b1804f53233d",
     "tutorial/tests/test_trajectory_market_story.py": "b3fb3a73e569094da6a8835109c1e22049f3229199eee2bd611386edf74f9dae",
     "tutorial/tests/test_trajectory_predictive_visuals.py": "309b85b741afb2ccb0e40857dcd8fb5f28c5d4dfee1d9e5387534b495452a0b3",
-    "tutorial/tests/test_trajectory_visual_widgets.py": "a305e28be06f294944c3457e23fd0353faf0b912a81aaba078e2a1c0f898634d",
+    "tutorial/tests/test_trajectory_visual_widgets.py": "b6ad9b688e8d1b54e3fb2db9a86e2dd8c9badc4e03d90e343227a847321ae04a",
     "tutorial/src/sbi4f_tutorial/trajectories/variance_aging.py": "81cc18d4afae99c817ffa3f1274bf8a4060bf150de301309bfcbe25c95f29cd1",
     "tutorial/tests/test_trajectory_variance_aging.py": "b8f2df2ef7d0f7abaef8060883766ae44994ca6925834a482b4b8bf41f0779e3",
     ".gitattributes": "43f5e851f28d49c0e8a1a1535b7b9bc8d275b418558dbb3d5f3a75ece7e2f86b",
     "tutorial/tests/test_trajectory_portability.py": "aebed32f7dbeb91708eaa4dca32f76da2db340dc4daa6f3decfecc257c5b3894",
     "lab/tests/test_tutorial_asset_checkout.py": "795778eb455c95be36ef46f852c43ac899df1b2252ec8c6847a7cef0a964c8bd",
-    "tutorial/notebooks/trajectory_inference.css": "add434b72c1f573d6696d40915357bbb7ec0bf9bdbdf9135fc8c64a0ee85feef"
+    "tutorial/notebooks/trajectory_inference.css": "add434b72c1f573d6696d40915357bbb7ec0bf9bdbdf9135fc8c64a0ee85feef",
+    "tutorial/src/sbi4f_tutorial/trajectories/observations.py": "735fa1f9b034f63bfbaa6d0c3ebb5a99f40cc2b621e13d5ea7aabfd462448f73",
+    "tutorial/tests/test_trajectory_observations.py": "00eff8b20a2fafba764253be209c0f6e92a192e46673349ec27bbdd190086262",
+    "tutorial/tests/test_trajectory_notebook_predictive.py": "e505a28ab8c4ae6daf27412155c908e0d0329b645193fcd6086388fb3d837d29"
   },
   "updated_at_utc": "2026-11-14T19:42:22.562401+00:00",
   "forward_simulator": {
@@ -2150,5 +2153,49 @@
       "release_symbols": 183
     },
     "artifacts": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/presentation-trim"
+  },
+  "observation_choice_20261114": {
+    "scope": "Presentation revision; unchanged tasks, priors, original observations, assets, weights and saved draws",
+    "observed_history_position": "4.1 at the beginning of Infer; immediately before 4.2 Produce and read the posterior",
+    "removed": [
+      "all observed-player footer prose and readouts",
+      "saved quiet-path gallery discussion and figure"
+    ],
+    "editable_notebook_copy": [
+      "history title",
+      "four panel labels"
+    ],
+    "sources": [
+      "original supplied case with its own cached fallback",
+      "chosen in-support parameters and seed, full1260-day task"
+    ],
+    "custom_inference": "matching native checkpoint required; no cached fallback; query bound to task/source/history bytes/prefix",
+    "shared_history_consumers": [
+      "native query",
+      "truth markers",
+      "posterior readout",
+      "evidence player",
+      "prior check",
+      "posterior replication"
+    ],
+    "idle_optional_checks": "always publish None; guard consumers; no mo.stop or ancestor-stopped output",
+    "pymc_opening": "Volterra memory and roughly10000 latent driving coordinates lead the motivation; exact conditional math and feasibility qualifications retained",
+    "execution": {
+      "all_three_saved_and_custom_routes": true,
+      "custom_native_days": 137,
+      "custom_native_paired_draws": [
+        512,
+        4
+      ],
+      "changed_seed_clears_posterior": true,
+      "synthetic_prior_uses_active_history": true,
+      "no_idle_ancestor_stop": true,
+      "custom_native_predictive_replicas": 32,
+      "custom_exact_daily_playback_frames": 21,
+      "playback_reuses_frames_without_sampling": true
+    },
+    "visual_review": "bare four-panel standalone widget artifact; browser host unavailable",
+    "artifacts": "local-artifacts/trajectory-feedback-20261114/chosen-history-integration",
+    "scientific_acceptance": false
   }
 }

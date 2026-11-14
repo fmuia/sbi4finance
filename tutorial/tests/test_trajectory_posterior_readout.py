@@ -124,7 +124,7 @@ class TrajectoryPosteriorReadoutTests(unittest.TestCase):
         boundary_rows = np.stack([bounds[:, 0], bounds[:, 1]])
         result = lesson.posterior_readout(task, boundary_rows)
         self.assertEqual(result["draw_count"], 2)
-        for truth in (bounds[:, 0], np.zeros(3), np.full(4, np.nan),
+        for truth in (bounds[:, 0] - .01, np.zeros(3), np.full(4, np.nan),
                       values[0].astype(complex), np.ma.array(values[0], mask=True)):
             with self.subTest(truth=truth), self.assertRaises(ValueError):
                 lesson.posterior_readout(task, values, truth)

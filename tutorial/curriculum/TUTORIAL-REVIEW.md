@@ -233,10 +233,30 @@ unused controls and notebook-only cell tests, while retaining shared numerical
 helpers and their tests. The separate MMAR take-home keeps its drawdown story.
 
 The core flow keeps posterior marginals and interpretation, evidence playback,
-posterior-predictive checks and saved final-cohort evidence. Playback becomes
-4.2, saved evidence becomes 5.2, and the retained continuation discussion becomes
+posterior-predictive checks and saved final-cohort evidence. The observed-history
+chooser moves immediately before posterior inference (4.1),
+posterior computation and reading become 4.2, and evidence playback becomes 4.3. Saved evidence
+remains 5.2, and the retained continuation discussion becomes
 6.1. The Use banner describes forecasting requirements rather than promising
 a scenario exercise. Preserve the explicit failed-calibration verdicts.
+
+The observed-history display has no footer prose or quiet-path gallery audit.
+Its title and panel labels are editable in the notebook cell. Add a source choice:
+original supplied history, or a full-task simulation at user-chosen in-support
+parameters and seed. Custom observations require a matching fresh native query;
+never attach saved samples to them. Bind every dependent view to the task,
+observation bytes and prefix, with empty posterior/PPC output until available.
+The optional prior/PPC producers always return an explicit idle result rather
+than stopping ancestor cells. Lead the PyMC motivation with rough Volterra
+memory and the roughly 10,000 latent driving coordinates in the stated
+five-year conditional formulation.
+
+Verification: 188 tutorial tests, 536 lab tests (three optional skips), all eight
+notebook exports, marimo and release checks. The trajectory has 72 cells and no
+export errors. All three saved/custom routes execute; the actual rough-known
+checkpoint supplies 512 draws for a chosen history at day 137. Changing the seed
+clears the result. Idle prior/PPC cells publish defined empty results and show
+no ancestor-stopped output.
 
 The dated records below describe earlier revisions; live cohort diagnostics
 and the drawdown exercise are superseded by this presentation scope.

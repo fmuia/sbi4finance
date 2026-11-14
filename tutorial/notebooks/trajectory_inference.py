@@ -113,8 +113,8 @@ def _(mo, workflow_map):
     | **Train here** | Generate a small training set, fit the GRU and flow, then infer parameters | A new tutorial model, kept in this session |
     | **Optional pretrained model** | Load the supplied estimator and reveal more days | A larger, separately trained model; saved draws work without a download |
 
-    First introduce the model, inspect a five-year synthetic history, then explore
-    the forward simulator. Training and model loading are explicit actions;
+    First introduce the model and explore the forward simulator. Choose the
+    observed history immediately before producing posteriors. Training and model loading are explicit actions;
     the small simulator runs locally.
 
     The supplied estimators learn useful information, but **all three failed
@@ -129,7 +129,7 @@ def _(mo, workflow_map):
     | `bf.networks.CouplingFlow` | Learn the conditional joint parameter density |
     | `bf.BasicWorkflow`, `fit_offline` | Fit the summary and density on simulated pairs |
     | `workflow.sample` through `inference.sample` | Condition on returns and restore physical parameter units |
-    | `bf.diagnostics` | Plot loss, recovery, ranks and a selected posterior's parameter pairs |
+    | `bf.diagnostics` | Inspect the tutorial fit's loss; saved cohort reports document calibration |
     """)})])
     return
 
@@ -590,109 +590,12 @@ def _(cache_task, mo):
     return
 
 
-@app.cell(hide_code=True)
-def _(cache_arrays, mo, lesson_md):
-    case_choice = mo.ui.dropdown(
-        options={f"History {index + 1}": index for index in range(len(cache_arrays["trajectory_id"]))},
-        value="History 1", label="Supplied synthetic history")
-    inference_mode = mo.ui.radio(
-        options={"Use saved posterior samples": "saved", "Compute posterior for selected prefix": "live"},
-        value="Use saved posterior samples", inline=True, label="Posterior calculation")
-    mo.vstack([lesson_md("### 1.3 The observed history"), case_choice, inference_mode])
-    return case_choice, inference_mode
 
 
-@app.cell(hide_code=True)
-def _(cache_arrays, inference_mode, mo, trajectory):
-    _lengths = trajectory.saved_lengths(cache_arrays)
-    if inference_mode.value == "saved":
-        observed_days = mo.ui.slider(steps=_lengths, value=1260,
-                                    label="Observed trading days", show_value=True)
-        _caption = "Saved samples come from the supplied trained network at this exact prefix. No model is loaded."
-    else:
-        observed_days = mo.ui.slider(1, 1260, step=1, value=1260,
-                                    label="Observed trading days", show_value=True, include_input=True)
-        _caption = ("Choose a prefix, then press Compute posterior below. This loads the matching trained network "
-                    "and draws parameter samples; no training is performed. Until then, the labelled saved snapshot is shown.")
-    mo.accordion({"Optional: change the prefix used for posterior calculations": mo.vstack([observed_days, mo.md(_caption)])})
-    return (observed_days,)
 
 
-@app.cell(hide_code=True)
-def _(cache_arrays, cache_task, case_choice, mo, observed_days, trajectory):
-    from sbi4f_tutorial.trajectories import history_widget, latent_assets
-    requested_days = observed_days.value
-    selection = trajectory.selection_key(cache_task, cache_arrays, case_choice.value, requested_days)
-    try:
-        _paired_history = latent_assets.load_history(cache_task, cache_arrays, case_choice.value)
-        _html = history_widget.render_html(_paired_history, end=requested_days,
-            label=f"{trajectory.MODEL_LABELS[cache_task['model']]} · synthetic history {case_choice.value+1}")
-        _display = mo.vstack([mo.iframe(_html, height="750px"),
-            mo.accordion({"How is the hidden path paired with these returns?": mo.md(
-                "The original daily returns are unchanged. A verified replay of the same generating "
-                "parameters and random innovations reconstructs variance at day boundaries, including V₀. "
-                "The paired asset is checked against the selected history and task. "
-                "For Heston this is effective nonnegative variance; its signed numerical state is a separate quantity. "
-                "This is simulation truth—not volatility estimated from returns—and it never enters the neural conditions.")})])
-    except (OSError, ValueError) as _error:
-        _display = mo.vstack([mo.callout(mo.md("**Paired hidden-state display unavailable:** " + str(_error) +
-            ". The observed returns remain available below; no replacement variance path is invented."), kind="warn"),
-            trajectory.plot_returns(cache_task, cache_arrays, case_choice.value, requested_days)])
-    _display
-    return requested_days, selection
 
 
-@app.cell(hide_code=True)
-def _(cache_task, mo):
-    _contents = [mo.md(r"""
-    A daily log return is $r_t=\log S_t-\log S_{t-1}$; 0.01 is about a 1% increase.
-    The blue panels show observed returns; orange panels reveal their paired
-    synthetic variance for explanation only. **The inference data are returns,
-    not that latent variance or the process shocks.** One observation is made per trading day,
-    with $\Delta t=1/252$ year, for a common maximum of **1,260 days (five years)**.
-
-    **Try it:** keep the history fixed and reveal more days. Switch to the
-    log-variance view: very small positive values remain distinguishable from
-    exact zero. Dashed references show the mean and median across possible
-    realizations at each time; neither is a restoring force on this path.
-    """)]
-    if cache_task["model"] != "heston":
-        _contents.append(mo.callout(mo.md(
-            "**This model's variance distribution changes with its age.** The zero-origin "
-            "rough driver spreads out through time. Its compensator keeps ensemble mean "
-            "variance fixed while lowering the pointwise median; there is no Heston-like "
-            "restoring drift. This is a finite-origin synthetic law, not a stationary slice "
-            "of market data. A stationary or prehistory-aware physical model requires its "
-            "own specification, training and validation."), kind="warn"))
-    if cache_task["model"] == "rough-known":
-        from sbi4f_tutorial.trajectories import variance_aging as _variance_aging
-        try:
-            _diagnostic = _variance_aging.load(cache_task)
-            _report = _diagnostic["report"]
-            _prior = _report["prior_ensemble"]
-            _saved_count = sum(row["event"] for row in _report["saved_cases"])
-            _contents.append(mo.callout(mo.md(
-                f"**These four cached histories are also an unusually quiet gallery.** "
-                f"Average variance in the last year falls below 0.0004 in **{_saved_count}/4** "
-                f"displayed histories, compared with **{_prior['count']}/{_prior['n']} "
-                f"({100*_prior['fraction']:.1f}%)** of independent histories drawn from the same "
-                "prior. Thus model ageing and the particular realizations both matter; "
-                "these four do not show what every rough-Bergomi path does."), kind="info"))
-            _contents.append(mo.accordion({"Compare the four saved paths with independent realizations": mo.vstack([
-                mo.image(_diagnostic["figure_path"]),
-                mo.md("The event is the **arithmetic mean of true daily-boundary variance over "
-                    "days 1009–1260 below 0.0004 = (2%)²**. Left: all 512 prior histories; "
-                    "right: 512 new realizations at each saved history's fixed parameters. "
-                    "For history 3's parameters, this quiet-final-year event occurs in only "
-                    "**2/512** repeats. The four original histories have not been replaced. "
-                    "The simulation audit found no numerical zeros, underflow, floor or redraw "
-                    "in the rough cohorts. This checks the simulator and example gallery; it "
-                    "does not validate a posterior or a real-market model."),
-            ])}))
-        except (OSError, ValueError, KeyError) as _error:
-            _contents.append(mo.callout(mo.md("**Variance-ageing comparison unavailable:** " + str(_error)), kind="warn"))
-    mo.vstack(_contents)
-    return
 
 
 @app.cell(hide_code=True)
@@ -929,40 +832,29 @@ def _(mo, prior_target, selection):
 
 
 @app.cell(hide_code=True)
-def _(
-    cache_arrays,
-    cache_task,
-    case_choice,
-    diagnostic_panels,
-    mo,
-    model_checks,
-    path_checks,
-    path_simulation,
-    prior_check_button,
-    prior_target,
-    requested_days,
-    trajectory,
-):
-    mo.stop(not prior_check_button.value, mo.md("*Optional: simulate from the prior and compare magnitude and ordering.*"))
-    _key = path_simulation.task_fingerprint(cache_task)
-    _reused = _key in diagnostic_panels
-    try:
-        if not _reused:
-            diagnostic_panels[_key] = path_checks.generate_panel(cache_task, count=200, seed=20261111)
-        if prior_target.value == "market":
-            _market = trajectory.load_market_example("voo-2020-20261113")
-            _observation = _market["log_returns"][:requested_days,None]
-            _label = f"VOO · {_market['dates'][0]} to {_market['dates'][requested_days-1]} · {requested_days} trading days"
-        else:
-            _observation = cache_arrays["observations"][case_choice.value]
-            _label = f"Selected synthetic history {case_choice.value+1} · {requested_days} trading days"
-        prior_predictive_result = model_checks.compare_prior(cache_task, diagnostic_panels[_key],
-                    _observation, requested_days)
-        prior_predictive_result["comparison_observation"] = _label
-    except (OSError, KeyError, ValueError, RuntimeError, FloatingPointError) as _error:
-        mo.stop(True, mo.callout(mo.md(f"**Prior check stopped:** {_error}. No histories are replaced or filtered."), kind="warn"))
+def _(active_history, cache_task, diagnostic_panels, mo, model_checks, path_checks,
+      path_simulation, prior_check_button, prior_target, requested_days, trajectory):
+    prior_predictive_result = None
+    _status = None
+    if prior_check_button.value:
+        _key = path_simulation.task_fingerprint(cache_task)
+        try:
+            if _key not in diagnostic_panels:
+                diagnostic_panels[_key] = path_checks.generate_panel(cache_task, count=200, seed=20261111)
+            if prior_target.value == "market":
+                _market = trajectory.load_market_example("voo-2020-20261113")
+                _observation = _market["log_returns"][:requested_days, None]
+                _label = f"VOO · {_market['dates'][0]} to {_market['dates'][requested_days-1]} · {requested_days} trading days"
+            else:
+                _observation = active_history["returns"]
+                _label = f"Selected synthetic history · {requested_days} trading days"
+            prior_predictive_result = model_checks.compare_prior(cache_task, diagnostic_panels[_key],
+                        _observation, requested_days)
+            prior_predictive_result["comparison_observation"] = _label
+        except (OSError, KeyError, ValueError, RuntimeError, FloatingPointError) as _error:
+            _status = mo.callout(mo.md(f"**Prior check stopped:** {_error}. No histories are replaced or filtered."), kind="warn")
+    _status
     return (prior_predictive_result,)
-
 
 @app.cell(hide_code=True)
 def _(
@@ -972,34 +864,38 @@ def _(
     predictive_visuals,
     prior_predictive_result,
 ):
-    _comparison = predictive_visuals.compare(prior_predictive_result)
-    _control = ("Brown is a separate 200-history IID Gaussian control fitted to the observed prefix. "
-                "It matches its mean and variance by construction; tails and timing can still differ. "
-                if _comparison["metadata"]["gaussian_available"] else
-                "The fitted Gaussian control is unavailable for fewer than two varying observations; "
-                "model histories are still shown. ")
-    mo.vstack([
-        mo.ui.tabs({"Paths and distributions": predictive_visuals.paths_and_distributions(_comparison),
-                    "Summary checks": model_checks.plot_check(prior_predictive_result),
-                    "Timing checks": predictive_visuals.timing(prior_predictive_result,_comparison,show_shuffle=ordering_shuffle.value)}),
-        mo.ui.table(predictive_visuals.feature_rows(_comparison),selection=None,pagination=False),
-        mo.md(f"**Observation: {prior_predictive_result['comparison_observation']}.** "
-              f"Prior simulations: {prior_predictive_result['length']} days each · 200 histories. "
-              "Blue bands are pointwise central 90% ranges, computed from all model histories. "
-              + _control +
-              "The return and cumulative-log-wealth views have fixed limits; crosses report values outside "
-              "the view without removing them. Distribution bins use all days in their denominators. "
-              "Zero tail frequency remains visible and means no exceedance in this finite history. "
-              "These are descriptive comparisons, not joint-support or calibrated rejection tests. "
-              "Undefined short/constant-series dependence remains explicit."),
-        mo.accordion({"What this Gaussian comparison can and cannot establish":mo.md(
-            "The IID Gaussian fixes its data-fitted mean and SD; blue simulations average over prior "
-            "or posterior parameter uncertainty. Those are different uncertainty budgets, so this is "
-            "a mechanism comparison, not a marginal-likelihood model-selection calculation. A Gaussian "
-            "model with uncertainty about its variance can itself have heavy predictive tails. A "
-            "stochastic-volatility model can also have Gaussian innovations and non-Gaussian marginal "
-            "returns. Timing checks ask the additional question of whether large amplitudes cluster.")}),
-    ])
+    if prior_predictive_result is None:
+        _display = mo.md("")
+    else:
+        _comparison = predictive_visuals.compare(prior_predictive_result)
+        _control = ("Brown is a separate 200-history IID Gaussian control fitted to the observed prefix. "
+                    "It matches its mean and variance by construction; tails and timing can still differ. "
+                    if _comparison["metadata"]["gaussian_available"] else
+                    "The fitted Gaussian control is unavailable for fewer than two varying observations; "
+                    "model histories are still shown. ")
+        _display = mo.vstack([
+            mo.ui.tabs({"Paths and distributions": predictive_visuals.paths_and_distributions(_comparison),
+                        "Summary checks": model_checks.plot_check(prior_predictive_result),
+                        "Timing checks": predictive_visuals.timing(prior_predictive_result,_comparison,show_shuffle=ordering_shuffle.value)}),
+            mo.ui.table(predictive_visuals.feature_rows(_comparison),selection=None,pagination=False),
+            mo.md(f"**Observation: {prior_predictive_result['comparison_observation']}.** "
+                  f"Prior simulations: {prior_predictive_result['length']} days each · 200 histories. "
+                  "Blue bands are pointwise central 90% ranges, computed from all model histories. "
+                  + _control +
+                  "The return and cumulative-log-wealth views have fixed limits; crosses report values outside "
+                  "the view without removing them. Distribution bins use all days in their denominators. "
+                  "Zero tail frequency remains visible and means no exceedance in this finite history. "
+                  "These are descriptive comparisons, not joint-support or calibrated rejection tests. "
+                  "Undefined short/constant-series dependence remains explicit."),
+            mo.accordion({"What this Gaussian comparison can and cannot establish":mo.md(
+                "The IID Gaussian fixes its data-fitted mean and SD; blue simulations average over prior "
+                "or posterior parameter uncertainty. Those are different uncertainty budgets, so this is "
+                "a mechanism comparison, not a marginal-likelihood model-selection calculation. A Gaussian "
+                "model with uncertainty about its variance can itself have heavy predictive tails. A "
+                "stochastic-volatility model can also have Gaussian innovations and non-Gaussian marginal "
+                "returns. Timing checks ask the additional question of whether large amplitudes cluster.")}),
+        ])
+    _display
     return
 
 
@@ -1008,12 +904,16 @@ def _(mo, lesson_md):
     mo.vstack([lesson_md(r"""
     ### 2.3 Why not just fit this model in PyMC?
 
-    **PyMC can fit stochastic-volatility models.** Here the observations are
-    returns, while variance and its driving shocks are hidden. The probability
-    of those returns must account for many possible hidden histories. In rough
-    Bergomi, a variance value also depends on earlier shocks through an
-    H-dependent memory kernel. That makes a likelihood-based analysis a larger
-    problem than fitting four or seven visible parameters alone.
+    **Rough Bergomi makes this a hidden-path problem.** Its Volterra kernel
+    makes variance depend on earlier innovations, with weights that change
+    with H. In the five-year conditional formulation below, roughly **10,000
+    latent variance-driver and bridge coordinates** remain after integrating
+    out the independent price shocks. We must account for those hidden
+    histories alongside the four or seven fixed parameters.
+
+    **PyMC can fit stochastic-volatility models.** The challenge here is
+    constructing and sampling the joint parameter–path target, or integrating
+    the hidden paths with a suitable specialized method.
 
     | Route | What has to be computed? | Where does the cost occur? |
     |:---|:---|:---|
@@ -1382,26 +1282,118 @@ def _(
 
 @app.cell(hide_code=True)
 def _(mo, lesson_section):
-    mo.vstack([lesson_section("Infer", "Condition a supplied estimator on the revealed returns and inspect joint parameter uncertainty.", stage=4), mo.md(r"""
-    **Reuse a larger fitted estimator; change the evidence.** This route uses
-    the supplied five-year model selected at the top, not the tutorial model
-    trained above. Saved draws let you inspect it immediately. To draw a fresh
-    posterior at any day, download the matching model and run:
+    lesson_section("Infer", "Choose an observed history, condition the supplied estimator on its returns, and inspect parameter uncertainty.", stage=4)
+    return
+
+@app.cell(hide_code=True)
+def _(cache_arrays, mo, lesson_md):
+    history_source = mo.ui.radio(
+        {"Supplied history": "saved", "Choose generating parameters": "custom"},
+        value="Supplied history", inline=True, label="Observed-history source")
+    case_choice = mo.ui.dropdown(
+        options={f"History {index + 1}": index for index in range(len(cache_arrays["trajectory_id"]))},
+        value="History 1", label="Supplied synthetic history")
+    mo.vstack([lesson_md("### 4.1 The observed history"), history_source])
+    return case_choice, history_source
+
+
+@app.cell(hide_code=True)
+def _(cache_arrays, cache_task, case_choice, history_source, mo, parameter_labels):
+    # These controls use the selected trained task's exact physical parameter bounds.
+    _controls = {}
+    for _index, (_name, (_low, _high)) in enumerate(zip(cache_task["parameter_names"], cache_task["prior_bounds"])):
+        _controls[_name] = mo.ui.slider(float(_low), float(_high), step=float((_high-_low)/200),
+            value=float(cache_arrays["truth"][case_choice.value, _index]),
+            label=parameter_labels[_name], show_value=True, include_input=True)
+    observed_parameters = mo.ui.dictionary(_controls)
+    history_seed = mo.ui.number(0, 2**31-1, value=20261114, step=1, label="Random realization seed")
+    if history_source.value == "custom":
+        _panel = mo.vstack([
+            mo.md("Choose parameters within the trained bounds. Changes regenerate one complete 1,260-day history "
+                  "with the same seed; change the seed for another realization. Posterior sampling is a separate action below."),
+            observed_parameters, history_seed,
+        ])
+    else:
+        _panel = case_choice
+    _panel
+    return history_seed, observed_parameters
+
+
+@app.cell(hide_code=True)
+def _(cache_arrays, cache_task, case_choice, history_seed, history_source, observed_parameters):
+    from sbi4f_tutorial.trajectories import observations as history_data
+    if history_source.value == "custom":
+        active_history = history_data.custom_history(cache_task,
+            [observed_parameters.value[name] for name in cache_task["parameter_names"]], seed=history_seed.value)
+    else:
+        active_history = history_data.saved_history(cache_task, cache_arrays, case_choice.value)
+    return active_history, history_data
+
+
+@app.cell(hide_code=True)
+def _(active_history, mo):
+    _options = ({"Use saved posterior samples": "saved", "Compute posterior for selected prefix": "live"}
+                if active_history["source"] == "saved" else {"Compute posterior for selected prefix": "live"})
+    inference_mode = mo.ui.radio(_options, value=next(iter(_options)), inline=True, label="Posterior calculation")
+    inference_mode
+    return (inference_mode,)
+
+
+@app.cell(hide_code=True)
+def _(active_history, cache_arrays, inference_mode, mo, trajectory):
+    if inference_mode.value == "saved":
+        observed_days = mo.ui.slider(steps=trajectory.saved_lengths(cache_arrays), value=1260,
+                                    label="Observed trading days", show_value=True)
+        _caption = "Saved samples belong to this supplied history at this exact prefix. No model is loaded."
+    else:
+        observed_days = mo.ui.slider(1, 1260, step=1, value=1260,
+                                    label="Observed trading days", show_value=True, include_input=True)
+        _caption = ("Choose a prefix, then press Compute posterior below. Only its returns enter the matching network. "
+                    + ("Until then, the labelled saved snapshot is shown." if active_history["source"] == "saved"
+                       else "A chosen history has no saved posterior; load the matching model to compute one."))
+    mo.accordion({"Optional: change the prefix used for posterior calculations": mo.vstack([observed_days, mo.md(_caption)])})
+    return (observed_days,)
+
+
+@app.cell(hide_code=True)
+def _(active_history, cache_task, history_data, mo, observed_days, trajectory):
+    from sbi4f_tutorial.trajectories import history_widget
+    requested_days = observed_days.value
+    selection = history_data.selection_key(cache_task, active_history, requested_days)
+    # Edit this title and these panel labels directly in marimo.
+    _title = (f"{trajectory.MODEL_LABELS[cache_task['model']]} · "
+              + (f"synthetic history {active_history['case']+1}" if active_history["source"] == "saved"
+                 else "chosen synthetic history"))
+    _labels = {
+        "returns": "Observed daily log return (%)",
+        "variance": "Actual hidden variance V (annualized variance)",
+        "returnhist": "Revealed returns (%)",
+        "variancehist": "Revealed boundary V",
+    }
+    _html = history_widget.render_html(active_history["paired_history"], end=requested_days,
+        label=_title, labels=_labels, show_header=False, show_footer=False, show_references=False)
+    mo.vstack([mo.md(f"**{_title}**"), mo.iframe(_html, height="650px")])
+    return requested_days, selection
+
+
+@app.cell(hide_code=True)
+def _(mo, lesson_md):
+    lesson_md(r"""
+    ### 4.2 Produce and read the posterior
+
+    **Condition the supplied estimator on this history.** Saved draws provide immediate
+    results for the supplied examples. A chosen history needs a fresh query using the
+    matching pretrained weights; no fitting is performed here.
 
     ```python
-    # Restore the matching pretrained weights; no fitting is performed.
     task, workflow, record = trajectory.load_live(model_choice.value)
-    # Only the observed prefix enters; future returns and generating labels stay out.
-    revealed = cache_arrays["observations"][case_choice.value:case_choice.value + 1,
-                                           :observed_days.value]
-    # Same workflow.sample pattern, with preprocessing and inverse parameter transforms.
+    # Only observed returns enter: no future returns, labels or hidden variance.
+    revealed = active_history["returns"][None, :observed_days.value]
     draws = trajectory.sample(workflow, task, revealed, draws=512, seed=20261031)[0]
     ```
 
-    Each query uses the **original prior and the entire revealed history**.
-    We do not multiply posteriors from overlapping prefixes or feed the previous
-    posterior into this unchanged network.
-    """)])
+    Each query uses the original prior and the complete revealed prefix.
+    """)
     return
 
 
@@ -1449,109 +1441,92 @@ def _(checkpoint_path, inference_mode, mo, requested_days, selection):
 
 
 @app.cell(hide_code=True)
-def _(
-    cache_arrays,
-    cache_task,
-    case_choice,
-    checkpoint_path,
-    inference_mode,
-    live_button,
-    model_choice,
-    requested_days,
-    selection,
-    trajectory,
-):
+def _(active_history, cache_arrays, cache_report, cache_task, checkpoint_path, history_data,
+      inference_mode, live_button, model_choice, requested_days, selection, trajectory):
     live_result, live_error, live_timing = None, None, None
     pretrained_workflow = None
     if inference_mode.value == "live" and live_button.value:
         from time import perf_counter as _live_clock
         try:
             _start = _live_clock()
-            _task, _workflow, _record = trajectory.load_live(
-                model_choice.value, checkpoint_path.value.strip() or None)
+            _task, _workflow, _record = trajectory.load_live(model_choice.value, checkpoint_path.value.strip() or None)
+            if _task != cache_task or _record["model_sha256"] != cache_report["checkpoint_sha256"]:
+                raise ValueError("checkpoint or task differs from this observed history")
             _load_seconds = _live_clock() - _start
-            # This slice excludes future observations, parameter labels and hidden states.
-            _revealed = cache_arrays["observations"][case_choice.value:case_choice.value + 1, :requested_days]
+            _revealed = active_history["returns"][None, :requested_days]
             _start = _live_clock()
             _draws = trajectory.sample(_workflow, _task, _revealed, draws=512, seed=20261031)[0]
             _sample_seconds = _live_clock() - _start
             _candidate = {"selection": selection, "draws": _draws}
-            trajectory.posterior_view(cache_task, cache_arrays, case_choice.value, requested_days, live=_candidate)
-            live_result = _candidate
-            pretrained_workflow = _workflow
+            history_data.posterior_view(cache_task, cache_arrays, active_history, requested_days, live=_candidate)
+            live_result, pretrained_workflow = _candidate, _workflow
             live_timing = (_load_seconds, _sample_seconds)
         except (FileNotFoundError, ValueError, RuntimeError, ImportError, OSError) as _error:
             live_error = str(_error)
     return live_error, live_result, live_timing, pretrained_workflow
 
-
 @app.cell(hide_code=True)
-def _(
-    cache_arrays,
-    cache_task,
-    case_choice,
-    live_result,
-    requested_days,
-    trajectory,
-):
-    posterior = trajectory.posterior_view(
-        cache_task, cache_arrays, case_choice.value, requested_days, live=live_result)
+def _(active_history, cache_arrays, cache_task, history_data, live_result, requested_days):
+    posterior = history_data.posterior_view(cache_task, cache_arrays, active_history, requested_days, live=live_result)
     return (posterior,)
 
-
 @app.cell(hide_code=True)
-def _(inference_mode, live_error, live_timing, mo, posterior, requested_days):
-    _contents = [mo.callout(mo.md(f"**Source: supplied pretrained model. {posterior['label']}.**"), kind="neutral")]
+def _(active_history, inference_mode, live_error, live_timing, mo, posterior, requested_days):
+    _contents = []
+    if posterior is None:
+        _contents.append(mo.md("**No posterior computed for this chosen history yet.** Use the matching pretrained model and press Compute posterior."))
+    else:
+        _contents.append(mo.callout(mo.md(f"**Source: supplied pretrained model. {posterior['label']}.**"), kind="neutral"))
+        if posterior["source"] == "live":
+            _contents.append(mo.md(f"Model verification/load: **{live_timing[0]:.3f} s**; "
+                                  f"512 paired draws: **{live_timing[1]:.3f} s**. Fresh describes execution, not accuracy."))
+        elif inference_mode.value == "live":
+            _contents.append(mo.md(f"The display reveals {requested_days} days; the saved posterior uses "
+                f"{posterior['length']} days. Press Compute posterior to query the selected prefix."))
     if live_error:
-        _contents.append(mo.callout(mo.md(
-            "Posterior calculation is unavailable: " + live_error + " The labelled saved result remains visible."), kind="warn"))
-    if posterior["source"] == "live":
-        _contents.append(mo.md(f"Model verification/load: **{live_timing[0]:.3f} s**; "
-                              f"512 draws: **{live_timing[1]:.3f} s**. First sampling may include compilation. "
-                              "Fresh describes execution, not posterior accuracy."))
-    elif inference_mode.value == "live":
-        _contents.append(mo.md(f"The return plot reveals **{requested_days} days**. "
-                              f"The posterior below uses the saved **{posterior['length']}-day** prefix. "
-                              "Press the button to condition on every revealed return. Saved snapshots are never interpolated."))
-    _contents.append(mo.md("Central 90% intervals and all density/dependence panels use the **same paired draw rows**. "
-                          "The four example histories were selected before inspecting their posteriors."))
+        _suffix = (" The labelled saved result remains visible." if active_history["source"] == "saved"
+                   else " No other history's posterior is substituted.")
+        _contents.append(mo.callout(mo.md("Posterior calculation is unavailable: " + live_error + _suffix), kind="warn"))
     mo.vstack(_contents)
     return
 
-
 @app.cell(hide_code=True)
 def _(
-    cache_arrays,
+    active_history,
     cache_task,
-    case_choice,
+    mo,
     np,
     parameter_labels,
     plt,
     posterior,
 ):
-    _names = cache_task["parameter_names"]
-    _figure, _axes = plt.subplots((len(_names) + 1) // 2, 2,
-                                 figsize=(10, 2.45 * ((len(_names) + 1) // 2)), squeeze=False)
-    _label = "fresh neural approximation" if posterior["source"] == "live" else "saved neural approximation"
-    for _index, _axis in enumerate(_axes.flat):
-        if _index >= len(_names):
-            _axis.set_visible(False)
-            continue
-        _low, _high = cache_task["prior_bounds"][_index]
-        _grid = np.linspace(_low, _high, 240)
-        _density = (1 / (_grid * np.log(_high / _low))
-                    if cache_task["prior_types"][_index] == "log_uniform" else np.full_like(_grid, 1 / (_high - _low)))
-        _axis.hist(posterior["draws"][:, _index], bins=np.linspace(_low, _high, 29), density=True,
-                   alpha=.42, color="#2563eb", label=_label)
-        _axis.plot(_grid, _density, linestyle="--", color="#64748b", linewidth=1.5,
-                   label="declared prior density")
-        _axis.axvline(cache_arrays["truth"][case_choice.value, _index], linestyle=":", color="#111827",
-                     linewidth=1, label="synthetic truth")
-        _axis.set(xlim=(_low, _high), title=parameter_labels[_names[_index]], ylabel="Marginal density")
-    _axes.flat[0].legend(fontsize=7)
-    _figure.suptitle(f"Prior and approximate posterior · history {case_choice.value + 1} · {posterior['length']} days", fontsize=12)
-    _figure.tight_layout()
-    _figure
+    if posterior is None:
+        _display = mo.md("")
+    else:
+        _names = cache_task["parameter_names"]
+        _figure, _axes = plt.subplots((len(_names) + 1) // 2, 2,
+                                     figsize=(10, 2.45 * ((len(_names) + 1) // 2)), squeeze=False)
+        _label = "fresh neural approximation" if posterior["source"] == "live" else "saved neural approximation"
+        for _index, _axis in enumerate(_axes.flat):
+            if _index >= len(_names):
+                _axis.set_visible(False)
+                continue
+            _low, _high = cache_task["prior_bounds"][_index]
+            _grid = np.linspace(_low, _high, 240)
+            _density = (1 / (_grid * np.log(_high / _low))
+                        if cache_task["prior_types"][_index] == "log_uniform" else np.full_like(_grid, 1 / (_high - _low)))
+            _axis.hist(posterior["draws"][:, _index], bins=np.linspace(_low, _high, 29), density=True,
+                       alpha=.42, color="#2563eb", label=_label)
+            _axis.plot(_grid, _density, linestyle="--", color="#64748b", linewidth=1.5,
+                       label="declared prior density")
+            _axis.axvline(active_history["truth"][_index], linestyle=":", color="#111827",
+                         linewidth=1, label="synthetic truth")
+            _axis.set(xlim=(_low, _high), title=parameter_labels[_names[_index]], ylabel="Marginal density")
+        _axes.flat[0].legend(fontsize=7)
+        _figure.suptitle(f"Prior and approximate posterior · {posterior['length']} days", fontsize=12)
+        _figure.tight_layout()
+        _display = _figure
+    _display
     return
 
 
@@ -1567,34 +1542,38 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(cache_arrays, cache_task, case_choice, mo, parameter_labels, posterior, trajectory, lesson_md):
-    _reading = trajectory.posterior_readout(cache_task, posterior["draws"],
-                                          truth=cache_arrays["truth"][case_choice.value])
-    _small = _reading["narrowest_relative_to_prior"]
-    _large = _reading["widest_relative_to_prior"]
-    _parameters = _reading["parameters"]
-    _precision = (f"**Relative width.** {parameter_labels[_small]} has the narrowest central 90% interval "
-                  f"relative to its own prior: **{100*_parameters[_small]['width_ratio90']:.1f}%** of the prior's "
-                  f"central 90% width. {parameter_labels[_large]} retains **{100*_parameters[_large]['width_ratio90']:.1f}%**. "
-                  "These compare equal-probability widths, including the log-uniform priors.")
-    _pair = _reading["strongest_pair"]
-    _dependence = (f"**Dependence.** The largest absolute Pearson correlation is between "
-                   f"{parameter_labels[_pair['names'][0]]} and {parameter_labels[_pair['names'][1]]}: "
-                   f"**{_pair['correlation']:+.2f}**. Keep their coordinates paired when using these draws."
-                   if _pair else "**Dependence.** Fewer than two coordinates vary in these draws; a Pearson pair correlation is undefined.")
-    _misses = _reading["truth_excluded_parameters"]
-    _truth = ("**Synthetic truths.** Outside the central 90% marginal intervals: "
-              + ", ".join(parameter_labels[name] for name in _misses) + "."
-              if _misses else "**Synthetic truths.** All generating values lie within their central 90% marginal intervals for this history.")
-    mo.vstack([lesson_md("### 4.1 Read this posterior in three steps\n\n" + _precision),
-               mo.md(_dependence), mo.md(_truth),
-               mo.md("These summaries describe the displayed **approximation** for this history and prefix. "
-                     "Width reduction and truth inclusion in one case do not establish accuracy. "
-                     "The final calibration failures and model-specific numerical limits still apply."),
-               mo.accordion({"Definitions behind this reading": mo.md(
-                   "Relative width is (posterior q95 − q05) / (prior q95 − q05), in physical units. "
-                   "It is not an information-distance or accuracy score. Pearson correlation measures linear dependence; "
-                   "a small value does not rule out nonlinear dependence. Truth markers are evaluation labels and never network inputs.")})])
+def _(active_history, cache_arrays, cache_task, case_choice, mo, parameter_labels, posterior, trajectory, lesson_md):
+    if posterior is None:
+        _display = mo.md("")
+    else:
+        _reading = trajectory.posterior_readout(cache_task, posterior["draws"],
+                                              truth=active_history["truth"])
+        _small = _reading["narrowest_relative_to_prior"]
+        _large = _reading["widest_relative_to_prior"]
+        _parameters = _reading["parameters"]
+        _precision = (f"**Relative width.** {parameter_labels[_small]} has the narrowest central 90% interval "
+                      f"relative to its own prior: **{100*_parameters[_small]['width_ratio90']:.1f}%** of the prior's "
+                      f"central 90% width. {parameter_labels[_large]} retains **{100*_parameters[_large]['width_ratio90']:.1f}%**. "
+                      "These compare equal-probability widths, including the log-uniform priors.")
+        _pair = _reading["strongest_pair"]
+        _dependence = (f"**Dependence.** The largest absolute Pearson correlation is between "
+                       f"{parameter_labels[_pair['names'][0]]} and {parameter_labels[_pair['names'][1]]}: "
+                       f"**{_pair['correlation']:+.2f}**. Keep their coordinates paired when using these draws."
+                       if _pair else "**Dependence.** Fewer than two coordinates vary in these draws; a Pearson pair correlation is undefined.")
+        _misses = _reading["truth_excluded_parameters"]
+        _truth = ("**Synthetic truths.** Outside the central 90% marginal intervals: "
+                  + ", ".join(parameter_labels[name] for name in _misses) + "."
+                  if _misses else "**Synthetic truths.** All generating values lie within their central 90% marginal intervals for this history.")
+        _display = mo.vstack([mo.md("**Read this posterior in three steps**\n\n" + _precision),
+                   mo.md(_dependence), mo.md(_truth),
+                   mo.md("These summaries describe the displayed **approximation** for this history and prefix. "
+                         "Width reduction and truth inclusion in one case do not establish accuracy. "
+                         "The final calibration failures and model-specific numerical limits still apply."),
+                   mo.accordion({"Definitions behind this reading": mo.md(
+                       "Relative width is (posterior q95 − q05) / (prior q95 − q05), in physical units. "
+                       "It is not an information-distance or accuracy score. Pearson correlation measures linear dependence; "
+                       "a small value does not rule out nonlinear dependence. Truth markers are evaluation labels and never network inputs.")})])
+    _display
     return
 
 
@@ -1609,7 +1588,7 @@ def _():
 @app.cell(hide_code=True)
 def _(mo, lesson_md):
     lesson_md(r"""
-    ### 4.2 Watch the evidence grow
+    ### 4.3 Watch the evidence grow
 
     **Reveal observations; watch the parameter distributions respond.** This local
     player follows the model and history selected above. The upper observed-day
@@ -1666,6 +1645,7 @@ def _(
 
 @app.cell(hide_code=True)
 def _(
+    active_history,
     cache_arrays,
     cache_report,
     cache_task,
@@ -1683,17 +1663,17 @@ def _(
     from time import perf_counter as _playback_clock
     from hashlib import sha256 as _playback_hash
     _checkpoint = cache_report["checkpoint_sha256"]
-    _history = str(cache_arrays["trajectory_id"][case_choice.value])
+    _history = active_history["id"]
     _path = checkpoint_path.value.strip() or None
-    _history_hash = _playback_hash(cache_arrays["observations"][case_choice.value].tobytes()).hexdigest()
+    _history_hash = _playback_hash(active_history["returns"].tobytes()).hexdigest()
     _key = (cache_report["task_sha256"], _checkpoint, _history, _history_hash, inference_mode.value, _path)
     if _key not in evidence_contexts:
         _dense_error = None
         _manager = (evidence_frames.saved_manager(cache_task, cache_arrays, case_choice.value, _checkpoint)
-                    if inference_mode.value == "saved" else evidence_frames.native_manager(
-                        cache_task, cache_arrays["observations"][case_choice.value], _checkpoint, _history,
+                    if inference_mode.value == "saved" and active_history["source"] == "saved" else evidence_frames.native_manager(
+                        cache_task, active_history["returns"], _checkpoint, _history,
                         draws=128, seed=20261113))
-        if inference_mode.value == "saved":
+        if inference_mode.value == "saved" and active_history["source"] == "saved":
             try:
                 from sbi4f_tutorial.trajectories import evidence_assets as _dense_evidence
             except ImportError:
@@ -1729,6 +1709,7 @@ def _(
 
 @app.cell(hide_code=True)
 def _(
+    active_history,
     cache_arrays,
     case_choice,
     evidence_frames,
@@ -1750,9 +1731,9 @@ def _(
     if not _frames:
         _parts.append(mo.md("*The prior is ready. Prepare exact prefixes above before playing the native posterior sequence.*"))
     _html = evidence_widget.render_html(playback_manager["task"],
-        cache_arrays["observations"][case_choice.value], _frames, end=requested_days,
-        labels=parameter_labels, truth=cache_arrays["truth"][case_choice.value],
-        history_label=f"History {case_choice.value+1} · {'saved posterior samples' if inference_mode.value == 'saved' else 'computed posterior frames'}")
+        active_history["returns"], _frames, end=requested_days,
+        labels=parameter_labels, truth=active_history["truth"],
+        history_label=f"{active_history['source'].title()} history · {'saved posterior samples' if inference_mode.value == 'saved' else 'computed posterior frames'}")
     _rows = (len(playback_manager["task"]["parameter_names"])+1)//2
     _parts.append(mo.iframe(_html, height=f"{380+210*_rows}px"))
     mo.vstack(_parts)
@@ -1761,6 +1742,7 @@ def _(
 
 @app.cell(hide_code=True)
 def _(
+    active_history,
     cache_arrays,
     cache_task,
     case_choice,
@@ -1769,7 +1751,7 @@ def _(
     requested_days,
     trajectory,
 ):
-    _revealed = cache_arrays["observations"][case_choice.value:case_choice.value + 1, :requested_days]
+    _revealed = active_history["returns"][None, :requested_days]
     _inputs = trajectory.conditioning_data(_revealed, cache_task)
     _maximum = cache_task["n_observations"]
     _mask = _inputs["summary_mask"]
@@ -1786,8 +1768,7 @@ def _(
               "Only the revealed prefix and known time design enter inference."),
         _mask_figure,
         mo.md(r"""```python
-    revealed = cache_arrays["observations"][case_choice.value:case_choice.value + 1,
-                                           :observed_days.value]
+    revealed = active_history["returns"][None, :observed_days.value]
     inputs = trajectory.conditioning_data(revealed, cache_task)
     # observations, time_context, summary_mask
     ```"""),
@@ -1840,34 +1821,30 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo, posterior, predictive_count, selection):
-    _source = (selection, posterior["source"], posterior["length"], predictive_count.value)
-    replicate_button = mo.ui.run_button(label=f"Replicate {predictive_count.value} histories from the {posterior['length']}-day posterior")
-    mo.accordion({"Optional: generate a posterior-predictive comparison":mo.vstack([predictive_count,replicate_button,mo.md(
-        f"**Posterior source: {posterior['source']} · {posterior['length']} days.** "
-        "The default displays all 32 return and log-wealth paths. "
-        "The optional larger panel supports a pointwise simulation envelope; it is still not a calibrated test.")])})
+    _source = (selection, None if posterior is None else (posterior["source"], posterior["length"]), predictive_count.value)
+    replicate_button = mo.ui.run_button(label=f"Replicate {predictive_count.value} histories")
+    if posterior is None:
+        _panel = mo.md("Compute a posterior for the chosen history before generating its predictive replicas.")
+    else:
+        _panel = mo.accordion({"Optional: generate a posterior-predictive comparison": mo.vstack([
+            predictive_count, replicate_button,
+            mo.md(f"**Posterior source: {posterior['source']} · {posterior['length']} days.** "
+                  "Independent replicas retain parameter uncertainty and fresh process randomness.")])})
+    _panel
     return (replicate_button,)
 
-
 @app.cell(hide_code=True)
-def _(
-    cache_arrays,
-    cache_task,
-    case_choice,
-    mo,
-    model_checks,
-    posterior,
-    predictive_count,
-    replicate_button,
-):
-    mo.stop(not replicate_button.value, mo.md("*Optional: generate independent posterior-predictive histories.*"))
-    try:
-        posterior_predictive_result = model_checks.replicate_check(cache_task,
-            cache_arrays["observations"][case_choice.value], posterior["draws"], posterior["length"], count=predictive_count.value)
-    except (ValueError, RuntimeError, FloatingPointError) as _error:
-        mo.stop(True, mo.callout(mo.md(f"**Replication stopped:** {_error}. No replicas are discarded or replaced."), kind="warn"))
+def _(active_history, cache_task, mo, model_checks, posterior, predictive_count, replicate_button):
+    posterior_predictive_result = None
+    _status = None
+    if posterior is not None and replicate_button.value:
+        try:
+            posterior_predictive_result = model_checks.replicate_check(cache_task,
+                active_history["returns"], posterior["draws"], posterior["length"], count=predictive_count.value)
+        except (ValueError, RuntimeError, FloatingPointError) as _error:
+            _status = mo.callout(mo.md(f"**Replication stopped:** {_error}. No replicas are discarded or replaced."), kind="warn")
+    _status
     return (posterior_predictive_result,)
-
 
 @app.cell(hide_code=True)
 def _(
@@ -1879,30 +1856,34 @@ def _(
     predictive_visuals,
     requested_days,
 ):
-    _result = posterior_predictive_result
-    _comparison = predictive_visuals.compare(_result)
-    _control = ("The brown IID Gaussian reference is fitted to this observed prefix's mean and SD. "
-                if _comparison["metadata"]["gaussian_available"] else
-                "The Gaussian reference is unavailable for a short or constant prefix. ")
-    mo.vstack([
-        mo.ui.tabs({"Paths and distributions":predictive_visuals.paths_and_distributions(_comparison),
-                    "Summary checks":model_checks.plot_check(_result),
-                    "Timing checks":predictive_visuals.timing(_result,_comparison,show_shuffle=ordering_shuffle.value)}),
-        mo.ui.table(predictive_visuals.feature_rows(_comparison),selection=None,pagination=False),
-        mo.md(f"**{_result['metadata']['count']} independent replicas · {posterior['length']} days each.** "
-              f"The return plot reveals {requested_days} days; this check follows the actual "
-              "posterior conditioning length. The spread retains parameter uncertainty and process "
-              "randomness. The ordering view uses the same prefix, with at most 20 lags and at least "
-              "five observed days per lag; below 21 days it reports insufficient history. "
-              "A shuffled prefix is a teaching intervention, not another model simulation. "
-              "Agreement on these checks does not establish model adequacy or calibrated inference. "
-              "No latent state is filtered and no continuation forecast is generated."),
-        mo.md(_control + "**Compare mechanisms:** which features differ from the data-fitted IID Gaussian control? "
-              "Which features does the volatility model still fail to reproduce? A Gaussian control is "
-              "fitted after seeing these returns, whereas blue replicas use the displayed approximate "
-              "parameter posterior. Neither shaded range is a simultaneous path or joint-feature test. "
-              "All model and Gaussian histories remain in the comparisons."),
-    ])
+    if posterior_predictive_result is None:
+        _display = mo.md("")
+    else:
+        _result = posterior_predictive_result
+        _comparison = predictive_visuals.compare(_result)
+        _control = ("The brown IID Gaussian reference is fitted to this observed prefix's mean and SD. "
+                    if _comparison["metadata"]["gaussian_available"] else
+                    "The Gaussian reference is unavailable for a short or constant prefix. ")
+        _display = mo.vstack([
+            mo.ui.tabs({"Paths and distributions":predictive_visuals.paths_and_distributions(_comparison),
+                        "Summary checks":model_checks.plot_check(_result),
+                        "Timing checks":predictive_visuals.timing(_result,_comparison,show_shuffle=ordering_shuffle.value)}),
+            mo.ui.table(predictive_visuals.feature_rows(_comparison),selection=None,pagination=False),
+            mo.md(f"**{_result['metadata']['count']} independent replicas · {posterior['length']} days each.** "
+                  f"The return plot reveals {requested_days} days; this check follows the actual "
+                  "posterior conditioning length. The spread retains parameter uncertainty and process "
+                  "randomness. The ordering view uses the same prefix, with at most 20 lags and at least "
+                  "five observed days per lag; below 21 days it reports insufficient history. "
+                  "A shuffled prefix is a teaching intervention, not another model simulation. "
+                  "Agreement on these checks does not establish model adequacy or calibrated inference. "
+                  "No latent state is filtered and no continuation forecast is generated."),
+            mo.md(_control + "**Compare mechanisms:** which features differ from the data-fitted IID Gaussian control? "
+                  "Which features does the volatility model still fail to reproduce? A Gaussian control is "
+                  "fitted after seeing these returns, whereas blue replicas use the displayed approximate "
+                  "parameter posterior. Neither shaded range is a simultaneous path or joint-feature test. "
+                  "All model and Gaussian histories remain in the comparisons."),
+        ])
+    _display
     return
 
 

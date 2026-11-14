@@ -156,31 +156,28 @@ Four model cards connect physical drift versus log growth, volatility bursts,
 leverage and variance level/memory to the parameters. Predict a change, move
 one simulator control, then compare what happened with your prediction.
 
-Start with the rough model and its supplied variance curve. The observed
-synthetic history defaults to all **1,260 days**. Its local reveal player shows
-the original returns and their **actual paired hidden variance at day
-boundaries**, with marginal-frequency panels alongside. The hidden path comes
-from a verified replay of the same parameters and innovations; it is simulation
-truth, never a network input or an estimated state. Play, advance, reset and
-scrub reuse that one history; the defaults reveal 21 days per step on trading-month
-axes. Fixed axes and outside counts keep comparisons honest.
+Start with the rough model and its supplied variance curve. The model introduction
+groups the price, Volterra-driver, variance and correlation equations, with
+Heston's mean-reverting variance equation beside them. The forward simulator
+changes parameters while keeping innovations fixed. It shows eight five-year
+price paths, daily returns and return-based realized volatility.
 
-The model introduction groups the price, Volterra-driver, variance and
-correlation equations, with Heston's mean-reverting variance equation beside
-them. The observed synthetic history follows that introduction.
-The separate forward simulator changes parameters while keeping innovations
-fixed. It shows eight five-year price paths, daily returns and return-based
-realized volatility. This noisy rolling statistic differs from the hidden
-variance revealed for the fitted synthetic history.
-The observed-history explanation flags an important design limitation:
-zero-origin rough variance is nonstationary even with a constant mean curve.
-Its median can decline while rare large paths keep its mean fixed. The four
-saved known-curve histories are also an unusually quiet gallery. A frozen
-512-history prior audit separates that finite-gallery effect from the model's
-age-dependent distribution. The original examples remain unchanged. The
-history player adds paired mean/median reference curves, a log-variance view
-and exact-zero/minimum/first-versus-last-window readouts. Logarithms leave true
-zeros undefined instead of replacing them with a positive floor.
+Choose the **observed history immediately before inference**: keep a supplied
+example or set generating parameters within the selected model's trained
+bounds and choose a random realization seed. Both routes display the
+full **1,260-day** task. The reveal player shows returns, paired synthetic
+variance and empirical marginal-frequency panels, with fixed axes and optional
+log-variance view. Its title and panel labels live in the editable notebook cell;
+there is no explanatory footer or quiet-path audit in the participant flow.
+Playing the widget reveals the same fixed history. Hidden variance is simulation
+truth and never enters network conditions.
+
+A chosen history has **no cached posterior**. A fresh query of the matching native
+checkpoint is required; until then its posterior panels stay empty. Saved draws
+remain available for their original supplied histories. All truth markers,
+posterior queries, evidence playback and predictive checks follow the chosen
+history, and changing parameters or seed invalidates earlier query results.
+
 The H-prior explanation distinguishes roughness from Gaussianity:
 the driver is Gaussian for every H, while H=1/2 is its Brownian boundary. The
 chosen Uniform[0.03,0.4] training prior excludes that boundary and cannot test it.
