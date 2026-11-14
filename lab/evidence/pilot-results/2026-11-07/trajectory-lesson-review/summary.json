@@ -99,13 +99,13 @@
   },
   "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "4cb47708eee2f931562daf8b71c70726efb78a29c57196ff7dfb10901e1cb8e9",
+    "tutorial/notebooks/trajectory_inference.py": "55be2d6429b8096c3c0c57b18f99532f563ef062670fc8d83d57d1473af27996",
     "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "7054b13d46b1a369daace82a3c337cae0717aadce1093e6993714668b8419504",
     "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "7749e5245646ff567055a82f2535fafa4f36c537ee9165b53863edeafbe8fdf6",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "99174f8526cce21eede4af28dda17273d36244c569685c30c54dda693c6860fb",
-    "tutorial/README.md": "90032d178a1a469abef615eccd5ec0177fee762fd6e69bebb271a5111ee32b59",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "c8668c12b68f4c8f2c5a338c389fe4b8032fd47f6f57c60b8a275c3e588a49ec",
+    "tutorial/README.md": "1a918c443e38b2aad2bc3c411c7b61c03685d6df87acb7d1eda4c04e4e79f97b",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "ab094361d1060b8b6c109abac2d66ceb66202cf1dcefa4abb459f66451ff3183",
     "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "91092853be3846c730e83f3f45eb3789c2adc96a12b34cb571ba2f3074a32354",
     "tutorial/tests/test_trajectory_diagnostics.py": "02bf496481c2ad1c0fda1d949a042e1f36d36747b8e9a7b2cfea68d4b99e04ee",
     "tutorial/src/sbi4f_tutorial/trajectories/model_checks.py": "18440646719d4350e821cb05cee48b16904d09e65c18ff852e9165e163c88ec0",
@@ -137,9 +137,10 @@
     ".gitattributes": "43f5e851f28d49c0e8a1a1535b7b9bc8d275b418558dbb3d5f3a75ece7e2f86b",
     "tutorial/tests/test_trajectory_portability.py": "aebed32f7dbeb91708eaa4dca32f76da2db340dc4daa6f3decfecc257c5b3894",
     "lab/tests/test_tutorial_asset_checkout.py": "795778eb455c95be36ef46f852c43ac899df1b2252ec8c6847a7cef0a964c8bd",
-    "tutorial/tests/test_trajectory_notebook_diagnostics.py": "48dcc59ca711bbb48c80800bef3d350b2a60c3b7721ca01bd4a7cdc941654675"
+    "tutorial/tests/test_trajectory_notebook_diagnostics.py": "48dcc59ca711bbb48c80800bef3d350b2a60c3b7721ca01bd4a7cdc941654675",
+    "tutorial/notebooks/trajectory_inference.css": "add434b72c1f573d6696d40915357bbb7ec0bf9bdbdf9135fc8c64a0ee85feef"
   },
-  "updated_at_utc": "2026-11-14T17:34:41.131425+00:00",
+  "updated_at_utc": "2026-11-14T18:30:37.566303+00:00",
   "forward_simulator": {
     "paths": 8,
     "days": 252,
@@ -2017,5 +2018,72 @@
       "commit": "26d23c6e64bb11928cd5b959624531bf41f12f41",
       "description": "Merged MMAR take-home PR #92; fast-forwarded and reapplied trajectory fixes without conflicts."
     }
+  },
+  "heston_section_style_20261114": {
+    "reference": {
+      "commit": "d6c3c2c",
+      "notebook": "lab/notebooks/heston_spx_calibration.py",
+      "stylesheet": "lab/notebooks/heston_spx_calibration.css",
+      "stylesheet_sha256": "0ab02646a318e5233f189976215dc25f66851ccf8f3bcf997e32441ee9c22a1b"
+    },
+    "local_stylesheet": "tutorial/notebooks/trajectory_inference.css",
+    "changes": [
+      "One linked workflow map and six numbered section banners with completed/current/upcoming links.",
+      "Nineteen numbered subsection headings and unique outline/link anchors.",
+      "Heston typography, paragraph rhythm, tables, accordion Details styling and light/dark colors.",
+      "Unnumbered data banner before the workflow.",
+      "Fold setup/control source in the reading view while retaining displayed teaching examples and editor access.",
+      "Remove empty optional reading panels/name badges without hiding editor cells or actual console output."
+    ],
+    "structure": {
+      "stages": [
+        "1 Model",
+        "2 Simulate",
+        "3 Train",
+        "4 Infer",
+        "5 Check",
+        "6 Use"
+      ],
+      "numbered_subsections": 19,
+      "unique_ids": true,
+      "workflow_links_valid": true,
+      "code_fences_preserved": true
+    },
+    "visual_review": {
+      "wide_width": 1440,
+      "narrow_width": 760,
+      "dark_theme": true,
+      "equations_and_tables_readable": true,
+      "code_overflow_contained": true,
+      "page_horizontal_overflow": false,
+      "idle_reading_panels_removed": true,
+      "visible_accordions_checked": 25,
+      "artifacts": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/section-style",
+      "figures": {
+        "train-narrow.png": "fa9a9cae71103fe4a527f801e3b3d233a79d2a978b9cb3061b18c1779704a937",
+        "details.png": "78c1dc590e33406979d0ece8f513c6104813fa2bea0e7a6bd626c0dda941a482",
+        "model-dark.png": "a0917e6ae38e68b8a94d700e3da7a218c54e55565f2f3ed445e55f6eabb8f743",
+        "model-wide.png": "270bab8a3b0bdad90cfaa8c007893f26a9286aac216dcc11dba88aab23d0ec86",
+        "details-final.png": "4f5fa28256fcbe4d137f57b288397f4b2d6be929b310416580122d785c4f671c"
+      }
+    },
+    "verification": {
+      "tutorial_tests": 175,
+      "lab_tests": 536,
+      "optional_lab_skips": 3,
+      "notebook_exports": 8,
+      "trajectory_cells": 88,
+      "notebook_errors": 0,
+      "release_symbols": 183,
+      "marimo": "passed; inherited empty cells in MMAR and slots2/3"
+    },
+    "unchanged": [
+      "Simulation and inference functions",
+      "Priors and checkpoint contracts",
+      "Asset payloads and pins",
+      "Data/model controls and optional diagnostic state",
+      "Iframe player internals",
+      "Calibration verdicts"
+    ]
   }
 }

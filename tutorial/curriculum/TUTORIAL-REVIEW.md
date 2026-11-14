@@ -266,6 +266,15 @@ result visible rather than substituting the pretrained diagnostics.
 
 ### Align the lesson with the SPX workflow · 12 November 2026
 
+**Presentation alignment · 14 November:** match the current Heston/SPX page at
+`d6c3c2c`: one linked workflow map, numbered six-stage banners with short leads,
+completed/current/upcoming stage links, and numbered subsection headings with
+anchors. Use its typography, spacing, rules, tables and foldable-detail styles
+from a tutorial-local stylesheet. The data introduction has the same unnumbered
+"Before the workflow" banner. Code, controls and model behavior are preserved;
+the iframe players retain their own presentation. Setup code stays available
+in the editor while being folded in the reading view.
+
 Use the useful structure from the SPX Heston notebook without transferring its
 data, estimator or accuracy claims. Keep the observed-history opening, then
 mark each workflow stage and map its BayesFlow calls. A compact design table

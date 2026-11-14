@@ -117,6 +117,13 @@ mixed or damaged asset set; do not replace the recorded hashes to bypass them.
 
 ## Trajectory inference
 
+The page follows the Heston/SPX lesson's presentation: one linked workflow map,
+six numbered section banners, numbered subsection rules, and the same type,
+spacing and foldable-detail styling. Its local stylesheet is
+`notebooks/trajectory_inference.css`; the presentation helpers live in the
+notebook's opening hidden cell. Numerical code and the iframe players retain
+their existing behavior.
+
 The three models use daily log returns and infer **one joint distribution over
 fixed generating parameters**, including drift. The separate parameter plots
 are marginals of those same paired draws. They are not independently fitted

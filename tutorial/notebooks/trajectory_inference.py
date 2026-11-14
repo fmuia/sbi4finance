@@ -4,10 +4,11 @@ __generated_with = "0.25.1"
 app = marimo.App(
     width="medium",
     app_title="Learn volatility dynamics from observed paths",
+    css_file="trajectory_inference.css",
 )
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _():
     import json
     import marimo as mo
@@ -33,30 +34,67 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
-    def lesson_workflow(active=None):
-        stages = [("Model", "Parameters and physical return law"),
-                  ("Simulate", "Histories before seeing data"),
-                  ("Train", "Learn a conditional density"),
-                  ("Infer", "Condition on observed returns"),
-                  ("Check", "Replicate, recover, calibrate"),
-                  ("Use", "Interpret joint uncertainty")]
-        boxes = []
-        for name, detail in stages:
-            selected = active is None or active == name
-            border = "#2563eb" if selected else "#d1d5db"
-            fill = "rgba(37,99,235,.07)" if selected else "transparent"
-            boxes.append(f'<div style="border:1px solid {border};background:{fill};border-radius:8px;'
-                         f'padding:9px 10px"><strong>{name}</strong>'
-                         + (f'<div style="font-size:.8em;line-height:1.35;margin-top:4px">{detail}</div>'
-                            if active is None else "") + '</div>')
-        return mo.Html('<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));'
-                       'gap:6px;margin:8px 0">' + ''.join(boxes) + '</div>')
+    # Same section, type and navigation contract as the Heston/SPX notebook.
+    import html as _markup
+    import re as _re
 
-    return (lesson_workflow,)
+    _stages = (
+        ("Model", "Parameters and physical return law"),
+        ("Simulate", "Histories before seeing data"),
+        ("Train", "Learn a conditional density"),
+        ("Infer", "Condition on observed returns"),
+        ("Check", "Replicate, recover, calibrate"),
+        ("Use", "Interpret joint uncertainty"),
+    )
+
+    def _anchor(number):
+        return "s" + str(number).replace(".", "-")
+
+    def lesson_md(text):
+        # Leave displayed code intact while giving numbered headings anchors.
+        pieces = _re.split(r"(^[ \t]*(?:```|~~~).*?^[ \t]*(?:```|~~~)[ \t]*$)",
+                           text, flags=_re.MULTILINE | _re.DOTALL)
+        for index in range(0, len(pieces), 2):
+            pieces[index] = _re.sub(
+                r"^(\s*)### (\d+\.\d+) (.+)$",
+                lambda match: f'{match[1]}<h3 id="{_anchor(match[2])}">'
+                              f'<span class="nb-number">{match[2]}</span> {match[3]}</h3>',
+                pieces[index], flags=_re.MULTILINE)
+        return mo.md("".join(pieces))
+
+    def workflow_map():
+        steps = "".join(
+            f'<a class="nb-map-step" href="#{_anchor(number)}"><div class="nb-map-name">'
+            f'<span>{number}</span>{name}</div><div class="nb-map-text">{detail}</div></a>'
+            for number, (name, detail) in enumerate(_stages, start=1))
+        return mo.Html(f'<div class="nb-map">{steps}</div>')
+
+    def lesson_section(title, lead, stage=None, kicker=None):
+        if stage is None:
+            top = f'<div class="nb-eyebrow">{_markup.escape(kicker or "")}</div>'
+            number, outline = "", ""
+            anchor = _re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
+        else:
+            rail = []
+            for index, (name, _) in enumerate(_stages, start=1):
+                state = "is-done" if index < stage else "is-current" if index == stage else ""
+                if index > 1:
+                    rail.append(f'<span class="nb-rail-arrow {"is-done" if index <= stage else ""}">&#8594;</span>')
+                rail.append(f'<a class="nb-rail-step {state}" href="#{_anchor(index)}">'
+                            f'<span class="nb-rail-number">{index}</span>{name}</a>')
+            top = f'<div class="nb-rail">{"".join(rail)}</div>'
+            number = f'<span class="nb-section-number">{stage}</span>'
+            outline, anchor = f'<span class="nb-outline-only">{stage} </span>', _anchor(stage)
+        return mo.Html(
+            f'<div class="nb-section" id="{anchor}">{top}<div class="nb-section-head">{number}<div>'
+            f'<h2 id="{anchor}-title">{outline}{_markup.escape(title)}</h2>'
+            f'<div class="nb-standfirst">{lesson_md(lead).text}</div></div></div></div>')
+
+    return lesson_md, lesson_section, workflow_map
 
 
 @app.cell(hide_code=True)
-def _(lesson_workflow, mo):
+def _(mo, workflow_map):
     mo.vstack([mo.md(r"""
     # Learn volatility dynamics from observed paths
 
@@ -81,7 +119,7 @@ def _(lesson_workflow, mo):
 
     The supplied estimators learn useful information, but **all three failed
     their final marginal-calibration screen**. We will inspect that distinction.
-    """), lesson_workflow(),
+    """), workflow_map(),
     mo.accordion({"Where BayesFlow is used": mo.md(r"""
     | Call | Role here |
     |:---|:---|
@@ -118,12 +156,14 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(mo, lesson_section):
     market_window = mo.ui.dropdown(options={
         "2020 to latest available · 13 November 2026": "voo-2020-20261113",
         "2020 crisis window · 256 trading days": "voo-covid-256"},
         value="2020 to latest available · 13 November 2026", label="VOO market window")
     mo.vstack([
+        lesson_section("The data", "Compare market returns with a simulated history and a matched Gaussian.",
+                       kicker="Before the workflow"),
         market_window,
         mo.md("This selects the **VOO observations in the next chart**. "
               "The illustrative Bergomi history stays fixed for comparison."),
@@ -185,7 +225,7 @@ def _(illustrative_market_model, market_story, market_window, mo, trajectory):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo, trajectory):
     model_choice = mo.ui.dropdown(
         options={label: key for key, label in trajectory.MODEL_LABELS.items()},
@@ -201,7 +241,7 @@ def _(mo, trajectory):
     return (model_choice,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo, model_choice, trajectory):
     mo.stop(not trajectory.CATALOGUE.is_file(), mo.callout(mo.md(
         "**Trajectory examples are not packaged in this copy.** See the tutorial "
@@ -211,7 +251,7 @@ def _(mo, model_choice, trajectory):
 
 
 @app.cell(hide_code=True)
-def _(cache_task, lesson_workflow, mo):
+def _(cache_task, mo, lesson_md, lesson_section):
     parameter_labels = {
         "kappa": "Mean reversion κ", "long_variance": "Long variance L",
         "vol_of_vol": "Volatility of variance σ", "rho": "Leverage correlation ρ",
@@ -246,8 +286,8 @@ def _(cache_task, lesson_workflow, mo):
               "Learning a mean curve does not turn this estimator into a latent-state filter.")
     _steps = cache_task["numerics"].get("substeps", cache_task["numerics"].get("observation_substeps"))
     mo.vstack([
-        lesson_workflow("Model"), mo.md(r"""
-        ## 1. Model: dynamics and unknowns
+        lesson_section("Model", "Specify the return dynamics and parameter prior, then inspect one synthetic history.", stage=1), lesson_md(r"""
+        ### 1.1 Dynamics and unknowns
 
         **The price equation is shared with Heston; the variance mechanism changes.**
         We model one ordered return history under the physical probability **P**.
@@ -358,7 +398,7 @@ def _(cache_task, lesson_workflow, mo):
 
 
 @app.cell(hide_code=True)
-def _(cache_task, mo):
+def _(cache_task, mo, lesson_md):
     _memory = ("κ controls mean reversion; σ controls random variance fluctuations. "
                "Inspect persistence across several paths as you change them. The notebook fits the stated finite-step law."
                if cache_task["model"] == "heston" else
@@ -385,7 +425,7 @@ def _(cache_task, mo):
     _style = {"border": "1px solid #d1d5db", "border-radius": "8px", "padding": "10px 12px",
               "min-width": "240px", "min-height": "100%"}
     _cards = [mo.md(text).style(_style) for text in _texts]
-    mo.vstack([mo.md("### Four features to carry into the simulator"),
+    mo.vstack([lesson_md("### 1.2 Four features to carry into the simulator"),
                mo.hstack(_cards[:2], widths="equal", wrap=True, gap=1, align="stretch"),
                mo.hstack(_cards[2:], widths="equal", wrap=True, gap=1, align="stretch")], gap=1)
     return
@@ -550,19 +590,19 @@ def _(cache_task, mo):
     return
 
 
-@app.cell
-def _(cache_arrays, mo):
+@app.cell(hide_code=True)
+def _(cache_arrays, mo, lesson_md):
     case_choice = mo.ui.dropdown(
         options={f"History {index + 1}": index for index in range(len(cache_arrays["trajectory_id"]))},
         value="History 1", label="Supplied synthetic history")
     inference_mode = mo.ui.radio(
         options={"Use saved posterior samples": "saved", "Compute posterior for selected prefix": "live"},
         value="Use saved posterior samples", inline=True, label="Posterior calculation")
-    mo.vstack([mo.md("## The observed history"), case_choice, inference_mode])
+    mo.vstack([lesson_md("### 1.3 The observed history"), case_choice, inference_mode])
     return case_choice, inference_mode
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(cache_arrays, inference_mode, mo, trajectory):
     _lengths = trajectory.saved_lengths(cache_arrays)
     if inference_mode.value == "saved":
@@ -578,7 +618,7 @@ def _(cache_arrays, inference_mode, mo, trajectory):
     return (observed_days,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(cache_arrays, cache_task, case_choice, mo, observed_days, trajectory):
     from sbi4f_tutorial.trajectories import history_widget, latent_assets
     requested_days = observed_days.value
@@ -656,9 +696,9 @@ def _(cache_task, mo):
 
 
 @app.cell(hide_code=True)
-def _(lesson_workflow, mo):
-    mo.vstack([lesson_workflow("Simulate"), mo.md(r"""
-    ## 2. Simulate: try the forward model
+def _(mo, lesson_md, lesson_section):
+    mo.vstack([lesson_section("Simulate", "Choose parameters and generate ordered return histories before fitting a network.", stage=2), lesson_md(r"""
+    ### 2.1 Try the forward model
 
     **Choose the parameters; see the histories they can generate.** The sliders
     use the model's declared parameter ranges. Eight independent five-year paths
@@ -677,7 +717,7 @@ def _(lesson_workflow, mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(cache_task, mo, parameter_labels):
     _defaults = {"hurst": .10, "eta": 1.5, "rho": -.70, "drift": .05,
                  "kappa": 2., "long_variance": .04, "vol_of_vol": .30,
@@ -705,7 +745,7 @@ def _(cache_task, mo, parameter_labels):
     return (simulator_controls,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo, trajectory):
     simulator_scale = mo.ui.dropdown(options=list(trajectory.SIMULATOR_SCALES), value="Standard",
                                      label="Fixed simulator axes")
@@ -719,7 +759,7 @@ def _(mo, trajectory):
     return simulator_refresh, simulator_scale, simulator_view
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(cache_task, mo, parameter_labels, simulator_view):
     _choices = ["vol_of_vol", "kappa"] if cache_task["model"] == "heston" else ["hurst", "eta"]
     simulator_compare = mo.ui.dropdown(options={parameter_labels[name]: name for name in _choices},
@@ -728,7 +768,7 @@ def _(cache_task, mo, parameter_labels, simulator_view):
     return (simulator_compare,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     cache_task,
     mo,
@@ -828,9 +868,9 @@ def _():
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Prior predictive: could this model generate a history like this?
+def _(mo, lesson_md):
+    lesson_md(r"""
+    ### 2.2 Prior predictive: could this model generate a history like this?
 
     The sliders hold parameters fixed. A **prior-predictive check** instead draws
     parameters from their prior, then simulates one history for each draw. Compare
@@ -964,9 +1004,9 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.vstack([mo.md(r"""
-    ### Why not just fit this model in PyMC?
+def _(mo, lesson_md):
+    mo.vstack([lesson_md(r"""
+    ### 2.3 Why not just fit this model in PyMC?
 
     **PyMC can fit stochastic-volatility models.** Here the observations are
     returns, while variance and its driving shocks are hidden. The probability
@@ -1039,16 +1079,16 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(lesson_workflow, mo, trajectory):
+def _(mo, trajectory, lesson_md, lesson_section):
     _figure = trajectory.ASSETS / "illustrations" / "application-workflows-20261101" / "trajectory-prefix-workflow.png"
     mo.vstack([
-        lesson_workflow("Train"), mo.md("## 3. Train a tutorial model here\n\n"
+        lesson_section("Train", "Train a compact posterior estimator on simulated parameter–history pairs.", stage=3), mo.md(""
               "**One training pair: parameters drawn from the prior and the daily returns they generate.** "
               "Only returns enter the estimator. Generating parameters are training labels; latent "
               "variance and shocks stay inside the simulator."),
         mo.image(_figure) if _figure.is_file() else mo.md(""),
-        mo.md(f"""
-        ### Generate parameter–history pairs
+        lesson_md(f"""
+        ### 3.1 Generate parameter–history pairs
 
         ```python
         from sbi4f_tutorial.trajectories import simulation, inference
@@ -1075,11 +1115,11 @@ def _(lesson_workflow, mo, trajectory):
 
 
 @app.cell(hide_code=True)
-def _(mo, trajectory):
+def _(mo, trajectory, lesson_md):
     from sbi4f_tutorial.trajectories import simulation as _input_simulation
     _task = _input_simulation.teaching_task("rough-known", observations=1260)
     mo.vstack([
-        mo.md("### From a return sequence to network inputs\n\n"
+        lesson_md("### 3.2 From a return sequence to network inputs\n\n"
               "The tutorial and supplied models both use a 1,260-day maximum (five trading years). Each observed day becomes a scaled return "
               "and a known time coordinate. Padding gets a false mask; a genuine zero return remains "
               "observed. Generating parameter labels follow a separate training route."),
@@ -1123,9 +1163,9 @@ def _(trajectory):
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Build the posterior estimator
+def _(mo, lesson_md):
+    lesson_md(r"""
+    ### 3.3 Build the posterior estimator
 
     **Keep the order; ignore the padding.** A causal GRU reads returns in order
     and produces a learned summary. The conditional flow maps that summary to a
@@ -1205,10 +1245,10 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(mo, lesson_md):
     mo.vstack([
-        mo.md(r"""
-        ### Train on different amounts of evidence
+        lesson_md(r"""
+        ### 3.4 Train on different amounts of evidence
 
         **Reveal a random prefix, then mask its future.** This teaches one network
         to accept shorter or longer histories without treating padding as data.
@@ -1250,9 +1290,9 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Run the tutorial training route
+def _(mo, lesson_md):
+    lesson_md(r"""
+    ### 3.5 Run the tutorial training route
 
     The button executes the simulation, network, training and sampling steps
     above. It creates a **new five-year rough Bergomi model**. Its loss and
@@ -1265,7 +1305,7 @@ def _(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo):
     train_demo_button = mo.ui.run_button(label="Train the tutorial model and infer its example")
     train_demo_button
@@ -1306,7 +1346,7 @@ def _(mo, path_simulation, trajectory):
     return (train_tutorial_model,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     mo,
     path_simulation,
@@ -1341,10 +1381,8 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(lesson_workflow, mo):
-    mo.vstack([lesson_workflow("Infer"), mo.md(r"""
-    ## 4. Infer: use the supplied model
-
+def _(mo, lesson_section):
+    mo.vstack([lesson_section("Infer", "Condition a supplied estimator on the revealed returns and inspect joint parameter uncertainty.", stage=4), mo.md(r"""
     **Reuse a larger fitted estimator; change the evidence.** This route uses
     the supplied five-year model selected at the top, not the tutorial model
     trained above. Saved draws let you inspect it immediately. To draw a fresh
@@ -1378,7 +1416,7 @@ def _(cache_task, mo, trajectory):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(inference_mode, mo):
     checkpoint_path = mo.ui.text(value="", placeholder="local-checkpoints/path-rough-known (blank = selected model)",
                                  label="Model folder relative to tutorial/assets/ (optional)", full_width=True)
@@ -1396,7 +1434,7 @@ def _(inference_mode, mo):
     return (checkpoint_path,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(checkpoint_path, inference_mode, mo, requested_days, selection):
     _request = (selection, checkpoint_path.value, inference_mode.value)
     live_button = mo.ui.run_button(label=f"Compute posterior for {requested_days} observed days")
@@ -1410,7 +1448,7 @@ def _(checkpoint_path, inference_mode, mo, requested_days, selection):
     return (live_button,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     cache_arrays,
     cache_task,
@@ -1447,7 +1485,7 @@ def _(
     return live_error, live_result, live_timing, pretrained_workflow
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     cache_arrays,
     cache_task,
@@ -1481,7 +1519,7 @@ def _(inference_mode, live_error, live_timing, mo, posterior, requested_days):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     cache_arrays,
     cache_task,
@@ -1529,15 +1567,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(
-    cache_arrays,
-    cache_task,
-    case_choice,
-    mo,
-    parameter_labels,
-    posterior,
-    trajectory,
-):
+def _(cache_arrays, cache_task, case_choice, mo, parameter_labels, posterior, trajectory, lesson_md):
     _reading = trajectory.posterior_readout(cache_task, posterior["draws"],
                                           truth=cache_arrays["truth"][case_choice.value])
     _small = _reading["narrowest_relative_to_prior"]
@@ -1556,7 +1586,7 @@ def _(
     _truth = ("**Synthetic truths.** Outside the central 90% marginal intervals: "
               + ", ".join(parameter_labels[name] for name in _misses) + "."
               if _misses else "**Synthetic truths.** All generating values lie within their central 90% marginal intervals for this history.")
-    mo.vstack([mo.md("### Read this posterior in three steps\n\n" + _precision),
+    mo.vstack([lesson_md("### 4.1 Read this posterior in three steps\n\n" + _precision),
                mo.md(_dependence), mo.md(_truth),
                mo.md("These summaries describe the displayed **approximation** for this history and prefix. "
                      "Width reduction and truth inclusion in one case do not establish accuracy. "
@@ -1568,17 +1598,17 @@ def _(
     return
 
 
-@app.cell
-def _(cache_task, mo, parameter_labels):
+@app.cell(hide_code=True)
+def _(cache_task, mo, parameter_labels, lesson_md):
     _options = {parameter_labels[_name]: _name for _name in cache_task["parameter_names"]}
     _x = "vol_of_vol" if cache_task["model"] == "heston" else "eta"
     pair_x = mo.ui.dropdown(options=_options, value=parameter_labels[_x], label="Horizontal parameter")
     pair_y = mo.ui.dropdown(options=_options, value=parameter_labels["rho"], label="Vertical parameter")
-    mo.vstack([mo.md("### Inspect parameter dependence"), mo.hstack([pair_x, pair_y], justify="start")])
+    mo.vstack([lesson_md("### 4.2 Inspect parameter dependence"), mo.hstack([pair_x, pair_y], justify="start")])
     return pair_x, pair_y
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     cache_arrays,
     cache_task,
@@ -1620,9 +1650,9 @@ def _():
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Watch the evidence grow
+def _(mo, lesson_md):
+    lesson_md(r"""
+    ### 4.3 Watch the evidence grow
 
     **Reveal observations; watch the parameter distributions respond.** This local
     player follows the model and history selected above. The upper observed-day
@@ -1822,10 +1852,8 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(lesson_workflow, mo):
-    mo.vstack([lesson_workflow("Check"), mo.md(r"""
-    ## 5. Check: ask three different questions
-
+def _(mo, lesson_md, lesson_section):
+    mo.vstack([lesson_section("Check", "Check replicated histories, parameter recovery and uncertainty before interpreting the results.", stage=5), lesson_md(r"""
     | Check | Question | Evidence here |
     |:---|:---|:---|
     | Replicated histories | Can fitted parameters reproduce these return summaries? | Independent, zero-origin posterior-predictive histories |
@@ -1835,7 +1863,7 @@ def _(lesson_workflow, mo):
     The saved final-cohort results below answer a broader validation question.
     A successful small fit or a good-looking predictive plot does not replace them.
 
-    ### Posterior predictive: replicate, then compare
+    ### 5.1 Posterior predictive: replicate, then compare
 
     Select complete paired parameter draws from the displayed posterior and
     generate a new history from the model's origin for each. Compare the **same
@@ -1922,7 +1950,7 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(mo, path_checks):
+def _(mo, path_checks, lesson_md):
     _worked = mo.md(r"""
     **One history gives one rank.** Draw its parameters from the prior, simulate
     the observed prefix, then draw 200 parameter samples from its approximate
@@ -1947,7 +1975,7 @@ def _(mo, path_checks):
 
     These are clues, rather than unique diagnoses.
     """).style({"min-width": "260px"})
-    mo.accordion({"Read rank curves step by step": mo.vstack([
+    mo.vstack([lesson_md("### 5.2 Independent network checks"), mo.accordion({"Read rank curves step by step": mo.vstack([
         mo.hstack([_worked, _shapes], widths="equal", wrap=True, align="start", gap=1),
         path_checks.rank_shape_guide(),
         mo.md("**Illustrations, not trajectory results.** These Normal examples share the same simulated "
@@ -1972,7 +2000,7 @@ def _(mo, path_checks):
         that always returns the prior can have uniform ranks without learning.
         Read recovery, dependence, conditional checks and the saved final screens too.
         """),
-    ])})
+    ])})])
     return
 
 
@@ -2118,7 +2146,7 @@ def diagnostic_parameter_control(diagnostic_result, mo, parameter_labels):
         _names = diagnostic_result["task"]["parameter_names"]
         recovery_parameter = mo.ui.dropdown(options={parameter_labels[name]: name for name in _names},
                                            value=parameter_labels[_names[0]], label="Parameter for recovery selection")
-        _output = mo.vstack([mo.md("### Inspect a history behind the recovery plot\n\n"
+        _output = mo.vstack([mo.md("#### Inspect a history behind the recovery plot\n\n"
             "Drag a box around points, then choose a history from that selection. With no box, "
             "all 200 are available in generation order. The history and posterior below use the "
             "actual retained rows from this check; selecting a point runs no new inference."), recovery_parameter])
@@ -2204,7 +2232,7 @@ def diagnostic_case_view(
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(json, trajectory):
     aggregate_report, aggregate_images, aggregate_problem = None, {}, None
     _folder = trajectory.ASSETS / "results" / "trajectories" / "closeout-20261031"
@@ -2237,15 +2265,8 @@ def _(json, trajectory):
 
 
 @app.cell(hide_code=True)
-def _(
-    aggregate_images,
-    aggregate_problem,
-    aggregate_report,
-    cache_task,
-    mo,
-    parameter_labels,
-):
-    _contents = [mo.md("### Saved final-cohort evidence\n\n"
+def _(aggregate_images, aggregate_problem, aggregate_report, cache_task, mo, parameter_labels, lesson_md):
+    _contents = [lesson_md("### 5.3 Saved final-cohort evidence\n\n"
                        "**Learning information and reporting reliable uncertainty are different achievements.** "
                        "Recovery asks whether estimates improve over a prior-only baseline. Calibration asks "
                        "whether nominal 90% intervals contain truth about 90% of the time across independent "
@@ -2301,12 +2322,12 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(lesson_workflow, mo):
+def _(mo, lesson_md, lesson_section):
     scenario_count = mo.ui.radio(options={"128 histories per group": 128,
         "512 histories per group: optional refinement": 512}, value="128 histories per group",
         label="Replicated drawdown budget")
-    mo.vstack([lesson_workflow("Use"), mo.md(r"""
-    ## 6. Use: what does uncertainty change about drawdown?
+    mo.vstack([lesson_section("Use", "Carry paired parameter draws into a drawdown scenario and compare them with a point estimate.", stage=6), lesson_md(r"""
+    ### 6.1 What does uncertainty change about drawdown?
 
     **How much drawdown can this fitted model generate?** Compare two collections
     of independent histories: one at the posterior-mean parameter vector, and one
@@ -2388,10 +2409,10 @@ def _(drawdown_result, drawdown_threshold, mo, model_checks):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(mo, lesson_md):
     mo.vstack([
-        mo.md(r"""
-        ### What would a continuation forecast need?
+        lesson_md(r"""
+        ### 6.2 What would a continuation forecast need?
 
         Independent replicated histories check the fitted model from its origin.
         Predicting the next part of the observed history additionally needs its
