@@ -1367,19 +1367,21 @@ def _(
         The network receives the 63 numbers $y_i/h_i$, the quotes in noise units. In this raw form they are hard to learn from, for two reasons.
         """),
         grid({
-            "Strong correlation": "A change in any parameter moves all 63 inputs together.",
+            "Strong correlation": "Physical parameters often move many quote prices together.",
             "Bad scaling": f"A few directions, such as the overall level and the skew, vary up to {_ratio} times "
                            "more across simulations than the directions that reveal the noise multiplier $c$.",
         }),
         md(r"""
-        **Whitening** is a fixed linear change of coordinates. It makes the inputs uncorrelated with unit variance, without losing information. It is fitted once on simulations, frozen, and applied unchanged to every later input, the SPX quotes included.
+        These correlations come from the variation of mean surfaces across simulated parameters; the original quote errors remain independent.
+
+        **Whitening** is a fixed, invertible linear change of coordinates. It reduces differences in scale and correlation without discarding any input directions. It is fitted once on training simulations, frozen, and applied unchanged to later inputs, including SPX. The financial model and its exact posterior are unchanged.
         """),
         _fig,
         caption(f"The figure uses the {len(_x):,} simulations of Section 2.2. The whitening is fitted on {_split:,} of "
                 f"them and shown on the other {len(_x) - _split:,}."),
-        key("**Whitening gives every direction of the input the same weight.** Before it, the information about $c$ "
-            "sits in the directions that vary least. Afterwards these directions count as much as the dominant "
-            "ones."),
+        key("**Whitening makes the small directions easier to learn from.** Before it, information about $c$ "
+            "sits in directions that vary least. Rescaling helps the network use these alongside the dominant "
+            "directions."),
         grid({
             "Variance per direction": "The variance falls from the first principal direction of the inputs to the "
                                       f"last by {number_word(int(_exponent))} orders of magnitude.",
@@ -1393,23 +1395,32 @@ def _(
              "pairs."),
         mo.accordion({"Whitening, formally": mo.vstack([
             md(r"""
-            Let $x\in\mathbb R^{63}$ be the vector of inputs $y_i/h_i$, with mean $\mu$ and covariance $\Sigma$ estimated from $N$ simulated training data sets. Write $\Sigma=U\Lambda U^\top$, with orthonormal eigenvectors $U$ and eigenvalues $\Lambda=\mathrm{diag}(\lambda_1,\dots,\lambda_{63})$. The whitened input is
+            Let $x\in\mathbb R^{63}$ be the vector of inputs $y_i/h_i$, with mean $\mu$ and covariance $\Sigma$ estimated from $N$ simulated training data sets. Write $\Sigma=U\Lambda U^\top$, with orthonormal eigenvectors $U$ and eigenvalues $\Lambda=\mathrm{diag}(\lambda_1,\dots,\lambda_{63})$. With positive eigenvalues and no floor, the whitened input is
 
             $$\tilde x = W(x-\mu),\qquad W=U\Lambda^{-1/2}U^\top=\Sigma^{-1/2}$$
 
-            so that $\operatorname{Cov}(\tilde x)=W\Sigma W^\top=I$.
+            so that the fitted covariance satisfies $\operatorname{Cov}(\tilde x)=W\Sigma W^\top=I$. A floor limits amplification of very small eigenvalues, so this identity need not hold exactly in our implementation or on held-out simulations.
+
+            The distinction between pooled inputs and quote errors matters. For $X=m(\phi)+c\epsilon$, where $m_i(\phi)=P_i(\phi)/h_i$ and the priors for $\phi$ and $c$ are independent,
+
+            $$\operatorname{Cov}(X\mid\phi,c)=c^2I,\qquad
+            \operatorname{Cov}(X)=\operatorname{Cov}(m(\phi))+\mathbb E[c^2]I.$$
+
+            Whitening addresses the second covariance: the geometry across training simulations. It is not a new assumption about correlated market quote errors. The transformed residuals generally have correlated coordinates.
             """),
             grid({
-                "Choice of $W$": r"This choice of $W$ is **ZCA whitening**. Among all transformations with identity "
-                                 r"covariance, it keeps $\tilde x$ closest to $x$, so each whitened input still "
-                                 r"corresponds roughly to one quote. The alternative $\Lambda^{-1/2}U^\top$ (PCA "
-                                 r"whitening) would mix them. Eigenvalues below $10^{-8}\lambda_{\max}$ are floored "
-                                 "for numerical stability.",
+                "Choice of $W$": r"This choice of $W$ is **ZCA whitening**: it writes the transformed result back "
+                                 r"in the original coordinate axes. The alternative $\Lambda^{-1/2}U^\top$ "
+                                 r"(**PCA whitening**) uses the principal-component axes. Both retain all "
+                                 r"directions and make linear combinations of quotes; the resulting numbers "
+                                 r"are not option prices. Eigenvalues below $10^{-8}\lambda_{\max}$ are "
+                                 "floored for numerical stability.",
                 "Effect on training": r"The ratio $\lambda_{\max}/\lambda_{\min}$, the **condition number** of "
                                       r"$\Sigma$, measures how badly scaled the raw inputs are. Gradient descent on "
-                                      "badly scaled inputs is slow and unreliable, because a step size that suits "
-                                      "the dominant directions is far too small for the others. Whitening sets the "
-                                      "condition number to one.",
+                                      "badly scaled inputs can be slow or unreliable, because a step size that suits "
+                                      "the dominant directions is far too small for the others. Ideal whitening "
+                                      "sets the fitted covariance's condition number to one; eigenvalue flooring "
+                                      "and estimation error qualify that statement here.",
                 "Fitted once": r"The mean $\mu$ and the matrix $W$ come from training simulations only and are "
                                "stored with the estimator, so the same transformation is applied at training and at "
                                "inference.",
@@ -1417,6 +1428,95 @@ def _(
         ])}),
     ])
     return
+
+
+@app.cell(hide_code=True)
+def _(EVIDENCE, mo):
+    import importlib.util as _whitening_importlib
+
+    _spec = _whitening_importlib.spec_from_file_location(
+        "_heston_whitening_results_for_spx", mo.notebook_dir() / "_heston_whitening_results.py")
+    _module = _whitening_importlib.module_from_spec(_spec)
+    _spec.loader.exec_module(_module)
+    whitening_ablation_record = _module.load_results(EVIDENCE / "2026-11-14/heston-whitening-lesson")
+    return (whitening_ablation_record,)
+
+
+@app.cell(hide_code=True)
+def _(caption, key, md, mo, np, plots, plt, table, whitening_ablation_record):
+    _record = whitening_ablation_record
+    _truth = np.asarray(_record["population"]["c_truth"])
+    _arms = _record["arms"]
+    _shown = np.linspace(0, len(_truth) - 1, 32, dtype=int)  # the same cases in both panels
+    _fig, _axes = plt.subplots(1, 2, figsize=(10.6, 3.7), sharex=True, sharey=True, constrained_layout=True)
+    _all_q = np.asarray([_arms[_name]["c_q05_q50_q95"] for _name in ("diagonal", "zca")])
+    _low = min(.5, float(_all_q.min()), float(_truth.min()))
+    _high = max(2., float(_all_q.max()), float(_truth.max()))
+    _pad = .025 * (_high - _low)
+    _rows = []
+    for _axis, _name, _title, _color in zip(
+        _axes, ["diagonal", "zca"], ["Per-quote scaling only", "ZCA whitening"],
+        [plots.SERIES[1], plots.SERIES[0]],
+    ):
+        _q = np.asarray(_arms[_name]["c_q05_q50_q95"])
+        _axis.plot([.5, 2.], [.5, 2.], "--", color=plots.INK, lw=.9)
+        _axis.vlines(_truth[_shown], _q[0, _shown], _q[2, _shown], color=_color, alpha=.28, lw=.8)
+        _axis.scatter(_truth, _q[1], color=_color, s=8, alpha=.55, linewidths=0, rasterized=True)
+        _axis.set(title=_title, xlabel="Generating noise multiplier c",
+                  xlim=(_low - _pad, _high + _pad), ylim=(_low - _pad, _high + _pad))
+        _metrics = _arms[_name]["metrics"]
+        _rows.append({"Preprocessing": "Coordinatewise scaling" if _name == "diagonal" else "ZCA whitening",
+                      "Median RMSE": f"{_metrics['median_rmse']:.3f}",
+                      "Median–truth correlation": f"{_metrics['truth_median_correlation']:.3f}",
+                      "Median 90% width": f"{_metrics['median_width90']:.3f}",
+                      "90% interval frequency": f"{100 * _metrics['coverage90']:.1f}%"})
+    _axes[0].set_ylabel("Posterior median c")
+    plt.close(_fig)
+    whitening_ablation_figure = _fig
+    _before, _after = (_arms[_name]["metrics"] for _name in ("diagonal", "zca"))
+    _training = _record["training"]
+    mo.vstack([
+        md("#### What happened when we trained without whitening?"),
+        mo.callout(md(
+            "**Earlier controlled experiment.** This saved pilot used **54 quotes**, **10,000 training "
+            "datasets** and a spline **CouplingFlow**, trained for **200 epochs**. It is separate from the "
+            "current 63-quote FlowMatching checkpoint. Both arms use the same simulations, initialization, "
+            "network and training budget, starting from the same quotes in noise units, y/h. "
+            "Only the fixed input preprocessing changes."), kind="info"),
+        md(r"Here the noise scale is **$c$**, with quote-error SD $c h_i$. It is inferred jointly with the "
+           r"five Heston parameters. The symbol $\sigma_v$ elsewhere denotes Heston's physical volatility "
+           r"of variance, not this observation-noise multiplier."),
+        _fig,
+        caption(f"The same {len(_truth)} held-out synthetic quote sets appear in both panels. Each dot is a "
+                "generating c against its posterior median; the dashed unit line is exact recovery. "
+                "Central 90% marginal widths are shown for 32 matched cases. Every recorded value is retained "
+                "without clipping. The baseline still centers and scales each quote separately; it does not whiten."),
+        key(f"**Whitening made c informative to the network in this pilot.** Its median–truth correlation "
+            f"rose from {_before['truth_median_correlation']:.3f} to {_after['truth_median_correlation']:.3f}, "
+            f"and median RMSE fell from {_before['median_rmse']:.3f} to {_after['median_rmse']:.3f}."),
+        md(f"**Learning c was only part of the job.** The whitened fit's nominal 90% intervals contain the "
+           f"truth in **{100 * _after['coverage90']:.1f}%** of these cases, so these intervals under-cover. "
+           f"The baseline's **{100 * _before['coverage90']:.1f}%** frequency can look reassuring while its "
+           "medians barely respond to c and its intervals remain almost as wide as the prior's central "
+           "90% interval. Recovery and calibration must be "
+           "checked together. These historical results explain the preprocessing choice; they do not "
+           "certify the current checkpoint."),
+        mo.accordion({"Controlled pilot: training details and results": mo.vstack([
+            table(_rows, align="lrrrr"),
+            caption(f"Each arm uses {_training['rows']:,} fixed noisy training rows, "
+                    f"{_training['epochs']} passes, batch size {_training['batch_size']}, and "
+                    f"{_training['optimizer_updates']:,} optimizer updates. Both transformations are fitted "
+                    "on training inputs only and frozen before evaluation. The comparison keeps the same "
+                    "quote-noise law and all input dimensions; no clean prices or true c values are "
+                    "neural inputs."),
+            caption(f"Both displays use the predeclared final epoch {_arms['zca']['checkpoint']['epoch']}. "
+                    f"The ZCA validation loss reached its minimum at epoch "
+                    f"{_arms['zca']['checkpoint']['validation_min_epoch']}; that earlier model's weights "
+                    "were not retained, so its recovery and coverage are not known. The comparison does "
+                    "not select a favorable checkpoint after inspecting these plots."),
+        ])}),
+    ])
+    return (whitening_ablation_figure,)
 
 
 @app.cell(hide_code=True)
@@ -4300,7 +4400,8 @@ def _(
              f"A half-spread is {SPREAD_RANGE} volatility points. The posteriors are narrow, and model error "
              "stands out."),
             ("Section 2.3", "The network needs well-scaled inputs",
-             "Quotes in noise units and whitening put all 63 inputs on one uncorrelated scale."),
+             "Quotes in noise units and whitening balance input scales and correlations. The matched pilot "
+             "shows how this can help the network recover the noise multiplier."),
             ("Section 5.2", "Calibration is judged across many simulations", _calibration),
             ("Section 5.4", "A calibrated posterior can still be too wide", _sharpness),
             ("Section 5.5", "The model needs checking as well as the network",
