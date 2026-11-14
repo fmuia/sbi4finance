@@ -4200,7 +4200,7 @@ def _(bergomi_results, grid, md, mo, table):
     _reference = bergomi_results["reference"]
     # Immutable public source links also work from marimo's live and exported pages.
     _record_url = ("https://github.com/fmuia/sbi4finance/blob/"
-                   "b6bb3e0576de78ac301169207e430401db928a9c/"
+                   "0793db464059ad1038859a44b65b835d1c60c768/"
                    "lab/evidence/pilot-results/2026-11-14/bergomi-capstone/")
     mo.accordion({
         "All seven inferred parameters": table(_rows),
