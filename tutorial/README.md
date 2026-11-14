@@ -104,26 +104,50 @@ as instructed. The loaders check that the model matches the selected example.
 
 ## Trajectory inference
 
-The three models use daily returns and estimate drift. The joint rough model
-also estimates its variance curve. The estimator accepts any integer history
-length from **1 to 1,260 trading days** (five years).
+The three models use daily log returns and infer **one joint distribution over
+fixed generating parameters**, including drift. The separate parameter plots
+are marginals of those same paired draws. They are not independently fitted
+parameter estimates or a posterior over the hidden volatility history.
+The supplied estimators accept integer history lengths from **1 to 1,260
+trading days** (five years).
+
+The supplied-curve rough task fixes the deterministic mean curve ξ(t)=0.04 as
+part of its simulation design; realized variance remains random. Relax that
+assumption by selecting the rough joint-curve example: it infers the three
+static coefficients S, L and k in ξ(t)=L+(S−L)exp(−kt), together with H, η, ρ
+and drift. Learning these coefficients is still parameter inference, rather
+than filtering time-varying variance. These are physical-return model curves,
+not pricing-measure curves estimated from option quotes.
 
 A stage bar follows the workflow, and a short API map shows where BayesFlow
 enters. A design table explains the masked GRU, spline flow and preprocessing.
 The training code shown is the function called by the button.
-An opening VOO window (256 returns, 3 January 2020 to 7 January 2021) motivates
-the problem with return clustering and an empirical tail comparison against a
-Gaussian reference. This fixed real-data illustration is separate from the
-synthetic histories used for inference; it does not establish real-market
-accuracy of the supplied models.
+The opening defaults to a dated VOO snapshot with **1,726 daily returns from
+3 January 2020 through 13 November 2026**; the earlier 256-day crisis window
+remains selectable. Identical trace and tail-frequency views compare VOO with
+an explicitly specified rough-Bergomi simulation and a Gaussian matched to
+each history's mean and standard deviation. A pointwise band across 16 model
+histories shows simulation variability. The model parameters were fixed for
+illustration, not calibrated to VOO. The longer market display does not extend
+the neural estimator's 1,260-day support or feed market returns into it.
+Both windows load offline accepted data, with no vendor request on opening.
 Four model cards connect physical drift versus log growth, volatility bursts,
 leverage and variance level/memory to the parameters. Predict a change, move
 one simulator control, then compare what happened with your prediction.
 
-Start with the rough model and its supplied variance curve. Inspect returns,
-then use the early simulator to change parameters while keeping innovations
-fixed. It shows eight one-year price paths, daily returns and realized volatility.
-That forward example stays separate from the selected fitted history.
+Start with the rough model and its supplied variance curve. The observed
+synthetic history defaults to all **1,260 days**. Its local reveal player shows
+the original returns and their **actual paired hidden variance at day
+boundaries**, with marginal-frequency panels alongside. The hidden path comes
+from a verified replay of the same parameters and innovations; it is simulation
+truth, never a network input or an estimated state. Play, advance, reset and
+scrub reuse that one history; the defaults reveal 21 days per step on trading-month
+axes. Fixed axes and outside counts keep comparisons honest.
+
+The separate forward simulator changes parameters while keeping innovations
+fixed. It shows eight one-year price paths, daily returns and return-based
+realized volatility. This noisy rolling statistic differs from the hidden
+variance revealed for the fitted synthetic history.
 The observed-history explanation flags an important design limitation:
 zero-origin rough variance is nonstationary even with a constant mean curve.
 Its median can decline while rare large paths keep its mean fixed. The four
@@ -131,6 +155,10 @@ saved known-curve histories strongly illustrate this effect; it is not a plot
 normalization. The H-prior explanation distinguishes roughness from Gaussianity:
 the driver is Gaussian for every H, while H=1/2 is its Brownian boundary. The
 chosen Uniform[0.03,0.4] training prior excludes that boundary and cannot test it.
+Increasing η increases log-variance dispersion, while its compensator preserves
+the ensemble mean and lowers the marginal median. A fixed realized variance
+path can therefore fall when η rises. The controls explain this effect instead
+of promising a monotone increase in every path's level.
 An alternate three-setting view compares H or η for rough Bergomi and σ or κ
 for Heston with matched random inputs. **New realizations** refreshes every
 column together; switching display scales does not change the draws.
@@ -156,6 +184,13 @@ scaled time/mask tokens, the GRU and flow conditions, with generating labels
 kept on a separate training route. The architecture diagram and visible code
 show each route's actual settings. Switching the supplied model
 also changes its synthetic history.
+The original workflow graphic and input diagram remain, with a new animated
+walkthrough of an actual tutorial training pair. It follows canonical return
+tokens, prefix masks and known time features through the GRU and joint density
+loss. Moving highlights explain the computation; they are not measured neural
+activations and do not fit a model. A comparison diagram distinguishes the
+recurrent observation encoder from the option lessons' direct condition
+vectors, while also naming the density-family and preprocessing changes.
 The GRU compresses the returns into 16 tutorial or 32 pretrained summary values;
 two known timing features condition the flow separately. Summary size is a
 design choice, not a guarantee that all information survives. Training uses
@@ -169,8 +204,10 @@ posterior plots using exactly that prefix. Without it, the labelled saved
 fallback remains available. Changing the model, history or length clears a
 previous live result.
 The **Watch the evidence grow** player has separate local play/pause, advance,
-reset and scrub controls. Its default view covers the first 21 trading days;
-day, week and month axis units and longer views make the early changes legible.
+reset and scrub controls. It defaults to the full selected horizon, **Fast**
+playback and trading-month axes; optional early-time zoom and day/week units
+make the first changes legible. Generating-value markers stay visible in each
+parameter marginal for this synthetic example and never enter inference.
 It advances through actual posterior frames rather than interpolating samples.
 The four supplied-curve rough-Bergomi examples include 65 actual saved frames
 each, daily through day 21 and then more widely spaced. Their original 12
@@ -185,20 +222,31 @@ prior's, reports paired-draw Pearson correlations and locates the synthetic
 truth. These describe concentration and dependence; they do not measure accuracy.
 
 The two model sources are labelled beside their outputs. The tutorial fit does
-not reproduce or validate the supplied five-year fits. Production-bank
-instructions and detailed input/diagnostic tables are optional.
+not reproduce or validate the supplied five-year fits. Model extensions,
+posterior-prefix changes, additional native frames, production-bank instructions
+and detailed input/diagnostic tables are collapsed secondary tools.
 
-**Compare simulations with the observed history.** The prior-predictive check
-draws 200 independent histories from the declared prior. The posterior-predictive
-check draws 32 complete parameter rows from the displayed supplied-model
-posterior, saved or fresh, and simulates independent histories from the model's
-origin. Magnitude and Ordering views compare return summaries and signed/absolute
-return autocorrelation with the observed history. A shuffle illustration shows
-why matching return sizes does not establish temporal fit. Short or constant
-histories have explicitly unavailable dependence estimates. The default 32
-posterior replicas appear as individual ACF curves; an optional larger batch
-supports pointwise descriptive bands. The posterior check uses the actual prefix length
-shown beside the posterior, including any labelled saved fallback.
+**Compare data with replicated histories.** The prior-predictive action draws
+one parameter vector and one independent history for each of 200 simulations.
+Its default comparison uses the same-length prefix of the accepted VOO snapshot;
+the supplied synthetic observation is an alternative. This is a descriptive
+model/prior check, with no neural inference on market data.
+
+The posterior-predictive action selects 32 complete parameter rows from the
+displayed supplied-model posterior, saved or fresh, and simulates independent
+histories from the model's origin. It compares the actual posterior conditioning
+length, including any labelled saved fallback, with that synthetic observation.
+The default display aligns return paths, cumulative log wealth, pooled return
+frequencies and absolute-return tails. A Gaussian fitted to the comparison
+history provides an IID reference in the same views. Matching scale alone does
+not establish matching tails or timing; neither model is guaranteed to fit.
+Summary and Timing views add the original magnitude checks and signed/absolute
+return autocorrelation, with a finite-sample Gaussian comparison. A feature
+table highlights large moves and amplitude dependence. Short or constant
+histories have explicitly unavailable estimates. All simulation rows remain in
+the data; fixed views report outside counts. Individual curves and pointwise
+simulation bands have different meanings and do not establish calibration.
+The 32/256 replication budgets and actions are optional controls.
 These are independent replications, not continuations of the observed path.
 Parameter inference alone does not provide the hidden-state or rough-memory
 conditioning needed for a continuation forecast.
@@ -217,7 +265,8 @@ scenarios start at the model's origin and do not condition on today's latent
 variance or rough-shock memory. The supplied posterior's calibration failures
 also apply to calculations derived from it.
 
-**Check the network you used.** Choose **Network to check**, set **Days per
+**Check the network you used.** Expand the optional independent-history tools,
+choose **Network to check**, set **Days per
 diagnostic history**, then press **Check this network on 200 independent histories**.
 This length is separate from the single-history controls above. First use
 generates 200 validation histories for that task and keeps them in session
@@ -240,8 +289,9 @@ The figures describe the selected workflow at that history length; they add a
 check of the model you just ran alongside the saved final-cohort results below.
 They do not replace those results or validate the tiny tutorial fit.
 Edit `trajectories/diagnostics.py` for this check; the shared network and masking
-code remains in `trajectories/inference.py`. Prior/posterior-predictive return
-checks live in `trajectories/model_checks.py`.
+code remains in `trajectories/inference.py`. Prior/posterior-predictive numerical
+checks live in `trajectories/model_checks.py`; their data/model comparison views
+live in `trajectories/predictive_visuals.py`.
 
 **Checks are not yet satisfactory:** all three estimators failed the final
 calibration check. The Heston simulator can also produce zero-variance days

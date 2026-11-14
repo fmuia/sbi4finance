@@ -1,0 +1,20 @@
+{
+  "format": "fixed_market_return_example_v2",
+  "ticker": "VOO",
+  "n": 1726,
+  "start_date": "2020-01-03",
+  "end_date": "2026-11-13",
+  "price_start_date": "2020-01-02",
+  "n_prices": 1727,
+  "source": "Yahoo Finance daily chart; adjusted close including corporate-action adjustments",
+  "source_url": "https://query1.finance.yahoo.com/v8/finance/chart/VOO?period1=1577836800&period2=1794700800&interval=1d&events=history&includeAdjustedClose=true",
+  "fetched_at_utc": "2026-11-14T00:20:31.858218+00:00",
+  "source_file": "yahoo-voo-chart-20261114.json",
+  "source_sha256": "7c34c55fe67a1b9d2412d2cae70b77207195c5c6165acce632fc8a2206e6d0fd",
+  "fetch_record_sha256": "a8289520285e0f8a6b7f4049e2f2a0c987e8907acf0ce90e021a0dda88b999df",
+  "source_observation": "daily adjusted closing prices; every returned row retained",
+  "log_conversion": "simple=P[t]/P[t-1]-1; log=numpy.log1p(simple), float64",
+  "selection": "all dated closes in the recorded response; no filtering, recentering or scaling",
+  "scope": "dated empirical motivation; no neural market inference or forecasting claim",
+  "arrays_sha256": "ec4c5fffc661e1a89cc940ab2584076b6252e7c8e8a3f1f5968ee2d3f75d2beb"
+}

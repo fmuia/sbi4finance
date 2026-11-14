@@ -5,15 +5,15 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 116,
+    "tutorial_tests": 141,
     "notebook_exports": 7,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 183,
-    "local_document_links": 53,
+    "local_document_links": 48,
     "marimo_warnings": "existing empty cells in slots 2 and 3",
     "lab_runtime_parity_tests": 12,
-    "trajectory_notebook_cells": 83,
-    "lab_core_tests": 529,
+    "trajectory_notebook_cells": 88,
+    "lab_core_tests": 531,
     "lab_optional_skips": 3
   },
   "browser": {
@@ -98,13 +98,13 @@
   },
   "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "9f071cae8f657a3af7b02e67d45a02df205b6c34d8084d188894b8ab57778859",
-    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "1967427b7474402098b86cc9db7042f3986fa040c8000bf09d09caf77a62468e",
-    "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "5ed98e3d2fce3df3319e3478e08fbdd7f63f00e0f632461bbd783cebf9acac06",
+    "tutorial/notebooks/trajectory_inference.py": "ff4bc2cf26a91d77231d296e804fbf9120b264450ceeba09440fd8d1647c9dde",
+    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "54f6f1ee3069b34a7e0eacf0f511a9566fa2e360536868e020311f8f3f7a3664",
+    "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "7749e5245646ff567055a82f2535fafa4f36c537ee9165b53863edeafbe8fdf6",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "9f30d265bb20a0177cf1526bd387d5d141f4df4bccba5a58c14d253fd56b02c7",
-    "tutorial/README.md": "28a843fbf7fa4cfaa626dd7cb738da479734659385e008eda0189764eeab9d80",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "fba1d4542c945b034d83e70a60b168e4aeb4c2c03c8ef07a66f1fdc0ebb97704",
+    "tutorial/README.md": "3b5563937fc8ff9965e716d25828f6626ef4d25e373d9b38f3061f63dc869834",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "d1375cbdf7cb9fbc4daafd905a77c18473cfde66a2131a9d46487dd50b0fd645",
     "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "91092853be3846c730e83f3f45eb3789c2adc96a12b34cb571ba2f3074a32354",
     "tutorial/tests/test_trajectory_diagnostics.py": "02bf496481c2ad1c0fda1d949a042e1f36d36747b8e9a7b2cfea68d4b99e04ee",
     "tutorial/src/sbi4f_tutorial/trajectories/model_checks.py": "18440646719d4350e821cb05cee48b16904d09e65c18ff852e9165e163c88ec0",
@@ -112,17 +112,27 @@
     "tutorial/tests/test_trajectory_posterior_readout.py": "e2b64c53a7220e0dea19d9b44dc5a272e6ccef718b8d8fe0d49a095c1af66008",
     "tutorial/src/sbi4f_tutorial/shared/path_statistics.py": "5746d45222bd96caf0705e3a6f7fb93285068ef63ea543add23c0e2acc734d2f",
     "tutorial/tests/test_path_statistics.py": "6b991d3010707a4ea8cc790e5d61dae5dc848e04b5a8c448f0213581825ad094",
-    "lab/scripts/export_market_example.py": "fade5bfaca4e1ac0d0d865ecb4f66c9750d7189461c21514cfc517484262aa5d",
-    "lab/tests/test_market_example_export.py": "7ce4534dd6ef07bd78ee201ac40ec8ad665c9a3772ce4eaf32428b3249c8d295",
+    "lab/scripts/export_market_example.py": "122b89943dafb3b5a256693336243fd57c9335aa992098f72983ce7f22577908",
+    "lab/tests/test_market_example_export.py": "b1003e065f43c6c40f19077da3dfc06016ae95391ae55cae6df0031cdd0fcf3c",
     "lab/scripts/trajectory_evidence.py": "eeb8871a3845d78885998250e8ea230b7fff5aab7978ba11230bbd40ffbe5666",
     "tutorial/src/sbi4f_tutorial/trajectories/evidence.py": "543c9a5c42e9ad4f1c0829626c0fd3855c0d25bcad5f808ac9cd54b1c4a428d4",
     "tutorial/src/sbi4f_tutorial/trajectories/evidence_assets.py": "67ee13a2e1d7cb4e4c78d79ed4a828d33b45886be842b7a0a1ae148cde5f5f2e",
-    "tutorial/src/sbi4f_tutorial/trajectories/evidence_widget.py": "c9bfc8c34b9a8f3dc24a7a3242dc457e256dbb386df1b39303b75b3f36e855a5",
+    "tutorial/src/sbi4f_tutorial/trajectories/evidence_widget.py": "a48c5878e854b988b46422ea90da13224e5e12e3fac97bc683223bbd22802d44",
     "tutorial/tests/test_trajectory_evidence.py": "a82027c4096607bbeb537f9d7f969373468811963dec8bcee6a72fecc1140e3f",
     "tutorial/tests/test_trajectory_evidence_assets.py": "c135c3a93558eaa9577a419d17f8c6d075aabaf47909a59961db7ad4c2660925",
-    "tutorial/tests/test_trajectory_evidence_widget.py": "964c42e0975166dfebdfa4f5dbe3e02492c7bf2862eeb9340b3e61cbe4875b4a"
+    "tutorial/tests/test_trajectory_evidence_widget.py": "964c42e0975166dfebdfa4f5dbe3e02492c7bf2862eeb9340b3e61cbe4875b4a",
+    "lab/scripts/trajectory_latent_history.py": "3be7b09419c005c3610e59a2e50f12c013335adc1e2b3784c3a4e8bbe42b8486",
+    "tutorial/src/sbi4f_tutorial/trajectories/history_widget.py": "baadce6c87190b077506a2a7c73e43bdf78d2c82103d19b14908daec89c89563",
+    "tutorial/src/sbi4f_tutorial/trajectories/latent_assets.py": "7a5e5e2126679a3995154343dbff9c46a3568ad44fbb28a2334e779a1b6e8bac",
+    "tutorial/src/sbi4f_tutorial/trajectories/market_story.py": "12391c74ae958fb23a098ff00bfda18dca2a9e79cb072a27b23217b095f4c030",
+    "tutorial/src/sbi4f_tutorial/trajectories/predictive_visuals.py": "d124e2678e0e83fa5f2baa6272913d786685fb92bf93c8c95ac1dacc19cd5de8",
+    "tutorial/src/sbi4f_tutorial/trajectories/training_widget.py": "9793f575ca0b9dc939118ce1e58a870113feb4111656be1ee561420c8664dd66",
+    "tutorial/tests/test_trajectory_latent_history.py": "d51f5dae1e688ff1b2de6d1505610ab5bc6c64d71a9201b5fcb3b1804f53233d",
+    "tutorial/tests/test_trajectory_market_story.py": "6d26d149373ca910d1c6e0859f6130b72c67c9b18e24a6b63da9c5bb9145a79a",
+    "tutorial/tests/test_trajectory_predictive_visuals.py": "309b85b741afb2ccb0e40857dcd8fb5f28c5d4dfee1d9e5387534b495452a0b3",
+    "tutorial/tests/test_trajectory_visual_widgets.py": "f779579aaecbdd7fce8d401b725a2a962e51c548ee5247ce6e850039025ddbfc"
   },
-  "updated_at_utc": "2026-11-13T01:40:33+00:00",
+  "updated_at_utc": "2026-11-14T00:47:57+00:00",
   "forward_simulator": {
     "paths": 8,
     "days": 252,
@@ -1415,6 +1425,152 @@
       "final-export": "9808fbd80302dce6527dc9bf083e5f00d45b3a1fb4a0e8fe51c0a82a886eb4bd",
       "check": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
       "release": "0773007cc1d1281993097e92ffede6e3042fe73a2d82d1ac85e1c5d62e2a9a7d"
+    }
+  },
+  "trajectory_feedback_20261114": {
+    "scope": "joint static parameter inference with explicit synthetic latent truth; no new state posterior, real-market neural inference, checkpoint or scientific promotion",
+    "conceptual_assessment": {
+      "parameter_joint_vs_marginal_views": "one conditional joint distribution; marginal plots and complete paired draws share the same source",
+      "state_filtering_vs_smoothing": "marginal p(V_t|returns_so_far) and full-path smoothing are different targets, neither trained by this parameter estimator",
+      "fixed_curve_vs_latent_state": "xi is a deterministic physical mean curve, not the realized V path; rough-joint adds static curve coefficients without adding filtering",
+      "forecast_extension": "requires validated joint parameter/state or directly conditional predictive target; rough memory and finite-origin initialization need review",
+      "bayesflow_reference": "https://bayesflow.org/v2.0.14/_examples/Bivariate_Smoothing.html",
+      "mmar_source_commit": "069d5dc5943dbe85505849f2fa8bfb563617ff97"
+    },
+    "market": {
+      "n_daily_returns": 1726,
+      "first_date": "2020-01-03",
+      "last_date": "2026-11-13",
+      "market_json_sha256": "f6ca7b9c4478145fd7b23a3fac12b143ea48828c703a9f7f06474e8347308964",
+      "arrays_sha256": "ec4c5fffc661e1a89cc940ab2584076b6252e7c8e8a3f1f5968ee2d3f75d2beb",
+      "neural_horizon_days_unchanged": 1260,
+      "bergomi_distribution_comparison": "16 independent illustrative paths, fixed parameters, same trace and tail views; no market fit"
+    },
+    "latent_player": {
+      "bundle_sha256": "7beb5b9647fdf2fdec819f5bf0c7f7c5170841572490412643ddebb24a74436c",
+      "payload_bytes": 532076,
+      "models": 3,
+      "cases_per_model": 4,
+      "observed_returns_unchanged": true,
+      "canonical_default_outputs_bitwise_preserved": true,
+      "optional_capture_added": true,
+      "latent_paths_never_neural_conditions": true
+    },
+    "controls": {
+      "observed_prefix_default": 1260,
+      "observed_history_initially_fully_revealed": true,
+      "posterior_player_default_speed": "Fast",
+      "posterior_player_default_units": "Trading months",
+      "posterior_player_default_horizon": "all selected days",
+      "truth_markers": "actual case parameters",
+      "optional_tools_start_collapsed": true
+    },
+    "didactic_additions": [
+      "eta dispersion versus fixed-mean compensation and falling median",
+      "explicit latent likelihood integral and MCMC augmentation routes",
+      "canonical prefix/mask-to-GRU-to-flow schematic playback alongside preserved graphic",
+      "recurrent encoder comparison preserving other implementation differences",
+      "prior-predictive real VOO/synthetic target choice",
+      "prior and posterior paths, cumulative log wealth, return and tail frequencies, timing and fitted IID Gaussian controls"
+    ],
+    "browser": {
+      "widget-browser": {
+        "checks": [
+          "observed history shows1260 initially, actual pairedV, revealed-time marginals, replay/pause/scrub and fixed-axis data reuse",
+          "all three model histories show verified1260day returns and their own boundary variance",
+          "playable actualprefix-mask training route retains originalgraphics, illustrates GRU/flow without inventing activations or autoregressive decoder",
+          "evidence defaults Fast/months/full1260; generating truth lines correct and playback reuses actualframes",
+          "optional network-check tools collapsed and gated; saved calibration failures retained",
+          "plain selected-prefix calculation route opens collapsed extra tools without automatic query or training",
+          "collapsed native-frame action computes21 exact prefixes and preserves synthetic truth annotations"
+        ],
+        "page_errors": [],
+        "status": "passed",
+        "narrow_width": 760,
+        "math_errors": 0,
+        "marimo_errors": 0,
+        "no_hidden_widget_footer": true,
+        "iframe_sizes": {
+          "history": {
+            "scroll": 817,
+            "client": 817
+          },
+          "training": {
+            "scroll": 710,
+            "client": 710
+          },
+          "evidence": {
+            "scroll": 1025,
+            "client": 1025
+          }
+        }
+      },
+      "predictive-browser": {
+        "checks": [
+          "long VOO snapshot through2026-11-13 renders bydefault with illustrative Bergomi",
+          "full/crisis window switches without changing supported neural1260 horizon",
+          "200 prior histories compared with actualVOO same1260days and fittedGaussian featuretable",
+          "alternative synthetic prior observation works and source is relabelled",
+          "32 posterior replicas and Gaussian control render using actualsaved1260posterior"
+        ],
+        "page_errors": [],
+        "horizontal_overflow": false,
+        "math_errors": 0,
+        "status": "passed"
+      }
+    },
+    "browser_log_sha256": {
+      "widget-browser": "d0490f5616c91b8c4a8c52ce1d91ea1817410d4eb928066cb7159360f15883e8",
+      "predictive-browser": "6f98bc0c1bff3d3a3f1ae1a5b024f75f4b5949a4c5bbd5d78e04c0b79297a4b2"
+    },
+    "feature_readout": {
+      "voo_prior": [
+        {
+          "Feature": "Days beyond observed mean \u00b1 3 SD (4 log %)",
+          "Observed": "1.51%",
+          "Model central 90%": "0\u20134.25% (200/200)",
+          "Fitted IID Gaussian central 90%": "0.0794\u20130.48% (200/200)"
+        },
+        {
+          "Feature": "Lag-1 dependence in absolute returns",
+          "Observed": "0.397",
+          "Model central 90%": "0.0127\u20130.495 (200/200)",
+          "Fitted IID Gaussian central 90%": "-0.0501\u20130.0409 (200/200)"
+        }
+      ],
+      "synthetic_posterior": [
+        {
+          "Feature": "Days beyond observed mean \u00b1 3 SD (0.89 log %)",
+          "Observed": "2.62%",
+          "Model central 90%": "1.19\u201340.6% (32/32)",
+          "Fitted IID Gaussian central 90%": "0.0794\u20130.48% (200/200)"
+        },
+        {
+          "Feature": "Lag-1 dependence in absolute returns",
+          "Observed": "0.443",
+          "Model central 90%": "0.266\u20130.602 (32/32)",
+          "Fitted IID Gaussian central 90%": "-0.0535\u20130.0421 (200/200)"
+        }
+      ]
+    },
+    "verification": {
+      "tutorial_tests": 141,
+      "notebook_exports": 7,
+      "notebook_cell_errors": 0,
+      "runtime_boundary_symbols": 183,
+      "local_document_links": 48,
+      "marimo_warnings": "existing empty cells in slots 2 and 3",
+      "lab_runtime_parity_tests": 12,
+      "trajectory_notebook_cells": 88,
+      "lab_core_tests": 531,
+      "lab_optional_skips": 3
+    },
+    "log_sha256": {
+      "tutorial-tests": "066d454f5e97128c3bdc0b3bf5b9a3817881d14a25df578492f2f3963bb79f1a",
+      "lab-tests": "ea6366fa94b425fbe96c0c331310819a563392c89d7122e1ab6581435a2aa258",
+      "exports": "d705016509d3c61e242fc0e0e3f74fced77f0541c2beb0a5d71b0edfd00b1a92",
+      "marimo": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
+      "release": "807ab65bec1dd1237c49b58da48dc252e9f5a98ed06e5552d19f4f06b40e426c"
     }
   }
 }

@@ -11,7 +11,7 @@ import numpy as np
 from .simulation import validate_task
 
 
-def build_payload(task, observations, frames, *, end, labels=None, history_label="Selected history"):
+def build_payload(task, observations, frames, *, end, labels=None, history_label="Selected history", truth=None):
     """Prepare fixed-axis histograms from complete, paired physical draw rows."""
     validate_task(task)
     if isinstance(end, bool) or not isinstance(end, (int, np.integer)) or not 1 <= end <= task["n_observations"]:
@@ -24,10 +24,17 @@ def build_payload(task, observations, frames, *, end, labels=None, history_label
     if values.ndim != 1 or len(values) < end or values.dtype.kind not in "fiu" or not np.isfinite(values[:end]).all():
         raise ValueError("provide one finite observed prefix; later values are not read")
     names, bounds = task["parameter_names"], np.asarray(task["prior_bounds"])
+    if truth is not None:
+        if np.iscomplexobj(truth) or np.ma.isMaskedArray(truth):
+            raise ValueError("generating values must be one real complete parameter row")
+        truth = np.asarray(truth)
+        if (truth.shape != (len(names),) or truth.dtype.kind not in "fiu" or not np.isfinite(truth).all()
+                or np.any(truth < bounds[:, 0]) or np.any(truth > bounds[:, 1])):
+            raise ValueError("generating values must be one complete row within prior support")
     labels = labels or {}
     bins = [np.linspace(low, high, 25) for low, high in bounds]
     coordinates = []
-    for name, kind, edges in zip(names, task["prior_types"], bins, strict=True):
+    for index, (name, kind, edges) in enumerate(zip(names, task["prior_types"], bins, strict=True)):
         low, high = edges[0], edges[-1]
         cdf = (np.log(edges / low) / np.log(high / low) if kind == "log_uniform"
                else (edges - low) / (high - low))
@@ -35,7 +42,8 @@ def build_payload(task, observations, frames, *, end, labels=None, history_label
         quantiles = (np.exp(np.log(low) + probabilities * np.log(high / low)) if kind == "log_uniform"
                      else low + probabilities * (high - low))
         coordinates.append({"name": name, "label": labels.get(name, name), "edges": edges.tolist(),
-                            "prior": (np.diff(cdf) / np.diff(edges)).tolist(), "prior_quantiles": quantiles.tolist()})
+                            "prior": (np.diff(cdf) / np.diff(edges)).tolist(), "prior_quantiles": quantiles.tolist(),
+                            "truth": None if truth is None else float(truth[index])})
     actual, seen = [], set()
     for frame in sorted(frames, key=lambda item: item["length"]):
         length = frame["length"]
@@ -65,9 +73,9 @@ def build_payload(task, observations, frames, *, end, labels=None, history_label
             "frames": all_frames, "return_limits": [-8., 8.], "week_days": 5, "month_days": 21}
 
 
-def render_html(task, observations, frames, *, end, labels=None, history_label="Selected history"):
+def render_html(task, observations, frames, *, end, labels=None, history_label="Selected history", truth=None):
     """Build a dependency-free document for the documented ``mo.iframe`` API."""
-    payload = build_payload(task, observations, frames, end=end, labels=labels, history_label=history_label)
+    payload = build_payload(task, observations, frames, end=end, labels=labels, history_label=history_label, truth=truth)
     encoded = json.dumps(payload, allow_nan=False, separators=(",", ":")).replace("</", "<\\/")
     return _DOCUMENT.replace("__PAYLOAD__", encoded)
 
@@ -93,13 +101,13 @@ svg{display:block;width:100%;height:auto}.path{background:#fff;border:1px solid 
  <h3>Reveal one fixed history</h3>
  <div class="muted" id="context"></div>
  <div class="controls"><button id="play" class="primary">Play</button><button id="advance">Advance</button><button id="reset">Reset</button>
- <label>Axis units <select id="units" aria-label="Axis units"><option value="1">Trading days</option><option value="5">Trading weeks</option><option value="21">Trading months</option></select></label>
+ <label>Axis units <select id="units" aria-label="Axis units"><option value="1">Trading days</option><option value="5">Trading weeks</option><option value="21" selected>Trading months</option></select></label>
  <label>Early-time zoom <select id="zoom" aria-label="Early-time zoom"></select></label>
- <label>Playback <select id="speed" aria-label="Playback speed"><option value="1100">Slow</option><option value="500" selected>Normal</option><option value="200">Fast</option></select></label></div>
+ <label>Playback <select id="speed" aria-label="Playback speed"><option value="1100">Slow</option><option value="500">Normal</option><option value="200" selected>Fast</option></select></label></div>
  <div class="scrub"><input id="scrub" type="range" min="0" value="0" aria-label="Actual posterior frame"><output id="position" aria-live="polite"></output></div>
  <div class="muted" id="schedule"></div>
  <div class="path"><svg id="path" viewBox="0 0 900 190" role="img" aria-label="Revealed observed daily log-return path"></svg></div>
- <div class="legend"><span><i class="swatch"></i>Current empirical posterior</span><span><i class="swatch" style="border-color:#94a3b8;border-top-style:dashed"></i>Declared prior</span><span>Shading: central 90% marginal interval</span><span>Y axes: marginal density, fixed across frames</span></div>
+ <div class="legend"><span><i class="swatch"></i>Current empirical posterior</span><span><i class="swatch" style="border-color:#94a3b8;border-top-style:dashed"></i>Declared prior</span><span><i class="swatch" style="border-color:#111827;border-top-style:dotted"></i>Generating value (synthetic)</span><span>Shading: central 90% marginal interval</span><span>Y axes: marginal density, fixed across frames</span></div>
  <div id="parameters" class="parameters"></div>
  <div id="status" class="status"></div>
  <p class="muted" style="margin-bottom:0">One parameter vector governs the whole history. Each posterior conditions on the original prior and its entire revealed prefix. Playback reveals observations; it does not propagate hidden variance, restart a process, or recursively multiply overlapping posteriors. Histogram scales stay fixed throughout these prepared frames.</p>
@@ -131,6 +139,7 @@ function drawCards(frame){const holder=byId('parameters');holder.replaceChildren
  for(let j=0;j<frame.densities[i].length;j++)add(svg,'rect',{x:x(c.edges[j])+.3,y:y(frame.densities[i][j]),width:Math.max(.5,x(c.edges[j+1])-x(c.edges[j])-.6),height:H-B-y(frame.densities[i][j]),fill:frame.length?'#7ba6f6':'#c6d1e1',opacity:.8});
  let prior=[];for(let j=0;j<c.prior.length;j++){prior.push(x(c.edges[j])+','+y(c.prior[j]));prior.push(x(c.edges[j+1])+','+y(c.prior[j]));}add(svg,'polyline',{points:prior.join(' '),fill:'none',stroke:'#64748b','stroke-width':1.5,'stroke-dasharray':'4 3'});
  add(svg,'line',{x1:x(q[1]),x2:x(q[1]),y1:T,y2:H-B,stroke:'#1d4ed8','stroke-width':1.4});add(svg,'line',{x1:L,x2:W-R,y1:H-B,y2:H-B,stroke:'#b7c4d5'});
+ if(c.truth!==null)add(svg,'line',{x1:x(c.truth),x2:x(c.truth),y1:T,y2:H-B,stroke:'#111827','stroke-width':1.5,'stroke-dasharray':'2 3','data-generating-value':c.truth});
  for(let j=0;j<3;j++){const v=low+(high-low)*j/2;add(svg,'text',{x:x(v),y:H-B+16,'text-anchor':'middle','font-size':11,fill:'#526177'},number(v));}
  add(svg,'text',{x:L-3,y:15,'text-anchor':'end','font-size':9,fill:'#7a879a'},number(c.density_max));add(svg,'text',{x:L-3,y:H-B,'text-anchor':'end','font-size':9,fill:'#7a879a'},'0');
  const readout=document.createElement('div');readout.className='readout';readout.textContent='Median '+number(q[1])+' · central 90% ['+number(q[0])+', '+number(q[2])+']';card.append(readout);holder.append(card);
@@ -141,7 +150,7 @@ function draw(){const frame=available[index];byId('scrub').max=available.length-
  drawPath(frame);drawCards(frame);
 }
 byId('context').textContent=data.history_label+' · local playback ends at or before the '+data.end+' days selected above. This player does not change the other notebook views.';
-for(const end of [...new Set([Math.min(21,data.end),Math.min(63,data.end),data.end])]){const option=document.createElement('option');option.value=end;option.textContent=end===data.end?'All '+end+' selected days':'First '+end+' days';byId('zoom').append(option);}byId('zoom').value=Math.min(21,data.end);available=data.frames.filter(frame=>frame.length<=Number(byId('zoom').value));
+for(const end of [...new Set([Math.min(21,data.end),Math.min(63,data.end),data.end])]){const option=document.createElement('option');option.value=end;option.textContent=end===data.end?'All '+end+' selected days':'First '+end+' days';byId('zoom').append(option);}byId('zoom').value=data.end;available=data.frames.filter(frame=>frame.length<=Number(byId('zoom').value));
 byId('play').onclick=play;byId('advance').onclick=()=>{stop();advance();};byId('reset').onclick=()=>{stop();index=0;draw();};byId('scrub').oninput=()=>{stop();index=Number(byId('scrub').value);draw();};byId('units').onchange=draw;byId('zoom').onchange=()=>{stop();const previous=available[index].length;available=data.frames.filter(frame=>frame.length<=Number(byId('zoom').value));index=Math.max(0,available.findLastIndex(frame=>frame.length<=previous));draw();};byId('speed').onchange=()=>{if(timer!==null){stop();play();}};
 window.addEventListener('pagehide',stop);draw();
 </script></body></html>"""

@@ -437,28 +437,40 @@ def forward_simulator_figure(result, *, scale="Standard"):
     return figure
 
 
-def load_market_example():
+def load_market_example(name="voo-covid-256"):
     """Read the fixed motivation window offline; never send it to an estimator."""
-    folder = _asset_path(ASSETS / "market-examples" / "voo-covid-256")
+    _require(name in ("voo-covid-256", "voo-2020-20261113"), "choose a packaged dated market example")
+    folder = _asset_path(ASSETS / "market-examples" / name)
     accepted = json.loads(_asset_path(folder / "ACCEPTED.json").read_text())
     for filename in ("market.json", "returns.npz"):
         _require(sha256(_asset_path(folder / filename)) == accepted["source_sha256"][filename],
                  "market motivation checksum differs: " + filename)
     metadata = json.loads((folder / "market.json").read_text())
     with np.load(folder / "returns.npz", allow_pickle=False) as saved:
-        values = {name: saved[name].copy() for name in ("dates", "simple_returns", "log_returns")}
-    _require(metadata.get("ticker") == "VOO" and metadata.get("n") == 256,
-             "expected the fixed 256-day VOO motivation window")
-    _require(all(values[name].shape == (256,) for name in values), "market window axes differ")
+        values = {key: saved[key].copy() for key in ("dates", "simple_returns", "log_returns")}
+        prices = {key: saved[key].copy() for key in ("price_dates", "adjusted_close") if key in saved}
+    expected = 256 if name == "voo-covid-256" else 1726
+    _require(metadata.get("ticker") == "VOO" and metadata.get("n") == expected,
+             "expected the selected fixed VOO motivation window")
+    _require(all(values[key].shape == (expected,) for key in values), "market window axes differ")
     _require(values["dates"].dtype.kind in "US" and np.all(values["dates"][1:] > values["dates"][:-1]),
              "market dates must be ordered ISO strings")
-    for name in ("simple_returns", "log_returns"):
-        _require(values[name].dtype.kind in "fiu" and np.isfinite(values[name]).all(),
+    for key in ("simple_returns", "log_returns"):
+        _require(values[key].dtype.kind in "fiu" and np.isfinite(values[key]).all(),
                  "market returns must be finite real values")
     _require(np.all(values["simple_returns"] > -1), "simple returns must exceed -100%")
     _require(np.allclose(np.log1p(values["simple_returns"]), values["log_returns"], rtol=1e-12, atol=1e-15),
              "market log returns differ from the documented log1p conversion")
-    return {"metadata": metadata, **values}
+    if name != "voo-covid-256":
+        _require(set(prices) == {"price_dates", "adjusted_close"}
+                 and prices["adjusted_close"].shape == prices["price_dates"].shape == (expected + 1,)
+                 and np.isfinite(prices["adjusted_close"]).all() and np.all(prices["adjusted_close"] > 0)
+                 and np.array_equal(prices["price_dates"][1:], values["dates"]),
+                 "market adjusted-price axes or values differ")
+        _require(np.allclose(prices["adjusted_close"][1:] / prices["adjusted_close"][:-1] - 1,
+                            values["simple_returns"], rtol=0, atol=1e-15),
+                 "market returns do not reproduce the preserved adjusted prices")
+    return {"metadata": metadata, **values, **prices}
 
 
 def market_motivation_figure(example):
