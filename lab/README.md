@@ -21,6 +21,24 @@ and actual runtime locations; rerun the locked install above in this checkout.
 
 ## Start with the supplied data and models
 
+### Review the Heston SPX notebook
+
+The [SPX calibration lesson](notebooks/heston_spx_calibration.py) contains the model,
+interactive simulator, live training, posterior checks and pricing examples.
+
+```bash
+cd lab
+pixi install --locked -e core-reference
+pixi run --locked -e core-reference marimo edit notebooks/heston_spx_calibration.py
+```
+
+The saved PyMC examples and live training work without a download. To use the
+pretrained posterior, follow the [bundle instructions](plans/training-data-guide.md#heston-spx-notebook-and-optional-pretrained-model).
+The [lesson run record](evidence/pilot-results/2026-11-11/heston-actual63-notebook/README.md#delivery-scope)
+maps its code and results, and explains which research files were left out.
+
+### Existing option and trajectory packages
+
 All three complete-surface routes have **100k training banks and completed baseline fits**. Use the
 [training-data guide](plans/training-data-guide.md) for archive identities, extraction paths, SHA checks and
 executable examples of loading, training and evaluating. Downloads are in the

@@ -1,0 +1,130 @@
+{
+  "format": "heston_actual63_drive_delivery_v1",
+  "status": "all_files_hash_verified_and_provider_uploaded",
+  "created_utc": "2026-11-11T05:31:32.614401+00:00",
+  "destination": "/Users/afengler/Library/CloudStorage/GoogleDrive-alexander_fengler@brown.edu/My Drive/sbi4finance/heston-actual63-development-2026-11-11",
+  "parent_google_id": "1ta1LjBopl-kErBfDEr2R_UL-9Hs8Y9D7",
+  "files": [
+    {
+      "name": "heston-actual63-development-20261111.tar.gz",
+      "bytes": 464907858,
+      "sha256": "a2c23ab962d534e8807de0488c37e93581062bac8d87e81dc32a2f06c3380b3a",
+      "local_readback_verified": true,
+      "provider_fields": {
+        "documentSize": "464907858",
+        "hasUnresolvedConflicts": "0",
+        "isExcludedFromSync": "0",
+        "isSyncPaused": "0",
+        "isTrashed": "0",
+        "isUploaded": "1",
+        "isUploading": "0",
+        "itemIdentifier": "53198",
+        "parentItemIdentifier": "53196"
+      },
+      "drive_item_id": "1ukmoPqlEED4fLbVPX0f8W5JaIPWrLsyI",
+      "upload_complete": true
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 110,
+      "sha256": "ac265e73c892e7b20fa18269bcb47a291d6bee5e379f6489c0d977120392f6ac",
+      "local_readback_verified": true,
+      "provider_fields": {
+        "documentSize": "110",
+        "hasUnresolvedConflicts": "0",
+        "isExcludedFromSync": "0",
+        "isSyncPaused": "0",
+        "isTrashed": "0",
+        "isUploaded": "1",
+        "isUploading": "0",
+        "itemIdentifier": "53202",
+        "parentItemIdentifier": "53196"
+      },
+      "drive_item_id": "12gFWla2oHqfyU8itfhKTQTq9NXWEEAvT",
+      "upload_complete": true
+    },
+    {
+      "name": "bundle.json",
+      "bytes": 16079,
+      "sha256": "3ec94acb5728efd5f2dab65cecd299345ea1191f282b439ee8b4008848dc5343",
+      "local_readback_verified": true,
+      "provider_fields": {
+        "documentSize": "16079",
+        "hasUnresolvedConflicts": "0",
+        "isExcludedFromSync": "0",
+        "isSyncPaused": "0",
+        "isTrashed": "0",
+        "isUploaded": "1",
+        "isUploading": "0",
+        "itemIdentifier": "53204",
+        "parentItemIdentifier": "53196"
+      },
+      "drive_item_id": "1KOwpj5bIv4qNVVaMMQsrmxRpouoCQAZM",
+      "upload_complete": true
+    },
+    {
+      "name": "reload-verification.json",
+      "bytes": 540,
+      "sha256": "251231702deae0b198198328b6c516ce62e6378bde23f043bcfcd314e168fec5",
+      "local_readback_verified": true,
+      "provider_fields": {
+        "documentSize": "540",
+        "hasUnresolvedConflicts": "0",
+        "isExcludedFromSync": "0",
+        "isSyncPaused": "0",
+        "isTrashed": "0",
+        "isUploaded": "1",
+        "isUploading": "0",
+        "itemIdentifier": "53200",
+        "parentItemIdentifier": "53196"
+      },
+      "drive_item_id": "1U1lrb8lZQaWf0aYWE8tM3PCLWolDsSRL",
+      "upload_complete": true
+    },
+    {
+      "name": "heston_grid_collaborator.py",
+      "bytes": 13277,
+      "sha256": "2973411022f0cdc9c34d9cb830aabaa49a8ba1e6d7867204f21aba2f29051d4b",
+      "local_readback_verified": true,
+      "provider_fields": {
+        "documentSize": "13277",
+        "hasUnresolvedConflicts": "0",
+        "isExcludedFromSync": "0",
+        "isSyncPaused": "0",
+        "isTrashed": "0",
+        "isUploaded": "1",
+        "isUploading": "0",
+        "itemIdentifier": "53206",
+        "parentItemIdentifier": "53196"
+      },
+      "drive_item_id": "1KH_Dx_afKJ3wyiWKXKeqzMGRkguKQ05y",
+      "upload_complete": true
+    },
+    {
+      "name": "training-data-guide.md",
+      "bytes": 33922,
+      "sha256": "37400e60777850596df5ae8a986587e7177f4875023b02b2d6336e99afa1d314",
+      "local_readback_verified": true,
+      "provider_fields": {
+        "documentSize": "33922",
+        "hasUnresolvedConflicts": "0",
+        "isExcludedFromSync": "0",
+        "isSyncPaused": "0",
+        "isTrashed": "0",
+        "isUploaded": "1",
+        "isUploading": "0",
+        "itemIdentifier": "53208",
+        "parentItemIdentifier": "53196"
+      },
+      "drive_item_id": "1_Oc30dXP2HZkv1afFgvnPvKef6twqYcD",
+      "upload_complete": true
+    }
+  ],
+  "sharing_permissions_changed": false,
+  "independent_cloud_download_verified": false,
+  "source_archive_unchanged": true,
+  "folder_google_id": "1UYBredhF2hrxoZI-sP7sAawC3V6XQpB8",
+  "folder_url": "https://drive.google.com/drive/folders/1UYBredhF2hrxoZI-sP7sAawC3V6XQpB8",
+  "all_provider_uploaded": true,
+  "checked_utc": "2026-11-11T05:34:29.238304+00:00"
+}

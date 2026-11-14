@@ -21,6 +21,11 @@ refine the explanations, figures and code before worrying about exact timing.
 Shared code is in [shared/](tutorial/src/sbi4f_tutorial/shared/). The lab uses
 this same code. Edit it here; there is no copying step.
 
+**Current Heston review:** the newer [SPX calibration notebook](lab/notebooks/heston_spx_calibration.py)
+uses actual quotes and estimates six parameters. Run it from the
+[lab environment](lab/README.md#review-the-heston-spx-notebook). It includes a live
+training example; the larger pretrained model is an optional download.
+
 ## Run a notebook
 
 Install [Pixi](https://pixi.sh), then run:
