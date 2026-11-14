@@ -241,11 +241,11 @@ one-hour take-home inspired by
 [amortized-fractals](https://github.com/stefanradev93/amortized-fractals).
 It explains a volatility cascade and Student-t innovations, shows the BayesFlow
 construction and checks, infers four parameters for one fixed VOO window, then
-propagates paired draws into replicated wealth and drawdown. The final experiment
-keeps those observations fixed while changing the supplied volatility resolution.
+propagates paired draws into replicated wealth and drawdown. The lesson ends
+with links to upstream notebooks for the expanded story.
 
-The saved-results route is complete and works offline. It starts at eight
-32-day volatility blocks, then compares 4, 8 and 128 blocks. The unknowns remain
+The saved-results route is complete and works offline. It uses eight
+32-day volatility blocks. The unknowns remain
 daily location, baseline scale, cascade contrast and innovation-tail thickness;
 the number of blocks is a known input to the estimator. These are fixed
 256-day **simple-return** observations, not the trajectory lesson's variable
@@ -266,8 +266,9 @@ own recovery/calibration checks. The small fit does not inherit the supplied
 estimator's evidence.
 
 The supplied model was checked on 200 independent histories with 512 posterior
-draws at each displayed resolution. None of the twelve rank tests was rejected
-by the predeclared Holm-adjusted screen; empirical central-90% coverage ranged
+draws at each of three evaluated resolutions (4, 8 and 128 blocks). None of the
+twelve rank tests was rejected by the predeclared Holm-adjusted screen;
+empirical central-90% coverage ranged
 from 88.5% to 93.0%. These finite checks support the scoped example, not exact
 posterior accuracy or arbitrary real-market use. The preserved historical
 training bank/seed was not independently reconstructed. See the
@@ -277,10 +278,9 @@ simulation-parity, data and evaluation identities.
 Scenario paths start with fresh cascade phases. They are model-generated
 replications rather than continuations conditioned on today's hidden volatility.
 Threshold controls reuse outcomes. No live vendor data, training or checkpoint
-sampling starts on opening. The final submission asks for a mechanism
-explanation, a diagnostic interpretation, a drawdown answer and an assessment
-of sensitivity to the model assumption. The notebook links upstream for the
-expanded rolling-risk, joint-market and signed-memory story.
+sampling starts on opening. After the drawdown section, the notebook links to
+the upstream univariate and resolution-sensitivity notebooks and the expanded
+rolling-risk, joint-market and signed-memory story.
 
 ## Give feedback on an application
 

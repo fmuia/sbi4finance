@@ -4,9 +4,9 @@ The take-home follows the application lessons. Its intended reading and exercise
 route is about one hour, using the complete saved results. Optional model loading
 and live training add hands-on work without blocking the main questions.
 
-The central question is whether changing our representation of volatility
-clustering changes the inferred parameters, the replicated drawdown answer,
-or both. Students keep one observed market window fixed throughout.
+The central question is how a model of volatility clustering connects observed
+returns, uncertain parameters and replicated drawdown scenarios. Students keep
+one observed market window fixed throughout.
 
 Open `notebooks/mmar_takehome.py` with `pixi run --locked mmar-takehome` from
 `tutorial/`. The notebook is self-contained; it does not import the upstream
@@ -41,7 +41,7 @@ redraw rule for returns at or below −100% remain available beside the controls
 
 **Construct and check the estimator**
 
-Use one conditional estimator throughout. Begin at d=8, the original eight
+Use one conditional estimator throughout at d=8, the original eight
 32-day blocks. The input diagram distinguishes the observed 256×1 return
 sequence from the supplied scalar log d. A FusionTransformer learns 16 summary
 values; these and log d condition a four-layer spline coupling flow over four
@@ -60,7 +60,7 @@ baseline distinguishes learning from merely returning an uninformative prior.
 Then compare the market posterior with the prior and check replicated return
 magnitudes and temporal dependence. These checks answer different questions.
 
-**Use and challenge the answer**
+**Use the answer**
 
 Propagate complete posterior rows through independently generated 256-day
 histories. Compare replicated wealth and positive maximum drawdown with process
@@ -71,25 +71,9 @@ These are fresh-window scenarios, not continuations conditioned on the observed
 window's final latent volatility phase. A drawdown event probability reflects
 the fitted model, approximate posterior and finite simulation budget.
 
-Finally hold the observed data unchanged and compare d=4,8,128, representing
-64-, 32- and 2-day blocks. Show parameter intervals and drawdown ECDFs on common
-axes. Compare raw changes and changes relative to uncertainty, without assuming
-that the upstream result must repeat. The known resolution is supplied rather
-than inferred: this is sensitivity analysis, not model averaging.
-
-**Student submission**
-
-Ask for one short page containing:
-
-1. An explanation of q versus ν.
-2. One estimator diagnostic and the limit of what it establishes.
-3. A drawdown probability at a chosen threshold, including its scenario count.
-4. A comparison of parameter and drawdown sensitivity across resolutions.
-5. The distinction between these scenarios and a continuation forecast.
-
-The notebook provides a worked interpretation using its saved results. Fresh
-results from a small session fit need their own checks; they do not inherit the
-supplied estimator's evidence.
+The notebook ends after section 7's drawdown scenarios with links to the expanded
+story. Fresh results from a small session fit need their own checks; they do not
+inherit the supplied estimator's evidence.
 
 **Expanded story**
 

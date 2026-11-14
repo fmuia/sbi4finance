@@ -24,16 +24,14 @@ def _(mo):
 
     **A complete MMAR take-home · about one hour · saved results work offline**
 
-    What produces clusters of quiet and turbulent days? Can a different explanation
-    of that clustering change a parameter estimate while leaving the financial
-    answer similar?
+    What produces clusters of quiet and turbulent days? How can we carry
+    uncertainty about that mechanism into drawdown scenarios?
 
     We will observe one year of returns, build a small **multifractal model of asset
     returns (MMAR)**, follow its BayesFlow estimator, check it on known truths, then
-    carry its posterior into drawdown scenarios. The final experiment challenges
-    one assumption while holding the observations fixed.
+    carry its posterior into drawdown scenarios.
 
-    **Observe → Model → Simulate → Build → Check → Infer → Use → Challenge**
+    **Observe → Model → Simulate → Build → Check → Infer → Use**
 
     This lesson synthesizes the univariate and resolution experiments from
     [Stefan Radev's amortized-fractals](https://github.com/stefanradev93/amortized-fractals).
@@ -352,7 +350,7 @@ def _(mo):
     check without learning anything; inspect both.
 
     The supplied model was evaluated on **200 independent histories × 512 draws**
-    at each capstone resolution. The finite-rank null and decision rule were
+    at each evaluated resolution (d=4, 8 and 128). The finite-rank null and decision rule were
     frozen before evaluation: 10,000 discrete-uniform null simulations, followed
     by Holm correction across **12 parameter/resolution tests** at familywise 5%.
     Central-90% coverage has a descriptive Wilson 95% interval; it is not a second
@@ -432,7 +430,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(inference, lesson, model, observed, route, saved, supplied_model, tutorial_result):
+def _(inference, lesson, observed, route, saved, supplied_model, tutorial_result):
     active_data = saved
     active_label = "Accepted saved draws from the supplied estimator"
     active_note = None
@@ -440,16 +438,14 @@ def _(inference, lesson, model, observed, route, saved, supplied_model, tutorial
     if route.value != "saved" and _workflow is not None:
         active_data = dict(saved)
         active_label = "Fresh supplied-estimator inference" if route.value == "pretrained" else "New tiny tutorial estimator — approximation quality is exploratory"
-        for _d in model.CAPSTONE_D:
-            _draws = inference.sample(_workflow, observed, _d, count=512, seed=310061112+_d)[0]
-            _scenarios = lesson.scenario_result(_draws, _d, seed=310071112+_d)
-            active_data[f"posterior_{_d}"] = _draws
-            active_data[f"mdd_{_d}"] = _scenarios["mdd"]
-            active_data[f"wealth_{_d}"] = _scenarios["wealth"]
-            active_data[f"predictive_{_d}_summaries"] = _scenarios["summaries"]
-            active_data[f"predictive_{_d}_abs_acf"] = _scenarios["abs_acf"]
-            if _d == 8:
-                active_data["point_mdd"] = _scenarios["point_mdd"]
+        _draws = inference.sample(_workflow, observed, 8, count=512, seed=310061120)[0]
+        _scenarios = lesson.scenario_result(_draws, 8, seed=310071120)
+        active_data["posterior_8"] = _draws
+        active_data["mdd_8"] = _scenarios["mdd"]
+        active_data["wealth_8"] = _scenarios["wealth"]
+        active_data["predictive_8_summaries"] = _scenarios["summaries"]
+        active_data["predictive_8_abs_acf"] = _scenarios["abs_acf"]
+        active_data["point_mdd"] = _scenarios["point_mdd"]
     elif route.value != "saved":
         active_note = "Requested live model is not ready. The figures below explicitly retain the accepted saved results."
     return active_data, active_label, active_note
@@ -548,73 +544,6 @@ def _(mo):
     nested experiment is different from treating pointwise wealth bands as
     uncertainty about a risk metric.
     """)})
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## 8 · Challenge: keep the observations, change the resolution
-
-    Reuse **the same sensitivity estimator** at d=4, 8 and 128: volatility blocks
-    spanning 64, 32 and 2 trading days. d remains supplied; the targets are still
-    μ, σ̄, q and ν. Nothing is inferred about which d is true.
-
-    **Predict:** will q stay comparable when it acts over a different number of
-    binary splits? Will a shifted q necessarily change the drawdown answer?
-
-    This is sensitivity across model assumptions. It is neither Bayesian model
-    averaging nor a posterior distribution over d.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(active_data, active_label, drawdown_threshold, lesson, mo, plots, route):
-    _table=lesson.sensitivity_table(active_data,drawdown_threshold.value)
-    mo.vstack([mo.md(f"**Source: {active_label}.**"),plots.sensitivity(active_data),
-        mo.ui.table(_table,selection=None,pagination=False),
-        mo.md("Inspect raw changes in q, median drawdown and threshold probability. "
-              "A small shift relative to a broad uncertainty interval does not prove practical equivalence. "
-              "Similar drawdown distributions do not prove equal fit to temporal dependence. "
-              + ("The tiny tutorial fit has not established cross-resolution calibration; its differences are an exploratory API result."
-                 if route.value=="tutorial" else "The independent checks above support a bounded evaluation of this approximation; they do not remove model uncertainty."))])
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Your take-home submission
-
-    Write one short page:
-
-    1. Explain how q and ν differ, using the component experiment.
-    2. Interpret one recovery or calibration result and state its limitation.
-    3. Report a replicated drawdown probability, its threshold and scenario count.
-    4. Compare parameter and outcome sensitivity when d changes.
-    5. Explain why this is not a state-conditioned forecast.
-
-    **Keep the distinction:** observations are fixed; parameters are uncertain;
-    simulated histories add process randomness; d is an assumption we deliberately
-    change. Those are different sources of variation.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(lesson, mo, saved):
-    _worked=lesson.sensitivity_table(saved,.2)
-    _q=[row["q median"] for row in _worked]
-    _risk=[row["P(drawdown > 20%)"] for row in _worked]
-    mo.accordion({"A worked interpretation using the saved example":mo.md(
-        f"At a 20% drawdown threshold, the saved scenario probabilities across d=4,8,128 are "
-        f"{_risk[0]:.1f}%, {_risk[1]:.1f}% and {_risk[2]:.1f}%. The q medians are "
-        f"{_q[0]:.3f}, {_q[1]:.3f} and {_q[2]:.3f}. These are approximate results from one "
-        "chosen market window and one estimator; compare the raw shifts with the intervals and "
-        "finite scenario precision before deciding whether they matter. Lower ν changes innovation "
-        "tails; higher q changes cascade contrast. Reproducing drawdown does not establish an "
-        "adequate temporal fit, and independent new phases do not predict today's continuation.")})
     return
 
 
