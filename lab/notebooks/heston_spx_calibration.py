@@ -993,13 +993,12 @@ def _(
     EXPIRY_DATES,
     EXPIRY_DAYS,
     MATH_LABELS,
-    TRUTHS,
     controls,
     fields,
     mo,
     np,
 ):
-    _start = TRUTHS["synthetic-market-like"]
+    _start = (0.028, 5.0, 0.053, 1.8, -0.69, 2.0)  # (v0, kappa, v_inf, sigma_v, rho, c)
     _steps = (0.001, 0.1, 0.001, 0.05, 0.01, 0.05)
     _digits = (3, 1, 3, 2, 2, 2)
     _names = [_label[0].upper() + _label[1:] for _label in MATH_LABELS]
@@ -1017,7 +1016,7 @@ def _(
             fields({**{_names[_j]: sim_params[_j] for _j in range(3)}, "Quotes at expiry": sim_expiry}),
             fields({**{_names[_j]: sim_params[_j] for _j in range(3, 6)}, "Random seed": sim_seed}),
         ], justify="start", gap=3),
-        hint="Move the sliders. They start at the market-like parameters.",
+        hint="Move the sliders to explore a different simulated market.",
     )
     return sim_expiry, sim_params, sim_seed
 
