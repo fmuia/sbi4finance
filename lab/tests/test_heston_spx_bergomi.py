@@ -79,6 +79,46 @@ class HestonSPXBergomiTests(unittest.TestCase):
         self.assertEqual([axis.get_title() for axis in self.defs["bergomi_recovery_figure"].axes[:7]],
                          list(labels.values()))
 
+    def test_short_expiry_skew_coefficient_matches_the_integrated_driver_kernel(self):
+        from scipy.integrate import quad
+
+        record = self.defs["bergomi_skew_asymptotics"]
+        years, hurst = np.asarray(record["years"]), np.asarray(record["hurst"])
+        curves = np.asarray(record["rough_leading_skew"])
+        self.assertEqual(curves.shape, (3, 240))
+        self.assertTrue(np.all(curves < 0))
+
+        def kernel_integral(h):
+            # Independent numerical double integral; the diagonal singularity is integrable.
+            return quad(lambda t: quad(lambda s: np.sqrt(2 * h) * (t - s) ** (h - .5),
+                                       0, t, epsabs=1e-10)[0], 0, 1, epsabs=1e-10)[0]
+
+        # sqrt(V) has log-driver sensitivity eta/2, whereas eta belongs to log variance.
+        for h, curve in zip(hurst, curves):
+            coefficient = record["rho"] * record["eta"] / 2 * kernel_integral(h)
+            np.testing.assert_allclose(curve * years ** (.5 - h), coefficient, rtol=1e-10)
+        # At the Brownian boundary the kernel is 1; local matching must recover Heston.
+        self.assertAlmostEqual(record["sigma"], record["eta"] * np.sqrt(record["initial_variance"]))
+        boundary = record["rho"] * record["eta"] / 2 * kernel_integral(.5)
+        self.assertAlmostEqual(boundary, record["rho"] * record["eta"] / 4)
+        self.assertAlmostEqual(record["heston_limit"], boundary)
+
+    def test_short_expiry_plot_shows_power_law_slopes_and_volatility_point_units(self):
+        record = self.defs["bergomi_skew_asymptotics"]
+        days, years = np.asarray(record["days"]), np.asarray(record["years"])
+        curves = np.asarray(record["rough_leading_skew"])
+        np.testing.assert_allclose(years, days / 365)
+        axis = self.defs["bergomi_skew_figure"].axes[0]
+        self.assertEqual((axis.get_xscale(), axis.get_yscale()), ("log", "log"))
+        self.assertIn("volatility points per log-moneyness", axis.get_ylabel())
+        self.assertEqual(len(axis.lines), 4)
+        for h, curve, line in zip(record["hurst"], curves, axis.lines[:3]):
+            slopes = np.diff(np.log(np.abs(curve))) / np.diff(np.log(years))
+            np.testing.assert_allclose(slopes, h - .5, atol=1e-12)
+            np.testing.assert_allclose(line.get_xdata(), days)
+            np.testing.assert_allclose(line.get_ydata(), 100 * np.abs(curve))
+        np.testing.assert_allclose(axis.lines[-1].get_ydata(), 100 * abs(record["heston_limit"]))
+
     def test_heston_displayed_rms_and_heatmap_use_the_same_volatility_point_residuals(self):
         observed = np.asarray(self.defs["MID"])
         expected = 100 * (np.asarray(self.defs["market_fit"]) - observed) / self.defs["MARKET_VEGA"]

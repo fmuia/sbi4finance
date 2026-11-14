@@ -18,8 +18,19 @@ recorded numerical or scientific limitation.
 ## Heston SPX notebook and optional pretrained model
 
 The current [SPX notebook](../notebooks/heston_spx_calibration.py) runs from `lab/`
-with the locked `core-reference` environment. Its saved PyMC examples and small
-live-training example need no download.
+with the locked `core-reference` environment. Its saved Heston market-fit and
+predictive plots in Section 5.5, recovery summaries, Bergomi plots and small
+live-training example need no download. Fresh sampling from the pretrained
+Heston model, including full posteriors opened by clicking recovery points,
+requires the optional bundle below.
+
+If the notebook still says only “Set `HESTON_BUNDLE` to the folder that contains
+`bundle.json`”, it is showing the older setup instructions from
+[PR #94](https://github.com/fmuia/sbi4finance/pull/94). Update to the
+`lesson/heston-bergomi-capstone-20261114` branch used by
+[PR #95](https://github.com/fmuia/sbi4finance/pull/95), including setup fix
+`0793db4` or later, and restart marimo from that checkout. The updated notebook
+links directly to the download and discovers the installed cache automatically.
 
 The pretrained model and bank are in the existing project Google Drive, rather
 than the Git checkout. Download
@@ -41,6 +52,7 @@ cd lab
 pixi install --locked -e core-reference
 pixi run --locked -e core-reference python scripts/heston_notebook_bundle.py \
   --archive "$HOME/Downloads/heston-actual63-development-20261111.tar.gz"
+unset HESTON_BUNDLE
 pixi run --locked -e core-reference marimo edit notebooks/heston_spx_calibration.py
 ```
 
@@ -53,7 +65,9 @@ An existing external extraction also works: set `HESTON_BUNDLE` to the extracted
 takes precedence over the cache; an invalid path is reported rather than
 silently falling back. Explicit `HESTON_BUNDLE=""` disables the optional model,
 including automatic cache discovery, for a reproducible saved-only run.
-`HESTON_BUNDLE` is a local folder path, not a Drive URL.
+Use `unset HESTON_BUNDLE` to restore automatic cache discovery after an older
+launch command or shell configuration set it. `HESTON_BUNDLE` is a local folder
+path, not a Drive URL.
 
 The archive is 464,907,858 bytes; its SHA-256 is
 `a2c23ab962d534e8807de0488c37e93581062bac8d87e81dc32a2f06c3380b3a`.
@@ -72,8 +86,11 @@ other recorded checkpoints and the bank; downloading it does not start training.
 
 Raw inference quotes are in SPX index points. The loader divides them by their
 half-spreads and applies the saved whitening. Do not apply either step yourself.
-The six targets are $v_0$, $\kappa$, $v_\infty$, $\sigma_v$, $\rho$ and $c$, with
-quote noise $c h_i$. The contract layout and prior are fixed to the recorded task.
+The six displayed targets are $v_0$, $\kappa$, $L$, $\sigma$, $\rho$ and $c$, with
+quote noise $c h_i$. Their archived machine keys remain `initial_variance`,
+`kappa`, `theta`, `vol_of_vol`, `rho` and `c`; the display notation does not change
+the saved task or checkpoints. The contract layout and prior are fixed to the
+recorded task.
 
 The estimator still has approximation errors, and Heston does not fit these SPX
 quotes within the assumed noise. Keep the notebook's checks and caveats visible.

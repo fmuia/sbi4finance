@@ -77,9 +77,11 @@ def _():
         "From `lab/`, install the downloaded archive once:\n\n"
         "```bash\npixi run --locked -e core-reference python scripts/heston_notebook_bundle.py "
         f"--archive ~/Downloads/{bundle_setup.ARCHIVE_FILENAME}\n```\n\n"
-        "Restart marimo: the notebook finds the verified local cache automatically. `HESTON_BUNDLE` is an optional "
-        "override pointing to an **extracted local folder**, not a Drive URL. The saved references and Bergomi "
-        "results work without this download."
+        "Restart marimo: the notebook finds the verified local cache automatically when `HESTON_BUNDLE` is unset. "
+        "That variable is an optional override pointing to an **extracted local folder**, not a Drive URL. "
+        "The saved Heston market-fit and predictive plots (Section 5.5), recovery summaries and Bergomi plots "
+        "work without this download. Fresh posterior sampling and clicking a recovery point to inspect its "
+        "full posterior require the installed model."
         + (f"\n\n**Local setup problem:** {_bundle_error}" if _bundle_error else "")), kind="warn")
 
     plots.style()
@@ -695,12 +697,12 @@ def _(grid, md, mo, note, section):
         The variance $V_t$ follows its own random process, correlated with the price (Heston, 1993).
 
         $$
-        \frac{dF_t}{F_t} = \sqrt{V_t}\,dW_t^F,\qquad
+        \frac{dX_t}{X_t} = \sqrt{V_t}\,dW_t^S,\qquad
         dV_t = \kappa(L-V_t)\,dt+\sigma\sqrt{V_t}\,dW_t^V,
-        \qquad d\langle W^F,W^V\rangle_t=\rho\,dt
+        \qquad d\langle W^S,W^V\rangle_t=\rho\,dt
         $$
 
-        Here $W^F$ and $W^V$ are two Brownian motions with leverage correlation $\rho$, and $F_t$ is the forward price for the option's expiry. The model has six unknowns.
+        Here $W^S$ and $W^V$ are Brownian motions with leverage correlation $\rho$. Both option models in this notebook use the same **normalized, carry-adjusted price** $X_t$, starting at $X_0=1$. With deterministic carry, $X_t=F_t^{(T)}/F_0^{(T)}$ for any fixed expiry $T$. The observed contract forwards $F_i$ retain their original price units. The model has six unknowns.
 
         | Symbol | Meaning |
         |:---|:---|
@@ -713,11 +715,17 @@ def _(grid, md, mo, note, section):
         """),
         note("The priors are given with the prior predictive check in Section 2.2."),
         mo.accordion({"Why the dynamics have no drift": grid({
-            "Pricing measure": r"Prices are computed under the pricing measure $\mathbb Q$. Under it, the discounted "
-                               "prices of traded assets are martingales.",
-            "Forward price": r"The forward price $F_t=S_t\,e^{(r-q)(T-t)}$, with interest rate $r$ and dividend "
-                             r"yield $q$, is a martingale under $\mathbb Q$. It has no drift. At expiry $F_T=S_T$, "
-                             r"so a call is worth $C=D\,\mathbb E^{\mathbb Q}\big[(F_T-K)^+\big]$ with $D=e^{-rT}$.",
+            "Pricing measure": r"Prices are computed under the pricing measure $\mathbb Q$. The spot drift is "
+                               r"$r-q$ for deterministic rate $r$ and dividend yield $q$. Removing that carry "
+                               r"gives the zero-drift process $X_t$.",
+            "One price process": r"For constant rate $r$ and dividend yield $q$, "
+                                 r"$F_t^{(T)}=S_t e^{(r-q)(T-t)}$ and "
+                                 r"$X_t=F_t^{(T)}/F_0^{(T)}=(S_t/S_0)e^{-(r-q)t}$. "
+                                 r"Normalizing by the fixed $F_0^{(T)}$ changes units, not relative returns. "
+                                 r"The same relation holds with integrated deterministic carry.",
+            "Option price": r"Writing $F=F_0^{(T)}$ and $D=e^{-rT}$, a call is worth "
+                            r"$C=D F\,\mathbb E^{\mathbb Q}[(X_T-K/F)^+]$. The quoted forward and discount "
+                            "restore index-price units after the normalized expectation.",
             "Forward units": r"Rates and dividends enter only through $D$ and $F$, which are read from the market "
                              r"by put–call parity. Divided by $D\,F$, prices depend only on $\ln(K/F)$, $T$ and the "
                              "Heston parameters, so one parameter set prices every expiry.",
@@ -749,7 +757,7 @@ def _(cards, md, mo):
             - A large $\sigma$ breaks the **Feller condition** $2\kappa L\ge\sigma^2$. The variance can then touch zero.
             """),
             ("Feature 3", "The short-expiry skew has a ceiling", r"""
-            $$\psi(T)=\frac{\partial\,\sigma_{\mathrm{imp}}(k,T)}{\partial k}\bigg|_{k=0},\qquad k=\ln(K/F)$$
+            $$\psi(T)=\frac{\partial\,\sigma_{\mathrm{imp}}(\ell,T)}{\partial \ell}\bigg|_{\ell=0},\qquad \ell=\ln(K/F)$$
 
             - The **at-the-money skew** $\psi(T)$ measures how fast implied volatility changes with log-moneyness at the money, for expiry $T$.
             - As $T$ shrinks, $|\psi(T)|$ grows, but only up to a ceiling: $|\psi(T)|\to|\rho|\,\sigma/(4\sqrt{v_0})$ as $T\to0$.
@@ -757,7 +765,7 @@ def _(cards, md, mo):
             - For expiries well below the reversion time $1/\kappa$ the skew is at the ceiling and grows no further.
             """),
             ("Feature 4", "Prices in closed form", r"""
-            - The model is affine and $(F_t,V_t)$ is a Markov state, so the characteristic function is known exactly.
+            - The model is affine and $(X_t,V_t)$ is a Markov state, so the characteristic function is known exactly.
             - Each price is one Fourier integral of the characteristic function. We call this the **Fourier pricer**.
             - All 63 prices take milliseconds, so MCMC with the exact likelihood is affordable (Section 4.1).
             """),
@@ -1148,7 +1156,7 @@ def _(
     _at = EXPIRY == sim_expiry.value
     _fig, _axes = plt.subplots(2, 2, figsize=(10.8, 6.0), constrained_layout=True)
     _axes[0, 0].plot(_years, np.exp(_log_forward).T, lw=1)
-    _axes[0, 0].set(xlabel="years", ylabel="forward / initial forward", title="Forward-price paths")
+    _axes[0, 0].set(xlabel="years", ylabel=r"Normalized price $X_t$", title="Normalized price paths")
     _axes[0, 1].plot(_years, 100 * _vol.T, lw=1)
     _axes[0, 1].axhline(100 * np.sqrt(_v_inf), color="#888888", ls="--", lw=1, label=r"$\sqrt{L}$")
     _axes[0, 1].axhline(_median_vol, color="#888888", ls=":", lw=1, label="long-run median")
@@ -1173,7 +1181,7 @@ def _(
     _axes[1, 1].set(xlabel="standardized moneyness δ", ylabel="Quote error (volatility points; vega-equivalent)",
                     title="The quote errors, magnified")
 
-    _view = [_fig, caption(f"The top row shows {number_word(_count)} forward-price paths over {number_word(_days // 252)} "
+    _view = [_fig, caption(f"The top row shows {number_word(_count)} normalized price paths over {number_word(_days // 252)} "
                            "year and the volatility behind them. The bottom row shows the quotes at the selected "
                            "expiry and their errors against the Heston price.")]
     if _clean is None:
@@ -1239,15 +1247,15 @@ def _(md):
     z_var, z_other = normals[:, day, k, :].T  # independent standard normals
     z_price = rho * z_var + np.sqrt(1 - rho**2) * z_other
 
-    # Accumulate the log-forward return; its -V/2 term is the Itô correction.
+    # Accumulate the normalized log-price return; -V/2 is the Itô correction.
     step += -0.5 * positive * dt + scale * z_price
     variance += kappa * (v_inf - positive) * dt + xi * scale * z_var
     ```
 
     The two updates share `z_var`, giving price and variance innovations leverage correlation $\rho$.
     Full truncation uses the nonnegative part in the coefficients even if the numerical variance state crosses zero.
-    `step` accumulates a day's log-forward return; exponentiating the cumulative returns gives the plotted
-    forward-price paths. The forward has zero drift under the pricing measure; its **logarithm** has the
+    `step` accumulates a day's normalized log-price return; exponentiating the cumulative returns gives
+    the plotted $X_t$ paths. This normalized price has zero drift under the pricing measure; its **logarithm** has the
     $-V_t/2$ drift above.
 
     These paths illustrate the dynamics. Option prices below come from the checked Fourier pricer, not
@@ -1993,7 +2001,7 @@ def _(
     time,
 ):
     estimator, estimator_record, neural_draws, run_seconds = None, None, {}, None
-    if BUNDLE is not None:  # without the bundle the notebook shows the PyMC reference alone
+    if BUNDLE is not None:  # fresh network draws require the bundle; saved diagnostics remain available
         _clock = [time.perf_counter()]
         estimator, estimator_record = delivery.load_checkpoint(BUNDLE, ESTIMATOR)
         if recipe.fingerprint(estimator.task) != recipe.fingerprint(task):
@@ -4250,7 +4258,7 @@ def _(cards, grid, md, mo, note, section):
 
         As in the trajectory lesson, rough Bergomi replaces Heston's square-root variance diffusion
         by an exponential Gaussian Volterra construction. Here we work under the **pricing measure Q**,
-        with deterministic carry removed from the normalized price $X_t$, starting at $X_0=1$:
+        using the same carry-adjusted, normalized price $X_t$ as Heston in Section 1.1, with $X_0=1$:
 
         $$\begin{aligned}
         \frac{dX_t}{X_t}&=\sqrt{V_t}\,dW_t^S,
@@ -4315,6 +4323,75 @@ def _(cards, grid, md, mo, note, section):
             """)}),
     ])
     return (BERGOMI_PARAMETER_LABELS,)
+
+
+@app.cell(hide_code=True)
+def _(caption, grid, md, mo, np, plots, plt):
+    # Leading-order theory only: no price emulator is evaluated below its trained expiries.
+    _days = np.geomspace(1 / 24, 7, 240)
+    _years = _days / 365
+    _hurst = np.array([.10, .20, .35])
+    _rho, _eta, _v0 = -.7, 2., .04
+    _sigma = _eta * np.sqrt(_v0)  # match local variance sensitivity at the H=1/2 boundary
+    _heston = _rho * _sigma / (4 * np.sqrt(_v0))
+    _coefficients = _rho * _eta * np.sqrt(2 * _hurst) / (2 * (_hurst + .5) * (_hurst + 1.5))
+    _rough = _coefficients[:, None] * _years[None, :] ** (_hurst[:, None] - .5)
+    _fig, _axis = plt.subplots(figsize=(8.5, 3.8), constrained_layout=True)
+    for _h, _curve, _color in zip(_hurst, _rough, [plots.SERIES[0], plots.SERIES[2], "#7f53ad"]):
+        _axis.plot(_days, 100 * np.abs(_curve), color=_color, lw=1.8,
+                   label=f"Rough Bergomi H = {_h:.2f}; slope {_h - .5:.2f}")
+    _axis.axhline(100 * abs(_heston), color=plots.INK, ls="--", lw=1.5, label="Heston: finite limit; slope 0")
+    _axis.set(xscale="log", yscale="log", xlabel="Days to expiry (log scale)",
+              ylabel="Absolute ATM skew\n(volatility points per log-moneyness)",
+              title="As expiry shrinks: a finite Heston limit, a rough-Bergomi power law")
+    _axis.set_xticks([1 / 24, .25, 1, 7], ["1 hour", "6 hours", "1 day", "7 days"])
+    _axis.legend(fontsize=7, loc="upper right")
+    plt.close(_fig)
+    bergomi_skew_figure = _fig
+    bergomi_skew_asymptotics = {"days": _days, "years": _years, "hurst": _hurst,
+                               "rho": _rho, "eta": _eta, "initial_variance": _v0, "sigma": _sigma,
+                               "heston_limit": _heston, "rough_leading_skew": _rough}
+    mo.vstack([
+        md(r"""
+        #### Why H changes the short-expiry skew
+
+        Write $\ell=\log(K/F)$ and $\psi(T)=\left.\partial_\ell\sigma_{\rm imp}(\ell,T)\right|_{\ell=0}$.
+        This is skew per unit **log-moneyness**, not per unit standardized moneyness $\delta$.
+        For our driving equations and a smooth positive initial variance curve:
+
+        $$\begin{aligned}
+        \psi_{\rm Heston}(T)&\longrightarrow\frac{\rho\sigma}{4\sqrt{v_0}},\\
+        \psi_{\rm rB}(T)&\sim
+        \frac{\rho\eta\sqrt{2H}}{2(H+\tfrac12)(H+\tfrac32)}\,T^{H-\frac12},
+        \qquad T\downarrow0.
+        \end{aligned}$$
+
+        For fixed $0<H<1/2$ and negative $\rho$, Bergomi's signed skew tends to $-\infty$;
+        its magnitude grows with log-log slope $H-1/2$. Heston reaches a finite limit.
+        The formulas use decimal volatility and time in years; the plot multiplies skew by 100.
+        """),
+        _fig,
+        caption("Illustrative leading terms, with ρ = −0.7, η = 2 and v₀ = S = 0.04. "
+                "Heston uses σ = η√v₀ = 0.4, matching the local variance sensitivity at the Brownian "
+                "H = 1/2 boundary. Moving left means shorter expiry. These are asymptotic laws, not "
+                "calibrated smile curves, finite-maturity pricing results or emulator extrapolations."),
+        grid({
+            "Role of H": r"$H$ controls the power-law exponent. At $H=1/2$, the Bergomi leading term is "
+                         r"the constant $\rho\eta/4$, equal to Heston's limit for the illustrative local matching.",
+            "Coordinate matters": r"With $\delta=\ell/(\sigma_{\rm ref}\sqrt T)$, the chain rule gives "
+                                  r"$\partial_\delta\sigma_{\rm imp}=\sigma_{\rm ref}\sqrt T\,\psi(T)$. "
+                                  r"Its rough leading term is proportional to $T^H$; the divergence is in log-moneyness skew.",
+        }, columns=2, kind="reading"),
+        mo.accordion({"Details: convention and sources": md(r"""
+            The coefficient includes $\sqrt{2H}$ from our Gaussian-driver kernel, and $1/2$ because
+            spot volatility is $\sqrt{V_t}$, with log-driver coefficient $\eta/2$.
+            Here $\ell$ denotes log-moneyness so $k$ keeps its meaning as curve decay.
+
+            Sources: [Friz, Gassiat and Pigato, Theorem 3.7, Section 4.1 and Appendix A](https://arxiv.org/html/2009.08814v2);
+            [Friz, Gerhold and Pinter, Sections 5.2–5.3](https://pmc.ncbi.nlm.nih.gov/articles/PMC6043956/).
+            """)}),
+    ])
+    return bergomi_skew_asymptotics, bergomi_skew_figure
 
 
 @app.cell(hide_code=True)
@@ -4681,8 +4758,9 @@ def _(bundle_setup, grid, md, mo, note):
                 ```
                 """,
             }),
-            note("Without an installed bundle, fresh Heston inference is unavailable and the saved PyMC reference is "
-                 "shown alone. Saved recovery summaries and the Bergomi extension remain available. "
+            note("Without an installed bundle, fresh Heston sampling and recovery-point recomputation are unavailable. "
+                 "The saved PyMC and amortizer market comparisons in Section 5.5, recovery summaries, and "
+                 "the Bergomi extension remain available. "
                  "The reference posteriors and their run records are in "
                  "`lab/evidence/pilot-results/2026-11-11/heston-actual63-notebook/`. Posterior draws use fixed "
                  "seeds, so the figures are reproducible."),
