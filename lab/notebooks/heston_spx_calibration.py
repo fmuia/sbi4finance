@@ -4090,6 +4090,10 @@ def _(bergomi_results, grid, md, mo, table):
         _rows.append(_row)
     _training = bergomi_results["training"]
     _reference = bergomi_results["reference"]
+    # Immutable public source links also work from marimo's live and exported pages.
+    _record_url = ("https://github.com/fmuia/sbi4finance/blob/"
+                   "b6bb3e0576de78ac301169207e430401db928a9c/"
+                   "lab/evidence/pilot-results/2026-11-14/bergomi-capstone/")
     mo.accordion({
         "All seven inferred parameters": table(_rows),
         "Saved experiment and numerical scope": mo.vstack([
@@ -4111,9 +4115,9 @@ def _(bergomi_results, grid, md, mo, table):
                f"{_reference['min_ess_bulk']:,.0f}/{_reference['min_ess_tail']:,.0f}, "
                f"{_reference['divergences']} divergences. Each predictive band uses "
                f"{bergomi_results['predictives']['mcmc']['draw_count']:,} saved paired draws per method."),
-            md("The [aggregate run record](../evidence/pilot-results/2026-11-14/bergomi-capstone/results.json) "
+            md(f"The [aggregate run record]({_record_url}results.json) "
                "binds this display to hashes of the quote ordering, task, price emulator and control checkpoint. "
-               "The [study notes](../evidence/pilot-results/2026-11-14/bergomi-capstone/README.md) document "
+               f"The [study notes]({_record_url}README.md) document "
                "the reference target and numerical limitations."),
         ]),
     })
