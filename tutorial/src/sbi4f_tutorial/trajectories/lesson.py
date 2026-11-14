@@ -598,7 +598,7 @@ def input_concept_figure(task):
 
     validate_task(task)
     maximum = task["n_observations"]
-    figure, ax = plt.subplots(figsize=(12, 3.5), layout="constrained")
+    figure, ax = plt.subplots(figsize=(12, 3.15), layout="constrained")
     ax.set(xlim=(0, 1), ylim=(0, 1))
     ax.axis("off")
     boxes = [(.01, .16, "One observed history", r"$r_1,\ldots,r_T$" + "\nKeep the time order", "#eff6ff"),
@@ -606,21 +606,27 @@ def input_concept_figure(task):
              (.49, .15, "GRU encoder", "Reads tokens\nwith their mask", "#f3e8ff"),
              (.675, .31, "Coupling-flow conditions", "GRU summary + known time context\n" + r"$[T/T_{\max},\ \Delta t/(1/252)]$", "#dcfce7")]
     for x, width, title, body, color in boxes:
-        ax.add_patch(FancyBboxPatch((x, .50), width, .36, boxstyle="round,pad=.007,rounding_size=.02",
+        ax.add_patch(FancyBboxPatch((x, .56), width, .35, boxstyle="round,pad=.007,rounding_size=.02",
                                    facecolor=color, edgecolor="#94a3b8", linewidth=.8))
-        ax.text(x + width / 2, .78, title, ha="center", va="center", fontsize=8.5, fontweight="bold")
-        ax.text(x + width / 2, .64, body, ha="center", va="center", fontsize=8)
+        ax.text(x + width / 2, .83, title, ha="center", va="center", fontsize=8.5, fontweight="bold")
+        ax.text(x + width / 2, .70, body, ha="center", va="center", fontsize=8)
     for start, end in ((.17, .20), (.455, .485), (.64, .67)):
-        ax.add_patch(FancyArrowPatch((start, .68), (end, .68), arrowstyle="-|>",
+        ax.add_patch(FancyArrowPatch((start, .735), (end, .735), arrowstyle="-|>",
                                      mutation_scale=12, color="#64748b", linewidth=1.1))
-    ax.add_patch(FancyBboxPatch((.08, .13), .38, .18, boxstyle="round,pad=.01",
-                               facecolor="#f3e8ff", edgecolor="#c4b5fd", linewidth=.8))
-    ax.text(.27, .22, "Generating parameters Θ: training labels only", ha="center", fontsize=9, color="#6d28d9")
-    ax.text(.78, .22, r"Training loss: $-\log q_\phi(\Theta\mid r_{1:T},T)$", ha="center", fontsize=9, color="#6d28d9")
-    ax.add_patch(FancyArrowPatch((.47, .22), (.59, .22), arrowstyle="-|>",
-                                 mutation_scale=12, color="#7c3aed", linestyle="--"))
-    ax.add_patch(FancyArrowPatch((.83, .49), (.83, .32), arrowstyle="-|>",
-                                 mutation_scale=12, color="#7c3aed", linestyle="--"))
-    ax.text(.5, .035, f"The query uses only the upper route. Maximum history: {maximum} days; no truth or latent variance enters conditions.",
-             ha="center", fontsize=8.5, color="#0f766e")
+    training_boxes = [(.08, "Generating parameters Θ", "Training labels only; absent at query"),
+                      (.59, "Training objective", r"$-\log q_\phi(\Theta\mid r_{1:T},T)$")]
+    for x, title, body in training_boxes:
+        ax.add_patch(FancyBboxPatch((x, .19), .38, .21,
+                                   boxstyle="round,pad=.009,rounding_size=.02",
+                                   facecolor="#f3e8ff", edgecolor="#a78bfa", linewidth=.9))
+        ax.text(x + .19, .335, title, ha="center", va="center", fontsize=9,
+                fontweight="bold", color="#6d28d9")
+        ax.text(x + .19, .255, body, ha="center", va="center", fontsize=8.5, color="#6d28d9")
+    ax.add_patch(FancyArrowPatch((.47, .295), (.58, .295), arrowstyle="-|>",
+                                 mutation_scale=12, color="#7c3aed", linewidth=1.1, linestyle="--"))
+    ax.add_patch(FancyArrowPatch((.83, .55), (.83, .415), arrowstyle="-|>",
+                                 mutation_scale=12, color="#7c3aed", linewidth=1.1, linestyle="--"))
+    ax.text(.5, .10, "Dashed arrows: training only", ha="center", va="center", fontsize=8, color="#7c3aed")
+    ax.text(.5, .025, f"Query: upper route only · maximum {maximum} days · no generating values or latent variance enter conditions.",
+             ha="center", va="center", fontsize=8.5, color="#0f766e")
     return figure

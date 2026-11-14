@@ -98,8 +98,8 @@
   },
   "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "ff4bc2cf26a91d77231d296e804fbf9120b264450ceeba09440fd8d1647c9dde",
-    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "54f6f1ee3069b34a7e0eacf0f511a9566fa2e360536868e020311f8f3f7a3664",
+    "tutorial/notebooks/trajectory_inference.py": "3c743b27f429794531ffd61b988d4337068fd6b50d8a63385f9e496d58aeebc2",
+    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "eed50b4a2ef5f8fbf192d46934622f905e90d2d0710d11b56c54c3a7d5212703",
     "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "7749e5245646ff567055a82f2535fafa4f36c537ee9165b53863edeafbe8fdf6",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "9f30d265bb20a0177cf1526bd387d5d141f4df4bccba5a58c14d253fd56b02c7",
@@ -132,7 +132,7 @@
     "tutorial/tests/test_trajectory_predictive_visuals.py": "309b85b741afb2ccb0e40857dcd8fb5f28c5d4dfee1d9e5387534b495452a0b3",
     "tutorial/tests/test_trajectory_visual_widgets.py": "f779579aaecbdd7fce8d401b725a2a962e51c548ee5247ce6e850039025ddbfc"
   },
-  "updated_at_utc": "2026-11-14T00:47:57+00:00",
+  "updated_at_utc": "2026-11-14T13:40:03+00:00",
   "forward_simulator": {
     "paths": 8,
     "days": 252,
@@ -1572,5 +1572,27 @@
       "marimo": "3b9bc7a83affeb9bb9cb9bf8a8cd25262ca2d7799716df8078295e989c8f8649",
       "release": "807ab65bec1dd1237c49b58da48dc252e9f5a98ed06e5552d19f4f06b40e426c"
     }
+  },
+  "rendering_fixes_20261114": {
+    "scope": "formatting and diagram layout only; equations and inference unchanged",
+    "math": "separate adjacent display blocks so KaTeX receives individual equations",
+    "diagram": "balanced training-label and objective boxes with dashed training arrows",
+    "browser": {
+      "status": "passed",
+      "math_errors": [],
+      "page_errors": [],
+      "all_visible_explanatory_accordions_opened": true
+    },
+    "math_screenshot_sha256": "a44e37e3be53be5671cfc906cf94ed9e432ed65a1ca987dd9aab57843e2d2f53",
+    "diagram_1056px_sha256": "664fcd818dc73dced6b6cd2af3b7cb0d533a7324bebce5db93cb9998020da0ee",
+    "diagram_widths_checked": [
+      1056,
+      600
+    ],
+    "tutorial_tests": 141,
+    "notebook_exports": 7,
+    "trajectory_cells": 88,
+    "notebook_cell_errors": 0,
+    "release_symbols": 183
   }
 }

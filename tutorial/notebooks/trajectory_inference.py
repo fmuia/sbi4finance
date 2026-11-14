@@ -869,10 +869,15 @@ def _(mo):
     Let $U$ contain the variance-driving and hybrid-bridge shocks. For one
     observed day, summing its fine steps gives
 
-    $$I_t=\sum_{j\in t} V_j h,\qquad
-      J_t=\sum_{j\in t}\sqrt{V_jh}\,Z_{W,j},$$
-    $$r_t\mid\Theta,U\sim\mathcal N\!\left(
-      \mu\Delta-\tfrac12 I_t+\rho J_t,\ (1-\rho^2)I_t\right).$$
+    $$
+    I_t=\sum_{j\in t} V_j h,\qquad
+    J_t=\sum_{j\in t}\sqrt{V_jh}\,Z_{W,j}.
+    $$
+
+    $$
+    r_t\mid\Theta,U\sim\mathcal{N}\!\left(
+      \mu\Delta-\frac{1}{2}I_t+\rho J_t,\ (1-\rho^2)I_t\right).
+    $$
 
     The Normal's second argument is its variance. The independent asset-shock
     channel has been integrated out. The parameter posterior still contains
