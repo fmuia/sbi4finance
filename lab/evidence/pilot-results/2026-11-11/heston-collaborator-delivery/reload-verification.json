@@ -1,0 +1,19 @@
+{
+  "format": "heston_actual63_collaborator_reload_v1",
+  "verified_utc": "2026-11-11T05:22:32.933603+00:00",
+  "bank_arrays": 29,
+  "train_rows": 300000,
+  "validation_rows": 100,
+  "historical_rows": 512,
+  "portable_native_state_matches_origin": true,
+  "same_seed_draws_bitexact": true,
+  "draw_shape": [
+    2,
+    3,
+    6
+  ],
+  "seed": 117,
+  "role": "software_reload_only_no_scientific_diagnostics",
+  "scientific_acceptance": false,
+  "bundle_manifest_sha256": "3ec94acb5728efd5f2dab65cecd299345ea1191f282b439ee8b4008848dc5343"
+}

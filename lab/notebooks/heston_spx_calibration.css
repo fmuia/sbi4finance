@@ -1,0 +1,791 @@
+/* Presentation layer of heston_spx_calibration.py.
+
+   The notebook builds its page from plain markdown and from a few helpers (section, key, note, caption,
+   grid, ...) that emit the nb-* classes below. This file gives both one type scale and one vertical
+   rhythm, and makes the reading order visible. From what to read first to what can be skipped:
+
+     1. the section banner and its one-sentence summary
+     2. the first paragraph under a subsection heading
+     3. key messages (blockquotes)
+     4. body text: paragraphs, lists and the labelled columns under a figure
+     5. details: notes and captions
+     6. optional depth: foldable sections
+
+   marimo applies this file to the page and again inside the shadow roots of its own components
+   (accordions, tabs, callouts), so one set of rules styles both. Rules for marimo's components are
+   therefore scoped to their host element. Colours follow the figures' palette
+   (sbi4f_tutorial.shared.plots) and switch with marimo's light and dark themes. */
+
+:root {
+  --nb-accent: #2a78d6;
+  --nb-accent-strong: #1c5db0;
+  --nb-accent-soft: #eef4fc;
+  --nb-accent-line: #c8dcf5;
+  --nb-solid: #1c5db0; /* filled marks: the current stage and the BayesFlow mark */
+  --nb-on-solid: #ffffff;
+  --nb-ink: #0f172a;
+  --nb-text: #2b3648;
+  --nb-quiet: #5d6a7d;
+  --nb-rule: #e2e8f0;
+  --nb-surface: #f7f9fc;
+  --nb-warm-soft: rgba(235, 104, 52, 0.08);
+  --nb-warm-line: rgba(235, 104, 52, 0.6);
+}
+
+.dark {
+  --nb-accent: #6ea8ee;
+  --nb-accent-strong: #9cc4f5;
+  --nb-accent-soft: rgba(110, 168, 238, 0.12);
+  --nb-accent-line: rgba(110, 168, 238, 0.35);
+  --nb-solid: #6ea8ee;
+  --nb-on-solid: #0b1730;
+  --nb-warm-soft: rgba(235, 104, 52, 0.14);
+  --nb-ink: #f1f5f9;
+  --nb-text: #d5dce6;
+  --nb-quiet: #9aa7b8;
+  --nb-rule: #334155;
+  --nb-surface: rgba(148, 163, 184, 0.08);
+}
+
+/* ------------------------------------------------------------------ the page
+
+   In the editor marimo limits a cell's output to 610px and scrolls the rest inside the cell. This notebook
+   is read and presented from its outputs, so every output is shown in full. */
+.marimo-cell.interactive .output-area.output-area {
+  max-height: none;
+}
+
+/* A static copy (marimo export html) is a handout. marimo shows the first line of hidden code above each
+   output and frames every cell. Here a cell with hidden code shows only its output, and only displayed
+   code is framed. The editor is left as it is: its cells carry the class "interactive". */
+.marimo-cell:not(.interactive) > .tray:has(.cm.opacity-20),
+.marimo-cell:not(.interactive):has(> .tray .cm.opacity-20):not(:has(.output-area, [class*="console-output"])) {
+  display: none;
+}
+
+.marimo-cell:not(.interactive),
+.marimo-cell:not(.interactive) > div {
+  border-color: transparent;
+}
+
+.marimo-cell:not(.interactive) > .tray:not(:has(.cm.opacity-20)) {
+  border: 1px solid var(--nb-rule);
+  border-radius: 10px;
+  background: var(--nb-surface);
+}
+
+/* ------------------------------------------------------------------ markdown: one block, one rhythm
+
+   marimo renders markdown with `display: contents`. Inside mo.vstack (a flex column) each heading,
+   paragraph and list would then be its own flex item, and their margins would add up instead of
+   collapsing. Laying markdown out as one block restores normal margin collapsing. */
+.markdown.prose.contents {
+  display: block;
+}
+
+.markdown.prose {
+  max-width: none;
+  color: var(--nb-text);
+  line-height: 1.65;
+}
+
+/* The label of a button or a menu is markdown too. It keeps the colours of its control. */
+:is(label, button) > .markdown.prose {
+  color: inherit;
+  line-height: inherit;
+}
+
+.markdown.prose :is(.paragraph, p, ul, ol, table, blockquote, pre, .codehilite-wrapper) {
+  margin-top: 0.7em;
+  margin-bottom: 0.7em;
+}
+
+.markdown.prose > :first-child {
+  margin-top: 0;
+}
+
+.markdown.prose > :last-child {
+  margin-bottom: 0;
+}
+
+/* Text, equations, figures and tables all use the full width of the page. A displayed equation that is
+   wider still scrolls sideways. */
+.markdown.prose > marimo-tex {
+  display: block;
+  overflow-x: auto;
+}
+
+.markdown.prose strong {
+  color: var(--nb-ink);
+  font-weight: 700;
+}
+
+.markdown.prose li {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+
+/* A reference to another section is a link to it. */
+a.nb-ref {
+  color: var(--nb-accent-strong);
+  font-weight: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--nb-accent-line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a.nb-ref:hover {
+  text-decoration-color: var(--nb-accent);
+}
+
+/* Text for the notebook's outline only. */
+.nb-outline-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ headings: four levels
+
+   Title, section (in its banner), subsection, and the parts of a subsection. */
+.markdown.prose h1 {
+  margin: 0 0 0.5em;
+  font-size: 2.7rem;
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--nb-ink);
+}
+
+/* Subsections: a rule across the page, then the number and the heading. */
+.markdown.prose h3 {
+  margin: 2.4rem 0 0.7rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--nb-rule);
+  font-size: 1.65rem;
+  line-height: 1.25;
+  font-weight: 600;
+  color: var(--nb-ink);
+}
+
+.markdown.prose > h3:first-child {
+  margin-top: 1rem;
+}
+
+.nb-number {
+  margin-right: 0.45em;
+  font-variant-numeric: lining-nums;
+  color: var(--nb-accent);
+}
+
+.markdown.prose h3,
+.nb-section {
+  scroll-margin-top: 4.5rem; /* a link stops below marimo's top bar */
+}
+
+/* Parts of a subsection. */
+.markdown.prose h4 {
+  margin: 1.8rem 0 0.45rem;
+  font-family: var(--text-font);
+  font-size: 1.15rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--nb-ink);
+}
+
+.markdown.prose > h4:first-child {
+  margin-top: 0.8rem;
+}
+
+/* The first paragraph under the title or a subsection heading states its point. */
+.markdown.prose :is(h1, h3) + :is(.paragraph, p) {
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: var(--nb-ink);
+}
+
+/* ------------------------------------------------------------------ labels
+
+   A label names a column or a block, in the words of the text. An eyebrow is a fixed word above a title
+   or a frame ("Feature 1", "Try it"). */
+.nb-label {
+  margin-bottom: 0.3rem;
+  font-size: 0.94rem;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--nb-accent-strong);
+}
+
+.nb-eyebrow {
+  font-size: 0.8rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nb-accent-strong);
+}
+
+/* ------------------------------------------------------------------ section banner */
+.nb-section {
+  margin: 2.25rem 0 0.75rem;
+  padding: 1.1rem 1.5rem 1.4rem;
+  border-top: 4px solid var(--nb-accent);
+  border-radius: 4px 4px 12px 12px;
+  background: linear-gradient(180deg, var(--nb-accent-soft), transparent 150%);
+}
+
+.nb-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1.1rem;
+  margin-top: 1.1rem;
+}
+
+.nb-section > .nb-eyebrow + .nb-section-head {
+  margin-top: 0.5rem;
+}
+
+.nb-section-number {
+  min-width: 1.95rem; /* every title starts at the same place, whatever the numeral */
+  font-family: var(--heading-font);
+  font-size: 3.4rem;
+  line-height: 1;
+  font-weight: 600;
+  font-variant-numeric: lining-nums;
+  color: var(--nb-accent);
+}
+
+.nb-section h2 {
+  margin: 0;
+  font-family: var(--heading-font);
+  font-size: 2.3rem;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--nb-ink);
+}
+
+.nb-standfirst {
+  margin-top: 0.45rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--nb-text);
+}
+
+/* The workflow as a row of boxes: stages done, the current stage, stages to come. Each box is a link. */
+.nb-rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: var(--nb-quiet);
+}
+
+a.nb-rail-step {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid var(--nb-rule);
+  border-radius: 8px;
+  white-space: nowrap;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nb-rail-number {
+  font-weight: 700;
+  font-variant-numeric: lining-nums;
+}
+
+a.nb-rail-step.is-done {
+  border-color: var(--nb-accent-line);
+  color: var(--nb-accent-strong);
+}
+
+a.nb-rail-step:hover {
+  border-color: var(--nb-accent);
+}
+
+.nb-rail-arrow.is-done {
+  color: var(--nb-accent);
+}
+
+a.nb-rail-step.is-current {
+  border-color: var(--nb-solid);
+  background: var(--nb-solid);
+  font-weight: 700;
+  color: var(--nb-on-solid);
+}
+
+/* The workflow as a map, under the title. Each stage is a link to its section. */
+.nb-map {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0.6rem 0 0.4rem;
+}
+
+a.nb-map-step {
+  display: block;
+  padding: 0.7rem 0.8rem 0.85rem;
+  border: 1px solid var(--nb-accent-line);
+  border-top: 3px solid var(--nb-accent);
+  border-radius: 3px 3px 10px 10px;
+  background: var(--nb-accent-soft);
+  text-decoration: none;
+}
+
+a.nb-map-step:hover {
+  border-color: var(--nb-accent);
+}
+
+.nb-map-name {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-weight: 700;
+  color: var(--nb-ink);
+}
+
+.nb-map-name span {
+  font-family: var(--heading-font);
+  font-size: 1.3rem;
+  font-variant-numeric: lining-nums;
+  color: var(--nb-accent);
+}
+
+.nb-map-text {
+  margin-top: 0.3rem;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--nb-text);
+}
+
+/* ------------------------------------------------------------------ key messages
+
+   The box is as wide as the page, like the figure above it. */
+.markdown.prose blockquote {
+  max-width: none;
+  margin: 0.9rem 0;
+  padding: 0.8rem 1.15rem;
+  border-left: 4px solid var(--nb-accent);
+  border-radius: 0 10px 10px 0;
+  background: var(--nb-accent-soft);
+  font-size: 1.06rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--nb-ink);
+  quotes: none;
+}
+
+.markdown.prose blockquote :is(.paragraph, p) {
+  margin: 0;
+}
+
+.markdown.prose blockquote :is(.paragraph, p) + :is(.paragraph, p) {
+  margin-top: 0.5em;
+}
+
+.markdown.prose blockquote :is(.paragraph, p)::before,
+.markdown.prose blockquote :is(.paragraph, p)::after {
+  content: none;
+}
+
+/* ------------------------------------------------------------------ details: notes and captions */
+.nb-note,
+.nb-caption {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--nb-quiet);
+}
+
+.nb-note {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin: 0.35rem 0;
+}
+
+.nb-note-label {
+  flex: none;
+  padding: 0.1rem 0.55rem;
+  border: 1px solid var(--nb-rule);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+:is(.nb-note, .nb-caption) .markdown.prose strong {
+  color: var(--nb-text);
+}
+
+/* ------------------------------------------------------------------ grids: blocks side by side */
+.nb-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--nb-columns, 2), minmax(0, 1fr));
+  gap: 1rem 1.75rem;
+  margin: 0.5rem 0;
+}
+
+.nb-grid > div {
+  min-width: 0;
+}
+
+.nb-grid > div > :is(.nb-note, .nb-controls, marimo-accordion):first-child {
+  margin-top: 0;
+}
+
+.nb-grid .markdown.prose {
+  font-size: 0.96rem;
+  line-height: 1.6;
+}
+
+.nb-stack > div + div {
+  margin-top: 0.9rem;
+}
+
+/* Under a figure: one column per panel. */
+.nb-grid.is-reading > div {
+  padding-top: 0.65rem;
+  border-top: 2px solid var(--nb-rule);
+}
+
+.nb-grid.is-cards > div {
+  padding: 0.85rem 1.1rem 0.95rem;
+  border: 1px solid var(--nb-rule);
+  border-radius: 10px;
+}
+
+.nb-card-title {
+  margin: 0.15rem 0 0.4rem;
+  font-size: 1.04rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--nb-ink);
+}
+
+/* An equation inside a card is set slightly smaller, so that the widest one fits. */
+.nb-grid .markdown.prose > marimo-tex {
+  font-size: 0.86em;
+}
+
+/* Text set inside a component takes the component's size and colour. This rule comes after the grid's. */
+:is(.nb-standfirst, .nb-note, .nb-caption, .nb-map-text, .nb-label, .nb-eyebrow, .nb-hint, .nb-card-title,
+    .nb-flow-name, .nb-flow-text, .nb-field-label, .nb-table) .markdown.prose {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* A chain of boxes: what goes into the network and what comes out. */
+.nb-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.4rem;
+  margin: 0.3rem 0;
+}
+
+.nb-flow-step {
+  flex: 1 1 9rem;
+  min-width: 9rem;
+  padding: 0.65rem 0.8rem 0.75rem;
+  border: 1px solid var(--nb-accent-line);
+  border-radius: 10px;
+  background: var(--nb-accent-soft);
+}
+
+.nb-flow-step.is-absent {
+  border-style: dashed;
+  border-color: var(--nb-rule);
+  background: transparent;
+}
+
+.nb-flow-step.is-network {
+  border-color: var(--nb-warm-line);
+  background: var(--nb-warm-soft);
+}
+
+.nb-flow-name {
+  font-weight: 700;
+  color: var(--nb-ink);
+}
+
+.nb-flow-text {
+  margin-top: 0.25rem;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--nb-text);
+}
+
+.nb-flow-arrow {
+  align-self: center;
+  font-size: 1.2rem;
+  color: var(--nb-quiet);
+}
+
+/* ------------------------------------------------------------------ controls
+
+   An outlined frame invites action. A filled one (the foldable sections below) holds optional reading. */
+.nb-controls {
+  margin: 0.4rem 0;
+  padding: 0.75rem 1.1rem 0.85rem;
+  border: 1px solid var(--nb-accent-line);
+  border-radius: 10px;
+}
+
+.nb-controls-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.nb-controls-head + * {
+  margin-top: 0.55rem;
+}
+
+.nb-controls-head .nb-eyebrow {
+  flex: none;
+}
+
+.nb-hint {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--nb-quiet);
+}
+
+/* Controls with their labels in one column, so that the controls line up. */
+.nb-fields {
+  display: grid;
+  grid-template-columns: max-content minmax(11rem, 15rem);
+  align-items: center;
+  gap: 0.3rem 1rem;
+}
+
+.nb-field-label {
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--nb-text);
+}
+
+/* Marks the places where BayesFlow is used. */
+.nb-chip {
+  display: inline-block;
+  margin-right: 0.5rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: var(--nb-solid);
+  font-family: var(--text-font);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  vertical-align: 0.1em;
+  color: var(--nb-on-solid);
+}
+
+/* ------------------------------------------------------------------ tables
+
+   The same design for tables written in markdown and for those built by the notebook's table helper. */
+:is(.markdown.prose, .nb-table) table {
+  display: table;
+  width: auto;
+  max-width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.nb-table {
+  margin: 0.7rem 0;
+  overflow-x: auto;
+  color: var(--nb-text);
+}
+
+:is(.markdown.prose, .nb-table) thead th {
+  padding: 0.45rem 1.1rem 0.45rem 0;
+  border-bottom: 1.5px solid var(--nb-ink);
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+  vertical-align: bottom;
+  color: var(--nb-ink);
+}
+
+:is(.markdown.prose, .nb-table) tbody td {
+  padding: 0.45rem 1.1rem 0.45rem 0;
+  border-bottom: 1px solid var(--nb-rule);
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  vertical-align: top;
+}
+
+.markdown.prose :is(thead, tbody) tr,
+.markdown.prose tbody tr:nth-child(odd),
+.markdown.prose tbody tr:nth-child(even) {
+  background: transparent;
+}
+
+:is(.markdown.prose, .nb-table) :is(th, td):last-child {
+  padding-right: 0;
+}
+
+.nb-table table :is(th, td).is-right {
+  text-align: right;
+}
+
+.nb-table table :is(th, td).is-centre {
+  text-align: center;
+}
+
+.nb-table.is-nowrap :is(th, td):first-child,
+.nb-table thead th {
+  white-space: nowrap;
+}
+
+/* Headings on one line share a baseline, with or without a symbol in them. */
+.nb-table thead th {
+  vertical-align: baseline;
+}
+
+/* A heading over several columns, with a rule that stops short of the next group. */
+.nb-table thead th.is-group {
+  padding: 0.45rem 0 0;
+  border-bottom: 0;
+  text-align: center;
+}
+
+.nb-table thead th.is-group > span {
+  display: block;
+  margin-right: 1.1rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--nb-quiet);
+}
+
+.nb-table thead th.is-group:last-child > span {
+  margin-right: 0;
+}
+
+.nb-table thead tr + tr th {
+  padding-top: 0.3rem;
+  font-weight: 400;
+  color: var(--nb-quiet);
+}
+
+/* ------------------------------------------------------------------ foldable sections (mo.accordion)
+
+   Optional depth, marked "Details". The trigger and the content live in the component's shadow root, so
+   the rules name their host: marimo's own panels use the same parts and keep their look. */
+marimo-accordion {
+  display: block;
+  margin: 0.4rem 0;
+  padding: 0 1.1rem;
+  border: 1px solid var(--nb-rule);
+  border-radius: 10px;
+  background: var(--nb-surface);
+}
+
+:host(marimo-accordion) div[data-state].border-b:last-child {
+  border-bottom-width: 0;
+}
+
+:host(marimo-accordion) h3[data-state] > button {
+  justify-content: flex-start;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
+  text-align: left;
+}
+
+:host(marimo-accordion) h3[data-state] > button::before {
+  content: "Details";
+  flex: none;
+  padding: 0.1rem 0.55rem;
+  border: 1px solid var(--nb-accent-line);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--nb-accent-strong);
+}
+
+:host(marimo-accordion) h3[data-state] > button > svg {
+  margin-left: auto;
+}
+
+:host(marimo-accordion) h3[data-state] > button .markdown.prose {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--nb-ink);
+}
+
+:host(marimo-accordion) [role="region"] {
+  color: var(--nb-text);
+}
+
+:host(marimo-accordion) [role="region"] > div {
+  padding-bottom: 1.1rem;
+}
+
+/* ------------------------------------------------------------------ tabs (mo.ui.tabs)
+
+   One tab per data set. The tab that is shown is filled, like the current stage in a section banner. */
+:host(marimo-tabs) [role="tablist"] {
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border: 1px solid var(--nb-accent-line);
+  border-radius: 10px;
+  background: var(--nb-accent-soft);
+}
+
+:host(marimo-tabs) [role="tab"] {
+  padding: 0.35rem 1rem;
+  border-radius: 7px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--nb-accent-strong);
+}
+
+:host(marimo-tabs) [role="tab"][data-state="active"] {
+  background: var(--nb-solid);
+  box-shadow: none;
+  color: var(--nb-on-solid);
+}
+
+:host(marimo-tabs) [role="tabpanel"] {
+  margin-top: 0.9rem;
+}
+
+/* ------------------------------------------------------------------ narrow windows */
+@media (max-width: 900px) {
+  .nb-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .nb-grid.is-cards,
+  .nb-map {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .nb-rail {
+    gap: 0.25rem;
+    font-size: 0.8rem;
+  }
+
+  a.nb-rail-step {
+    padding: 0.15rem 0.45rem;
+  }
+}

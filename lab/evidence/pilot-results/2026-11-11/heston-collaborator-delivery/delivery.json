@@ -1,0 +1,223 @@
+{
+  "format": "heston_actual63_collaborator_delivery_v1",
+  "prepared_utc": "2026-11-11T05:25:56.070775+00:00",
+  "status": "google_drive_hash_verified_and_provider_uploaded",
+  "source_branch": "feat/heston-spread-baseline-20261109",
+  "checkout_commit": "58e06ae3f29c09cf2873d1f85d3ec130d6b53fa6",
+  "scientific_base_commit": "4a337c30f1d55d791a284e48123d0e0b0f0f643e",
+  "bundle": {
+    "archive": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-collaborator-actual63-20261111-v2/heston-actual63-development-20261111.tar.gz",
+    "bytes": 464907858,
+    "sha256": "a2c23ab962d534e8807de0488c37e93581062bac8d87e81dc32a2f06c3380b3a",
+    "manifest_sha256": "3ec94acb5728efd5f2dab65cecd299345ea1191f282b439ee8b4008848dc5343",
+    "native_files_verified": 32,
+    "archive_members_verified": true
+  },
+  "bank": {
+    "data_sha256": "47c7f1f25756162985d437e6a133c2651656e7c506bdc2b8aeb39b33fcb803c4",
+    "train_rows": 300000,
+    "validation_rows": 100,
+    "historical_diagnostic_rows": 512,
+    "quote_count": 63,
+    "parameters": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho",
+      "c"
+    ]
+  },
+  "checkpoints": {
+    "200k-300-final300": {
+      "directory": "checkpoints/200k-300-final300",
+      "train_rows": 200000,
+      "epoch": 300,
+      "primary": true,
+      "origin_training": "provenance/200k-300-training.json"
+    },
+    "200k-300-minimum": {
+      "directory": "checkpoints/200k-300-minimum",
+      "train_rows": 200000,
+      "epoch": 272,
+      "primary": false,
+      "origin_training": "provenance/200k-300-training.json"
+    },
+    "300k-300-final300": {
+      "directory": "checkpoints/300k-300-final300",
+      "train_rows": 300000,
+      "epoch": 300,
+      "primary": true,
+      "origin_training": "provenance/300k-300-training.json"
+    },
+    "300k-300-minimum": {
+      "directory": "checkpoints/300k-300-minimum",
+      "train_rows": 300000,
+      "epoch": 259,
+      "primary": false,
+      "origin_training": "provenance/300k-300-training.json"
+    }
+  },
+  "reload_check": {
+    "format": "heston_actual63_collaborator_reload_v1",
+    "verified_utc": "2026-11-11T05:22:32.933603+00:00",
+    "bank_arrays": 29,
+    "train_rows": 300000,
+    "validation_rows": 100,
+    "historical_rows": 512,
+    "portable_native_state_matches_origin": true,
+    "same_seed_draws_bitexact": true,
+    "draw_shape": [
+      2,
+      3,
+      6
+    ],
+    "seed": 117,
+    "role": "software_reload_only_no_scientific_diagnostics",
+    "scientific_acceptance": false,
+    "bundle_manifest_sha256": "3ec94acb5728efd5f2dab65cecd299345ea1191f282b439ee8b4008848dc5343"
+  },
+  "source_bindings": {
+    "spread_pilot": {
+      "kind": "repository",
+      "relative_path": "lab/src/sbi4finance/calibration/heston_spread.py",
+      "sha256": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca"
+    },
+    "checked_pilot": {
+      "kind": "repository",
+      "relative_path": "lab/src/sbi4finance/calibration/heston_pilot.py",
+      "sha256": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b"
+    },
+    "financial_model": {
+      "kind": "repository",
+      "relative_path": "tutorial/src/sbi4f_tutorial/heston_options/model.py",
+      "sha256": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+    },
+    "bf_workflow": {
+      "kind": "installed_python_source",
+      "distribution": "bayesflow",
+      "version": "2.1.0",
+      "relative_path": "bayesflow/workflows/basic_workflow.py",
+      "sha256": "93515e2e100024e4c7c3c4c5743834d8a5d608f35d6162bf90530e342fe53193"
+    },
+    "bf_offline_dataset": {
+      "kind": "installed_python_source",
+      "distribution": "bayesflow",
+      "version": "2.1.0",
+      "relative_path": "bayesflow/datasets/offline_dataset.py",
+      "sha256": "ccc50ef2b4833a5c31230a2bdd19e77a1f9972a4e8d4a1847f3232dd3044470e"
+    },
+    "bf_flow_matching": {
+      "kind": "installed_python_source",
+      "distribution": "bayesflow",
+      "version": "2.1.0",
+      "relative_path": "bayesflow/networks/inference/flow_matching/flow_matching.py",
+      "sha256": "4a7e2c1eeb077992247dcf86760460a7d9317f9fa68444514edf227187111a61"
+    },
+    "bf_make_simulator": {
+      "kind": "installed_python_source",
+      "distribution": "bayesflow",
+      "version": "2.1.0",
+      "relative_path": "bayesflow/simulators/make_simulator.py",
+      "sha256": "3fdf8669d490b9d2328094571a257eb981f1b1a2c9d221793e68592e325f90f3"
+    },
+    "bf_sequential_simulator": {
+      "kind": "installed_python_source",
+      "distribution": "bayesflow",
+      "version": "2.1.0",
+      "relative_path": "bayesflow/simulators/sequential_simulator.py",
+      "sha256": "e7c9ac33c91ff212e6b9c68905c03362c7bebc079fc54269a3563b948b310dfb"
+    },
+    "bf_lambda_simulator": {
+      "kind": "installed_python_source",
+      "distribution": "bayesflow",
+      "version": "2.1.0",
+      "relative_path": "bayesflow/simulators/lambda_simulator.py",
+      "sha256": "e543338502ea8e3cd9ab013e20b0c28ab94e6de698e79d171f1b6c2a22e64a75"
+    },
+    "lab_lock": {
+      "kind": "repository",
+      "relative_path": "lab/pixi.lock",
+      "sha256": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+    },
+    "parent_producer": {
+      "kind": "repository",
+      "relative_path": "lab/scripts/reproduce_heston_pr87.py",
+      "sha256": "f80246ceae9f3b0a7a1a2d4dcdf0da109311dd942bb2fd8f42d1e2fe0205ca0a"
+    },
+    "parent_extension_producer": {
+      "kind": "repository",
+      "relative_path": "lab/scripts/reproduce_heston_pr87_100k.py",
+      "sha256": "f58f9bd5adb3a01582a641adfb4e733224883c2f00146bc4397bc8084e3255af"
+    },
+    "parent_followup_producer": {
+      "kind": "repository",
+      "relative_path": "lab/scripts/reproduce_heston_pr87_followup.py",
+      "sha256": "151c03e9e337f1fd4b97ee6d5dd2cffe4ac9f79372fd666275015ddd69fc7561"
+    },
+    "producer": {
+      "kind": "repository",
+      "relative_path": "lab/scripts/reproduce_heston_pr87_grid.py",
+      "sha256": "0c2aa3bd168e6659e71c8119c746bd9b3980558acae33d8526031ff07918227f"
+    },
+    "grid_pilot": {
+      "kind": "repository",
+      "relative_path": "lab/src/sbi4finance/calibration/heston_grid.py",
+      "sha256": "adebd7b9d3532ee8d180c4ae94ea400f2bb798818916123879ed6219fe870927"
+    },
+    "black_control_variate": {
+      "kind": "repository",
+      "relative_path": "tutorial/src/sbi4f_tutorial/heston_options/control_variate.py",
+      "sha256": "ad2908472eed00688a1ffc8b53eb0187ef9f47a02d3be761589211da90ebf566"
+    },
+    "collaborator_loader": {
+      "kind": "repository",
+      "relative_path": "lab/scripts/heston_grid_collaborator.py",
+      "sha256": "2973411022f0cdc9c34d9cb830aabaa49a8ba1e6d7867204f21aba2f29051d4b"
+    }
+  },
+  "repository_is_public": true,
+  "proposed_distribution": {
+    "service": "GitHub unpublished draft release",
+    "tag": "heston-actual63-development-2026-11-11",
+    "draft_required": true,
+    "published": false,
+    "created": false,
+    "uploaded": false,
+    "write_access_required": true,
+    "official_visibility_source": "https://docs.github.com/en/rest/releases/releases"
+  },
+  "automatic_approval_review": {
+    "status": "rejected_before_execution",
+    "reason": "The requested upload is a large nonpublic bank/model payload to a GitHub release, and exact destination/payload authorization was not explicit; repository is public.",
+    "workaround_attempted": false,
+    "explicit_approval_required": true,
+    "action": "Earlier proposed GitHub draft upload, not the current explicitly authorized Google Drive delivery",
+    "current_route": "User explicitly selected the existing project Google Drive after that rejection; no GitHub retry was attempted"
+  },
+  "existing_notebooks_changed": false,
+  "tutorial_assets_promoted": false,
+  "scientific_acceptance": false,
+  "design": {
+    "source_relative_path": "lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/revised-grid/cv-preparation/design.json",
+    "sha256": "c6f14b0cd7f6d1ecbcbee01f64cf1715c307547d00a802e2e3f232d52d136236",
+    "full_ordered_records_also_embedded_in_bundle_task": true
+  },
+  "focused_tests": {
+    "count": 3,
+    "passed": true,
+    "log_sha256": "eb29b0d4fc2d14547e956781f6e9fdfb1163c2d49225a64c5a3452a25add27d3"
+  },
+  "local_sha256sums": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-collaborator-actual63-20261111-v2/SHA256SUMS",
+  "distribution": {
+    "service": "Google Drive",
+    "folder_url": "https://drive.google.com/drive/folders/1UYBredhF2hrxoZI-sP7sAawC3V6XQpB8",
+    "folder_google_id": "1UYBredhF2hrxoZI-sP7sAawC3V6XQpB8",
+    "parent_google_id": "1ta1LjBopl-kErBfDEr2R_UL-9Hs8Y9D7",
+    "existing_project_permissions_unchanged": true,
+    "provider_uploaded": true,
+    "independent_cloud_download_verified": false,
+    "receipt_sha256": "49e4d3aa0c4cfbd9210d8e7f9c2de43e187838d2306a509587a13016f3358934"
+  },
+  "drive_route_explicitly_user_authorized": true
+}

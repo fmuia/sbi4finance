@@ -18,6 +18,11 @@ planned format for the opening lessons.
 For now, please focus on the three application notebooks above. We want to
 improve the content and presentation; we can trim for timing later.
 
+For the newer Heston work, review the [SPX notebook](../lab/notebooks/heston_spx_calibration.py)
+using the [lab setup](../lab/README.md#review-the-heston-spx-notebook). It estimates
+six parameters from actual quotes. The four-parameter notebook above remains
+available with its original saved examples.
+
 1. Follow the [setup](#install), then [open a notebook](#run-or-review-an-existing-lesson).
    The saved examples work without Oscar or extra downloads.
 2. Review the explanations, figures and visible code. Is it clear what we

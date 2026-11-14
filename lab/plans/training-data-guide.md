@@ -15,6 +15,48 @@ HTML preview does not contain subsequent notebook edits; use the agreed Git
 revision for collaboration. Model and bank distribution does not change any
 recorded numerical or scientific limitation.
 
+## Heston SPX notebook and optional pretrained model
+
+The current [SPX notebook](../notebooks/heston_spx_calibration.py) runs from `lab/`
+with the locked `core-reference` environment. Its saved PyMC examples and small
+live-training example need no download.
+
+To use the pretrained posterior, download `heston-actual63-development-20261111.tar.gz` and `SHA256SUMS`
+from the project [Heston Drive folder](https://drive.google.com/drive/folders/1UYBredhF2hrxoZI-sP7sAawC3V6XQpB8).
+Check the checksum, then extract it outside Git. The archive is 464,907,858 bytes;
+its SHA-256 is `a2c23ab962d534e8807de0488c37e93581062bac8d87e81dc32a2f06c3380b3a`.
+The [delivery receipt](../evidence/pilot-results/2026-11-11/heston-collaborator-delivery/delivery.json)
+records its exact contents. Use your existing project Drive access.
+
+The archive extracts into `heston-actual63-development/`. Set `HESTON_BUNDLE`
+to that folder, which contains `bundle.json`:
+
+```bash
+cd lab
+pixi install --locked -e core-reference
+export HESTON_BUNDLE="/absolute/path/to/extracted/bundle"
+pixi run --locked -e core-reference python scripts/heston_grid_collaborator.py verify \
+  --directory "$HESTON_BUNDLE"
+pixi run --locked -e core-reference marimo edit notebooks/heston_spx_calibration.py
+```
+
+The loader verifies the original task, weights, whitening and source files. Those
+files are unchanged from the research checkout, so the existing archive works.
+The lesson uses `300k-300-final300`: FlowMatching with three 128-unit hidden
+layers, trained on 300,000 simulated quote sets. The archive also retains the
+other recorded checkpoints and the bank; downloading it does not start training.
+
+Raw inference quotes are in SPX index points. The loader divides them by their
+half-spreads and applies the saved whitening. Do not apply either step yourself.
+The six targets are $v_0$, $\kappa$, $v_\infty$, $\sigma_v$, $\rho$ and $c$, with
+quote noise $c h_i$. The contract layout and prior are fixed to the recorded task.
+
+The estimator still has approximation errors, and Heston does not fit these SPX
+quotes within the assumed noise. Keep the notebook's checks and caveats visible.
+This delivery makes the lesson runnable; it does not promote a new accepted model.
+For the complete experimental history or bank-generation continuations, use the
+[pinned research checkout](https://github.com/fmuia/sbi4finance/tree/1c276bb72c1a8d43d1055327934f359708ba1e3f).
+
 ## Source and environment for existing banks
 
 Keep the complete current checkout when installing the locked lab environment:
