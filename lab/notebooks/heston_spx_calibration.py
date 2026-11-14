@@ -3247,6 +3247,21 @@ def _(
 
 
 @app.cell(hide_code=True)
+def _(CASES, EVALUATED, H, mo, reference_summary, task):
+    import importlib.util as _market_importlib
+
+    _market_spec = _market_importlib.spec_from_file_location(
+        "_heston_market_predictives_for_spx", mo.notebook_dir() / "_heston_market_predictives.py")
+    _market_module = _market_importlib.module_from_spec(_market_spec)
+    _market_spec.loader.exec_module(_market_module)
+    market_predictives = _market_module.load_results(
+        mo.notebook_dir() / "data/heston_market_predictives", evaluation=EVALUATED, task=task,
+        observations=CASES["market"], half_spread=H,
+        reference_sha256=reference_summary["display_cache"]["sha256"])
+    return (market_predictives,)
+
+
+@app.cell(hide_code=True)
 def _(
     BOUNDS,
     CASES,
@@ -3259,11 +3274,11 @@ def _(
     grid,
     implied_vols,
     key,
+    market_predictives,
     md,
     mo,
-    neural_draws,
+    note,
     np,
-    number_word,
     pilot,
     plots,
     plt,
@@ -3273,80 +3288,120 @@ def _(
     vol_point_noise,
 ):
     _y = CASES["market"]
-    _rng = np.random.default_rng(20261113)
-    _shown = 40  # posterior draws priced for each band
+    _methods = market_predictives["methods"]
+    _styles = [("pymc", "PyMC reference", plots.SERIES[1]),
+               ("amortizer", "Amortizer", plots.SERIES[0])]
+
+    def _market_figure(noisy):
+        fig, axes = plt.subplots(2, 4, figsize=(11.6, 5.9), constrained_layout=True)
+        for expiry, axis in enumerate(axes.flat[:7]):
+            indices = np.flatnonzero(EXPIRY == expiry)
+            indices = indices[np.argsort(DELTA[indices])]
+            for name, label, color in _styles:
+                clean = np.asarray(_methods[name]["clean_q05_q50_q95_raw"])
+                if noisy:
+                    clean = price_residual_vol_points(clean, _y)[:, indices]
+                    replicated = price_residual_vol_points(
+                        np.asarray(_methods[name]["noisy_q05_q50_q95_raw"]), _y)[:, indices]
+                    axis.fill_between(DELTA[indices], replicated[0], replicated[2], color=color, alpha=.17)
+                    axis.fill_between(DELTA[indices], clean[0], clean[2], color=color, alpha=.38)
+                else:
+                    clean = 100 * implied_vols(clean)[:, indices]
+                    axis.fill_between(DELTA[indices], clean[0], clean[2], color=color, alpha=.25)
+                # Median lines remain visible when the clean-price interval is very narrow.
+                axis.plot(DELTA[indices], clean[1], color=color, lw=1.4, label=label)
+            if noisy:
+                axis.axhline(0, color=plots.INK, lw=.7)
+                axis.scatter(DELTA[indices], np.zeros(len(indices)), color=plots.INK, s=10, zorder=4,
+                             label="Observed quotes")
+            else:
+                axis.scatter(DELTA[indices], 100 * MARKET_IV[indices], color=plots.INK, s=14, zorder=4,
+                             label="Observed quotes")
+            axis.set_title(f"{EXPIRY_DAYS[expiry]} days", fontsize=8.5)
+        limits = [axis.get_ylim() for axis in axes.flat[:7]]
+        for axis in axes.flat[:7]:
+            axis.set_ylim(min(low for low, high in limits), max(high for low, high in limits))
+        axes[0, 0].legend(fontsize=6, loc="best")
+        last = axes.flat[7]
+        for name, label, color in _styles:
+            histogram = _methods[name]["c_histogram"]
+            last.stairs(histogram["density"], histogram["edges"], color=color, lw=1.3, label=label)
+        last.axvline(BOUNDS[-1, 1], color=plots.INK, ls="--", lw=1, label="Prior bound")
+        last.set(title="Noise multiplier c", xlabel="c", ylabel="Density (log scale)", yscale="log")
+        last.legend(fontsize=6)
+        for axis in axes[:, 0]:
+            axis.set_ylabel("Price residual\n(volatility points; vega-equivalent)" if noisy
+                            else "Implied volatility (volatility points)")
+        for axis in list(axes[1, :3]) + [axes[0, 3]]:
+            axis.set_xlabel("Standardized moneyness δ")
+        plt.close(fig)
+        return fig
+
+    heston_market_fit_figure = _market_figure(False)
+    heston_market_predictive_figure = _market_figure(True)
+    # Preserve the reference-fit diagnostics used by the advanced section.
     _reference = reference_draws["market"]
-    _sets = {"PyMC reference": (_reference, _reference[_rng.choice(len(_reference), _shown, replace=False)], plots.SERIES[1])}
-    _neural = neural_draws.get("market")
-    if _neural is not None:
-        _inside = _neural[np.all((_neural >= BOUNDS[:, 0]) & (_neural <= BOUNDS[:, 1]), axis=1)]
-        if len(_inside) >= 2:
-            _sets["network posterior"] = (_neural, _inside[_rng.choice(len(_inside), min(_shown, len(_inside)), replace=False)],
-                                          plots.SERIES[0])
-    _prices = {_name: np.array([pilot.prices(_row) for _row in _sample]) for _name, (_, _sample, _) in _sets.items()}
-    _fig, _axes = plt.subplots(2, 4, figsize=(11.6, 5.4), constrained_layout=True)
-    for _e, _ax in enumerate(_axes.flat[:7]):
-        _at = EXPIRY == _e
-        for _name, (_, _, _color) in _sets.items():
-            _band = implied_vols(np.quantile(_prices[_name], [.05, .95], axis=0))[:, _at]
-            _ax.fill_between(DELTA[_at], 100 * _band[0], 100 * _band[1], color=_color, alpha=.35, label=f"{_name} (90%)")
-        _ax.scatter(DELTA[_at], 100 * MARKET_IV[_at], color="#222222", s=14, zorder=4, label="SPX quotes")
-        _ax.set_title(f"{EXPIRY_DAYS[_e]} days", fontsize=8.5)
-    _axes[0, 0].legend(fontsize=6, loc="upper right")
-    _last = _axes.flat[7]
-    for _name, (_all, _, _color) in _sets.items():
-        _last.hist(_all[:, -1], bins=40, density=True, histtype="step", color=_color, lw=1.3, label=_name)
-    _last.axvline(BOUNDS[-1, 1], color=plots.INK, ls="--", lw=1, label="prior bound")
-    _last.set(title="noise multiplier c", xlabel="c", yticks=[])
-    _last.legend(fontsize=6)
-    for _ax in _axes[:, 0]:
-        _ax.set_ylabel("Implied volatility (volatility points)")
-    for _ax in list(_axes[1, :3]) + [_axes[0, 3]]:
-        _ax.set_xlabel("standardized moneyness δ")
-    # Preserve scaled residuals for the unchanged working likelihood; display errors use fixed-vega vol points.
     market_fit = pilot.prices(_reference.mean(axis=0))
     market_residual = (_y - market_fit) / H
     market_residual_vol_points = price_residual_vol_points(market_fit, _y)
     market_rms = float(np.sqrt(np.mean(market_residual_vol_points ** 2)))
     _bound = float(BOUNDS[-1, 1])
     market_noise_rms_vol_points = float(np.sqrt(np.mean(vol_point_noise(_bound * H) ** 2)))
-    _cap = number_word(int(_bound)) if _bound.is_integer() else f"{_bound:g}"
-    _columns = {
-        "PyMC posterior":
-            "PyMC samples the exact posterior of our model and prior. The noise multiplier $c$ piles up at its bound "
-            "(last panel), and the Heston parameters settle on the best compromise. The "
-            '<a class="nb-ref" href="#s7-1">advanced section</a> shows where the fit misses and which '
-            "feature is missing.",
-    }
-    if _neural is not None:
-        _width = lambda _draws: np.subtract(*np.quantile(_draws[:, -1], [.95, .05]))
-        _columns["Network posterior"] = (
-            f"The fitted surface misses SPX by {market_rms:.3f} equivalent volatility points (RMS), compared "
-            f"with a maximum working quote-noise SD of {market_noise_rms_vol_points:.3f} on this scale (RMS across contracts). "
-            "The network's 90% interval for $c$ is "
-            f"{times(_width(_neural) / _width(_reference))} times as wide as PyMC's, and "
-            f"{100 * np.mean(_neural[:, -1] > _bound):.0f}% of its draws have $c>{_bound:g}$, outside the prior range.")
+    _rq = np.asarray(_methods["pymc"]["c_q05_q50_q95"])
+    _nq = np.asarray(_methods["amortizer"]["c_q05_q50_q95"])
+    _outside = _methods["amortizer"]["outside_prior_count"]
+    _total = _methods["amortizer"]["raw_draw_count"]
+    _included = {}
+    for _name, _, _ in _styles:
+        _q = np.asarray(_methods[_name]["noisy_q05_q50_q95_raw"])
+        _included[_name] = int(np.sum((_q[0] <= _y) & (_y <= _q[2])))
     mo.vstack([
         md(r"""
         ### 5.5 Heston against the SPX quotes
 
-        Sections 5.2 to 5.4 judged the network. On the SPX quotes the first question is about the model: can any Heston parameters reproduce the market within the assumed noise?
+        Compare **PyMC and the amortizer on the same market quotes**. The first view includes
+        observation noise; the second shows the fitted smiles with parameter uncertainty alone.
+        Both are saved diagnostics of the notebook's pretrained estimator, available without downloading it.
         """),
-        _fig,
-        caption(f"The bands are implied volatilities of the model prices from {_shown} posterior draws, and the "
-                "points are the SPX mid quotes. The last panel shows the posterior of the noise multiplier $c$."),
+        mo.ui.tabs({"Posterior predictive: parameters + noise": heston_market_predictive_figure,
+                    "Mean-price fit: parameter uncertainty only": heston_market_fit_figure}),
+        caption(f"Orange: PyMC; blue: amortizer. Lines are clean-price medians. Dark bands show parameter "
+                f"uncertainty; in the predictive view, lighter bands also include fresh quote noise. "
+                f"All bands are pointwise central 90% intervals from {market_predictives['draws_per_method']} "
+                "paired parameter/c draws per method. Predictive residuals use fixed market Black vegas, "
+                "retaining noisy prices without a valid Black IV. The fit view shows exact Black IV levels. "
+                "The seven price panels share a vertical scale within each view. "
+                "The final panel compares c densities on a log scale so both widths remain visible."),
+        grid({
+            "PyMC posterior":
+                "PyMC samples the working posterior. The noise multiplier piles up at its upper bound, "
+                "and the Heston parameters settle on a compromise. "
+                '<a class="nb-ref" href="#s7-1">Advanced</a> examines the remaining residual pattern.',
+            "Amortizer posterior":
+                f"Its central 90% interval for $c$ is {times((_nq[2] - _nq[0]) / (_rq[2] - _rq[0]))} times "
+                f"as wide as PyMC's. {_outside:,}/{_total:,} raw network draws lie outside the training prior; "
+                "those support violations remain visible rather than being clipped away.",
+        }, kind="reading", columns=2),
+        note(f"The predictive bands contain {_included['pymc']}/63 viewed quotes for PyMC and "
+             f"{_included['amortizer']}/63 for the amortizer. These are descriptive checks on the fitted "
+             "quotes, not held-out coverage. Each priced physical row retains its own positive c, including "
+             "network c values above the prior bound. The price function does not use c.", label="Reading"),
         key(f"""
-        **The fitted Heston surface misses the quotes beyond the working error scale.** At the posterior-mean parameters, its price error is {market_rms:.3f} equivalent volatility points (RMS). The prior permits a quote-noise SD of at most {market_noise_rms_vol_points:.3f} on this scale (RMS across contracts).
+        **The fitted Heston surface misses the quotes beyond the working error scale.** At the PyMC posterior-mean parameters, its price error is {market_rms:.3f} equivalent volatility points (RMS). The prior permits a quote-noise SD of at most {market_noise_rms_vol_points:.3f} on this scale (RMS across contracts).
         """),
-        grid(_columns, kind="reading", columns=2),
         key("**Market fit and neural approximation need separate checks.** The market residuals question the "
-            "pricing/error model. Neural disagreement with PyMC is also an approximation problem: even an "
-            "inadequate working model has a posterior the network should reproduce."
-            if _neural is not None else
-            "**This checks the financial working model.** Its failure to describe the market is separate from "
-            "the network's ability to approximate that model's posterior."),
+            "pricing/error model. Neural disagreement with PyMC is an approximation problem: even an "
+            "inadequate working model has a posterior the network should reproduce."),
     ])
-    return market_fit, market_residual, market_residual_vol_points, market_noise_rms_vol_points, market_rms
+    return (
+        heston_market_fit_figure,
+        heston_market_predictive_figure,
+        market_fit,
+        market_residual,
+        market_residual_vol_points,
+        market_noise_rms_vol_points,
+        market_rms,
+    )
 
 
 @app.cell(hide_code=True)

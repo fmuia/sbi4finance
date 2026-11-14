@@ -110,6 +110,61 @@ class HestonSPXBergomiTests(unittest.TestCase):
                 np.testing.assert_array_equal(raw_inside, converted_inside)
                 self.assertEqual(int(converted_inside.sum()), predictive["noisy_in_band_count"])
 
+    def test_saved_heston_market_views_include_both_methods_without_an_estimator(self):
+        self.assertIsNone(self.defs["estimator"])
+        record = self.defs["market_predictives"]
+        self.assertEqual(set(record["methods"]), {"pymc", "amortizer"})
+        expiry, z = np.asarray(self.defs["EXPIRY"]), np.asarray(self.defs["DELTA"])
+        fit = self.defs["heston_market_fit_figure"]
+        predictive = self.defs["heston_market_predictive_figure"]
+        self.assertEqual(len(fit.axes), 8)
+        self.assertEqual(len(predictive.axes), 8)
+        for index, axis in enumerate(fit.axes[:7]):
+            indices = np.flatnonzero(expiry == index)
+            indices = indices[np.argsort(z[indices])]
+            for line, method in zip(axis.lines[:2], ("pymc", "amortizer")):
+                quantiles = np.asarray(record["methods"][method]["clean_q05_q50_q95_raw"])
+                expected, _ = self.defs["display_units"].implied_volatility_points(
+                    quantiles, self.defs["FORWARD"], self.defs["STRIKE"], self.defs["MATURITY"],
+                    self.defs["DISCOUNT"], self.defs["KIND"])
+                np.testing.assert_allclose(line.get_xdata(), z[indices])
+                np.testing.assert_allclose(line.get_ydata(), expected[1, indices])
+        for figure in (fit, predictive):
+            axis = figure.axes[7]
+            self.assertEqual(axis.get_yscale(), "log")
+            self.assertEqual(len(axis.patches), 2)
+            for patch, method in zip(axis.patches, ("pymc", "amortizer")):
+                histogram = record["methods"][method]["c_histogram"]
+                np.testing.assert_allclose(patch.get_data().edges, histogram["edges"])
+                np.testing.assert_allclose(patch.get_data().values, histogram["density"])
+
+    def test_heston_market_predictive_medians_and_bands_use_the_paired_method_quantiles(self):
+        record = self.defs["market_predictives"]
+        observed = np.asarray(self.defs["CASES"]["market"])
+        vega = np.asarray(self.defs["MARKET_VEGA"])
+        expiry, z = np.asarray(self.defs["EXPIRY"]), np.asarray(self.defs["DELTA"])
+        figure = self.defs["heston_market_predictive_figure"]
+        for index, axis in enumerate(figure.axes[:7]):
+            indices = np.flatnonzero(expiry == index)
+            indices = indices[np.argsort(z[indices])]
+            for method_index, method in enumerate(("pymc", "amortizer")):
+                clean = 100 * (np.asarray(record["methods"][method]["clean_q05_q50_q95_raw"])
+                               - observed) / vega
+                noisy = 100 * (np.asarray(record["methods"][method]["noisy_q05_q50_q95_raw"])
+                               - observed) / vega
+                np.testing.assert_allclose(axis.lines[method_index].get_xdata(), z[indices])
+                np.testing.assert_allclose(axis.lines[method_index].get_ydata(), clean[1, indices])
+                for collection, expected in ((axis.collections[2 * method_index], noisy),
+                                              (axis.collections[2 * method_index + 1], clean)):
+                    paths = collection.get_paths()
+                    self.assertEqual(len(paths), 1)
+                    vertices = paths[0].vertices
+                    for contract in indices:
+                        boundary = vertices[np.isclose(vertices[:, 0], z[contract], rtol=0, atol=1e-12), 1]
+                        self.assertGreaterEqual(len(boundary), 2)
+                        np.testing.assert_allclose([boundary.min(), boundary.max()],
+                                                   expected[[0, 2], contract])
+
     def test_parameter_and_noisy_panels_keep_paired_quantiles_and_common_scale(self):
         self.check_predictive_figure(self.defs, 0)
 
