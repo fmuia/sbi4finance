@@ -135,8 +135,9 @@ The opening defaults to a dated VOO snapshot with **1,726 daily returns from
 3 January 2020 through 13 November 2026**; the earlier 256-day crisis window
 remains selectable. Identical trace and tail-frequency views compare VOO with
 an explicitly specified rough-Bergomi simulation and a Gaussian matched to
-each history's mean and standard deviation. A pointwise band across 16 model
-histories shows simulation variability. The model parameters were fixed for
+each history's mean and standard deviation. One Bergomi history supplies both
+its trace and empirical tail curve, making the excess of large moves over the
+matched Gaussian easy to inspect. The model parameters were fixed for
 illustration, not calibrated to VOO. The longer market display does not extend
 the neural estimator's 1,260-day support or feed market returns into it.
 Both windows load offline accepted data, with no vendor request on opening.

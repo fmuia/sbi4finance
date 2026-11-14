@@ -13,7 +13,7 @@
     "marimo_warnings": "existing empty cells in slots 2 and 3",
     "lab_runtime_parity_tests": 12,
     "trajectory_notebook_cells": 88,
-    "lab_core_tests": 531,
+    "lab_core_tests": 532,
     "lab_optional_skips": 3,
     "lab_checkout_regression_tests": 1
   },
@@ -99,13 +99,13 @@
   },
   "scope": "Tutorial-owned physical-return workflow with interactive simulation, explicit fitting, prior/predictive checks and selected-workflow diagnostics. Existing models, cached posterior evidence, final calibration failures and the Heston drift-atom limit are preserved.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "512a901f3568611375037f37e13e968f960cd79eca0f482df6ac735b7d4dae28",
+    "tutorial/notebooks/trajectory_inference.py": "7e9748c4b7dd8051364de6235e04c8761059c0b080415c296fea44070eb2f619",
     "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "7054b13d46b1a369daace82a3c337cae0717aadce1093e6993714668b8419504",
     "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "7749e5245646ff567055a82f2535fafa4f36c537ee9165b53863edeafbe8fdf6",
     "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
     "tutorial/tests/test_trajectory_forward.py": "99174f8526cce21eede4af28dda17273d36244c569685c30c54dda693c6860fb",
-    "tutorial/README.md": "57d5b0b8a69f7216d98a5c26d0d82d0405d2383c1d1377d456ea46492f5e6a55",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "13bcd0c7c139b4a6f2db872d5c3d441e13a4e46a2d6d1d463fe41281f639f5ae",
+    "tutorial/README.md": "8448b2ef167270c01533e645b50e74673925def0aca7225ed7f722e552a32ad3",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "11404a13388ad2d26d8e8b4738bf66d0a0455f61037474cdcc368047cfb56b5b",
     "tutorial/src/sbi4f_tutorial/trajectories/diagnostics.py": "91092853be3846c730e83f3f45eb3789c2adc96a12b34cb571ba2f3074a32354",
     "tutorial/tests/test_trajectory_diagnostics.py": "02bf496481c2ad1c0fda1d949a042e1f36d36747b8e9a7b2cfea68d4b99e04ee",
     "tutorial/src/sbi4f_tutorial/trajectories/model_checks.py": "18440646719d4350e821cb05cee48b16904d09e65c18ff852e9165e163c88ec0",
@@ -125,11 +125,11 @@
     "lab/scripts/trajectory_latent_history.py": "3be7b09419c005c3610e59a2e50f12c013335adc1e2b3784c3a4e8bbe42b8486",
     "tutorial/src/sbi4f_tutorial/trajectories/history_widget.py": "a14d28a472e91cdc9de3f619605c88dca349afdd359d140224f6e3c8a25796a1",
     "tutorial/src/sbi4f_tutorial/trajectories/latent_assets.py": "b88d8ae9abb81ba8f1c49700251d09022cf68c24a907a736055f69bc1fc8c30c",
-    "tutorial/src/sbi4f_tutorial/trajectories/market_story.py": "12391c74ae958fb23a098ff00bfda18dca2a9e79cb072a27b23217b095f4c030",
+    "tutorial/src/sbi4f_tutorial/trajectories/market_story.py": "fa187011f41fe76b1c6b00378570c6db4c1da15a143bb5b5381935841e4868ac",
     "tutorial/src/sbi4f_tutorial/trajectories/predictive_visuals.py": "d124e2678e0e83fa5f2baa6272913d786685fb92bf93c8c95ac1dacc19cd5de8",
     "tutorial/src/sbi4f_tutorial/trajectories/training_widget.py": "65f76dd6be63592080dd666e9d4ef9e628cd912a1bfab9acbee0418913598d10",
     "tutorial/tests/test_trajectory_latent_history.py": "d51f5dae1e688ff1b2de6d1505610ab5bc6c64d71a9201b5fcb3b1804f53233d",
-    "tutorial/tests/test_trajectory_market_story.py": "6d26d149373ca910d1c6e0859f6130b72c67c9b18e24a6b63da9c5bb9145a79a",
+    "tutorial/tests/test_trajectory_market_story.py": "b3fb3a73e569094da6a8835109c1e22049f3229199eee2bd611386edf74f9dae",
     "tutorial/tests/test_trajectory_predictive_visuals.py": "309b85b741afb2ccb0e40857dcd8fb5f28c5d4dfee1d9e5387534b495452a0b3",
     "tutorial/tests/test_trajectory_visual_widgets.py": "a305e28be06f294944c3457e23fd0353faf0b912a81aaba078e2a1c0f898634d",
     "tutorial/src/sbi4f_tutorial/trajectories/variance_aging.py": "81cc18d4afae99c817ffa3f1274bf8a4060bf150de301309bfcbe25c95f29cd1",
@@ -138,7 +138,7 @@
     "tutorial/tests/test_trajectory_portability.py": "aebed32f7dbeb91708eaa4dca32f76da2db340dc4daa6f3decfecc257c5b3894",
     "lab/tests/test_tutorial_asset_checkout.py": "795778eb455c95be36ef46f852c43ac899df1b2252ec8c6847a7cef0a964c8bd"
   },
-  "updated_at_utc": "2026-11-14T17:02:44.282725+00:00",
+  "updated_at_utc": "2026-11-14T17:09:11.661880+00:00",
   "forward_simulator": {
     "paths": 8,
     "days": 252,
@@ -1450,7 +1450,7 @@
       "market_json_sha256": "f6ca7b9c4478145fd7b23a3fac12b143ea48828c703a9f7f06474e8347308964",
       "arrays_sha256": "ec4c5fffc661e1a89cc940ab2584076b6252e7c8e8a3f1f5968ee2d3f75d2beb",
       "neural_horizon_days_unchanged": 1260,
-      "bergomi_distribution_comparison": "16 independent illustrative paths, fixed parameters, same trace and tail views; no market fit"
+      "bergomi_distribution_comparison": "One fixed illustrative history, same trace and tail views against matched Gaussian; 16-history band removed; no market fit"
     },
     "latent_player": {
       "bundle_sha256": "7beb5b9647fdf2fdec819f5bf0c7f7c5170841572490412643ddebb24a74436c",
@@ -1840,5 +1840,35 @@
     },
     "collaborator_action": "Pull PR #75 branch and restart marimo. No regeneration, re-download, hash replacement or retraining is needed for the CRLF issue.",
     "scope": "Git CRLF checkout behavior was reproduced locally; a native Windows environment was not available."
+  },
+  "opening_single_history_20261114": {
+    "histories_simulated": 1,
+    "old_displayed_first_path_preserved_bitwise": true,
+    "returns_sha256": "41057b159977f3125f605e09dc0a2fedc630deaf720c0aa4ad7f2dfccf3bc27e",
+    "seed": 20261114,
+    "parameters": {
+      "hurst": 0.12,
+      "eta": 1.2,
+      "rho": -0.7,
+      "drift": 0.07
+    },
+    "figure_review": "Both dated VOO windows rendered and visually inspected; one empirical Bergomi tail versus matched Gaussian, no ensemble band.",
+    "change": "Remove the ensemble band and its 16-history narrative. Preserve the exact original displayed history and matched Gaussian comparison.",
+    "verification": {
+      "tutorial_tests": 154,
+      "notebook_exports": 7,
+      "trajectory_cells": 88,
+      "cell_errors": 0,
+      "figure_review": "both VOO windows",
+      "marimo": "passed; existing empty-cell warnings in slots 2/3",
+      "release_symbols": 183,
+      "lab_tests": 532,
+      "optional_lab_skips": 3
+    },
+    "figures": {
+      "voo-covid-256.png": "e3f15ddeb083cc5636b5c97899d1b12bc7d753b38b628f1305b5c88d1fff3b5d",
+      "voo-2020-20261113.png": "6033d94ea3adf7583b577391d940908b96d888beea549a576c0006513857c44c"
+    },
+    "artifact_directory": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/trajectory-feedback-20261114/single-market-history"
   }
 }

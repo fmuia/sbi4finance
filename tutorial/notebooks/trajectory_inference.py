@@ -145,11 +145,12 @@ def _(illustrative_market_model, market_story, market_window, mo, trajectory):
                 "tail-frequency views**. A Gaussian benchmark is matched to each displayed history's "
                 "mean and standard deviation. Does that match its frequency of large moves?"),
             market_story.comparison_figure(_market, illustrative_market_model),
-            mo.md("**Why can Bergomi differ from a Gaussian?** Its instantaneous shocks are Gaussian, "
+            mo.md("**Bergomi can produce more large moves than a matched Gaussian.** "
+                "The purple tail curve lies above its Gaussian benchmark for large daily returns, "
+                "even though their mean and standard deviation match. Its instantaneous shocks are Gaussian, "
                 "but their scale changes with hidden variance. Mixing returns from quiet and volatile "
-                "periods changes the marginal distribution. The shaded tail band shows variation across "
-                "16 simulations at the same parameters; it is not a confidence band for VOO or a "
-                "claim that these parameters fit the market."),
+                "periods changes the marginal return distribution. This illustrates non-Gaussian "
+                "behavior; these parameters have not been fitted to VOO."),
             mo.md(f"**VOO: {_market['dates'][0]} to {_market['dates'][-1]} · "
                 f"{len(_market['dates']):,} daily returns.** The full market snapshot extends beyond "
                 "the neural estimator's five-year training horizon. The following synthetic lesson "
@@ -163,8 +164,8 @@ def _(illustrative_market_model, market_story, market_window, mo, trajectory):
                 "The Bergomi panel uses H = 0.12, eta = 1.2, rho = -0.7, drift = 0.07 and a flat "
                 "mean-variance curve of 0.04. These settings and seed 20261114 were fixed for the "
                 "illustration, not estimated from VOO. Time starts at the model's origin; its "
-                "nonstationary long-history behavior is explained below. All 16 paths contribute "
-                "to the pointwise 10–90% tail band. Empirical probabilities are discrete; a finite "
+                "nonstationary long-history behavior is explained below. The same single simulated "
+                "history supplies both the trace and its tail curve. Empirical probabilities are discrete; a finite "
                 "tail plot is not a formal normality or model-adequacy test.\n\n"
                 f"Source: {_metadata.get('source_url', _metadata['source'])}  \n"
                 f"Last recorded trading date: **{_market['dates'][-1]}**. "

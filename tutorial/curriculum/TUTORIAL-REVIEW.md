@@ -520,9 +520,10 @@ corporate-action convention and exact `log1p` return conversion recorded in
 the accepted snapshot. The original 256-day crisis window remains selectable.
 Use the same trace and absolute-return tail-frequency layout for observed VOO
 and an explicitly specified rough-Bergomi model. Each Gaussian reference uses
-the corresponding history's mean and standard deviation. A pointwise
-simulation band shows variation across 16 model histories; it is not a
-confidence band for market data or evidence of a calibrated fit to VOO.
+the corresponding history's mean and standard deviation. One illustrative
+Bergomi history supplies the trace and tail curve; the multi-history band is
+removed to focus on the departure from a matched Gaussian. The example is not
+evidence of a calibrated fit to VOO.
 The full dated market display exceeds the neural estimator's 1,260-day input
 support. It remains a motivation panel, with no out-of-support market query.
 
