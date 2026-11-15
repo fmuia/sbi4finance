@@ -68,13 +68,15 @@ class HestonSPXBergomiTests(unittest.TestCase):
                 np.testing.assert_allclose(line.get_xdata(), z[indices])
                 np.testing.assert_allclose(line.get_ydata(), expected[indices])
 
-    def test_bergomi_display_symbols_match_the_trajectory_lesson(self):
+    def test_bergomi_variance_curve_uses_the_heston_variance_symbols(self):
         labels = self.defs["BERGOMI_PARAMETER_LABELS"]
         symbols = {name: re.search(r"\$([^$]+)\$", label).group(1)
                    for name, label in labels.items()}
         self.assertEqual(symbols, {"hurst": "H", "eta": r"\eta", "rho": r"\rho",
-                                   "short_variance": "S", "long_variance": "L",
+                                   "short_variance": "v_0", "long_variance": r"v_\infty",
                                    "decay": "k", "c": "c"})
+        heston = dict(zip(self.defs["NAMES"], self.defs["LABELS"]))
+        self.assertEqual((heston["initial_variance"], heston["theta"]), (r"$v_0$", r"$v_\infty$"))
         self.assertEqual(list(labels), self.defs["bergomi_results"]["parameter_names"])
         self.assertEqual([axis.get_title() for axis in self.defs["bergomi_recovery_figure"].axes[:7]],
                          list(labels.values()))
@@ -111,13 +113,34 @@ class HestonSPXBergomiTests(unittest.TestCase):
         axis = self.defs["bergomi_skew_figure"].axes[0]
         self.assertEqual((axis.get_xscale(), axis.get_yscale()), ("log", "log"))
         self.assertIn("volatility points per log-moneyness", axis.get_ylabel())
-        self.assertEqual(len(axis.lines), 4)
+        self.assertEqual(len(axis.lines), 5)
         for h, curve, line in zip(record["hurst"], curves, axis.lines[:3]):
             slopes = np.diff(np.log(np.abs(curve))) / np.diff(np.log(years))
             np.testing.assert_allclose(slopes, h - .5, atol=1e-12)
             np.testing.assert_allclose(line.get_xdata(), days)
             np.testing.assert_allclose(line.get_ydata(), 100 * np.abs(curve))
-        np.testing.assert_allclose(axis.lines[-1].get_ydata(), 100 * abs(record["heston_limit"]))
+        # Heston's finite limit is drawn only at expiries below the quoted range.
+        spx = self.defs["spx_atm_skew"]
+        np.testing.assert_allclose(axis.lines[3].get_ydata(), 100 * abs(record["heston_limit"]))
+        self.assertLessEqual(max(axis.lines[3].get_xdata()), min(spx["days"]))
+
+    def test_short_expiry_plot_shows_the_spx_skews_on_the_rough_power_law(self):
+        record = self.defs["bergomi_skew_asymptotics"]
+        spx = self.defs["spx_atm_skew"]
+        axis = self.defs["bergomi_skew_figure"].axes[0]
+        # The dots are the Section 7.1 measurement, in volatility points per unit log-moneyness.
+        np.testing.assert_allclose(axis.collections[0].get_offsets(),
+                                   np.column_stack([spx["days"], 100 * np.abs(spx["skew"])]))
+        # The line through them has the H = 0.10 exponent and a least-squares level in log space.
+        days, values = axis.lines[4].get_xdata(), axis.lines[4].get_ydata()
+        np.testing.assert_allclose(np.diff(np.log(values)) / np.diff(np.log(days)), record["hurst"][0] - .5,
+                                   atol=1e-12)
+        self.assertEqual((days.min(), days.max()), (min(spx["days"]), max(spx["days"])))
+        level = np.mean(np.log(np.abs(spx["skew"])) - (record["hurst"][0] - .5) * np.log(np.asarray(spx["days"]) / 365))
+        self.assertAlmostEqual(record["spx_level"], np.exp(level), places=12)
+        # The SPX skew is well described by T^-0.4: the free exponent and the fixed-exponent misfit.
+        self.assertLess(abs(spx["exponent"] + .4), .05)
+        self.assertLess(record["spx_max_deviation"], .1)
 
     def test_heston_displayed_rms_and_heatmap_use_the_same_volatility_point_residuals(self):
         observed = np.asarray(self.defs["MID"])

@@ -31,9 +31,39 @@ class HestonSummaryNotationTests(unittest.TestCase):
         figures = loader.load_figures(DATA, SOURCE, self.record, self.labels)
         self.assertEqual(set(figures), {None, 64, 32, 16, 8, 7, 6, 5, 4, 2})
         self.assertTrue(all(p.parent == DATA and p.is_file() for p in figures.values()))
-        self.assertEqual(self.labels[2:5], [r"long variance $L$", r"volatility of variance $\sigma$",
+        self.assertEqual(self.labels[2:5], [r"long-run variance $v_\infty$", r"volatility of variance $\sigma$",
                                            r"leverage correlation $\rho$"])
         self.assertEqual(before, {p.name: sha256(p.read_bytes()).hexdigest() for p in SOURCE.iterdir() if p.is_file()})
+
+    def test_relabelling_replaces_only_title_pixels(self):
+        import matplotlib
+        from matplotlib import ft2font
+        import numpy as np
+        from PIL import Image
+        from scripts.relabel_heston_summary_notation import relabel
+
+        recorded = json.loads((DATA / "manifest.json").read_text()).get("relabelled", [{}])[-1]
+        if (recorded.get("matplotlib"), recorded.get("freetype")) != (matplotlib.__version__,
+                                                                      ft2font.__freetype_version__):
+            self.skipTest("exact text rendering needs the recorded matplotlib and FreeType versions")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            shutil.copytree(DATA, root / "figures")
+            labels = list(self.labels)
+            labels[2] = r"long-term variance $v_\infty$"
+            (root / "notebook.py").write_text(f"MATH_LABELS = {labels!r}\n")
+            manifest = relabel(root / "figures", SOURCE, root / "notebook.py")
+            self.assertEqual(manifest["labels"], labels)
+            self.assertEqual(manifest["relabelled"][-1]["previous_labels"], self.labels)
+            self.assertEqual(set(loader.load_figures(root / "figures", SOURCE, self.record, labels)),
+                             {None, 64, 32, 16, 8, 7, 6, 5, 4, 2})
+            for item in manifest["figures"]:
+                before = np.asarray(Image.open(DATA / item["file"]).convert("RGBA"))
+                after = np.asarray(Image.open(root / "figures" / item["file"]).convert("RGBA"))
+                rows, columns = np.nonzero(np.any(before != after, axis=-1))
+                # Only the third panel's title, above the top-right axes, may change.
+                self.assertTrue(rows.size and rows.max() < 100 and columns.min() > before.shape[1] * 2 / 3)
+                self.assertEqual(rows.size, manifest["relabelled"][-1]["changed_pixels"][item["file"]]["pixels"])
 
     def test_changed_image_source_metric_label_or_path_is_rejected(self):
         original = json.loads((DATA / "manifest.json").read_text())

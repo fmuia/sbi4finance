@@ -33,7 +33,7 @@
         ]
       },
       "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
-      "sha256": "7e32b3089079e24b5502f4ebfdf570c89a9fcfc274fa1412ff9402441bba213f",
+      "sha256": "512da62d9a05bd72d94ae73d2a456ccef4f95b522fc51f4d04f44d387fe3b1d5",
       "source_archived_image_sha256": "0b06c66dfd703a9b4ed26ac23fdc4a7f17bbcd57f2d4e75eb722448c54bc97d3",
       "source_draws_sha256": "e7f3412f5ed32386ced4273d0355dc550cbb59d82617f95902faf839a28d21e6",
       "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
@@ -68,7 +68,7 @@
         ]
       },
       "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
-      "sha256": "d5a7d308604897a8d68c7aa1113128d56c6bf9279bbafb8b0a464cd04a6044f2",
+      "sha256": "11e83dced32ff68a4c7102aee813c2e0262146f30d8f400503a6820d186b5202",
       "source_archived_image_sha256": "7c9baa3af4dc11ed72b45958028594775b4883751b1f842241943f5aa2c4b754",
       "source_draws_sha256": "7b77cdf5a8a03ed3d509bbeec7dd39e905fbc4b0561623d7285e7afb4d887dd2",
       "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
@@ -103,7 +103,7 @@
         ]
       },
       "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
-      "sha256": "91ec86913e2eb9903ea1dc010e6b24f3df6f41cd33d33aa3f86a99f3923616ec",
+      "sha256": "52e59ed6095f42a36903a6cb2a51b8f5f46b644be8d441ee4cdc9d6cb42a3236",
       "source_archived_image_sha256": "0332713e55f54740390ecafc11d2ccd86d2d5f7cc7e5f47efd248adec79183de",
       "source_draws_sha256": "14090f95857f096d3aa149bea17039a1a08546215acb468bc842a91b42e46e05",
       "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
@@ -138,7 +138,7 @@
         ]
       },
       "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
-      "sha256": "6ab2ef08bdf59068002930f32a75ed1d0c25b4aceeb116f29ff0a75666aefae6",
+      "sha256": "f577840194882cf2ecf621634b792a7e2f92d15931cdd07ff5b871cd1c9a742a",
       "source_archived_image_sha256": "25341fc296bcf22d597e064ebce510981e697d4c1c5c15e9a728cc21ae31c37c",
       "source_draws_sha256": "a46a675a1a327cd539bdb4d239a3ca396cced413395f0b1b96093ed245dacf41",
       "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
@@ -173,7 +173,7 @@
         ]
       },
       "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
-      "sha256": "f09adf46d4859186285c3c2b0db609112f4afde8a3b5659ffa04e4c9593eeb68",
+      "sha256": "c86bec2f03c107b8272dd74f2ca8e03a309f21a94d432b22b2619c7f0fa64bcd",
       "source_archived_image_sha256": "798f98fcd6a0ab10a05c5e7331ec9cd338c640f86e1c9f4e59a5c3bc8992686b",
       "source_draws_sha256": "e0c3ca3f4d481d334922bcb77cf980efae3f7748f4e5e04dc338ce4173ee9ebd",
       "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
@@ -208,7 +208,7 @@
         ]
       },
       "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
-      "sha256": "b0fd3dc5d97204403fde2127a5a16c12aebcfb4de1815b383a29daff0ee9ffa7",
+      "sha256": "e1a886b63ec079febd096d75ed592371f730374d790901a0f9e9b01292140792",
       "source_archived_image_sha256": "54f8a7a0cf1a7cc9bbf1e84dd006e6ede4f16ef8170e2fe24a89079976692b1e",
       "source_draws_sha256": "c5883d7d49e78185916b38e957f7e65f3e28e79e6bf2db94b704eed8d092019c",
       "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
@@ -243,7 +243,7 @@
         ]
       },
       "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
-      "sha256": "408b9fc56ac8e5d8c14b78cae0996cd4814528927ddd2197e397d3dbab67d783",
+      "sha256": "941ca6c394de6f0b43243edb0daa2530f41a521024acf60fdbb9b4305b6bbe7a",
       "source_archived_image_sha256": "a58ffdf823e4be5446348599d3150d9fedb689a4a5ccc8301bf58002fd1d520c",
       "source_draws_sha256": "06f214fdde8d9df0d4c032743f9fc6418c41023a4309244606011b5c52caf1d1",
       "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
@@ -278,7 +278,7 @@
         ]
       },
       "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
-      "sha256": "ac578675cdc8f31f3108c2ac57c87b6a4475ebb2f662331f0f320e6a19f782f2",
+      "sha256": "27f1ca7b073529d3909f8eff255a34c179702bf0889277dd54e5068177c84b74",
       "source_archived_image_sha256": "b730b52ce5c7a3f35fa0f6728d69897fd9c124b3235b8d6e496401c1ad978dbf",
       "source_draws_sha256": "d0096c65c9d554c8ee5957f10ee51e8786bc7ff3001bf1da8d79e1ae85fa9d6c",
       "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
@@ -313,7 +313,7 @@
         ]
       },
       "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
-      "sha256": "3b394939ffd93f4002ada95bf912e2e0bbde19d6afc399782e80ed061a4341e2",
+      "sha256": "c2f73b1ad858779e2669874e85a96a8ab44e342bbfb4b0d2beaf8b179a946dd5",
       "source_archived_image_sha256": "9e0656ba6730d008b83aab4b7148f4d19950943d9b02bc3061edbf578adf7f3a",
       "source_draws_sha256": "9b9ec75c3a2329265b52101f2d0cc15536467570487cb308a5900f1bf53e8879",
       "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
@@ -348,7 +348,7 @@
         ]
       },
       "observations_sha256": "30a38f84ca061c32f5d210b3dd96fddad7d3cd7fcb1048d4a453102f0adb43c8",
-      "sha256": "1d1c6dfc904f45b16aec0542af50944f580a8641a6ae7586e248c60e9e2052e6",
+      "sha256": "aeea3bdc2eea5e09a69c5157375b469ba85dd6e91b399db84d36ae4c2c3463c9",
       "source_archived_image_sha256": "0aed58151695108356138930e931cb4c339a1b63939bd53b6fcccedf0f514e53",
       "source_draws_sha256": "e08fb7231ed6b2989097d2b718a82d6df78e12ffd7225d6707305f465bd1ae34",
       "truth_sha256": "4d35211370df7e3e7368e007d18538582557af475465048ea88965b3e55be13d"
@@ -358,7 +358,7 @@
   "labels": [
     "initial variance $v_0$",
     "mean reversion $\\kappa$",
-    "long variance $L$",
+    "long-run variance $v_\\infty$",
     "volatility of variance $\\sigma$",
     "leverage correlation $\\rho$",
     "noise multiplier $c$"
@@ -370,6 +370,146 @@
     "vol_of_vol",
     "rho",
     "c"
+  ],
+  "relabelled": [
+    {
+      "changed_pixels": {
+        "direct-final.png": {
+          "columns": [
+            1465,
+            1718
+          ],
+          "pixels": 2430,
+          "rows": [
+            47,
+            71
+          ]
+        },
+        "mlp16-final.png": {
+          "columns": [
+            1465,
+            1718
+          ],
+          "pixels": 2430,
+          "rows": [
+            47,
+            71
+          ]
+        },
+        "mlp2-final.png": {
+          "columns": [
+            1465,
+            1718
+          ],
+          "pixels": 2430,
+          "rows": [
+            47,
+            71
+          ]
+        },
+        "mlp32-final.png": {
+          "columns": [
+            1465,
+            1718
+          ],
+          "pixels": 2430,
+          "rows": [
+            47,
+            71
+          ]
+        },
+        "mlp4-final.png": {
+          "columns": [
+            1465,
+            1718
+          ],
+          "pixels": 2430,
+          "rows": [
+            47,
+            71
+          ]
+        },
+        "mlp5-final.png": {
+          "columns": [
+            1465,
+            1718
+          ],
+          "pixels": 2430,
+          "rows": [
+            47,
+            71
+          ]
+        },
+        "mlp6-final.png": {
+          "columns": [
+            1465,
+            1718
+          ],
+          "pixels": 2430,
+          "rows": [
+            47,
+            71
+          ]
+        },
+        "mlp64-final.png": {
+          "columns": [
+            1465,
+            1718
+          ],
+          "pixels": 2430,
+          "rows": [
+            47,
+            71
+          ]
+        },
+        "mlp7-final.png": {
+          "columns": [
+            1465,
+            1718
+          ],
+          "pixels": 2430,
+          "rows": [
+            47,
+            71
+          ]
+        },
+        "mlp8-final.png": {
+          "columns": [
+            1465,
+            1718
+          ],
+          "pixels": 2430,
+          "rows": [
+            47,
+            71
+          ]
+        }
+      },
+      "freetype": "2.14.3",
+      "matplotlib": "3.11.2",
+      "previous_figure_sha256": {
+        "direct-final.png": "7e32b3089079e24b5502f4ebfdf570c89a9fcfc274fa1412ff9402441bba213f",
+        "mlp16-final.png": "6ab2ef08bdf59068002930f32a75ed1d0c25b4aceeb116f29ff0a75666aefae6",
+        "mlp2-final.png": "1d1c6dfc904f45b16aec0542af50944f580a8641a6ae7586e248c60e9e2052e6",
+        "mlp32-final.png": "91ec86913e2eb9903ea1dc010e6b24f3df6f41cd33d33aa3f86a99f3923616ec",
+        "mlp4-final.png": "3b394939ffd93f4002ada95bf912e2e0bbde19d6afc399782e80ed061a4341e2",
+        "mlp5-final.png": "ac578675cdc8f31f3108c2ac57c87b6a4475ebb2f662331f0f320e6a19f782f2",
+        "mlp6-final.png": "408b9fc56ac8e5d8c14b78cae0996cd4814528927ddd2197e397d3dbab67d783",
+        "mlp64-final.png": "d5a7d308604897a8d68c7aa1113128d56c6bf9279bbafb8b0a464cd04a6044f2",
+        "mlp7-final.png": "b0fd3dc5d97204403fde2127a5a16c12aebcfb4de1815b383a29daff0ee9ffa7",
+        "mlp8-final.png": "f09adf46d4859186285c3c2b0db609112f4afde8a3b5659ffa04e4c9593eeb68"
+      },
+      "previous_labels": [
+        "initial variance $v_0$",
+        "mean reversion $\\kappa$",
+        "long variance $L$",
+        "volatility of variance $\\sigma$",
+        "leverage correlation $\\rho$",
+        "noise multiplier $c$"
+      ],
+      "scope": "Only panel-title pixels changed. A data-free rebuild of the exporter layout with the previous labels reproduced each replaced region exactly, and both label sets give identical axes. Every plotted value, axis and metric is unchanged.",
+      "tool_sha256": "cd3014a9b43652d0baa9f92e36727094d6499ff3b1a6624a81c76ff1e54796aa"
+    }
   ],
   "rows": 512,
   "scope": "Only display labels changed. All 512 truths, raw-draw quantiles, metrics and common axes are preserved. Original images and study identities remain unchanged.",
