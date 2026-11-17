@@ -4,7 +4,7 @@
 
 At a parameter set near the middle of the prior (H 0.10, eta 1.8, rho -0.75, volatility levels 18% to 22%), after
 one warm-up call, each timing is the median of three calls. Writes timing.json next to this file. The figures
-plan the cluster runs (lab/plans/CLUSTER-RUNS.md) and the costs of course/v2-plan.md, Section 2.4.
+plan the cluster runs (lab/plans/CLUSTER-RUNS.md) and the costs of the removed course's v2-plan.md, Section 2.4.
 """
 
 import json

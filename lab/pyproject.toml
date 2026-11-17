@@ -49,7 +49,6 @@ claims = "python studies/claims.py"
 runtime-check = "python studies/runtime_boundary.py"
 copy-to-tutorial = "python studies/copy_to_tutorial.py"
 release-check = "python studies/manifest.py --check && python studies/claims.py --check && python studies/runtime_boundary.py"
-course-check = "python ../course/scripts/check_v2_plan.py"
 discover-cluster = "python cluster/discover_cluster.py"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
@@ -88,7 +87,6 @@ copy-to-tutorial = "python studies/copy_to_tutorial.py"
 manifest = "python studies/manifest.py"
 claims = "python studies/claims.py"
 release-check = "python studies/manifest.py --check && python studies/claims.py --check && python studies/runtime_boundary.py"
-course-check = "python ../course/scripts/check_v2_plan.py"
 
 # Reference MCMC is optional and isolated from participant/training installs.
 [tool.pixi.feature.reference.pypi-dependencies]

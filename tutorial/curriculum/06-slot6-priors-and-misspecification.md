@@ -29,7 +29,7 @@ Slot 5 ends on four conditions: the prior, the noise model, the forward-variance
 | 13–14 | 5. Across models | Slot 5's two forward-start distributions on SPY, Heston and rough Bergomi; if they are late, the pilot's three smiles | cached | When both models are wrong in different ways, report both and the spread between them, judged smile by smile. Model averaging and stacking are the formal versions. |
 | 14–15 | 6. Close | What the afternoon showed, in three lines; the repository | slide | The method needs a simulator, a prior and a noise model, and it is only as good as its checks. |
 
-**Optional slides.** The minute plan has no free minute, so two slides of the course's [version-2 plan](../../course/v2-plan.md) are optional: pooling across names (Section 2.3) and the prior beyond the last quote (Section 2.2). Both are specified below, at one minute each. Each can take the time of a piece that is not built (Open choices for Stefan and Jerry).
+**Optional slides.** The minute plan has no free minute, so two slides of the course's [version-2 plan](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/v2-plan.md) are optional: pooling across names (Section 2.3) and the prior beyond the last quote (Section 2.2). Both are specified below, at one minute each. Each can take the time of a piece that is not built (Open choices for Stefan and Jerry).
 
 ## The pieces, specified
 
@@ -66,7 +66,7 @@ The fourth detector is the one slot 3 names. It needs a summary network, which s
 
 ### Optional slide: pooling across names
 
-- **On screen.** Coverage of the 90% intervals of the illiquid names in a simulated Black–Scholes sector, for four methods ([`v2-pooling.png`](../../course/images/v2-pooling.png)), with the table of v2-plan, Section 2.3.
+- **On screen.** Coverage of the 90% intervals of the illiquid names in a simulated Black–Scholes sector, for four methods ([`v2-pooling.png`](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/images/v2-pooling.png)), with the table of v2-plan, Section 2.3.
 - **Said.** The liquid names of the sector quote the full grid. Each illiquid name quotes one at-the-money option with 3 volatility points of noise. With 2 liquid and 6 illiquid names, the 90% intervals of the illiquid names cover the truth 89.7% of the time per name, 59.5% for the proxy (the liquid names' mean), 69.7% for empirical Bayes and 88.0% for hierarchical Bayes. The hierarchical intervals are 7.6 volatility points wide, against 9.9 per name. With 8 liquid and 32 illiquid names the four methods cover 89.6%, 83.3%, 87.5% and 89.4%. A small sector leaves its hyperparameters uncertain, and only the hierarchical model carries that uncertainty into each name. Pooling is a prior for each thin name, learned from the other names of its sector. The rules allow a proxy from similar instruments, without a recipe for it (Regulation (EU) 2016/101, Art. 3(3)(a)).
 
 ### Optional slide: the prior beyond the last quote

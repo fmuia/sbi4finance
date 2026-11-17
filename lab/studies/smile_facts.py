@@ -9,7 +9,7 @@ example: one surface at the centre of the prior box (rough Bergomi with a flat
 one draw of quote noise. Reported: the implied volatilities of the clean and of
 the noisy quotes, the at-the-money level, skew and curvature per maturity, and
 the power law fitted to the skew across maturities; for rough Bergomi also the
-short-maturity formula of the course (Lecture 13), maturity by maturity.
+short-maturity formula, maturity by maturity.
 
 prior-predictive: four statistics over held-out surfaces of a bank, from the
 clean model prices and from the noisy quotes: the 1-month ATM implied
