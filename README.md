@@ -1,7 +1,7 @@
 # sbi4finance
 
 Code and materials for the ICAIF '26 tutorial **Amortized Bayesian Calibration of Volatility
-Models** (Milan, 14 November 2026), built with [BayesFlow](https://github.com/bayesflow-org/bayesflow).
+Models** (Milan, 15 November 2026), built with [BayesFlow](https://github.com/bayesflow-org/bayesflow).
 The [tutorial website](https://fmuia.github.io/sbi4finance/) has the programme, the presenters,
 slides and static copies of the notebooks.
 
@@ -45,9 +45,10 @@ pixi install --locked -e core-reference
 pixi run --locked -e core-reference marimo edit notebooks/heston_spx_calibration.py
 ```
 
-The SPX notebook's optional pretrained Heston estimator is a separate download. Without it the
-notebook still shows every saved result, but fresh Heston sampling is unavailable. See the
-[lab README](lab/README.md#review-the-heston-spx-notebook). The
+The SPX notebook's optional pretrained Heston estimator is a separate 465 MB archive on the
+project's Google Drive, available to the project team only. Without it the notebook still shows
+every saved result and can train a small network live; only fresh sampling from the pretrained
+estimator is unavailable. See the [lab README](lab/README.md#review-the-heston-spx-notebook). The
 [tutorial README](tutorial/README.md) covers the return-history notebook's options and checks.
 
 ## What the results show
@@ -84,8 +85,9 @@ Notebooks that were prepared but not presented are parked in
 
 The generation, training and evaluation scripts run on a laptop or on a cluster. Follow the
 [lab instructions](lab/README.md#canonical-workflow) and the
-[training-data guide](lab/plans/training-data-guide.md); large banks and models are versioned
-downloads, identified by SHA-256 hashes, outside Git.
+[training-data guide](lab/plans/training-data-guide.md). Large training banks and models are kept
+outside Git, identified by SHA-256 hashes, as GitHub release assets or on the project's Google
+Drive (which needs project access).
 
 ## Presenters
 

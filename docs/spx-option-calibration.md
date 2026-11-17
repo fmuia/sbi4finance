@@ -1,6 +1,6 @@
 # Bayesian calibration on SPX options
 
-*A companion to the Heston and rough Bergomi notebook presented at ICAIF '26 (Milan, 14 November
+*A companion to the Heston and rough Bergomi notebook presented at ICAIF '26 (Milan, 15 November
 2026). About 15 minutes. The numbers and figures are those of the notebook as presented; section
 numbers such as §5.2 refer to it.*
 
