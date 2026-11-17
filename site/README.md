@@ -77,5 +77,3 @@ what may be public: no unreleased results, private links or credentials.
 ## Before announcing the page
 
 - Fill in or remove every `todo` placeholder.
-- Delete the `<meta name="robots" content="noindex">` line, so that search
-  engines can find the page.
