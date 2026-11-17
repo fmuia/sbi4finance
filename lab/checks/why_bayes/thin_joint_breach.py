@@ -8,7 +8,7 @@ give a lower and an upper 90% bound for each product:
 * posterior: the 10% and 90% quantiles of the products priced under the network's draws;
 * gauss_newton: least squares in the same six-parameter model, the Gauss-Newton covariance in the logit
   coordinates of the prior box, and the delta method: the price at the fit plus or minus 1.2816 sd;
-* hurst_fixed: the same with H fixed at 0.10, the course's baseline (Lecture 6, Section 6.7);
+* hurst_fixed: the same with H fixed at 0.10, the baseline of the removed background course (Lecture 6, Section 6.7);
 * flat_curve: the gauss_newton fit, with the curve held flat beyond the last quote at its average over the last
   quoted interval (thin_joint.product_curve);
 * laplace: the posterior's mode and the Laplace approximation there, in the same logit coordinates, where the

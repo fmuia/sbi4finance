@@ -76,7 +76,7 @@ KHAT_RELIABLE = 0.7
 _TAG = 0x53313030  # "S100"
 METHODS = ("network", "posterior", "gauss_newton", "gauss_newton_power", "h_fixed")
 COLOURS = {"network": "#2a78d6", "posterior": "#eb6834", "gauss_newton": "#1baf7a", "gauss_newton_power": "#7a5af5",
-           "h_fixed": "#555555"}  # the first three are the course's validated series colours
+           "h_fixed": "#555555"}  # the first three are the validated series colours
 ARMS = ("prior", "flat", "wide")
 LONG_PRODUCT = "forward_start_6m_1y"
 

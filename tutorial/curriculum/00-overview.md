@@ -24,7 +24,7 @@ For the proposed next numerical campaign, read the [experiment plan](../../lab/p
 | [05-slot5-rough-bergomi-to-a-reserve.md](05-slot5-rough-bergomi-to-a-reserve.md) | 5. Rough Bergomi on the SPY smile: from the posterior to a reserve | Francesco, Alex | 40 |
 | [06-slot6-priors-and-misspecification.md](06-slot6-priors-and-misspecification.md) | 6. Changing priors and dealing with misspecified models | Stefan, Jerry | 15 |
 
-A number written ⟨Sn⟩ comes from study Sn ([course/status.md](../../course/status.md)) and is not on screen until [CLAIMS.md](../CLAIMS.md) records the final run.
+A number written ⟨Sn⟩ comes from study Sn ([course/status.md](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/status.md)) and is not on screen until [CLAIMS.md](../CLAIMS.md) records the final run.
 
 ## Executive summary
 
@@ -55,7 +55,7 @@ Slots 2 and 3 explain the machine between them. Slot 6 changes the prior and the
 
 ## 1. The message
 
-**In three sentences.** On a liquid smile the posterior and the classical interval agree, as theory predicts. They part where the quotes do not determine what the product needs: a thin chain, maturities beyond the last quote, and names that quote almost nothing. Amortization does not make one posterior much cheaper than a good classical proposal does; it makes the method checkable, by coverage on a thousand simulated chains, and usable across many names. The course states the argument in Lecture 6, Section 6.8, and gathers its evidence in [Lecture 16, Section 16.8](../../course/16-a-thin-chain-ewg.md); the plan's Section 2.6 lists the options to strengthen it.
+**In three sentences.** On a liquid smile the posterior and the classical interval agree, as theory predicts. They part where the quotes do not determine what the product needs: a thin chain, maturities beyond the last quote, and names that quote almost nothing. Amortization does not make one posterior much cheaper than a good classical proposal does; it makes the method checkable, by coverage on a thousand simulated chains, and usable across many names. The course states the argument in Lecture 6, Section 6.8, and gathers its evidence in [Lecture 16, Section 16.8](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/16-a-thin-chain-ewg.md); the plan's Section 2.6 lists the options to strengthen it.
 
 The message has three beats, each carried by named slots.
 
@@ -219,7 +219,7 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 | D10 | Presentation format | Marimo notebooks for slots 1, 2, 4, 5 and 6, slides for slot 3, a cached fallback in every live cell | Fri 30 Oct |
 | D11 | The LLM verification agent promised in the proposal | A two-minute demonstration in slot 4, or drop it and say so | Fri 30 Oct |
 | D12 | Hands-on time beyond the talks | Exercises after slots 4 and 5 | Fri 30 Oct |
-| D13 | Slot 5's title and presenter split | Proposed: "Where the quotes stop: which price do you mark?", in place of "The smile fits many calibrations" ([v2-plan](../../course/v2-plan.md), Section 9); Alex takes sections 4 and 5 | Fri 30 Oct |
+| D13 | Slot 5's title and presenter split | Proposed: "Where the quotes stop: which price do you mark?", in place of "The smile fits many calibrations" ([v2-plan](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/v2-plan.md), Section 9); Alex takes sections 4 and 5 | Fri 30 Oct |
 | D14 | Threshold for gate G3 | One smile in three flagged | Fri 30 Oct |
 | D15 | Slot 6's sensitivity-aware network and summary-space detector | Build the first; the second if time allows | Fri 30 Oct |
 | D17 | Student and solved versions of the notebooks | Solved versions on stage; student versions with the exercises blanked, generated from the solved ones | Fri 30 Oct |
@@ -232,8 +232,8 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 
 ## 11. Sources
 
-- [course/status.md](../../course/status.md): the studies. [CLAIMS.md](../CLAIMS.md): the status of every number.
-- [The course](../../course/README.md): the long version of slots 1, 4 and 5.
+- [course/status.md](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/status.md): the studies. [CLAIMS.md](../CLAIMS.md): the status of every number.
+- [The course](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/README.md): the long version of slots 1, 4 and 5.
 - The proposal: *Amortized Bayesian Calibration of Volatility Models*, ICAIF '26 tutorial proposal.
 - The feasibility run of 23 October: `lab/checks/heston_spy_exact.py` and [data/heston-spy-exact.json](../assets/data/heston-spy-exact.json).
 - Branches with other slot drafts: `feat/tutorial-slot1-intro`, `feat/tutorial-slot4-bayesflow-basics`, `feat/tutorial-slot6-crash-risk`.

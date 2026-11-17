@@ -14,8 +14,8 @@ For generation that should grow beyond the initial training allocation, use the 
 
 24 October 2026. For whoever runs Oscar jobs next. Every run below is missing: nothing in
 `tutorial_final/results/` comes from the full bank yet. The plan behind the runs is
-[`docs/course/v2-plan.md`](../../course/v2-plan.md), and what the results decide is in Lecture 16, Section 16.8
-([`docs/course/16-a-thin-chain-ewg.md`](../../course/16-a-thin-chain-ewg.md)); the scripts are described in
+[`docs/course/v2-plan.md`](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/v2-plan.md), and what the results decide is in Lecture 16, Section 16.8
+([`docs/course/16-a-thin-chain-ewg.md`](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/16-a-thin-chain-ewg.md)); the scripts are described in
 [`studies/README.md`](../studies/README.md).
 
 All costs are in CPU-hours on this project's 2-core container; Oscar's cores may be up to about 30% faster or

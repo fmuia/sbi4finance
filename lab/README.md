@@ -62,7 +62,7 @@ Heston's snapshot and canonical collection are in different top-level directorie
 part files and checksums. A full bank is unnecessary for pretrained inference. Keep large payloads outside Git.
 
 Current validation is development evidence, not automatic model or lesson acceptance. J1 is complete; joint
-conditional references J2 and product/long-end comparisons J3 remain pending. See [course/status.md](../course/status.md)
+conditional references J2 and product/long-end comparisons J3 remain pending. See the [study status](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/status.md) of the removed course
 and the [numerical plan](plans/NUMERICAL-EXPERIMENT-PLAN.md) before starting additional work.
 
 Trajectory inference is the third core application. Its three million-history
@@ -328,9 +328,13 @@ model payloads, tasks and published caches are not rewritten by this refactor.
 For historical studies, use their recorded environment.
 [`studies/README.md`](studies/README.md) describes S1–S9 and publication tools;
 [`checks/README.md`](checks/README.md) describes exploratory quick checks, which
-are not accepted studies. Course figures are drawn by `course/scripts/` in the
-lab environment; `pixi run --locked -e core course-check` checks course-plan
-numbers against stored results.
+are not accepted studies.
+
+The background course (sixteen lectures with their figure scripts and the version-2
+plan) was removed on 17 November 2026. Comments, docstrings and dated plans that cite
+"the course", a lecture or `course/...` refer to it; it remains at commit
+[`9e175a6`](https://github.com/fmuia/sbi4finance/tree/9e175a683a3a0d72185493e31fb8244a76e14d0f/course). Source files whose hashes are recorded in run
+identities keep those citations unchanged.
 
 ## What remains, and what can be trimmed
 
