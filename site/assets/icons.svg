@@ -25,6 +25,9 @@
   <symbol id="notebook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
     <path d="M4 3h15v18H4zM7 3v18M2 7h4M2 12h4M2 17h4M10 8h6M10 12h6"/>
   </symbol>
+  <symbol id="slides" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 4h20v13H2zM12 17v4M8 21h8M6 13l4-4 3 3 5-5"/>
+  </symbol>
   <symbol id="code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
     <path d="m7 6-6 6 6 6M17 6l6 6-6 6M14 3l-4 18"/>
   </symbol>
