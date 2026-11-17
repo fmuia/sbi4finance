@@ -43,9 +43,9 @@ PyMC adoption is planned, not implemented by this documentation. The inspected c
 - [calibration/correction.py](../src/sbi4finance/calibration/correction.py), `random_walk_chain`, used for numerical references.
 - [calibration/pricer_net.py](../src/sbi4finance/calibration/pricer_net.py), `metropolis`, used by [the S4 runner](../studies/pricer_route.py).
 - [svj/pmmh.py](../src/sbi4finance/svj/pmmh.py), `run_pmmh`, and its application callers.
-- Course/check scripts with their own chain loops, including `course/scripts/lecture10.py` and `course/scripts/lecture11.py`.
+- Check scripts with their own chain loops. The background course's `scripts/lecture10.py` and `scripts/lecture11.py` also had them; the course was removed on 17 November 2026 and remains at commit [`9e175a6`](https://github.com/fmuia/sbi4finance/tree/9e175a683a3a0d72185493e31fb8244a76e14d0f/course).
 - Tests that execute those implementations, including the pricer/chain test in `tests/test_calibration.py`.
 
 This list is a starting inventory, not a blanket certification of other entry points. Assess callers and figure/test generators as each workflow is reviewed; they can retain a documented custom implementation where appropriate. Start with one bounded core PyMC route, measure the benefit, and expand adoption where useful. Specialized PMMH migration is not a prerequisite for the core Heston/rough-Bergomi tutorial or the data/training campaign.
 
-Preserve the original implementation metadata and historical results. New or migrated results get distinct run identities and measured timing/accuracy reports; the old sampler's cost is not automatically a PyMC benchmark. Update runbooks and course labels when a new path is verified. Describe PyMC as an implemented part of the technology stack once a working, validated route exists; until then label it as planned.
+Preserve the original implementation metadata and historical results. New or migrated results get distinct run identities and measured timing/accuracy reports; the old sampler's cost is not automatically a PyMC benchmark. Update runbooks and labels when a new path is verified. Describe PyMC as an implemented part of the technology stack once a working, validated route exists; until then label it as planned.

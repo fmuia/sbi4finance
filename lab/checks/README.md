@@ -1,7 +1,7 @@
 # Quick checks of 23 and 24 October 2026
 
-Scripts and results behind the "why Bayes" material of slots 1, 4 and 5, and behind the course's version-2
-plan (`course/v2-plan.md`). They are quick checks, not
+Scripts and results behind the "why Bayes" material of slots 1, 4 and 5, and behind the version-2 plan of the
+background course ([`course/v2-plan.md`](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/v2-plan.md), removed on 17 November 2026). They are quick checks, not
 accepted studies: nothing here is registered in `tutorial/CLAIMS.md`, and a number moves to the stage only once a
 study in `studies/` reproduces it. The outputs the notebooks show are copied to `tutorial/assets/quick-checks/`
 by `studies/manifest.py`; rerun it after rerunning a check. Run the scripts from `lab/`, in the lab environment.
@@ -16,7 +16,7 @@ by `studies/manifest.py`; rerun it after rerunning a check. Run the scripts from
 | Thin chains (deferred sparse unit) | `thin_chains/thin_chain.py`, `thin_chains/settings.json` | `thin_chains/{EWI,EWG,EWQ}_2026-10-22.json`, `thin_chains/FEZ_2026-10-23.json` (derived data only; raw files: `data/SOURCES.md`) | Four thin chains in implied-volatility units: spreads, two-sided quotes, early-exercise premia, strips, parity; the summary used to choose the thin example |
 | The EWG layout (deferred sparse unit) | `thin_chains/build_layout.py` | `configs/thin/ewg_layout.json`, `thin_chains/EWG_observation.json` | The design contracts EWG quotes and their noise (the thin network's layout), EWG read onto it, and EWG's cleaned quotes for the audit; carry forward, NYSE trading days, each quote's own vega; diagnostics of the parity forward, the clock and the vega |
 | Costs on EWG (deferred sparse unit) | `thin_chains/timing.py` | `thin_chains/timing.json` | CPU-seconds of one audit evaluation on EWG's layout and quotes, and of the six thin products |
-| A curve prior for the full bank | `curve_prior/curve_prior.py` | `curve_prior/curve_prior.json`, `course/images/v2-curve-prior.png` | The pilot's forward-variance prior against a power law with a log-time random walk, on SPY's curve (gate G0′) |
+| A curve prior for the full bank | `curve_prior/curve_prior.py` | `curve_prior/curve_prior.json` (the course drew `v2-curve-prior.png` from it) | The pilot's forward-variance prior against a power law with a log-time random walk, on SPY's curve (gate G0′) |
 | The mini-pilot | `scripts/calibration_bank.py local` with `configs/tasks/calibration_rough_minipilot.json`; `studies/bank_quality.py`; `studies/smile_facts.py prior-predictive` | `minipilot/bank-quality.json`, `numerical-error.png`, `prior-predictive.json`, `.png`, `spy-against-prior.json` | Gate G0′: the new prior's cost, its Monte Carlo quality, and SPY's smile statistics in its prior predictive |
 | Where the posterior and the classical answer part: complete surfaces and a thin chain (28–29 Oct) | `why_bayes/*.py` | `why_bayes/README.md` and its JSON and npz files; `why_bayes/thin_joint_net/`, `why_bayes/thin_joint_results/` | Heston's S6 smiles by fitted vol-of-vol; a local Gauss–Newton screen and an importance-sampling posterior of PR #48's joint-curve rough task beyond the last quote; SPY's curve against that task's curve family; on EWG's thin layout with the curve inferred, a six-target network, its SBC, a 100-chain breach study against least squares, fixed $H$, a flat curve and the Laplace approximation, a 10-chain audit, and EWG's own chain. The scripts that price need PR #48's joint task |
 | The grid bias | `studies/grid_bias.py` on 12 mini-pilot surfaces | `grid_bias_minipilot/grid-bias.json`, `grid-bias.png` | How far the bank's time grids are from grids twice as fine, in units of the quote noise |

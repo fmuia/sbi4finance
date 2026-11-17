@@ -3,10 +3,10 @@
 Quick check of 28 and 29 October 2026. It looks for a case in the core tutorial, Heston and rough Bergomi on the
 complete 63-quote design, where the full posterior changes a product's 90% bound, and proposes how to test it;
 Section 5 then runs the thin-chain case it settles on, on one machine. It is a quick check, not a study: nothing here
-is registered in `tutorial/CLAIMS.md`, and no number goes on screen from it. The course quotes it as a quick check:
-Section 1 in Lecture 11, Section 11.6; Sections 3 and 4 in Lecture 15, Section 15.6; Section 5 in Lecture 16,
-Sections 16.1 to 16.9; `course/scripts/check_v2_plan.py` checks every number quoted there against the files here.
-Sections 2, 3 and 5 use `rough_joint_calibration_v1` and `tasks.joint_rough_task`, with the task/runtime/source identities of their recorded runs. Their outputs and samplers are not changed or rerun by this editorial refresh. The current full-surface tutorial has completed 100k known-curve and joint-curve banks/fits; see [current status](../../../course/status.md). Sparse chains remain an optional/deferred unit under the separate [sparse plan](../../plans/SPARSE-QUOTE-CASE-PLAN.md).
+is registered in `tutorial/CLAIMS.md`, and no number goes on screen from it. The background course, removed on 17 November 2026 and kept at commit [`9e175a6`](https://github.com/fmuia/sbi4finance/tree/9e175a683a3a0d72185493e31fb8244a76e14d0f/course),
+quoted it as a quick check: Section 1 in Lecture 11, Section 11.6; Sections 3 and 4 in Lecture 15, Section 15.6;
+Section 5 in Lecture 16, Sections 16.1 to 16.9.
+Sections 2, 3 and 5 use `rough_joint_calibration_v1` and `tasks.joint_rough_task`, with the task/runtime/source identities of their recorded runs. Their outputs and samplers are not changed or rerun by this editorial refresh. The current full-surface tutorial has completed 100k known-curve and joint-curve banks/fits; see the [course's study status](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/status.md). Sparse chains remain an optional/deferred unit under the separate [sparse plan](../../plans/SPARSE-QUOTE-CASE-PLAN.md).
 
 **What these checks establish.** In the particular full-surface product comparisons below, the prior and curve continuation matter more than departures from a matched local Gaussian approximation. On the separate thin quick check, least squares without a prior over-reserves and fixing H at 0.10 can bias bounds; a Gaussian at the posterior mode with the same prior matches the network for the six tested products. These are useful arguments for stating the prior and comparing strong classical alternatives. They are not a theorem that all complete-surface posteriors are Gaussian or that SBI requires sparse observations.
 

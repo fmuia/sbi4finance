@@ -1389,7 +1389,7 @@ best tool for a particular workload. The tutorial will be stronger if it teaches
 that decision openly, including situations where another method is sufficient.
 
 The [curriculum overview](00-overview.md) provides a coherent sequence.
-The sixteen-lecture [course](../../course/README.md) should remain supporting
+The sixteen-lecture [course](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/README.md) should remain supporting
 material, with only the concepts needed for the live task introduced on stage.
 
 ## Follow-up self-review: keep the tutorial small
@@ -1416,7 +1416,7 @@ The [central plan](../../lab/plans/NUMERICAL-EXPERIMENT-PLAN.md#current-next-wor
   pricing makes the trade-off between simulation, training and repeated inference
   tangible. Training data, computation and accuracy all have visible costs.
 - **The evidence ledger is unusually useful.** The
-  [study status](../../course/status.md) and [claims ledger](../CLAIMS.md) distinguish
+  [study status](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/status.md) and [claims ledger](../CLAIMS.md) distinguish
   completed studies, pilot results and pending evidence. Retain this discipline
   when new architectures and BayesFlow versions are added.
 
@@ -1445,7 +1445,7 @@ beside it.
 both a good classical proposal with importance sampling and a validated neural
 pricer with MCMC. The cost must include bank generation, training, warm-up and any
 audit applied to each query. The
-[course plan, Section 2.4](../../course/v2-plan.md#24-why-simulation-based-inference)
+[course plan, Section 2.4](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/v2-plan.md#24-why-simulation-based-inference)
 already acknowledges these competitors; make that comparison central on stage.
 
 If either competitor matches the accuracy and total cost of the intended
@@ -1482,7 +1482,7 @@ as a full description of calibration uncertainty.
 Use matched priors, observed information, noise and numerical accuracy when
 comparing methods. Include a small prior/noise sensitivity check in the core
 full-grid examples. In the separate sparse-chain unit, the alternative laws for the unquoted curve level in
-[Lecture 16, Sections 16.4–16.5](../../course/16-a-thin-chain-ewg.md)
+[Lecture 16, Sections 16.4–16.5](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/16-a-thin-chain-ewg.md)
 are important. Keep the favourable prior-generated case and the deliberately
 misspecified cases together; neither alone settles comparative performance.
 
@@ -1502,7 +1502,7 @@ market adequacy from one date.
   references. Label surrogate-MCMC and finite Monte Carlo targets precisely.
   The current rough-MCMC cost extrapolation is not a measured completed chain.
 - **Model criticism:** violating Heston's Feller condition does not invalidate
-  the model. [Lecture 10, Section 10.2](../../course/10-heston.md)
+  the model. [Lecture 10, Section 10.2](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/10-heston.md)
   correctly explains this. Carry that distinction into the live handoff and use
   product or predictive discrepancies as the substantive evidence. Fixing mean
   reversion at two also restricts the Heston comparison. Show the existing
@@ -1510,7 +1510,7 @@ market adequacy from one date.
   the mismatch to the whole Heston family or arguing that roughness is necessary.
 - **Uncertainty:** the proposed product quantile is a conditional, within-model
   uncertainty measure. The course's
-  [three ranges](../../course/06-marking-a-product-the-smile-does-not-quote.md#67-three-ranges-and-baselines-that-fix-what-the-quotes-do-not)
+  [three ranges](https://github.com/fmuia/sbi4finance/blob/9e175a683a3a0d72185493e31fb8244a76e14d0f/course/06-marking-a-product-the-smile-does-not-quote.md#67-three-ranges-and-baselines-that-fix-what-the-quotes-do-not)
   explain why it does not cover every source of valuation uncertainty. Avoid
   implying that one posterior quantile automatically establishes a complete
   prudent-valuation or regulatory-compliance procedure.
