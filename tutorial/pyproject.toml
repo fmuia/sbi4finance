@@ -45,9 +45,18 @@ sbi4f-tutorial = { path = ".", editable = true, extras = ["participant"] }
 KERAS_BACKEND = "jax"
 
 [tool.pixi.tasks]
-# Named entry points for the notebooks presented at the tutorial.
+# Named application entry points; the numbered slot tasks remain compatible.
+heston-options = { cmd = "marimo edit slot4_heston_bayesflow.py --no-token", cwd = "notebooks" }
+rough-options = { cmd = "marimo edit slot5_calibration.py --no-token", cwd = "notebooks" }
 path-inference = "marimo edit notebooks/trajectory_inference.py --no-token"
+mmar-takehome = "marimo edit notebooks/mmar_takehome.py --no-token"
 edit = { cmd = "marimo edit --no-token", cwd = "notebooks" }
+slot1 = { cmd = "marimo edit slot1_intro.py --no-token", cwd = "notebooks" }
+slot2 = { cmd = "marimo edit slot2_amortized_bayes.py --no-token", cwd = "notebooks" }
+slot3 = { cmd = "marimo edit slot3_architectures.py --no-token", cwd = "notebooks" }
+slot4 = { cmd = "marimo edit slot4_heston_bayesflow.py --no-token", cwd = "notebooks" }
+slot5 = { cmd = "marimo edit slot5_calibration.py --no-token", cwd = "notebooks" }
+backbones = "marimo edit notebooks/backbone_review.py --no-token"
 trajectories = "marimo edit notebooks/trajectory_inference.py --no-token"
 check = "marimo check notebooks"
 test = "python -m unittest discover -s tests -v"
@@ -68,6 +77,8 @@ httpx2 = "==2.13.1"
 
 [tool.pixi.feature.collaboration.tasks]
 collaborate = { cmd = "marimo edit --host 127.0.0.1 --port 8772 --no-token --mcp code-mode --no-sandbox", env = { MARIMO_STUDIO_EDIT_ROOT = "marimo" } }
+studio-create = "marimo-studio view create lesson --target notebooks/backbone_review.py"
+studio-build = "marimo-studio view build lesson --target notebooks/backbone_review.py --profile production"
 
 [tool.pixi.environments]
 default = { features = [], solve-group = "participant" }

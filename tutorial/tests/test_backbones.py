@@ -61,6 +61,9 @@ for name in backbones.examples():
             ast.parse(text)
             self.assertNotIn("load_approximator", text, path.name)
             self.assertNotIn("teaching.load_network", text, path.name)
+        toy = (notebooks / "slot2_amortized_bayes.py").read_text(encoding="utf-8")
+        self.assertNotIn("or not TOY_CHECKPOINT.exists()", toy)
+        self.assertIn("mo.stop(not train_button.value", toy)
 
 
 if __name__ == "__main__":
