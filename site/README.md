@@ -47,6 +47,21 @@ repository root and open <http://localhost:8000>:
 python -m http.server --directory site 8000
 ```
 
+## Notebook pages
+
+`notebooks/` holds static HTML exports of the notebooks presented at the
+tutorial, with their saved outputs; the programme links to them. Interactive
+controls show their initial state. To refresh a page after a notebook changes,
+export it again from its environment and replace the file:
+
+```bash
+cd tutorial
+pixi run --locked marimo export html notebooks/trajectory_inference.py -o ../site/notebooks/trajectory_inference.html
+pixi run --locked marimo export html notebooks/mmar_takehome.py -o ../site/notebooks/mmar_takehome.html
+cd ../lab
+pixi run --locked -e core-reference marimo export html notebooks/heston_spx_calibration.py -o ../site/notebooks/heston_spx_calibration.html
+```
+
 ## Publish
 
 Every push to `main` that changes `site/` runs the
