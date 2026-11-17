@@ -600,7 +600,7 @@ below. Keep active trajectory code and its dependency closure during trimming.
 **Source ownership update, 2 November 2026:** the lesson runtime is now owned
 under `tutorial/src/sbi4f_tutorial/{heston_options,rough_options,trajectories,shared}/`.
 Lab workflows reuse these implementations; there is no source-copy publication
-step. See the [current source map and handover](../../tutorial/README.md#collaborator-handover)
+step. See the [current source map and handover](../../tutorial/README.md#review-or-edit-a-notebook)
 and [refactor plan](../../tutorial/curriculum/TUTORIAL-REVIEW.md#h-tutorial-owned-runtime-refactor).
 Keep both sibling directories from one revision on compute. Read/train on
 preserved banks normally; append or resume frozen generation only with its

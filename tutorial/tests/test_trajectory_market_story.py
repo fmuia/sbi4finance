@@ -18,7 +18,8 @@ class MarketStoryTests(unittest.TestCase):
                          (1726, "2020-01-03", "2026-11-13"))
         np.testing.assert_array_equal(full["adjusted_close"][1:] / full["adjusted_close"][:-1] - 1,
                                       full["simple_returns"])
-        np.testing.assert_array_equal(np.log1p(full["simple_returns"]), full["log_returns"])
+        # log1p may differ in the last bit across platforms' maths libraries.
+        np.testing.assert_allclose(np.log1p(full["simple_returns"]), full["log_returns"], rtol=1e-14, atol=0)
         self.assertEqual(len(lesson.load_market_example()["dates"]), 256)
         with self.assertRaises(ValueError):
             lesson.load_market_example("unpackaged-market-window")

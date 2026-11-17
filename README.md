@@ -1,25 +1,35 @@
 # sbi4finance
 
-Materials for our ICAIF '26 tutorial on simulation-based inference in finance,
-using [BayesFlow](https://github.com/bayesflow-org/bayesflow).
+Code and materials for the ICAIF '26 tutorial **Amortized Bayesian Calibration of Volatility
+Models** (Milan, 14 November 2026), built with [BayesFlow](https://github.com/bayesflow-org/bayesflow).
+The [tutorial website](https://fmuia.github.io/sbi4finance/) has the programme, the presenters,
+slides and static copies of the notebooks.
 
-**We start with slides** for the introduction, amortized Bayes and network
-architectures. **We then work through the notebooks presented at the tutorial:**
+The tutorial shows how amortized simulation-based inference turns model calibration into a
+Bayesian posterior that is fast enough to compute every day and cheap enough to check. A network is
+trained once on simulated data. It then returns the posterior of the model's parameters for new
+data in under a second, where MCMC takes minutes to hours.
 
-| Application | Notebook | Code |
+## What was presented
+
+The tutorial opened with slides on Bayesian calibration, amortized inference and network
+architectures, and then worked through two notebooks.
+
+| Notebook | What it does | Static copy |
 | --- | --- | --- |
-| Heston and rough Bergomi on SPX options | [Open notebook](lab/notebooks/heston_spx_calibration.py) | [lab/](lab/) and [shared/](tutorial/src/sbi4f_tutorial/shared/) |
-| Parameter estimation from returns | [Open notebook](tutorial/notebooks/trajectory_inference.py) | [trajectories/](tutorial/src/sbi4f_tutorial/trajectories/) |
+| [Heston and rough Bergomi on SPX options](lab/notebooks/heston_spx_calibration.py) | Calibrates Heston to 63 SPX option quotes. The notebook checks the posterior against PyMC, prices a product the market does not quote, and diagnoses what Heston misses. It then repeats the inference with rough Bergomi. | [page](https://fmuia.github.io/sbi4finance/notebooks/heston_spx_calibration.html) |
+| [Parameter estimation from return histories](tutorial/notebooks/trajectory_inference.py) | Infers the parameters of rough Bergomi (and of Heston) from daily returns, as the history grows. It simulates, trains live or loads a pretrained network, and checks calibration. | [page](https://fmuia.github.io/sbi4finance/notebooks/trajectory_inference.html) |
 
-The SPX notebook runs from the [lab environment](lab/README.md#review-the-heston-spx-notebook).
-It includes a live training example; the larger pretrained model is an optional download.
+[**docs/spx-option-calibration.md**](docs/spx-option-calibration.md) explains the SPX notebook in
+about 15 minutes, for readers who want the argument before the code.
 
-Shared code is in [shared/](tutorial/src/sbi4f_tutorial/shared/). The lab uses
-this same code. Edit it here; there is no copying step.
+## Run the notebooks
 
-## Run a notebook
+Install [Pixi](https://pixi.sh). Each notebook opens in the browser; stop it with Ctrl+C before
+starting the other. The saved examples are included, so you do not need a cluster, a training bank
+or extra downloads.
 
-Install [Pixi](https://pixi.sh), then run:
+Return histories, from `tutorial/`:
 
 ```bash
 cd tutorial
@@ -27,42 +37,56 @@ pixi install --locked
 pixi run --locked path-inference
 ```
 
-It opens in your browser; press Ctrl+C to stop it. The SPX notebook has its own
-[lab setup](lab/README.md#review-the-heston-spx-notebook).
+Heston and rough Bergomi on SPX, from `lab/`:
 
-The saved examples are included. **You do not need Oscar, a training bank or
-additional model downloads to review the notebooks.**
+```bash
+cd lab
+pixi install --locked -e core-reference
+pixi run --locked -e core-reference marimo edit notebooks/heston_spx_calibration.py
+```
 
-Start with the [collaborator handover](tutorial/README.md#collaborator-handover)
-for review and editing guidance. The [tutorial README](tutorial/README.md)
-also covers setup, optional downloads and checks.
+The SPX notebook's optional pretrained Heston estimator is a separate download. Without it the
+notebook still shows every saved result, but fresh Heston sampling is unavailable. See the
+[lab README](lab/README.md#review-the-heston-spx-notebook). The
+[tutorial README](tutorial/README.md) covers the return-history notebook's options and checks.
 
-## Where things belong
+## What the results show
+
+- **Heston on SPX.** The network returns a posterior in under 0.3 s, where PyMC takes 17 to
+  32 minutes. On simulated data it is well calibrated for five of the six parameters and too
+  cautious for the sixth. On the SPX quotes, however, Heston itself fails: it misses them by
+  1.1 volatility points (RMS), far beyond the assumed quote noise. Refitting it to different
+  subsets of the quotes moves a product's price 18 times more than the posterior range.
+- **Rough Bergomi on SPX** lowers the misfit by about a quarter. Its amortized posterior still
+  underestimates the noise level that MCMC finds, so it is a development result, not an accepted
+  calibration.
+- **Return histories.** All three trajectory estimators failed their final calibration check. The
+  Heston trajectory simulator also has a known limitation when estimating drift. See the
+  [trajectory plan](lab/plans/PATH-INFERENCE-PLAN.md).
+
+## Repository layout
 
 | Folder | Contents |
 | --- | --- |
-| [tutorial/](tutorial/) | Notebooks, their code, tests and saved examples |
-| [lab/](lab/) | Data generation, larger training runs, reference calculations and results |
-| [site/](site/) | The public tutorial webpage, published with GitHub Pages ([how to edit](site/README.md)) |
+| [docs/](docs/) | The written companion to the SPX notebook |
+| [tutorial/](tutorial/) | The return-history notebook, the shared runtime both notebooks use, tests and saved examples |
+| [lab/](lab/) | The SPX notebook, data generation, training runs, reference calculations and their evidence |
+| [site/](site/) | The public tutorial website, published with GitHub Pages ([how to edit](site/README.md)) |
 
-## Run numerical work on your compute
+`tutorial/` is self-contained: it never imports the lab. The lab installs the tutorial runtime
+as a local dependency, so keep the two folders together. [AGENTS.md](AGENTS.md) states the rules
+for editing either one.
 
-The generation, training and evaluation scripts can run without Oscar or Slurm.
-Follow the [lab instructions](lab/README.md#canonical-workflow) and
-[training-data guide](lab/plans/training-data-guide.md).
+Notebooks that were prepared but not presented are parked in
+[pull request 101](https://github.com/fmuia/sbi4finance/pull/101) until we decide what to bring back.
 
-Keep `tutorial/` and `lab/` together when copying the repo to another machine.
-For current lab work, use `pixi run --locked -e core ...` from `lab/`.
+## Reproduce the numerical work
 
-## Current state
+The generation, training and evaluation scripts run on a laptop or on a cluster. Follow the
+[lab instructions](lab/README.md#canonical-workflow) and the
+[training-data guide](lab/plans/training-data-guide.md); large banks and models are versioned
+downloads, identified by SHA-256 hashes, outside Git.
 
-All three notebooks have saved examples, trained models and training banks.
-Some numerical checks are still unfinished:
+## Presenters
 
-- Rough Bergomi needs further reference-posterior and product checks.
-- All three trajectory estimators failed the final calibration check. The
-  Heston trajectory simulator also has a known limitation when estimating drift.
-
-Please keep these limitations visible when reviewing or editing results.
-Details are in the [application plan](tutorial/curriculum/TUTORIAL-REVIEW.md)
-and [trajectory plan](lab/plans/PATH-INFERENCE-PLAN.md).
+Francesco Muia, Alexander Fengler, Stefan T. Radev and Jerry M. Huang.
