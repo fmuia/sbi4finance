@@ -5,8 +5,7 @@ Bayes and network architectures. These notebooks cover the applications:
 
 | Application | Notebook | Main code |
 | --- | --- | --- |
-| Heston options | [slot4_heston_bayesflow.py](notebooks/slot4_heston_bayesflow.py) | [heston_options/](src/sbi4f_tutorial/heston_options/) |
-| Rough Bergomi options | [slot5_calibration.py](notebooks/slot5_calibration.py) | [rough_options/](src/sbi4f_tutorial/rough_options/) |
+| Heston and rough Bergomi on SPX options | [heston_spx_calibration.py](../lab/notebooks/heston_spx_calibration.py) | [lab/](../lab/) and [shared/](src/sbi4f_tutorial/shared/) |
 | Parameter estimation from returns | [trajectory_inference.py](notebooks/trajectory_inference.py) | [trajectories/](src/sbi4f_tutorial/trajectories/) |
 
 An optional [MMAR take-home](notebooks/mmar_takehome.py) carries the same workflow
@@ -14,18 +13,12 @@ into a different return model and a sensitivity experiment; see its
 [curriculum](curriculum/07-takehome-mmar.md).
 
 Each follows the same workflow: **model → simulate → train → infer → check**.
-The slot 1–3 notebooks remain available as supporting demos; they are not the
-planned format for the opening lessons.
+The SPX notebook runs from the [lab setup](../lab/README.md#review-the-heston-spx-notebook).
 
 ## Collaborator handover
 
-For now, please focus on the three application notebooks above. We want to
-improve the content and presentation; we can trim for timing later.
-
-For the newer Heston work, review the [SPX notebook](../lab/notebooks/heston_spx_calibration.py)
-using the [lab setup](../lab/README.md#review-the-heston-spx-notebook). It estimates
-six parameters from actual quotes. The four-parameter notebook above remains
-available with its original saved examples.
+Please focus on the notebooks above. We want to improve the content and
+presentation; we can trim for timing later.
 
 1. Follow the [setup](#install), then [open a notebook](#run-or-review-an-existing-lesson).
    The saved examples work without Oscar or extra downloads.
@@ -73,9 +66,8 @@ package and selects its own BayesFlow version.
 From `tutorial/`:
 
 ```bash
-pixi run --locked heston-options
-pixi run --locked rough-options
 pixi run --locked path-inference
+pixi run --locked mmar-takehome
 ```
 
 Run one command at a time. Each opens the marimo editor in your browser;
@@ -89,13 +81,11 @@ NumPy forward illustration when its parameter controls change.
 For a read-only app:
 
 ```bash
-pixi run --locked marimo run notebooks/slot4_heston_bayesflow.py
+pixi run --locked marimo run notebooks/trajectory_inference.py
 ```
 
 Exported HTML is a static preview; use marimo for interactive controls.
-`slot1`, `slot2` and `slot3` open the supporting demos. `backbones` opens the
-separate model-review notebook. The older `slot4`, `slot5` and `trajectories`
-commands still work.
+The older `trajectories` command still works.
 
 ## Choose files for the task
 

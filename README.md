@@ -3,28 +3,20 @@
 Materials for our ICAIF '26 tutorial on simulation-based inference in finance,
 using [BayesFlow](https://github.com/bayesflow-org/bayesflow).
 
-**We start with Beamer slides** for the introduction, amortized Bayes and network
-architectures. **We then work through three application notebooks:** Heston
-options, rough Bergomi options and parameter estimation from return histories.
-The introductory notebooks remain available as supporting demos.
-
-## Start editing here
-
-For this feedback round, please focus on these three notebooks. We want to
-refine the explanations, figures and code before worrying about exact timing.
+**We start with slides** for the introduction, amortized Bayes and network
+architectures. **We then work through the notebooks presented at the tutorial:**
 
 | Application | Notebook | Code |
 | --- | --- | --- |
-| Heston options | [Open notebook](tutorial/notebooks/slot4_heston_bayesflow.py) | [heston_options/](tutorial/src/sbi4f_tutorial/heston_options/) |
-| Rough Bergomi options | [Open notebook](tutorial/notebooks/slot5_calibration.py) | [rough_options/](tutorial/src/sbi4f_tutorial/rough_options/) |
+| Heston and rough Bergomi on SPX options | [Open notebook](lab/notebooks/heston_spx_calibration.py) | [lab/](lab/) and [shared/](tutorial/src/sbi4f_tutorial/shared/) |
+| Parameter estimation from returns | [Open notebook](tutorial/notebooks/trajectory_inference.py) | [trajectories/](tutorial/src/sbi4f_tutorial/trajectories/) |
+| MMAR take-home | [Open notebook](tutorial/notebooks/mmar_takehome.py) | [mmar_takehome/](tutorial/src/sbi4f_tutorial/mmar_takehome/) |
+
+The SPX notebook runs from the [lab environment](lab/README.md#review-the-heston-spx-notebook).
+It includes a live training example; the larger pretrained model is an optional download.
 
 Shared code is in [shared/](tutorial/src/sbi4f_tutorial/shared/). The lab uses
 this same code. Edit it here; there is no copying step.
-
-**Current Heston review:** the newer [SPX calibration notebook](lab/notebooks/heston_spx_calibration.py)
-uses actual quotes and estimates six parameters. Run it from the
-[lab environment](lab/README.md#review-the-heston-spx-notebook). It includes a live
-training example; the larger pretrained model is an optional download.
 
 ## Run a notebook
 
@@ -33,11 +25,12 @@ Install [Pixi](https://pixi.sh), then run:
 ```bash
 cd tutorial
 pixi install --locked
-pixi run --locked heston-options
+pixi run --locked path-inference
 ```
 
-Use `rough-options` or `path-inference` to open the other applications. Run one
-at a time; press Ctrl+C before starting the next. Each opens in your browser.
+Use `mmar-takehome` for the take-home notebook. Run one at a time; press Ctrl+C
+before starting the next. Each opens in your browser. The SPX notebook has its own
+[lab setup](lab/README.md#review-the-heston-spx-notebook).
 
 The saved examples are included. **You do not need Oscar, a training bank or
 additional model downloads to review the notebooks.**
