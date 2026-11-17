@@ -1,7 +1,7 @@
 # Application notebooks
 
-We start the workshop with **Beamer slides** on the introduction, amortized
-Bayes and network architectures. These notebooks cover the applications:
+The tutorial opened with slides on the introduction, amortized Bayes and
+network architectures. These notebooks cover the applications presented:
 
 | Application | Notebook | Main code |
 | --- | --- | --- |
@@ -11,10 +11,7 @@ Bayes and network architectures. These notebooks cover the applications:
 Each follows the same workflow: **model → simulate → train → infer → check**.
 The SPX notebook runs from the [lab setup](../lab/README.md#review-the-heston-spx-notebook).
 
-## Collaborator handover
-
-Please focus on the notebooks above. We want to improve the content and
-presentation; we can trim for timing later.
+## Review or edit a notebook
 
 1. Follow the [setup](#install), then [open a notebook](#run-or-review-an-existing-lesson).
    The saved examples work without Oscar or extra downloads.

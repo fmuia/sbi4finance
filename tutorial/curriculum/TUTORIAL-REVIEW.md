@@ -1241,7 +1241,7 @@ records bind the executing runtime; frozen producer-mismatch guards remain.
 
 ### H3 · Update handover and validate the route
 
-The short [collaborator handover](../README.md#collaborator-handover) is the
+The short [collaborator handover](../README.md#review-or-edit-a-notebook) is the
 shareable entry point. Root/tutorial/lab READMEs and repository instructions
 must agree on ownership, installation, editing and checks. Publication of data
 and figures remains separate from source edits.
