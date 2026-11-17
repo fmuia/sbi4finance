@@ -99,7 +99,7 @@ Drive (which needs project access).
 
 ## Presenters
 
-- Francesco Muia
+- Francesco Muia, Muia AI & Analytics Solutions
 - Alexander Fengler, Brown University
 - Stefan T. Radev, Rensselaer Polytechnic Institute
 - Jerry M. Huang, Rensselaer Polytechnic Institute
