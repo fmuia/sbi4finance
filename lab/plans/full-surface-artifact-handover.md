@@ -4,7 +4,7 @@
 > commands and Oscar/SCP paths below describe the original artifact export, not
 > the current collaborator setup. Start with the [tutorial README](../../tutorial/README.md),
 > [current data guide](training-data-guide.md) and
-> [handover execution plan](../../tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round).
+> [handover execution plan](https://github.com/fmuia/sbi4finance/blob/5c9f44cded83fc668fd8e3742af3c1a4e40fd28d/tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round).
 > Published native model downloads now exist; retain this record for the original
 > checkpoint/reference provenance.
 

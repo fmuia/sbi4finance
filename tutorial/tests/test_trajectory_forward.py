@@ -146,7 +146,8 @@ class TrajectoryForwardTests(unittest.TestCase):
         self.assertEqual(example["dates"][0], "2020-01-03")
         self.assertEqual(example["dates"][-1], "2021-01-07")
         self.assertEqual(len(example["log_returns"]), 256)
-        np.testing.assert_array_equal(example["log_returns"], np.log1p(example["simple_returns"]))
+        # log1p may differ in the last bit across platforms' maths libraries.
+        np.testing.assert_allclose(example["log_returns"], np.log1p(example["simple_returns"]), rtol=1e-14, atol=0)
         figure = lesson.market_motivation_figure(example)
         self.assertEqual(len(figure.axes), 2)
         np.testing.assert_array_equal(figure.axes[0].lines[0].get_ydata(), 100 * example["log_returns"])

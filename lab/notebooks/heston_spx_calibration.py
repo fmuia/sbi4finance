@@ -422,7 +422,7 @@ def _(GRID, HestonGridPilot, display_units, json, np, plt, recipe):
                                infer_c=True, c_bounds=(0.5, 2.0))
 
     def atm_shape(log_moneyness, vols):
-        """At-the-money skew and curvature (Lecture 5): a quadratic in log-moneyness through the five nearest strikes."""
+        """At-the-money skew and curvature: a quadratic in log-moneyness through the five nearest strikes."""
         _near = np.argsort(np.abs(log_moneyness))[:5]
         _c2, _c1, _ = np.polyfit(log_moneyness[_near], vols[_near], 2)
         return _c1, 2 * _c2
@@ -818,7 +818,7 @@ def _(
     _xis = [_xi / 2, _xi, min(1.5 * _xi, BOUNDS[3, 1])]
     _rho_smiles, _xi_smiles = _smile(_vary(4, _rhos)), _smile(_vary(3, _xis))
 
-    # (d) Feature 3: the at-the-money skew from one day to one year, measured as in Lecture 5.
+    # (d) Feature 3: the at-the-money skew from one day to one year, from a quadratic fit near the money.
     _grid_t = np.geomspace(1 / 365, 1.0, 36)
     _grid_d = np.array([-1.25, -0.5, 0.0, 0.5, 1.0])
     _tt, _dd = np.meshgrid(_grid_t, _grid_d, indexing="ij")
@@ -875,7 +875,7 @@ def _(
             "(a) Mean reversion":
                 f"The expected variance moves from $v_0$ to $v_\\infty$ and covers half the distance in "
                 f"{_half_life:.0f} days, which is $\\ln 2/\\kappa$ years. Implied volatilities sit below these "
-                "curves, because a random variance lowers at-the-money volatility (Lecture 10, Figure 10.6).",
+                "curves, because a random variance lowers at-the-money volatility.",
             "(b) Correlation":
                 f"From $\\rho={_minus(_rhos[0])}$ to ${_minus(_rhos[-1])}$, the implied volatility of {_wings[0]} "
                 f"rises from {_deep(_rho_smiles)[0]:.1f}% to {_deep(_rho_smiles)[1]:.1f}% and that of {_wings[1]} "
@@ -4112,7 +4112,7 @@ def _(
     _grid_iv = surface.implied_vol(forward_unit_pricer(_gk, _gt, _gkind).prices(_theta)[None], _gk, _gt,
                                    _gkind)[0].reshape(_tt.shape)
     _curve = np.array([atm_shape(_grid_d * REF_VOL * np.sqrt(_t), _grid_iv[_i]) for _i, _t in enumerate(_grid_t)])
-    _ceiling = abs(_rho * _xi / (4 * np.sqrt(_v0)))  # Heston's short-expiry skew limit (Lecture 10, Section 10.8)
+    _ceiling = abs(_rho * _xi / (4 * np.sqrt(_v0)))  # Heston's short-expiry skew limit (feature 3)
     _power = lambda _x: np.polyfit(np.log(_days / 365), np.log(np.abs(_x)), 1)
 
     _fig, _axes = plt.subplots(1, 3, figsize=(11.8, 3.7), constrained_layout=True)
@@ -4164,7 +4164,7 @@ def _(
         The at-the-money skew and curvature of each smile show what Heston lacks at short expiries.
         """),
         _fig,
-        caption("Skew and curvature are measured as in Lecture 5, by a quadratic in log-moneyness through the five "
+        caption("Skew and curvature are measured by a quadratic in log-moneyness through the five "
                 "quotes nearest the money. Derivatives use volatility points per unit log-moneyness (squared for "
                 "curvature). The right panel shows exact Black implied-volatility levels, not vega-equivalent residuals."),
         key(f"**The missing feature is a short-expiry smile that keeps steepening.** Heston's skew stops at its "

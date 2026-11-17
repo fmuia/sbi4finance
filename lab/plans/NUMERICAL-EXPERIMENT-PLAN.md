@@ -592,7 +592,7 @@ Completed work remains in the [26 October report](oscar-pilot-2026-10-26.md), [r
 
 **Scope update, 1 November 2026:** merged PR #64 includes the three core
 application notebooks, including trajectory inference. The current
-[collaborator handover plan](../../tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round)
+[collaborator handover plan](https://github.com/fmuia/sbi4finance/blob/5c9f44cded83fc668fd8e3742af3c1a4e40fd28d/tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round)
 supersedes older returns exclusions and the initial lesson-integration status
 below. Keep active trajectory code and its dependency closure during trimming.
 
@@ -600,18 +600,18 @@ below. Keep active trajectory code and its dependency closure during trimming.
 **Source ownership update, 2 November 2026:** the lesson runtime is now owned
 under `tutorial/src/sbi4f_tutorial/{heston_options,rough_options,trajectories,shared}/`.
 Lab workflows reuse these implementations; there is no source-copy publication
-step. See the [current source map and handover](../../tutorial/README.md#collaborator-handover)
-and [refactor plan](../../tutorial/curriculum/TUTORIAL-REVIEW.md#h-tutorial-owned-runtime-refactor).
+step. See the [current source map and handover](../../tutorial/README.md#review-or-edit-a-notebook)
+and [refactor plan](https://github.com/fmuia/sbi4finance/blob/5c9f44cded83fc668fd8e3742af3c1a4e40fd28d/tutorial/curriculum/TUTORIAL-REVIEW.md#h-tutorial-owned-runtime-refactor).
 Keep both sibling directories from one revision on compute. Read/train on
 preserved banks normally; append or resume frozen generation only with its
 producer-matching historical source/environment. New generation records the
 changed source identity. This organization change requires no new scientific fit.
 
-**First content-review action:** reconcile [the slot 4 curriculum](../../tutorial/curriculum/04-slot4-heston-in-bayesflow.md), [the slot 5 curriculum](../../tutorial/curriculum/05-slot5-rough-bergomi-to-a-reserve.md) and their notebook prose with the complete-surface Heston → known-curve rough → joint-curve rough sequence. The existing narrative still contains historical SPY/known-curve framing, and the slot 5 plan names a thin-chain case as required. Retain historical SPY provenance, but keep thin-chain material optional rather than a prerequisite for the core lesson. Cached integration and completed numerical inputs do not mean the lessons are fully curated.
+**First content-review action:** reconcile [the slot 4 curriculum](https://github.com/fmuia/sbi4finance/blob/5c9f44cded83fc668fd8e3742af3c1a4e40fd28d/tutorial/curriculum/04-slot4-heston-in-bayesflow.md), [the slot 5 curriculum](https://github.com/fmuia/sbi4finance/blob/5c9f44cded83fc668fd8e3742af3c1a4e40fd28d/tutorial/curriculum/05-slot5-rough-bergomi-to-a-reserve.md) and their notebook prose with the complete-surface Heston → known-curve rough → joint-curve rough sequence. The existing narrative still contains historical SPY/known-curve framing, and the slot 5 plan names a thin-chain case as required. Retain historical SPY provenance, but keep thin-chain material optional rather than a prerequisite for the core lesson. Cached integration and completed numerical inputs do not mean the lessons are fully curated.
 
 Use the supplied data and saved cases to finish that sequence. J1's marginal calibration, contraction and observation-dependence evidence does not complete J2's conditional references or J3's financial-product comparisons. Keep dataset size, optimizer-update count, task/curve prior, observation noise and reference method explicit when comparing results. New numerical work should resolve a named lesson claim; another bank or infrastructure layer is not the default next step.
 
-The [repository README](../../README.md) is the collaborator front door. Maintain this plan and the curriculum overview in place. Trim in small reviewed follow-ups:
+The [repository README](../../README.md) is the collaborator front door. Maintain this plan in place. Trim in small reviewed follow-ups:
 
 1. **Keep active content and its dependency closure.** Retain the core notebooks, their runtime, publication tools, tests, task configurations and code used by supported load/train/evaluate/generate/reference/product commands. Retain historical accepted checkpoints and exact reference evidence while a lesson or claim still uses them.
 2. **Check dependencies before cutting.** Search imports, CLI/pixi tasks, tests, the runtime-boundary/parity checks, asset manifests, claims, source-hash bindings and links. Deferred sparse/legacy helpers may still supply utilities to active routes; first separate or replace that dependency with checks.

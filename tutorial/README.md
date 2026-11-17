@@ -1,7 +1,7 @@
 # Application notebooks
 
-We start the workshop with **Beamer slides** on the introduction, amortized
-Bayes and network architectures. These notebooks cover the applications:
+The tutorial opened with slides on the introduction, amortized Bayes and
+network architectures. These notebooks cover the applications presented:
 
 | Application | Notebook | Main code |
 | --- | --- | --- |
@@ -11,10 +11,7 @@ Bayes and network architectures. These notebooks cover the applications:
 Each follows the same workflow: **model → simulate → train → infer → check**.
 The SPX notebook runs from the [lab setup](../lab/README.md#review-the-heston-spx-notebook).
 
-## Collaborator handover
-
-Please focus on the notebooks above. We want to improve the content and
-presentation; we can trim for timing later.
+## Review or edit a notebook
 
 1. Follow the [setup](#install), then [open a notebook](#run-or-review-an-existing-lesson).
    The saved examples work without Oscar or extra downloads.
@@ -322,8 +319,7 @@ rehearsal is still planned separately.
 
 Edit the implementation directly. Older flat modules are compatibility imports;
 there is no code-copy step. Changing a displayed code snippet alone does not
-change the calculation behind it. The [source map](curriculum/TUTORIAL-REVIEW.md#follow-a-computation-from-the-lesson)
-gives more detail.
+change the calculation behind it.
 
 Before opening a PR, run from `tutorial/`:
 
@@ -350,13 +346,11 @@ matching code and environment.
 | `src/sbi4f_tutorial/` | Application packages and shared code |
 | `assets/` | Saved examples, results and figures |
 | `tests/` | Code, data and notebook checks |
-| `curriculum/` | Teaching plans and review notes |
 
 ## Where the numbers come from
 
-The [application plan](curriculum/TUTORIAL-REVIEW.md) and
-[trajectory plan](../lab/plans/PATH-INFERENCE-PLAN.md) record the current checks
-and limitations. Rough Bergomi still needs further reference-posterior and
+The [trajectory plan](../lab/plans/PATH-INFERENCE-PLAN.md) records the current
+checks and limitations. Rough Bergomi still needs further reference-posterior and
 product checks. Older SPY comparisons and calibration claims have their own
 scope in [CLAIMS.md](CLAIMS.md). Passing software tests does not establish
 posterior accuracy.

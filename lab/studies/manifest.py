@@ -5,7 +5,7 @@
 tutorial/assets/ holds everything the notebooks read. Accepted study results
 and checkpoints enter it through accept.py, and the exact Heston posterior on
 SPY through lab/checks/heston_spy_exact.py. The files in EXPORTS are copies of
-lab and curriculum files, refreshed here. Every file under tutorial/assets/ is then
+lab files, refreshed here. Every file under tutorial/assets/ is then
 listed with its size, SHA-256 and, for a copy, its source. The table sits
 between two marker lines in MANIFEST.md and is replaced whole; the rest of the
 file is untouched. With --check the script changes nothing, reports whether the
@@ -34,8 +34,6 @@ EXPORTS = {
     "quick-checks/long_end/long_end_extra.json": "lab/checks/long_end/long_end_extra.json",
     "quick-checks/rough_checks.json": "lab/checks/rough_checks.json",
     "tasks/calibration_rough_pilot.json": "lab/configs/tasks/calibration_rough_pilot.json",
-    "images/ladder.png": "tutorial/curriculum/images/ladder.png",
-    "images/l10-credible-vs-confidence.png": "lab/evidence/illustrations/credible-vs-confidence/l10-credible-vs-confidence.png",
 }
 BACKBONES = ("heston-final500", "rough-known100k-validation0", "rough-joint100k-validation0",
              "rough-joint100k-validation1983", "rough-joint100k-validation1941", "rough-joint100k-validation1962")
