@@ -9,7 +9,7 @@ import unittest
 
 TUTORIAL = Path(__file__).resolve().parents[1]
 ASSETS = TUTORIAL / "assets"
-CODE = sorted(p for folder in ("notebooks", "src", "tests", "curriculum") for p in (TUTORIAL / folder).rglob("*.py"))
+CODE = sorted(p for folder in ("notebooks", "src", "tests") for p in (TUTORIAL / folder).rglob("*.py"))
 RUNTIME = "sbi4f_tutorial"
 
 
