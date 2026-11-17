@@ -406,7 +406,7 @@ accuracy, conditional references and fresh acceptance remain the follow-ups belo
 
 ## Bounded numerical diagnosis follow-up — 1 November 2026
 
-This develops [application subplan E](../../tutorial/curriculum/TUTORIAL-REVIEW.md#e-resolve-trajectory-numerical-and-inference-limitations)
+This develops [application subplan E](https://github.com/fmuia/sbi4finance/blob/5c9f44cded83fc668fd8e3742af3c1a4e40fd28d/tutorial/curriculum/TUTORIAL-REVIEW.md#e-resolve-trajectory-numerical-and-inference-limitations)
 against merged baseline `7751e4c`. The current implementation tranche is diagnosis
 and specification; this section submits no jobs and does not extend an earlier
 allocation. Notebook refinement and preservation proceed independently. Equal

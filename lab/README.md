@@ -70,7 +70,8 @@ banks, native models and preserved outputs are available through the
 [training-data guide](plans/training-data-guide.md); the
 [path plan](plans/PATH-INFERENCE-PLAN.md) records growing-prefix inference and
 its unresolved numerical/calibration questions. The
-[collaborator handover plan](../tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round)
+[collaborator handover plan](https://github.com/fmuia/sbi4finance/blob/5c9f44cded83fc668fd8e3742af3c1a4e40fd28d/tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round)
+(in the tutorial's planning notes, removed on 17 November 2026)
 separates scheduler-free workers, optional deployment wrappers and historical
 Oscar controllers. It defines the remaining clean-machine and compute rehearsal;
 no other cluster is claimed tested by that plan.
