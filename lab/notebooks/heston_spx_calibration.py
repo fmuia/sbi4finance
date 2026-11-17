@@ -993,13 +993,12 @@ def _(
     EXPIRY_DATES,
     EXPIRY_DAYS,
     MATH_LABELS,
-    TRUTHS,
     controls,
     fields,
     mo,
     np,
 ):
-    _start = TRUTHS["synthetic-market-like"]
+    _start = (0.028, 5.0, 0.053, 1.8, -0.69, 2.0)  # (v0, kappa, v_inf, sigma_v, rho, c)
     _steps = (0.001, 0.1, 0.001, 0.05, 0.01, 0.05)
     _digits = (3, 1, 3, 2, 2, 2)
     _names = [_label[0].upper() + _label[1:] for _label in MATH_LABELS]
@@ -1017,7 +1016,7 @@ def _(
             fields({**{_names[_j]: sim_params[_j] for _j in range(3)}, "Quotes at expiry": sim_expiry}),
             fields({**{_names[_j]: sim_params[_j] for _j in range(3, 6)}, "Random seed": sim_seed}),
         ], justify="start", gap=3),
-        hint="Move the sliders. They start at the market-like parameters.",
+        hint="Move the sliders to explore a different simulated market.",
     )
     return sim_expiry, sim_params, sim_seed
 
@@ -1409,7 +1408,7 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(TRAINING, bayesflow, cards, grid, key, md, mo, section, table):
+def _(TRAINING, bayesflow, cards, grid, key, md, mo, note, section, table):
     _steps = (
         (r"Quotes $\mathbf y$", "63 mid prices, simulated in training and observed at inference", ""),
         ("Preprocessing", r"Division by the half-spreads and the frozen whitening give $\tilde{\mathbf x}$, 63 numbers", ""),
@@ -1471,6 +1470,8 @@ def _(TRAINING, bayesflow, cards, grid, key, md, mo, section, table):
         The network turns the 63 quotes into draws from the posterior of the six parameters.
         """),
         mo.Html(f'<div class="nb-flow">{_chain}</div>'),
+        note("The pretrained estimator uses the direct-input route. Section 5.6 compares it with "
+             "separately trained learned summaries on the same simulation bank."),
         grid({
             "In training": rf"The network sees simulated pairs $(\boldsymbol\theta,\tilde{{\mathbf x}})$. The "
                            rf"pretrained estimator saw {TRAINING['rows']:,} of them.",
@@ -2340,8 +2341,9 @@ def _(EXPIRY_DATES, EXPIRY_DAYS, controls, md, mo, section):
         options={f"{_days} days ({_date})": _e for _e, (_date, _days) in enumerate(zip(EXPIRY_DATES, EXPIRY_DAYS))},
         value=f"{EXPIRY_DAYS[4]} days ({EXPIRY_DATES[4]})", label="Expiry")
     mo.vstack([
-        section("Check", "Five checks. The first asks whether model and posterior together regenerate the quotes. "
-                "The next three test the network's posterior. The last tests the model on the SPX quotes.", stage=5),
+        section("Check", "Five checks, followed by a summary-network experiment. The first asks whether model and "
+                "posterior together regenerate the quotes. The next three test the network's posterior. "
+                "The fifth tests the model on SPX; the experiment then changes the learned representation.", stage=5),
         md(r"""
         | Check | Question | What to look for |
         |:---|:---|:---|
@@ -2350,6 +2352,7 @@ def _(EXPIRY_DATES, EXPIRY_DAYS, controls, md, mo, section):
         | <a class="nb-ref" href="#s5-3">5.3 Recovery across simulated data sets</a> | Does the posterior median find the true parameters? | points on the diagonal, short intervals |
         | <a class="nb-ref" href="#s5-4">5.4 Comparison with the PyMC reference</a> | Does the network reproduce the posterior of one data set? | agreement with PyMC |
         | <a class="nb-ref" href="#s5-5">5.5 Heston against the SPX quotes</a> | Can Heston describe the market at all? | residuals within the assumed noise |
+        | <a class="nb-ref" href="#s5-6">5.6 How much must a summary retain?</a> | Can a smaller representation retain parameter recovery? | recovery and contraction, alongside calibration |
 
         ### 5.1 Posterior predictive check
 
@@ -3147,6 +3150,274 @@ def _(
             "simulator could have produced."),
     ])
     return market_fit, market_residual, market_rms
+
+
+@app.cell(hide_code=True)
+def _(BOUNDS, EVALUATED, NAMES, TRAINING, mo, np):
+    import importlib.util as _summary_importlib
+
+    _summary_spec = _summary_importlib.spec_from_file_location(
+        "_heston_summary_results_for_spx", mo.notebook_dir() / "_heston_summary_results.py")
+    _summary_module = _summary_importlib.module_from_spec(_summary_spec)
+    _summary_spec.loader.exec_module(_summary_module)
+
+    def bind_summary_study(record, runs, baseline, training, names, bounds):
+        """Bind the independent summary study to this notebook's saved direct baseline."""
+        protocol, identities = record["protocol"], record["identities"]
+        budget, panel = protocol["training"], baseline["population"]
+        direct = next(fit for fit in record["fits"] if fit["dimension"] is None)
+        if (list(protocol["parameter_names"]) != list(names)
+                or not np.array_equal(np.asarray(protocol["prior_bounds"]), bounds)
+                or any(budget[key] != training[other] for key, other in
+                       (("rows", "rows"), ("validation_rows", "validation_rows"), ("epochs", "epochs"),
+                        ("batch_size", "batch_size"), ("optimizer_updates", "updates"), ("seed", "seed")))
+                or budget["presentations"] != baseline["training_presentations"]
+                or identities["truth_sha256"] != panel["truth_sha256"]
+                or identities["observations_sha256"] != panel["observations_sha256"]
+                or protocol["population"]["rows"] != panel["rows"]
+                or protocol["population"]["draws_per_case"] != panel["draws_per_case"]
+                or direct["source"]["training_run_sha256"] != baseline["training_run"]["sha256"]
+                or direct["source"]["bank_record_sha256"] != baseline["common_bank"]["sha256"]):
+            raise ValueError("summary experiment and SPX baseline contracts differ")
+        _direct_run = next(row for row in runs if row["dimension"] is None)
+        for index, name in enumerate(names):
+            metrics = _direct_run["evaluation"]["parameters"][name]
+            if (metrics["rmse"] != panel["recovery"]["median_rmse"][index]
+                    or metrics["median_width90"] != panel["recovery"]["median_posterior_width90"][index]
+                    or metrics["coverage90"] != panel["coverage"]["0.9"]["coverage"][index]):
+                raise ValueError("summary-study direct baseline metrics differ")
+        for case, chain in identities["reference_chains"].items():
+            if chain != baseline["cases"][case]["reference_chain_payload"]["sha256"]:
+                raise ValueError("archived summary-reference identities differ")
+
+    _summary_root = mo.notebook_dir() / "data/heston_summary_dimensions"
+    summary_runs, summary_recovery_figures, summary_record = _summary_module.load_results(_summary_root)
+    bind_summary_study(summary_record, summary_runs, EVALUATED, TRAINING, NAMES, BOUNDS)
+    summary_primary_runs = [row for row in summary_runs if row["endpoint"] == "primary_final"]
+    summary_by_dimension = {row["dimension"]: row for row in summary_primary_runs}
+    return (
+        bind_summary_study,
+        summary_by_dimension,
+        summary_primary_runs,
+        summary_record,
+        summary_recovery_figures,
+        summary_runs,
+    )
+
+
+@app.cell(hide_code=True)
+def _(caption, grid, md, mo, note, summary_record):
+    _budget = summary_record["protocol"]["training"]
+    _steps = (
+        ("63 whitened quotes", "The same division by half-spreads and frozen whitening as Section 2.3", ""),
+        ("Learned summary", r"MLP: 128 SiLU → 128 SiLU → linear output of $d$ coordinates", "is-network"),
+        ("Inference network", r"`FlowMatching`, conditioned on the $d$ coordinates, with the same 3 × 128 recipe", "is-network"),
+        ("Posterior draws", r"Base noise is transformed into joint draws of $(v_0,\kappa,v_\infty,\sigma_v,\rho,c)$", ""),
+    )
+    _chain = '<div class="nb-flow-arrow">&#8594;</div>'.join(
+        f'<div class="nb-flow-step {_kind}"><div class="nb-flow-name">{md(_name).text}</div>'
+        f'<div class="nb-flow-text">{md(_text).text}</div></div>' for _name, _text, _kind in _steps)
+    mo.vstack([
+        md(r"""
+        ### 5.6 How much must a summary retain?
+
+        The pretrained estimator uses all 63 whitened inputs. Can a smaller learned representation retain
+        their information? We insert an MLP summary $s_\psi:\mathbb R^{63}\to\mathbb R^d$ before the posterior
+        network and train both together. The summary learns through the same inference loss, without a
+        separate reconstruction objective.
+        """),
+        mo.Html(f'<div class="nb-flow">{_chain}</div>'),
+        caption("The warm-coloured boxes train jointly. At inference both are frozen. Each dimension is a "
+                "separate fitted model: the posterior heads share a recipe, not fitted weights."),
+        grid({
+            "Same task and training": f"All nine summary sizes use the same {_budget['rows']:,} stored noisy "
+                f"observations, {_budget['epochs']} epochs, batch size {_budget['batch_size']} and seed {_budget['seed']}. "
+                f"That is {_budget['optimizer_updates']:,} updates. Final epoch 300 is primary.",
+            "Changed representation": "The tested outputs are 64, 32, 16, 8, 7, 6, 5, 4 and 2 coordinates. "
+                "Whitening keeps 63 dimensions; the summary can discard information. Dimension 64 is a "
+                "learned-representation control, not compression.",
+        }, kind="reading"),
+        note("These checks use 512 simulated Heston data sets with 512 saved posterior draws each. "
+             "They investigate the fitted estimator, separately from SPX model misspecification in Section 5.5. "
+             "The displays below read saved results and work without the pretrained bundle."),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(TEXT_LABELS, controls, mo, summary_record):
+    summary_parameter = mo.ui.dropdown(options={label: index for index, label in enumerate(TEXT_LABELS)},
+                                       value=TEXT_LABELS[-1], label="Parameter")
+    summary_dimensions = mo.ui.multiselect(options={str(d): d for d in summary_record["protocol"]["summary_dimensions"]},
+                                          value=["8", "7", "6", "5", "4"], label="Summary dimensions")
+    controls(summary_parameter, summary_dimensions,
+             hint="Start with c and dimensions 8 to 4. Then choose a Heston parameter: does it deteriorate at the same size?")
+    return summary_dimensions, summary_parameter
+
+
+@app.cell(hide_code=True)
+def _(
+    LABELS,
+    caption,
+    mo,
+    np,
+    plots,
+    plt,
+    summary_by_dimension,
+    summary_dimensions,
+    summary_parameter,
+    summary_record,
+):
+    _j = summary_parameter.value
+    _name = summary_record["protocol"]["parameter_names"][_j]
+    _ds = sorted(summary_dimensions.value)
+    _direct = summary_by_dimension[None]["evaluation"]["parameters"][_name]
+    _prior_width = summary_record["protocol"]["population"]["prior_width90"][_j]
+    _fig, _axes = plt.subplots(1, 3, figsize=(10, 3.1), layout="constrained")
+    _targets = [_direct["rmse"], _prior_width, 1.]
+    _keys = ["rmse", "median_width90", "coverage90"]
+    for _ax, _metric, _denom, _title, _ylabel in zip(_axes, _keys, _targets,
+            ["Point recovery", "Posterior contraction", "90% interval coverage"],
+            ["RMSE / direct-input RMSE", "Median 90% width / prior width", "Fraction of truths covered"]):
+        for _d in _ds:
+            _value = summary_by_dimension[_d]["evaluation"]["parameters"][_name][_metric] / _denom
+            _ax.scatter(_d, _value, color=plots.SERIES[1] if _d == 5 else plots.SERIES[0], s=34, zorder=3)
+        _baseline = _direct[_metric] / _denom
+        _ax.axhline(_baseline, color=plots.INK_2, ls="--", lw=1, label="Direct input")
+        if _metric == "median_width90":
+            _ax.axhline(1., color=plots.MUTED, ls=":", lw=1, label="Prior width")
+        if _metric == "coverage90":
+            _ax.axhline(.9, color=plots.MUTED, ls=":", lw=1, label="Nominal 90%")
+            _ax.set_ylim(0, 1.04)
+        if _metric == "rmse":
+            _ax.set_yscale("log")
+        _ticks = _ds or [4, 5, 6, 7, 8]
+        if max(_ticks) > 8 or min(_ticks) < 4:
+            _ax.set_xscale("log", base=2)
+        _ax.set_xticks(_ticks, [str(d) for d in _ticks])
+        _ax.tick_params(axis="x", labelrotation=45 if len(_ticks) > 5 else 0)
+        _ax.set(title=_title, xlabel="Summary dimension", ylabel=_ylabel)
+        _ax.legend(fontsize=7, loc="best")
+    _fig.suptitle(f"{LABELS[_j]} — matched final-epoch results", fontsize=11)
+    mo.vstack([
+        _fig,
+        caption("Each dot is one completed fit; orange identifies dimension 5. The axes show recovery error, "
+                "contraction relative to the prior and coverage on the same 512 cases. Narrow intervals need "
+                "accurate coverage; near-nominal coverage can also accompany nearly prior-width uncertainty."),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(MATH_LABELS, cards, key, md, mo, summary_by_dimension, summary_parameter, summary_primary_runs, table):
+    _name = tuple(summary_by_dimension[None]["evaluation"]["parameters"])[summary_parameter.value]
+    _rows = []
+    for _row in summary_primary_runs:
+        _d, _evaluation = _row["dimension"], _row["evaluation"]
+        _metric = _evaluation["parameters"][_name]
+        _rows.append({"Input": "Direct 63" if _d is None else f"MLP {_d}",
+                      "RMSE": f"{_metric['rmse']:.5g}", "Median 90% width": f"{_metric['median_width90']:.5g}",
+                      "90% coverage": f"{100*_metric['coverage90']:.1f}%",
+                      "Marginal SBC screen": "pass" if _evaluation["population"]["rank_dkw"]["passed"][summary_parameter.value] else "fail"})
+    _six, _five, _four = (summary_by_dimension[d]["evaluation"]["parameters"] for d in (6, 5, 4))
+    _direct = summary_by_dimension[None]["evaluation"]["parameters"]
+    _physical = [_five[name]["rmse"] / _direct[name]["rmse"] for name in _five if name != "c"]
+    mo.vstack([
+        cards([
+            ("6 → 5 coordinates", "The noise multiplier loses recovery",
+             f"For $c$, RMSE rises from {_six['c']['rmse']:.3f} to {_five['c']['rmse']:.3f}. "
+             f"The median 90% interval widens from {_six['c']['median_width90']:.3f} to "
+             f"{_five['c']['median_width90']:.3f}, close to the prior's 1.35."),
+            ("5 coordinates", "The five Heston parameters still recover",
+             f"Their pooled median-estimate RMSEs are {min(_physical):.2f}–{max(_physical):.2f} times the "
+             "direct model's. Losing $c$ does not mean losing every parameter at once."),
+            ("5 → 4 coordinates", "Physical recovery deteriorates too",
+             f"For {MATH_LABELS[0]}, RMSE increases from {_five['initial_variance']['rmse']:.3g} to "
+             f"{_four['initial_variance']['rmse']:.3g}. Other Heston parameters deteriorate as well."),
+        ], columns=3),
+        key("**The observed break depends on the parameter.** Six is the smallest tested size retaining "
+            "similar pooled recovery for all six targets in this recipe. This is an empirical result, "
+            "not a sufficient-statistic theorem."),
+        md(f"#### Recorded final-epoch values for {MATH_LABELS[summary_parameter.value]}"),
+        table(_rows, align="lrrrc"),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(controls, mo, summary_record):
+    summary_model = mo.ui.dropdown(
+        options={"Direct 63-input baseline": None, **{f"MLP {d}": d for d in summary_record["protocol"]["summary_dimensions"]}},
+        value="MLP 6", label="Recovery plot: fitted representation")
+    controls(summary_model, hint="Compare 6 with 5, then 4. This selects saved study outputs only; it does not switch the live or pretrained estimator.")
+    return (summary_model,)
+
+
+@app.cell(hide_code=True)
+def _(caption, mo, summary_model, summary_recovery_figures):
+    _label = "Direct 63-input baseline" if summary_model.value is None else f"MLP {summary_model.value}"
+    mo.vstack([
+        mo.image(summary_recovery_figures[summary_model.value], width="100%",
+                 alt=f"{_label}: true parameters against posterior medians and central 90% intervals"),
+        caption("All six parameters for one fitted model, at final epoch 300. Each point is a simulated truth "
+                "against its posterior median; the bar is the central 90% interval. Limits are identical across "
+                r"models. These archived figure labels use θ for $v_\infty$ and η for $\sigma_v$. "
+                "The parameter control above changes the phase plots and table; this recovery figure always "
+                "shows all six parameters."),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(caption, md, mo, note, plots, plt, summary_model, summary_primary_runs, summary_record, summary_runs, table):
+    _dimension = summary_model.value
+    _pair = [row for row in summary_runs if row["dimension"] == _dimension]
+    _final = next(row for row in _pair if row["endpoint"] == "primary_final")
+    _details = []
+    if _final["history"] is not None:
+        _history, _best = _final["history"], _final["run"]["best_epoch"]
+        _fig, _ax = plt.subplots(figsize=(8, 2.6), layout="constrained")
+        _ax.plot(_history["epoch"], _history["loss"], color=plots.SERIES[0], label="training", lw=1)
+        _ax.plot(_history["epoch"], _history["val_loss"], color=plots.SERIES[1], label="validation", lw=1)
+        _ax.axvline(_best, color=plots.INK_2, ls=":", lw=1, label=f"validation minimum: {_best}")
+        _ax.set(xlabel="Epoch", ylabel="FlowMatching objective", title=f"MLP {_dimension}: recorded training history")
+        _ax.legend(fontsize=8)
+        _details += [_fig, caption("The validation set has 100 observations. Final epoch 300 was primary before "
+                                  "fitting; the distinct validation minimum is a separate endpoint, never selected "
+                                  "by its posterior diagnostics.")]
+    else:
+        _details.append(md("The direct baseline's history is retained in the original experiment archive."))
+    _details.append(table([{"Endpoint": "Final (primary)" if row["endpoint"] == "primary_final" else "Validation minimum (secondary)",
+                           "Epoch": row["run"]["evaluated_epoch"],
+                           "c RMSE": f"{row['evaluation']['parameters']['c']['rmse']:.5g}",
+                           "Median c 90% width": f"{row['evaluation']['parameters']['c']['median_width90']:.5g}"}
+                          for row in _pair], align="lrrr"))
+    _backend = [{"Input": "Direct 63" if row["dimension"] is None else f"MLP {row['dimension']}",
+                 "Recorded training device": ", ".join(row["run"].get("devices", [])) or "device metadata not stored; see archive"}
+                for row in summary_primary_runs]
+    _archive = summary_record["archive"]
+    mo.vstack([
+        note("Calibration and information retention are different: a method that returns the prior can pass "
+             "prior-averaged calibration while learning nothing. Pooled recovery is also not conditional accuracy. "
+             "The summary experiment's complete conditional panels remain inadequate, using its archived "
+             "reference chains; these are not new comparisons to this notebook's regenerated PyMC draws."),
+        note("One seed per size and repeated use of this development panel do not establish a universal cutoff. "
+             "Dimensions 6 and 5 trained on Oscar GPUs; the other summaries trained on local CPUs. CPU/GPU "
+             "kernels and optimization trajectories can differ. Independent-seed and common-backend repeats "
+             "are needed before calling a boundary stable."),
+        mo.accordion({
+            "Checkpoint and backend details": mo.vstack([*_details, table(_backend)]),
+            "Full comparison and archived experiment": md(f"""
+                The standalone `heston_summary_experiments.py` lesson contains the full comparison.
+                Both lessons read the same compact records and recovery images; no model is loaded here.
+                The [experiment archive]({_archive['file_url']}) and its
+                [manifest/checksums]({_archive['folder_url']}) preserve the original source, models and draws.
+
+                Archive SHA-256: `{_archive['sha256']}`.
+                """),
+        }),
+    ])
+    return
 
 
 @app.cell(hide_code=True)

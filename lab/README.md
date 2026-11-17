@@ -32,8 +32,14 @@ pixi install --locked -e core-reference
 pixi run --locked -e core-reference marimo edit notebooks/heston_spx_calibration.py
 ```
 
-The saved PyMC examples and live training work without a download. To use the
-pretrained posterior, follow the [bundle instructions](plans/training-data-guide.md#heston-spx-notebook-and-optional-pretrained-model).
+The saved PyMC examples and live training work without a download. Section 5.6
+adds the learned-summary dimension investigation, with interactive recovery and
+calibration comparisons from the saved nine-size study. That section also works
+without a bank or checkpoint download. The
+[standalone investigation](notebooks/heston_summary_experiments.py) remains
+available for the full rundown.
+
+To use the pretrained posterior, follow the [bundle instructions](plans/training-data-guide.md#heston-spx-notebook-and-optional-pretrained-model).
 The [lesson run record](evidence/pilot-results/2026-11-11/heston-actual63-notebook/README.md#delivery-scope)
 maps its code and results, and explains which research files were left out.
 
