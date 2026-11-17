@@ -183,7 +183,9 @@ artifacts. Leave them in this ignored cache; the current checkout already
 supplies its own published teaching assets. Use only the `pretrained/` native
 posterior directories below for fresh option inference.
 
-From `tutorial/`, open `pixi run --locked backbones`. Select the cached example
+The backbone review notebook that loads these models is not on `main`; it is parked in
+[pull request 101](https://github.com/fmuia/sbi4finance/pull/101). From `tutorial/` on that
+branch, open `pixi run --locked backbones`. Select the cached example
 and enter the **absolute** checkpoint directory in **Local matching checkpoint
 directory**, then press **Load the matching model and draw 1,000 fresh samples**.
 The field is a filesystem path; it does not expand shell variables.
