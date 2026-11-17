@@ -1,0 +1,18 @@
+{
+  "format": "fixed_market_return_example_v1",
+  "ticker": "VOO",
+  "n": 256,
+  "start_date": "2020-01-03",
+  "end_date": "2021-01-07",
+  "requested_end": "2021-01-07",
+  "source": "Adjusted-close simple returns cached by amortized-fractals; its loader uses Yahoo Finance. No fresh download.",
+  "source_repository": "https://github.com/stefanradev93/amortized-fractals",
+  "source_revision": "069d5dc5943dbe85505849f2fa8bfb563617ff97",
+  "source_file": "VOO_GLD_TLT_2015-01-01_2026-09-01.csv",
+  "source_sha256": "028917f22a4ef8acd1e8fb7b580bdb0348c1da4c00d77481b7e60deb07c0506c",
+  "source_observation": "decimal simple returns from the preserved upstream cache",
+  "log_conversion": "numpy.log1p(simple_returns), float64; no recentering, scaling or filtering",
+  "selection": "last 256 recorded observations on or before 2021-01-07",
+  "scope": "selected empirical motivation and model-adequacy example; not a forecasting benchmark",
+  "arrays_sha256": "8770882ef27cb692216075bb28af0d040bc4a010b3036d36c3a1bf7ab1cb4b5d"
+}

@@ -49,6 +49,7 @@ KERAS_BACKEND = "jax"
 heston-options = { cmd = "marimo edit slot4_heston_bayesflow.py --no-token", cwd = "notebooks" }
 rough-options = { cmd = "marimo edit slot5_calibration.py --no-token", cwd = "notebooks" }
 path-inference = "marimo edit notebooks/trajectory_inference.py --no-token"
+mmar-takehome = "marimo edit notebooks/mmar_takehome.py --no-token"
 edit = { cmd = "marimo edit --no-token", cwd = "notebooks" }
 slot1 = { cmd = "marimo edit slot1_intro.py --no-token", cwd = "notebooks" }
 slot2 = { cmd = "marimo edit slot2_amortized_bayes.py --no-token", cwd = "notebooks" }

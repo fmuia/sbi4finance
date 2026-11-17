@@ -1,0 +1,9 @@
+{
+  "accepted": "2026-11-13T01:27:59+00:00",
+  "source": "dense-evidence-02",
+  "source_sha256": {
+    "bundle.json": "cd4d9b1eb3097aed74c91e7e159ffcd9c0a89adc1d3f26ee9338b5d44a821f47",
+    "frames.npz": "c480d49902fa8ac90b74b6c66cafec1caa16192bcee9488d4a1570caab859f5b"
+  },
+  "changes": []
+}

@@ -1,0 +1,403 @@
+{
+  "format": "mmar_takehome_bundle_v1",
+  "created": "2026-11-12T23:19:13.084697+00:00",
+  "model_design": {
+    "format": "mmar_takehome_v1",
+    "window": 256,
+    "parameter_order": [
+      "mu",
+      "sigma_bar",
+      "q",
+      "nu"
+    ],
+    "return_type": "daily_simple",
+    "supported_d": [
+      128,
+      64,
+      32,
+      16,
+      8,
+      4
+    ],
+    "prior": {
+      "mu": {
+        "family": "normal",
+        "mean": 0.0,
+        "sd": 0.0015
+      },
+      "sigma_bar": {
+        "family": "uniform",
+        "bounds": [
+          0.005,
+          0.025
+        ]
+      },
+      "q": {
+        "family": "uniform",
+        "bounds": [
+          0.52,
+          0.9
+        ]
+      },
+      "nu_minus_two": {
+        "family": "log_uniform",
+        "bounds": [
+          0.05,
+          10.0
+        ]
+      }
+    },
+    "acceptance": "redraw the complete 256-day path when nonfinite or any simple return <= -1",
+    "cascade": "binary contrasts 2q/2(1-q), normalized mean one, circular random phase",
+    "upstream_revision": "069d5dc5943dbe85505849f2fa8bfb563617ff97"
+  },
+  "checkpoint_sha256": "4e2ce00711f3cf1e87969fc20e1dc9a81fe437e6e1862e8cb44df29fa1cb874b",
+  "checkpoint_origin": "amortized-fractals/checkpoints/sensitivity/model.keras at pinned revision",
+  "checkpoint_historical_provenance": "source configuration reconstructed and numerical parity verified; original training seed/bank not independently established",
+  "source_parity": {
+    "upstream_revision": "069d5dc5943dbe85505849f2fa8bfb563617ff97",
+    "all_six_design_values": [
+      {
+        "d": 128,
+        "paths": 64,
+        "maximum_absolute_error": {
+          "mu": 0.0,
+          "sigma_bar": 0.0,
+          "q": 0.0,
+          "nu": 0.0,
+          "returns": 0.0,
+          "trading_time_increments": 0.0,
+          "log_d": 0.0
+        }
+      },
+      {
+        "d": 64,
+        "paths": 64,
+        "maximum_absolute_error": {
+          "mu": 0.0,
+          "sigma_bar": 0.0,
+          "q": 0.0,
+          "nu": 0.0,
+          "returns": 0.0,
+          "trading_time_increments": 0.0,
+          "log_d": 0.0
+        }
+      },
+      {
+        "d": 32,
+        "paths": 64,
+        "maximum_absolute_error": {
+          "mu": 0.0,
+          "sigma_bar": 0.0,
+          "q": 0.0,
+          "nu": 0.0,
+          "returns": 0.0,
+          "trading_time_increments": 0.0,
+          "log_d": 0.0
+        }
+      },
+      {
+        "d": 16,
+        "paths": 64,
+        "maximum_absolute_error": {
+          "mu": 0.0,
+          "sigma_bar": 0.0,
+          "q": 0.0,
+          "nu": 0.0,
+          "returns": 0.0,
+          "trading_time_increments": 0.0,
+          "log_d": 0.0
+        }
+      },
+      {
+        "d": 8,
+        "paths": 64,
+        "maximum_absolute_error": {
+          "mu": 0.0,
+          "sigma_bar": 0.0,
+          "q": 0.0,
+          "nu": 0.0,
+          "returns": 0.0,
+          "trading_time_increments": 0.0,
+          "log_d": 0.0
+        }
+      },
+      {
+        "d": 4,
+        "paths": 64,
+        "maximum_absolute_error": {
+          "mu": 0.0,
+          "sigma_bar": 0.0,
+          "q": 0.0,
+          "nu": 0.0,
+          "returns": 0.0,
+          "trading_time_increments": 0.0,
+          "log_d": 0.0
+        }
+      }
+    ],
+    "stress_rejection_parity": true,
+    "kind": "bit-identical outputs at fixed seeds, not historical training provenance"
+  },
+  "frozen_rule": {
+    "format": "mmar_calibration_rule_v1",
+    "histories_per_resolution": 200,
+    "posterior_draws": 512,
+    "resolutions": [
+      4,
+      8,
+      128
+    ],
+    "parameter_order": [
+      "mu",
+      "sigma_bar",
+      "q",
+      "nu"
+    ],
+    "rank_null": "discrete uniform integers 0 through 512",
+    "rank_statistic": "maximum absolute ECDF deviation on all integer rank support points",
+    "null_replications": 10000,
+    "null_seed": 720061112,
+    "p_value": "(1 + number of null statistics >= observed)/(10000 + 1)",
+    "decision": "Holm familywise alpha .05 across four parameters x three resolutions",
+    "coverage": "central 90% empirical coverage; Wilson 95% descriptive interval, no second pass/fail rule",
+    "test_seeds": {
+      "4": 63061116,
+      "8": 63061120,
+      "128": 63061240
+    },
+    "sampling_seeds": {
+      "4": 64061116,
+      "8": 64061120,
+      "128": 64061240
+    },
+    "cohort_use": "reserved evaluation, not used to tune or select seeds"
+  },
+  "calibration": [
+    {
+      "parameter": "mu",
+      "rank_deviation": 0.03414230019493181,
+      "rank_p_value": 0.9606039396060394,
+      "coverage90": 0.885,
+      "coverage90_wilson95": [
+        0.8333528310151243,
+        0.9221362676743804
+      ],
+      "mean_interval_width90": 0.0014707082972684588,
+      "mse_to_prior_mean_ratio": 0.0929797902682071,
+      "d": 4,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    },
+    {
+      "parameter": "sigma_bar",
+      "rank_deviation": 0.061393762183235834,
+      "rank_p_value": 0.40455954404559547,
+      "coverage90": 0.925,
+      "coverage90_wilson95": [
+        0.8799563897637055,
+        0.954025082815618
+      ],
+      "mean_interval_width90": 0.00827104330260772,
+      "mse_to_prior_mean_ratio": 0.25490258657874426,
+      "d": 4,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    },
+    {
+      "parameter": "q",
+      "rank_deviation": 0.04445419103313841,
+      "rank_p_value": 0.792020797920208,
+      "coverage90": 0.895,
+      "coverage90_wilson95": [
+        0.8448196800887696,
+        0.9302925120731899
+      ],
+      "mean_interval_width90": 0.12338471597433089,
+      "mse_to_prior_mean_ratio": 0.14481140976397724,
+      "d": 4,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    },
+    {
+      "parameter": "nu",
+      "rank_deviation": 0.05056530214424948,
+      "rank_p_value": 0.6527347265273473,
+      "coverage90": 0.915,
+      "coverage90_wilson95": [
+        0.8681041292843443,
+        0.9462542498225244
+      ],
+      "mean_interval_width90": 2.8595898581147194,
+      "mse_to_prior_mean_ratio": 0.2357025514505668,
+      "d": 4,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    },
+    {
+      "parameter": "mu",
+      "rank_deviation": 0.06777777777777777,
+      "rank_p_value": 0.29177082291770823,
+      "coverage90": 0.91,
+      "coverage90_wilson95": [
+        0.8622342812328346,
+        0.9423125511378069
+      ],
+      "mean_interval_width90": 0.0013919164497587528,
+      "mse_to_prior_mean_ratio": 0.1034818472252207,
+      "d": 8,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    },
+    {
+      "parameter": "sigma_bar",
+      "rank_deviation": 0.06553606237816761,
+      "rank_p_value": 0.33136686331366866,
+      "coverage90": 0.905,
+      "coverage90_wilson95": [
+        0.8563983883518006,
+        0.9383368972826135
+      ],
+      "mean_interval_width90": 0.008636812124284915,
+      "mse_to_prior_mean_ratio": 0.2307708751630539,
+      "d": 8,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    },
+    {
+      "parameter": "q",
+      "rank_deviation": 0.031686159844054596,
+      "rank_p_value": 0.9796020397960205,
+      "coverage90": 0.895,
+      "coverage90_wilson95": [
+        0.8448196800887696,
+        0.9302925120731899
+      ],
+      "mean_interval_width90": 0.10577140951156616,
+      "mse_to_prior_mean_ratio": 0.10353373014616706,
+      "d": 8,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    },
+    {
+      "parameter": "nu",
+      "rank_deviation": 0.06612085769980505,
+      "rank_p_value": 0.3213678632136786,
+      "coverage90": 0.9,
+      "coverage90_wilson95": [
+        0.8505941875672826,
+        0.9343295513309041
+      ],
+      "mean_interval_width90": 3.1092402996420856,
+      "mse_to_prior_mean_ratio": 0.2589751891916635,
+      "d": 8,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    },
+    {
+      "parameter": "mu",
+      "rank_deviation": 0.06399610136452241,
+      "rank_p_value": 0.35606439356064395,
+      "coverage90": 0.9,
+      "coverage90_wilson95": [
+        0.8505941875672826,
+        0.9343295513309041
+      ],
+      "mean_interval_width90": 0.0010079360055634933,
+      "mse_to_prior_mean_ratio": 0.06249912810329829,
+      "d": 128,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    },
+    {
+      "parameter": "sigma_bar",
+      "rank_deviation": 0.05264132553606238,
+      "rank_p_value": 0.6044395560443956,
+      "coverage90": 0.92,
+      "coverage90_wilson95": [
+        0.874010511732856,
+        0.9501594141102401
+      ],
+      "mean_interval_width90": 0.00981015548983123,
+      "mse_to_prior_mean_ratio": 0.30395103602998114,
+      "d": 128,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    },
+    {
+      "parameter": "q",
+      "rank_deviation": 0.04565302144249517,
+      "rank_p_value": 0.7663233676632337,
+      "coverage90": 0.89,
+      "coverage90_wilson95": [
+        0.839073090026985,
+        0.926227555398747
+      ],
+      "mean_interval_width90": 0.09215665723383427,
+      "mse_to_prior_mean_ratio": 0.07995769945450722,
+      "d": 128,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    },
+    {
+      "parameter": "nu",
+      "rank_deviation": 0.07077972709551655,
+      "rank_p_value": 0.24817518248175183,
+      "coverage90": 0.93,
+      "coverage90_wilson95": [
+        0.8859451911438936,
+        0.9578478281716571
+      ],
+      "mean_interval_width90": 3.727801600515842,
+      "mse_to_prior_mean_ratio": 0.4556112850360423,
+      "d": 128,
+      "rank_holm_p": 1.0,
+      "rank_holm_reject": false
+    }
+  ],
+  "calibration_rejections": 0,
+  "scope": "approximate amortized posterior; checks do not establish exact posterior or state-conditioned forecasts",
+  "saved_sha256": "c03aaa4969a568c7ca3933eaba868844ccadf0dae0c5a49f00607e577729065d",
+  "software": {
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "runtime_sha256": {
+    "diagnostics.py": "d4864dde653c1db60b8fa050898cffa6aeed35b2bce70ac507909cbb9125a926",
+    "lesson.py": "f4c5d583d2a3e159262773ac09d9e26a5ec1bf62ddac86f0fa1545dc5ac93534",
+    "__init__.py": "7b9e3e00fd80291377c064319e5b532c3a21f04f812444ff1c56f5a12cd529d1",
+    "model.py": "edfff690b48496ced1996e75a253f058d30e140b1d6ea55e1cc5c130f6e6d0ea",
+    "plots.py": "c6a8fe4c25686cf461a788e900b7046db58c4dca4f59f3afb622d547712641da",
+    "inference.py": "632efa61f8a0e9daaad3539f5d0d182eeeb344fd83b70fa37c564a970f7846f4"
+  },
+  "producer_script_sha256": "d1d61adb91b298f1555c9940f6ed75a5cb596fce7abd0337d29ae099e009139d",
+  "shared_statistics_sha256": "5746d45222bd96caf0705e3a6f7fb93285068ef63ea543add23c0e2acc734d2f",
+  "task_sha256": "1f78c11ceb0a04db508d3acee11f77a04a76710a43503a1a40ef9ed523de8e1c",
+  "checkpoint_url": "https://github.com/stefanradev93/amortized-fractals/raw/069d5dc5943dbe85505849f2fa8bfb563617ff97/checkpoints/sensitivity/model.keras",
+  "scenario_count_per_group": 512,
+  "market_draws_per_resolution": 1024,
+  "market": {
+    "ticker": "VOO",
+    "n": 256,
+    "return_type": "daily_simple",
+    "start_date": "2020-01-03",
+    "end_date": "2021-01-07",
+    "simple_returns_sha256": "80de5f59fa2a4e5eee92f991a299c541be13b3756990829e52203b221e0757e4",
+    "source_file_sha256": "8770882ef27cb692216075bb28af0d040bc4a010b3036d36c3a1bf7ab1cb4b5d"
+  },
+  "seeds": {
+    "market_sampling": "180061112+d",
+    "posterior_scenarios": "180071112+d",
+    "point_scenarios": 180081112,
+    "prior": 190061112
+  },
+  "repeat_verification": {
+    "previous_report_sha256": "cb2feb1387d87b83e2d74ec3cba4be42e2b10b48a0e8c660e70d759b9e8b578f",
+    "all_saved_arrays_identical": true,
+    "calibration_identical": true,
+    "scope": "same frozen cohort/checkpoint, no tuning or seed selection; repeat binds final hardened source"
+  }
+}

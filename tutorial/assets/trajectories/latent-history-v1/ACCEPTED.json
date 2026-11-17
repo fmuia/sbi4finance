@@ -1,0 +1,11 @@
+{
+  "accepted": "2026-11-14T00:23:33+00:00",
+  "source": "paired-latent-01",
+  "source_sha256": {
+    "bundle.json": "7beb5b9647fdf2fdec819f5bf0c7f7c5170841572490412643ddebb24a74436c",
+    "heston.npz": "3f5469e0da69687ea4c8dd15b41770edaf5088eb6322bbec999050a3a595185a",
+    "rough-joint.npz": "8ce925f4eab49cd2265690d02a5604bf39ac178c88b2125fa6fd00618c248aab",
+    "rough-known.npz": "f196532021e3bed955045f03c812df130f6009e55dcd30de34441f5a519a1c6f"
+  },
+  "changes": []
+}

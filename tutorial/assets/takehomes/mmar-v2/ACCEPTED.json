@@ -1,0 +1,9 @@
+{
+  "accepted": "2026-11-12T23:19:57+00:00",
+  "source": "bundle",
+  "source_sha256": {
+    "report.json": "2e1acb23e2212ca9e0cd73c76ef3f0a9a28f882b99da0450207d7b429574503e",
+    "saved.npz": "c03aaa4969a568c7ca3933eaba868844ccadf0dae0c5a49f00607e577729065d"
+  },
+  "changes": []
+}

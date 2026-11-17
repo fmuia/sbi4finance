@@ -1,0 +1,621 @@
+{
+  "format": "trajectory_dense_evidence_v1",
+  "created": "2026-11-13T01:27:19.531909+00:00",
+  "model": "rough-known",
+  "measure": "P",
+  "task": {
+    "dt_years": 0.003968253968253968,
+    "fixed": {
+      "variance_level": 0.04
+    },
+    "history_length_range": [
+      1,
+      1260
+    ],
+    "measure": "P",
+    "min_history": 1,
+    "model": "rough-known",
+    "n_observations": 1260,
+    "numerics": {
+      "driver_method": "hybrid",
+      "initialization": "zero_volterra_driver_at_origin",
+      "observation_substeps": 4,
+      "scheme": "log_euler",
+      "variance_compensator": "discrete_hybrid_variance"
+    },
+    "observation": "decimal_log_returns_only",
+    "parameter_names": [
+      "hurst",
+      "eta",
+      "rho",
+      "drift"
+    ],
+    "prefix_lengths": [
+      21,
+      63,
+      126,
+      252,
+      504,
+      756,
+      1260
+    ],
+    "prefix_lengths_role": "validation_landmarks",
+    "prior_bounds": [
+      [
+        0.03,
+        0.4
+      ],
+      [
+        0.2,
+        2.5
+      ],
+      [
+        -0.95,
+        -0.05
+      ],
+      [
+        -0.1,
+        0.2
+      ]
+    ],
+    "prior_types": [
+      "uniform",
+      "uniform",
+      "uniform",
+      "uniform"
+    ],
+    "task_id": "physical_rough_known_daily_drift_paths_v2",
+    "task_version": 2
+  },
+  "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+  "checkpoint_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+  "source_replay_bundle_sha256": "c21aa1f12c59a664469a4ce4d3b6824f61180b10663ee8e765b5dac0c7dde79f",
+  "source_split": "validation",
+  "source_case_offset": 0,
+  "scientific_acceptance": false,
+  "interpolated": false,
+  "parameter_prior_updated": false,
+  "scope": "development posterior playback; exact prefix queries using unchanged supplied weights and original prior; no new calibration claim",
+  "base_lengths": [
+    1,
+    2,
+    4,
+    8,
+    17,
+    21,
+    63,
+    126,
+    252,
+    504,
+    756,
+    1260
+  ],
+  "all_lengths": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    26,
+    31,
+    36,
+    41,
+    46,
+    51,
+    56,
+    61,
+    63,
+    66,
+    71,
+    76,
+    81,
+    86,
+    91,
+    96,
+    101,
+    106,
+    111,
+    116,
+    121,
+    126,
+    147,
+    168,
+    189,
+    210,
+    231,
+    252,
+    315,
+    378,
+    441,
+    504,
+    567,
+    630,
+    693,
+    756,
+    819,
+    882,
+    945,
+    1008,
+    1071,
+    1134,
+    1197,
+    1260
+  ],
+  "posterior_draws": 128,
+  "query_batch_size": 8,
+  "seed_mapping": "nonnegative integer modulo 2**32; existing uint32 seeds unchanged",
+  "histories": [
+    {
+      "case": 0,
+      "trajectory_id": "eb195dd594de03a9:20261031002:validation:0",
+      "history_sha256": "d314e0b30864e3d24d8539436effdf5e20802a89d9321bf7fe72d68b50f4262f",
+      "history_length": 1260,
+      "sampling_seed": 20261113100,
+      "query_batches": [
+        {
+          "days": [
+            3,
+            5,
+            6,
+            7,
+            9,
+            10,
+            11,
+            12
+          ],
+          "seed": 20261113100
+        },
+        {
+          "days": [
+            13,
+            14,
+            15,
+            16,
+            18,
+            19,
+            20,
+            26
+          ],
+          "seed": 20261113101
+        },
+        {
+          "days": [
+            31,
+            36,
+            41,
+            46,
+            51,
+            56,
+            61,
+            66
+          ],
+          "seed": 20261113102
+        },
+        {
+          "days": [
+            71,
+            76,
+            81,
+            86,
+            91,
+            96,
+            101,
+            106
+          ],
+          "seed": 20261113103
+        },
+        {
+          "days": [
+            111,
+            116,
+            121,
+            147,
+            168,
+            189,
+            210,
+            231
+          ],
+          "seed": 20261113104
+        },
+        {
+          "days": [
+            315,
+            378,
+            441,
+            567,
+            630,
+            693,
+            819,
+            882
+          ],
+          "seed": 20261113105
+        },
+        {
+          "days": [
+            945,
+            1008,
+            1071,
+            1134,
+            1197
+          ],
+          "seed": 20261113106
+        }
+      ],
+      "inference_seconds": 3.616203541168943,
+      "original_frame_sha256": {
+        "1": "66a8a61c7cfc887581d3ca51543d27837045fe81f2fd7d25c38ea85a17cd5ec6",
+        "2": "dddbd0c9e54d1fd2a9eaebfa4f437f406eb75bd91c628c00408f765eee7f3f5c",
+        "4": "90a33cbf3165e5b8a9c6814139cca1cd7cb04e6d5dd55ff564f245a5ad5e9e39",
+        "8": "317b9d50d4a1d2a31bdddaac36eecd499fb2d425b981bef9a70a99eb9b426831",
+        "17": "85d33418f895674bbcaed08564fe330e2dc3aed3db30fbd0a2d5c67e6b54e006",
+        "21": "6d8b20a4341739661441d672828a90dadf402d9899a2fbb581003ce0d7a4b13b",
+        "63": "9e2016c196e087cbb41ac45a86d40a195650b473ee36b1b245f6a3cf7ed86f84",
+        "126": "75f0c3ad9dbed45074ae451ed8d8bbaa3e1f137f8f9560eb42265e21c26dfcfa",
+        "252": "9d97bf9389ce88c6217e40c899be12fd5b924e584fd67ce60fa42ea2a5172366",
+        "504": "4f846ea890bfded0ebc0ad3051fdce52e5ca7393093a20fdc6ae7064ac2f83ce",
+        "756": "5792ab00c15762e30c34d47d9218cffaa75abbf500685c248fc4d805bd954fa5",
+        "1260": "9e5551826b7313e56320f85ec59d70beddd953319ca083401bc343ac64c9413f"
+      }
+    },
+    {
+      "case": 1,
+      "trajectory_id": "eb195dd594de03a9:20261031002:validation:1",
+      "history_sha256": "f5e75f531f83d392d5c4abec545432af67ed0a178215ca64d13a3e3b0db25942",
+      "history_length": 1260,
+      "sampling_seed": 20261113101,
+      "query_batches": [
+        {
+          "days": [
+            3,
+            5,
+            6,
+            7,
+            9,
+            10,
+            11,
+            12
+          ],
+          "seed": 20261113101
+        },
+        {
+          "days": [
+            13,
+            14,
+            15,
+            16,
+            18,
+            19,
+            20,
+            26
+          ],
+          "seed": 20261113102
+        },
+        {
+          "days": [
+            31,
+            36,
+            41,
+            46,
+            51,
+            56,
+            61,
+            66
+          ],
+          "seed": 20261113103
+        },
+        {
+          "days": [
+            71,
+            76,
+            81,
+            86,
+            91,
+            96,
+            101,
+            106
+          ],
+          "seed": 20261113104
+        },
+        {
+          "days": [
+            111,
+            116,
+            121,
+            147,
+            168,
+            189,
+            210,
+            231
+          ],
+          "seed": 20261113105
+        },
+        {
+          "days": [
+            315,
+            378,
+            441,
+            567,
+            630,
+            693,
+            819,
+            882
+          ],
+          "seed": 20261113106
+        },
+        {
+          "days": [
+            945,
+            1008,
+            1071,
+            1134,
+            1197
+          ],
+          "seed": 20261113107
+        }
+      ],
+      "inference_seconds": 0.6021293331868947,
+      "original_frame_sha256": {
+        "1": "1dc8c6beab0d0d2201804ee52cd3adcd4608f86c10c412d7aa8e3a0aeb36a1c1",
+        "2": "5fc61d28cb1d71431c1afb5c5654e093beb4480c4bc5c35519835cc8bb945adf",
+        "4": "b655a1b8caff0353819da522a181e3c4ba355782b41c7f473e868d6523b05dcc",
+        "8": "848b33562ed502f9f407ce5e08c3946e06edaf7d73e32156cd95c584f2735fa0",
+        "17": "7e7e5d762009d05477746f8bd1a66562a4a54cb5217b59dd8bae7af295ec0b2a",
+        "21": "de3a55883ec992f61564e7c8b0988b8d1329f022cb3564a1326fa94afd0b4b01",
+        "63": "dca8f49b539e248ec60c6c2d2ca067400537eb4ade64c90a89ba7bce42a453c7",
+        "126": "05ac19d13c22950554a4e56ff1cf740b761c96404a42f5c988eccbe6deda308b",
+        "252": "927c2e63007f8aaf601b4ffeb5166cbb8d25bc53c2cb9929dd3f4e873053c858",
+        "504": "d6d8cf69a24f7f3734ea15069f752707e08ff933e17328b04b36b379d50a3957",
+        "756": "4012f9643a8b9b64d56a26272e668202fa56495014f2003321d24c16cc0615ae",
+        "1260": "022e473dccbac13229d4ca574f9a5cc93f29ff726fc98747697c70ba9b3d0519"
+      }
+    },
+    {
+      "case": 2,
+      "trajectory_id": "eb195dd594de03a9:20261031002:validation:2",
+      "history_sha256": "fa98482eee058b7ed80f05adc85215047e885f37af562bb213432741f1cec969",
+      "history_length": 1260,
+      "sampling_seed": 20261113102,
+      "query_batches": [
+        {
+          "days": [
+            3,
+            5,
+            6,
+            7,
+            9,
+            10,
+            11,
+            12
+          ],
+          "seed": 20261113102
+        },
+        {
+          "days": [
+            13,
+            14,
+            15,
+            16,
+            18,
+            19,
+            20,
+            26
+          ],
+          "seed": 20261113103
+        },
+        {
+          "days": [
+            31,
+            36,
+            41,
+            46,
+            51,
+            56,
+            61,
+            66
+          ],
+          "seed": 20261113104
+        },
+        {
+          "days": [
+            71,
+            76,
+            81,
+            86,
+            91,
+            96,
+            101,
+            106
+          ],
+          "seed": 20261113105
+        },
+        {
+          "days": [
+            111,
+            116,
+            121,
+            147,
+            168,
+            189,
+            210,
+            231
+          ],
+          "seed": 20261113106
+        },
+        {
+          "days": [
+            315,
+            378,
+            441,
+            567,
+            630,
+            693,
+            819,
+            882
+          ],
+          "seed": 20261113107
+        },
+        {
+          "days": [
+            945,
+            1008,
+            1071,
+            1134,
+            1197
+          ],
+          "seed": 20261113108
+        }
+      ],
+      "inference_seconds": 0.6470703328959644,
+      "original_frame_sha256": {
+        "1": "a196072191b879441d30373dc20cf7248dc27c8a8922dbbbb78da495f8e7ecd7",
+        "2": "8b5cf2ca803b1cb6b9643f530db00eaeb49f65f031622e2507ef937795ebf5bc",
+        "4": "421885d0a0be5494151d5e0bd7e571beac83a8155d44d19e4d914b95c85240ff",
+        "8": "826638f7ef0c1162a565b3512d2a4f0988a4c31a164df494f12a0f78060ebaf0",
+        "17": "e2c893a09def6b58432a1ef8537170fa6a9aa6be00fbb2ccb3c1bf93080d5798",
+        "21": "ad34529d0779aa1d58d93534675073edc3581622f91d472f555e37a8a3c1668f",
+        "63": "a5578c8f765360518f6f1402c9fdf5698f2b616d3e28008ee9ab6321b00b4683",
+        "126": "8bed7611c8e6e98513d664d3bf70285dd99b3e93314ce1c025bc69396cd83b2d",
+        "252": "de9468b81fe2b6958f21ed2dfa746ade94d4bd5f1602493958dcdd73027681c1",
+        "504": "f29cb8c37a6d0c39fbd75ef65110e410a5a42b47eb78e7d20b70439aeecb748f",
+        "756": "d4218cae2d139198317c003932fae446e1223902bddbbaf2e80b0690b489c70c",
+        "1260": "571d64fe62baa93810836b0e56f06b28e4b2bece1dc2bcb3e8f0bf25fcc0329c"
+      }
+    },
+    {
+      "case": 3,
+      "trajectory_id": "eb195dd594de03a9:20261031002:validation:3",
+      "history_sha256": "21de9965f2a1d9c060cfff262a83cbd8b22756ddf57703a80683da38e565d868",
+      "history_length": 1260,
+      "sampling_seed": 20261113103,
+      "query_batches": [
+        {
+          "days": [
+            3,
+            5,
+            6,
+            7,
+            9,
+            10,
+            11,
+            12
+          ],
+          "seed": 20261113103
+        },
+        {
+          "days": [
+            13,
+            14,
+            15,
+            16,
+            18,
+            19,
+            20,
+            26
+          ],
+          "seed": 20261113104
+        },
+        {
+          "days": [
+            31,
+            36,
+            41,
+            46,
+            51,
+            56,
+            61,
+            66
+          ],
+          "seed": 20261113105
+        },
+        {
+          "days": [
+            71,
+            76,
+            81,
+            86,
+            91,
+            96,
+            101,
+            106
+          ],
+          "seed": 20261113106
+        },
+        {
+          "days": [
+            111,
+            116,
+            121,
+            147,
+            168,
+            189,
+            210,
+            231
+          ],
+          "seed": 20261113107
+        },
+        {
+          "days": [
+            315,
+            378,
+            441,
+            567,
+            630,
+            693,
+            819,
+            882
+          ],
+          "seed": 20261113108
+        },
+        {
+          "days": [
+            945,
+            1008,
+            1071,
+            1134,
+            1197
+          ],
+          "seed": 20261113109
+        }
+      ],
+      "inference_seconds": 0.6296875409316272,
+      "original_frame_sha256": {
+        "1": "5716da5cc3f8fa7093894aafb75e7975c7209e445b686fed2f9c30386a83659b",
+        "2": "2d863b883bffb43cb5603d074a751483e9384d5d161bc1726f8ed3bfbc716282",
+        "4": "45550d2e84dd8f12ec3481e29b50926509431dfac44d7340d3191f6a28bcafec",
+        "8": "f72625ddad2b0ab9cda42062534548781f7525797604bac3f2dffbfbc0016abb",
+        "17": "d500cb4cbee54dd84a702afe99c0b784892eb6b106cfe911dd1f596e45e73d8d",
+        "21": "9600f78ce649ddfbd0e4b827fb52956e52a66bd00c088cab1a7d421cc1565fd0",
+        "63": "0c1e4124168ae2cbfda3b74de96665ecdf3777ed8095a6fd66b1186e1004b573",
+        "126": "4135de57cc80541bc665d488ba5ecf178f3726c7a2c7feecabb5592b2b21da4f",
+        "252": "02e89d1c9401e64ad5819b8dc87603f6b0d573f55bc9080caf15e348ae902755",
+        "504": "6e33f40ae61b18b1f7b250e05caa83dad73e54d4a6db7e5ba32a561a7e7025fb",
+        "756": "780984b8dc61377a769d3c7b01e403e4418495ff6f0286aa99d51f8cdb206234",
+        "1260": "6ef3533643efc7acacffa10da748e98627f932353b9abaa5ed74469a62a1db6b"
+      }
+    }
+  ],
+  "files": {
+    "frames.npz": "c480d49902fa8ac90b74b6c66cafec1caa16192bcee9488d4a1570caab859f5b"
+  },
+  "runtime_sha256": {
+    "evidence.py": "543c9a5c42e9ad4f1c0829626c0fd3855c0d25bcad5f808ac9cd54b1c4a428d4",
+    "inference.py": "6e9ab646a2627a356fef0fcaf8587cdf9bbbbbde0a6d64360cd77de9e517f643",
+    "simulation.py": "5ed98e3d2fce3df3319e3478e08fbdd7f63f00e0f632461bbd783cebf9acac06"
+  }
+}

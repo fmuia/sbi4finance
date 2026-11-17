@@ -1,0 +1,9 @@
+{
+  "accepted": "2026-11-14T14:24:48+00:00",
+  "source": "teaching-evidence-v1",
+  "source_sha256": {
+    "report.json": "68645f59e6ad2d3c02c1ad40dd721884e94e0598c5a852c95ee23db022a4fd6b",
+    "variance-aging.png": "1d33afc116ba246e6a23c8a818687c08e0240585204e72cef7658be3e9885612"
+  },
+  "changes": []
+}
