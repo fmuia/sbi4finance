@@ -47,7 +47,6 @@ KERAS_BACKEND = "jax"
 [tool.pixi.tasks]
 # Named entry points for the notebooks presented at the tutorial.
 path-inference = "marimo edit notebooks/trajectory_inference.py --no-token"
-mmar-takehome = "marimo edit notebooks/mmar_takehome.py --no-token"
 edit = { cmd = "marimo edit --no-token", cwd = "notebooks" }
 trajectories = "marimo edit notebooks/trajectory_inference.py --no-token"
 check = "marimo check notebooks"

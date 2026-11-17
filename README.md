@@ -10,7 +10,6 @@ architectures. **We then work through the notebooks presented at the tutorial:**
 | --- | --- | --- |
 | Heston and rough Bergomi on SPX options | [Open notebook](lab/notebooks/heston_spx_calibration.py) | [lab/](lab/) and [shared/](tutorial/src/sbi4f_tutorial/shared/) |
 | Parameter estimation from returns | [Open notebook](tutorial/notebooks/trajectory_inference.py) | [trajectories/](tutorial/src/sbi4f_tutorial/trajectories/) |
-| MMAR take-home | [Open notebook](tutorial/notebooks/mmar_takehome.py) | [mmar_takehome/](tutorial/src/sbi4f_tutorial/mmar_takehome/) |
 
 The SPX notebook runs from the [lab environment](lab/README.md#review-the-heston-spx-notebook).
 It includes a live training example; the larger pretrained model is an optional download.
@@ -28,8 +27,7 @@ pixi install --locked
 pixi run --locked path-inference
 ```
 
-Use `mmar-takehome` for the take-home notebook. Run one at a time; press Ctrl+C
-before starting the next. Each opens in your browser. The SPX notebook has its own
+It opens in your browser; press Ctrl+C to stop it. The SPX notebook has its own
 [lab setup](lab/README.md#review-the-heston-spx-notebook).
 
 The saved examples are included. **You do not need Oscar, a training bank or
