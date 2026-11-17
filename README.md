@@ -25,9 +25,14 @@ about 15 minutes, for readers who want the argument before the code.
 
 ## Run the notebooks
 
-Install [Pixi](https://pixi.sh). Each notebook opens in the browser; stop it with Ctrl+C before
-starting the other. The saved examples are included, so you do not need a cluster, a training bank
-or extra downloads.
+**Requirements.** [Pixi](https://pixi.sh), which installs Python 3.12, BayesFlow 2.1, marimo and
+the other dependencies from the lock files. A laptop CPU is enough. The return-history notebook
+runs on macOS (Apple Silicon), Linux (x86-64) and Windows (x86-64); the SPX notebook needs macOS
+(Apple Silicon) or Linux (x86-64), for example through WSL on Windows. The static copies above
+work in any browser.
+
+Each notebook opens in the browser; stop it with Ctrl+C before starting the other. The saved
+examples are included, so you do not need a cluster, a training bank or extra downloads.
 
 Return histories, from `tutorial/`:
 
@@ -37,7 +42,8 @@ pixi install --locked
 pixi run --locked path-inference
 ```
 
-Heston and rough Bergomi on SPX, from `lab/`:
+Heston and rough Bergomi on SPX, from `lab/`, in the lab's `core-reference` environment (the
+scientific stack plus PyMC, which computes the exact reference posteriors):
 
 ```bash
 cd lab
@@ -75,11 +81,13 @@ estimator is unavailable. See the [lab README](lab/README.md#review-the-heston-s
 | [site/](site/) | The public tutorial website, published with GitHub Pages ([how to edit](site/README.md)) |
 
 `tutorial/` is self-contained: it never imports the lab. The lab installs the tutorial runtime
-as a local dependency, so keep the two folders together. [AGENTS.md](AGENTS.md) states the rules
-for editing either one.
+as a local dependency, so keep the two folders together. To change a notebook, see
+[Review or edit a notebook](tutorial/README.md#review-or-edit-a-notebook); the conventions for
+both folders, for people and coding agents alike, are in [AGENTS.md](AGENTS.md).
 
-Notebooks that were prepared but not presented are parked in
-[pull request 101](https://github.com/fmuia/sbi4finance/pull/101) until we decide what to bring back.
+Further notebooks prepared for the tutorial but not presented, including introductory demos and
+an MMAR take-home, are kept in
+[pull request 101](https://github.com/fmuia/sbi4finance/pull/101).
 
 ## Reproduce the numerical work
 
@@ -91,4 +99,10 @@ Drive (which needs project access).
 
 ## Presenters
 
-Francesco Muia, Alexander Fengler, Stefan T. Radev and Jerry M. Huang.
+- Francesco Muia
+- Alexander Fengler, Brown University
+- Stefan T. Radev, Rensselaer Polytechnic Institute
+- Jerry M. Huang, Rensselaer Polytechnic Institute
+
+The [tutorial website](https://fmuia.github.io/sbi4finance/#presenters) has their profiles and a
+contact address.
