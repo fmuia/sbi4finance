@@ -61,6 +61,13 @@ cd ../lab
 pixi run --locked -e core-reference marimo export html notebooks/heston_spx_calibration.py -o ../site/notebooks/heston_spx_calibration.html
 ```
 
+Export with matplotlib's default settings. A system `matplotlibrc` that raises `figure.dpi`
+doubles every image, and the SPX page's Section 4.2 then exceeds marimo's output limit. If
+`python -c "import matplotlib; print(matplotlib.rcParams['figure.dpi'])"` prints more than 100,
+set `MATPLOTLIBRC` to the `matplotlibrc` file in `matplotlib.get_data_path()` for the export.
+Timings measured while exporting (simulation and training costs) change slightly between
+machines.
+
 ## Publish
 
 Every push to `main` that changes `site/` runs the

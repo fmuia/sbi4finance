@@ -1,8 +1,9 @@
 # Bayesian calibration on SPX options
 
 *A companion to the Heston and rough Bergomi notebook presented at ICAIF '26 (Milan, 15 November
-2026). About 15 minutes. The numbers and figures are those of the notebook as presented; section
-numbers such as §5.2 refer to it.*
+2026). About 15 minutes. The numbers and figures are those of the notebook as presented, except
+the product prices of §6, corrected on 19 November 2026 (section 5 below); section numbers such
+as §5.2 refer to the notebook.*
 
 The notebook calibrates an option-pricing model to 63 SPX quotes. Instead of one best-fitting
 parameter vector, it computes a posterior distribution over the parameters. It then checks that
@@ -202,23 +203,42 @@ $`\max(S_{6\text{m}}/S_{3\text{m}} - 1,\,0)`$. Listed options fix the index's di
 expiry, but not how those distributions are linked across dates, so the product needs a model.
 Its price is shown as an equivalent Black volatility over the 3-to-6-month period.
 
-Pricing it under every posterior draw gives a range. On the market-like simulation, where Heston
-is right by construction, the PyMC 90% range of 15.672 to 15.741 volatility points contains the
-true value of 15.682.
+Pricing it under every posterior draw gives a range. Given the variance on the reset date, the
+payoff is an ordinary Heston call, so the notebook prices it exactly: it averages that call over
+the exact law of the variance on that date. On the market-like simulation, where Heston is right
+by construction, the PyMC 90% range of 15.61 to 15.65 volatility points contains the true value
+of 15.63.
 
-On the SPX quotes the range is 15.865 to 15.988. But Heston does not fit these quotes, so its
+On the SPX quotes the range is 15.83 to 15.93. But Heston does not fit these quotes, so its
 parameters depend on which quotes it is fitted to.
 
 ![Posterior range and refits of the forward-start call on SPX](images/refits.png)
 
-*The forward-start call on the SPX quotes: the PyMC posterior's 90% range (orange) and Heston
-refitted by least squares to parts of the quotes (diamonds). The refits move the price 18 times
-more than the posterior range, from 15.70 to 17.95 volatility points. For a 3-month volatility
-swap they spread 21 times wider.*
+*The forward-start call on the SPX quotes: the PyMC posterior's 90% range (orange bar; the dots
+are its draws) and Heston refitted by least squares to parts of the quotes (diamonds). The refits
+move the price from 15.60 to 17.90 volatility points, 24 times the width of the posterior range.
+For a 3-month volatility swap they spread 22 times wider.*
+
+These multiples hold under the working prior, which bounds the noise multiplier at $`c \le 2`$
+and so keeps the posterior narrow. The SPX quotes call for $`c \approx 14`$: a Heston posterior
+with $`c`$ free (the reference behind §7.2) has $`c = 14.1`$ (90% interval 12.2 to 16.6), and
+its 90% price band is 7.2 times as wide at the median quote, with almost the same centre.
+Scaled alike, the refits spread about 3 times the posterior range (3.3 for the forward start,
+3.1 for the volatility swap).
 
 A posterior range measures uncertainty within the model. When the model is wrong, the choice of
-quotes moves the price far more, and the posterior cannot see that. A posterior range is not a
-model-risk reserve.
+quotes moves the price more than the posterior range, and the posterior cannot see that. A
+posterior range is not a model-risk reserve.
+
+> **Corrected on 19 November 2026.** As presented, §6 priced 40 posterior draws per data set by
+> Monte Carlo with 4,096 paths. Each forward-start price then carried an error of about 0.15
+> volatility points, more than the width of the ranges, and a coarse time step raised the
+> volatility swap by about 0.1 points. It reported ranges of 15.672 to 15.741 (simulation; true
+> value 15.682) and 15.865 to 15.988 (SPX), and refit spreads 18 and 21 times the posterior range,
+> without noting that these multiples rest on the bound $`c \le 2`$. The notebook now prices both
+> products exactly under every posterior draw; the
+> [pricing check](../lab/evidence/pilot-results/2026-11-19/heston-spx-product-pricing/README.md)
+> compares the exact prices with Monte Carlo.
 
 ## 6. What Heston misses, and rough Bergomi (§7)
 
@@ -285,7 +305,8 @@ They show, for Heston on these SPX quotes:
   simulations, while on SPX Heston misses the quotes by 1.1 volatility points and pushes $`c`$ to
   its bound, and the network's posterior departs from PyMC's;
 - that on SPX, model error dominates parameter uncertainty: refits of the same model spread
-  18 to 21 times wider than the posterior range;
+  22 to 24 times wider than the posterior range under the working bound $`c \le 2`$, and still
+  about 3 times wider with $`c`$ free;
 - that the missing feature is the short-expiry skew, which rough Bergomi reproduces in shape and
   which lowers the misfit by a quarter.
 

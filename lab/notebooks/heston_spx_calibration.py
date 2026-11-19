@@ -3670,7 +3670,7 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(grid, md, mo, section):
+def _(grid, md, mo, note, section):
     FORWARD_START = (0.25, 0.5)  # in years: the strike is fixed after three months, the option expires after six
     _fix, _end = (f"{12 * _t:.0f}" for _t in FORWARD_START)
     use_intro = mo.vstack([
@@ -3699,6 +3699,9 @@ def _(grid, md, mo, section):
                 stage=6),
         md('The product-pricing example is folded below. Continue to '
            '<a class="nb-ref" href="#s7">Advanced</a> for model diagnostics and the Bergomi extension.'),
+        note("The product prices below are now exact, and the comparison with refits states how much it depends on "
+             "the prior bound on the noise multiplier $c$. The folded section gives the figures presented on "
+             "15 November 2026.", label="Corrected on 19 November 2026"),
     ])
     return FORWARD_START, use_intro
 
@@ -3708,15 +3711,19 @@ def _(
     BOUNDS,
     CASES,
     DELTA,
+    EVIDENCE,
     EXPIRY,
     EXPIRY_DAYS,
     FORWARD_START,
     H,
     TRUTHS,
+    bergomi_results,
     caption,
     display_units,
     grid,
+    json,
     key,
+    market_predictives,
     md,
     mo,
     neural_draws,
@@ -3728,41 +3735,51 @@ def _(
     plt,
     reference_draws,
     table,
+    times,
     use_intro,
 ):
     # Price a forward-start call and a volatility swap under posterior draws, and under Heston refitted to SPX subsets.
-    _n_paths, _shown = 4096, 40  # Monte Carlo paths per price, and posterior draws priced
     from scipy.optimize import least_squares as _least_squares
 
-    from sbi4finance.calibration import products as _products
+    from sbi4finance.calibration import heston_exact_products as _exact
 
-    # Monte Carlo prices under one parameter draw, with the same random numbers for every draw, so that differences
-    # between draws are due to the parameters, not to Monte Carlo noise.
-    def _price(_theta):
-        _v0, _kappa, _v_inf, _xi, _rho = _theta[:5]
-        _paths = _products.heston_paths(dict(kappa=_kappa, theta=_v_inf, vol_of_vol=_xi), _v0, FORWARD_START[1], 252, _n_paths,
-                                        seed=20261115)
-        _call_price = 100 * _products.forward_start_call(_paths, _rho, *FORWARD_START, 1.0)[0]  # % of notional
-        _equivalent, _valid = display_units.forward_start_volatility_points(_call_price, *FORWARD_START)
-        if not bool(_valid):
-            raise ValueError("the forward-start price has no supported Black-equivalent volatility")
-        return (float(_equivalent),
-                100 * _products.volatility_swap(_paths, FORWARD_START[0])[0])  # annualized volatility points
+    _quadrature = []  # the largest change of any price when the quadrature nodes are doubled, in volatility points
 
-    def _posterior(_draws, _seed, _count=_shown):
+    # Exact prices under parameter rows (v0, kappa, v_inf, sigma, rho, ...). The forward-start call averages the
+    # Heston call at the reset over the exact law of the variance on that date; the volatility swap integrates the
+    # Laplace transform of the integrated variance. Neither has Monte Carlo or time-stepping error.
+    def _price(_draws):
+        _draws = np.atleast_2d(_draws)
+        _heston = dict(kappa=_draws[:, 1], theta=_draws[:, 2], vol_of_vol=_draws[:, 3])
+        _call, _call_change = _exact.forward_start_call({**_heston, "rho": _draws[:, 4]}, _draws[:, 0],
+                                                        *FORWARD_START)
+        _swap, _swap_change = _exact.volatility_swap(_heston, _draws[:, 0], FORWARD_START[0])
+        (_points, _moved), _valid = display_units.forward_start_volatility_points(
+            100 * np.stack([_call, _call + _call_change]), *FORWARD_START)  # prices in % of notional
+        if not np.all(_valid):
+            raise ValueError("a forward-start price has no supported Black-equivalent volatility")
+        _quadrature.append(max(float(np.max(_moved - _points)), float(100 * np.max(_swap_change))))
+        return np.column_stack([_points, 100 * _swap])  # both in annualized volatility points
+
+    def _posterior(_draws):
+        """Prices under every posterior draw inside the prior."""
         _inside = _draws[np.all((_draws >= BOUNDS[:, 0]) & (_draws <= BOUNDS[:, 1]), axis=1)]
-        if len(_inside) < 20:
-            return None
-        _pick = np.random.default_rng(_seed).choice(len(_inside), min(_count, len(_inside)), replace=False)
-        return np.array([_price(_t) for _t in _inside[_pick]])
+        return _price(_inside) if len(_inside) >= 20 else None
 
     _sets = {}
-    for _k, _case in enumerate(("synthetic-market-like", "market")):
-        _sets[_case] = {"PyMC": _posterior(reference_draws[_case], [20261115, _k, 0])}
-        _network_prices = _posterior(neural_draws[_case], [20261115, _k, 1]) if _case in neural_draws else None
+    for _case in ("synthetic-market-like", "market"):
+        _sets[_case] = {"PyMC": _posterior(reference_draws[_case])}
+        _network_prices = _posterior(neural_draws[_case]) if _case in neural_draws else None
         if _network_prices is not None:
             _sets[_case]["network"] = _network_prices
-    _truth = np.array(_price(TRUTHS["synthetic-market-like"]))
+    _truth = _price(TRUTHS["synthetic-market-like"])[0]
+
+    def _end_error(_values):
+        """Sampling error of a 90% range's ends: batch means over 50 consecutive draws of a chain."""
+        _ends = np.quantile(_values[:len(_values) // 50 * 50].reshape(-1, 50, _values.shape[1]), [.05, .95], axis=1)
+        return float(np.max(_ends.std(axis=1, ddof=1)) / np.sqrt(_ends.shape[1]))
+
+    _end = max(_end_error(_sets[_case]["PyMC"]) for _case in _sets)
 
     # Refit Heston to four subsets of the SPX quotes, by least squares weighted by the base error profile b_i
     # (the Gaussian likelihood of Section 1.3 at fixed c), and price the same products.
@@ -3781,7 +3798,7 @@ def _(
             except (FloatingPointError, ValueError):
                 return np.full(int(_mask.sum()), 1e3)
         _fit = _least_squares(_misfit, _start[:5], bounds=(BOUNDS[:5, 0], BOUNDS[:5, 1]), x_scale="jac", max_nfev=400)
-        _refits[_name] = (_fit.x, np.array(_price(_fit.x)))
+        _refits[_name] = (_fit.x, _price(_fit.x)[0])
 
     _colors = {"PyMC": plots.SERIES[1], "network": plots.SERIES[0]}
 
@@ -3792,7 +3809,8 @@ def _(
         for source, values in _sets[case].items():
             q = np.quantile(values[:, 0], [.05, .95])
             ax.plot(q, [len(labels)] * 2, color=_colors[source], lw=7, solid_capstyle="butt", alpha=.75)
-            ax.scatter(values[:, 0], np.full(len(values), len(labels)), color=_colors[source], s=7, zorder=3)
+            jitter = np.random.default_rng([20261115, len(labels)]).uniform(-.2, .2, len(values))  # spreads the dots
+            ax.scatter(values[:, 0], len(labels) + jitter, color=_colors[source], s=3, alpha=.3, lw=0, zorder=3)
             labels.append(f"{source} posterior, 90% range")
         if case == "market":
             for name, (_, prices) in _refits.items():
@@ -3811,24 +3829,69 @@ def _(
     _like, _spx = (np.quantile(_sets[_c]["PyMC"], [.05, .95], axis=0) for _c in ("synthetic-market-like", "market"))
     _refit_prices = np.array([_p for _, _p in _refits.values()])
     _low, _high = _refit_prices.min(axis=0), _refit_prices.max(axis=0)
-    _ratio = (_high - _low) / (_spx[1] - _spx[0])
+    _ratio = (_high - _low) / (_spx[1] - _spx[0])  # under the working prior, which bounds c
+    # Without that bound. The Heston reference behind Section 7.2 lets c range much wider; quote by quote, its 90%
+    # price band is wider than this posterior's by about the same factor. Product ranges are scaled by its median.
+    _free = bergomi_results["fit_comparison"]["heston"]
+    _wide, _narrow = (np.asarray(_bands, dtype=float) for _bands in
+                      (_free["price_q05_q50_q95_raw"], market_predictives["methods"]["pymc"]["clean_q05_q50_q95_raw"]))
+    _widening = (_wide[2] - _wide[0]) / (_narrow[2] - _narrow[0])
+    _factor = float(np.median(_widening))
+    _middle = np.quantile(_widening, [.25, .75])
+    _shift = float(np.median(np.abs(_wide[1] - _narrow[1]) / H))
+    _free_ratio = _ratio / _factor
+    _c_low, _c_mid, _c_high = _free["c_q05_q50_q95"]
+    _bound, _free_bounds = BOUNDS[-1, 1], bergomi_results["comparison_heston_c_bounds"]
     _covered = [bool(_like[0, _j] <= _truth[_j] <= _like[1, _j]) for _j in range(2)]
     _network = {_c: np.quantile(_sets[_c]["network"], [.05, .95], axis=0) for _c in _sets if "network" in _sets[_c]}
-    use_summary = {"ratio": float(_ratio[0]), "covered": _covered[0]}  # for the takeaways
+    use_summary = {"ratio": float(_ratio[0]), "free_ratio": float(_free_ratio[0]), "bound": float(_bound),
+                   "covered": _covered[0]}  # for the takeaways
     _heads = ("Forward-start Black-equivalent volatility (volatility points)", "Volatility swap (volatility points)")
-    _range = lambda _q: {_heads[0]: f"[{_q[0, 0]:.3f}, {_q[1, 0]:.3f}]", _heads[1]: f"[{_q[0, 1]:.2f}, {_q[1, 1]:.2f}]"}
+    _range = lambda _q: {_heads[0]: f"[{_q[0, 0]:.2f}, {_q[1, 0]:.2f}]", _heads[1]: f"[{_q[0, 1]:.2f}, {_q[1, 1]:.2f}]"}
     _months = f"{12 * FORWARD_START[0]:.0f}"
+    _counts = {_c: len(_sets[_c]["PyMC"]) for _c in _sets}
 
-    _simulated = [{"Source": "True value", _heads[0]: f"{_truth[0]:.3f}", _heads[1]: f"{_truth[1]:.2f}"},
+    # The version presented on 15 November 2026 used Monte Carlo; scripts/check_heston_spx_products.py recomputed
+    # its numbers and checked the exact prices against Monte Carlo.
+    _check = json.loads((EVIDENCE / "2026-11-19" / "heston-spx-product-pricing" / "results.json").read_text())
+    if _check.get("format") != "heston_spx_product_pricing_check_v1":
+        raise ValueError("the product-pricing check record is missing or has another format")
+    _presented = {_c: _check["ranges_c_at_most_2"][_c]["presented"] for _c in _sets}
+    _noise = max(_presented[_c]["median_se"][0] for _c in _sets)
+    _bias = max(_row["monte_carlo"]["252"]["volatility_swap"] - _row["exact"]["volatility_swap"]
+                for _row in _check["convergence"])
+    _finest = max(_check["monte_carlo"]["steps_over_six_months"])
+    _agreement = max(abs(_mc[_p] - _row["exact"][_p]) / _mc[_p + "_se"] for _row in _check["convergence"]
+                     for _mc in [_row["monte_carlo"][str(_finest)]] for _p in ("forward_start", "volatility_swap"))
+    _old = [f"{_a:.3f}–{_b:.3f}" for _a, _b in (_presented[_c]["forward_start"] for _c in _sets)]
+    _correction = note(
+        f"As presented on 15 November 2026 ([commit c103794](https://github.com/fmuia/sbi4finance/blob/"
+        "c10379421de65cbd64cce799749b52e1716fd631/lab/notebooks/heston_spx_calibration.py)), this section priced "
+        f"{_check['presented_method']['draws']} posterior draws per data set by Monte Carlo, with "
+        f"{_check['presented_method']['paths']:,} paths and {_check['presented_method']['steps']} time steps over six "
+        "months. Each "
+        f"forward-start price then carried a Monte Carlo error of about {_noise:.2f} volatility points, more than the "
+        f"width of the ranges, and the coarse time step raised the volatility swap by about {_bias:.1f} points. That "
+        f"version reported forward-start ranges of {_old[0]} on the simulation (true value "
+        f"{_check['market_like_truth']['presented'][0]:.3f}) and {_old[1]} on SPX, and refits that spread "
+        f"{_check['refit_ratio_c_at_most_2']['presented'][0]:.0f} and "
+        f"{_check['refit_ratio_c_at_most_2']['presented'][1]:.0f} times wider than the posterior range, without "
+        f"saying that these multiples rest on the bound $c\\le{_bound:g}$. Prices are now exact and use every "
+        f"posterior draw. With {_check['monte_carlo']['paths']:,} paths and {_finest:,} steps, Monte Carlo agrees "
+        f"with them within {_agreement:.1f} standard errors (`lab/evidence/pilot-results/2026-11-19/"
+        "heston-spx-product-pricing/`).",
+        label="Corrected on 19 November 2026")
+
+    _simulated = [{"Source": "True value", _heads[0]: f"{_truth[0]:.2f}", _heads[1]: f"{_truth[1]:.2f}"},
                   {"Source": "PyMC reference, 90% range", **_range(_like)}]
     if "synthetic-market-like" in _network:
         _simulated.append({"Source": "Network, 90% range", **_range(_network["synthetic-market-like"])})
     _first = (f"**On this simulated data set, the range contains the generating value.** The PyMC range is "
-              f"{_like[0, 0]:.3f}–{_like[1, 0]:.3f} Black-equivalent volatility points, and the generating "
-              f"value is {_truth[0]:.3f}." if _covered[0] else
-              f"**On this data set the range misses the true price.** The PyMC range is {_like[0, 0]:.3f}–"
-              f"{_like[1, 0]:.3f} Black-equivalent volatility points and the generating value is {_truth[0]:.3f}. One noisy data set can shift "
-              "a posterior (Section 4.2).")
+              f"{_like[0, 0]:.2f}–{_like[1, 0]:.2f} Black-equivalent volatility points, and the generating "
+              f"value is {_truth[0]:.2f}." if _covered[0] else
+              f"**On this data set the range misses the true price.** The PyMC range is {_like[0, 0]:.2f}–"
+              f"{_like[1, 0]:.2f} Black-equivalent volatility points and the generating value is {_truth[0]:.2f}. "
+              "One noisy data set can shift a posterior (Section 4.2).")
     _swap = ("The true rate of the volatility swap lies inside its range too." if all(_covered) else
              "The true rate of the volatility swap lies outside its range." if _covered[0] else
              "The true rate of the volatility swap lies inside its range." if _covered[1] else
@@ -3842,7 +3905,7 @@ def _(
         _fits.append({"Fit": "Network, 90% range", **_range(_network["market"]),
                       r"$\kappa$": _median(neural_draws["market"], 1), r"$\sigma$": _median(neural_draws["market"], 3)})
     for _name, (_parameters, _prices) in _refits.items():
-        _fits.append({"Fit": f"Refit to {_name}", _heads[0]: f"{_prices[0]:.3f}", _heads[1]: f"{_prices[1]:.2f}",
+        _fits.append({"Fit": f"Refit to {_name}", _heads[0]: f"{_prices[0]:.2f}", _heads[1]: f"{_prices[1]:.2f}",
                       r"$\kappa$": _kappa_text(_parameters[1]), r"$\sigma$": f"{_parameters[3]:.2f}"})
     _second = [
         md(f"""
@@ -3853,33 +3916,47 @@ def _(
         _ranges("market", 3.0, "SPX quotes: posterior ranges and refits"),
         caption("The bars are 90% posterior ranges, as in Section 6.1. Each diamond is the price after Heston is "
                 "refitted by least squares to part of the SPX quotes."),
-        key(f"**A posterior measures uncertainty within the model.** This working specification misses SPX: refitting it to "
-            f"different quotes moves the price {_ratio[0]:.0f} times more than the posterior range, and the posterior "
-            "cannot see that."),
+        key(f"**A posterior measures uncertainty within the model.** This working specification misses SPX: refitting "
+            f"it to different quotes moves the price {_ratio[0]:.0f} times more than the posterior range, and the "
+            "posterior cannot see that. Most of that multiple comes from the working prior's bound "
+            f"$c\\le{_bound:g}$, which keeps the posterior narrow: with $c$ free, the refits would spread about "
+            f"{times(_free_ratio[0])} times its range."),
         md(f"The table lists the posterior ranges and the {number_word(len(_refits))} refits. For the posteriors it "
            r"gives 90% ranges of the prices and medians of $\kappa$ and $\sigma$."),
         table(_fits, align="lrrrr"),
         grid({
             "Volatility swap": f"For the volatility swap the refits spread {_ratio[1]:.0f} times wider than the "
-                               "posterior range.",
+                               f"posterior range, and about {times(_free_ratio[1])} times with $c$ free.",
+            "The bound on $c$": f"These quotes want $c$ far above {_bound:g} (Section 7.1). A Heston posterior with "
+                                f"$c$ between {_free_bounds[0]:g} and {_free_bounds[1]:g}, the reference of Section "
+                                f"7.2, has $c={_c_mid:.1f}$ (90%: {_c_low:.1f}–{_c_high:.1f}). Its 90% price band "
+                                f"is {times(_factor)} times as wide as this posterior's at the median quote "
+                                f"({times(_middle[0])}–{times(_middle[1])} for the middle half), while its median "
+                                f"prices differ by {_shift:.2f} half-spreads at the median quote. The figures for $c$ "
+                                f"free scale the posterior ranges by {times(_factor)}.",
             "Model-risk decisions": "Refit sensitivity can inform a reserve or motivate a different model. A reserve "
                                    "requires a separate pricing reference and decision rule.",
             "Value of the posterior range": "The posterior range matters when the quotes leave the price open. "
                                             "That happens with few or wide quotes, or with a model so flexible "
                                             "that the quotes do not determine what the product depends on.",
-        }),
+        }, columns=2),
     ]
     if "market" in _network:
         _second.append(note("The network's ranges differ from PyMC's on these market quotes. This is an approximation "
                             "error relative to the working posterior; poor model fit alone does not explain it (Section 5.5)."))
     use_section = mo.accordion({"Optional: forward-start and volatility-swap pricing": mo.vstack([
         use_intro,
+        _correction,
         _ranges("synthetic-market-like", 1.9, "Market-like simulation: Heston is right"),
-        caption(f"The bars are 90% ranges over {_shown} posterior draws, and each dot is one draw. The underlying "
-                f"prices use {_n_paths:,} Monte Carlo paths with common random numbers, then convert to "
-                "Black-equivalent volatility points before intervals and refit comparisons are computed."),
+        caption(f"The bars are 90% ranges over every posterior draw inside the prior "
+                f"({_counts['synthetic-market-like']:,} for PyMC), and the dots are the draws. Prices are exact, "
+                "with no Monte Carlo or time-stepping error: doubling the quadrature nodes moves none by more than "
+                f"{max(max(_quadrature), 1e-12):.0e} volatility points. Forward-start prices convert to "
+                "Black-equivalent volatility points before intervals and refit comparisons are computed. Ranges are "
+                f"shown to two decimals, since their ends carry a sampling error of up to {_end:.3f} points from the "
+                "finite number of draws."),
         key(_first),
-        md(f"The table adds a {_months}-month volatility swap, priced in the same way. {_swap}"),
+        md(f"The table adds a {_months}-month volatility swap, priced under the same draws. {_swap}"),
         table(_simulated, align="lrr"),
         *_second,
     ])}, expanded=False)
@@ -4690,7 +4767,9 @@ def _(
              "can reveal."),
             ("Section 6", "A posterior range is not a model-risk range",
              f"On SPX, refitting Heston to different quotes moves a forward-start price {use_summary['ratio']:.0f} "
-             "times more than its posterior range. Parameter uncertainty within a wrong model understates the risk."),
+             f"times more than its posterior range while the prior holds $c$ at most {use_summary['bound']:g}, and "
+             f"about {times(use_summary['free_ratio'])} times with $c$ free. Parameter uncertainty within a wrong "
+             "model understates the risk."),
             ("Section 7", "Misspecification points to the next model, which needs validating again",
              f"The SPX skew falls like $T^{{{_exponent:.2f}}}$, the rough-Bergomi law with "
              f"$H\\approx{0.5 + _exponent:.1f}$, which Heston cannot follow at short expiries. Rough Bergomi lowers "

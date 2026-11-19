@@ -1,0 +1,413 @@
+{
+ "format": "heston_spx_product_pricing_check_v1",
+ "contract": {
+  "forward_start": "max(S(0.5)/S(0.25) - 1, 0), zero carry, Black-equivalent volatility points",
+  "volatility_swap": "100 E[sqrt(I(0.25)/0.25)], annualized volatility points"
+ },
+ "presented_method": {
+  "draws": 40,
+  "paths": 4096,
+  "steps": 252,
+  "seed": 20261115
+ },
+ "monte_carlo": {
+  "paths": 1048576,
+  "steps_over_six_months": [
+   252,
+   1008,
+   4032
+  ],
+  "seed": 20261119,
+  "scheme": "products.heston_paths full-truncation Euler, antithetic, chunks of 4,096 paths"
+ },
+ "convergence": [
+  {
+   "name": "market-like generating values",
+   "parameters": {
+    "initial_variance": 0.027111476938590673,
+    "kappa": 4.33564875507931,
+    "theta": 0.056477632243131036,
+    "vol_of_vol": 1.7993356588948335,
+    "rho": -0.6674551198176153
+   },
+   "exact": {
+    "forward_start": 15.626371380192655,
+    "volatility_swap": 15.743004751518178,
+    "quadrature_change": 2.3728547654748232e-11
+   },
+   "quantile_average_forward_start": 15.62626951457133,
+   "presented_monte_carlo": {
+    "forward_start": 15.682417436087698,
+    "volatility_swap": 15.789590890965954,
+    "forward_start_se": 0.15344213781579644,
+    "volatility_swap_se": 0.08732072945961937
+   },
+   "monte_carlo": {
+    "252": {
+     "forward_start": 15.64446869889016,
+     "forward_start_se": 0.009627831688558207,
+     "volatility_swap": 15.853964438980425,
+     "volatility_swap_se": 0.005475251732415509
+    },
+    "1008": {
+     "forward_start": 15.633547688589791,
+     "forward_start_se": 0.009619508808784705,
+     "volatility_swap": 15.763641648687992,
+     "volatility_swap_se": 0.005473713210781201
+    },
+    "4032": {
+     "forward_start": 15.608784887382873,
+     "forward_start_se": 0.009543408720792842,
+     "volatility_swap": 15.743353623667236,
+     "volatility_swap_se": 0.005446820291045341
+    }
+   }
+  },
+  {
+   "name": "SPX posterior median",
+   "parameters": {
+    "initial_variance": 0.028067099252464506,
+    "kappa": 5.070476470892999,
+    "theta": 0.05348760468027536,
+    "vol_of_vol": 1.8045863942024598,
+    "rho": -0.6966389943135242
+   },
+   "exact": {
+    "forward_start": 15.877331792767412,
+    "volatility_swap": 16.12606525988787,
+    "quadrature_change": 2.3784836111240303e-11
+   },
+   "quantile_average_forward_start": 15.877236822203065,
+   "presented_monte_carlo": {
+    "forward_start": 15.883243849833054,
+    "volatility_swap": 16.16339036021277,
+    "forward_start_se": 0.14010922113807234,
+    "volatility_swap_se": 0.08270323851385498
+   },
+   "monte_carlo": {
+    "252": {
+     "forward_start": 15.89129637773055,
+     "forward_start_se": 0.008879064872594773,
+     "volatility_swap": 16.225817881030626,
+     "volatility_swap_se": 0.005179387669028745
+    },
+    "1008": {
+     "forward_start": 15.88399407322143,
+     "forward_start_se": 0.00886672429860683,
+     "volatility_swap": 16.142509542561168,
+     "volatility_swap_se": 0.005173979287066449
+    },
+    "4032": {
+     "forward_start": 15.862558092609943,
+     "forward_start_se": 0.008801248394482427,
+     "volatility_swap": 16.125008497803844,
+     "volatility_swap_se": 0.005145817240850096
+    }
+   }
+  },
+  {
+   "name": "refit to the 3 shortest expiries",
+   "parameters": {
+    "initial_variance": 0.02596971428084391,
+    "kappa": 9.999999999997335,
+    "theta": 0.05068851808551216,
+    "vol_of_vol": 2.096867378884268,
+    "rho": -0.6475710967874837
+   },
+   "exact": {
+    "forward_start": 17.89501631015145,
+    "volatility_swap": 17.62639043764703,
+    "quadrature_change": 2.373418742357857e-11
+   },
+   "quantile_average_forward_start": 17.894945566348902,
+   "presented_monte_carlo": {
+    "forward_start": 17.946816627807067,
+    "volatility_swap": 17.632553349503755,
+    "forward_start_se": 0.09491691420447568,
+    "volatility_swap_se": 0.06720957525665536
+   },
+   "monte_carlo": {
+    "252": {
+     "forward_start": 17.894703656307204,
+     "forward_start_se": 0.0058910076769741315,
+     "volatility_swap": 17.700661883766657,
+     "volatility_swap_se": 0.0041853288367744755
+    },
+    "1008": {
+     "forward_start": 17.90093241099647,
+     "forward_start_se": 0.005866570733093494,
+     "volatility_swap": 17.635248049215974,
+     "volatility_swap_se": 0.004171082427495557
+    },
+    "4032": {
+     "forward_start": 17.887533519867304,
+     "forward_start_se": 0.005826414654643623,
+     "volatility_swap": 17.62763691872731,
+     "volatility_swap_se": 0.0041509168366365545
+    }
+   }
+  },
+  {
+   "name": "refit to the 4 longest expiries",
+   "parameters": {
+    "initial_variance": 0.03094366811800457,
+    "kappa": 4.079808094889462,
+    "theta": 0.05400896275299939,
+    "vol_of_vol": 1.613500833074146,
+    "rho": -0.7015406507815692
+   },
+   "exact": {
+    "forward_start": 15.603991595997591,
+    "volatility_swap": 16.28987291188309,
+    "quadrature_change": 2.3672795133607336e-11
+   },
+   "quantile_average_forward_start": 15.603897995021665,
+   "presented_monte_carlo": {
+    "forward_start": 15.697270754172163,
+    "volatility_swap": 16.348799199474946,
+    "forward_start_se": 0.15367793196109225,
+    "volatility_swap_se": 0.0804827355120393
+   },
+   "monte_carlo": {
+    "252": {
+     "forward_start": 15.617144283673046,
+     "forward_start_se": 0.009460607960593807,
+     "volatility_swap": 16.374680664642185,
+     "volatility_swap_se": 0.005003493186961492
+    },
+    "1008": {
+     "forward_start": 15.611564802824073,
+     "forward_start_se": 0.0094585578403754,
+     "volatility_swap": 16.304483875237402,
+     "volatility_swap_se": 0.004989437321962097
+    },
+    "4032": {
+     "forward_start": 15.587324270713335,
+     "forward_start_se": 0.009389942384859188,
+     "volatility_swap": 16.28822421561304,
+     "volatility_swap_se": 0.004961769119845467
+    }
+   }
+  }
+ ],
+ "ranges_c_at_most_2": {
+  "synthetic-market-like": {
+   "inside_prior_draws": 2000,
+   "presented": {
+    "forward_start": [
+     15.672,
+     15.741
+    ],
+    "volatility_swap": [
+     15.77,
+     15.8
+    ],
+    "median_se": [
+     0.154,
+     0.088
+    ]
+   },
+   "exact_same_draws": {
+    "forward_start": [
+     15.614,
+     15.656
+    ],
+    "volatility_swap": [
+     15.738,
+     15.767
+    ],
+    "correlation_with_presented": [
+     0.32,
+     0.72
+    ],
+    "width_ratio_presented_over_exact": [
+     1.65,
+     1.22
+    ]
+   },
+   "exact_all_draws": {
+    "forward_start": [
+     15.611,
+     15.655
+    ],
+    "volatility_swap": [
+     15.734,
+     15.765
+    ],
+    "quadrature_change": 2.406280307058657e-11
+   }
+  },
+  "market": {
+   "inside_prior_draws": 2000,
+   "presented": {
+    "forward_start": [
+     15.865,
+     15.988
+    ],
+    "volatility_swap": [
+     16.14,
+     16.21
+    ],
+    "median_se": [
+     0.141,
+     0.083
+    ]
+   },
+   "exact_same_draws": {
+    "forward_start": [
+     15.844,
+     15.937
+    ],
+    "volatility_swap": [
+     16.1,
+     16.16
+    ],
+    "correlation_with_presented": [
+     0.85,
+     0.86
+    ],
+    "width_ratio_presented_over_exact": [
+     1.33,
+     1.17
+    ]
+   },
+   "exact_all_draws": {
+    "forward_start": [
+     15.829,
+     15.926
+    ],
+    "volatility_swap": [
+     16.092,
+     16.159
+    ],
+    "quadrature_change": 2.4118965047185242e-11
+   }
+  }
+ },
+ "market_like_truth": {
+  "presented": [
+   15.682,
+   15.79
+  ],
+  "exact": [
+   15.6264,
+   15.743
+  ]
+ },
+ "refits": {
+  "all 63 quotes": {
+   "parameters": {
+    "initial_variance": 0.02806994467142211,
+    "kappa": 5.067789656444841,
+    "theta": 0.05349151605056531,
+    "vol_of_vol": 1.8042536182986633,
+    "rho": -0.6967510167373216
+   },
+   "presented": [
+    15.894,
+    16.163
+   ],
+   "exact": [
+    15.8762,
+    16.1257
+   ]
+  },
+  "3 shortest expiries": {
+   "parameters": {
+    "initial_variance": 0.02596971428084391,
+    "kappa": 9.999999999997335,
+    "theta": 0.05068851808551216,
+    "vol_of_vol": 2.096867378884268,
+    "rho": -0.6475710967874837
+   },
+   "presented": [
+    17.947,
+    17.633
+   ],
+   "exact": [
+    17.895,
+    17.6264
+   ]
+  },
+  "4 longest expiries": {
+   "parameters": {
+    "initial_variance": 0.03094366811800457,
+    "kappa": 4.079808094889462,
+    "theta": 0.05400896275299939,
+    "vol_of_vol": 1.613500833074146,
+    "rho": -0.7015406507815692
+   },
+   "presented": [
+    15.697,
+    16.349
+   ],
+   "exact": [
+    15.604,
+    16.2899
+   ]
+  },
+  "near the money": {
+   "parameters": {
+    "initial_variance": 0.02571102475563415,
+    "kappa": 4.5429364828297665,
+    "theta": 0.04955660748611869,
+    "vol_of_vol": 1.2972978188176978,
+    "rho": -0.7104603579857054
+   },
+   "presented": [
+    16.457,
+    16.21
+   ],
+   "exact": [
+    16.4607,
+    16.2089
+   ]
+  }
+ },
+ "refit_ratio_c_at_most_2": {
+  "presented": [
+   18.3,
+   21.1
+  ],
+  "exact_all_draws": [
+   23.7,
+   22.4
+  ]
+ },
+ "c_free": {
+  "capstone_c_q05_q50_q95": [
+   12.171193697587087,
+   14.11495484635496,
+   16.597160276485436
+  ],
+  "band_width_factor_median": 7.17,
+  "band_width_factor_iqr": [
+   6.86,
+   7.35
+  ],
+  "band_width_factor_range": [
+   6.39,
+   7.66
+  ],
+  "median_shift_half_spreads": 0.27,
+  "refit_ratio_estimate": [
+   3.3,
+   3.1
+  ]
+ },
+ "environment": {
+  "python": "3.12.16",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "platform": "Linux-6.18.44-fc-v595-x86_64-with-glibc2.39"
+ },
+ "sources": {
+  "script": "c37bfe7d97e4f1ea4e14f66b00e3d85a5246de6300569d2ec3005a0c17686efc",
+  "exact_products": "32ec088d7cfc2989bfcdf9c381f86f712a188d100eec65d70b6b38e539356c91",
+  "monte_carlo_products": "80328d3ae995ad0c5f127e476244de65f67b02a4deac3330e319a2f8ae23ee34",
+  "reference_display_draws": "a78a35102b42e0a1d5efabb315b454cd6ff7f399ffe00bc5d0bb3bd3a17c4976",
+  "capstone_results": "1a4e104e6bc4e440e63a482e4403ae35972651baa9f1dd0c0c6a7d21d0b453ca",
+  "market_predictives": "8850ac45d1c3c33c29dee12b9b4000fef3d017e3c32404caa97ebac008a164d6"
+ },
+ "seconds": 1422
+}

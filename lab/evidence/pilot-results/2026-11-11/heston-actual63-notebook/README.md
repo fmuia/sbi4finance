@@ -80,3 +80,5 @@ The full per-parameter comparison is in `reference-comparison.json`. The market 
 - `pixi run --locked -e core-reference release-check` passes.
 
 The pretrained-estimator cells have so far run here only with stand-ins: the Drive archive is restricted to named accounts and could not be fetched into the cloud container. The first render against the real bundle should be recorded here, with its revision and environment.
+
+On 19 November 2026 Section 6 was corrected: its forward-start and volatility-swap prices are now exact under every posterior draw, and its refit comparison states its dependence on the bound c ≤ 2. The [pricing check](../../2026-11-19/heston-spx-product-pricing/README.md) records the presented figures and the Monte Carlo comparison.

@@ -63,7 +63,10 @@ estimator is unavailable. See the [lab README](lab/README.md#review-the-heston-s
   32 minutes. On simulated data it is well calibrated for five of the six parameters and too
   cautious for the sixth. On the SPX quotes, however, Heston itself fails: it misses them by
   1.1 volatility points (RMS), far beyond the assumed quote noise. Refitting it to different
-  subsets of the quotes moves a product's price 18 times more than the posterior range.
+  subsets of the quotes moves a product's price about 24 times more than the posterior range
+  while the noise multiplier is bounded at c ≤ 2, as in the presented notebook, and about 3 times
+  more with c free. (Corrected on 19 November 2026: the version presented reported 18 times,
+  from Monte Carlo prices too noisy for the range, and did not mention the bound.)
 - **Rough Bergomi on SPX** lowers the misfit by about a quarter. Its amortized posterior still
   underestimates the noise level that MCMC finds, so it is a development result, not an accepted
   calibration.

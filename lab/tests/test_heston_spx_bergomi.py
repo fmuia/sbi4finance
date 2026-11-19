@@ -252,6 +252,25 @@ class HestonSPXBergomiTests(unittest.TestCase):
         self.assertIn("Optional: forward-start and volatility-swap pricing", self.defs["use_section"].text)
         self.assertTrue(self.defs["use_summary"])
 
+    def test_product_ranges_are_exact_and_qualified_by_the_noise_bound(self):
+        # The notebook prices every inside-prior draw exactly; the separate check script recorded the same ratios,
+        # the presented Monte Carlo figures and the band-width factor that rescales them for c free.
+        import json
+
+        record = json.loads((LAB / "evidence/pilot-results/2026-11-19/heston-spx-product-pricing/results.json")
+                            .read_text())
+        summary = self.defs["use_summary"]
+        self.assertEqual(summary["bound"], self.defs["BOUNDS"][-1, 1])
+        self.assertAlmostEqual(summary["ratio"], record["refit_ratio_c_at_most_2"]["exact_all_draws"][0], delta=.05)
+        self.assertAlmostEqual(summary["free_ratio"],
+                               summary["ratio"] / record["c_free"]["band_width_factor_median"], delta=.01)
+        self.assertTrue(summary["covered"])
+        text = self.defs["use_section"].text
+        self.assertIn("Corrected on 19 November 2026", text)
+        for presented in record["ranges_c_at_most_2"].values():  # the presented figures, quoted in the note
+            self.assertIn("{:.3f}–{:.3f}".format(*presented["presented"]["forward_start"]), text)
+        self.assertNotIn("common random numbers", text)
+
     def test_last_expiry_can_be_selected_without_a_model(self):
         # App.run overrides only the selector's cell; the saved posterior is fixed.
         definitions = dict(self.defs)
