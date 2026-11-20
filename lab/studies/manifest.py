@@ -34,6 +34,8 @@ EXPORTS = {
     "quick-checks/long_end/long_end_extra.json": "lab/checks/long_end/long_end_extra.json",
     "quick-checks/rough_checks.json": "lab/checks/rough_checks.json",
     "tasks/calibration_rough_pilot.json": "lab/configs/tasks/calibration_rough_pilot.json",
+    "images/ladder.png": "lab/evidence/illustrations/ladder/ladder.png",
+    "images/l10-credible-vs-confidence.png": "lab/evidence/illustrations/credible-vs-confidence/l10-credible-vs-confidence.png",
 }
 BACKBONES = ("heston-final500", "rough-known100k-validation0", "rough-joint100k-validation0",
              "rough-joint100k-validation1983", "rough-joint100k-validation1941", "rough-joint100k-validation1962")
